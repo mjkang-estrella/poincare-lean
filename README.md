@@ -922,7 +922,10 @@ The current artifact is intentionally conservative:
   boundary through the five package-layer requirements named by the crosswalk.
   `remainingDependencyPackage_milestone_requirements_payload`, together with
   `remainingDependencyPackage_iff_milestone_requirements`, exposes the same
-  boundary through all six milestone requirements. The
+  boundary through all six milestone requirements. The remaining package-layer
+  and milestone payloads are now also pinned to the generic package-layer
+  projection tuple and to the milestone-assigned package-layer projection tuple.
+  The
   theorem
   `canonical_completion_payload_of_remaining_dependency_component_requirements`
   carries the remaining package to the canonical payload through that
@@ -1082,7 +1085,9 @@ The current artifact is intentionally conservative:
   `poincareCompletionCertificate_component_requirements_payload`,
   `poincareCompletionCertificate_package_layer_requirements_payload`, and
   `poincareCompletionCertificate_milestone_requirements_payload` project those
-  presentations back out of the certificate.
+  presentations back out of the certificate. The package-layer and milestone
+  certificate payloads are pinned back to the certificate's remaining-dependency
+  payloads and to the same generic/package-layer projection tuples.
   `completion_certificate_of_components`,
   `completion_certificate_of_component_requirements`,
   `completion_certificate_of_package_layer_requirements`, and

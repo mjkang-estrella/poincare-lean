@@ -3020,6 +3020,26 @@ theorem remainingDependencyPackage_package_layer_requirements_payload_eq
   apply Subsingleton.elim
 
 /--
+The remaining-dependency package-layer payload is also the tuple of generic
+package-layer projections in package-layer order.
+-/
+theorem remainingDependencyPackage_package_layer_requirements_payload_to_generic_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    remainingDependencyPackage_package_layer_requirements_payload dependencies =
+      ⟨ dependencyPackageLayerRequirement_of_dependencies dependencies
+          DependencyPackageLayer.smoothabilityPackage
+      , dependencyPackageLayerRequirement_of_dependencies dependencies
+          DependencyPackageLayer.analyticFoundationPackage
+      , dependencyPackageLayerRequirement_of_dependencies dependencies
+          DependencyPackageLayer.surgeryPackage
+      , dependencyPackageLayerRequirement_of_dependencies dependencies
+          DependencyPackageLayer.finiteExtinctionPackage
+      , dependencyPackageLayerRequirement_of_dependencies dependencies
+          DependencyPackageLayer.topologyPackage
+      ⟩ := by
+  apply Subsingleton.elim
+
+/--
 The remaining dependency package is equivalent to supplying the five
 package-layer requirements named by the dependency crosswalk.
 -/
@@ -3079,6 +3099,22 @@ theorem remainingDependencyPackage_milestone_requirements_payload_eq
     (dependencies : RemainingDependencyPackage.{u}) :
     remainingDependencyPackage_milestone_requirements_payload dependencies =
       dependency_milestone_requirements_payload_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency milestone payload is also the tuple of package-layer
+projections assigned to the six ledger milestones.
+-/
+theorem remainingDependencyPackage_milestone_requirements_payload_to_package_layer_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    remainingDependencyPackage_milestone_requirements_payload dependencies =
+      ⟨ smoothabilityPackage_requirement_of_dependencies dependencies
+      , analyticFoundationPackage_requirement_of_dependencies dependencies
+      , surgeryPackage_requirement_of_dependencies dependencies
+      , surgeryPackage_requirement_of_dependencies dependencies
+      , finiteExtinctionPackage_requirement_of_dependencies dependencies
+      , topologyPackage_requirement_of_dependencies dependencies
+      ⟩ := by
   apply Subsingleton.elim
 
 /--
@@ -7183,6 +7219,45 @@ theorem poincareCompletionCertificate_package_layer_requirements_payload_eq
   apply Subsingleton.elim
 
 /--
+The package-layer certificate payload is the remaining-dependency package-layer
+payload projected from the certificate.
+-/
+theorem poincareCompletionCertificate_package_layer_requirements_payload_to_remaining_dependency_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    poincareCompletionCertificate_package_layer_requirements_payload
+      certificate =
+      remainingDependencyPackage_package_layer_requirements_payload
+        (remaining_dependency_package_of_completion_certificate
+          certificate) := by
+  apply Subsingleton.elim
+
+/--
+The package-layer certificate payload is also the tuple of generic
+package-layer projections from the certificate's remaining-dependency package.
+-/
+theorem poincareCompletionCertificate_package_layer_requirements_payload_to_generic_projections_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    poincareCompletionCertificate_package_layer_requirements_payload
+      certificate =
+      ⟨ dependencyPackageLayerRequirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+          DependencyPackageLayer.smoothabilityPackage
+      , dependencyPackageLayerRequirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+          DependencyPackageLayer.analyticFoundationPackage
+      , dependencyPackageLayerRequirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+          DependencyPackageLayer.surgeryPackage
+      , dependencyPackageLayerRequirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+          DependencyPackageLayer.finiteExtinctionPackage
+      , dependencyPackageLayerRequirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+          DependencyPackageLayer.topologyPackage
+      ⟩ := by
+  apply Subsingleton.elim
+
+/--
 A completion certificate exposes all six milestone requirements named by the
 dependency crosswalk.
 -/
@@ -7213,6 +7288,41 @@ theorem poincareCompletionCertificate_milestone_requirements_payload_eq
     poincareCompletionCertificate_milestone_requirements_payload certificate =
       poincareCompletionCertificate_iff_milestone_requirements.mp
         certificate := by
+  apply Subsingleton.elim
+
+/--
+The milestone certificate payload is the remaining-dependency milestone payload
+projected from the certificate.
+-/
+theorem poincareCompletionCertificate_milestone_requirements_payload_to_remaining_dependency_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    poincareCompletionCertificate_milestone_requirements_payload certificate =
+      remainingDependencyPackage_milestone_requirements_payload
+        (remaining_dependency_package_of_completion_certificate
+          certificate) := by
+  apply Subsingleton.elim
+
+/--
+The milestone certificate payload is also the tuple of package-layer
+projections assigned to the six ledger milestones for the certificate's
+remaining-dependency package.
+-/
+theorem poincareCompletionCertificate_milestone_requirements_payload_to_package_layer_projections_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    poincareCompletionCertificate_milestone_requirements_payload certificate =
+      ⟨ smoothabilityPackage_requirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+      , analyticFoundationPackage_requirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+      , surgeryPackage_requirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+      , surgeryPackage_requirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+      , finiteExtinctionPackage_requirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+      , topologyPackage_requirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+      ⟩ := by
   apply Subsingleton.elim
 
 /--
