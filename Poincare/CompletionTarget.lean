@@ -2967,6 +2967,30 @@ theorem remainingDependencyPackage_component_requirements_payload_eq
   apply Subsingleton.elim
 
 /--
+The remaining-dependency component-slot payload is the tuple of the stored
+remaining-dependency fields under the crosswalk component aliases.
+-/
+theorem remainingDependencyPackage_component_requirements_payload_to_fields_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    remainingDependencyPackage_component_requirements_payload dependencies =
+      ⟨dependencies.smoothability, dependencies.surgery,
+        dependencies.topology⟩ := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency component-slot payload is also the tuple of the named
+component-slot projections.
+-/
+theorem remainingDependencyPackage_component_requirements_payload_to_named_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    remainingDependencyPackage_component_requirements_payload dependencies =
+      ⟨ smoothabilityComponent_requirement_of_dependencies dependencies
+      , surgeryComponent_requirement_of_dependencies dependencies
+      , topologyComponent_requirement_of_dependencies dependencies
+      ⟩ := by
+  apply Subsingleton.elim
+
+/--
 The remaining dependency package is equivalent to exactly the three
 component-slot requirements named by the dependency crosswalk.
 -/
@@ -7184,6 +7208,34 @@ theorem poincareCompletionCertificate_component_requirements_payload_eq
     poincareCompletionCertificate_component_requirements_payload certificate =
       poincareCompletionCertificate_iff_component_requirements.mp
         certificate := by
+  apply Subsingleton.elim
+
+/--
+The component-slot certificate payload is the remaining-dependency component
+payload projected from the certificate.
+-/
+theorem poincareCompletionCertificate_component_requirements_payload_to_remaining_dependency_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    poincareCompletionCertificate_component_requirements_payload certificate =
+      remainingDependencyPackage_component_requirements_payload
+        (remaining_dependency_package_of_completion_certificate
+          certificate) := by
+  apply Subsingleton.elim
+
+/--
+The component-slot certificate payload is also the tuple of named component
+projections from the certificate's remaining-dependency package.
+-/
+theorem poincareCompletionCertificate_component_requirements_payload_to_named_projections_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    poincareCompletionCertificate_component_requirements_payload certificate =
+      ⟨ smoothabilityComponent_requirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+      , surgeryComponent_requirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+      , topologyComponent_requirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+      ⟩ := by
   apply Subsingleton.elim
 
 /--

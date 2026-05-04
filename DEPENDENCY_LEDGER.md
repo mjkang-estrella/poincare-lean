@@ -951,7 +951,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   topology projections. The theorem
   `remainingDependencyPackage_component_requirements_payload`, together with
   `remainingDependencyPackage_iff_component_requirements`, exposes the same
-  boundary through the component-slot requirements named by the crosswalk.
+  boundary through the component-slot requirements named by the crosswalk; its
+  payload is pinned directly to both the stored remaining-dependency fields and
+  the named component-slot projection tuple.
   `remainingDependencyPackage_package_layer_requirements_payload`, together with
   `remainingDependencyPackage_iff_package_layer_requirements`, exposes the same
   boundary through the five package-layer requirements named by the crosswalk.
@@ -1120,9 +1122,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   `poincareCompletionCertificate_component_requirements_payload`,
   `poincareCompletionCertificate_package_layer_requirements_payload`, and
   `poincareCompletionCertificate_milestone_requirements_payload` project those
-  presentations back out of the certificate. The package-layer and milestone
-  certificate payloads are pinned back to the certificate's remaining-dependency
-  payloads and to the same generic/package-layer projection tuples.
+  presentations back out of the certificate. The component-slot, package-layer,
+  and milestone certificate payloads are pinned back to the certificate's
+  remaining-dependency payloads and to the corresponding component,
+  generic-package, or milestone-assigned package-layer projection tuples.
   `completion_certificate_of_components`,
   `completion_certificate_of_component_requirements`,
   `completion_certificate_of_package_layer_requirements`, and
