@@ -177,6 +177,71 @@ theorem dependencyComponentRequirement_topologyComponent :
       ExtinctionTopologyExtractionPackage.{u} :=
   rfl
 
+/-- A completed aggregate dependency package supplies every component-slot requirement. -/
+theorem dependencyComponentRequirement_of_dependencies
+    (dependencies : PoincareProofDependencies.{u})
+    (slot : DependencyComponentSlot) :
+    dependencyComponentRequirement.{u} slot := by
+  cases slot
+  · exact dependencies.smoothability
+  · exact dependencies.surgery
+  · exact dependencies.topology
+
+/-- Aggregate dependencies supply the smoothability component requirement. -/
+theorem smoothabilityComponent_requirement_of_dependencies
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependencyComponentRequirement.{u}
+      DependencyComponentSlot.smoothabilityComponent := by
+  exact dependencyComponentRequirement_of_dependencies dependencies
+    DependencyComponentSlot.smoothabilityComponent
+
+/-- Aggregate dependencies supply the surgery component requirement. -/
+theorem surgeryComponent_requirement_of_dependencies
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent := by
+  exact dependencyComponentRequirement_of_dependencies dependencies
+    DependencyComponentSlot.surgeryComponent
+
+/-- Aggregate dependencies supply the topology component requirement. -/
+theorem topologyComponent_requirement_of_dependencies
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent := by
+  exact dependencyComponentRequirement_of_dependencies dependencies
+    DependencyComponentSlot.topologyComponent
+
+/--
+The smoothability component projection is the generic component-slot projection
+at the smoothability component.
+-/
+theorem smoothabilityComponent_requirement_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    smoothabilityComponent_requirement_of_dependencies dependencies =
+      dependencyComponentRequirement_of_dependencies dependencies
+        DependencyComponentSlot.smoothabilityComponent :=
+  rfl
+
+/--
+The surgery component projection is the generic component-slot projection at the
+surgery component.
+-/
+theorem surgeryComponent_requirement_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    surgeryComponent_requirement_of_dependencies dependencies =
+      dependencyComponentRequirement_of_dependencies dependencies
+        DependencyComponentSlot.surgeryComponent :=
+  rfl
+
+/--
+The topology component projection is the generic component-slot projection at
+the topology component.
+-/
+theorem topologyComponent_requirement_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topologyComponent_requirement_of_dependencies dependencies =
+      dependencyComponentRequirement_of_dependencies dependencies
+        DependencyComponentSlot.topologyComponent :=
+  rfl
+
 /--
 A completed aggregate dependency package supplies the requirements for exactly
 the three aggregate component slots.
@@ -188,7 +253,11 @@ theorem dependency_component_requirements_payload_of_dependencies
     ∃ _surgery :
       dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
       dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent := by
-  exact ⟨dependencies.smoothability, dependencies.surgery, dependencies.topology⟩
+  exact
+    ⟨ smoothabilityComponent_requirement_of_dependencies dependencies
+    , surgeryComponent_requirement_of_dependencies dependencies
+    , topologyComponent_requirement_of_dependencies dependencies
+    ⟩
 
 /--
 The aggregate dependency component-slot payload is the tuple of the stored
@@ -197,8 +266,10 @@ component fields under the component-slot requirement aliases.
 theorem dependency_component_requirements_payload_of_dependencies_eq
     (dependencies : PoincareProofDependencies.{u}) :
     dependency_component_requirements_payload_of_dependencies dependencies =
-      ⟨dependencies.smoothability, dependencies.surgery,
-        dependencies.topology⟩ := by
+      ⟨ smoothabilityComponent_requirement_of_dependencies dependencies
+      , surgeryComponent_requirement_of_dependencies dependencies
+      , topologyComponent_requirement_of_dependencies dependencies
+      ⟩ := by
   apply Subsingleton.elim
 
 /--

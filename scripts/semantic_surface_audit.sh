@@ -5160,6 +5160,30 @@ set_option linter.unusedVariables false
       Poincare.DependencyComponentSlot.topologyComponent =
     Poincare.ExtinctionTopologyExtractionPackage)
 
+#check (Poincare.dependencyComponentRequirement_of_dependencies :
+  ∀ (dependencies : Poincare.PoincareProofDependencies)
+    (slot : Poincare.DependencyComponentSlot),
+      Poincare.dependencyComponentRequirement slot)
+
+#check (Poincare.smoothabilityComponent_requirement_of_dependencies :
+  Poincare.PoincareProofDependencies →
+    Poincare.dependencyComponentRequirement
+      Poincare.DependencyComponentSlot.smoothabilityComponent)
+
+#check (Poincare.surgeryComponent_requirement_of_dependencies :
+  Poincare.PoincareProofDependencies →
+    Poincare.dependencyComponentRequirement
+      Poincare.DependencyComponentSlot.surgeryComponent)
+
+#check (Poincare.topologyComponent_requirement_of_dependencies :
+  Poincare.PoincareProofDependencies →
+    Poincare.dependencyComponentRequirement
+      Poincare.DependencyComponentSlot.topologyComponent)
+
+#check Poincare.smoothabilityComponent_requirement_of_dependencies_eq
+#check Poincare.surgeryComponent_requirement_of_dependencies_eq
+#check Poincare.topologyComponent_requirement_of_dependencies_eq
+
 #check (Poincare.dependency_component_requirements_payload_of_dependencies :
   Poincare.PoincareProofDependencies →
     ∃ _smoothability :

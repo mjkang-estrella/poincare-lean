@@ -711,6 +711,9 @@ The current artifact is intentionally conservative:
   layers still fold to the three aggregate dependency components with
   `DependencyComponentSlot`, `dependencyComponentForPackageLayer`,
   `dependencyComponentForMilestone`, `dependencyComponentRequirement`,
+  the generic projection `dependencyComponentRequirement_of_dependencies`,
+  named smoothability/surgery/topology component projections and their equality
+  contracts,
   `dependency_component_requirements_payload_of_dependencies`,
   `poincareProofDependencies_iff_component_requirements`,
   `dependency_ledger_has_component_slots`, and
@@ -725,9 +728,9 @@ The current artifact is intentionally conservative:
   exact requirement tuples they project from `PoincareProofDependencies`; the
   reverse constructors from those requirement payloads back to
   `PoincareProofDependencies` are named and the three iff routes are pinned to
-  the named forward/reverse maps. The individual package-layer and milestone
-  projection wrappers are now pinned to their generic package-layer or
-  milestone projection routes.
+  the named forward/reverse maps. The individual component-slot, package-layer,
+  and milestone projection wrappers are now pinned to their generic component,
+  package-layer, or milestone projection routes.
 - `Poincare/CompletionTarget.lean` records the canonical completion theorem name,
   proves by definitional equality that the canonical target is exactly the
   project statement and the explicit completion criterion, proves iff contracts
