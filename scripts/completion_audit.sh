@@ -1,0 +1,11142 @@
+#!/usr/bin/env sh
+set -eu
+
+root_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+cd "$root_dir"
+
+echo "== Build gate =="
+lake build
+
+echo "== Interface gate =="
+sh scripts/interface_audit.sh
+
+echo "== Mathlib gap gate =="
+sh scripts/mathlib_gap_audit.sh
+
+echo "== Semantic surface gate =="
+sh scripts/semantic_surface_audit.sh
+
+echo "== Root import gate =="
+sh scripts/root_import_audit.sh
+
+echo "== Axiom footprint gate =="
+sh scripts/axiom_audit.sh
+
+echo "== Objective =="
+cat <<'TEXT'
+Implement a complete Lean proof of the Poincare Conjecture:
+every closed, simply connected topological 3-manifold is homeomorphic to S^3.
+TEXT
+
+echo "== Prompt-to-artifact checklist =="
+
+status=0
+completion_check=
+completion_check_dir=
+dependency_contract_check=
+dependency_contract_check_dir=
+root_contract_check=
+root_contract_check_dir=
+
+cleanup() {
+  if [ -n "$root_contract_check_dir" ]; then
+    rm -rf "$root_contract_check_dir"
+  fi
+  if [ -n "$root_contract_check" ]; then
+    rm -f "$root_contract_check"
+  fi
+  if [ -n "$dependency_contract_check_dir" ]; then
+    rm -rf "$dependency_contract_check_dir"
+  fi
+  if [ -n "$dependency_contract_check" ]; then
+    rm -f "$dependency_contract_check"
+  fi
+  if [ -n "$completion_check_dir" ]; then
+    rm -rf "$completion_check_dir"
+  fi
+  if [ -n "$completion_check" ]; then
+    rm -f "$completion_check"
+  fi
+}
+
+trap cleanup EXIT
+
+check_present() {
+  label=$1
+  path=$2
+  if [ -e "$path" ]; then
+    echo "PASS: $label -> $path exists"
+  else
+    echo "FAIL: $label -> $path missing"
+    status=1
+  fi
+}
+
+check_present "Lean project manifest" "lakefile.lean"
+check_present "Lean toolchain pin" "lean-toolchain"
+check_present "Root Lean module" "Poincare.lean"
+check_present "Poincare statement layer" "Poincare/Statement.lean"
+check_present "Poincare assembly lemmas" "Poincare/Assembly.lean"
+check_present "Canonical completion bridges" "Poincare/CanonicalBridges.lean"
+check_present "Minimal Ricci-flow API" "Poincare/RicciFlow.lean"
+check_present "Analytic Ricci-flow foundation interface" "Poincare/AnalyticFoundation.lean"
+check_present "Ricci-flow-with-surgery interface" "Poincare/Surgery.lean"
+check_present "Ricci-flow interface layer" "Poincare/RicciFlowInterface.lean"
+check_present "Topology extraction interface" "Poincare/TopologyExtraction.lean"
+check_present "Smoothability interface" "Poincare/Smoothability.lean"
+check_present "End-to-end conditional assembly" "Poincare/FullAssembly.lean"
+check_present "Aggregate dependency package" "Poincare/Dependencies.lean"
+check_present "Dependency projection lemmas" "Poincare/DependencyProjections.lean"
+check_present "Dependency crosswalk" "Poincare/DependencyCrosswalk.lean"
+check_present "Canonical completion target" "Poincare/CompletionTarget.lean"
+check_present "Lean dependency milestone ledger" "Poincare/Milestones.lean"
+check_present "Markdown dependency ledger" "DEPENDENCY_LEDGER.md"
+check_present "Mathlib gap analysis" "MATHLIB_GAP_ANALYSIS.md"
+check_present "External research status" "EXTERNAL_RESEARCH_STATUS.md"
+check_present "Progress report" "POINCARE_FORMALIZATION_REPORT.md"
+check_present "Generated current status" "CURRENT_STATUS.md"
+
+if rg -q '^- Completion: not achieved$' CURRENT_STATUS.md &&
+    rg -q '^- Axiom footprint audit status: 0$' CURRENT_STATUS.md &&
+    rg -q '^- Completion audit status: 1$' CURRENT_STATUS.md; then
+  echo "PASS: generated status snapshot records clean axiom audit and incomplete completion audit"
+else
+  echo "FAIL: generated status snapshot does not record the current axiom/completion state"
+  status=1
+fi
+
+toolchain=$(tr -d '\n' < lean-toolchain)
+if rg -q "^- Lean toolchain: ${toolchain}$" CURRENT_STATUS.md; then
+  echo "PASS: generated status snapshot matches current Lean toolchain"
+else
+  echo "FAIL: generated status snapshot does not match current Lean toolchain"
+  status=1
+fi
+
+if rg -q '^def PoincareConjectureStatement\b' Poincare/Statement.lean; then
+  echo "PASS: target proposition is stated in Poincare/Statement.lean"
+else
+  echo "FAIL: target proposition is not stated"
+  status=1
+fi
+
+if rg -q 'SimplyConnectedSpace.nonempty_homeomorph_sphere_three|SimplyConnectedSpace.nonempty_diffeomorph_sphere_three' \
+    .lake/packages/mathlib/Mathlib/Geometry/Manifold/PoincareConjecture.lean; then
+  echo "PASS: canonical mathlib Poincare statement file is present"
+else
+  echo "FAIL: canonical mathlib Poincare statement file not found"
+  status=1
+fi
+
+if rg -q '^proof_wanted .*nonempty_(homeomorph|diffeomorph)_sphere_three' \
+    .lake/packages/mathlib/Mathlib/Geometry/Manifold/PoincareConjecture.lean; then
+  echo "GAP: upstream mathlib still marks 3D Poincare statements as proof_wanted"
+  rg -n '^proof_wanted .*nonempty_(homeomorph|diffeomorph)_sphere_three' \
+    .lake/packages/mathlib/Mathlib/Geometry/Manifold/PoincareConjecture.lean
+else
+  echo "PASS: upstream mathlib no longer marks 3D Poincare statements as proof_wanted"
+fi
+
+check_decl() {
+  label=$1
+  pattern=$2
+  path=$3
+  if rg -q "$pattern" "$path"; then
+    echo "PASS: $label"
+  else
+    echo "FAIL: $label"
+    status=1
+  fi
+}
+
+check_decl "Ricci tensor interface is declared" \
+  '^inductive IsRicciTensorOf\b' Poincare/RicciFlow.lean
+check_decl "target sphere model contract is declared" \
+  '^theorem threeSphere_eq\b' Poincare/Statement.lean
+check_decl "topological statement shape contract is declared" \
+  '^theorem poincareConjectureStatement_eq\b' Poincare/Statement.lean
+check_decl "topological statement iff contract is declared" \
+  '^theorem poincareConjectureStatement_iff_canonical_three_sphere_statement\b' Poincare/Statement.lean
+check_decl "topological statement iff equality contract is declared" \
+  '^theorem poincareConjectureStatement_iff_canonical_three_sphere_statement_eq\b' Poincare/Statement.lean
+check_decl "completion criterion iff target theorem is declared" \
+  '^theorem completionCriterionAtUniverse_iff_poincareConjectureStatement\b' Poincare/Statement.lean
+check_decl "completion criterion iff target equality contract is declared" \
+  '^theorem completionCriterionAtUniverse_iff_poincareConjectureStatement_eq\b' Poincare/Statement.lean
+check_decl "completion criterion witness transfer theorem is declared" \
+  '^theorem completionCriterionAtUniverse_of_completionCriterionAtUniverse\b' Poincare/Statement.lean
+check_decl "completion criterion witness transfer equality contract is declared" \
+  '^theorem completionCriterionAtUniverse_of_completionCriterionAtUniverse_eq\b' Poincare/Statement.lean
+check_decl "completion criterion witness iff theorem is declared" \
+  '^theorem completionCriterionAtUniverse_iff_completionCriterionAtUniverse\b' Poincare/Statement.lean
+check_decl "completion criterion witness iff equality contract is declared" \
+  '^theorem completionCriterionAtUniverse_iff_completionCriterionAtUniverse_eq\b' Poincare/Statement.lean
+check_decl "target statement to completion criterion theorem is declared" \
+  '^theorem completionCriterionAtUniverse_of_poincareConjectureStatement\b' Poincare/Statement.lean
+check_decl "target statement to completion criterion equality contract is declared" \
+  '^theorem completionCriterionAtUniverse_of_poincareConjectureStatement_eq\b' Poincare/Statement.lean
+check_decl "target statement completion payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_poincareConjectureStatement\b' Poincare/Statement.lean
+check_decl "target statement completion payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_poincareConjectureStatement_eq\b' Poincare/Statement.lean
+check_decl "completion payload to target statement theorem is declared" \
+  '^theorem poincareConjectureStatement_of_poincare_completion_payload\b' Poincare/Statement.lean
+check_decl "completion payload to target statement equality contract is declared" \
+  '^theorem poincareConjectureStatement_of_poincare_completion_payload_eq\b' Poincare/Statement.lean
+check_decl "completion payload to completion criterion theorem is declared" \
+  '^theorem completionCriterionAtUniverse_of_poincare_completion_payload\b' Poincare/Statement.lean
+check_decl "completion payload to completion criterion equality contract is declared" \
+  '^theorem completionCriterionAtUniverse_of_poincare_completion_payload_eq\b' Poincare/Statement.lean
+check_decl "target statement completion payload iff theorem is declared" \
+  '^theorem poincareConjectureStatement_iff_poincare_completion_payload\b' Poincare/Statement.lean
+check_decl "target statement completion payload iff equality contract is declared" \
+  '^theorem poincareConjectureStatement_iff_poincare_completion_payload_eq\b' Poincare/Statement.lean
+check_decl "completion criterion to target statement theorem is declared" \
+  '^theorem poincareConjectureStatement_of_completionCriterionAtUniverse\b' Poincare/Statement.lean
+check_decl "completion criterion to target statement equality contract is declared" \
+  '^theorem poincareConjectureStatement_of_completionCriterionAtUniverse_eq\b' Poincare/Statement.lean
+check_decl "completion criterion to completion payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_completionCriterionAtUniverse\b' Poincare/Statement.lean
+check_decl "completion criterion to completion payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_completionCriterionAtUniverse_eq\b' Poincare/Statement.lean
+check_decl "completion criterion completion payload iff theorem is declared" \
+  '^theorem completionCriterionAtUniverse_iff_poincare_completion_payload\b' Poincare/Statement.lean
+check_decl "completion criterion completion payload iff equality contract is declared" \
+  '^theorem completionCriterionAtUniverse_iff_poincare_completion_payload_eq\b' Poincare/Statement.lean
+check_decl "smooth statement shape contract is declared" \
+  '^theorem smoothPoincareConjectureStatement_eq\b' Poincare/Statement.lean
+check_decl "smooth statement iff contract is declared" \
+  '^theorem smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_statement\b' Poincare/Statement.lean
+check_decl "smooth statement iff equality contract is declared" \
+  '^theorem smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_statement_eq\b' Poincare/Statement.lean
+check_decl "Ricci-flow equation interface is declared" \
+  '^inductive SatisfiesRicciFlowEquation\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow metric projection is declared" \
+  '^def metric_of_ricci_flow_data\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow metric projection equality theorem is declared" \
+  '^@\[simp\] theorem metric_of_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow curvature projection is declared" \
+  '^def curvature_data_of_ricci_flow_data\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow curvature projection equality theorem is declared" \
+  '^@\[simp\] theorem curvature_data_of_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
+check_decl "time-dependent metric time-slice projection is declared" \
+  '^def metric_at_time_of_time_dependent_metric\b' Poincare/RicciFlow.lean
+check_decl "time-dependent metric time-slice equality theorem is declared" \
+  '^@\[simp\] theorem metric_at_time_of_time_dependent_metric_eq\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow metric time-slice projection is declared" \
+  '^def metric_at_time_of_ricci_flow_data\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow metric time-slice equality theorem is declared" \
+  '^@\[simp\] theorem metric_at_time_of_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
+check_decl "Ricci tensor field projection is declared" \
+  '^def ricci_tensor_field_of_curvature_data\b' Poincare/RicciFlow.lean
+check_decl "Ricci tensor field projection equality theorem is declared" \
+  '^@\[simp\] theorem ricci_tensor_field_of_curvature_data_eq\b' Poincare/RicciFlow.lean
+check_decl "scalar curvature field projection is declared" \
+  '^def scalar_curvature_field_of_curvature_data\b' Poincare/RicciFlow.lean
+check_decl "scalar curvature field projection equality theorem is declared" \
+  '^@\[simp\] theorem scalar_curvature_field_of_curvature_data_eq\b' Poincare/RicciFlow.lean
+check_decl "Ricci tensor time-slice projection is declared" \
+  '^def ricci_tensor_at_time_of_ricci_tensor_field\b' Poincare/RicciFlow.lean
+check_decl "Ricci tensor time-slice equality theorem is declared" \
+  '^@\[simp\] theorem ricci_tensor_at_time_of_ricci_tensor_field_eq\b' Poincare/RicciFlow.lean
+check_decl "scalar curvature time-slice projection is declared" \
+  '^def scalar_curvature_at_time_of_scalar_curvature_field\b' Poincare/RicciFlow.lean
+check_decl "scalar curvature time-slice equality theorem is declared" \
+  '^@\[simp\] theorem scalar_curvature_at_time_of_scalar_curvature_field_eq\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow tensor time-slice projection is declared" \
+  '^def ricci_tensor_at_time_of_ricci_flow_data\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow tensor time-slice equality theorem is declared" \
+  '^@\[simp\] theorem ricci_tensor_at_time_of_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow scalar curvature time-slice projection is declared" \
+  '^def scalar_curvature_at_time_of_ricci_flow_data\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow scalar curvature time-slice equality theorem is declared" \
+  '^@\[simp\] theorem scalar_curvature_at_time_of_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
+check_decl "Ricci-identification curvature projection theorem is declared" \
+  '^theorem ricci_identification_of_curvature_data\b' Poincare/RicciFlow.lean
+check_decl "Ricci-identification curvature equality theorem is declared" \
+  '^theorem ricci_identification_of_curvature_data_eq\b' Poincare/RicciFlow.lean
+check_decl "Ricci-identification flow projection theorem is declared" \
+  '^theorem ricci_identification_of_ricci_flow_data\b' Poincare/RicciFlow.lean
+check_decl "Ricci-identification flow equality theorem is declared" \
+  '^theorem ricci_identification_of_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow dot equation equality theorem is declared" \
+  '^theorem RicciFlowData\.satisfies_equation_eq\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow equation projection theorem is declared" \
+  '^theorem equation_evidence_of_ricci_flow_data\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow equation projection equality theorem is declared" \
+  '^theorem equation_evidence_of_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
+check_decl "Levi-Civita theory interface is declared" \
+  '^inductive HasLeviCivitaConnectionTheory\b' Poincare/AnalyticFoundation.lean
+check_decl "Levi-Civita existence interface is declared" \
+  '^inductive HasLeviCivitaConnectionExistence\b' Poincare/AnalyticFoundation.lean
+check_decl "Levi-Civita uniqueness interface is declared" \
+  '^inductive HasLeviCivitaConnectionUniqueness\b' Poincare/AnalyticFoundation.lean
+check_decl "Levi-Civita torsion-free interface is declared" \
+  '^inductive HasLeviCivitaTorsionFreeProperty\b' Poincare/AnalyticFoundation.lean
+check_decl "Levi-Civita metric-compatibility interface is declared" \
+  '^inductive HasLeviCivitaMetricCompatibility\b' Poincare/AnalyticFoundation.lean
+check_decl "Riemann-curvature theory interface is declared" \
+  '^inductive HasRiemannCurvatureTensorTheory\b' Poincare/AnalyticFoundation.lean
+check_decl "Riemann-curvature construction interface is declared" \
+  '^inductive HasRiemannCurvatureTensorConstruction\b' Poincare/AnalyticFoundation.lean
+check_decl "Riemann-curvature symmetries interface is declared" \
+  '^inductive HasRiemannCurvatureTensorSymmetries\b' Poincare/AnalyticFoundation.lean
+check_decl "first Bianchi identity interface is declared" \
+  '^inductive HasFirstBianchiIdentity\b' Poincare/AnalyticFoundation.lean
+check_decl "second Bianchi identity interface is declared" \
+  '^inductive HasSecondBianchiIdentity\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-contraction theory interface is declared" \
+  '^inductive HasRicciContractionTheory\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci tensor contraction formula interface is declared" \
+  '^inductive HasRicciTensorContractionFormula\b' Poincare/AnalyticFoundation.lean
+check_decl "scalar-curvature contraction formula interface is declared" \
+  '^inductive HasScalarCurvatureContractionFormula\b' Poincare/AnalyticFoundation.lean
+check_decl "time-dependent metric regularity interface is declared" \
+  '^inductive HasTimeDependentMetricRegularity\b' Poincare/AnalyticFoundation.lean
+check_decl "metric time-derivative theory interface is declared" \
+  '^inductive HasMetricTimeDerivativeTheory\b' Poincare/AnalyticFoundation.lean
+check_decl "scalar-curvature theory interface is declared" \
+  '^inductive HasScalarCurvatureTheory\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow equation derivation interface is declared" \
+  '^inductive HasRicciFlowEquationDerivation\b' Poincare/AnalyticFoundation.lean
+check_decl "initial metric compatibility interface is declared" \
+  '^inductive HasInitialMetricCompatibility\b' Poincare/AnalyticFoundation.lean
+check_decl "DeTurck gauge-fixing interface is declared" \
+  '^inductive HasDeTurckGaugeFixing\b' Poincare/AnalyticFoundation.lean
+check_decl "DeTurck background-metric compatibility interface is declared" \
+  '^inductive HasDeTurckBackgroundMetricCompatibility\b' Poincare/AnalyticFoundation.lean
+check_decl "DeTurck vector-field construction interface is declared" \
+  '^inductive HasDeTurckVectorFieldConstruction\b' Poincare/AnalyticFoundation.lean
+check_decl "DeTurck equation derivation interface is declared" \
+  '^inductive HasDeTurckEquationDerivation\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-DeTurck linearization interface is declared" \
+  '^inductive HasRicciDeTurckLinearization\b' Poincare/AnalyticFoundation.lean
+check_decl "strictly parabolic DeTurck system interface is declared" \
+  '^inductive HasStrictlyParabolicDeTurckSystem\b' Poincare/AnalyticFoundation.lean
+check_decl "parabolic linear theory interface is declared" \
+  '^inductive HasParabolicLinearTheory\b' Poincare/AnalyticFoundation.lean
+check_decl "parabolic fixed-point argument interface is declared" \
+  '^inductive HasParabolicFixedPointArgument\b' Poincare/AnalyticFoundation.lean
+check_decl "DeTurck short-time existence interface is declared" \
+  '^inductive HasDeTurckShortTimeExistence\b' Poincare/AnalyticFoundation.lean
+check_decl "short-time regularity bootstrap interface is declared" \
+  '^inductive HasShortTimeRegularityBootstrap\b' Poincare/AnalyticFoundation.lean
+check_decl "DeTurck diffeomorphism ODE interface is declared" \
+  '^inductive HasDeTurckDiffeomorphismODE\b' Poincare/AnalyticFoundation.lean
+check_decl "DeTurck pullback equation identity interface is declared" \
+  '^inductive HasDeTurckPullbackEquationIdentity\b' Poincare/AnalyticFoundation.lean
+check_decl "DeTurck pullback-to-Ricci-flow interface is declared" \
+  '^inductive HasDeTurckPullbackToRicciFlow\b' Poincare/AnalyticFoundation.lean
+check_decl "short-time Ricci-flow existence interface is declared" \
+  '^inductive HasShortTimeRicciFlowSolution\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow maximal-time interval interface is declared" \
+  '^inductive HasRicciFlowMaximalTimeInterval\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow continuation criterion interface is declared" \
+  '^inductive HasRicciFlowContinuationCriterion\b' Poincare/AnalyticFoundation.lean
+check_decl "curvature blow-up continuation criterion interface is declared" \
+  '^inductive HasCurvatureBlowUpContinuationCriterion\b' Poincare/AnalyticFoundation.lean
+check_decl "maximal solution extension interface is declared" \
+  '^inductive HasMaximalSolutionExtension\b' Poincare/AnalyticFoundation.lean
+check_decl "parabolic Schauder estimates interface is declared" \
+  '^inductive HasParabolicSchauderEstimates\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow parabolic regularity interface is declared" \
+  '^inductive HasRicciFlowParabolicRegularity\b' Poincare/AnalyticFoundation.lean
+check_decl "Shi derivative estimates interface is declared" \
+  '^inductive HasShiDerivativeEstimates\b' Poincare/AnalyticFoundation.lean
+check_decl "curvature derivative bootstrap interface is declared" \
+  '^inductive HasCurvatureDerivativeBootstrap\b' Poincare/AnalyticFoundation.lean
+check_decl "Hamilton maximum principle interface is declared" \
+  '^inductive HasHamiltonMaximumPrinciple\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow uniqueness interface is declared" \
+  '^inductive HasRicciFlowUniquenessTheory\b' Poincare/AnalyticFoundation.lean
+check_decl "metric evolution equation interface is declared" \
+  '^inductive HasMetricEvolutionEquation\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci tensor evolution equation interface is declared" \
+  '^inductive HasRicciTensorEvolutionEquation\b' Poincare/AnalyticFoundation.lean
+check_decl "scalar curvature evolution equation interface is declared" \
+  '^inductive HasScalarCurvatureEvolutionEquation\b' Poincare/AnalyticFoundation.lean
+check_decl "curvature norm evolution inequality interface is declared" \
+  '^inductive HasCurvatureNormEvolutionInequality\b' Poincare/AnalyticFoundation.lean
+check_decl "curvature evolution equations interface is declared" \
+  '^inductive HasCurvatureEvolutionEquations\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation package is declared" \
+  '^structure RicciFlowAnalyticFoundationPackage\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation fixed derivation statement is declared" \
+  '^def AnalyticFoundationDerivationStatement\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation sub-obligations payload alias is declared" \
+  '^abbrev AnalyticFoundationSubobligationsPayload\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation theorem-shaped statement is declared" \
+  '^def RicciFlowAnalyticFoundationStatement\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation component assembly theorem is declared" \
+  '^theorem analytic_foundation_derivation_statement_of_components\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation derivation statement sub-obligation projection is declared" \
+  '^theorem analytic_foundation_subobligations_of_derivation_statement\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation Ricci-flow data projection is declared" \
+  '^def ricci_flow_data_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation Ricci-flow data projection equality theorem is declared" \
+  '^@\[simp\] theorem ricci_flow_data_of_analytic_foundation_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation Levi-Civita existence projection theorem is declared" \
+  '^theorem levi_civita_existence_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation Levi-Civita uniqueness projection theorem is declared" \
+  '^theorem levi_civita_uniqueness_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation Levi-Civita torsion-free projection theorem is declared" \
+  '^theorem levi_civita_torsion_free_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation Levi-Civita metric-compatibility projection theorem is declared" \
+  '^theorem levi_civita_metric_compatibility_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation Levi-Civita projection theorem is declared" \
+  '^theorem levi_civita_theory_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation Riemann-curvature construction projection theorem is declared" \
+  '^theorem riemann_curvature_construction_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation Riemann-curvature symmetries projection theorem is declared" \
+  '^theorem riemann_curvature_symmetries_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation first Bianchi projection theorem is declared" \
+  '^theorem first_bianchi_identity_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation second Bianchi projection theorem is declared" \
+  '^theorem second_bianchi_identity_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation Riemann-curvature projection theorem is declared" \
+  '^theorem riemann_curvature_theory_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation Ricci contraction formula projection theorem is declared" \
+  '^theorem ricci_contraction_formula_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation scalar-curvature contraction formula projection theorem is declared" \
+  '^theorem scalar_curvature_contraction_formula_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation Ricci-contraction projection theorem is declared" \
+  '^theorem ricci_contraction_theory_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation metric-regularity projection theorem is declared" \
+  '^theorem metric_regularity_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation metric-time-derivative projection theorem is declared" \
+  '^theorem metric_time_derivative_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation scalar-curvature projection theorem is declared" \
+  '^theorem scalar_curvature_theory_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation equation-derivation projection theorem is declared" \
+  '^theorem equation_derivation_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation initial metric compatibility projection theorem is declared" \
+  '^theorem initial_metric_compatibility_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation DeTurck gauge projection theorem is declared" \
+  '^theorem deturck_gauge_fixing_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation DeTurck background-metric projection theorem is declared" \
+  '^theorem deturck_background_metric_compatibility_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation DeTurck vector-field projection theorem is declared" \
+  '^theorem deturck_vector_field_construction_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation DeTurck equation projection theorem is declared" \
+  '^theorem deturck_equation_derivation_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation Ricci-DeTurck linearization projection theorem is declared" \
+  '^theorem ricci_deturck_linearization_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation strictly parabolic DeTurck projection theorem is declared" \
+  '^theorem strictly_parabolic_deturck_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation parabolic linear theory projection theorem is declared" \
+  '^theorem parabolic_linear_theory_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation parabolic fixed-point projection theorem is declared" \
+  '^theorem parabolic_fixed_point_argument_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation DeTurck short-time projection theorem is declared" \
+  '^theorem deturck_short_time_existence_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation short-time regularity bootstrap projection theorem is declared" \
+  '^theorem short_time_regularity_bootstrap_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation DeTurck diffeomorphism ODE projection theorem is declared" \
+  '^theorem deturck_diffeomorphism_ode_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation DeTurck pullback equation identity projection theorem is declared" \
+  '^theorem deturck_pullback_equation_identity_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation DeTurck pullback projection theorem is declared" \
+  '^theorem deturck_pullback_to_ricci_flow_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation short-time existence projection theorem is declared" \
+  '^theorem short_time_existence_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation maximal-time interval projection theorem is declared" \
+  '^theorem maximal_time_interval_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation continuation criterion projection theorem is declared" \
+  '^theorem continuation_criterion_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation curvature blow-up criterion projection theorem is declared" \
+  '^theorem curvature_blowup_criterion_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation maximal-solution extension projection theorem is declared" \
+  '^theorem maximal_solution_extension_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation parabolic Schauder estimates projection theorem is declared" \
+  '^theorem parabolic_schauder_estimates_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation parabolic-regularity projection theorem is declared" \
+  '^theorem parabolic_regularity_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation Shi derivative estimates projection theorem is declared" \
+  '^theorem shi_derivative_estimates_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation curvature derivative bootstrap projection theorem is declared" \
+  '^theorem curvature_derivative_bootstrap_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation Hamilton maximum principle projection theorem is declared" \
+  '^theorem hamilton_maximum_principle_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation uniqueness projection theorem is declared" \
+  '^theorem uniqueness_theory_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation metric evolution projection theorem is declared" \
+  '^theorem metric_evolution_equation_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation Ricci tensor evolution projection theorem is declared" \
+  '^theorem ricci_tensor_evolution_equation_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation scalar curvature evolution projection theorem is declared" \
+  '^theorem scalar_curvature_evolution_equation_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation curvature norm evolution projection theorem is declared" \
+  '^theorem curvature_norm_evolution_inequality_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation curvature-evolution projection theorem is declared" \
+  '^theorem curvature_evolution_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation Ricci-identification projection theorem is declared" \
+  '^theorem ricci_identification_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation Ricci-identification equality theorem is declared" \
+  '^theorem ricci_identification_of_analytic_foundation_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation equation evidence projection theorem is declared" \
+  '^theorem equation_evidence_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation equation evidence equality theorem is declared" \
+  '^theorem equation_evidence_of_analytic_foundation_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation package derivation statement projection is declared" \
+  '^theorem analytic_foundation_derivation_statement_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation package statement projection is declared" \
+  '^theorem analytic_foundation_statement_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation package payload theorem is declared" \
+  '^theorem analytic_foundation_payload_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation statement Ricci-flow data bridge is declared" \
+  '^theorem ricci_flow_data_of_analytic_foundation_statement\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation statement Ricci-identification bridge is declared" \
+  '^theorem ricci_identification_of_analytic_foundation_statement\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation statement equation evidence bridge is declared" \
+  '^theorem equation_evidence_of_analytic_foundation_statement\b' Poincare/AnalyticFoundation.lean
+check_decl "finite-extinction/extraction assembly payload theorem is declared" \
+  '^theorem poincare_payload_of_extinction_and_extraction\b' Poincare/RicciFlowInterface.lean
+check_decl "Poincare target to extinction-extraction theorem is declared" \
+  '^theorem extinction_extraction_of_poincare_statement\b' Poincare/RicciFlowInterface.lean
+check_decl "finite-extinction equivalence to extraction theorem is declared" \
+  '^theorem poincare_statement_iff_extinction_extraction\b' Poincare/RicciFlowInterface.lean
+check_decl "finite-extinction/extraction canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_extinction_and_extraction\b' Poincare/RicciFlowInterface.lean
+check_decl "finite-extinction canonical statement equivalence to extraction theorem is declared" \
+  '^theorem canonical_three_sphere_statement_iff_extinction_extraction\b' Poincare/RicciFlowInterface.lean
+check_decl "smooth-to-topological assembly theorem is declared" \
+  '^theorem poincare_statement_of_smooth_statement\b' Poincare/Assembly.lean
+check_decl "smooth statement to canonical topological statement bridge is declared" \
+  '^theorem canonical_three_sphere_statement_of_smooth_statement\b' Poincare/Assembly.lean
+check_decl "canonical topological statement assembly payload is declared" \
+  '^theorem poincare_payload_of_canonical_three_sphere_statement\b' Poincare/Assembly.lean
+check_decl "canonical topological statement completion criterion bridge is declared" \
+  '^theorem completion_criterion_of_canonical_three_sphere_statement\b' Poincare/Assembly.lean
+check_decl "project statement exposes canonical topological statement bridge is declared" \
+  '^theorem canonical_three_sphere_statement_of_poincare_statement\b' Poincare/Assembly.lean
+check_decl "project payload exposes canonical topological statement bridge is declared" \
+  '^theorem canonical_three_sphere_statement_of_poincare_payload\b' Poincare/Assembly.lean
+check_decl "canonical topological statement to project payload equivalence is declared" \
+  '^theorem canonical_three_sphere_statement_iff_poincare_completion_payload\b' Poincare/Assembly.lean
+check_decl "completion criterion exposes canonical topological statement bridge is declared" \
+  '^theorem canonical_three_sphere_statement_of_completionCriterionAtUniverse\b' Poincare/Assembly.lean
+check_decl "canonical topological statement to completion criterion equivalence is declared" \
+  '^theorem canonical_three_sphere_statement_iff_completionCriterionAtUniverse\b' Poincare/Assembly.lean
+check_decl "canonical smooth statement bridge is declared" \
+  '^theorem smooth_statement_of_canonical_three_sphere_statement\b' Poincare/Assembly.lean
+check_decl "smooth statement assembly payload is declared" \
+  '^theorem poincare_payload_of_smooth_statement\b' Poincare/Assembly.lean
+check_decl "smooth statement completion criterion bridge is declared" \
+  '^theorem completion_criterion_of_smooth_statement\b' Poincare/Assembly.lean
+check_decl "canonical smooth-to-topological assembly theorem is declared" \
+  '^theorem poincare_statement_of_canonical_smooth_three_sphere_statement\b' Poincare/Assembly.lean
+check_decl "canonical smooth statement to canonical topological statement bridge is declared" \
+  '^theorem canonical_three_sphere_statement_of_canonical_smooth_three_sphere_statement\b' Poincare/Assembly.lean
+check_decl "canonical smooth statement assembly payload is declared" \
+  '^theorem poincare_payload_of_canonical_smooth_three_sphere_statement\b' Poincare/Assembly.lean
+check_decl "canonical smooth statement completion criterion bridge is declared" \
+  '^theorem completion_criterion_of_canonical_smooth_three_sphere_statement\b' Poincare/Assembly.lean
+check_decl "project smooth statement exposes canonical smooth statement bridge is declared" \
+  '^theorem canonical_smooth_three_sphere_statement_of_smooth_statement\b' Poincare/Assembly.lean
+check_decl "canonical smooth statement to project smooth statement equivalence is declared" \
+  '^theorem canonical_smooth_three_sphere_statement_iff_smooth_statement\b' Poincare/Assembly.lean
+check_decl "diffeomorphism-to-homeomorphism equality contract is declared" \
+  '^theorem homeomorph_of_diffeomorph_three_sphere_eq\b' Poincare/Assembly.lean
+check_decl "canonical topological target equality contract is declared" \
+  '^theorem poincare_statement_of_canonical_three_sphere_statement_eq\b' Poincare/Assembly.lean
+check_decl "canonical topological payload equality contract is declared" \
+  '^theorem poincare_payload_of_canonical_three_sphere_statement_eq\b' Poincare/Assembly.lean
+check_decl "canonical topological criterion equality contract is declared" \
+  '^theorem completion_criterion_of_canonical_three_sphere_statement_eq\b' Poincare/Assembly.lean
+check_decl "project target canonical-statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_poincare_statement_eq\b' Poincare/Assembly.lean
+check_decl "project payload canonical-statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_poincare_payload_eq\b' Poincare/Assembly.lean
+check_decl "canonical statement project-payload iff equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_iff_poincare_completion_payload_eq\b' Poincare/Assembly.lean
+check_decl "completion criterion canonical-statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_completionCriterionAtUniverse_eq\b' Poincare/Assembly.lean
+check_decl "canonical statement completion-criterion iff equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_iff_completionCriterionAtUniverse_eq\b' Poincare/Assembly.lean
+check_decl "canonical smooth project target equality contract is declared" \
+  '^theorem smooth_statement_of_canonical_three_sphere_statement_eq\b' Poincare/Assembly.lean
+check_decl "project smooth canonical-statement equality contract is declared" \
+  '^theorem canonical_smooth_three_sphere_statement_of_smooth_statement_eq\b' Poincare/Assembly.lean
+check_decl "canonical smooth project-smooth iff equality contract is declared" \
+  '^theorem canonical_smooth_three_sphere_statement_iff_smooth_statement_eq\b' Poincare/Assembly.lean
+check_decl "smooth-to-topological target equality contract is declared" \
+  '^theorem poincare_statement_of_smooth_statement_eq\b' Poincare/Assembly.lean
+check_decl "smooth-to-topological canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_smooth_statement_eq\b' Poincare/Assembly.lean
+check_decl "smooth-to-topological payload equality contract is declared" \
+  '^theorem poincare_payload_of_smooth_statement_eq\b' Poincare/Assembly.lean
+check_decl "smooth-to-topological criterion equality contract is declared" \
+  '^theorem completion_criterion_of_smooth_statement_eq\b' Poincare/Assembly.lean
+check_decl "canonical smooth-to-topological target equality contract is declared" \
+  '^theorem poincare_statement_of_canonical_smooth_three_sphere_statement_eq\b' Poincare/Assembly.lean
+check_decl "canonical smooth-to-topological statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_canonical_smooth_three_sphere_statement_eq\b' Poincare/Assembly.lean
+check_decl "canonical smooth-to-topological payload equality contract is declared" \
+  '^theorem poincare_payload_of_canonical_smooth_three_sphere_statement_eq\b' Poincare/Assembly.lean
+check_decl "canonical smooth-to-topological criterion equality contract is declared" \
+  '^theorem completion_criterion_of_canonical_smooth_three_sphere_statement_eq\b' Poincare/Assembly.lean
+check_decl "canonical payload bridge from topological statement is declared" \
+  '^theorem canonical_completion_payload_of_canonical_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "canonical target bridge from topological statement is declared" \
+  '^theorem canonical_completion_target_of_canonical_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "canonical criterion bridge from topological statement is declared" \
+  '^theorem canonical_completion_criterion_of_canonical_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "canonical target exposes canonical topological statement bridge is declared" \
+  '^theorem canonical_three_sphere_statement_of_canonical_completion_target\b' Poincare/CanonicalBridges.lean
+check_decl "canonical payload exposes canonical topological statement bridge is declared" \
+  '^theorem canonical_three_sphere_statement_of_canonical_completion_payload\b' Poincare/CanonicalBridges.lean
+check_decl "canonical topological statement to canonical target equivalence is declared" \
+  '^theorem canonical_three_sphere_statement_iff_canonical_completion_target\b' Poincare/CanonicalBridges.lean
+check_decl "canonical topological statement to canonical payload equivalence is declared" \
+  '^theorem canonical_three_sphere_statement_iff_canonical_completion_payload\b' Poincare/CanonicalBridges.lean
+check_decl "completion certificate exposes canonical topological statement bridge is declared" \
+  '^theorem canonical_three_sphere_statement_of_completion_certificate\b' Poincare/CanonicalBridges.lean
+check_decl "completion certificate canonical statement payload is declared" \
+  '^theorem poincareCompletionCertificate_canonical_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "completion certificate canonical statement payload constructor is declared" \
+  '^theorem completion_certificate_of_canonical_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "completion certificate canonical statement payload equivalence is declared" \
+  '^theorem poincareCompletionCertificate_iff_canonical_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "completion certificate aggregate canonical statement payload is declared" \
+  '^theorem poincareCompletionCertificate_aggregate_canonical_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "completion certificate aggregate canonical statement payload constructor is declared" \
+  '^theorem completion_certificate_of_aggregate_canonical_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "completion certificate aggregate canonical statement payload equivalence is declared" \
+  '^theorem poincareCompletionCertificate_iff_aggregate_canonical_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency plus canonical statement certificate constructor is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency plus canonical statement certificate equivalence is declared" \
+  '^theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_canonical_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependencies plus canonical statement certificate constructor is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependencies plus canonical statement certificate equivalence is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_canonical_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "canonical payload bridge from topological statement equality contract is declared" \
+  '^theorem canonical_completion_payload_of_canonical_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "canonical target bridge from topological statement equality contract is declared" \
+  '^theorem canonical_completion_target_of_canonical_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "canonical criterion bridge from topological statement equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_canonical_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "canonical target exposes canonical topological statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_canonical_completion_target_eq\b' Poincare/CanonicalBridges.lean
+check_decl "canonical payload exposes canonical topological statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_canonical_completion_payload_eq\b' Poincare/CanonicalBridges.lean
+check_decl "canonical topological statement to canonical target equivalence equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_iff_canonical_completion_target_eq\b' Poincare/CanonicalBridges.lean
+check_decl "canonical topological statement to canonical payload equivalence equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_iff_canonical_completion_payload_eq\b' Poincare/CanonicalBridges.lean
+check_decl "completion certificate exposes canonical topological statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_completion_certificate_eq\b' Poincare/CanonicalBridges.lean
+check_decl "completion certificate canonical statement payload equality contract is declared" \
+  '^theorem poincareCompletionCertificate_canonical_statement_payload_eq\b' Poincare/CanonicalBridges.lean
+check_decl "completion certificate canonical statement payload constructor equality contract is declared" \
+  '^theorem completion_certificate_of_canonical_statement_payload_eq\b' Poincare/CanonicalBridges.lean
+check_decl "completion certificate canonical statement payload equivalence equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_canonical_statement_payload_eq\b' Poincare/CanonicalBridges.lean
+check_decl "completion certificate aggregate canonical statement payload equality contract is declared" \
+  '^theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_eq\b' Poincare/CanonicalBridges.lean
+check_decl "completion certificate aggregate canonical statement payload constructor equality contract is declared" \
+  '^theorem completion_certificate_of_aggregate_canonical_statement_payload_eq\b' Poincare/CanonicalBridges.lean
+check_decl "completion certificate aggregate canonical statement payload equivalence equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_aggregate_canonical_statement_payload_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency plus canonical statement certificate constructor equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency plus canonical statement certificate equivalence equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_canonical_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependencies plus canonical statement certificate constructor equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependencies plus canonical statement certificate equivalence equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_canonical_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency canonical aggregate statement endpoint is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_package\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency canonical aggregate extraction-derivation statement endpoint is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_aggregate_extraction_derivation\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency canonical projection statement endpoint is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_projections\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency canonical projection extraction-derivation statement endpoint is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_extraction_derivation_projections\b' Poincare/CanonicalBridges.lean
+check_decl "canonical payload bridge from smooth statement is declared" \
+  '^theorem canonical_completion_payload_of_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "canonical target bridge from smooth statement is declared" \
+  '^theorem canonical_completion_target_of_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "canonical criterion bridge from smooth statement is declared" \
+  '^theorem canonical_completion_criterion_of_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency plus smooth statement certificate constructor is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_and_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependencies plus smooth statement certificate constructor is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_and_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency plus canonical smooth statement certificate constructor is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_and_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependencies plus canonical smooth statement certificate constructor is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_and_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth route completion payload is declared" \
+  '^theorem packaged_smooth_statement_completion_payload_of_remaining_dependency\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth route completion payload is declared" \
+  '^theorem packaged_smooth_statement_completion_payload_of_poincareProofDependencies\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth route completion payload is declared" \
+  '^theorem packaged_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth route completion payload is declared" \
+  '^theorem packaged_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth route Poincare target projection is declared" \
+  '^theorem poincare_statement_of_remaining_dependency_and_packaged_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth route project criterion projection is declared" \
+  '^theorem completion_criterion_of_remaining_dependency_and_packaged_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth route Poincare target projection is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_and_packaged_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth route project criterion projection is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_and_packaged_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth route Poincare target projection is declared" \
+  '^theorem poincare_statement_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth route project criterion projection is declared" \
+  '^theorem completion_criterion_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth route Poincare target projection is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth route project criterion projection is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth route project completion payload is declared" \
+  '^theorem poincare_completion_payload_of_remaining_dependency_and_packaged_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth route project completion payload is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth route project completion payload is declared" \
+  '^theorem poincare_completion_payload_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth route project completion payload is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth route canonical completion payload is declared" \
+  '^theorem canonical_completion_payload_of_remaining_dependency_and_packaged_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth route canonical completion payload is declared" \
+  '^theorem canonical_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth route canonical completion payload is declared" \
+  '^theorem canonical_completion_payload_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth route canonical completion payload is declared" \
+  '^theorem canonical_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth route canonical target projection is declared" \
+  '^theorem canonical_completion_target_of_remaining_dependency_and_packaged_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth route criterion projection is declared" \
+  '^theorem canonical_completion_criterion_of_remaining_dependency_and_packaged_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth route canonical target projection is declared" \
+  '^theorem canonical_completion_target_of_poincareProofDependencies_and_packaged_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth route criterion projection is declared" \
+  '^theorem canonical_completion_criterion_of_poincareProofDependencies_and_packaged_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth route canonical target projection is declared" \
+  '^theorem canonical_completion_target_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth route criterion projection is declared" \
+  '^theorem canonical_completion_criterion_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth route canonical target projection is declared" \
+  '^theorem canonical_completion_target_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth route criterion projection is declared" \
+  '^theorem canonical_completion_criterion_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth route canonical statement projection is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_and_packaged_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth route canonical statement projection is declared" \
+  '^theorem canonical_three_sphere_statement_of_poincareProofDependencies_and_packaged_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth route canonical statement projection is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth route canonical statement projection is declared" \
+  '^theorem canonical_three_sphere_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth statement certificate constructor is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_and_packaged_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth statement certificate constructor is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_and_packaged_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth statement certificate constructor is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth statement certificate constructor is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "certificate remaining dependency packaged smooth statement payload projection is declared" \
+  '^theorem poincareCompletionCertificate_remainingDependencyPackage_packaged_smooth_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "certificate aggregate dependency packaged smooth statement payload projection is declared" \
+  '^theorem poincareCompletionCertificate_poincareProofDependencies_packaged_smooth_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "certificate remaining dependency packaged canonical smooth statement payload projection is declared" \
+  '^theorem poincareCompletionCertificate_remainingDependencyPackage_packaged_canonical_smooth_three_sphere_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "certificate aggregate dependency packaged canonical smooth statement payload projection is declared" \
+  '^theorem poincareCompletionCertificate_poincareProofDependencies_packaged_canonical_smooth_three_sphere_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth statement payload certificate constructor is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_package_packaged_smooth_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth statement payload certificate constructor is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_packaged_smooth_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth statement payload certificate constructor is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_package_packaged_canonical_smooth_three_sphere_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth statement payload certificate constructor is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_packaged_canonical_smooth_three_sphere_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth statement certificate iff payload is declared" \
+  '^theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_packaged_smooth_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth statement certificate iff payload is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_packaged_smooth_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth statement certificate iff payload is declared" \
+  '^theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_packaged_canonical_smooth_three_sphere_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth statement certificate iff payload is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "canonical smooth statement payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "canonical smooth statement target equality contract is declared" \
+  '^theorem canonical_completion_target_of_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "canonical smooth statement criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency smooth statement certificate equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_and_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency smooth statement certificate equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_and_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency canonical smooth statement certificate equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_and_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency canonical smooth statement certificate equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_and_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth payload equality contract is declared" \
+  '^theorem packaged_smooth_statement_completion_payload_of_remaining_dependency_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth payload equality contract is declared" \
+  '^theorem packaged_smooth_statement_completion_payload_of_poincareProofDependencies_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth payload equality contract is declared" \
+  '^theorem packaged_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth payload equality contract is declared" \
+  '^theorem packaged_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth canonical payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_remaining_dependency_and_packaged_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth canonical payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth canonical payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth canonical payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth target equality contract is declared" \
+  '^theorem poincare_statement_of_remaining_dependency_and_packaged_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth criterion equality contract is declared" \
+  '^theorem completion_criterion_of_remaining_dependency_and_packaged_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth target equality contract is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_and_packaged_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth criterion equality contract is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_and_packaged_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth target equality contract is declared" \
+  '^theorem poincare_statement_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth criterion equality contract is declared" \
+  '^theorem completion_criterion_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth target equality contract is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth criterion equality contract is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth project payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_remaining_dependency_and_packaged_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth project payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth project payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth project payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth project target remaining-dependency equality contract is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_and_packaged_smooth_statement_to_remaining_dependency_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth project criterion remaining-dependency equality contract is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_and_packaged_smooth_statement_to_remaining_dependency_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth project payload remaining-dependency equality contract is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement_to_remaining_dependency_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth project target remaining-dependency equality contract is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_remaining_dependency_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth project criterion remaining-dependency equality contract is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_remaining_dependency_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth project payload remaining-dependency equality contract is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_remaining_dependency_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth canonical payload remaining-dependency equality contract is declared" \
+  '^theorem canonical_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement_to_remaining_dependency_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth canonical target remaining-dependency equality contract is declared" \
+  '^theorem canonical_completion_target_of_poincareProofDependencies_and_packaged_smooth_statement_to_remaining_dependency_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth canonical criterion remaining-dependency equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_poincareProofDependencies_and_packaged_smooth_statement_to_remaining_dependency_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth canonical statement remaining-dependency equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_poincareProofDependencies_and_packaged_smooth_statement_to_remaining_dependency_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth canonical payload remaining-dependency equality contract is declared" \
+  '^theorem canonical_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_remaining_dependency_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth canonical target remaining-dependency equality contract is declared" \
+  '^theorem canonical_completion_target_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_remaining_dependency_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth canonical criterion remaining-dependency equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_remaining_dependency_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth canonical statement remaining-dependency equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_remaining_dependency_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth certificate remaining-dependency equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_and_packaged_smooth_statement_to_remaining_dependency_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth certificate remaining-dependency equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_remaining_dependency_eq\b' Poincare/CanonicalBridges.lean
+check_decl "packaged smooth aggregate/remaining payload equivalence is declared" \
+  '^theorem packaged_smooth_statement_payload_iff_poincareProofDependencies_remainingDependencyPackage\b' Poincare/CanonicalBridges.lean
+check_decl "packaged canonical smooth aggregate/remaining payload equivalence is declared" \
+  '^theorem packaged_canonical_smooth_three_sphere_statement_payload_iff_poincareProofDependencies_remainingDependencyPackage\b' Poincare/CanonicalBridges.lean
+check_decl "packaged smooth aggregate certificate iff remaining-dependency equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_packaged_smooth_statement_payload_to_remaining_dependency_eq\b' Poincare/CanonicalBridges.lean
+check_decl "packaged canonical smooth aggregate certificate iff remaining-dependency equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_payload_to_remaining_dependency_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth canonical target equality contract is declared" \
+  '^theorem canonical_completion_target_of_remaining_dependency_and_packaged_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth canonical criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_remaining_dependency_and_packaged_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_and_packaged_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth canonical target equality contract is declared" \
+  '^theorem canonical_completion_target_of_poincareProofDependencies_and_packaged_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth canonical criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_poincareProofDependencies_and_packaged_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_poincareProofDependencies_and_packaged_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth canonical target equality contract is declared" \
+  '^theorem canonical_completion_target_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth canonical criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth canonical target equality contract is declared" \
+  '^theorem canonical_completion_target_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth canonical criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package smooth route completion payload is declared" \
+  '^theorem smoothability_package_smooth_statement_completion_payload\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package smooth route target projection is declared" \
+  '^theorem poincare_statement_of_smoothability_package_and_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package smooth route criterion projection is declared" \
+  '^theorem completion_criterion_of_smoothability_package_and_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package smooth route project payload is declared" \
+  '^theorem poincare_completion_payload_of_smoothability_package_and_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package smooth route canonical payload is declared" \
+  '^theorem canonical_completion_payload_of_smoothability_package_and_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package smooth route canonical target projection is declared" \
+  '^theorem canonical_completion_target_of_smoothability_package_and_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package smooth route canonical criterion projection is declared" \
+  '^theorem canonical_completion_criterion_of_smoothability_package_and_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package smooth route canonical statement projection is declared" \
+  '^theorem canonical_three_sphere_statement_of_smoothability_package_and_smooth_statement\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package canonical smooth route completion payload is declared" \
+  '^theorem smoothability_package_canonical_smooth_three_sphere_statement_completion_payload\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package canonical smooth route target projection is declared" \
+  '^theorem poincare_statement_of_smoothability_package_and_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package canonical smooth route criterion projection is declared" \
+  '^theorem completion_criterion_of_smoothability_package_and_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package canonical smooth route project payload is declared" \
+  '^theorem poincare_completion_payload_of_smoothability_package_and_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package canonical smooth route canonical payload is declared" \
+  '^theorem canonical_completion_payload_of_smoothability_package_and_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package canonical smooth route canonical target projection is declared" \
+  '^theorem canonical_completion_target_of_smoothability_package_and_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package canonical smooth route canonical criterion projection is declared" \
+  '^theorem canonical_completion_criterion_of_smoothability_package_and_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package canonical smooth route canonical statement projection is declared" \
+  '^theorem canonical_three_sphere_statement_of_smoothability_package_and_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package smooth payload equality contract is declared" \
+  '^theorem smoothability_package_smooth_statement_completion_payload_eq\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package smooth target equality contract is declared" \
+  '^theorem poincare_statement_of_smoothability_package_and_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package smooth criterion equality contract is declared" \
+  '^theorem completion_criterion_of_smoothability_package_and_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package smooth project payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_smoothability_package_and_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package smooth canonical payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_smoothability_package_and_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package canonical smooth payload equality contract is declared" \
+  '^theorem smoothability_package_canonical_smooth_three_sphere_statement_completion_payload_eq\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package canonical smooth target equality contract is declared" \
+  '^theorem poincare_statement_of_smoothability_package_and_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package canonical smooth criterion equality contract is declared" \
+  '^theorem completion_criterion_of_smoothability_package_and_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package canonical smooth project payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_smoothability_package_and_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package canonical smooth canonical payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_smoothability_package_and_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package smooth canonical target equality contract is declared" \
+  '^theorem canonical_completion_target_of_smoothability_package_and_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package smooth canonical criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_smoothability_package_and_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package smooth canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_smoothability_package_and_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package canonical smooth canonical target equality contract is declared" \
+  '^theorem canonical_completion_target_of_smoothability_package_and_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package canonical smooth canonical criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_smoothability_package_and_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "standalone smoothability package canonical smooth canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_smoothability_package_and_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth payload standalone smoothability equality contract is declared" \
+  '^theorem packaged_smooth_statement_completion_payload_of_remaining_dependency_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth payload standalone smoothability equality contract is declared" \
+  '^theorem packaged_smooth_statement_completion_payload_of_poincareProofDependencies_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth payload standalone smoothability equality contract is declared" \
+  '^theorem packaged_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth payload standalone smoothability equality contract is declared" \
+  '^theorem packaged_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth target standalone smoothability equality contract is declared" \
+  '^theorem poincare_statement_of_remaining_dependency_and_packaged_smooth_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth target standalone smoothability equality contract is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_and_packaged_smooth_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth criterion standalone smoothability equality contract is declared" \
+  '^theorem completion_criterion_of_remaining_dependency_and_packaged_smooth_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth criterion standalone smoothability equality contract is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_and_packaged_smooth_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth project payload standalone smoothability equality contract is declared" \
+  '^theorem poincare_completion_payload_of_remaining_dependency_and_packaged_smooth_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth project payload standalone smoothability equality contract is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth target standalone smoothability equality contract is declared" \
+  '^theorem poincare_statement_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth target standalone smoothability equality contract is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth criterion standalone smoothability equality contract is declared" \
+  '^theorem completion_criterion_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth criterion standalone smoothability equality contract is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth project payload standalone smoothability equality contract is declared" \
+  '^theorem poincare_completion_payload_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth project payload standalone smoothability equality contract is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth canonical payload standalone smoothability equality contract is declared" \
+  '^theorem canonical_completion_payload_of_remaining_dependency_and_packaged_smooth_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth canonical payload standalone smoothability equality contract is declared" \
+  '^theorem canonical_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth canonical target standalone smoothability equality contract is declared" \
+  '^theorem canonical_completion_target_of_remaining_dependency_and_packaged_smooth_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth canonical target standalone smoothability equality contract is declared" \
+  '^theorem canonical_completion_target_of_poincareProofDependencies_and_packaged_smooth_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth canonical criterion standalone smoothability equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_remaining_dependency_and_packaged_smooth_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth canonical criterion standalone smoothability equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_poincareProofDependencies_and_packaged_smooth_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth canonical statement standalone smoothability equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_and_packaged_smooth_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth canonical statement standalone smoothability equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_poincareProofDependencies_and_packaged_smooth_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth canonical payload standalone smoothability equality contract is declared" \
+  '^theorem canonical_completion_payload_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth canonical payload standalone smoothability equality contract is declared" \
+  '^theorem canonical_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth canonical target standalone smoothability equality contract is declared" \
+  '^theorem canonical_completion_target_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth canonical target standalone smoothability equality contract is declared" \
+  '^theorem canonical_completion_target_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth canonical criterion standalone smoothability equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth canonical criterion standalone smoothability equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth canonical statement standalone smoothability equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth canonical statement standalone smoothability equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth certificate standalone smoothability equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_and_packaged_smooth_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth certificate standalone smoothability equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_and_packaged_smooth_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth certificate standalone smoothability equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth certificate standalone smoothability equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "Ricci-flow-with-surgery interface is declared" \
+  '^inductive HasRicciFlowWithSurgery\b' Poincare/Surgery.lean
+check_decl "surgery parameter-selection interface is declared" \
+  '^inductive HasSurgeryParameterSelection\b' Poincare/Surgery.lean
+check_decl "surgery scale-function interface is declared" \
+  '^inductive HasSurgeryScaleFunction\b' Poincare/Surgery.lean
+check_decl "surgery scale-continuity interface is declared" \
+  '^inductive HasSurgeryScaleContinuity\b' Poincare/Surgery.lean
+check_decl "surgery scale-separation interface is declared" \
+  '^inductive HasSurgeryScaleSeparation\b' Poincare/Surgery.lean
+check_decl "surgery cutoff-parameter control interface is declared" \
+  '^inductive HasSurgeryCutoffParameterControl\b' Poincare/Surgery.lean
+check_decl "surgery cutoff smooth-bump interface is declared" \
+  '^inductive HasSurgeryCutoffSmoothBumpFunction\b' Poincare/Surgery.lean
+check_decl "surgery neck-decomposition interface is declared" \
+  '^inductive HasSurgeryNeckDecomposition\b' Poincare/Surgery.lean
+check_decl "strong delta-neck detection interface is declared" \
+  '^inductive HasStrongDeltaNeckDetection\b' Poincare/Surgery.lean
+check_decl "surgery neck-separation interface is declared" \
+  '^inductive HasSurgeryNeckSeparation\b' Poincare/Surgery.lean
+check_decl "surgery neck-parametrization interface is declared" \
+  '^inductive HasSurgeryNeckParametrization\b' Poincare/Surgery.lean
+check_decl "surgery neck canonical-coordinate interface is declared" \
+  '^inductive HasSurgeryNeckCanonicalCoordinates\b' Poincare/Surgery.lean
+check_decl "surgery cap-construction interface is declared" \
+  '^inductive HasSurgeryCapConstruction\b' Poincare/Surgery.lean
+check_decl "standard cap model interface is declared" \
+  '^inductive HasStandardCapModel\b' Poincare/Surgery.lean
+check_decl "cap-gluing smoothness interface is declared" \
+  '^inductive HasCapGluingSmoothness\b' Poincare/Surgery.lean
+check_decl "surgery cap metric-interpolation interface is declared" \
+  '^inductive HasSurgeryCapMetricInterpolation\b' Poincare/Surgery.lean
+check_decl "surgery cap curvature-estimate interface is declared" \
+  '^inductive HasSurgeryCapCurvatureEstimates\b' Poincare/Surgery.lean
+check_decl "post-surgery metric-control interface is declared" \
+  '^inductive HasPostSurgeryMetricControl\b' Poincare/Surgery.lean
+check_decl "post-surgery curvature-pinching interface is declared" \
+  '^inductive HasPostSurgeryCurvaturePinching\b' Poincare/Surgery.lean
+check_decl "post-surgery noncollapsing-control interface is declared" \
+  '^inductive HasPostSurgeryNoncollapsingControl\b' Poincare/Surgery.lean
+check_decl "post-surgery derivative-bound interface is declared" \
+  '^inductive HasPostSurgeryDerivativeBounds\b' Poincare/Surgery.lean
+check_decl "post-surgery canonical-neighborhood persistence interface is declared" \
+  '^inductive HasPostSurgeryCanonicalNeighborhoodPersistence\b' Poincare/Surgery.lean
+check_decl "long-time surgery continuation interface is declared" \
+  '^inductive HasLongTimeSurgeryContinuation\b' Poincare/Surgery.lean
+check_decl "surgery-time discreteness interface is declared" \
+  '^inductive HasSurgeryTimeDiscreteness\b' Poincare/Surgery.lean
+check_decl "surgery-time local-finiteness interface is declared" \
+  '^inductive HasSurgeryTimeLocalFiniteness\b' Poincare/Surgery.lean
+check_decl "long-time existence iteration interface is declared" \
+  '^inductive HasLongTimeExistenceIteration\b' Poincare/Surgery.lean
+check_decl "long-time surgery-parameter coherence interface is declared" \
+  '^inductive HasLongTimeSurgeryParameterCoherence\b' Poincare/Surgery.lean
+check_decl "long-time nonaccumulation interface is declared" \
+  '^inductive HasLongTimeNonaccumulation\b' Poincare/Surgery.lean
+check_decl "Ricci-flow-with-surgery construction package is declared" \
+  '^structure RicciFlowWithSurgeryConstructionPackage\b' Poincare/Surgery.lean
+check_decl "surgery construction scale-function projection is declared" \
+  '^theorem surgery_scale_function_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction scale-continuity projection is declared" \
+  '^theorem surgery_scale_continuity_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction scale-separation projection is declared" \
+  '^theorem surgery_scale_separation_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction cutoff-parameter projection is declared" \
+  '^theorem surgery_cutoff_parameter_control_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction cutoff smooth-bump projection is declared" \
+  '^theorem surgery_cutoff_smooth_bump_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction parameter projection is declared" \
+  '^theorem surgery_parameter_selection_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction strong-neck detection projection is declared" \
+  '^theorem strong_delta_neck_detection_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction neck-separation projection is declared" \
+  '^theorem surgery_neck_separation_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction neck-parametrization projection is declared" \
+  '^theorem surgery_neck_parametrization_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction neck-coordinate projection is declared" \
+  '^theorem surgery_neck_canonical_coordinates_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction neck-decomposition projection is declared" \
+  '^theorem surgery_neck_decomposition_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction standard-cap model projection is declared" \
+  '^theorem standard_cap_model_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction cap-gluing projection is declared" \
+  '^theorem cap_gluing_smoothness_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction cap metric-interpolation projection is declared" \
+  '^theorem surgery_cap_metric_interpolation_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction cap curvature-estimate projection is declared" \
+  '^theorem surgery_cap_curvature_estimates_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction cap-construction projection is declared" \
+  '^theorem surgery_cap_construction_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction post-surgery curvature projection is declared" \
+  '^theorem post_surgery_curvature_pinching_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction post-surgery noncollapsing projection is declared" \
+  '^theorem post_surgery_noncollapsing_control_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction post-surgery derivative projection is declared" \
+  '^theorem post_surgery_derivative_bounds_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction post-surgery canonical-neighborhood projection is declared" \
+  '^theorem post_surgery_canonical_neighborhood_persistence_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction metric-control projection is declared" \
+  '^theorem post_surgery_metric_control_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction surgery-time discreteness projection is declared" \
+  '^theorem surgery_time_discreteness_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction surgery-time local-finiteness projection is declared" \
+  '^theorem surgery_time_local_finiteness_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction long-time iteration projection is declared" \
+  '^theorem long_time_existence_iteration_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction long-time parameter-coherence projection is declared" \
+  '^theorem long_time_surgery_parameter_coherence_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction long-time nonaccumulation projection is declared" \
+  '^theorem long_time_nonaccumulation_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction long-time continuation projection is declared" \
+  '^theorem long_time_surgery_continuation_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction fixed statement is declared" \
+  '^def RicciFlowWithSurgeryConstructionStatement\b' Poincare/Surgery.lean
+check_decl "surgery construction component assembly theorem is declared" \
+  '^theorem ricci_flow_with_surgery_construction_statement_of_components\b' Poincare/Surgery.lean
+check_decl "surgery construction package statement projection is declared" \
+  '^theorem ricci_flow_with_surgery_construction_statement_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction statement aggregate bridge is declared" \
+  '^theorem ricci_flow_with_surgery_of_construction_statement\b' Poincare/Surgery.lean
+check_decl "surgery construction sub-obligation payload alias is declared" \
+  '^abbrev RicciFlowWithSurgeryConstructionSubobligationsPayload\b' Poincare/Surgery.lean
+check_decl "surgery construction statement sub-obligation projection is declared" \
+  '^theorem surgery_construction_subobligations_of_statement\b' Poincare/Surgery.lean
+check_decl "surgery construction package payload theorem is declared" \
+  '^theorem surgery_construction_payload_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction aggregate projection is declared" \
+  '^theorem ricci_flow_with_surgery_of_construction_package\b' Poincare/Surgery.lean
+for decl in \
+  surgery_scale_function_of_construction_package_eq \
+  surgery_scale_continuity_of_construction_package_eq \
+  surgery_scale_separation_of_construction_package_eq \
+  surgery_cutoff_parameter_control_of_construction_package_eq \
+  surgery_cutoff_smooth_bump_of_construction_package_eq \
+  surgery_parameter_selection_of_construction_package_eq \
+  strong_delta_neck_detection_of_construction_package_eq \
+  surgery_neck_separation_of_construction_package_eq \
+  surgery_neck_parametrization_of_construction_package_eq \
+  surgery_neck_canonical_coordinates_of_construction_package_eq \
+  surgery_neck_decomposition_of_construction_package_eq \
+  standard_cap_model_of_construction_package_eq \
+  cap_gluing_smoothness_of_construction_package_eq \
+  surgery_cap_metric_interpolation_of_construction_package_eq \
+  surgery_cap_curvature_estimates_of_construction_package_eq \
+  surgery_cap_construction_of_construction_package_eq \
+  post_surgery_curvature_pinching_of_construction_package_eq \
+  post_surgery_noncollapsing_control_of_construction_package_eq \
+  post_surgery_derivative_bounds_of_construction_package_eq \
+  post_surgery_canonical_neighborhood_persistence_of_construction_package_eq \
+  post_surgery_metric_control_of_construction_package_eq \
+  surgery_time_discreteness_of_construction_package_eq \
+  surgery_time_local_finiteness_of_construction_package_eq \
+  long_time_existence_iteration_of_construction_package_eq \
+  long_time_surgery_parameter_coherence_of_construction_package_eq \
+  long_time_nonaccumulation_of_construction_package_eq \
+  long_time_surgery_continuation_of_construction_package_eq \
+  ricci_flow_with_surgery_of_construction_package_eq
+do
+  check_decl "surgery construction stored-field equality contract ${decl} is declared" \
+    "^theorem ${decl}\b" Poincare/Surgery.lean
+done
+check_decl "Perelman entropy-functional interface is declared" \
+  '^inductive HasPerelmanEntropyFunctional\b' Poincare/Surgery.lean
+check_decl "Perelman F-functional setup interface is declared" \
+  '^inductive HasPerelmanFFunctionalSetup\b' Poincare/Surgery.lean
+check_decl "Perelman entropy normalization interface is declared" \
+  '^inductive HasPerelmanEntropyNormalization\b' Poincare/Surgery.lean
+check_decl "Perelman entropy minimizer-existence interface is declared" \
+  '^inductive HasPerelmanEntropyMinimizerExistence\b' Poincare/Surgery.lean
+check_decl "Perelman entropy log-Sobolev interface is declared" \
+  '^inductive HasPerelmanEntropyLogSobolevControl\b' Poincare/Surgery.lean
+check_decl "Perelman conjugate heat equation interface is declared" \
+  '^inductive HasConjugateHeatEquationTheory\b' Poincare/Surgery.lean
+check_decl "Perelman adjoint heat kernel interface is declared" \
+  '^inductive HasAdjointHeatKernelConstruction\b' Poincare/Surgery.lean
+check_decl "Perelman conjugate heat-kernel estimates interface is declared" \
+  '^inductive HasPerelmanConjugateHeatKernelEstimates\b' Poincare/Surgery.lean
+check_decl "Perelman W-functional setup interface is declared" \
+  '^inductive HasPerelmanWFunctionalSetup\b' Poincare/Surgery.lean
+check_decl "Perelman entropy-gradient formula interface is declared" \
+  '^inductive HasPerelmanEntropyGradientFormula\b' Poincare/Surgery.lean
+check_decl "Perelman entropy first-variation interface is declared" \
+  '^inductive HasPerelmanEntropyFirstVariation\b' Poincare/Surgery.lean
+check_decl "Perelman entropy monotonicity interface is declared" \
+  '^inductive HasPerelmanEntropyMonotonicity\b' Poincare/Surgery.lean
+check_decl "Perelman entropy lower-bound propagation interface is declared" \
+  '^inductive HasPerelmanEntropyLowerBoundPropagation\b' Poincare/Surgery.lean
+check_decl "Perelman reduced-distance interface is declared" \
+  '^inductive HasPerelmanReducedDistanceTheory\b' Poincare/Surgery.lean
+check_decl "Perelman reduced-length first-variation interface is declared" \
+  '^inductive HasPerelmanReducedLengthFirstVariation\b' Poincare/Surgery.lean
+check_decl "Perelman reduced-distance existence interface is declared" \
+  '^inductive HasPerelmanReducedDistanceExistence\b' Poincare/Surgery.lean
+check_decl "Perelman reduced-distance differential inequality interface is declared" \
+  '^inductive HasPerelmanReducedDistanceDifferentialInequality\b' Poincare/Surgery.lean
+check_decl "Perelman reduced-distance estimates interface is declared" \
+  '^inductive HasPerelmanReducedDistanceEstimates\b' Poincare/Surgery.lean
+check_decl "Perelman reduced-distance cut-locus interface is declared" \
+  '^inductive HasPerelmanReducedDistanceCutLocusControl\b' Poincare/Surgery.lean
+check_decl "Perelman reduced-Jacobian comparison interface is declared" \
+  '^inductive HasPerelmanReducedJacobianComparison\b' Poincare/Surgery.lean
+check_decl "Perelman reduced-volume nonincreasing interface is declared" \
+  '^inductive HasPerelmanReducedVolumeNonincreasing\b' Poincare/Surgery.lean
+check_decl "Perelman reduced-volume definition interface is declared" \
+  '^inductive HasPerelmanReducedVolumeDefinition\b' Poincare/Surgery.lean
+check_decl "Perelman reduced-volume derivative interface is declared" \
+  '^inductive HasPerelmanReducedVolumeDerivativeFormula\b' Poincare/Surgery.lean
+check_decl "Perelman reduced-volume rigidity interface is declared" \
+  '^inductive HasPerelmanReducedVolumeRigidity\b' Poincare/Surgery.lean
+check_decl "Perelman reduced-volume positive lower-bound interface is declared" \
+  '^inductive HasPerelmanReducedVolumePositiveLowerBound\b' Poincare/Surgery.lean
+check_decl "Perelman reduced-volume limit-rigidity interface is declared" \
+  '^inductive HasPerelmanReducedVolumeLimitRigidity\b' Poincare/Surgery.lean
+check_decl "Perelman kappa-noncollapsing quantification interface is declared" \
+  '^inductive HasPerelmanKappaNoncollapsingQuantification\b' Poincare/Surgery.lean
+check_decl "Perelman no-local-collapsing contradiction setup interface is declared" \
+  '^inductive HasPerelmanNoLocalCollapsingContradictionSetup\b' Poincare/Surgery.lean
+check_decl "Perelman collapsed-ball blow-up interface is declared" \
+  '^inductive HasPerelmanCollapsedBallBlowup\b' Poincare/Surgery.lean
+check_decl "Perelman volume-ratio contradiction interface is declared" \
+  '^inductive HasPerelmanVolumeRatioContradiction\b' Poincare/Surgery.lean
+check_decl "Perelman kappa-from-reduced-volume interface is declared" \
+  '^inductive HasPerelmanKappaNoncollapsingFromReducedVolume\b' Poincare/Surgery.lean
+check_decl "Perelman no-local-collapsing volume lower-bound interface is declared" \
+  '^inductive HasNoLocalCollapsingVolumeLowerBound\b' Poincare/Surgery.lean
+check_decl "Hamilton compactness interface is declared" \
+  '^inductive HasHamiltonCompactnessTheorem\b' Poincare/Surgery.lean
+check_decl "ancient kappa-solution compactness interface is declared" \
+  '^inductive HasAncientKappaSolutionCompactness\b' Poincare/Surgery.lean
+check_decl "ancient kappa-solution limit-extraction interface is declared" \
+  '^inductive HasAncientKappaSolutionLimitExtraction\b' Poincare/Surgery.lean
+check_decl "kappa-solution pointed-rescaling interface is declared" \
+  '^inductive HasKappaSolutionPointedRescaling\b' Poincare/Surgery.lean
+check_decl "kappa-solution curvature-normalization interface is declared" \
+  '^inductive HasKappaSolutionCurvatureNormalization\b' Poincare/Surgery.lean
+check_decl "kappa-solution structure interface is declared" \
+  '^inductive HasKappaSolutionStructureTheory\b' Poincare/Surgery.lean
+check_decl "kappa-solution nonnegative curvature-operator interface is declared" \
+  '^inductive HasKappaSolutionNonnegativeCurvatureOperator\b' Poincare/Surgery.lean
+check_decl "kappa-solution asymptotic soliton interface is declared" \
+  '^inductive HasKappaSolutionAsymptoticSoliton\b' Poincare/Surgery.lean
+check_decl "canonical-neighborhood classification interface is declared" \
+  '^inductive HasCanonicalNeighborhoodClassification\b' Poincare/Surgery.lean
+check_decl "canonical-neighborhood neck/cap dichotomy interface is declared" \
+  '^inductive HasCanonicalNeighborhoodNeckCapDichotomy\b' Poincare/Surgery.lean
+check_decl "canonical-neighborhood scale-control interface is declared" \
+  '^inductive HasCanonicalNeighborhoodScaleControl\b' Poincare/Surgery.lean
+check_decl "canonical-neighborhood stability interface is declared" \
+  '^inductive HasCanonicalNeighborhoodStability\b' Poincare/Surgery.lean
+check_decl "canonical-neighborhood cross-scale persistence interface is declared" \
+  '^inductive HasCanonicalNeighborhoodPersistenceAcrossScales\b' Poincare/Surgery.lean
+check_decl "Perelman no-local-collapsing interface is declared" \
+  '^inductive HasPerelmanNoLocalCollapsing\b' Poincare/Surgery.lean
+check_decl "Perelman reduced-volume interface is declared" \
+  '^inductive HasPerelmanReducedVolumeMonotonicity\b' Poincare/Surgery.lean
+check_decl "canonical-neighborhood interface is declared" \
+  '^inductive HasCanonicalNeighborhoodTheorem\b' Poincare/Surgery.lean
+check_decl "singularity-model classification interface is declared" \
+  '^inductive HasSingularityModelClassification\b' Poincare/Surgery.lean
+check_decl "singularity-model blow-up classification interface is declared" \
+  '^inductive HasSingularityModelBlowupClassification\b' Poincare/Surgery.lean
+check_decl "finite-extinction fundamental-group input interface is declared" \
+  '^inductive HasFiniteExtinctionFundamentalGroupInput\b' Poincare/Surgery.lean
+check_decl "finite-extinction sweepout-existence interface is declared" \
+  '^inductive HasFiniteExtinctionSweepoutExistence\b' Poincare/Surgery.lean
+check_decl "finite-extinction sweepout-continuity interface is declared" \
+  '^inductive HasFiniteExtinctionSweepoutContinuity\b' Poincare/Surgery.lean
+check_decl "finite-extinction sweepout-nontriviality interface is declared" \
+  '^inductive HasFiniteExtinctionSweepoutNontriviality\b' Poincare/Surgery.lean
+check_decl "finite-extinction area-functional setup interface is declared" \
+  '^inductive HasFiniteExtinctionAreaFunctionalSetup\b' Poincare/Surgery.lean
+check_decl "finite-extinction min-max width definition interface is declared" \
+  '^inductive HasFiniteExtinctionMinMaxWidthDefinition\b' Poincare/Surgery.lean
+check_decl "finite-extinction width compactness interface is declared" \
+  '^inductive HasFiniteExtinctionWidthCompactness\b' Poincare/Surgery.lean
+check_decl "finite-extinction minimizing-sequence interface is declared" \
+  '^inductive HasFiniteExtinctionMinimizingSequence\b' Poincare/Surgery.lean
+check_decl "finite-extinction min-surface regularity interface is declared" \
+  '^inductive HasFiniteExtinctionMinSurfaceRegularity\b' Poincare/Surgery.lean
+check_decl "finite-extinction positive-width interface is declared" \
+  '^inductive HasFiniteExtinctionPositiveWidth\b' Poincare/Surgery.lean
+check_decl "finite-extinction width theory interface is declared" \
+  '^inductive HasFiniteExtinctionWidthTheory\b' Poincare/Surgery.lean
+check_decl "finite-extinction first-variation interface is declared" \
+  '^inductive HasFiniteExtinctionFirstVariationFormula\b' Poincare/Surgery.lean
+check_decl "finite-extinction second-variation interface is declared" \
+  '^inductive HasFiniteExtinctionSecondVariationInequality\b' Poincare/Surgery.lean
+check_decl "finite-extinction Gauss-Bonnet estimate interface is declared" \
+  '^inductive HasFiniteExtinctionGaussBonnetEstimate\b' Poincare/Surgery.lean
+check_decl "finite-extinction scalar-curvature width-bound interface is declared" \
+  '^inductive HasFiniteExtinctionScalarCurvatureWidthBound\b' Poincare/Surgery.lean
+check_decl "finite-extinction width evolution interface is declared" \
+  '^inductive HasFiniteExtinctionWidthEvolution\b' Poincare/Surgery.lean
+check_decl "finite-extinction width differential inequality interface is declared" \
+  '^inductive HasFiniteExtinctionWidthDifferentialInequality\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery metric-comparison interface is declared" \
+  '^inductive HasFiniteExtinctionSurgeryMetricComparison\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery width drop interface is declared" \
+  '^inductive HasFiniteExtinctionSurgeryWidthDrop\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery-discard control interface is declared" \
+  '^inductive HasFiniteExtinctionSurgeryDiscardControl\b' Poincare/Surgery.lean
+check_decl "finite-extinction discarded-component width-neutrality interface is declared" \
+  '^inductive HasFiniteExtinctionDiscardedComponentWidthNeutrality\b' Poincare/Surgery.lean
+check_decl "finite-extinction discarded-component classification interface is declared" \
+  '^inductive HasFiniteExtinctionDiscardedComponentClassification\b' Poincare/Surgery.lean
+check_decl "finite-extinction component topology interface is declared" \
+  '^inductive HasFiniteExtinctionComponentTopology\b' Poincare/Surgery.lean
+check_decl "Perelman singularity-control package is declared" \
+  '^structure PerelmanSingularityControlPackage\b' Poincare/Surgery.lean
+check_decl "Perelman fixed singularity-control statement is declared" \
+  '^def PerelmanSingularityControlStatement\b' Poincare/Surgery.lean
+check_decl "Perelman statement component assembly theorem is declared" \
+  '^theorem perelman_singularity_control_statement_of_components\b' Poincare/Surgery.lean
+check_decl "Perelman package statement projection is declared" \
+  '^theorem perelman_singularity_control_statement_of_package\b' Poincare/Surgery.lean
+check_decl "Perelman statement aggregate bridge is declared" \
+  '^theorem perelman_singularity_control_of_statement\b' Poincare/Surgery.lean
+check_decl "Perelman statement sub-obligation payload alias is declared" \
+  '^abbrev PerelmanSingularityControlSubobligationsPayload\b' Poincare/Surgery.lean
+check_decl "Perelman monotonicity/blow-up payload alias is declared" \
+  '^abbrev PerelmanMonotonicityBlowupSubobligationsPayload\b' Poincare/Surgery.lean
+check_decl "Perelman statement sub-obligations bridge is declared" \
+  '^theorem perelman_subobligations_of_statement\b' Poincare/Surgery.lean
+check_decl "Perelman statement monotonicity/blow-up bridge is declared" \
+  '^theorem perelman_monotonicity_blowup_subobligations_of_statement\b' Poincare/Surgery.lean
+check_decl "Perelman package payload theorem is declared" \
+  '^theorem perelman_control_payload_of_package\b' Poincare/Surgery.lean
+check_decl "Perelman package F-functional setup projection is declared" \
+  '^theorem f_functional_setup_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package entropy normalization projection is declared" \
+  '^theorem entropy_normalization_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package entropy minimizer-existence projection is declared" \
+  '^theorem entropy_minimizer_existence_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package entropy log-Sobolev projection is declared" \
+  '^theorem entropy_log_sobolev_control_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package conjugate heat equation projection is declared" \
+  '^theorem conjugate_heat_equation_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package adjoint heat kernel projection is declared" \
+  '^theorem adjoint_heat_kernel_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package conjugate heat-kernel estimate projection is declared" \
+  '^theorem conjugate_heat_kernel_estimates_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package W-functional setup projection is declared" \
+  '^theorem w_functional_setup_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package entropy-gradient projection is declared" \
+  '^theorem entropy_gradient_formula_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package entropy first-variation projection is declared" \
+  '^theorem entropy_first_variation_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package entropy monotonicity projection is declared" \
+  '^theorem entropy_monotonicity_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package entropy lower-bound propagation projection is declared" \
+  '^theorem entropy_lower_bound_propagation_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package entropy-functional projection is declared" \
+  '^theorem entropy_functional_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package reduced-length first-variation projection is declared" \
+  '^theorem reduced_length_first_variation_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package reduced-distance existence projection is declared" \
+  '^theorem reduced_distance_existence_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package reduced-distance differential inequality projection is declared" \
+  '^theorem reduced_distance_differential_inequality_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package reduced-distance estimates projection is declared" \
+  '^theorem reduced_distance_estimates_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package reduced-distance cut-locus projection is declared" \
+  '^theorem reduced_distance_cut_locus_control_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package reduced-Jacobian projection is declared" \
+  '^theorem reduced_jacobian_comparison_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package reduced-distance projection is declared" \
+  '^theorem reduced_distance_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package reduced-volume definition projection is declared" \
+  '^theorem reduced_volume_definition_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package reduced-volume derivative projection is declared" \
+  '^theorem reduced_volume_derivative_formula_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package reduced-volume rigidity projection is declared" \
+  '^theorem reduced_volume_rigidity_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package reduced-volume positive lower-bound projection is declared" \
+  '^theorem reduced_volume_positive_lower_bound_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package reduced-volume limit-rigidity projection is declared" \
+  '^theorem reduced_volume_limit_rigidity_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package reduced-volume nonincreasing projection is declared" \
+  '^theorem reduced_volume_nonincreasing_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package kappa-from-reduced-volume projection is declared" \
+  '^theorem kappa_noncollapsing_from_reduced_volume_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package no-local-collapsing contradiction setup projection is declared" \
+  '^theorem no_local_collapsing_contradiction_setup_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package collapsed-ball blow-up projection is declared" \
+  '^theorem collapsed_ball_blowup_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package volume-ratio contradiction projection is declared" \
+  '^theorem volume_ratio_contradiction_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package no-local-collapsing lower-bound projection is declared" \
+  '^theorem no_local_collapsing_volume_lower_bound_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package kappa-noncollapsing projection is declared" \
+  '^theorem kappa_noncollapsing_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package Hamilton compactness projection is declared" \
+  '^theorem hamilton_compactness_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package ancient kappa limit-extraction projection is declared" \
+  '^theorem ancient_kappa_solution_limit_extraction_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package kappa-solution pointed-rescaling projection is declared" \
+  '^theorem kappa_solution_pointed_rescaling_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package kappa-solution curvature-normalization projection is declared" \
+  '^theorem kappa_solution_curvature_normalization_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package kappa-solution structure projection is declared" \
+  '^theorem kappa_solution_structure_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package kappa-solution nonnegative-curvature projection is declared" \
+  '^theorem kappa_solution_nonnegative_curvature_operator_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package asymptotic soliton projection is declared" \
+  '^theorem kappa_solution_asymptotic_soliton_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package ancient kappa compactness projection is declared" \
+  '^theorem ancient_kappa_solution_compactness_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package canonical-neighborhood scale-control projection is declared" \
+  '^theorem canonical_neighborhood_scale_control_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package canonical-neighborhood stability projection is declared" \
+  '^theorem canonical_neighborhood_stability_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package canonical-neighborhood cross-scale persistence projection is declared" \
+  '^theorem canonical_neighborhood_persistence_across_scales_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package neck/cap dichotomy projection is declared" \
+  '^theorem canonical_neighborhood_neck_cap_dichotomy_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package canonical-neighborhood classification projection is declared" \
+  '^theorem canonical_neighborhood_classification_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package no-local-collapsing projection is declared" \
+  '^theorem no_local_collapsing_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package reduced-volume projection is declared" \
+  '^theorem reduced_volume_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package canonical-neighborhood projection is declared" \
+  '^theorem canonical_neighborhood_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package singularity-model projection is declared" \
+  '^theorem singularity_model_classification_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package singularity-model blow-up projection is declared" \
+  '^theorem singularity_model_blowup_classification_of_perelman_package\b' Poincare/Surgery.lean
+check_decl "Perelman package aggregate control projection is declared" \
+  '^theorem singularity_control_of_perelman_package\b' Poincare/Surgery.lean
+for decl in \
+  f_functional_setup_of_perelman_package_eq \
+  entropy_normalization_of_perelman_package_eq \
+  entropy_minimizer_existence_of_perelman_package_eq \
+  entropy_log_sobolev_control_of_perelman_package_eq \
+  conjugate_heat_equation_of_perelman_package_eq \
+  adjoint_heat_kernel_of_perelman_package_eq \
+  conjugate_heat_kernel_estimates_of_perelman_package_eq \
+  w_functional_setup_of_perelman_package_eq \
+  entropy_gradient_formula_of_perelman_package_eq \
+  entropy_first_variation_of_perelman_package_eq \
+  entropy_monotonicity_of_perelman_package_eq \
+  entropy_lower_bound_propagation_of_perelman_package_eq \
+  entropy_functional_of_perelman_package_eq \
+  reduced_length_first_variation_of_perelman_package_eq \
+  reduced_distance_existence_of_perelman_package_eq \
+  reduced_distance_differential_inequality_of_perelman_package_eq \
+  reduced_distance_estimates_of_perelman_package_eq \
+  reduced_distance_cut_locus_control_of_perelman_package_eq \
+  reduced_jacobian_comparison_of_perelman_package_eq \
+  reduced_distance_of_perelman_package_eq \
+  reduced_volume_definition_of_perelman_package_eq \
+  reduced_volume_derivative_formula_of_perelman_package_eq \
+  reduced_volume_rigidity_of_perelman_package_eq \
+  reduced_volume_positive_lower_bound_of_perelman_package_eq \
+  reduced_volume_limit_rigidity_of_perelman_package_eq \
+  reduced_volume_nonincreasing_of_perelman_package_eq \
+  kappa_noncollapsing_from_reduced_volume_of_perelman_package_eq \
+  no_local_collapsing_contradiction_setup_of_perelman_package_eq \
+  collapsed_ball_blowup_of_perelman_package_eq \
+  volume_ratio_contradiction_of_perelman_package_eq \
+  no_local_collapsing_volume_lower_bound_of_perelman_package_eq \
+  kappa_noncollapsing_of_perelman_package_eq \
+  hamilton_compactness_of_perelman_package_eq \
+  ancient_kappa_solution_limit_extraction_of_perelman_package_eq \
+  kappa_solution_pointed_rescaling_of_perelman_package_eq \
+  kappa_solution_curvature_normalization_of_perelman_package_eq \
+  kappa_solution_structure_of_perelman_package_eq \
+  kappa_solution_nonnegative_curvature_operator_of_perelman_package_eq \
+  kappa_solution_asymptotic_soliton_of_perelman_package_eq \
+  ancient_kappa_solution_compactness_of_perelman_package_eq \
+  canonical_neighborhood_scale_control_of_perelman_package_eq \
+  canonical_neighborhood_stability_of_perelman_package_eq \
+  canonical_neighborhood_persistence_across_scales_of_perelman_package_eq \
+  canonical_neighborhood_neck_cap_dichotomy_of_perelman_package_eq \
+  canonical_neighborhood_classification_of_perelman_package_eq \
+  no_local_collapsing_of_perelman_package_eq \
+  reduced_volume_of_perelman_package_eq \
+  canonical_neighborhood_of_perelman_package_eq \
+  singularity_model_classification_of_perelman_package_eq \
+  singularity_model_blowup_classification_of_perelman_package_eq \
+  singularity_control_of_perelman_package_eq
+do
+  check_decl "Perelman package stored-field equality contract ${decl} is declared" \
+    "^theorem ${decl}\b" Poincare/Surgery.lean
+done
+check_decl "finite-extinction surgery package is declared" \
+  '^structure FiniteExtinctionSurgeryPackage\b' Poincare/Surgery.lean
+check_decl "surgery package analytic foundation projection is declared" \
+  '^noncomputable def analytic_foundation_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package analytic foundation equality theorem is declared" \
+  '^@\[simp\] theorem analytic_foundation_of_surgery_package_eq\b' Poincare/Surgery.lean
+check_decl "surgery package Ricci-flow data projection is declared" \
+  '^noncomputable def ricci_flow_data_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package Ricci-flow data equality theorem is declared" \
+  '^@\[simp\] theorem ricci_flow_data_of_surgery_package_eq\b' Poincare/Surgery.lean
+check_decl "surgery package analytic-foundation payload theorem is declared" \
+  '^theorem analytic_foundation_payload_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package Ricci-flow equation evidence projection is declared" \
+  '^theorem equation_evidence_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package Ricci-flow equation equality theorem is declared" \
+  '^theorem equation_evidence_of_surgery_package_eq\b' Poincare/Surgery.lean
+check_decl "surgery package Ricci-flow-with-surgery projection is declared" \
+  '^theorem ricci_flow_with_surgery_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package construction package projection is declared" \
+  '^noncomputable def surgery_construction_package_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package construction package equality theorem is declared" \
+  '^@\[simp\] theorem surgery_construction_package_of_surgery_package_eq\b' Poincare/Surgery.lean
+check_decl "surgery package construction statement projection is declared" \
+  '^theorem ricci_flow_with_surgery_construction_statement_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package scale-function projection is declared" \
+  '^theorem surgery_scale_function_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package scale-continuity projection is declared" \
+  '^theorem surgery_scale_continuity_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package scale-separation projection is declared" \
+  '^theorem surgery_scale_separation_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package cutoff-parameter projection is declared" \
+  '^theorem surgery_cutoff_parameter_control_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package cutoff smooth-bump projection is declared" \
+  '^theorem surgery_cutoff_smooth_bump_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package parameter-selection projection is declared" \
+  '^theorem surgery_parameter_selection_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package strong-neck detection projection is declared" \
+  '^theorem strong_delta_neck_detection_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package neck-separation projection is declared" \
+  '^theorem surgery_neck_separation_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package neck-parametrization projection is declared" \
+  '^theorem surgery_neck_parametrization_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package neck-coordinate projection is declared" \
+  '^theorem surgery_neck_canonical_coordinates_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package neck-decomposition projection is declared" \
+  '^theorem surgery_neck_decomposition_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package standard-cap model projection is declared" \
+  '^theorem standard_cap_model_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package cap-gluing projection is declared" \
+  '^theorem cap_gluing_smoothness_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package cap metric-interpolation projection is declared" \
+  '^theorem surgery_cap_metric_interpolation_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package cap curvature-estimate projection is declared" \
+  '^theorem surgery_cap_curvature_estimates_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package cap-construction projection is declared" \
+  '^theorem surgery_cap_construction_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package post-surgery curvature projection is declared" \
+  '^theorem post_surgery_curvature_pinching_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package post-surgery noncollapsing projection is declared" \
+  '^theorem post_surgery_noncollapsing_control_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package post-surgery derivative projection is declared" \
+  '^theorem post_surgery_derivative_bounds_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package post-surgery canonical-neighborhood projection is declared" \
+  '^theorem post_surgery_canonical_neighborhood_persistence_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package metric-control projection is declared" \
+  '^theorem post_surgery_metric_control_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package surgery-time discreteness projection is declared" \
+  '^theorem surgery_time_discreteness_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package surgery-time local-finiteness projection is declared" \
+  '^theorem surgery_time_local_finiteness_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package long-time iteration projection is declared" \
+  '^theorem long_time_existence_iteration_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package long-time parameter-coherence projection is declared" \
+  '^theorem long_time_surgery_parameter_coherence_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package long-time nonaccumulation projection is declared" \
+  '^theorem long_time_nonaccumulation_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package long-time continuation projection is declared" \
+  '^theorem long_time_surgery_continuation_of_surgery_package\b' Poincare/Surgery.lean
+for decl in \
+  ricci_flow_with_surgery_construction_statement_of_surgery_package_eq \
+  ricci_flow_with_surgery_of_surgery_package_eq \
+  surgery_scale_function_of_surgery_package_eq \
+  surgery_scale_continuity_of_surgery_package_eq \
+  surgery_scale_separation_of_surgery_package_eq \
+  surgery_cutoff_parameter_control_of_surgery_package_eq \
+  surgery_cutoff_smooth_bump_of_surgery_package_eq \
+  surgery_parameter_selection_of_surgery_package_eq \
+  strong_delta_neck_detection_of_surgery_package_eq \
+  surgery_neck_separation_of_surgery_package_eq \
+  surgery_neck_parametrization_of_surgery_package_eq \
+  surgery_neck_canonical_coordinates_of_surgery_package_eq \
+  surgery_neck_decomposition_of_surgery_package_eq \
+  standard_cap_model_of_surgery_package_eq \
+  cap_gluing_smoothness_of_surgery_package_eq \
+  surgery_cap_metric_interpolation_of_surgery_package_eq \
+  surgery_cap_curvature_estimates_of_surgery_package_eq \
+  surgery_cap_construction_of_surgery_package_eq \
+  post_surgery_curvature_pinching_of_surgery_package_eq \
+  post_surgery_noncollapsing_control_of_surgery_package_eq \
+  post_surgery_derivative_bounds_of_surgery_package_eq \
+  post_surgery_canonical_neighborhood_persistence_of_surgery_package_eq \
+  post_surgery_metric_control_of_surgery_package_eq \
+  surgery_time_discreteness_of_surgery_package_eq \
+  surgery_time_local_finiteness_of_surgery_package_eq \
+  long_time_existence_iteration_of_surgery_package_eq \
+  long_time_surgery_parameter_coherence_of_surgery_package_eq \
+  long_time_nonaccumulation_of_surgery_package_eq \
+  long_time_surgery_continuation_of_surgery_package_eq
+do
+  check_decl "surgery package construction-route equality contract ${decl} is declared" \
+    "^theorem ${decl}\b" Poincare/Surgery.lean
+done
+check_decl "surgery package Perelman package projection is declared" \
+  '^noncomputable def perelman_control_package_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package Perelman package equality theorem is declared" \
+  '^@\[simp\] theorem perelman_control_package_of_surgery_package_eq\b' Poincare/Surgery.lean
+check_decl "surgery package Perelman statement projection is declared" \
+  '^theorem perelman_singularity_control_statement_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package F-functional setup projection is declared" \
+  '^theorem f_functional_setup_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package entropy normalization projection is declared" \
+  '^theorem entropy_normalization_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package entropy minimizer-existence projection is declared" \
+  '^theorem entropy_minimizer_existence_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package entropy log-Sobolev projection is declared" \
+  '^theorem entropy_log_sobolev_control_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package conjugate heat equation projection is declared" \
+  '^theorem conjugate_heat_equation_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package adjoint heat kernel projection is declared" \
+  '^theorem adjoint_heat_kernel_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package conjugate heat-kernel estimates projection is declared" \
+  '^theorem conjugate_heat_kernel_estimates_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package W-functional setup projection is declared" \
+  '^theorem w_functional_setup_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package entropy-gradient projection is declared" \
+  '^theorem entropy_gradient_formula_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package entropy first-variation projection is declared" \
+  '^theorem entropy_first_variation_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package entropy monotonicity projection is declared" \
+  '^theorem entropy_monotonicity_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package entropy lower-bound propagation projection is declared" \
+  '^theorem entropy_lower_bound_propagation_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package entropy-functional projection is declared" \
+  '^theorem entropy_functional_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package reduced-length first-variation projection is declared" \
+  '^theorem reduced_length_first_variation_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package reduced-distance existence projection is declared" \
+  '^theorem reduced_distance_existence_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package reduced-distance differential inequality projection is declared" \
+  '^theorem reduced_distance_differential_inequality_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package reduced-distance estimates projection is declared" \
+  '^theorem reduced_distance_estimates_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package reduced-distance cut-locus projection is declared" \
+  '^theorem reduced_distance_cut_locus_control_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package reduced-Jacobian projection is declared" \
+  '^theorem reduced_jacobian_comparison_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package reduced-distance projection is declared" \
+  '^theorem reduced_distance_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package reduced-volume definition projection is declared" \
+  '^theorem reduced_volume_definition_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package reduced-volume derivative projection is declared" \
+  '^theorem reduced_volume_derivative_formula_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package reduced-volume rigidity projection is declared" \
+  '^theorem reduced_volume_rigidity_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package reduced-volume positive lower-bound projection is declared" \
+  '^theorem reduced_volume_positive_lower_bound_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package reduced-volume limit-rigidity projection is declared" \
+  '^theorem reduced_volume_limit_rigidity_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package reduced-volume nonincreasing projection is declared" \
+  '^theorem reduced_volume_nonincreasing_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package kappa-from-reduced-volume projection is declared" \
+  '^theorem kappa_noncollapsing_from_reduced_volume_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package no-local-collapsing contradiction setup projection is declared" \
+  '^theorem no_local_collapsing_contradiction_setup_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package collapsed-ball blow-up projection is declared" \
+  '^theorem collapsed_ball_blowup_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package volume-ratio contradiction projection is declared" \
+  '^theorem volume_ratio_contradiction_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package no-local-collapsing lower-bound projection is declared" \
+  '^theorem no_local_collapsing_volume_lower_bound_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package kappa-noncollapsing projection is declared" \
+  '^theorem kappa_noncollapsing_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package Hamilton compactness projection is declared" \
+  '^theorem hamilton_compactness_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package ancient kappa limit-extraction projection is declared" \
+  '^theorem ancient_kappa_solution_limit_extraction_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package kappa-solution pointed-rescaling projection is declared" \
+  '^theorem kappa_solution_pointed_rescaling_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package kappa-solution curvature-normalization projection is declared" \
+  '^theorem kappa_solution_curvature_normalization_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package kappa-solution structure projection is declared" \
+  '^theorem kappa_solution_structure_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package kappa-solution nonnegative-curvature projection is declared" \
+  '^theorem kappa_solution_nonnegative_curvature_operator_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package asymptotic soliton projection is declared" \
+  '^theorem kappa_solution_asymptotic_soliton_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package ancient kappa compactness projection is declared" \
+  '^theorem ancient_kappa_solution_compactness_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package canonical-neighborhood scale-control projection is declared" \
+  '^theorem canonical_neighborhood_scale_control_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package canonical-neighborhood stability projection is declared" \
+  '^theorem canonical_neighborhood_stability_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package canonical-neighborhood cross-scale persistence projection is declared" \
+  '^theorem canonical_neighborhood_persistence_across_scales_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package neck/cap dichotomy projection is declared" \
+  '^theorem canonical_neighborhood_neck_cap_dichotomy_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package canonical-neighborhood classification projection is declared" \
+  '^theorem canonical_neighborhood_classification_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package no-local-collapsing projection is declared" \
+  '^theorem no_local_collapsing_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package reduced-volume projection is declared" \
+  '^theorem reduced_volume_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package canonical-neighborhood projection is declared" \
+  '^theorem canonical_neighborhood_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package singularity-model projection is declared" \
+  '^theorem singularity_model_classification_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package singularity-model blow-up projection is declared" \
+  '^theorem singularity_model_blowup_classification_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package Perelman control projection is declared" \
+  '^theorem perelman_singularity_control_of_surgery_package\b' Poincare/Surgery.lean
+for decl in \
+  perelman_singularity_control_statement_of_surgery_package_eq \
+  f_functional_setup_of_surgery_package_eq \
+  entropy_normalization_of_surgery_package_eq \
+  entropy_minimizer_existence_of_surgery_package_eq \
+  entropy_log_sobolev_control_of_surgery_package_eq \
+  conjugate_heat_equation_of_surgery_package_eq \
+  adjoint_heat_kernel_of_surgery_package_eq \
+  conjugate_heat_kernel_estimates_of_surgery_package_eq \
+  w_functional_setup_of_surgery_package_eq \
+  entropy_gradient_formula_of_surgery_package_eq \
+  entropy_first_variation_of_surgery_package_eq \
+  entropy_monotonicity_of_surgery_package_eq \
+  entropy_lower_bound_propagation_of_surgery_package_eq \
+  entropy_functional_of_surgery_package_eq \
+  reduced_length_first_variation_of_surgery_package_eq \
+  reduced_distance_existence_of_surgery_package_eq \
+  reduced_distance_differential_inequality_of_surgery_package_eq \
+  reduced_distance_estimates_of_surgery_package_eq \
+  reduced_distance_cut_locus_control_of_surgery_package_eq \
+  reduced_jacobian_comparison_of_surgery_package_eq \
+  reduced_distance_of_surgery_package_eq \
+  reduced_volume_definition_of_surgery_package_eq \
+  reduced_volume_derivative_formula_of_surgery_package_eq \
+  reduced_volume_rigidity_of_surgery_package_eq \
+  reduced_volume_positive_lower_bound_of_surgery_package_eq \
+  reduced_volume_limit_rigidity_of_surgery_package_eq \
+  reduced_volume_nonincreasing_of_surgery_package_eq \
+  kappa_noncollapsing_from_reduced_volume_of_surgery_package_eq \
+  no_local_collapsing_contradiction_setup_of_surgery_package_eq \
+  collapsed_ball_blowup_of_surgery_package_eq \
+  volume_ratio_contradiction_of_surgery_package_eq \
+  no_local_collapsing_volume_lower_bound_of_surgery_package_eq \
+  kappa_noncollapsing_of_surgery_package_eq \
+  hamilton_compactness_of_surgery_package_eq \
+  ancient_kappa_solution_limit_extraction_of_surgery_package_eq \
+  kappa_solution_pointed_rescaling_of_surgery_package_eq \
+  kappa_solution_curvature_normalization_of_surgery_package_eq \
+  kappa_solution_structure_of_surgery_package_eq \
+  kappa_solution_nonnegative_curvature_operator_of_surgery_package_eq \
+  kappa_solution_asymptotic_soliton_of_surgery_package_eq \
+  ancient_kappa_solution_compactness_of_surgery_package_eq \
+  canonical_neighborhood_scale_control_of_surgery_package_eq \
+  canonical_neighborhood_stability_of_surgery_package_eq \
+  canonical_neighborhood_persistence_across_scales_of_surgery_package_eq \
+  canonical_neighborhood_neck_cap_dichotomy_of_surgery_package_eq \
+  canonical_neighborhood_classification_of_surgery_package_eq \
+  no_local_collapsing_of_surgery_package_eq \
+  reduced_volume_of_surgery_package_eq \
+  canonical_neighborhood_of_surgery_package_eq \
+  singularity_model_classification_of_surgery_package_eq \
+  singularity_model_blowup_classification_of_surgery_package_eq \
+  perelman_singularity_control_of_surgery_package_eq
+do
+  check_decl "surgery package Perelman-route equality contract ${decl} is declared" \
+    "^theorem ${decl}\b" Poincare/Surgery.lean
+done
+check_decl "surgery package finite-extinction fundamental-group projection is declared" \
+  '^theorem finite_extinction_fundamental_group_input_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction sweepout projection is declared" \
+  '^theorem finite_extinction_sweepout_existence_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction sweepout parameter-space projection is declared" \
+  '^theorem finite_extinction_sweepout_parameter_space_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction sweepout-continuity projection is declared" \
+  '^theorem finite_extinction_sweepout_continuity_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction sweepout area-bound projection is declared" \
+  '^theorem finite_extinction_sweepout_area_bound_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction sweepout-nontriviality projection is declared" \
+  '^theorem finite_extinction_sweepout_nontriviality_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction area-functional projection is declared" \
+  '^theorem finite_extinction_area_functional_setup_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction min-max width projection is declared" \
+  '^theorem finite_extinction_minmax_width_definition_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction width-compactness projection is declared" \
+  '^theorem finite_extinction_width_compactness_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction width lower-semicontinuity projection is declared" \
+  '^theorem finite_extinction_width_lower_semicontinuity_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction minimizing-sequence projection is declared" \
+  '^theorem finite_extinction_minimizing_sequence_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction pull-tight projection is declared" \
+  '^theorem finite_extinction_pull_tight_argument_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction min-max stationarity projection is declared" \
+  '^theorem finite_extinction_minmax_stationarity_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction min-surface regularity projection is declared" \
+  '^theorem finite_extinction_min_surface_regularity_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction positive-width projection is declared" \
+  '^theorem finite_extinction_positive_width_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction width theory projection is declared" \
+  '^theorem finite_extinction_width_theory_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction first-variation projection is declared" \
+  '^theorem finite_extinction_first_variation_formula_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction second-variation projection is declared" \
+  '^theorem finite_extinction_second_variation_inequality_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction Gauss-Bonnet projection is declared" \
+  '^theorem finite_extinction_gauss_bonnet_estimate_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction scalar-curvature width-bound projection is declared" \
+  '^theorem finite_extinction_scalar_curvature_width_bound_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction width evolution projection is declared" \
+  '^theorem finite_extinction_width_evolution_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction width differential projection is declared" \
+  '^theorem finite_extinction_width_differential_inequality_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction surgery metric-comparison projection is declared" \
+  '^theorem finite_extinction_surgery_metric_comparison_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction surgery width-comparison map projection is declared" \
+  '^theorem finite_extinction_surgery_width_comparison_map_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction surgery width-drop projection is declared" \
+  '^theorem finite_extinction_surgery_width_drop_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction surgery-discard control projection is declared" \
+  '^theorem finite_extinction_surgery_discard_control_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction discarded-component width-neutrality projection is declared" \
+  '^theorem finite_extinction_discarded_component_width_neutrality_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction discarded-component sweepout-triviality projection is declared" \
+  '^theorem finite_extinction_discarded_component_sweepout_triviality_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction discarded-component projection is declared" \
+  '^theorem finite_extinction_discarded_component_classification_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction surviving-component tracking projection is declared" \
+  '^theorem finite_extinction_surviving_component_tracking_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction component topology projection is declared" \
+  '^theorem finite_extinction_component_topology_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "finite-extinction curvature pinching interface is declared" \
+  '^inductive HasFiniteExtinctionCurvaturePinching\b' Poincare/Surgery.lean
+check_decl "finite-extinction positive scalar curvature lower-bound interface is declared" \
+  '^inductive HasFiniteExtinctionPositiveScalarCurvatureLowerBound\b' Poincare/Surgery.lean
+check_decl "finite-extinction positive scalar curvature persistence interface is declared" \
+  '^inductive HasFiniteExtinctionPositiveScalarCurvaturePersistence\b' Poincare/Surgery.lean
+check_decl "finite-extinction component-control interface is declared" \
+  '^inductive HasFiniteExtinctionComponentControl\b' Poincare/Surgery.lean
+check_decl "finite-extinction volume-evolution formula interface is declared" \
+  '^inductive HasFiniteExtinctionVolumeEvolutionFormula\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery volume-nonincrease interface is declared" \
+  '^inductive HasFiniteExtinctionSurgeryVolumeNonincrease\b' Poincare/Surgery.lean
+check_decl "finite-extinction scalar-curvature differential interface is declared" \
+  '^inductive HasFiniteExtinctionScalarCurvatureDifferentialInequality\b' Poincare/Surgery.lean
+check_decl "finite-extinction volume differential interface is declared" \
+  '^inductive HasFiniteExtinctionVolumeDifferentialInequality\b' Poincare/Surgery.lean
+check_decl "finite-extinction volume-decay estimate interface is declared" \
+  '^inductive HasFiniteExtinctionVolumeDecayEstimate\b' Poincare/Surgery.lean
+check_decl "finite-extinction time-bound interface is declared" \
+  '^inductive HasFiniteExtinctionTimeBound\b' Poincare/Surgery.lean
+check_decl "finite-extinction differential-inequality integration interface is declared" \
+  '^inductive HasFiniteExtinctionDifferentialInequalityIntegration\b' Poincare/Surgery.lean
+check_decl "finite-extinction finite-time integration interface is declared" \
+  '^inductive HasFiniteExtinctionFiniteTimeIntegration\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery-time summability interface is declared" \
+  '^inductive HasFiniteExtinctionSurgeryTimeSummability\b' Poincare/Surgery.lean
+check_decl "finite-extinction extinction-time contradiction interface is declared" \
+  '^inductive HasFiniteExtinctionExtinctionTimeContradiction\b' Poincare/Surgery.lean
+check_decl "finite-extinction conclusion derivation interface is declared" \
+  '^inductive HasFiniteExtinctionConclusionDerivation\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction curvature pinching projection is declared" \
+  '^theorem finite_extinction_curvature_pinching_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction positive scalar curvature lower-bound projection is declared" \
+  '^theorem finite_extinction_positive_scalar_curvature_lower_bound_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction positive scalar curvature projection is declared" \
+  '^theorem finite_extinction_positive_scalar_curvature_persistence_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction component-control projection is declared" \
+  '^theorem finite_extinction_component_control_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction volume-evolution projection is declared" \
+  '^theorem finite_extinction_volume_evolution_formula_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction surgery volume-nonincrease projection is declared" \
+  '^theorem finite_extinction_surgery_volume_nonincrease_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction scalar-curvature differential projection is declared" \
+  '^theorem finite_extinction_scalar_curvature_differential_inequality_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction volume differential projection is declared" \
+  '^theorem finite_extinction_volume_differential_inequality_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction volume-decay projection is declared" \
+  '^theorem finite_extinction_volume_decay_estimate_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction time-bound projection is declared" \
+  '^theorem finite_extinction_time_bound_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction differential-inequality integration projection is declared" \
+  '^theorem finite_extinction_differential_inequality_integration_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction finite-time integration projection is declared" \
+  '^theorem finite_extinction_finite_time_integration_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction surgery-time summability projection is declared" \
+  '^theorem finite_extinction_surgery_time_summability_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction extinction-time contradiction projection is declared" \
+  '^theorem finite_extinction_extinction_time_contradiction_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction derivation projection is declared" \
+  '^theorem finite_extinction_derivation_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction conclusion derivation projection is declared" \
+  '^theorem finite_extinction_conclusion_derivation_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction projection is declared" \
+  '^theorem finite_extinction_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction equality theorem is declared" \
+  '^theorem finite_extinction_of_surgery_package_eq\b' Poincare/Surgery.lean
+for decl in \
+  finite_extinction_fundamental_group_input_of_surgery_package_eq \
+  finite_extinction_sweepout_existence_of_surgery_package_eq \
+  finite_extinction_sweepout_parameter_space_of_surgery_package_eq \
+  finite_extinction_sweepout_continuity_of_surgery_package_eq \
+  finite_extinction_sweepout_area_bound_of_surgery_package_eq \
+  finite_extinction_sweepout_nontriviality_of_surgery_package_eq \
+  finite_extinction_area_functional_setup_of_surgery_package_eq \
+  finite_extinction_minmax_width_definition_of_surgery_package_eq \
+  finite_extinction_width_compactness_of_surgery_package_eq \
+  finite_extinction_width_lower_semicontinuity_of_surgery_package_eq \
+  finite_extinction_minimizing_sequence_of_surgery_package_eq \
+  finite_extinction_pull_tight_argument_of_surgery_package_eq \
+  finite_extinction_minmax_stationarity_of_surgery_package_eq \
+  finite_extinction_min_surface_regularity_of_surgery_package_eq \
+  finite_extinction_positive_width_of_surgery_package_eq \
+  finite_extinction_width_theory_of_surgery_package_eq \
+  finite_extinction_first_variation_formula_of_surgery_package_eq \
+  finite_extinction_second_variation_inequality_of_surgery_package_eq \
+  finite_extinction_gauss_bonnet_estimate_of_surgery_package_eq \
+  finite_extinction_scalar_curvature_width_bound_of_surgery_package_eq \
+  finite_extinction_width_evolution_of_surgery_package_eq \
+  finite_extinction_width_differential_inequality_of_surgery_package_eq \
+  finite_extinction_surgery_metric_comparison_of_surgery_package_eq \
+  finite_extinction_surgery_width_comparison_map_of_surgery_package_eq \
+  finite_extinction_surgery_width_drop_of_surgery_package_eq \
+  finite_extinction_surgery_discard_control_of_surgery_package_eq \
+  finite_extinction_discarded_component_width_neutrality_of_surgery_package_eq \
+  finite_extinction_discarded_component_sweepout_triviality_of_surgery_package_eq \
+  finite_extinction_discarded_component_classification_of_surgery_package_eq \
+  finite_extinction_surviving_component_tracking_of_surgery_package_eq \
+  finite_extinction_component_topology_of_surgery_package_eq \
+  finite_extinction_curvature_pinching_of_surgery_package_eq \
+  finite_extinction_positive_scalar_curvature_lower_bound_of_surgery_package_eq \
+  finite_extinction_positive_scalar_curvature_persistence_of_surgery_package_eq \
+  finite_extinction_component_control_of_surgery_package_eq \
+  finite_extinction_volume_evolution_formula_of_surgery_package_eq \
+  finite_extinction_surgery_volume_nonincrease_of_surgery_package_eq \
+  finite_extinction_scalar_curvature_differential_inequality_of_surgery_package_eq \
+  finite_extinction_volume_differential_inequality_of_surgery_package_eq \
+  finite_extinction_volume_decay_estimate_of_surgery_package_eq \
+  finite_extinction_time_bound_of_surgery_package_eq \
+  finite_extinction_finite_time_integration_of_surgery_package_eq \
+  finite_extinction_surgery_time_summability_of_surgery_package_eq \
+  finite_extinction_extinction_time_contradiction_of_surgery_package_eq \
+  finite_extinction_differential_inequality_integration_of_surgery_package_eq \
+  finite_extinction_derivation_of_surgery_package_eq \
+  finite_extinction_conclusion_derivation_of_surgery_package_eq
+do
+  check_decl "surgery package finite-extinction equality contract ${decl} is declared" \
+    "^theorem ${decl}\b" Poincare/Surgery.lean
+done
+check_decl "finite-extinction conclusion statement is declared" \
+  '^def FiniteExtinctionConclusionStatement\b' Poincare/Surgery.lean
+check_decl "finite-extinction statement is declared" \
+  '^def FiniteExtinctionStatement\b' Poincare/Surgery.lean
+check_decl "finite-extinction component assembly theorem is declared" \
+  '^theorem finite_extinction_conclusion_statement_of_components\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction conclusion statement projection is declared" \
+  '^theorem finite_extinction_conclusion_statement_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction statement projection is declared" \
+  '^theorem finite_extinction_statement_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "finite-extinction statement conclusion payload bridge is declared" \
+  '^theorem finite_extinction_conclusion_statement_of_finite_extinction_statement\b' Poincare/Surgery.lean
+check_decl "finite-extinction statement bridge is declared" \
+  '^theorem finite_extinction_of_finite_extinction_statement\b' Poincare/Surgery.lean
+check_decl "surgery package statement-mediated finite-extinction projection is declared" \
+  '^theorem finite_extinction_via_statement_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "finite-extinction width sub-obligations statement is declared" \
+  '^def FiniteExtinctionWidthSubobligationsStatement\b' Poincare/Surgery.lean
+check_decl "finite-extinction full sub-obligations statement is declared" \
+  '^def FiniteExtinctionSubobligationsStatement\b' Poincare/Surgery.lean
+check_decl "finite-extinction width sub-obligation payload alias is declared" \
+  '^abbrev FiniteExtinctionWidthSubobligationsPayload\b' Poincare/Surgery.lean
+check_decl "finite-extinction full sub-obligation payload alias is declared" \
+  '^abbrev FiniteExtinctionSubobligationsPayload\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction width statement projection is declared" \
+  '^theorem finite_extinction_width_subobligations_statement_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction sub-obligations statement projection is declared" \
+  '^theorem finite_extinction_subobligations_statement_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "finite-extinction width statement bridge is declared" \
+  '^theorem finite_extinction_width_subobligations_of_statement\b' Poincare/Surgery.lean
+check_decl "finite-extinction sub-obligations statement bridge is declared" \
+  '^theorem finite_extinction_subobligations_of_statement\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction sub-obligations payload is declared" \
+  '^theorem finite_extinction_subobligations_payload_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "finite-extinction sub-obligations derivation bridge is declared" \
+  '^theorem finite_extinction_derivation_of_subobligations_statement\b' Poincare/Surgery.lean
+check_decl "finite-extinction sub-obligations conclusion-statement bridge is declared" \
+  '^theorem finite_extinction_conclusion_statement_of_subobligations_statement\b' Poincare/Surgery.lean
+check_decl "finite-extinction sub-obligations finite-extinction statement bridge is declared" \
+  '^theorem finite_extinction_statement_of_subobligations_statement\b' Poincare/Surgery.lean
+check_decl "finite-extinction sub-obligations conclusion bridge is declared" \
+  '^theorem finite_extinction_of_subobligations_statement\b' Poincare/Surgery.lean
+check_decl "surgery package finite-extinction statement payload is declared" \
+  '^theorem finite_extinction_statement_payload_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "topology extraction package is declared" \
+  '^structure ExtinctionTopologyExtractionPackage\b' Poincare/TopologyExtraction.lean
+check_decl "topology surgery trace reconstruction interface is declared" \
+  '^inductive HasExtinctionSurgeryTraceReconstruction\b' Poincare/TopologyExtraction.lean
+check_decl "topology prime-decomposition interface is declared" \
+  '^inductive HasExtinctionPrimeDecomposition\b' Poincare/TopologyExtraction.lean
+check_decl "topology sphere-theorem application interface is declared" \
+  '^inductive HasExtinctionSphereTheoremApplication\b' Poincare/TopologyExtraction.lean
+check_decl "topology prime-factor uniqueness interface is declared" \
+  '^inductive HasExtinctionPrimeFactorUniqueness\b' Poincare/TopologyExtraction.lean
+check_decl "topology irreducibility interface is declared" \
+  '^inductive HasExtinctionIrreducibility\b' Poincare/TopologyExtraction.lean
+check_decl "topology irreducible-factor recognition interface is declared" \
+  '^inductive HasExtinctionIrreducibleFactorRecognition\b' Poincare/TopologyExtraction.lean
+check_decl "topology connected-sum collapse interface is declared" \
+  '^inductive HasExtinctionConnectedSumCollapse\b' Poincare/TopologyExtraction.lean
+check_decl "topology connected-sum fundamental-group control interface is declared" \
+  '^inductive HasExtinctionConnectedSumFundamentalGroupControl\b' Poincare/TopologyExtraction.lean
+check_decl "topology spherical-space-form reduction interface is declared" \
+  '^inductive HasExtinctionSphericalSpaceFormReduction\b' Poincare/TopologyExtraction.lean
+check_decl "topology spherical-space-form classification interface is declared" \
+  '^inductive HasSphericalSpaceFormClassification\b' Poincare/TopologyExtraction.lean
+check_decl "topology spherical-space-form fundamental-group interface is declared" \
+  '^inductive HasSphericalSpaceFormFundamentalGroupComputation\b' Poincare/TopologyExtraction.lean
+check_decl "topology spherical covering-model interface is declared" \
+  '^inductive HasSphericalSpaceFormCoveringModel\b' Poincare/TopologyExtraction.lean
+check_decl "topology spherical-space-form deck-group triviality interface is declared" \
+  '^inductive HasSphericalSpaceFormDeckGroupTriviality\b' Poincare/TopologyExtraction.lean
+check_decl "topology deck-action trivialization interface is declared" \
+  '^inductive HasSphericalSpaceFormDeckActionTrivialization\b' Poincare/TopologyExtraction.lean
+check_decl "topology simply connected recognition interface is declared" \
+  '^inductive HasSimplyConnectedExtinctionRecognition\b' Poincare/TopologyExtraction.lean
+check_decl "topology trivial-quotient homeomorphism interface is declared" \
+  '^inductive HasSphericalSpaceFormTrivialQuotientHomeomorphism\b' Poincare/TopologyExtraction.lean
+check_decl "topology homeomorphism derivation interface is declared" \
+  '^inductive HasExtinctionHomeomorphismDerivation\b' Poincare/TopologyExtraction.lean
+if awk '
+  /^inductive HasExtinctionHomeomorphismDerivation([[:space:]]|$)/ { in_decl = 1 }
+  in_decl && /HasExtinctionHomeomorphismAssembly/ { found = 1 }
+  in_decl && /: Prop$/ { in_decl = 0 }
+  END { exit found ? 0 : 1 }
+' Poincare/TopologyExtraction.lean; then
+  echo "PASS: topology homeomorphism derivation interface depends on homeomorphism assembly"
+else
+  echo "FAIL: topology homeomorphism derivation interface does not depend on homeomorphism assembly"
+  status=1
+fi
+check_decl "topology package decomposition projection is declared" \
+  '^def extinction_decomposition_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package decomposition equality contract is declared" \
+  '^theorem extinction_decomposition_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology package surgery trace projection is declared" \
+  '^theorem extinction_surgery_trace_reconstruction_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology surgery trace handle-cancellation interface is declared" \
+  '^inductive HasExtinctionSurgeryTraceHandleCancellation\b' Poincare/TopologyExtraction.lean
+check_decl "topology package surgery trace handle-cancellation projection is declared" \
+  '^theorem extinction_surgery_trace_handle_cancellation_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology component-classification interface is declared" \
+  '^inductive HasExtinctionComponentClassification\b' Poincare/TopologyExtraction.lean
+check_decl "topology package component-classification projection is declared" \
+  '^theorem extinction_component_classification_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology discarded-component homeomorphism classification interface is declared" \
+  '^inductive HasExtinctionDiscardedComponentHomeomorphismClassification\b' Poincare/TopologyExtraction.lean
+check_decl "topology package discarded-component homeomorphism classification projection is declared" \
+  '^theorem extinction_discarded_component_homeomorphism_classification_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology component-inventory interface is declared" \
+  '^inductive HasExtinctionComponentInventory\b' Poincare/TopologyExtraction.lean
+check_decl "topology package component-inventory projection is declared" \
+  '^theorem extinction_component_inventory_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology component boundary-sphere control interface is declared" \
+  '^inductive HasExtinctionComponentBoundarySphereControl\b' Poincare/TopologyExtraction.lean
+check_decl "topology package component boundary-sphere control projection is declared" \
+  '^theorem extinction_component_boundary_sphere_control_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package recognition projection is declared" \
+  '^theorem three_sphere_recognition_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package prime-decomposition projection is declared" \
+  '^theorem extinction_prime_decomposition_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package prime-decomposition equality contract is declared" \
+  '^theorem extinction_prime_decomposition_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology prime-decomposition existence interface is declared" \
+  '^inductive HasExtinctionPrimeDecompositionExistence\b' Poincare/TopologyExtraction.lean
+check_decl "topology package prime-decomposition existence projection is declared" \
+  '^theorem extinction_prime_decomposition_existence_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package sphere-theorem projection is declared" \
+  '^theorem extinction_sphere_theorem_application_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology embedded-sphere production interface is declared" \
+  '^inductive HasExtinctionEmbeddedSphereProduction\b' Poincare/TopologyExtraction.lean
+check_decl "topology package embedded-sphere production projection is declared" \
+  '^theorem extinction_embedded_sphere_production_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology loop-theorem application interface is declared" \
+  '^inductive HasExtinctionLoopTheoremApplication\b' Poincare/TopologyExtraction.lean
+check_decl "topology package loop-theorem application projection is declared" \
+  '^theorem extinction_loop_theorem_application_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology prime-decomposition compatibility interface is declared" \
+  '^inductive HasExtinctionPrimeDecompositionCompatibility\b' Poincare/TopologyExtraction.lean
+check_decl "topology package prime-decomposition compatibility projection is declared" \
+  '^theorem extinction_prime_decomposition_compatibility_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package prime-factor uniqueness projection is declared" \
+  '^theorem extinction_prime_factor_uniqueness_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package irreducibility projection is declared" \
+  '^theorem extinction_irreducibility_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package irreducibility equality contract is declared" \
+  '^theorem extinction_irreducibility_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology package irreducible-factor recognition projection is declared" \
+  '^theorem extinction_irreducible_factor_recognition_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package connected-sum collapse projection is declared" \
+  '^theorem extinction_connected_sum_collapse_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package connected-sum collapse equality contract is declared" \
+  '^theorem extinction_connected_sum_collapse_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology package connected-sum fundamental-group projection is declared" \
+  '^theorem extinction_connected_sum_fundamental_group_control_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology connected-sum van Kampen interface is declared" \
+  '^inductive HasExtinctionConnectedSumVanKampenCalculation\b' Poincare/TopologyExtraction.lean
+check_decl "topology package connected-sum van Kampen projection is declared" \
+  '^theorem extinction_connected_sum_van_kampen_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology simply connected prime-factor control interface is declared" \
+  '^inductive HasExtinctionSimplyConnectedPrimeFactorControl\b' Poincare/TopologyExtraction.lean
+check_decl "topology package simply connected prime-factor control projection is declared" \
+  '^theorem extinction_simply_connected_prime_factor_control_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package spherical-space-form projection is declared" \
+  '^theorem extinction_spherical_space_form_reduction_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package spherical-space-form equality contract is declared" \
+  '^theorem extinction_spherical_space_form_reduction_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology package spherical-space-form classification projection is declared" \
+  '^theorem spherical_space_form_classification_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology spherical quotient-model interface is declared" \
+  '^inductive HasSphericalSpaceFormQuotientModel\b' Poincare/TopologyExtraction.lean
+check_decl "topology package spherical quotient-model projection is declared" \
+  '^theorem spherical_quotient_model_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package spherical quotient-model equality contract is declared" \
+  '^theorem spherical_quotient_model_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology spherical free-action interface is declared" \
+  '^inductive HasSphericalSpaceFormFreeAction\b' Poincare/TopologyExtraction.lean
+check_decl "topology package spherical free-action projection is declared" \
+  '^theorem spherical_free_action_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology spherical universal-cover interface is declared" \
+  '^inductive HasSphericalSpaceFormUniversalCover\b' Poincare/TopologyExtraction.lean
+check_decl "topology package spherical universal-cover projection is declared" \
+  '^theorem spherical_universal_cover_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package spherical covering-model projection is declared" \
+  '^theorem spherical_covering_model_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology spherical covering-projection interface is declared" \
+  '^inductive HasSphericalSpaceFormCoveringProjection\b' Poincare/TopologyExtraction.lean
+check_decl "topology package spherical covering-projection projection is declared" \
+  '^theorem spherical_covering_projection_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package spherical fundamental-group projection is declared" \
+  '^theorem spherical_fundamental_group_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package spherical fundamental-group equality contract is declared" \
+  '^theorem spherical_fundamental_group_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology spherical deck-group identification interface is declared" \
+  '^inductive HasSphericalSpaceFormDeckGroupIdentification\b' Poincare/TopologyExtraction.lean
+check_decl "topology package deck-group identification projection is declared" \
+  '^theorem spherical_deck_group_identification_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package deck-group identification equality contract is declared" \
+  '^theorem spherical_deck_group_identification_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology deck-action properness interface is declared" \
+  '^inductive HasSphericalSpaceFormDeckActionProperness\b' Poincare/TopologyExtraction.lean
+check_decl "topology package deck-action properness projection is declared" \
+  '^theorem spherical_deck_action_properness_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package deck-group triviality projection is declared" \
+  '^theorem spherical_deck_group_triviality_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package deck-group triviality equality contract is declared" \
+  '^theorem spherical_deck_group_triviality_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology package deck-action trivialization projection is declared" \
+  '^theorem spherical_deck_action_trivialization_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology trivial deck quotient identification interface is declared" \
+  '^inductive HasSphericalSpaceFormTrivialDeckQuotientIdentification\b' Poincare/TopologyExtraction.lean
+check_decl "topology package trivial deck quotient identification projection is declared" \
+  '^theorem spherical_trivial_deck_quotient_identification_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package simply connected recognition projection is declared" \
+  '^theorem simply_connected_extinction_recognition_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology trivial spherical quotient interface is declared" \
+  '^inductive HasTrivialSphericalSpaceFormQuotient\b' Poincare/TopologyExtraction.lean
+check_decl "topology package trivial spherical quotient projection is declared" \
+  '^theorem trivial_spherical_quotient_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package trivial spherical quotient equality contract is declared" \
+  '^theorem trivial_spherical_quotient_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology package trivial-quotient homeomorphism projection is declared" \
+  '^theorem trivial_quotient_homeomorphism_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package trivial-quotient homeomorphism equality contract is declared" \
+  '^theorem trivial_quotient_homeomorphism_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology spherical homeomorphism-lift interface is declared" \
+  '^inductive HasSphericalSpaceFormHomeomorphismLift\b' Poincare/TopologyExtraction.lean
+check_decl "topology package spherical homeomorphism-lift projection is declared" \
+  '^theorem spherical_homeomorphism_lift_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package spherical homeomorphism-lift equality contract is declared" \
+  '^theorem spherical_homeomorphism_lift_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology package homeomorphism projection is declared" \
+  '^theorem homeomorphism_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package homeomorphism equality contract is declared" \
+  '^theorem homeomorphism_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology homeomorphism assembly interface is declared" \
+  '^inductive HasExtinctionHomeomorphismAssembly\b' Poincare/TopologyExtraction.lean
+check_decl "topology package homeomorphism assembly projection is declared" \
+  '^theorem extinction_homeomorphism_assembly_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package homeomorphism assembly equality contract is declared" \
+  '^theorem extinction_homeomorphism_assembly_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology package homeomorphism derivation projection is declared" \
+  '^theorem extinction_homeomorphism_derivation_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package homeomorphism derivation equality contract is declared" \
+  '^theorem extinction_homeomorphism_derivation_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology fixed derivation statement is declared" \
+  '^def ExtinctionTopologyDerivationStatement\b' Poincare/TopologyExtraction.lean
+check_decl "topology homeomorphism assembly statement is declared" \
+  '^def ExtinctionTopologyHomeomorphismAssemblyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "topology homeomorphism derivation statement is declared" \
+  '^def ExtinctionTopologyHomeomorphismDerivationStatement\b' Poincare/TopologyExtraction.lean
+check_decl "topology extraction statement is declared" \
+  '^def ExtinctionTopologyExtractionStatement\b' Poincare/TopologyExtraction.lean
+check_decl "topology derivation-for-extraction statement is declared" \
+  '^def ExtinctionTopologyDerivationForExtractionStatement\b' Poincare/TopologyExtraction.lean
+check_decl "topology component assembly theorem for derivation statement is declared" \
+  '^theorem extinction_topology_derivation_statement_of_components\b' Poincare/TopologyExtraction.lean
+check_decl "topology package derivation statement projection is declared" \
+  '^theorem extinction_topology_derivation_statement_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology classification sub-obligations payload alias is declared" \
+  '^abbrev ExtinctionTopologyClassificationSubobligationsPayload\b' Poincare/TopologyExtraction.lean
+check_decl "topology derivation statement classification bridge is declared" \
+  '^theorem topology_classification_subobligations_of_derivation_statement\b' Poincare/TopologyExtraction.lean
+check_decl "topology derivation statement assembly bridge is declared" \
+  '^theorem topology_homeomorphism_assembly_statement_of_derivation_statement\b' Poincare/TopologyExtraction.lean
+check_decl "topology derivation statement homeomorphism-derivation bridge is declared" \
+  '^theorem topology_homeomorphism_derivation_statement_of_derivation_statement\b' Poincare/TopologyExtraction.lean
+check_decl "topology package extraction statement projection is declared" \
+  '^theorem extinction_topology_extraction_statement_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology extraction statement payload bridge is declared" \
+  '^theorem topology_derivation_statement_payload_of_extraction_statement\b' Poincare/TopologyExtraction.lean
+check_decl "topology extraction statement fixed-homeomorphism bridge is declared" \
+  '^theorem homeomorphism_of_topology_extraction_statement\b' Poincare/TopologyExtraction.lean
+check_decl "topology extraction statement bridge is declared" \
+  '^theorem extinction_implies_sphere_of_topology_extraction_statement\b' Poincare/TopologyExtraction.lean
+check_decl "topology extraction statement from extraction plus derivation is declared" \
+  '^theorem extinction_topology_extraction_statement_of_extraction_and_derivation\b' Poincare/TopologyExtraction.lean
+check_decl "topology extraction iff extraction plus derivation is declared" \
+  '^theorem extinction_topology_extraction_statement_iff_extraction_with_derivation\b' Poincare/TopologyExtraction.lean
+check_decl "finite-extinction plus topology extraction assembly theorem is declared" \
+  '^theorem poincare_statement_of_finite_extinction_and_topology_extraction_statement\b' Poincare/TopologyExtraction.lean
+check_decl "finite-extinction plus topology extraction payload theorem is declared" \
+  '^theorem poincare_payload_of_finite_extinction_and_topology_extraction_statement\b' Poincare/TopologyExtraction.lean
+check_decl "finite-extinction plus extraction-derivation assembly theorem is declared" \
+  '^theorem poincare_statement_of_finite_extinction_and_extraction_derivation\b' Poincare/TopologyExtraction.lean
+check_decl "finite-extinction plus extraction-derivation payload theorem is declared" \
+  '^theorem poincare_payload_of_finite_extinction_and_extraction_derivation\b' Poincare/TopologyExtraction.lean
+check_decl "topology package extraction payload bridge is declared" \
+  '^theorem topology_extraction_payload_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package extraction payload equality contract is declared" \
+  '^theorem topology_extraction_payload_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology package extraction-derivation payload bridge is declared" \
+  '^theorem topology_extraction_derivation_payload_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package extraction-derivation payload equality contract is declared" \
+  '^theorem topology_extraction_derivation_payload_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology package extraction statement payload bridge is declared" \
+  '^theorem topology_extraction_statement_payload_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package final extraction equality contract is declared" \
+  '^theorem extinction_implies_sphere_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
+for decl in \
+  extinction_surgery_trace_reconstruction_of_topology_package_eq \
+  extinction_surgery_trace_handle_cancellation_of_topology_package_eq \
+  extinction_component_classification_of_topology_package_eq \
+  extinction_discarded_component_homeomorphism_classification_of_topology_package_eq \
+  extinction_component_inventory_of_topology_package_eq \
+  extinction_component_boundary_sphere_control_of_topology_package_eq \
+  three_sphere_recognition_of_topology_package_eq \
+  extinction_prime_decomposition_existence_of_topology_package_eq \
+  extinction_sphere_theorem_application_of_topology_package_eq \
+  extinction_embedded_sphere_production_of_topology_package_eq \
+  extinction_loop_theorem_application_of_topology_package_eq \
+  extinction_prime_decomposition_compatibility_of_topology_package_eq \
+  extinction_prime_factor_uniqueness_of_topology_package_eq \
+  extinction_irreducible_factor_recognition_of_topology_package_eq \
+  extinction_connected_sum_fundamental_group_control_of_topology_package_eq \
+  extinction_connected_sum_van_kampen_of_topology_package_eq \
+  extinction_simply_connected_prime_factor_control_of_topology_package_eq \
+  spherical_space_form_classification_of_topology_package_eq \
+  spherical_free_action_of_topology_package_eq \
+  spherical_universal_cover_of_topology_package_eq \
+  spherical_covering_model_of_topology_package_eq \
+  spherical_covering_projection_of_topology_package_eq \
+  spherical_deck_action_properness_of_topology_package_eq \
+  spherical_deck_action_trivialization_of_topology_package_eq \
+  spherical_trivial_deck_quotient_identification_of_topology_package_eq \
+  simply_connected_extinction_recognition_of_topology_package_eq
+do
+  check_decl "topology package stored-field equality contract ${decl} is declared" \
+    "^theorem ${decl}\b" Poincare/TopologyExtraction.lean
+done
+check_decl "standard sphere self-homeomorphism theorem is declared" \
+  '^theorem threeSphere_self_homeomorph\b' Poincare/TopologyExtraction.lean
+check_decl "homeomorphism transitivity to standard sphere theorem is declared" \
+  '^theorem homeomorph_to_threeSphere_of_homeomorph\b' Poincare/TopologyExtraction.lean
+check_decl "opposite-direction homeomorphism to standard sphere theorem is declared" \
+  '^theorem homeomorph_to_threeSphere_of_homeomorph_source\b' Poincare/TopologyExtraction.lean
+check_decl "homeomorphism invariance of standard sphere recognition theorem is declared" \
+  '^theorem homeomorph_to_threeSphere_iff_of_homeomorph\b' Poincare/TopologyExtraction.lean
+check_decl "inverse homeomorphism to standard sphere theorem is declared" \
+  '^theorem homeomorph_to_threeSphere_of_threeSphere_homeomorph\b' Poincare/TopologyExtraction.lean
+check_decl "standard sphere reverse homeomorphism theorem is declared" \
+  '^theorem threeSphere_homeomorph_of_homeomorph_to_threeSphere\b' Poincare/TopologyExtraction.lean
+check_decl "standard sphere homeomorphism direction iff theorem is declared" \
+  '^theorem homeomorph_to_threeSphere_iff_threeSphere_homeomorph\b' Poincare/TopologyExtraction.lean
+check_decl "smoothability package is declared" \
+  '^structure SmoothabilityPackage\b' Poincare/Smoothability.lean
+check_decl "smoothability Moise triangulation interface is declared" \
+  '^inductive HasMoiseTriangulation\b' Poincare/Smoothability.lean
+check_decl "smoothability Moise local chart interface is declared" \
+  '^inductive HasMoiseLocalTriangulationCharts\b' Poincare/Smoothability.lean
+check_decl "smoothability Moise locally finite cover refinement interface is declared" \
+  '^inductive HasMoiseLocallyFiniteCoverRefinement\b' Poincare/Smoothability.lean
+check_decl "smoothability Moise simplicial-complex interface is declared" \
+  '^inductive HasMoiseSimplicialComplex\b' Poincare/Smoothability.lean
+check_decl "smoothability Moise compatible chart triangulations interface is declared" \
+  '^inductive HasMoiseCompatibleChartTriangulations\b' Poincare/Smoothability.lean
+check_decl "smoothability Moise simplicial approximation interface is declared" \
+  '^inductive HasMoiseSimplicialApproximation\b' Poincare/Smoothability.lean
+check_decl "smoothability Moise star-neighborhood basis interface is declared" \
+  '^inductive HasMoiseStarNeighborhoodBasis\b' Poincare/Smoothability.lean
+check_decl "smoothability Moise barycentric subdivision interface is declared" \
+  '^inductive HasMoiseBarycentricSubdivisionControl\b' Poincare/Smoothability.lean
+check_decl "smoothability Moise regular-neighborhood compatibility interface is declared" \
+  '^inductive HasMoiseRegularNeighborhoodCompatibility\b' Poincare/Smoothability.lean
+check_decl "smoothability Moise local-finiteness interface is declared" \
+  '^inductive HasMoiseTriangulationLocalFiniteness\b' Poincare/Smoothability.lean
+check_decl "smoothability Moise link-compatibility interface is declared" \
+  '^inductive HasMoiseLinkCompatibility\b' Poincare/Smoothability.lean
+check_decl "smoothability Moise PL-manifold recognition interface is declared" \
+  '^inductive HasMoisePLManifoldRecognition\b' Poincare/Smoothability.lean
+check_decl "smoothability Moise triangulation-homeomorphism interface is declared" \
+  '^inductive HasMoiseTriangulationHomeomorphism\b' Poincare/Smoothability.lean
+check_decl "smoothability Moise compatibility interface is declared" \
+  '^inductive HasMoiseTriangulationCompatibility\b' Poincare/Smoothability.lean
+check_decl "smoothability Moise triangulation uniqueness interface is declared" \
+  '^inductive HasMoiseTriangulationUniqueness\b' Poincare/Smoothability.lean
+check_decl "smoothability Moise dimension-three Hauptvermutung interface is declared" \
+  '^inductive HasMoiseHauptvermutungDimensionThree\b' Poincare/Smoothability.lean
+check_decl "smoothability PL-structure interface is declared" \
+  '^inductive HasCompatiblePLStructure\b' Poincare/Smoothability.lean
+check_decl "smoothability PL-transition compatibility interface is declared" \
+  '^inductive HasPLTransitionCompatibility\b' Poincare/Smoothability.lean
+check_decl "smoothability PL-atlas interface is declared" \
+  '^inductive HasCompatiblePLAtlas\b' Poincare/Smoothability.lean
+check_decl "smoothability PL-manifold atlas interface is declared" \
+  '^inductive HasPLManifoldAtlas\b' Poincare/Smoothability.lean
+check_decl "smoothability PL collar-neighborhood compatibility interface is declared" \
+  '^inductive HasPLCollarNeighborhoodCompatibility\b' Poincare/Smoothability.lean
+check_decl "smoothability PL-homeomorphism compatibility interface is declared" \
+  '^inductive HasPLHomeomorphismCompatibility\b' Poincare/Smoothability.lean
+check_decl "smoothability PL-atlas maximality interface is declared" \
+  '^inductive HasPLAtlasMaximality\b' Poincare/Smoothability.lean
+check_decl "smoothability PL-smoothing existence interface is declared" \
+  '^inductive HasPLSmoothingExistence\b' Poincare/Smoothability.lean
+check_decl "smoothability PL-smoothing obstruction-vanishing interface is declared" \
+  '^inductive HasPLSmoothingObstructionVanishing\b' Poincare/Smoothability.lean
+check_decl "smoothability PL microbundle smoothing interface is declared" \
+  '^inductive HasPLMicrobundleSmoothing\b' Poincare/Smoothability.lean
+check_decl "smoothability PL-smoothing theorem interface is declared" \
+  '^inductive HasPLSmoothingTheorem\b' Poincare/Smoothability.lean
+check_decl "smoothability PL-smoothing compatibility interface is declared" \
+  '^inductive HasPLSmoothingCompatibility\b' Poincare/Smoothability.lean
+check_decl "smoothability PL-smoothing uniqueness interface is declared" \
+  '^inductive HasPLSmoothingUniqueness\b' Poincare/Smoothability.lean
+check_decl "smoothability PL-smoothing local-model compatibility interface is declared" \
+  '^inductive HasPLSmoothingLocalModelCompatibility\b' Poincare/Smoothability.lean
+check_decl "smoothability smooth-atlas construction interface is declared" \
+  '^inductive HasSmoothAtlasConstruction\b' Poincare/Smoothability.lean
+check_decl "smoothability smooth-atlas PL-compatibility interface is declared" \
+  '^inductive HasSmoothAtlasPLCompatibility\b' Poincare/Smoothability.lean
+check_decl "smoothability smooth-atlas maximality interface is declared" \
+  '^inductive HasSmoothAtlasMaximality\b' Poincare/Smoothability.lean
+check_decl "smoothability smooth-atlas uniqueness interface is declared" \
+  '^inductive HasSmoothAtlasUniqueness\b' Poincare/Smoothability.lean
+check_decl "smoothability smooth-structure uniqueness interface is declared" \
+  '^inductive HasSmoothStructureUniquenessUpToDiffeomorphism\b' Poincare/Smoothability.lean
+check_decl "smoothability smooth-transition compatibility interface is declared" \
+  '^inductive HasSmoothTransitionCompatibility\b' Poincare/Smoothability.lean
+check_decl "smoothability smooth-atlas transition smoothness interface is declared" \
+  '^inductive HasSmoothAtlasTransitionSmoothness\b' Poincare/Smoothability.lean
+check_decl "smoothability smooth-structure derivation interface is declared" \
+  '^inductive HasSmoothStructureDerivation\b' Poincare/Smoothability.lean
+check_decl "smoothability smooth-structure derivation statement is declared" \
+  '^def SmoothStructureDerivationStatement\b' Poincare/Smoothability.lean
+check_decl "smoothability component assembly theorem for smooth-structure derivation statement is declared" \
+  '^theorem smooth_structure_derivation_statement_of_components\b' Poincare/Smoothability.lean
+check_decl "smoothability bridge statement is declared" \
+  '^def SmoothabilityBridgeStatement\b' Poincare/Smoothability.lean
+check_decl "smoothability C-infinity smooth-manifold statement is declared" \
+  '^def SmoothabilitySmoothManifoldStatement\b' Poincare/Smoothability.lean
+check_decl "smoothability bridge derivation interface is declared" \
+  '^inductive HasSmoothabilityBridgeDerivation\b' Poincare/Smoothability.lean
+check_decl "smoothability smooth-model compatibility interface is declared" \
+  '^inductive HasSmoothManifoldModelCompatibility\b' Poincare/Smoothability.lean
+check_decl "smoothability chart-compatibility interface is declared" \
+  '^inductive HasSmoothChartCompatibility\b' Poincare/Smoothability.lean
+check_decl "smoothability sub-obligations payload alias is declared" \
+  '^abbrev SmoothabilitySubobligationsPayload\b' Poincare/Smoothability.lean
+check_decl "smoothability derivation statement sub-obligation projection is declared" \
+  '^theorem smoothability_subobligations_of_derivation_statement\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise local chart projection is declared" \
+  '^theorem moise_local_charts_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise local chart equality contract is declared" \
+  '^theorem moise_local_charts_of_smoothability_package_eq\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise locally finite cover refinement projection is declared" \
+  '^theorem moise_locally_finite_cover_refinement_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise simplicial-complex projection is declared" \
+  '^theorem moise_simplicial_complex_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise compatible chart triangulations projection is declared" \
+  '^theorem moise_compatible_chart_triangulations_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise triangulation projection is declared" \
+  '^theorem moise_triangulation_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise triangulation equality contract is declared" \
+  '^theorem moise_triangulation_of_smoothability_package_eq\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise simplicial approximation projection is declared" \
+  '^theorem moise_simplicial_approximation_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise star-neighborhood projection is declared" \
+  '^theorem moise_star_neighborhood_basis_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise barycentric subdivision projection is declared" \
+  '^theorem moise_barycentric_subdivision_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise regular-neighborhood compatibility projection is declared" \
+  '^theorem moise_regular_neighborhood_compatibility_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise local-finiteness projection is declared" \
+  '^theorem moise_triangulation_local_finiteness_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise link-compatibility projection is declared" \
+  '^theorem moise_link_compatibility_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise PL-manifold recognition projection is declared" \
+  '^theorem moise_pl_manifold_recognition_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise triangulation-homeomorphism projection is declared" \
+  '^theorem moise_triangulation_homeomorphism_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise compatibility projection is declared" \
+  '^theorem moise_compatibility_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise triangulation uniqueness projection is declared" \
+  '^theorem moise_triangulation_uniqueness_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise dimension-three Hauptvermutung projection is declared" \
+  '^theorem moise_hauptvermutung_dimension_three_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL-structure projection is declared" \
+  '^theorem pl_structure_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL-structure equality contract is declared" \
+  '^theorem pl_structure_of_smoothability_package_eq\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL-transition compatibility projection is declared" \
+  '^theorem pl_transition_compatibility_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL-atlas projection is declared" \
+  '^theorem pl_atlas_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL-atlas equality contract is declared" \
+  '^theorem pl_atlas_of_smoothability_package_eq\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL-manifold atlas projection is declared" \
+  '^theorem pl_manifold_atlas_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL collar-neighborhood compatibility projection is declared" \
+  '^theorem pl_collar_neighborhood_compatibility_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL-homeomorphism compatibility projection is declared" \
+  '^theorem pl_homeomorphism_compatibility_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL-atlas maximality projection is declared" \
+  '^theorem pl_atlas_maximality_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL-smoothing existence projection is declared" \
+  '^theorem pl_smoothing_existence_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL-smoothing obstruction-vanishing projection is declared" \
+  '^theorem pl_smoothing_obstruction_vanishing_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL microbundle smoothing projection is declared" \
+  '^theorem pl_microbundle_smoothing_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL-smoothing projection is declared" \
+  '^theorem pl_smoothing_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL-smoothing equality contract is declared" \
+  '^theorem pl_smoothing_of_smoothability_package_eq\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL-smoothing compatibility projection is declared" \
+  '^theorem pl_smoothing_compatibility_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL-smoothing uniqueness projection is declared" \
+  '^theorem pl_smoothing_uniqueness_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL-smoothing local-model projection is declared" \
+  '^theorem pl_smoothing_local_model_compatibility_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package smooth-structure projection is declared" \
+  '^theorem smooth_structure_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package smooth-structure equality contract is declared" \
+  '^theorem smooth_structure_of_smoothability_package_eq\b' Poincare/Smoothability.lean
+check_decl "smoothability package smooth-atlas construction projection is declared" \
+  '^theorem smooth_atlas_construction_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package smooth-atlas construction equality contract is declared" \
+  '^theorem smooth_atlas_construction_of_smoothability_package_eq\b' Poincare/Smoothability.lean
+check_decl "smoothability package smooth-atlas PL-compatibility projection is declared" \
+  '^theorem smooth_atlas_pl_compatibility_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package smooth-atlas maximality projection is declared" \
+  '^theorem smooth_atlas_maximality_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package smooth-atlas uniqueness projection is declared" \
+  '^theorem smooth_atlas_uniqueness_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package smooth-structure uniqueness projection is declared" \
+  '^theorem smooth_structure_uniqueness_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package smooth-transition compatibility projection is declared" \
+  '^theorem smooth_transition_compatibility_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package smooth-transition compatibility equality contract is declared" \
+  '^theorem smooth_transition_compatibility_of_smoothability_package_eq\b' Poincare/Smoothability.lean
+check_decl "smoothability package smooth-atlas transition smoothness projection is declared" \
+  '^theorem smooth_atlas_transition_smoothness_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package smooth-atlas transition smoothness equality contract is declared" \
+  '^theorem smooth_atlas_transition_smoothness_of_smoothability_package_eq\b' Poincare/Smoothability.lean
+check_decl "smoothability package smooth-structure derivation projection is declared" \
+  '^theorem smooth_structure_derivation_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package smooth-structure derivation equality contract is declared" \
+  '^theorem smooth_structure_derivation_of_smoothability_package_eq\b' Poincare/Smoothability.lean
+check_decl "smoothability package smooth-structure derivation statement projection is declared" \
+  '^theorem smooth_structure_derivation_statement_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package smooth-structure statement payload is declared" \
+  '^theorem smoothability_smooth_structure_statement_payload_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package smooth-structure statement payload equality contract is declared" \
+  '^theorem smoothability_smooth_structure_statement_payload_of_smoothability_package_eq\b' Poincare/Smoothability.lean
+check_decl "smoothability package bridge projection is declared" \
+  '^theorem smoothability_bridge_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package bridge equality contract is declared" \
+  '^theorem smoothability_bridge_of_smoothability_package_eq\b' Poincare/Smoothability.lean
+check_decl "smoothability package C-infinity statement projection is declared" \
+  '^theorem smoothability_smooth_manifold_statement_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package C-infinity statement equality contract is declared" \
+  '^theorem smoothability_smooth_manifold_statement_of_smoothability_package_eq\b' Poincare/Smoothability.lean
+check_decl "smoothability package C-infinity manifold projection is declared" \
+  '^theorem smooth_manifold_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package C-infinity manifold equality contract is declared" \
+  '^theorem smooth_manifold_of_smoothability_package_eq\b' Poincare/Smoothability.lean
+check_decl "smoothability package C-infinity payload theorem is declared" \
+  '^theorem smoothability_smooth_manifold_payload_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package C-infinity payload equality contract is declared" \
+  '^theorem smoothability_smooth_manifold_payload_of_smoothability_package_eq\b' Poincare/Smoothability.lean
+check_decl "smoothability package bridge derivation projection is declared" \
+  '^theorem smoothability_bridge_derivation_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package bridge derivation equality contract is declared" \
+  '^theorem smoothability_bridge_derivation_of_smoothability_package_eq\b' Poincare/Smoothability.lean
+check_decl "smoothability bridge application theorem is declared" \
+  '^theorem is_manifold_of_smoothability_bridge\b' Poincare/Smoothability.lean
+check_decl "smoothability bridge application equality contract is declared" \
+  '^theorem is_manifold_of_smoothability_bridge_eq\b' Poincare/Smoothability.lean
+check_decl "smoothability package surgery-model manifold projection is declared" \
+  '^theorem smoothable_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package surgery-model manifold equality contract is declared" \
+  '^theorem smoothable_of_smoothability_package_eq\b' Poincare/Smoothability.lean
+check_decl "smoothability package smooth-model compatibility projection is declared" \
+  '^theorem smooth_model_compatibility_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package smooth-model compatibility equality contract is declared" \
+  '^theorem smooth_model_compatibility_of_smoothability_package_eq\b' Poincare/Smoothability.lean
+check_decl "smoothability package chart-compatibility projection is declared" \
+  '^theorem smooth_chart_compatibility_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package chart-compatibility equality contract is declared" \
+  '^theorem smooth_chart_compatibility_of_smoothability_package_eq\b' Poincare/Smoothability.lean
+check_decl "smoothability package bridge payload is declared" \
+  '^theorem smoothability_bridge_payload_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package bridge payload equality contract is declared" \
+  '^theorem smoothability_bridge_payload_of_smoothability_package_eq\b' Poincare/Smoothability.lean
+check_decl "full-assembly finite-extinction statement payload theorem is declared" \
+  '^theorem finite_extinction_statement_payload_of_smoothability_and_surgery_packages\b' Poincare/FullAssembly.lean
+check_decl "full-assembly finite-extinction input theorem is declared" \
+  '^theorem finite_extinction_input_of_smoothability_and_surgery_packages\b' Poincare/FullAssembly.lean
+check_decl "explicit package-route assembly inputs payload theorem is declared" \
+  '^theorem poincare_assembly_inputs_payload_of_surgery_and_topology_packages\b' Poincare/FullAssembly.lean
+check_decl "explicit package-route extraction-derivation assembly inputs payload theorem is declared" \
+  '^theorem poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation\b' Poincare/FullAssembly.lean
+check_decl "theorem-shaped topology route assembly inputs payload theorem is declared" \
+  '^theorem poincare_assembly_inputs_payload_of_surgery_and_topology_extraction_statement\b' Poincare/FullAssembly.lean
+check_decl "extraction-derivation route assembly inputs payload theorem is declared" \
+  '^theorem poincare_assembly_inputs_payload_of_surgery_and_extraction_derivation\b' Poincare/FullAssembly.lean
+check_decl "explicit package-route target payload theorem is declared" \
+  '^theorem poincare_target_payload_of_surgery_and_topology_packages\b' Poincare/FullAssembly.lean
+check_decl "explicit package-route extraction-derivation target payload theorem is declared" \
+  '^theorem poincare_target_payload_of_surgery_and_topology_package_extraction_derivation\b' Poincare/FullAssembly.lean
+check_decl "theorem-shaped topology route target payload theorem is declared" \
+  '^theorem poincare_target_payload_of_surgery_and_topology_extraction_statement\b' Poincare/FullAssembly.lean
+check_decl "extraction-derivation route target payload theorem is declared" \
+  '^theorem poincare_target_payload_of_surgery_and_extraction_derivation\b' Poincare/FullAssembly.lean
+check_decl "end-to-end conditional full assembly payload theorem is declared" \
+  '^theorem poincare_full_assembly_payload_of_surgery_and_topology_packages\b' Poincare/FullAssembly.lean
+check_decl "end-to-end conditional assembly payload theorem is declared" \
+  '^theorem poincare_assembly_payload_of_surgery_and_topology_packages\b' Poincare/FullAssembly.lean
+check_decl "end-to-end conditional completion payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_surgery_and_topology_packages\b' Poincare/FullAssembly.lean
+check_decl "explicit package-route extraction-derivation completion payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_surgery_and_topology_package_extraction_derivation\b' Poincare/FullAssembly.lean
+check_decl "theorem-shaped topology route completion payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_surgery_and_topology_extraction_statement\b' Poincare/FullAssembly.lean
+check_decl "extraction-derivation route completion payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_surgery_and_extraction_derivation\b' Poincare/FullAssembly.lean
+check_decl "end-to-end conditional assembly theorem is declared" \
+  '^theorem poincare_statement_of_surgery_and_topology_packages\b' Poincare/FullAssembly.lean
+check_decl "theorem-shaped topology route assembly theorem is declared" \
+  '^theorem poincare_statement_of_surgery_and_topology_extraction_statement\b' Poincare/FullAssembly.lean
+check_decl "extraction-derivation route assembly theorem is declared" \
+  '^theorem poincare_statement_of_surgery_and_extraction_derivation\b' Poincare/FullAssembly.lean
+check_decl "explicit package-route extraction-derivation assembly theorem is declared" \
+  '^theorem poincare_statement_of_surgery_and_topology_package_extraction_derivation\b' Poincare/FullAssembly.lean
+check_decl "end-to-end canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_surgery_and_topology_packages\b' Poincare/FullAssembly.lean
+check_decl "theorem-shaped topology route canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_surgery_and_topology_extraction_statement\b' Poincare/FullAssembly.lean
+check_decl "extraction-derivation route canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_surgery_and_extraction_derivation\b' Poincare/FullAssembly.lean
+check_decl "explicit package-route extraction-derivation canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation\b' Poincare/FullAssembly.lean
+check_decl "aggregate dependency package is declared" \
+  '^structure PoincareProofDependencies\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency component payload theorem is declared" \
+  '^theorem poincareProofDependencies_components_payload\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency component payload equality contract is declared" \
+  '^theorem poincareProofDependencies_components_payload_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency component iff theorem is declared" \
+  '^theorem poincareProofDependencies_iff_components\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency component reverse constructor is declared" \
+  '^theorem poincareProofDependencies_of_components_payload\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency component iff equality contract is declared" \
+  '^theorem poincareProofDependencies_iff_components_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency assembly inputs payload theorem is declared" \
+  '^theorem poincare_assembly_inputs_payload_of_aggregate_dependencies\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency assembly inputs payload equality contract is declared" \
+  '^theorem poincare_assembly_inputs_payload_of_aggregate_dependencies_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency extraction-derivation assembly inputs payload theorem is declared" \
+  '^theorem poincare_assembly_inputs_payload_of_aggregate_extraction_derivation_dependencies\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency extraction-derivation assembly inputs payload equality contract is declared" \
+  '^theorem poincare_assembly_inputs_payload_of_aggregate_extraction_derivation_dependencies_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency target payload theorem is declared" \
+  '^theorem poincare_target_payload_of_aggregate_dependencies\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency target payload equality contract is declared" \
+  '^theorem poincare_target_payload_of_aggregate_dependencies_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency extraction-derivation target payload theorem is declared" \
+  '^theorem poincare_target_payload_of_aggregate_extraction_derivation_dependencies\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency extraction-derivation target payload equality contract is declared" \
+  '^theorem poincare_target_payload_of_aggregate_extraction_derivation_dependencies_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency full assembly payload theorem is declared" \
+  '^theorem poincare_full_assembly_payload_of_dependencies\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency full assembly payload equality contract is declared" \
+  '^theorem poincare_full_assembly_payload_of_dependencies_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency extraction-derivation full assembly payload theorem is declared" \
+  '^theorem poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency extraction-derivation full assembly payload equality contract is declared" \
+  '^theorem poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency assembly payload theorem is declared" \
+  '^theorem poincare_assembly_payload_of_dependencies\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency assembly payload equality contract is declared" \
+  '^theorem poincare_assembly_payload_of_dependencies_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency completion payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_dependencies\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency completion payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_dependencies_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency extraction-derivation completion payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_aggregate_extraction_derivation_dependencies\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency extraction-derivation completion payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_aggregate_extraction_derivation_dependencies_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency theorem is declared" \
+  '^theorem poincare_statement_of_dependencies\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency theorem equality contract is declared" \
+  '^theorem poincare_statement_of_dependencies_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency extraction-derivation theorem is declared" \
+  '^theorem poincare_statement_of_aggregate_extraction_derivation_dependencies\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency extraction-derivation theorem equality contract is declared" \
+  '^theorem poincare_statement_of_aggregate_extraction_derivation_dependencies_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_dependencies\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_dependencies_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency extraction-derivation canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency extraction-derivation canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies_eq\b' Poincare/Dependencies.lean
+check_decl "completion criterion dependency theorem is declared" \
+  '^theorem completion_criterion_of_dependencies\b' Poincare/Dependencies.lean
+check_decl "completion criterion dependency equality contract is declared" \
+  '^theorem completion_criterion_of_dependencies_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency extraction-derivation completion criterion theorem is declared" \
+  '^theorem completion_criterion_of_aggregate_extraction_derivation_dependencies\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency extraction-derivation completion criterion equality contract is declared" \
+  '^theorem completion_criterion_of_aggregate_extraction_derivation_dependencies_eq\b' Poincare/Dependencies.lean
+check_decl "smoothability dependency projection theorem is declared" \
+  '^theorem smoothability_package_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "smoothability dependency projection equality contract is declared" \
+  '^theorem smoothability_package_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise local chart projection theorem is declared" \
+  '^theorem smoothability_moise_local_charts_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise local chart equality contract is declared" \
+  '^theorem smoothability_moise_local_charts_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise locally finite cover refinement projection theorem is declared" \
+  '^theorem smoothability_moise_locally_finite_cover_refinement_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise simplicial-complex projection theorem is declared" \
+  '^theorem smoothability_moise_simplicial_complex_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise compatible chart triangulations projection theorem is declared" \
+  '^theorem smoothability_moise_compatible_chart_triangulations_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise triangulation projection theorem is declared" \
+  '^theorem smoothability_moise_triangulation_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise triangulation equality contract is declared" \
+  '^theorem smoothability_moise_triangulation_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise simplicial approximation projection theorem is declared" \
+  '^theorem smoothability_moise_simplicial_approximation_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise star-neighborhood projection theorem is declared" \
+  '^theorem smoothability_moise_star_neighborhood_basis_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise barycentric subdivision projection theorem is declared" \
+  '^theorem smoothability_moise_barycentric_subdivision_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise regular-neighborhood compatibility projection theorem is declared" \
+  '^theorem smoothability_moise_regular_neighborhood_compatibility_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise local-finiteness projection theorem is declared" \
+  '^theorem smoothability_moise_triangulation_local_finiteness_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise link-compatibility projection theorem is declared" \
+  '^theorem smoothability_moise_link_compatibility_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise PL-manifold recognition projection theorem is declared" \
+  '^theorem smoothability_moise_pl_manifold_recognition_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise triangulation-homeomorphism projection theorem is declared" \
+  '^theorem smoothability_moise_triangulation_homeomorphism_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise compatibility projection theorem is declared" \
+  '^theorem smoothability_moise_compatibility_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise triangulation uniqueness projection theorem is declared" \
+  '^theorem smoothability_moise_triangulation_uniqueness_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise dimension-three Hauptvermutung projection theorem is declared" \
+  '^theorem smoothability_moise_hauptvermutung_dimension_three_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL-structure projection theorem is declared" \
+  '^theorem smoothability_pl_structure_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL-structure equality contract is declared" \
+  '^theorem smoothability_pl_structure_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL-transition compatibility projection theorem is declared" \
+  '^theorem smoothability_pl_transition_compatibility_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL-atlas projection theorem is declared" \
+  '^theorem smoothability_pl_atlas_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL-atlas equality contract is declared" \
+  '^theorem smoothability_pl_atlas_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL-manifold atlas projection theorem is declared" \
+  '^theorem smoothability_pl_manifold_atlas_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL collar-neighborhood compatibility projection theorem is declared" \
+  '^theorem smoothability_pl_collar_neighborhood_compatibility_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL-homeomorphism compatibility projection theorem is declared" \
+  '^theorem smoothability_pl_homeomorphism_compatibility_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL-atlas maximality projection theorem is declared" \
+  '^theorem smoothability_pl_atlas_maximality_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL-smoothing existence projection theorem is declared" \
+  '^theorem smoothability_pl_smoothing_existence_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL-smoothing obstruction projection theorem is declared" \
+  '^theorem smoothability_pl_smoothing_obstruction_vanishing_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL microbundle smoothing projection theorem is declared" \
+  '^theorem smoothability_pl_microbundle_smoothing_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL-smoothing projection theorem is declared" \
+  '^theorem smoothability_pl_smoothing_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL-smoothing equality contract is declared" \
+  '^theorem smoothability_pl_smoothing_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL-smoothing compatibility projection theorem is declared" \
+  '^theorem smoothability_pl_smoothing_compatibility_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL-smoothing uniqueness projection theorem is declared" \
+  '^theorem smoothability_pl_smoothing_uniqueness_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL-smoothing local-model projection theorem is declared" \
+  '^theorem smoothability_pl_smoothing_local_model_compatibility_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability smooth-atlas construction projection theorem is declared" \
+  '^theorem smoothability_smooth_atlas_construction_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability smooth-atlas construction equality contract is declared" \
+  '^theorem smoothability_smooth_atlas_construction_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability smooth-atlas PL-compatibility projection theorem is declared" \
+  '^theorem smoothability_smooth_atlas_pl_compatibility_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability smooth-atlas maximality projection theorem is declared" \
+  '^theorem smoothability_smooth_atlas_maximality_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability smooth-atlas uniqueness projection theorem is declared" \
+  '^theorem smoothability_smooth_atlas_uniqueness_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability smooth-structure uniqueness projection theorem is declared" \
+  '^theorem smoothability_smooth_structure_uniqueness_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability smooth-transition compatibility projection theorem is declared" \
+  '^theorem smoothability_smooth_transition_compatibility_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability smooth-transition compatibility equality contract is declared" \
+  '^theorem smoothability_smooth_transition_compatibility_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability smooth-atlas transition smoothness projection theorem is declared" \
+  '^theorem smoothability_smooth_atlas_transition_smoothness_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability smooth-atlas transition smoothness equality contract is declared" \
+  '^theorem smoothability_smooth_atlas_transition_smoothness_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability smooth-structure derivation projection theorem is declared" \
+  '^theorem smoothability_smooth_structure_derivation_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability smooth-structure derivation equality contract is declared" \
+  '^theorem smoothability_smooth_structure_derivation_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise locally finite cover refinement equality contract is declared" \
+  '^theorem smoothability_moise_locally_finite_cover_refinement_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise simplicial-complex equality contract is declared" \
+  '^theorem smoothability_moise_simplicial_complex_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise compatible chart triangulations equality contract is declared" \
+  '^theorem smoothability_moise_compatible_chart_triangulations_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise simplicial approximation equality contract is declared" \
+  '^theorem smoothability_moise_simplicial_approximation_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise star-neighborhood equality contract is declared" \
+  '^theorem smoothability_moise_star_neighborhood_basis_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise barycentric subdivision equality contract is declared" \
+  '^theorem smoothability_moise_barycentric_subdivision_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise regular-neighborhood equality contract is declared" \
+  '^theorem smoothability_moise_regular_neighborhood_compatibility_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise local-finiteness equality contract is declared" \
+  '^theorem smoothability_moise_triangulation_local_finiteness_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise link-compatibility equality contract is declared" \
+  '^theorem smoothability_moise_link_compatibility_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise PL-manifold recognition equality contract is declared" \
+  '^theorem smoothability_moise_pl_manifold_recognition_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise triangulation-homeomorphism equality contract is declared" \
+  '^theorem smoothability_moise_triangulation_homeomorphism_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise compatibility equality contract is declared" \
+  '^theorem smoothability_moise_compatibility_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise triangulation uniqueness equality contract is declared" \
+  '^theorem smoothability_moise_triangulation_uniqueness_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability Moise dimension-three Hauptvermutung equality contract is declared" \
+  '^theorem smoothability_moise_hauptvermutung_dimension_three_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL-transition compatibility equality contract is declared" \
+  '^theorem smoothability_pl_transition_compatibility_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL-manifold atlas equality contract is declared" \
+  '^theorem smoothability_pl_manifold_atlas_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL collar-neighborhood compatibility equality contract is declared" \
+  '^theorem smoothability_pl_collar_neighborhood_compatibility_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL-homeomorphism compatibility equality contract is declared" \
+  '^theorem smoothability_pl_homeomorphism_compatibility_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL-atlas maximality equality contract is declared" \
+  '^theorem smoothability_pl_atlas_maximality_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL-smoothing existence equality contract is declared" \
+  '^theorem smoothability_pl_smoothing_existence_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL-smoothing obstruction equality contract is declared" \
+  '^theorem smoothability_pl_smoothing_obstruction_vanishing_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL microbundle smoothing equality contract is declared" \
+  '^theorem smoothability_pl_microbundle_smoothing_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL-smoothing compatibility equality contract is declared" \
+  '^theorem smoothability_pl_smoothing_compatibility_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL-smoothing uniqueness equality contract is declared" \
+  '^theorem smoothability_pl_smoothing_uniqueness_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability PL-smoothing local-model equality contract is declared" \
+  '^theorem smoothability_pl_smoothing_local_model_compatibility_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability smooth-atlas PL-compatibility equality contract is declared" \
+  '^theorem smoothability_smooth_atlas_pl_compatibility_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability smooth-atlas maximality equality contract is declared" \
+  '^theorem smoothability_smooth_atlas_maximality_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability smooth-atlas uniqueness equality contract is declared" \
+  '^theorem smoothability_smooth_atlas_uniqueness_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability smooth-structure uniqueness equality contract is declared" \
+  '^theorem smoothability_smooth_structure_uniqueness_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability smooth-structure derivation statement payload theorem is declared" \
+  '^theorem smoothability_smooth_structure_statement_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability smooth-structure derivation statement projection theorem is declared" \
+  '^theorem smoothability_smooth_structure_derivation_statement_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "surgery dependency projection theorem is declared" \
+  '^theorem surgery_packages_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "surgery dependency projection equality contract is declared" \
+  '^theorem surgery_packages_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency surgery package payload theorem is declared" \
+  '^theorem surgery_package_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency analytic foundation projection theorem is declared" \
+  '^theorem analytic_foundation_packages_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency analytic foundation projection equality contract is declared" \
+  '^theorem analytic_foundation_packages_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency analytic foundation package-routed statement payload theorem is declared" \
+  '^theorem analytic_foundation_statement_payload_with_surgery_package_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency analytic foundation statement payload theorem is declared" \
+  '^theorem analytic_foundation_statement_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency analytic foundation statement projection theorem is declared" \
+  '^theorem analytic_foundation_statements_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency analytic foundation statement projection equality contract is declared" \
+  '^theorem analytic_foundation_statements_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency analytic foundation derivation statement projection theorem is declared" \
+  '^theorem analytic_foundation_derivation_statements_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency analytic foundation derivation statement equality contract is declared" \
+  '^theorem analytic_foundation_derivation_statements_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency Ricci-flow data projection theorem is declared" \
+  '^theorem ricci_flow_data_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency Ricci-flow data equality contract is declared" \
+  '^theorem ricci_flow_data_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency Ricci-flow equation evidence projection theorem is declared" \
+  '^theorem ricci_flow_equation_evidence_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency Ricci-flow equation evidence equality contract is declared" \
+  '^theorem ricci_flow_equation_evidence_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency analytic foundation sub-obligations projection theorem is declared" \
+  '^theorem analytic_foundation_subobligations_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency analytic foundation sub-obligations equality contract is declared" \
+  '^theorem analytic_foundation_subobligations_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency surgery construction package projection theorem is declared" \
+  '^theorem surgery_construction_packages_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency surgery construction package-routed statement payload theorem is declared" \
+  '^theorem surgery_construction_statement_payload_with_surgery_package_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency surgery construction statement payload theorem is declared" \
+  '^theorem surgery_construction_statement_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency surgery construction statement projection theorem is declared" \
+  '^theorem surgery_construction_statements_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency surgery construction statement equality contract is declared" \
+  '^theorem surgery_construction_statements_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency surgery construction sub-obligations projection theorem is declared" \
+  '^theorem surgery_construction_subobligations_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency surgery construction sub-obligations equality contract is declared" \
+  '^theorem surgery_construction_subobligations_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency Perelman control statement payload theorem is declared" \
+  '^theorem perelman_control_statement_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency Perelman control package-routed statement payload theorem is declared" \
+  '^theorem perelman_control_statement_payload_with_surgery_package_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency Perelman control statement projection theorem is declared" \
+  '^theorem perelman_control_statements_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency Perelman control statement equality contract is declared" \
+  '^theorem perelman_control_statements_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency Perelman control projection theorem is declared" \
+  '^theorem perelman_control_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency Perelman control equality contract is declared" \
+  '^theorem perelman_control_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency Perelman package projection theorem is declared" \
+  '^theorem perelman_control_packages_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency Perelman package equality contract is declared" \
+  '^theorem perelman_control_packages_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency Perelman sub-obligations projection theorem is declared" \
+  '^theorem perelman_subobligations_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency Perelman sub-obligations equality contract is declared" \
+  '^theorem perelman_subobligations_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency Perelman monotonicity/blow-up sub-obligations projection theorem is declared" \
+  '^theorem perelman_monotonicity_blowup_subobligations_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency Perelman monotonicity/blow-up equality contract is declared" \
+  '^theorem perelman_monotonicity_blowup_subobligations_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency finite-extinction sub-obligations statement payload theorem is declared" \
+  '^theorem finite_extinction_subobligations_statement_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency finite-extinction package-routed sub-obligations statement payload theorem is declared" \
+  '^theorem finite_extinction_subobligations_statement_payload_with_surgery_package_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency finite-extinction width statement projection theorem is declared" \
+  '^theorem finite_extinction_width_statements_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency finite-extinction width statement equality contract is declared" \
+  '^theorem finite_extinction_width_statements_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency finite-extinction sub-obligations statement projection theorem is declared" \
+  '^theorem finite_extinction_subobligations_statements_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency finite-extinction sub-obligations statement equality contract is declared" \
+  '^theorem finite_extinction_subobligations_statements_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency finite-extinction statement payload theorem is declared" \
+  '^theorem finite_extinction_statement_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency finite-extinction package-routed statement payload theorem is declared" \
+  '^theorem finite_extinction_statement_payload_with_surgery_package_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency finite-extinction derivation stack projection theorem is declared" \
+  '^theorem finite_extinction_derivation_stack_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency finite-extinction derivation stack equality contract is declared" \
+  '^theorem finite_extinction_derivation_stack_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency finite-extinction width sub-obligations projection theorem is declared" \
+  '^theorem finite_extinction_width_subobligations_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency finite-extinction width sub-obligations equality contract is declared" \
+  '^theorem finite_extinction_width_subobligations_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency finite-extinction sub-obligations projection theorem is declared" \
+  '^theorem finite_extinction_subobligations_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency finite-extinction sub-obligations equality contract is declared" \
+  '^theorem finite_extinction_subobligations_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency finite-extinction package-statement equality contract is declared" \
+  '^theorem finite_extinction_statements_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency finite-extinction via-subobligations statement equality contract is declared" \
+  '^theorem finite_extinction_statements_via_subobligations_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "topology dependency projection theorem is declared" \
+  '^theorem topology_package_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "topology dependency projection equality contract is declared" \
+  '^theorem topology_package_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology classification payload theorem is declared" \
+  '^theorem topology_classification_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology classification payload equality contract is declared" \
+  '^theorem topology_classification_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology decomposition projection theorem is declared" \
+  '^theorem topology_decomposition_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology decomposition equality contract is declared" \
+  '^theorem topology_decomposition_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology surgery trace projection theorem is declared" \
+  '^theorem topology_surgery_trace_reconstruction_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology surgery trace equality contract is declared" \
+  '^theorem topology_surgery_trace_reconstruction_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology surgery trace handle-cancellation projection theorem is declared" \
+  '^theorem topology_surgery_trace_handle_cancellation_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology surgery trace handle-cancellation equality contract is declared" \
+  '^theorem topology_surgery_trace_handle_cancellation_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology component-classification projection theorem is declared" \
+  '^theorem topology_component_classification_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology component-classification equality contract is declared" \
+  '^theorem topology_component_classification_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology discarded-component homeomorphism classification projection theorem is declared" \
+  '^theorem topology_discarded_component_homeomorphism_classification_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology discarded-component classification equality contract is declared" \
+  '^theorem topology_discarded_component_homeomorphism_classification_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology component-inventory projection theorem is declared" \
+  '^theorem topology_component_inventory_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology component-inventory equality contract is declared" \
+  '^theorem topology_component_inventory_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology component boundary-sphere control projection theorem is declared" \
+  '^theorem topology_component_boundary_sphere_control_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology component boundary-sphere equality contract is declared" \
+  '^theorem topology_component_boundary_sphere_control_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency 3-sphere recognition projection theorem is declared" \
+  '^theorem three_sphere_recognition_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency 3-sphere recognition equality contract is declared" \
+  '^theorem three_sphere_recognition_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology prime-decomposition projection theorem is declared" \
+  '^theorem topology_prime_decomposition_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology prime-decomposition equality contract is declared" \
+  '^theorem topology_prime_decomposition_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology prime-decomposition existence projection theorem is declared" \
+  '^theorem topology_prime_decomposition_existence_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology prime-decomposition existence equality contract is declared" \
+  '^theorem topology_prime_decomposition_existence_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology sphere-theorem projection theorem is declared" \
+  '^theorem topology_sphere_theorem_application_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology sphere-theorem equality contract is declared" \
+  '^theorem topology_sphere_theorem_application_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology embedded-sphere production projection theorem is declared" \
+  '^theorem topology_embedded_sphere_production_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology embedded-sphere production equality contract is declared" \
+  '^theorem topology_embedded_sphere_production_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology loop-theorem application projection theorem is declared" \
+  '^theorem topology_loop_theorem_application_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology loop-theorem application equality contract is declared" \
+  '^theorem topology_loop_theorem_application_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology prime-decomposition compatibility projection theorem is declared" \
+  '^theorem topology_prime_decomposition_compatibility_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology prime-decomposition compatibility equality contract is declared" \
+  '^theorem topology_prime_decomposition_compatibility_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology prime-factor uniqueness projection theorem is declared" \
+  '^theorem topology_prime_factor_uniqueness_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology prime-factor uniqueness equality contract is declared" \
+  '^theorem topology_prime_factor_uniqueness_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology irreducibility projection theorem is declared" \
+  '^theorem topology_irreducibility_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology irreducibility equality contract is declared" \
+  '^theorem topology_irreducibility_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology irreducible-factor recognition projection theorem is declared" \
+  '^theorem topology_irreducible_factor_recognition_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology irreducible-factor recognition equality contract is declared" \
+  '^theorem topology_irreducible_factor_recognition_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology connected-sum collapse projection theorem is declared" \
+  '^theorem topology_connected_sum_collapse_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology connected-sum collapse equality contract is declared" \
+  '^theorem topology_connected_sum_collapse_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology connected-sum fundamental-group projection theorem is declared" \
+  '^theorem topology_connected_sum_fundamental_group_control_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology connected-sum fundamental-group equality contract is declared" \
+  '^theorem topology_connected_sum_fundamental_group_control_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology connected-sum van Kampen projection theorem is declared" \
+  '^theorem topology_connected_sum_van_kampen_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology connected-sum van Kampen equality contract is declared" \
+  '^theorem topology_connected_sum_van_kampen_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology simply connected prime-factor control projection theorem is declared" \
+  '^theorem topology_simply_connected_prime_factor_control_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology simply connected prime-factor control equality contract is declared" \
+  '^theorem topology_simply_connected_prime_factor_control_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology spherical-space-form projection theorem is declared" \
+  '^theorem topology_spherical_space_form_reduction_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology spherical-space-form equality contract is declared" \
+  '^theorem topology_spherical_space_form_reduction_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology spherical-space-form classification projection theorem is declared" \
+  '^theorem topology_spherical_space_form_classification_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology spherical-space-form classification equality contract is declared" \
+  '^theorem topology_spherical_space_form_classification_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology spherical quotient-model projection theorem is declared" \
+  '^theorem topology_spherical_quotient_model_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology spherical quotient-model equality contract is declared" \
+  '^theorem topology_spherical_quotient_model_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology spherical free-action projection theorem is declared" \
+  '^theorem topology_spherical_free_action_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology spherical free-action equality contract is declared" \
+  '^theorem topology_spherical_free_action_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology spherical universal-cover projection theorem is declared" \
+  '^theorem topology_spherical_universal_cover_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology spherical universal-cover equality contract is declared" \
+  '^theorem topology_spherical_universal_cover_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology spherical covering-model projection theorem is declared" \
+  '^theorem topology_spherical_covering_model_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology spherical covering-model equality contract is declared" \
+  '^theorem topology_spherical_covering_model_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology spherical covering-projection theorem is declared" \
+  '^theorem topology_spherical_covering_projection_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology spherical covering-projection equality contract is declared" \
+  '^theorem topology_spherical_covering_projection_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology spherical fundamental-group projection theorem is declared" \
+  '^theorem topology_spherical_fundamental_group_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology spherical fundamental-group equality contract is declared" \
+  '^theorem topology_spherical_fundamental_group_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology deck-group identification projection theorem is declared" \
+  '^theorem topology_deck_group_identification_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology deck-group identification equality contract is declared" \
+  '^theorem topology_deck_group_identification_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology deck-action properness projection theorem is declared" \
+  '^theorem topology_deck_action_properness_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology deck-action properness equality contract is declared" \
+  '^theorem topology_deck_action_properness_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology deck-group triviality projection theorem is declared" \
+  '^theorem topology_deck_group_triviality_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology deck-group triviality equality contract is declared" \
+  '^theorem topology_deck_group_triviality_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology deck-action trivialization projection theorem is declared" \
+  '^theorem topology_deck_action_trivialization_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology deck-action trivialization equality contract is declared" \
+  '^theorem topology_deck_action_trivialization_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology trivial deck quotient identification projection theorem is declared" \
+  '^theorem topology_trivial_deck_quotient_identification_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology trivial deck quotient identification equality contract is declared" \
+  '^theorem topology_trivial_deck_quotient_identification_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology simply connected recognition projection theorem is declared" \
+  '^theorem topology_simply_connected_recognition_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology simply connected recognition equality contract is declared" \
+  '^theorem topology_simply_connected_recognition_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology trivial spherical quotient projection theorem is declared" \
+  '^theorem topology_trivial_spherical_quotient_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology trivial spherical quotient equality contract is declared" \
+  '^theorem topology_trivial_spherical_quotient_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology trivial-quotient homeomorphism projection theorem is declared" \
+  '^theorem topology_trivial_quotient_homeomorphism_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology trivial-quotient homeomorphism equality contract is declared" \
+  '^theorem topology_trivial_quotient_homeomorphism_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology spherical homeomorphism-lift projection theorem is declared" \
+  '^theorem topology_spherical_homeomorphism_lift_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology spherical homeomorphism-lift equality contract is declared" \
+  '^theorem topology_spherical_homeomorphism_lift_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology classification sub-obligations projection theorem is declared" \
+  '^theorem topology_classification_subobligations_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology classification sub-obligations equality contract is declared" \
+  '^theorem topology_classification_subobligations_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology extraction statement payload theorem is declared" \
+  '^theorem topology_extraction_statement_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology extraction statement payload equality contract is declared" \
+  '^theorem topology_extraction_statement_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology extraction payload theorem is declared" \
+  '^theorem topology_derivation_statement_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology derivation statement payload equality contract is declared" \
+  '^theorem topology_derivation_statement_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency extinction-to-homeomorphism projection theorem is declared" \
+  '^theorem homeomorphism_of_extinction_and_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency extinction-to-homeomorphism equality contract is declared" \
+  '^theorem homeomorphism_of_extinction_and_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology extraction derivation statement theorem is declared" \
+  '^theorem topology_derivation_statement_via_extraction_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology extraction derivation statement equality contract is declared" \
+  '^theorem topology_derivation_statement_via_extraction_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology extraction homeomorphism assembly statement theorem is declared" \
+  '^theorem topology_homeomorphism_assembly_statement_via_extraction_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology extraction homeomorphism assembly statement equality contract is declared" \
+  '^theorem topology_homeomorphism_assembly_statement_via_extraction_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology extraction homeomorphism derivation statement theorem is declared" \
+  '^theorem topology_homeomorphism_derivation_statement_via_extraction_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology extraction homeomorphism derivation statement equality contract is declared" \
+  '^theorem topology_homeomorphism_derivation_statement_via_extraction_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology homeomorphism assembly projection theorem is declared" \
+  '^theorem topology_homeomorphism_assembly_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology homeomorphism assembly equality contract is declared" \
+  '^theorem topology_homeomorphism_assembly_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology homeomorphism derivation projection theorem is declared" \
+  '^theorem topology_homeomorphism_derivation_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology homeomorphism derivation equality contract is declared" \
+  '^theorem topology_homeomorphism_derivation_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology derivation statement projection theorem is declared" \
+  '^theorem topology_derivation_statement_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology derivation statement equality contract is declared" \
+  '^theorem topology_derivation_statement_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology homeomorphism assembly statement theorem is declared" \
+  '^theorem topology_homeomorphism_assembly_statement_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology homeomorphism assembly statement equality contract is declared" \
+  '^theorem topology_homeomorphism_assembly_statement_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology homeomorphism derivation statement theorem is declared" \
+  '^theorem topology_homeomorphism_derivation_statement_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology homeomorphism derivation statement equality contract is declared" \
+  '^theorem topology_homeomorphism_derivation_statement_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology global extraction payload theorem is declared" \
+  '^theorem topology_extraction_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology global extraction payload equality contract is declared" \
+  '^theorem topology_extraction_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology extraction statement theorem is declared" \
+  '^theorem topology_extraction_statement_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology extraction statement equality contract is declared" \
+  '^theorem topology_extraction_statement_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology extraction/derivation payload equality contract is declared" \
+  '^theorem topology_extraction_derivation_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology final extractor equality contract is declared" \
+  '^theorem extinction_extraction_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability bridge statement theorem is declared" \
+  '^theorem smoothability_bridge_statement_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability bridge statement equality contract is declared" \
+  '^theorem smoothability_bridge_statement_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability smooth-structure statement payload theorem is declared" \
+  '^theorem smoothability_smooth_structure_statement_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability smooth-structure statement payload equality contract is declared" \
+  '^theorem smoothability_smooth_structure_statement_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability smooth-structure derivation statement equality contract is declared" \
+  '^theorem smoothability_smooth_structure_derivation_statement_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability bridge payload theorem is declared" \
+  '^theorem smoothability_bridge_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "smoothability bridge dependency projection theorem is declared" \
+  '^theorem smoothability_bridge_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency C-infinity smooth-manifold statement theorem is declared" \
+  '^theorem smoothability_smooth_manifold_statement_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency C-infinity smooth-manifold statement equality contract is declared" \
+  '^theorem smoothability_smooth_manifold_statement_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency C-infinity smooth-manifold projection theorem is declared" \
+  '^theorem smooth_manifold_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency C-infinity smooth-manifold projection equality contract is declared" \
+  '^theorem smooth_manifold_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency C-infinity smooth-manifold payload theorem is declared" \
+  '^theorem smoothability_smooth_manifold_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency C-infinity smooth-manifold payload equality contract is declared" \
+  '^theorem smoothability_smooth_manifold_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability bridge derivation projection theorem is declared" \
+  '^theorem smoothability_bridge_derivation_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability bridge projection equality contract is declared" \
+  '^theorem smoothability_bridge_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability bridge derivation equality contract is declared" \
+  '^theorem smoothability_bridge_derivation_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability smooth-model compatibility projection theorem is declared" \
+  '^theorem smoothability_model_compatibility_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability smooth-model compatibility equality contract is declared" \
+  '^theorem smoothability_model_compatibility_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability chart-compatibility projection theorem is declared" \
+  '^theorem smoothability_chart_compatibility_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability chart-compatibility equality contract is declared" \
+  '^theorem smoothability_chart_compatibility_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability sub-obligations payload theorem is declared" \
+  '^theorem smoothability_subobligations_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability bridge payload equality contract is declared" \
+  '^theorem smoothability_bridge_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability sub-obligations payload equality contract is declared" \
+  '^theorem smoothability_subobligations_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability sub-obligations projection theorem is declared" \
+  '^theorem smoothability_subobligations_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability sub-obligations equality contract is declared" \
+  '^theorem smoothability_subobligations_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency finite-extinction statement projection theorem is declared" \
+  '^theorem finite_extinction_statements_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency finite-extinction statement via sub-obligations theorem is declared" \
+  '^theorem finite_extinction_statements_via_subobligations_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency finite-extinction via sub-obligations theorem is declared" \
+  '^theorem finite_extinction_via_subobligations_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency finite-extinction via sub-obligations equality contract is declared" \
+  '^theorem finite_extinction_via_subobligations_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "finite-extinction dependency projection theorem is declared" \
+  '^theorem finite_extinction_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "finite-extinction dependency projection equality contract is declared" \
+  '^theorem finite_extinction_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "extinction extraction dependency projection theorem is declared" \
+  '^theorem extinction_extraction_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology extraction derivation payload theorem is declared" \
+  '^theorem topology_extraction_derivation_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "projected dependency assembly input source payload theorem is declared" \
+  '^theorem poincare_projection_assembly_inputs_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "projected dependency assembly input source payload equality contract is declared" \
+  '^theorem poincare_projection_assembly_inputs_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "projected extraction-derivation assembly input payload theorem is declared" \
+  '^theorem poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "projected extraction-derivation assembly input payload equality contract is declared" \
+  '^theorem poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "projected dependency target payload theorem is declared" \
+  '^theorem poincare_target_payload_of_dependency_projections\b' Poincare/DependencyProjections.lean
+check_decl "projected dependency target payload equality contract is declared" \
+  '^theorem poincare_target_payload_of_dependency_projections_eq\b' Poincare/DependencyProjections.lean
+check_decl "projected extraction-derivation target payload theorem is declared" \
+  '^theorem poincare_target_payload_of_extraction_derivation_dependency_projections\b' Poincare/DependencyProjections.lean
+check_decl "projected extraction-derivation target payload equality contract is declared" \
+  '^theorem poincare_target_payload_of_extraction_derivation_dependency_projections_eq\b' Poincare/DependencyProjections.lean
+check_decl "projected dependency full assembly payload theorem is declared" \
+  '^theorem poincare_full_assembly_payload_of_dependency_projections\b' Poincare/DependencyProjections.lean
+check_decl "projected dependency full assembly payload equality contract is declared" \
+  '^theorem poincare_full_assembly_payload_of_dependency_projections_eq\b' Poincare/DependencyProjections.lean
+check_decl "projected extraction-derivation full assembly payload theorem is declared" \
+  '^theorem poincare_full_assembly_payload_of_extraction_derivation_dependency_projections\b' Poincare/DependencyProjections.lean
+check_decl "projected extraction-derivation full assembly payload equality contract is declared" \
+  '^theorem poincare_full_assembly_payload_of_extraction_derivation_dependency_projections_eq\b' Poincare/DependencyProjections.lean
+check_decl "projected dependency assembly inputs payload theorem is declared" \
+  '^theorem poincare_assembly_inputs_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "projected dependency assembly inputs payload equality contract is declared" \
+  '^theorem poincare_assembly_inputs_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "projected dependency completion payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_dependency_projections\b' Poincare/DependencyProjections.lean
+check_decl "projected dependency completion payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_dependency_projections_eq\b' Poincare/DependencyProjections.lean
+check_decl "projected extraction-derivation completion payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_extraction_derivation_dependency_projections\b' Poincare/DependencyProjections.lean
+check_decl "projected extraction-derivation completion payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_extraction_derivation_dependency_projections_eq\b' Poincare/DependencyProjections.lean
+check_decl "projected dependency assembly theorem is declared" \
+  '^theorem poincare_statement_of_dependency_projections\b' Poincare/DependencyProjections.lean
+check_decl "projected dependency assembly theorem equality contract is declared" \
+  '^theorem poincare_statement_of_dependency_projections_eq\b' Poincare/DependencyProjections.lean
+check_decl "projected extraction-derivation assembly theorem is declared" \
+  '^theorem poincare_statement_of_extraction_derivation_dependency_projections\b' Poincare/DependencyProjections.lean
+check_decl "projected extraction-derivation assembly theorem equality contract is declared" \
+  '^theorem poincare_statement_of_extraction_derivation_dependency_projections_eq\b' Poincare/DependencyProjections.lean
+check_decl "projected dependency canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_dependency_projections\b' Poincare/DependencyProjections.lean
+check_decl "projected dependency canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_dependency_projections_eq\b' Poincare/DependencyProjections.lean
+check_decl "projected extraction-derivation canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_extraction_derivation_dependency_projections\b' Poincare/DependencyProjections.lean
+check_decl "projected extraction-derivation canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_extraction_derivation_dependency_projections_eq\b' Poincare/DependencyProjections.lean
+check_decl "projected dependency completion criterion theorem is declared" \
+  '^theorem completion_criterion_of_dependency_projections\b' Poincare/DependencyProjections.lean
+check_decl "projected dependency completion criterion equality contract is declared" \
+  '^theorem completion_criterion_of_dependency_projections_eq\b' Poincare/DependencyProjections.lean
+check_decl "projected extraction-derivation completion criterion theorem is declared" \
+  '^theorem completion_criterion_of_extraction_derivation_dependency_projections\b' Poincare/DependencyProjections.lean
+check_decl "projected extraction-derivation completion criterion equality contract is declared" \
+  '^theorem completion_criterion_of_extraction_derivation_dependency_projections_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency crosswalk theorem is declared" \
+  '^theorem dependency_ledger_has_package_layers\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency package-layer membership theorem is declared" \
+  '^theorem dependency_ledger_package_layer_mem\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency component slot type is declared" \
+  '^inductive DependencyComponentSlot\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency package-layer component map is declared" \
+  '^def dependencyComponentForPackageLayer\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency milestone component map is declared" \
+  '^def dependencyComponentForMilestone\b' Poincare/DependencyCrosswalk.lean
+check_decl "smoothability package-layer component theorem is declared" \
+  '^theorem dependencyComponentForPackageLayer_smoothabilityPackage\b' Poincare/DependencyCrosswalk.lean
+check_decl "analytic package-layer component theorem is declared" \
+  '^theorem dependencyComponentForPackageLayer_analyticFoundationPackage\b' Poincare/DependencyCrosswalk.lean
+check_decl "surgery package-layer component theorem is declared" \
+  '^theorem dependencyComponentForPackageLayer_surgeryPackage\b' Poincare/DependencyCrosswalk.lean
+check_decl "finite-extinction package-layer component theorem is declared" \
+  '^theorem dependencyComponentForPackageLayer_finiteExtinctionPackage\b' Poincare/DependencyCrosswalk.lean
+check_decl "topology package-layer component theorem is declared" \
+  '^theorem dependencyComponentForPackageLayer_topologyPackage\b' Poincare/DependencyCrosswalk.lean
+check_decl "smoothability milestone component theorem is declared" \
+  '^theorem dependencyComponentForMilestone_smoothabilityBridge\b' Poincare/DependencyCrosswalk.lean
+check_decl "analytic milestone component theorem is declared" \
+  '^theorem dependencyComponentForMilestone_ricciFlowAnalyticFoundation\b' Poincare/DependencyCrosswalk.lean
+check_decl "Ricci-flow-with-surgery milestone component theorem is declared" \
+  '^theorem dependencyComponentForMilestone_ricciFlowWithSurgery\b' Poincare/DependencyCrosswalk.lean
+check_decl "Perelman-control milestone component theorem is declared" \
+  '^theorem dependencyComponentForMilestone_perelmanSingularityControl\b' Poincare/DependencyCrosswalk.lean
+check_decl "finite-extinction milestone component theorem is declared" \
+  '^theorem dependencyComponentForMilestone_finiteExtinction\b' Poincare/DependencyCrosswalk.lean
+check_decl "topology-extraction milestone component theorem is declared" \
+  '^theorem dependencyComponentForMilestone_extinctionToSphereHomeomorphism\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency component requirement map is declared" \
+  '^def dependencyComponentRequirement\b' Poincare/DependencyCrosswalk.lean
+check_decl "smoothability component requirement theorem is declared" \
+  '^theorem dependencyComponentRequirement_smoothabilityComponent\b' Poincare/DependencyCrosswalk.lean
+check_decl "surgery component requirement theorem is declared" \
+  '^theorem dependencyComponentRequirement_surgeryComponent\b' Poincare/DependencyCrosswalk.lean
+check_decl "topology component requirement theorem is declared" \
+  '^theorem dependencyComponentRequirement_topologyComponent\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency package-layer requirement map is declared" \
+  '^def dependencyPackageLayerRequirement\b' Poincare/DependencyCrosswalk.lean
+check_decl "smoothability package-layer requirement theorem is declared" \
+  '^theorem dependencyPackageLayerRequirement_smoothabilityPackage\b' Poincare/DependencyCrosswalk.lean
+check_decl "analytic package-layer requirement theorem is declared" \
+  '^theorem dependencyPackageLayerRequirement_analyticFoundationPackage\b' Poincare/DependencyCrosswalk.lean
+check_decl "surgery package-layer requirement theorem is declared" \
+  '^theorem dependencyPackageLayerRequirement_surgeryPackage\b' Poincare/DependencyCrosswalk.lean
+check_decl "finite-extinction package-layer requirement theorem is declared" \
+  '^theorem dependencyPackageLayerRequirement_finiteExtinctionPackage\b' Poincare/DependencyCrosswalk.lean
+check_decl "topology package-layer requirement theorem is declared" \
+  '^theorem dependencyPackageLayerRequirement_topologyPackage\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency package-layer requirements projection theorem is declared" \
+  '^theorem dependencyPackageLayerRequirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "smoothability package-layer dependency projection theorem is declared" \
+  '^theorem smoothabilityPackage_requirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "analytic package-layer dependency projection theorem is declared" \
+  '^theorem analyticFoundationPackage_requirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "surgery package-layer dependency projection theorem is declared" \
+  '^theorem surgeryPackage_requirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "finite-extinction package-layer dependency projection theorem is declared" \
+  '^theorem finiteExtinctionPackage_requirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "topology package-layer dependency projection theorem is declared" \
+  '^theorem topologyPackage_requirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "smoothability package-layer dependency projection equality contract is declared" \
+  '^theorem smoothabilityPackage_requirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "analytic package-layer dependency projection equality contract is declared" \
+  '^theorem analyticFoundationPackage_requirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "surgery package-layer dependency projection equality contract is declared" \
+  '^theorem surgeryPackage_requirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "finite-extinction package-layer dependency projection equality contract is declared" \
+  '^theorem finiteExtinctionPackage_requirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "topology package-layer dependency projection equality contract is declared" \
+  '^theorem topologyPackage_requirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency package-layer requirements payload theorem is declared" \
+  '^theorem dependency_package_layer_requirements_payload_of_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency package-layer requirements payload equality contract is declared" \
+  '^theorem dependency_package_layer_requirements_payload_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency package-layer requirements iff theorem is declared" \
+  '^theorem poincareProofDependencies_iff_package_layer_requirements\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency package-layer requirements reverse constructor is declared" \
+  '^theorem poincareProofDependencies_of_package_layer_requirements_payload\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency package-layer requirements iff equality contract is declared" \
+  '^theorem poincareProofDependencies_iff_package_layer_requirements_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency milestone requirement map is declared" \
+  '^def dependencyMilestoneRequirement\b' Poincare/DependencyCrosswalk.lean
+check_decl "smoothability milestone requirement theorem is declared" \
+  '^theorem dependencyMilestoneRequirement_smoothabilityBridge\b' Poincare/DependencyCrosswalk.lean
+check_decl "analytic-foundation milestone requirement theorem is declared" \
+  '^theorem dependencyMilestoneRequirement_ricciFlowAnalyticFoundation\b' Poincare/DependencyCrosswalk.lean
+check_decl "Ricci-flow-with-surgery milestone requirement theorem is declared" \
+  '^theorem dependencyMilestoneRequirement_ricciFlowWithSurgery\b' Poincare/DependencyCrosswalk.lean
+check_decl "Perelman-control milestone requirement theorem is declared" \
+  '^theorem dependencyMilestoneRequirement_perelmanSingularityControl\b' Poincare/DependencyCrosswalk.lean
+check_decl "finite-extinction milestone requirement theorem is declared" \
+  '^theorem dependencyMilestoneRequirement_finiteExtinction\b' Poincare/DependencyCrosswalk.lean
+check_decl "topology-extraction milestone requirement theorem is declared" \
+  '^theorem dependencyMilestoneRequirement_extinctionToSphereHomeomorphism\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency milestone requirements projection theorem is declared" \
+  '^theorem dependencyMilestoneRequirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "smoothability milestone dependency projection theorem is declared" \
+  '^theorem smoothabilityBridge_requirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "analytic-foundation milestone dependency projection theorem is declared" \
+  '^theorem ricciFlowAnalyticFoundation_requirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "Ricci-flow-with-surgery milestone dependency projection theorem is declared" \
+  '^theorem ricciFlowWithSurgery_requirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "Perelman-control milestone dependency projection theorem is declared" \
+  '^theorem perelmanSingularityControl_requirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "finite-extinction milestone dependency projection theorem is declared" \
+  '^theorem finiteExtinction_requirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "topology-extraction milestone dependency projection theorem is declared" \
+  '^theorem extinctionToSphereHomeomorphism_requirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency milestone projection equality contract is declared" \
+  '^theorem dependencyMilestoneRequirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "smoothability milestone dependency projection equality contract is declared" \
+  '^theorem smoothabilityBridge_requirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "analytic-foundation milestone dependency projection equality contract is declared" \
+  '^theorem ricciFlowAnalyticFoundation_requirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "Ricci-flow-with-surgery milestone dependency projection equality contract is declared" \
+  '^theorem ricciFlowWithSurgery_requirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "Perelman-control milestone dependency projection equality contract is declared" \
+  '^theorem perelmanSingularityControl_requirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "finite-extinction milestone dependency projection equality contract is declared" \
+  '^theorem finiteExtinction_requirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "topology-extraction milestone dependency projection equality contract is declared" \
+  '^theorem extinctionToSphereHomeomorphism_requirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency milestone requirements payload theorem is declared" \
+  '^theorem dependency_milestone_requirements_payload_of_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency milestone requirements payload equality contract is declared" \
+  '^theorem dependency_milestone_requirements_payload_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency milestone requirements iff theorem is declared" \
+  '^theorem poincareProofDependencies_iff_milestone_requirements\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency milestone requirements reverse constructor is declared" \
+  '^theorem poincareProofDependencies_of_milestone_requirements_payload\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency milestone requirements iff equality contract is declared" \
+  '^theorem poincareProofDependencies_iff_milestone_requirements_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency component requirements payload theorem is declared" \
+  '^theorem dependency_component_requirements_payload_of_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency component requirements payload equality contract is declared" \
+  '^theorem dependency_component_requirements_payload_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency component requirements iff theorem is declared" \
+  '^theorem poincareProofDependencies_iff_component_requirements\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency component requirements reverse constructor is declared" \
+  '^theorem poincareProofDependencies_of_component_requirements_payload\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency component requirements iff equality contract is declared" \
+  '^theorem poincareProofDependencies_iff_component_requirements_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency ledger component slots theorem is declared" \
+  '^theorem dependency_ledger_has_component_slots\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency ledger component-slot membership theorem is declared" \
+  '^theorem dependency_ledger_component_slot_mem\b' Poincare/DependencyCrosswalk.lean
+check_decl "smoothability crosswalk theorem is declared" \
+  '^theorem dependencyLayerForMilestone_smoothabilityBridge\b' Poincare/DependencyCrosswalk.lean
+check_decl "analytic-foundation crosswalk theorem is declared" \
+  '^theorem dependencyLayerForMilestone_ricciFlowAnalyticFoundation\b' Poincare/DependencyCrosswalk.lean
+check_decl "Ricci-flow-with-surgery crosswalk theorem is declared" \
+  '^theorem dependencyLayerForMilestone_ricciFlowWithSurgery\b' Poincare/DependencyCrosswalk.lean
+check_decl "Perelman-control crosswalk theorem is declared" \
+  '^theorem dependencyLayerForMilestone_perelmanSingularityControl\b' Poincare/DependencyCrosswalk.lean
+check_decl "finite-extinction crosswalk theorem is declared" \
+  '^theorem dependencyLayerForMilestone_finiteExtinction\b' Poincare/DependencyCrosswalk.lean
+check_decl "topology-extraction crosswalk theorem is declared" \
+  '^theorem dependencyLayerForMilestone_extinctionToSphereHomeomorphism\b' Poincare/DependencyCrosswalk.lean
+check_decl "smoothability milestone is declared" \
+  '^\s*\| smoothabilityBridge\b' Poincare/Milestones.lean
+check_decl "smoothability milestone is in the ledger" \
+  'DependencyMilestone\.smoothabilityBridge' Poincare/Milestones.lean
+check_decl "smoothability milestone maps to smoothability package" \
+  'DependencyMilestone\.smoothabilityBridge' Poincare/DependencyCrosswalk.lean
+check_decl "smoothability package layer is in the crosswalk theorem" \
+  'DependencyPackageLayer\.smoothabilityPackage' Poincare/DependencyCrosswalk.lean
+check_decl "analytic foundation milestone maps to analytic foundation package" \
+  'DependencyMilestone\.ricciFlowAnalyticFoundation' Poincare/DependencyCrosswalk.lean
+check_decl "analytic foundation package layer is in the crosswalk theorem" \
+  'DependencyPackageLayer\.analyticFoundationPackage' Poincare/DependencyCrosswalk.lean
+check_decl "dependency ledger length theorem is declared" \
+  '^theorem dependencyMilestoneLedger_length\b' Poincare/Milestones.lean
+check_decl "smoothability milestone membership theorem is declared" \
+  '^theorem smoothabilityBridge_mem_dependencyMilestoneLedger\b' Poincare/Milestones.lean
+check_decl "analytic-foundation milestone membership theorem is declared" \
+  '^theorem ricciFlowAnalyticFoundation_mem_dependencyMilestoneLedger\b' Poincare/Milestones.lean
+check_decl "Ricci-flow-with-surgery milestone membership theorem is declared" \
+  '^theorem ricciFlowWithSurgery_mem_dependencyMilestoneLedger\b' Poincare/Milestones.lean
+check_decl "Perelman-control milestone membership theorem is declared" \
+  '^theorem perelmanSingularityControl_mem_dependencyMilestoneLedger\b' Poincare/Milestones.lean
+check_decl "finite-extinction milestone membership theorem is declared" \
+  '^theorem finiteExtinction_mem_dependencyMilestoneLedger\b' Poincare/Milestones.lean
+check_decl "topology-extraction milestone membership theorem is declared" \
+  '^theorem extinctionToSphereHomeomorphism_mem_dependencyMilestoneLedger\b' Poincare/Milestones.lean
+check_decl "dependency ledger membership theorem is declared" \
+  '^theorem dependencyMilestoneLedger_mem\b' Poincare/Milestones.lean
+check_decl "dependency ledger nodup theorem is declared" \
+  '^theorem dependencyMilestoneLedger_nodup\b' Poincare/Milestones.lean
+check_decl "canonical completion theorem name is declared" \
+  '^def canonicalCompletionTheoremName\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion theorem name contract is declared" \
+  '^theorem canonicalCompletionTheoremName_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion target is declared" \
+  '^def canonicalCompletionTarget\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion target iff target theorem is declared" \
+  '^theorem canonicalCompletionTarget_iff_poincareConjectureStatement\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion target iff target equality contract is declared" \
+  '^theorem canonicalCompletionTarget_iff_poincareConjectureStatement_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion target criterion equality is declared" \
+  '^theorem canonicalCompletionTarget_eq_completionCriterionAtUniverse\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion target iff criterion theorem is declared" \
+  '^theorem canonicalCompletionTarget_iff_completionCriterionAtUniverse\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion target iff criterion equality contract is declared" \
+  '^theorem canonicalCompletionTarget_iff_completionCriterionAtUniverse_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion target to extinction-extraction theorem is declared" \
+  '^theorem extinction_extraction_of_canonical_completion_target\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion target to extinction-extraction equality contract is declared" \
+  '^theorem extinction_extraction_of_canonical_completion_target_eq\b' Poincare/CompletionTarget.lean
+check_decl "extinction-extraction to canonical completion target theorem is declared" \
+  '^theorem canonical_completion_target_of_extinction_and_extraction\b' Poincare/CompletionTarget.lean
+check_decl "extinction-extraction to canonical completion target equality contract is declared" \
+  '^theorem canonical_completion_target_of_extinction_and_extraction_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion target iff extinction-extraction theorem is declared" \
+  '^theorem canonicalCompletionTarget_iff_extinction_extraction\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion target iff extinction-extraction equality contract is declared" \
+  '^theorem canonicalCompletionTarget_iff_extinction_extraction_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical target to completion criterion theorem is declared" \
+  '^theorem completion_criterion_of_canonical_completion_target\b' Poincare/CompletionTarget.lean
+check_decl "canonical target to completion criterion equality contract is declared" \
+  '^theorem completion_criterion_of_canonical_completion_target_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical target completion payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_canonical_completion_target\b' Poincare/CompletionTarget.lean
+check_decl "canonical target completion payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_canonical_completion_target_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical target to Poincare completion payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_canonical_completion_target\b' Poincare/CompletionTarget.lean
+check_decl "canonical target to Poincare completion payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_canonical_completion_target_eq\b' Poincare/CompletionTarget.lean
+check_decl "Poincare completion payload to canonical completion payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_poincare_completion_payload\b' Poincare/CompletionTarget.lean
+check_decl "Poincare completion payload to canonical completion payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_poincare_completion_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion payload target projection theorem is declared" \
+  '^theorem canonical_completion_target_of_canonical_completion_payload\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion payload target projection equality contract is declared" \
+  '^theorem canonical_completion_target_of_canonical_completion_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "Poincare completion payload to canonical target projection theorem is declared" \
+  '^theorem canonicalCompletionTarget_of_poincare_completion_payload\b' Poincare/CompletionTarget.lean
+check_decl "Poincare completion payload to canonical target projection equality contract is declared" \
+  '^theorem canonicalCompletionTarget_of_poincare_completion_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion payload criterion projection theorem is declared" \
+  '^theorem completion_criterion_of_canonical_completion_payload\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion payload criterion projection equality contract is declared" \
+  '^theorem completion_criterion_of_canonical_completion_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical target completion payload iff theorem is declared" \
+  '^theorem canonicalCompletionTarget_iff_canonical_completion_payload\b' Poincare/CompletionTarget.lean
+check_decl "canonical target completion payload iff equality contract is declared" \
+  '^theorem canonicalCompletionTarget_iff_canonical_completion_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical criterion completion payload iff theorem is declared" \
+  '^theorem completionCriterionAtUniverse_iff_canonical_completion_payload\b' Poincare/CompletionTarget.lean
+check_decl "canonical criterion completion payload iff equality contract is declared" \
+  '^theorem completionCriterionAtUniverse_iff_canonical_completion_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion criterion to canonical payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_completion_criterion\b' Poincare/CompletionTarget.lean
+check_decl "completion criterion to canonical payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_completion_criterion_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion payload to Poincare completion payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_canonical_completion_payload\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion payload to Poincare completion payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_canonical_completion_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical/Poincare completion payload iff theorem is declared" \
+  '^theorem canonical_completion_payload_iff_poincare_completion_payload\b' Poincare/CompletionTarget.lean
+check_decl "canonical/Poincare completion payload iff equality contract is declared" \
+  '^theorem canonical_completion_payload_iff_poincare_completion_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion extinction-extraction payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_extinction_and_extraction\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion extinction-extraction payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_extinction_and_extraction_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion extinction-extraction criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_extinction_and_extraction\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion extinction-extraction criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_extinction_and_extraction_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion finite-extinction topology-statement payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_finite_extinction_and_topology_extraction_statement\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion finite-extinction topology-statement payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_finite_extinction_and_topology_extraction_statement_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion finite-extinction topology-statement target theorem is declared" \
+  '^theorem canonical_completion_target_of_finite_extinction_and_topology_extraction_statement\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion finite-extinction topology-statement target equality contract is declared" \
+  '^theorem canonical_completion_target_of_finite_extinction_and_topology_extraction_statement_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion finite-extinction topology-statement criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion finite-extinction topology-statement criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion finite-extinction extraction-derivation payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_finite_extinction_and_extraction_derivation\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion finite-extinction extraction-derivation payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_finite_extinction_and_extraction_derivation_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion finite-extinction extraction-derivation target theorem is declared" \
+  '^theorem canonical_completion_target_of_finite_extinction_and_extraction_derivation\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion finite-extinction extraction-derivation target equality contract is declared" \
+  '^theorem canonical_completion_target_of_finite_extinction_and_extraction_derivation_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion finite-extinction extraction-derivation criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_finite_extinction_and_extraction_derivation\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion finite-extinction extraction-derivation criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_finite_extinction_and_extraction_derivation_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion criterion to canonical target theorem is declared" \
+  '^theorem canonical_completion_target_of_completion_criterion\b' Poincare/CompletionTarget.lean
+check_decl "completion criterion to canonical target equality contract is declared" \
+  '^theorem canonical_completion_target_of_completion_criterion_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion explicit package payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_surgery_and_topology_packages\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion explicit package payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_surgery_and_topology_packages_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion explicit package target theorem is declared" \
+  '^theorem canonical_completion_target_of_surgery_and_topology_packages\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion explicit package target equality contract is declared" \
+  '^theorem canonical_completion_target_of_surgery_and_topology_packages_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion explicit package criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_surgery_and_topology_packages\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion explicit package criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_surgery_and_topology_packages_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion theorem-shaped topology payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_surgery_and_topology_extraction_statement\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion theorem-shaped topology payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_surgery_and_topology_extraction_statement_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion theorem-shaped topology target theorem is declared" \
+  '^theorem canonical_completion_target_of_surgery_and_topology_extraction_statement\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion theorem-shaped topology target equality contract is declared" \
+  '^theorem canonical_completion_target_of_surgery_and_topology_extraction_statement_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion theorem-shaped topology criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_surgery_and_topology_extraction_statement\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion theorem-shaped topology criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_surgery_and_topology_extraction_statement_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion extraction-derivation payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_surgery_and_extraction_derivation\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion extraction-derivation payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_surgery_and_extraction_derivation_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion extraction-derivation target theorem is declared" \
+  '^theorem canonical_completion_target_of_surgery_and_extraction_derivation\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion extraction-derivation target equality contract is declared" \
+  '^theorem canonical_completion_target_of_surgery_and_extraction_derivation_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion extraction-derivation criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_surgery_and_extraction_derivation\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion extraction-derivation criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_surgery_and_extraction_derivation_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion package extraction-derivation payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_surgery_and_topology_package_extraction_derivation\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion package extraction-derivation payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_surgery_and_topology_package_extraction_derivation_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion package extraction-derivation target theorem is declared" \
+  '^theorem canonical_completion_target_of_surgery_and_topology_package_extraction_derivation\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion package extraction-derivation target equality contract is declared" \
+  '^theorem canonical_completion_target_of_surgery_and_topology_package_extraction_derivation_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion package extraction-derivation criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion package extraction-derivation criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion extraction-derivation dependency-projection payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_extraction_derivation_dependency_projections\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion extraction-derivation dependency-projection payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_extraction_derivation_dependency_projections_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion extraction-derivation dependency-projection target theorem is declared" \
+  '^theorem canonical_completion_target_of_extraction_derivation_dependency_projections\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion extraction-derivation dependency-projection target equality contract is declared" \
+  '^theorem canonical_completion_target_of_extraction_derivation_dependency_projections_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion extraction-derivation dependency-projection criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_extraction_derivation_dependency_projections\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion extraction-derivation dependency-projection criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_extraction_derivation_dependency_projections_eq\b' Poincare/CompletionTarget.lean
+check_decl "Poincare component-requirement completion payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "Poincare component-requirement completion payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion component-requirement payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion component-requirement payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion component-requirement target theorem is declared" \
+  '^theorem canonical_completion_target_of_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion component-requirement target equality contract is declared" \
+  '^theorem canonical_completion_target_of_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion component-requirement criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion component-requirement criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "component-requirement canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "component-requirement canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "Poincare component-requirement extraction-derivation completion payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "Poincare component-requirement extraction-derivation completion payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion component-requirement extraction-derivation payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion component-requirement extraction-derivation payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion component-requirement extraction-derivation target theorem is declared" \
+  '^theorem canonical_completion_target_of_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion component-requirement extraction-derivation target equality contract is declared" \
+  '^theorem canonical_completion_target_of_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion component-requirement extraction-derivation criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion component-requirement extraction-derivation criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "component-requirement extraction-derivation canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "component-requirement extraction-derivation canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "Poincare package-layer completion payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "Poincare package-layer completion payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion package-layer payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion package-layer payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion package-layer target theorem is declared" \
+  '^theorem canonical_completion_target_of_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion package-layer target equality contract is declared" \
+  '^theorem canonical_completion_target_of_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion package-layer criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion package-layer criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "package-layer canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "package-layer canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "Poincare package-layer extraction-derivation completion payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "Poincare package-layer extraction-derivation completion payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion package-layer extraction-derivation payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion package-layer extraction-derivation payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion package-layer extraction-derivation target theorem is declared" \
+  '^theorem canonical_completion_target_of_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion package-layer extraction-derivation target equality contract is declared" \
+  '^theorem canonical_completion_target_of_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion package-layer extraction-derivation criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion package-layer extraction-derivation criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "package-layer extraction-derivation canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "package-layer extraction-derivation canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "Poincare milestone-requirement completion payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "Poincare milestone-requirement completion payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion milestone-requirement payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion milestone-requirement payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion milestone-requirement target theorem is declared" \
+  '^theorem canonical_completion_target_of_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion milestone-requirement target equality contract is declared" \
+  '^theorem canonical_completion_target_of_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion milestone-requirement criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion milestone-requirement criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "milestone-requirement canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "milestone-requirement canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "Poincare milestone-requirement extraction-derivation completion payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "Poincare milestone-requirement extraction-derivation completion payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion milestone-requirement extraction-derivation payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion milestone-requirement extraction-derivation payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion milestone-requirement extraction-derivation target theorem is declared" \
+  '^theorem canonical_completion_target_of_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion milestone-requirement extraction-derivation target equality contract is declared" \
+  '^theorem canonical_completion_target_of_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion milestone-requirement extraction-derivation criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion milestone-requirement extraction-derivation criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "milestone-requirement extraction-derivation canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "milestone-requirement extraction-derivation canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package equality contract is declared" \
+  '^theorem remainingDependencyPackage_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package iff contract is declared" \
+  '^theorem remainingDependencyPackage_iff_poincareProofDependencies\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency smoothability projection theorem is declared" \
+  '^theorem smoothability_package_of_remaining_dependency_package\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency C-infinity smooth-manifold statement theorem is declared" \
+  '^theorem smoothability_smooth_manifold_statement_of_remaining_dependency_package\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency C-infinity smooth-manifold projection theorem is declared" \
+  '^theorem smooth_manifold_of_remaining_dependency_package\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency C-infinity smooth-manifold payload theorem is declared" \
+  '^theorem smoothability_smooth_manifold_payload_of_remaining_dependency_package\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency smoothability projection equality contract is declared" \
+  '^theorem smoothability_package_of_remaining_dependency_package_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency C-infinity smooth-manifold statement equality contract is declared" \
+  '^theorem smoothability_smooth_manifold_statement_of_remaining_dependency_package_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency C-infinity smooth-manifold projection equality contract is declared" \
+  '^theorem smooth_manifold_of_remaining_dependency_package_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency C-infinity smooth-manifold payload equality contract is declared" \
+  '^theorem smoothability_smooth_manifold_payload_of_remaining_dependency_package_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency surgery projection theorem is declared" \
+  '^theorem surgery_packages_of_remaining_dependency_package\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency topology projection theorem is declared" \
+  '^theorem topology_package_of_remaining_dependency_package\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency surgery projection equality contract is declared" \
+  '^theorem surgery_packages_of_remaining_dependency_package_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency topology projection equality contract is declared" \
+  '^theorem topology_package_of_remaining_dependency_package_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component payload theorem is declared" \
+  '^theorem remainingDependencyPackage_components_payload\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component iff contract is declared" \
+  '^theorem remainingDependencyPackage_iff_components\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component payload equality contract is declared" \
+  '^theorem remainingDependencyPackage_components_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component iff equality contract is declared" \
+  '^theorem remainingDependencyPackage_iff_components_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component-requirements payload theorem is declared" \
+  '^theorem remainingDependencyPackage_component_requirements_payload\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component-requirements iff theorem is declared" \
+  '^theorem remainingDependencyPackage_iff_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component-requirements payload equality contract is declared" \
+  '^theorem remainingDependencyPackage_component_requirements_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component-requirements iff equality contract is declared" \
+  '^theorem remainingDependencyPackage_iff_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package-layer requirements payload theorem is declared" \
+  '^theorem remainingDependencyPackage_package_layer_requirements_payload\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package-layer requirements iff theorem is declared" \
+  '^theorem remainingDependencyPackage_iff_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package-layer requirements payload equality contract is declared" \
+  '^theorem remainingDependencyPackage_package_layer_requirements_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package-layer requirements iff equality contract is declared" \
+  '^theorem remainingDependencyPackage_iff_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency milestone-requirements payload theorem is declared" \
+  '^theorem remainingDependencyPackage_milestone_requirements_payload\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency milestone-requirements iff theorem is declared" \
+  '^theorem remainingDependencyPackage_iff_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency milestone-requirements payload equality contract is declared" \
+  '^theorem remainingDependencyPackage_milestone_requirements_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency milestone-requirements iff equality contract is declared" \
+  '^theorem remainingDependencyPackage_iff_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining component-requirement payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_remaining_dependency_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining component-requirement payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_remaining_dependency_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining component-requirement target theorem is declared" \
+  '^theorem canonical_completion_target_of_remaining_dependency_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining component-requirement target equality contract is declared" \
+  '^theorem canonical_completion_target_of_remaining_dependency_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining component-requirement criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_remaining_dependency_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining component-requirement criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_remaining_dependency_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining component-requirement canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining component-requirement canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining component extraction-derivation payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_remaining_dependency_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining component extraction-derivation payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_remaining_dependency_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining component extraction-derivation target theorem is declared" \
+  '^theorem canonical_completion_target_of_remaining_dependency_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining component extraction-derivation target equality contract is declared" \
+  '^theorem canonical_completion_target_of_remaining_dependency_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining component extraction-derivation criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_remaining_dependency_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining component extraction-derivation criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_remaining_dependency_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining component extraction-derivation canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining component extraction-derivation canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining package-layer payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_remaining_dependency_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining package-layer payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_remaining_dependency_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining package-layer target theorem is declared" \
+  '^theorem canonical_completion_target_of_remaining_dependency_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining package-layer target equality contract is declared" \
+  '^theorem canonical_completion_target_of_remaining_dependency_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining package-layer criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_remaining_dependency_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining package-layer criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_remaining_dependency_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining package-layer canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining package-layer canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining package-layer extraction-derivation payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_remaining_dependency_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining package-layer extraction-derivation payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining package-layer extraction-derivation target theorem is declared" \
+  '^theorem canonical_completion_target_of_remaining_dependency_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining package-layer extraction-derivation target equality contract is declared" \
+  '^theorem canonical_completion_target_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining package-layer extraction-derivation criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_remaining_dependency_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining package-layer extraction-derivation criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining package-layer extraction-derivation canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining package-layer extraction-derivation canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining milestone-requirement payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_remaining_dependency_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining milestone-requirement payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_remaining_dependency_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining milestone-requirement target theorem is declared" \
+  '^theorem canonical_completion_target_of_remaining_dependency_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining milestone-requirement target equality contract is declared" \
+  '^theorem canonical_completion_target_of_remaining_dependency_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining milestone-requirement criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_remaining_dependency_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining milestone-requirement criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_remaining_dependency_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining milestone-requirement canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining milestone-requirement canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining milestone extraction-derivation payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_remaining_dependency_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining milestone extraction-derivation payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_remaining_dependency_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining milestone extraction-derivation target theorem is declared" \
+  '^theorem canonical_completion_target_of_remaining_dependency_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining milestone extraction-derivation target equality contract is declared" \
+  '^theorem canonical_completion_target_of_remaining_dependency_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining milestone extraction-derivation criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_remaining_dependency_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion remaining milestone extraction-derivation criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_remaining_dependency_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining milestone extraction-derivation canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining milestone extraction-derivation canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component-requirement project payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_remaining_dependency_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component-requirement project payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_remaining_dependency_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component-requirement project target theorem is declared" \
+  '^theorem poincare_statement_of_remaining_dependency_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component-requirement project target equality contract is declared" \
+  '^theorem poincare_statement_of_remaining_dependency_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component-requirement project criterion theorem is declared" \
+  '^theorem completion_criterion_of_remaining_dependency_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component-requirement project criterion equality contract is declared" \
+  '^theorem completion_criterion_of_remaining_dependency_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component extraction-derivation project payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_remaining_dependency_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component extraction-derivation project payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_remaining_dependency_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component extraction-derivation project target theorem is declared" \
+  '^theorem poincare_statement_of_remaining_dependency_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component extraction-derivation project target equality contract is declared" \
+  '^theorem poincare_statement_of_remaining_dependency_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component extraction-derivation project criterion theorem is declared" \
+  '^theorem completion_criterion_of_remaining_dependency_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component extraction-derivation project criterion equality contract is declared" \
+  '^theorem completion_criterion_of_remaining_dependency_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package-layer project payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_remaining_dependency_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package-layer project payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_remaining_dependency_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package-layer project target theorem is declared" \
+  '^theorem poincare_statement_of_remaining_dependency_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package-layer project target equality contract is declared" \
+  '^theorem poincare_statement_of_remaining_dependency_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package-layer project criterion theorem is declared" \
+  '^theorem completion_criterion_of_remaining_dependency_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package-layer project criterion equality contract is declared" \
+  '^theorem completion_criterion_of_remaining_dependency_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package-layer extraction-derivation project payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_remaining_dependency_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package-layer extraction-derivation project payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package-layer extraction-derivation project target theorem is declared" \
+  '^theorem poincare_statement_of_remaining_dependency_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package-layer extraction-derivation project target equality contract is declared" \
+  '^theorem poincare_statement_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package-layer extraction-derivation project criterion theorem is declared" \
+  '^theorem completion_criterion_of_remaining_dependency_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package-layer extraction-derivation project criterion equality contract is declared" \
+  '^theorem completion_criterion_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency milestone-requirement project payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_remaining_dependency_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency milestone-requirement project payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_remaining_dependency_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency milestone-requirement project target theorem is declared" \
+  '^theorem poincare_statement_of_remaining_dependency_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency milestone-requirement project target equality contract is declared" \
+  '^theorem poincare_statement_of_remaining_dependency_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency milestone-requirement project criterion theorem is declared" \
+  '^theorem completion_criterion_of_remaining_dependency_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency milestone-requirement project criterion equality contract is declared" \
+  '^theorem completion_criterion_of_remaining_dependency_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency milestone extraction-derivation project payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_remaining_dependency_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency milestone extraction-derivation project payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_remaining_dependency_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency milestone extraction-derivation project target theorem is declared" \
+  '^theorem poincare_statement_of_remaining_dependency_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency milestone extraction-derivation project target equality contract is declared" \
+  '^theorem poincare_statement_of_remaining_dependency_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency milestone extraction-derivation project criterion theorem is declared" \
+  '^theorem completion_criterion_of_remaining_dependency_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency milestone extraction-derivation project criterion equality contract is declared" \
+  '^theorem completion_criterion_of_remaining_dependency_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component-requirement canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_poincareProofDependencies_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component-requirement canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_poincareProofDependencies_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component extraction-derivation canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_poincareProofDependencies_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component extraction-derivation canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_poincareProofDependencies_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_poincareProofDependencies_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_poincareProofDependencies_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer extraction-derivation canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_poincareProofDependencies_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer extraction-derivation canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone-requirement canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_poincareProofDependencies_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone-requirement canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_poincareProofDependencies_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone extraction-derivation canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_poincareProofDependencies_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone extraction-derivation canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_poincareProofDependencies_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component-requirement canonical payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_poincareProofDependencies_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component-requirement canonical payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_poincareProofDependencies_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component-requirement canonical target theorem is declared" \
+  '^theorem canonical_completion_target_of_poincareProofDependencies_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component-requirement canonical target equality contract is declared" \
+  '^theorem canonical_completion_target_of_poincareProofDependencies_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component-requirement canonical criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_poincareProofDependencies_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component-requirement canonical criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_poincareProofDependencies_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component extraction-derivation canonical payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_poincareProofDependencies_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component extraction-derivation canonical payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_poincareProofDependencies_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component extraction-derivation canonical target theorem is declared" \
+  '^theorem canonical_completion_target_of_poincareProofDependencies_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component extraction-derivation canonical target equality contract is declared" \
+  '^theorem canonical_completion_target_of_poincareProofDependencies_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component extraction-derivation canonical criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_poincareProofDependencies_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component extraction-derivation canonical criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_poincareProofDependencies_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer canonical payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_poincareProofDependencies_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer canonical payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_poincareProofDependencies_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer canonical target theorem is declared" \
+  '^theorem canonical_completion_target_of_poincareProofDependencies_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer canonical target equality contract is declared" \
+  '^theorem canonical_completion_target_of_poincareProofDependencies_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer canonical criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_poincareProofDependencies_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer canonical criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_poincareProofDependencies_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer extraction-derivation canonical payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_poincareProofDependencies_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer extraction-derivation canonical payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer extraction-derivation canonical target theorem is declared" \
+  '^theorem canonical_completion_target_of_poincareProofDependencies_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer extraction-derivation canonical target equality contract is declared" \
+  '^theorem canonical_completion_target_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer extraction-derivation canonical criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_poincareProofDependencies_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer extraction-derivation canonical criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone-requirement canonical payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_poincareProofDependencies_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone-requirement canonical payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_poincareProofDependencies_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone-requirement canonical target theorem is declared" \
+  '^theorem canonical_completion_target_of_poincareProofDependencies_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone-requirement canonical target equality contract is declared" \
+  '^theorem canonical_completion_target_of_poincareProofDependencies_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone-requirement canonical criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_poincareProofDependencies_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone-requirement canonical criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_poincareProofDependencies_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone extraction-derivation canonical payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_poincareProofDependencies_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone extraction-derivation canonical payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_poincareProofDependencies_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone extraction-derivation canonical target theorem is declared" \
+  '^theorem canonical_completion_target_of_poincareProofDependencies_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone extraction-derivation canonical target equality contract is declared" \
+  '^theorem canonical_completion_target_of_poincareProofDependencies_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone extraction-derivation canonical criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_poincareProofDependencies_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone extraction-derivation canonical criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_poincareProofDependencies_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component-requirement project payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component-requirement project payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component-requirement project target theorem is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component-requirement project target equality contract is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component-requirement project criterion theorem is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component-requirement project criterion equality contract is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component extraction-derivation project payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component extraction-derivation project payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component extraction-derivation project target theorem is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component extraction-derivation project target equality contract is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component extraction-derivation project criterion theorem is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component extraction-derivation project criterion equality contract is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer project payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer project payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer project target theorem is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer project target equality contract is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer project criterion theorem is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer project criterion equality contract is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer extraction-derivation project payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer extraction-derivation project payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer extraction-derivation project target theorem is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer extraction-derivation project target equality contract is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer extraction-derivation project criterion theorem is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer extraction-derivation project criterion equality contract is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone-requirement project payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone-requirement project payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone-requirement project target theorem is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone-requirement project target equality contract is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone-requirement project criterion theorem is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone-requirement project criterion equality contract is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone extraction-derivation project payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone extraction-derivation project payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone extraction-derivation project target theorem is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone extraction-derivation project target equality contract is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone extraction-derivation project criterion theorem is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone extraction-derivation project criterion equality contract is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component-requirement project payload remaining-dependency equality contract is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_component_requirements_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component-requirement project target remaining-dependency equality contract is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_component_requirements_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component-requirement project criterion remaining-dependency equality contract is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_component_requirements_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component extraction-derivation project payload remaining-dependency equality contract is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_component_extraction_derivation_requirements_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component extraction-derivation project target remaining-dependency equality contract is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_component_extraction_derivation_requirements_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency component extraction-derivation project criterion remaining-dependency equality contract is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_component_extraction_derivation_requirements_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer project payload remaining-dependency equality contract is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_package_layer_requirements_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer project target remaining-dependency equality contract is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_package_layer_requirements_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer project criterion remaining-dependency equality contract is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_package_layer_requirements_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer extraction-derivation project payload remaining-dependency equality contract is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer extraction-derivation project target remaining-dependency equality contract is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency package-layer extraction-derivation project criterion remaining-dependency equality contract is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone-requirement project payload remaining-dependency equality contract is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_milestone_requirements_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone-requirement project target remaining-dependency equality contract is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_milestone_requirements_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone-requirement project criterion remaining-dependency equality contract is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_milestone_requirements_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone extraction-derivation project payload remaining-dependency equality contract is declared" \
+  '^theorem poincare_completion_payload_of_poincareProofDependencies_milestone_extraction_derivation_requirements_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone extraction-derivation project target remaining-dependency equality contract is declared" \
+  '^theorem poincare_statement_of_poincareProofDependencies_milestone_extraction_derivation_requirements_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency milestone extraction-derivation project criterion remaining-dependency equality contract is declared" \
+  '^theorem completion_criterion_of_poincareProofDependencies_milestone_extraction_derivation_requirements_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package completion payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_remaining_dependency_package\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package completion payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_remaining_dependency_package_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion aggregate dependency payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_dependencies\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion aggregate dependency payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_dependencies_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion target dependency theorem is declared" \
+  '^theorem canonical_completion_target_of_dependencies\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion target dependency equality contract is declared" \
+  '^theorem canonical_completion_target_of_dependencies_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion aggregate dependency criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_dependencies\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion aggregate dependency criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_dependencies_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion aggregate extraction-derivation dependency payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_aggregate_extraction_derivation_dependencies\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion aggregate extraction-derivation dependency payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_aggregate_extraction_derivation_dependencies_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion aggregate extraction-derivation dependency target theorem is declared" \
+  '^theorem canonical_completion_target_of_aggregate_extraction_derivation_dependencies\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion aggregate extraction-derivation dependency target equality contract is declared" \
+  '^theorem canonical_completion_target_of_aggregate_extraction_derivation_dependencies_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion aggregate extraction-derivation dependency criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion aggregate extraction-derivation dependency criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion projection payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_dependency_projections\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion projection payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_dependency_projections_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion target projection theorem is declared" \
+  '^theorem canonical_completion_target_of_dependency_projections\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion target projection equality contract is declared" \
+  '^theorem canonical_completion_target_of_dependency_projections_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion criterion projection theorem is declared" \
+  '^theorem canonical_completion_criterion_of_dependency_projections\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion criterion projection equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_dependency_projections_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate proposition is declared" \
+  '^def PoincareCompletionCertificate\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate theorem-name payload theorem is declared" \
+  '^theorem poincareCompletionCertificate_theoremName_payload\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate literal full payload theorem is declared" \
+  '^theorem poincareCompletionCertificate_literal_payload\b' Poincare/CompletionTarget.lean
+check_decl "literal full payload completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_literal_payload\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate literal full payload iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_literal_payload\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate canonical payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_completion_certificate\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate project completion payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_completion_certificate\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate canonical target theorem is declared" \
+  '^theorem canonical_completion_target_of_completion_certificate\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate target statement theorem is declared" \
+  '^theorem target_statement_of_completion_certificate\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate criterion theorem is declared" \
+  '^theorem completion_criterion_of_completion_certificate\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate remaining dependency projection theorem is declared" \
+  '^theorem remaining_dependency_package_of_completion_certificate\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency and project payload completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_and_poincare_payload\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate remaining dependency and project payload iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_poincare_payload\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency and canonical payload completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_and_canonical_payload\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate remaining dependency and canonical payload iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_canonical_payload\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency and target statement completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_and_target_statement\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate remaining dependency and target statement iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_target_statement\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency and canonical target completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_and_canonical_target\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate remaining dependency and canonical target iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_canonical_target\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency and completion criterion completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_and_completion_criterion\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate remaining dependency and completion criterion iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_completion_criterion\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate aggregate dependency projection theorem is declared" \
+  '^theorem poincareProofDependencies_of_completion_certificate\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_package\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate remaining dependency iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_remainingDependencyPackage\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate aggregate dependency iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency and project payload completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_and_poincare_payload\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate aggregate dependency and project payload iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_poincare_payload\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency and canonical payload completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_and_canonical_payload\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate aggregate dependency and canonical payload iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_canonical_payload\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency and target statement completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_and_target_statement\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate aggregate dependency and target statement iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_target_statement\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency and canonical target completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_and_canonical_target\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate aggregate dependency and canonical target iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_canonical_target\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency and completion criterion completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_and_completion_criterion\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate aggregate dependency and completion criterion iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_completion_criterion\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency and project payload completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_and_poincare_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate aggregate dependency and project payload iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_poincare_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency and canonical payload completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_and_canonical_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate aggregate dependency and canonical payload iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_canonical_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency and target statement completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_and_target_statement_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate aggregate dependency and target statement iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_target_statement_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency and canonical target completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_and_canonical_target_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate aggregate dependency and canonical target iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_canonical_target_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency and completion criterion completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_and_completion_criterion_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate aggregate dependency and completion criterion iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_completion_criterion_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate aggregate full payload theorem is declared" \
+  '^theorem poincareCompletionCertificate_aggregate_dependency_payload\b' Poincare/CompletionTarget.lean
+check_decl "aggregate full payload completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_aggregate_dependency_payload\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate aggregate full payload iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_aggregate_dependency_payload\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate project-statement full payload theorem is declared" \
+  '^theorem poincareCompletionCertificate_project_statement_payload\b' Poincare/CompletionTarget.lean
+check_decl "project-statement full payload completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_project_statement_payload\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate project-statement full payload iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_project_statement_payload\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate theorem-name payload equality contract is declared" \
+  '^theorem poincareCompletionCertificate_theoremName_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate literal payload equality contract is declared" \
+  '^theorem poincareCompletionCertificate_literal_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "literal payload certificate equality contract is declared" \
+  '^theorem completion_certificate_of_literal_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "literal payload iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_literal_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate canonical payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate project payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate canonical target equality contract is declared" \
+  '^theorem canonical_completion_target_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate target statement equality contract is declared" \
+  '^theorem target_statement_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate criterion equality contract is declared" \
+  '^theorem completion_criterion_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate remaining dependency equality contract is declared" \
+  '^theorem remaining_dependency_package_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency project payload certificate equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_and_poincare_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency canonical payload certificate equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_and_canonical_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency target statement certificate equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_and_target_statement_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency canonical target certificate equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_and_canonical_target_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency completion criterion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_and_completion_criterion_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate aggregate dependency projection equality contract is declared" \
+  '^theorem poincareProofDependencies_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package certificate equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_package_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_remainingDependencyPackage_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency certificate equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency payload projection equality contract is declared" \
+  '^theorem poincareCompletionCertificate_aggregate_dependency_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency payload certificate equality contract is declared" \
+  '^theorem completion_certificate_of_aggregate_dependency_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency payload iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_aggregate_dependency_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "project statement payload projection equality contract is declared" \
+  '^theorem poincareCompletionCertificate_project_statement_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "project statement payload certificate equality contract is declared" \
+  '^theorem completion_certificate_of_project_statement_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "project statement payload iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_project_statement_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate component iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_components\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate component-requirements iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate package-layer requirements iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate milestone requirements iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate components payload theorem is declared" \
+  '^theorem poincareCompletionCertificate_components_payload\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate component-requirements payload theorem is declared" \
+  '^theorem poincareCompletionCertificate_component_requirements_payload\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate package-layer requirements payload theorem is declared" \
+  '^theorem poincareCompletionCertificate_package_layer_requirements_payload\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate milestone requirements payload theorem is declared" \
+  '^theorem poincareCompletionCertificate_milestone_requirements_payload\b' Poincare/CompletionTarget.lean
+check_decl "raw components completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_components\b' Poincare/CompletionTarget.lean
+check_decl "component requirements completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "package-layer requirements completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "milestone requirements completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "raw components payload completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_components_payload\b' Poincare/CompletionTarget.lean
+check_decl "component requirements payload completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_component_requirements_payload\b' Poincare/CompletionTarget.lean
+check_decl "package-layer requirements payload completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_package_layer_requirements_payload\b' Poincare/CompletionTarget.lean
+check_decl "milestone requirements payload completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_milestone_requirements_payload\b' Poincare/CompletionTarget.lean
+check_decl "raw component certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_components_eq\b' Poincare/CompletionTarget.lean
+check_decl "component-slot certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "package-layer certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "milestone certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "raw component certificate payload equality contract is declared" \
+  '^theorem poincareCompletionCertificate_components_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "component-slot certificate payload equality contract is declared" \
+  '^theorem poincareCompletionCertificate_component_requirements_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "package-layer certificate payload equality contract is declared" \
+  '^theorem poincareCompletionCertificate_package_layer_requirements_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "milestone certificate payload equality contract is declared" \
+  '^theorem poincareCompletionCertificate_milestone_requirements_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "raw component certificate constructor equality contract is declared" \
+  '^theorem completion_certificate_of_components_eq\b' Poincare/CompletionTarget.lean
+check_decl "component-slot certificate constructor equality contract is declared" \
+  '^theorem completion_certificate_of_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "package-layer certificate constructor equality contract is declared" \
+  '^theorem completion_certificate_of_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "milestone certificate constructor equality contract is declared" \
+  '^theorem completion_certificate_of_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "raw component payload certificate constructor equality contract is declared" \
+  '^theorem completion_certificate_of_components_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "component-slot payload certificate constructor equality contract is declared" \
+  '^theorem completion_certificate_of_component_requirements_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "package-layer payload certificate constructor equality contract is declared" \
+  '^theorem completion_certificate_of_package_layer_requirements_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "milestone payload certificate constructor equality contract is declared" \
+  '^theorem completion_certificate_of_milestone_requirements_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "certified component requirements completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "certified component requirements payload completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_component_extraction_derivation_requirements_payload\b' Poincare/CompletionTarget.lean
+check_decl "certified component requirements completion certificate iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "certified package-layer requirements completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "certified package-layer requirements payload completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_package_layer_extraction_derivation_requirements_payload\b' Poincare/CompletionTarget.lean
+check_decl "certified package-layer requirements completion certificate iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "certified milestone requirements completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "certified milestone requirements payload completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_milestone_extraction_derivation_requirements_payload\b' Poincare/CompletionTarget.lean
+check_decl "certified milestone requirements completion certificate iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "certified component requirements completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "certified component requirements payload completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_component_extraction_derivation_requirements_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "certified component requirements completion certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "certified package-layer requirements completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "certified package-layer requirements payload completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_package_layer_extraction_derivation_requirements_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "certified package-layer requirements completion certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "certified milestone requirements completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "certified milestone requirements payload completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_milestone_extraction_derivation_requirements_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "certified milestone requirements completion certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency raw component completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency raw component completion certificate iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_remaining_dependency_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency raw package-layer completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency raw package-layer completion certificate iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_remaining_dependency_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency raw milestone completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency raw milestone completion certificate iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_remaining_dependency_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency raw component completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency raw component completion certificate iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency raw package-layer completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency raw package-layer completion certificate iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency raw milestone completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency raw milestone completion certificate iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency certified component completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency certified component completion certificate iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_remaining_dependency_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency certified package-layer completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency certified package-layer completion certificate iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_remaining_dependency_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency certified milestone completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency certified milestone completion certificate iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_remaining_dependency_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency certified component completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency certified component completion certificate iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency certified package-layer completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency certified package-layer completion certificate iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency certified milestone completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency certified milestone completion certificate iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "aggregate certified completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_aggregate_extraction_derivation_dependencies\b' Poincare/CompletionTarget.lean
+check_decl "projection certified completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_extraction_derivation_dependency_projections\b' Poincare/CompletionTarget.lean
+check_decl "aggregate certified completion certificate iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_aggregate_extraction_derivation_dependencies\b' Poincare/CompletionTarget.lean
+check_decl "projection certified completion certificate iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_extraction_derivation_dependency_projections\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency certified completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency certified completion certificate iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_aggregate_extraction_derivation\b' Poincare/CompletionTarget.lean
+check_decl "projection dependency certified completion certificate theorem is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_extraction_derivation_projections\b' Poincare/CompletionTarget.lean
+check_decl "projection dependency certified completion certificate iff theorem is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_extraction_derivation_projections\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency raw component completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency raw component completion certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_remaining_dependency_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency raw package-layer completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency raw package-layer completion certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_remaining_dependency_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency raw milestone completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency raw milestone completion certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_remaining_dependency_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency raw component completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency raw component completion certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency raw package-layer completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency raw package-layer completion certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency raw milestone completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency raw milestone completion certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency certified component completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency certified component completion certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_remaining_dependency_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency certified package-layer completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency certified package-layer completion certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_remaining_dependency_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency certified milestone completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency certified milestone completion certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_remaining_dependency_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency certified component completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency certified component completion certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency certified package-layer completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency certified package-layer completion certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency certified milestone completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency certified milestone completion certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate certified completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_aggregate_extraction_derivation_dependencies_eq\b' Poincare/CompletionTarget.lean
+check_decl "projection certified completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_extraction_derivation_dependency_projections_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate certified completion certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_aggregate_extraction_derivation_dependencies_eq\b' Poincare/CompletionTarget.lean
+check_decl "projection certified completion certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_extraction_derivation_dependency_projections_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency certified completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency certified completion certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_aggregate_extraction_derivation_eq\b' Poincare/CompletionTarget.lean
+check_decl "projection dependency certified completion certificate equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_eq\b' Poincare/CompletionTarget.lean
+check_decl "projection dependency certified completion certificate iff equality contract is declared" \
+  '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_extraction_derivation_projections_eq\b' Poincare/CompletionTarget.lean
+
+root_contract_check_dir=$(mktemp -d "${TMPDIR:-/tmp}/poincare-completion-root-contract.$$-XXXXXX")
+root_contract_check="$root_contract_check_dir/check.lean"
+cat > "$root_contract_check" <<'EOF'
+import Poincare
+
+open scoped Manifold ContDiff
+
+#check Poincare.threeSphere_eq
+#check Poincare.poincareConjectureStatement_eq
+#check Poincare.poincareConjectureStatement_iff_canonical_three_sphere_statement
+#check Poincare.poincareConjectureStatement_iff_canonical_three_sphere_statement_eq
+#check Poincare.completionCriterionAtUniverse_iff_poincareConjectureStatement
+#check Poincare.completionCriterionAtUniverse_iff_poincareConjectureStatement_eq
+#check Poincare.completionCriterionAtUniverse_of_completionCriterionAtUniverse
+#check Poincare.completionCriterionAtUniverse_of_completionCriterionAtUniverse_eq
+#check Poincare.completionCriterionAtUniverse_iff_completionCriterionAtUniverse
+#check Poincare.completionCriterionAtUniverse_iff_completionCriterionAtUniverse_eq
+#check Poincare.completionCriterionAtUniverse_of_poincareConjectureStatement
+#check Poincare.completionCriterionAtUniverse_of_poincareConjectureStatement_eq
+#check Poincare.poincare_completion_payload_of_poincareConjectureStatement
+#check Poincare.poincare_completion_payload_of_poincareConjectureStatement_eq
+#check Poincare.poincareConjectureStatement_of_poincare_completion_payload
+#check Poincare.poincareConjectureStatement_of_poincare_completion_payload_eq
+#check Poincare.completionCriterionAtUniverse_of_poincare_completion_payload
+#check Poincare.completionCriterionAtUniverse_of_poincare_completion_payload_eq
+#check Poincare.poincareConjectureStatement_iff_poincare_completion_payload
+#check Poincare.poincareConjectureStatement_iff_poincare_completion_payload_eq
+#check Poincare.poincareConjectureStatement_of_completionCriterionAtUniverse
+#check Poincare.poincareConjectureStatement_of_completionCriterionAtUniverse_eq
+#check Poincare.poincare_completion_payload_of_completionCriterionAtUniverse
+#check Poincare.poincare_completion_payload_of_completionCriterionAtUniverse_eq
+#check Poincare.completionCriterionAtUniverse_iff_poincare_completion_payload
+#check Poincare.completionCriterionAtUniverse_iff_poincare_completion_payload_eq
+#check Poincare.canonical_completion_target_of_canonical_completion_payload
+#check Poincare.canonical_completion_target_of_canonical_completion_payload_eq
+#check Poincare.completion_criterion_of_canonical_completion_payload
+#check Poincare.completion_criterion_of_canonical_completion_payload_eq
+#check Poincare.canonicalCompletionTarget_iff_canonical_completion_payload
+#check Poincare.canonicalCompletionTarget_iff_canonical_completion_payload_eq
+#check Poincare.completionCriterionAtUniverse_iff_canonical_completion_payload
+#check Poincare.completionCriterionAtUniverse_iff_canonical_completion_payload_eq
+#check Poincare.poincare_completion_payload_of_canonical_completion_payload
+#check Poincare.poincare_completion_payload_of_canonical_completion_payload_eq
+#check Poincare.canonical_completion_payload_iff_poincare_completion_payload
+#check Poincare.canonical_completion_payload_iff_poincare_completion_payload_eq
+#check Poincare.smoothPoincareConjectureStatement_eq
+#check Poincare.smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_statement
+#check Poincare.smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_statement_eq
+#check Poincare.threeSphere_self_homeomorph
+#check Poincare.homeomorph_to_threeSphere_of_homeomorph
+#check Poincare.homeomorph_to_threeSphere_of_homeomorph_source
+#check Poincare.homeomorph_to_threeSphere_iff_of_homeomorph
+#check Poincare.homeomorph_to_threeSphere_of_threeSphere_homeomorph
+#check Poincare.threeSphere_homeomorph_of_homeomorph_to_threeSphere
+#check Poincare.homeomorph_to_threeSphere_iff_threeSphere_homeomorph
+#check Poincare.extinction_decomposition_of_topology_package
+#check Poincare.extinction_decomposition_of_topology_package_eq
+#check Poincare.extinction_surgery_trace_reconstruction_of_topology_package
+#check Poincare.extinction_surgery_trace_handle_cancellation_of_topology_package
+#check Poincare.extinction_component_classification_of_topology_package
+#check Poincare.extinction_discarded_component_homeomorphism_classification_of_topology_package
+#check Poincare.extinction_component_inventory_of_topology_package
+#check Poincare.extinction_component_boundary_sphere_control_of_topology_package
+#check Poincare.three_sphere_recognition_of_topology_package
+#check Poincare.extinction_prime_decomposition_of_topology_package
+#check Poincare.extinction_prime_decomposition_of_topology_package_eq
+#check Poincare.extinction_prime_decomposition_existence_of_topology_package
+#check Poincare.extinction_sphere_theorem_application_of_topology_package
+#check Poincare.extinction_embedded_sphere_production_of_topology_package
+#check Poincare.extinction_loop_theorem_application_of_topology_package
+#check Poincare.extinction_prime_decomposition_compatibility_of_topology_package
+#check Poincare.extinction_prime_factor_uniqueness_of_topology_package
+#check Poincare.extinction_irreducibility_of_topology_package
+#check Poincare.extinction_irreducibility_of_topology_package_eq
+#check Poincare.extinction_irreducible_factor_recognition_of_topology_package
+#check Poincare.extinction_connected_sum_collapse_of_topology_package
+#check Poincare.extinction_connected_sum_collapse_of_topology_package_eq
+#check Poincare.extinction_connected_sum_fundamental_group_control_of_topology_package
+#check Poincare.extinction_connected_sum_van_kampen_of_topology_package
+#check Poincare.extinction_simply_connected_prime_factor_control_of_topology_package
+#check Poincare.extinction_spherical_space_form_reduction_of_topology_package
+#check Poincare.extinction_spherical_space_form_reduction_of_topology_package_eq
+#check Poincare.spherical_space_form_classification_of_topology_package
+#check Poincare.spherical_quotient_model_of_topology_package
+#check Poincare.spherical_quotient_model_of_topology_package_eq
+#check Poincare.spherical_free_action_of_topology_package
+#check Poincare.spherical_universal_cover_of_topology_package
+#check Poincare.spherical_covering_model_of_topology_package
+#check Poincare.spherical_covering_projection_of_topology_package
+#check Poincare.spherical_fundamental_group_of_topology_package
+#check Poincare.spherical_fundamental_group_of_topology_package_eq
+#check Poincare.spherical_deck_group_identification_of_topology_package
+#check Poincare.spherical_deck_group_identification_of_topology_package_eq
+#check Poincare.spherical_deck_action_properness_of_topology_package
+#check Poincare.spherical_deck_group_triviality_of_topology_package
+#check Poincare.spherical_deck_group_triviality_of_topology_package_eq
+#check Poincare.spherical_deck_action_trivialization_of_topology_package
+#check Poincare.spherical_trivial_deck_quotient_identification_of_topology_package
+#check Poincare.simply_connected_extinction_recognition_of_topology_package
+#check Poincare.trivial_spherical_quotient_of_topology_package
+#check Poincare.trivial_spherical_quotient_of_topology_package_eq
+#check Poincare.trivial_quotient_homeomorphism_of_topology_package
+#check Poincare.trivial_quotient_homeomorphism_of_topology_package_eq
+#check Poincare.spherical_homeomorphism_lift_of_topology_package
+#check Poincare.spherical_homeomorphism_lift_of_topology_package_eq
+#check Poincare.homeomorphism_of_topology_package
+#check Poincare.homeomorphism_of_topology_package_eq
+#check Poincare.extinction_homeomorphism_assembly_of_topology_package
+#check Poincare.extinction_homeomorphism_assembly_of_topology_package_eq
+#check Poincare.extinction_homeomorphism_derivation_of_topology_package
+#check Poincare.extinction_homeomorphism_derivation_of_topology_package_eq
+#check Poincare.ExtinctionTopologyDerivationStatement
+#check Poincare.ExtinctionTopologyHomeomorphismAssemblyStatement
+#check Poincare.ExtinctionTopologyHomeomorphismDerivationStatement
+#check Poincare.ExtinctionTopologyExtractionStatement
+#check Poincare.ExtinctionTopologyDerivationForExtractionStatement
+#check Poincare.extinction_topology_derivation_statement_of_components
+#check Poincare.extinction_topology_derivation_statement_of_topology_package
+#check Poincare.ExtinctionTopologyClassificationSubobligationsPayload
+#check Poincare.topology_classification_subobligations_of_derivation_statement
+#check Poincare.topology_homeomorphism_assembly_statement_of_derivation_statement
+#check Poincare.topology_homeomorphism_derivation_statement_of_derivation_statement
+#check Poincare.extinction_topology_extraction_statement_of_topology_package
+#check Poincare.topology_derivation_statement_payload_of_extraction_statement
+#check Poincare.homeomorphism_of_topology_extraction_statement
+#check Poincare.extinction_implies_sphere_of_topology_extraction_statement
+#check Poincare.extinction_topology_extraction_statement_of_extraction_and_derivation
+#check Poincare.extinction_topology_extraction_statement_iff_extraction_with_derivation
+#check Poincare.poincare_statement_of_finite_extinction_and_topology_extraction_statement
+#check Poincare.poincare_payload_of_finite_extinction_and_topology_extraction_statement
+#check Poincare.poincare_statement_of_finite_extinction_and_extraction_derivation
+#check Poincare.poincare_payload_of_finite_extinction_and_extraction_derivation
+#check Poincare.topology_extraction_payload_of_topology_package
+#check Poincare.topology_extraction_payload_of_topology_package_eq
+#check Poincare.topology_extraction_derivation_payload_of_topology_package
+#check Poincare.topology_extraction_derivation_payload_of_topology_package_eq
+#check Poincare.topology_extraction_statement_payload_of_topology_package
+#check Poincare.extinction_implies_sphere_of_topology_package_eq
+#check Poincare.extinction_surgery_trace_reconstruction_of_topology_package_eq
+#check Poincare.extinction_surgery_trace_handle_cancellation_of_topology_package_eq
+#check Poincare.extinction_component_classification_of_topology_package_eq
+#check Poincare.extinction_discarded_component_homeomorphism_classification_of_topology_package_eq
+#check Poincare.extinction_component_inventory_of_topology_package_eq
+#check Poincare.extinction_component_boundary_sphere_control_of_topology_package_eq
+#check Poincare.three_sphere_recognition_of_topology_package_eq
+#check Poincare.extinction_prime_decomposition_existence_of_topology_package_eq
+#check Poincare.extinction_sphere_theorem_application_of_topology_package_eq
+#check Poincare.extinction_embedded_sphere_production_of_topology_package_eq
+#check Poincare.extinction_loop_theorem_application_of_topology_package_eq
+#check Poincare.extinction_prime_decomposition_compatibility_of_topology_package_eq
+#check Poincare.extinction_prime_factor_uniqueness_of_topology_package_eq
+#check Poincare.extinction_irreducible_factor_recognition_of_topology_package_eq
+#check Poincare.extinction_connected_sum_fundamental_group_control_of_topology_package_eq
+#check Poincare.extinction_connected_sum_van_kampen_of_topology_package_eq
+#check Poincare.extinction_simply_connected_prime_factor_control_of_topology_package_eq
+#check Poincare.spherical_space_form_classification_of_topology_package_eq
+#check Poincare.spherical_free_action_of_topology_package_eq
+#check Poincare.spherical_universal_cover_of_topology_package_eq
+#check Poincare.spherical_covering_model_of_topology_package_eq
+#check Poincare.spherical_covering_projection_of_topology_package_eq
+#check Poincare.spherical_deck_action_properness_of_topology_package_eq
+#check Poincare.spherical_deck_action_trivialization_of_topology_package_eq
+#check Poincare.spherical_trivial_deck_quotient_identification_of_topology_package_eq
+#check Poincare.simply_connected_extinction_recognition_of_topology_package_eq
+#check Poincare.moise_local_charts_of_smoothability_package
+#check Poincare.moise_local_charts_of_smoothability_package_eq
+#check Poincare.moise_locally_finite_cover_refinement_of_smoothability_package
+#check Poincare.moise_simplicial_complex_of_smoothability_package
+#check Poincare.moise_compatible_chart_triangulations_of_smoothability_package
+#check Poincare.moise_triangulation_of_smoothability_package
+#check Poincare.moise_triangulation_of_smoothability_package_eq
+#check Poincare.moise_simplicial_approximation_of_smoothability_package
+#check Poincare.moise_star_neighborhood_basis_of_smoothability_package
+#check Poincare.moise_barycentric_subdivision_of_smoothability_package
+#check Poincare.moise_regular_neighborhood_compatibility_of_smoothability_package
+#check Poincare.moise_triangulation_local_finiteness_of_smoothability_package
+#check Poincare.moise_link_compatibility_of_smoothability_package
+#check Poincare.moise_pl_manifold_recognition_of_smoothability_package
+#check Poincare.moise_triangulation_homeomorphism_of_smoothability_package
+#check Poincare.moise_compatibility_of_smoothability_package
+#check Poincare.moise_triangulation_uniqueness_of_smoothability_package
+#check Poincare.moise_hauptvermutung_dimension_three_of_smoothability_package
+#check Poincare.pl_structure_of_smoothability_package
+#check Poincare.pl_structure_of_smoothability_package_eq
+#check Poincare.pl_transition_compatibility_of_smoothability_package
+#check Poincare.pl_atlas_of_smoothability_package
+#check Poincare.pl_atlas_of_smoothability_package_eq
+#check Poincare.pl_manifold_atlas_of_smoothability_package
+#check Poincare.pl_collar_neighborhood_compatibility_of_smoothability_package
+#check Poincare.pl_homeomorphism_compatibility_of_smoothability_package
+#check Poincare.pl_atlas_maximality_of_smoothability_package
+#check Poincare.pl_smoothing_existence_of_smoothability_package
+#check Poincare.pl_smoothing_obstruction_vanishing_of_smoothability_package
+#check Poincare.pl_microbundle_smoothing_of_smoothability_package
+#check Poincare.pl_smoothing_of_smoothability_package
+#check Poincare.pl_smoothing_of_smoothability_package_eq
+#check Poincare.pl_smoothing_compatibility_of_smoothability_package
+#check Poincare.pl_smoothing_uniqueness_of_smoothability_package
+#check Poincare.pl_smoothing_local_model_compatibility_of_smoothability_package
+#check Poincare.smooth_structure_of_smoothability_package
+#check Poincare.smooth_structure_of_smoothability_package_eq
+#check Poincare.smooth_atlas_construction_of_smoothability_package
+#check Poincare.smooth_atlas_construction_of_smoothability_package_eq
+#check Poincare.smooth_atlas_pl_compatibility_of_smoothability_package
+#check Poincare.smooth_atlas_maximality_of_smoothability_package
+#check Poincare.smooth_atlas_uniqueness_of_smoothability_package
+#check Poincare.smooth_structure_uniqueness_of_smoothability_package
+#check Poincare.smooth_transition_compatibility_of_smoothability_package
+#check Poincare.smooth_transition_compatibility_of_smoothability_package_eq
+#check Poincare.smooth_atlas_transition_smoothness_of_smoothability_package
+#check Poincare.smooth_atlas_transition_smoothness_of_smoothability_package_eq
+#check Poincare.smooth_structure_derivation_of_smoothability_package
+#check Poincare.smooth_structure_derivation_of_smoothability_package_eq
+#check Poincare.smooth_structure_derivation_statement_of_components
+#check Poincare.smooth_structure_derivation_statement_of_smoothability_package
+#check Poincare.smoothability_smooth_structure_statement_payload_of_smoothability_package
+#check Poincare.smoothability_smooth_structure_statement_payload_of_smoothability_package_eq
+#check (show
+  Poincare.SmoothabilityBridgeStatement =
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        ∀ smoothStructure : Poincare.HasThreeManifoldSmoothStructure M,
+          Poincare.SmoothStructureDerivationStatement M smoothStructure →
+            IsManifold Poincare.ThreeManifoldModelWithCorners 1 M) from rfl)
+#check (show
+  Poincare.SmoothabilitySmoothManifoldStatement =
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        IsManifold (𝓡 3) ∞ M) from rfl)
+#check Poincare.smoothability_bridge_of_smoothability_package
+#check Poincare.smoothability_bridge_of_smoothability_package_eq
+#check Poincare.smoothability_smooth_manifold_statement_of_smoothability_package
+#check Poincare.smoothability_smooth_manifold_statement_of_smoothability_package_eq
+#check Poincare.smooth_manifold_of_smoothability_package
+#check Poincare.smooth_manifold_of_smoothability_package_eq
+#check Poincare.smoothability_smooth_manifold_payload_of_smoothability_package
+#check Poincare.smoothability_smooth_manifold_payload_of_smoothability_package_eq
+#check Poincare.smoothability_bridge_derivation_of_smoothability_package
+#check Poincare.smoothability_bridge_derivation_of_smoothability_package_eq
+#check Poincare.is_manifold_of_smoothability_bridge
+#check Poincare.is_manifold_of_smoothability_bridge_eq
+#check Poincare.smooth_model_compatibility_of_smoothability_package
+#check Poincare.smooth_model_compatibility_of_smoothability_package_eq
+#check Poincare.smooth_chart_compatibility_of_smoothability_package
+#check Poincare.smooth_chart_compatibility_of_smoothability_package_eq
+#check Poincare.SmoothabilitySubobligationsPayload
+#check Poincare.smoothability_subobligations_of_derivation_statement
+#check Poincare.smoothability_bridge_payload_of_smoothability_package
+#check Poincare.smoothability_bridge_payload_of_smoothability_package_eq
+#check Poincare.metric_of_ricci_flow_data
+#check Poincare.metric_of_ricci_flow_data_eq
+#check Poincare.curvature_data_of_ricci_flow_data
+#check Poincare.curvature_data_of_ricci_flow_data_eq
+#check Poincare.metric_at_time_of_time_dependent_metric
+#check Poincare.metric_at_time_of_time_dependent_metric_eq
+#check Poincare.metric_at_time_of_ricci_flow_data
+#check Poincare.metric_at_time_of_ricci_flow_data_eq
+#check Poincare.ricci_tensor_field_of_curvature_data
+#check Poincare.ricci_tensor_field_of_curvature_data_eq
+#check Poincare.scalar_curvature_field_of_curvature_data
+#check Poincare.scalar_curvature_field_of_curvature_data_eq
+#check Poincare.ricci_tensor_at_time_of_ricci_tensor_field
+#check Poincare.ricci_tensor_at_time_of_ricci_tensor_field_eq
+#check Poincare.scalar_curvature_at_time_of_scalar_curvature_field
+#check Poincare.scalar_curvature_at_time_of_scalar_curvature_field_eq
+#check Poincare.ricci_tensor_at_time_of_ricci_flow_data
+#check Poincare.ricci_tensor_at_time_of_ricci_flow_data_eq
+#check Poincare.scalar_curvature_at_time_of_ricci_flow_data
+#check Poincare.scalar_curvature_at_time_of_ricci_flow_data_eq
+#check Poincare.ricci_identification_of_curvature_data
+#check Poincare.ricci_identification_of_curvature_data_eq
+#check Poincare.ricci_identification_of_ricci_flow_data
+#check Poincare.ricci_identification_of_ricci_flow_data_eq
+#check Poincare.RicciFlowData.satisfies_equation_eq
+#check Poincare.equation_evidence_of_ricci_flow_data
+#check Poincare.equation_evidence_of_ricci_flow_data_eq
+#check Poincare.ricci_flow_data_of_analytic_foundation_package
+#check Poincare.ricci_flow_data_of_analytic_foundation_package_eq
+#check Poincare.levi_civita_existence_of_analytic_foundation_package
+#check Poincare.levi_civita_uniqueness_of_analytic_foundation_package
+#check Poincare.levi_civita_torsion_free_of_analytic_foundation_package
+#check Poincare.levi_civita_metric_compatibility_of_analytic_foundation_package
+#check Poincare.levi_civita_theory_of_analytic_foundation_package
+#check Poincare.riemann_curvature_construction_of_analytic_foundation_package
+#check Poincare.riemann_curvature_symmetries_of_analytic_foundation_package
+#check Poincare.first_bianchi_identity_of_analytic_foundation_package
+#check Poincare.second_bianchi_identity_of_analytic_foundation_package
+#check Poincare.riemann_curvature_theory_of_analytic_foundation_package
+#check Poincare.ricci_contraction_formula_of_analytic_foundation_package
+#check Poincare.scalar_curvature_contraction_formula_of_analytic_foundation_package
+#check Poincare.ricci_contraction_theory_of_analytic_foundation_package
+#check Poincare.metric_regularity_of_analytic_foundation_package
+#check Poincare.metric_time_derivative_of_analytic_foundation_package
+#check Poincare.scalar_curvature_theory_of_analytic_foundation_package
+#check Poincare.equation_derivation_of_analytic_foundation_package
+#check Poincare.initial_metric_compatibility_of_analytic_foundation_package
+#check Poincare.deturck_gauge_fixing_of_analytic_foundation_package
+#check Poincare.deturck_background_metric_compatibility_of_analytic_foundation_package
+#check Poincare.deturck_vector_field_construction_of_analytic_foundation_package
+#check Poincare.deturck_equation_derivation_of_analytic_foundation_package
+#check Poincare.ricci_deturck_linearization_of_analytic_foundation_package
+#check Poincare.strictly_parabolic_deturck_of_analytic_foundation_package
+#check Poincare.parabolic_linear_theory_of_analytic_foundation_package
+#check Poincare.parabolic_fixed_point_argument_of_analytic_foundation_package
+#check Poincare.deturck_short_time_existence_of_analytic_foundation_package
+#check Poincare.short_time_regularity_bootstrap_of_analytic_foundation_package
+#check Poincare.deturck_diffeomorphism_ode_of_analytic_foundation_package
+#check Poincare.deturck_pullback_equation_identity_of_analytic_foundation_package
+#check Poincare.deturck_pullback_to_ricci_flow_of_analytic_foundation_package
+#check Poincare.short_time_existence_of_analytic_foundation_package
+#check Poincare.maximal_time_interval_of_analytic_foundation_package
+#check Poincare.continuation_criterion_of_analytic_foundation_package
+#check Poincare.curvature_blowup_criterion_of_analytic_foundation_package
+#check Poincare.maximal_solution_extension_of_analytic_foundation_package
+#check Poincare.parabolic_schauder_estimates_of_analytic_foundation_package
+#check Poincare.parabolic_regularity_of_analytic_foundation_package
+#check Poincare.shi_derivative_estimates_of_analytic_foundation_package
+#check Poincare.curvature_derivative_bootstrap_of_analytic_foundation_package
+#check Poincare.hamilton_maximum_principle_of_analytic_foundation_package
+#check Poincare.uniqueness_theory_of_analytic_foundation_package
+#check Poincare.metric_evolution_equation_of_analytic_foundation_package
+#check Poincare.ricci_tensor_evolution_equation_of_analytic_foundation_package
+#check Poincare.scalar_curvature_evolution_equation_of_analytic_foundation_package
+#check Poincare.curvature_norm_evolution_inequality_of_analytic_foundation_package
+#check Poincare.curvature_evolution_of_analytic_foundation_package
+#check Poincare.ricci_identification_of_analytic_foundation_package
+#check Poincare.ricci_identification_of_analytic_foundation_package_eq
+#check Poincare.equation_evidence_of_analytic_foundation_package
+#check Poincare.equation_evidence_of_analytic_foundation_package_eq
+#check Poincare.AnalyticFoundationDerivationStatement
+#check Poincare.AnalyticFoundationSubobligationsPayload
+#check Poincare.RicciFlowAnalyticFoundationStatement
+#check Poincare.analytic_foundation_derivation_statement_of_components
+#check Poincare.analytic_foundation_subobligations_of_derivation_statement
+#check Poincare.analytic_foundation_derivation_statement_of_analytic_foundation_package
+#check Poincare.analytic_foundation_statement_of_analytic_foundation_package
+#check Poincare.analytic_foundation_payload_of_analytic_foundation_package
+#check Poincare.ricci_flow_data_of_analytic_foundation_statement
+#check Poincare.ricci_identification_of_analytic_foundation_statement
+#check Poincare.equation_evidence_of_analytic_foundation_statement
+#check Poincare.finite_extinction_fundamental_group_input_of_surgery_package
+#check Poincare.finite_extinction_sweepout_existence_of_surgery_package
+#check Poincare.finite_extinction_sweepout_parameter_space_of_surgery_package
+#check Poincare.finite_extinction_sweepout_continuity_of_surgery_package
+#check Poincare.finite_extinction_sweepout_area_bound_of_surgery_package
+#check Poincare.finite_extinction_sweepout_nontriviality_of_surgery_package
+#check Poincare.finite_extinction_area_functional_setup_of_surgery_package
+#check Poincare.finite_extinction_minmax_width_definition_of_surgery_package
+#check Poincare.finite_extinction_width_compactness_of_surgery_package
+#check Poincare.finite_extinction_width_lower_semicontinuity_of_surgery_package
+#check Poincare.finite_extinction_minimizing_sequence_of_surgery_package
+#check Poincare.finite_extinction_pull_tight_argument_of_surgery_package
+#check Poincare.finite_extinction_minmax_stationarity_of_surgery_package
+#check Poincare.finite_extinction_min_surface_regularity_of_surgery_package
+#check Poincare.finite_extinction_positive_width_of_surgery_package
+#check Poincare.finite_extinction_width_theory_of_surgery_package
+#check Poincare.finite_extinction_first_variation_formula_of_surgery_package
+#check Poincare.finite_extinction_second_variation_inequality_of_surgery_package
+#check Poincare.finite_extinction_gauss_bonnet_estimate_of_surgery_package
+#check Poincare.finite_extinction_scalar_curvature_width_bound_of_surgery_package
+#check Poincare.finite_extinction_width_evolution_of_surgery_package
+#check Poincare.finite_extinction_width_differential_inequality_of_surgery_package
+#check Poincare.finite_extinction_surgery_metric_comparison_of_surgery_package
+#check Poincare.finite_extinction_surgery_width_comparison_map_of_surgery_package
+#check Poincare.finite_extinction_surgery_width_drop_of_surgery_package
+#check Poincare.finite_extinction_surgery_discard_control_of_surgery_package
+#check Poincare.finite_extinction_discarded_component_width_neutrality_of_surgery_package
+#check Poincare.finite_extinction_discarded_component_sweepout_triviality_of_surgery_package
+#check Poincare.finite_extinction_discarded_component_classification_of_surgery_package
+#check Poincare.finite_extinction_surviving_component_tracking_of_surgery_package
+#check Poincare.finite_extinction_component_topology_of_surgery_package
+#check Poincare.finite_extinction_curvature_pinching_of_surgery_package
+#check Poincare.finite_extinction_positive_scalar_curvature_lower_bound_of_surgery_package
+#check Poincare.finite_extinction_positive_scalar_curvature_persistence_of_surgery_package
+#check Poincare.finite_extinction_component_control_of_surgery_package
+#check Poincare.finite_extinction_volume_evolution_formula_of_surgery_package
+#check Poincare.finite_extinction_surgery_volume_nonincrease_of_surgery_package
+#check Poincare.finite_extinction_scalar_curvature_differential_inequality_of_surgery_package
+#check Poincare.finite_extinction_volume_differential_inequality_of_surgery_package
+#check Poincare.finite_extinction_volume_decay_estimate_of_surgery_package
+#check Poincare.finite_extinction_time_bound_of_surgery_package
+#check Poincare.finite_extinction_differential_inequality_integration_of_surgery_package
+#check Poincare.finite_extinction_finite_time_integration_of_surgery_package
+#check Poincare.finite_extinction_surgery_time_summability_of_surgery_package
+#check Poincare.finite_extinction_extinction_time_contradiction_of_surgery_package
+#check Poincare.finite_extinction_derivation_of_surgery_package
+#check Poincare.finite_extinction_conclusion_derivation_of_surgery_package
+#check Poincare.finite_extinction_fundamental_group_input_of_surgery_package_eq
+#check Poincare.finite_extinction_sweepout_existence_of_surgery_package_eq
+#check Poincare.finite_extinction_sweepout_parameter_space_of_surgery_package_eq
+#check Poincare.finite_extinction_sweepout_continuity_of_surgery_package_eq
+#check Poincare.finite_extinction_sweepout_area_bound_of_surgery_package_eq
+#check Poincare.finite_extinction_sweepout_nontriviality_of_surgery_package_eq
+#check Poincare.finite_extinction_area_functional_setup_of_surgery_package_eq
+#check Poincare.finite_extinction_minmax_width_definition_of_surgery_package_eq
+#check Poincare.finite_extinction_width_compactness_of_surgery_package_eq
+#check Poincare.finite_extinction_width_lower_semicontinuity_of_surgery_package_eq
+#check Poincare.finite_extinction_minimizing_sequence_of_surgery_package_eq
+#check Poincare.finite_extinction_pull_tight_argument_of_surgery_package_eq
+#check Poincare.finite_extinction_minmax_stationarity_of_surgery_package_eq
+#check Poincare.finite_extinction_min_surface_regularity_of_surgery_package_eq
+#check Poincare.finite_extinction_positive_width_of_surgery_package_eq
+#check Poincare.finite_extinction_width_theory_of_surgery_package_eq
+#check Poincare.finite_extinction_first_variation_formula_of_surgery_package_eq
+#check Poincare.finite_extinction_second_variation_inequality_of_surgery_package_eq
+#check Poincare.finite_extinction_gauss_bonnet_estimate_of_surgery_package_eq
+#check Poincare.finite_extinction_scalar_curvature_width_bound_of_surgery_package_eq
+#check Poincare.finite_extinction_width_evolution_of_surgery_package_eq
+#check Poincare.finite_extinction_width_differential_inequality_of_surgery_package_eq
+#check Poincare.finite_extinction_surgery_metric_comparison_of_surgery_package_eq
+#check Poincare.finite_extinction_surgery_width_comparison_map_of_surgery_package_eq
+#check Poincare.finite_extinction_surgery_width_drop_of_surgery_package_eq
+#check Poincare.finite_extinction_surgery_discard_control_of_surgery_package_eq
+#check Poincare.finite_extinction_discarded_component_width_neutrality_of_surgery_package_eq
+#check Poincare.finite_extinction_discarded_component_sweepout_triviality_of_surgery_package_eq
+#check Poincare.finite_extinction_discarded_component_classification_of_surgery_package_eq
+#check Poincare.finite_extinction_surviving_component_tracking_of_surgery_package_eq
+#check Poincare.finite_extinction_component_topology_of_surgery_package_eq
+#check Poincare.finite_extinction_curvature_pinching_of_surgery_package_eq
+#check Poincare.finite_extinction_positive_scalar_curvature_lower_bound_of_surgery_package_eq
+#check Poincare.finite_extinction_positive_scalar_curvature_persistence_of_surgery_package_eq
+#check Poincare.finite_extinction_component_control_of_surgery_package_eq
+#check Poincare.finite_extinction_volume_evolution_formula_of_surgery_package_eq
+#check Poincare.finite_extinction_surgery_volume_nonincrease_of_surgery_package_eq
+#check Poincare.finite_extinction_scalar_curvature_differential_inequality_of_surgery_package_eq
+#check Poincare.finite_extinction_volume_differential_inequality_of_surgery_package_eq
+#check Poincare.finite_extinction_volume_decay_estimate_of_surgery_package_eq
+#check Poincare.finite_extinction_time_bound_of_surgery_package_eq
+#check Poincare.finite_extinction_finite_time_integration_of_surgery_package_eq
+#check Poincare.finite_extinction_surgery_time_summability_of_surgery_package_eq
+#check Poincare.finite_extinction_extinction_time_contradiction_of_surgery_package_eq
+#check Poincare.finite_extinction_differential_inequality_integration_of_surgery_package_eq
+#check Poincare.finite_extinction_derivation_of_surgery_package_eq
+#check Poincare.finite_extinction_conclusion_derivation_of_surgery_package_eq
+#check Poincare.FiniteExtinctionConclusionStatement
+#check Poincare.FiniteExtinctionStatement
+#check Poincare.finite_extinction_conclusion_statement_of_components
+#check Poincare.finite_extinction_conclusion_statement_of_surgery_package
+#check Poincare.finite_extinction_statement_of_surgery_package
+#check Poincare.finite_extinction_conclusion_statement_of_finite_extinction_statement
+#check Poincare.finite_extinction_of_finite_extinction_statement
+#check Poincare.finite_extinction_via_statement_of_surgery_package
+#check Poincare.FiniteExtinctionWidthSubobligationsStatement
+#check Poincare.FiniteExtinctionSubobligationsStatement
+#check Poincare.RicciFlowWithSurgeryConstructionSubobligationsPayload
+#check Poincare.PerelmanSingularityControlSubobligationsPayload
+#check Poincare.PerelmanMonotonicityBlowupSubobligationsPayload
+#check Poincare.surgery_construction_payload_of_construction_package
+#check Poincare.perelman_control_payload_of_package
+#check Poincare.FiniteExtinctionWidthSubobligationsPayload
+#check Poincare.FiniteExtinctionSubobligationsPayload
+#check Poincare.finite_extinction_width_subobligations_statement_of_surgery_package
+#check Poincare.finite_extinction_subobligations_statement_of_surgery_package
+#check Poincare.finite_extinction_width_subobligations_of_statement
+#check Poincare.finite_extinction_subobligations_of_statement
+#check Poincare.finite_extinction_subobligations_payload_of_surgery_package
+#check Poincare.finite_extinction_derivation_of_subobligations_statement
+#check Poincare.finite_extinction_conclusion_statement_of_subobligations_statement
+#check Poincare.finite_extinction_statement_of_subobligations_statement
+#check Poincare.finite_extinction_of_subobligations_statement
+#check Poincare.finite_extinction_statement_payload_of_surgery_package
+#check Poincare.extinction_extraction_of_poincare_statement
+#check Poincare.poincare_statement_iff_extinction_extraction
+#check Poincare.poincare_payload_of_extinction_and_extraction
+#check Poincare.canonical_three_sphere_statement_of_extinction_and_extraction
+#check Poincare.canonical_three_sphere_statement_iff_extinction_extraction
+#check Poincare.poincare_statement_of_canonical_three_sphere_statement
+#check Poincare.poincare_payload_of_canonical_three_sphere_statement
+#check Poincare.completion_criterion_of_canonical_three_sphere_statement
+#check Poincare.canonical_three_sphere_statement_of_poincare_statement
+#check Poincare.canonical_three_sphere_statement_of_poincare_payload
+#check Poincare.canonical_three_sphere_statement_iff_poincare_completion_payload
+#check Poincare.canonical_three_sphere_statement_of_completionCriterionAtUniverse
+#check Poincare.canonical_three_sphere_statement_iff_completionCriterionAtUniverse
+#check Poincare.smooth_statement_of_canonical_three_sphere_statement
+#check Poincare.poincare_payload_of_smooth_statement
+#check Poincare.completion_criterion_of_smooth_statement
+#check Poincare.canonical_three_sphere_statement_of_smooth_statement
+#check Poincare.poincare_statement_of_canonical_smooth_three_sphere_statement
+#check Poincare.canonical_three_sphere_statement_of_canonical_smooth_three_sphere_statement
+#check Poincare.poincare_payload_of_canonical_smooth_three_sphere_statement
+#check Poincare.completion_criterion_of_canonical_smooth_three_sphere_statement
+#check Poincare.canonical_smooth_three_sphere_statement_of_smooth_statement
+#check Poincare.canonical_smooth_three_sphere_statement_iff_smooth_statement
+#check Poincare.homeomorph_of_diffeomorph_three_sphere_eq
+#check Poincare.poincare_statement_of_canonical_three_sphere_statement_eq
+#check Poincare.poincare_payload_of_canonical_three_sphere_statement_eq
+#check Poincare.completion_criterion_of_canonical_three_sphere_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_poincare_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_poincare_payload_eq
+#check Poincare.canonical_three_sphere_statement_iff_poincare_completion_payload_eq
+#check Poincare.canonical_three_sphere_statement_of_completionCriterionAtUniverse_eq
+#check Poincare.canonical_three_sphere_statement_iff_completionCriterionAtUniverse_eq
+#check Poincare.smooth_statement_of_canonical_three_sphere_statement_eq
+#check Poincare.canonical_smooth_three_sphere_statement_of_smooth_statement_eq
+#check Poincare.canonical_smooth_three_sphere_statement_iff_smooth_statement_eq
+#check Poincare.poincare_statement_of_smooth_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_smooth_statement_eq
+#check Poincare.poincare_payload_of_smooth_statement_eq
+#check Poincare.completion_criterion_of_smooth_statement_eq
+#check Poincare.poincare_statement_of_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_canonical_smooth_three_sphere_statement_eq
+#check Poincare.poincare_payload_of_canonical_smooth_three_sphere_statement_eq
+#check Poincare.completion_criterion_of_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_payload_of_canonical_three_sphere_statement
+#check Poincare.canonical_completion_target_of_canonical_three_sphere_statement
+#check Poincare.canonical_completion_criterion_of_canonical_three_sphere_statement
+#check Poincare.canonical_three_sphere_statement_of_canonical_completion_target
+#check Poincare.canonical_three_sphere_statement_of_canonical_completion_payload
+#check Poincare.canonical_three_sphere_statement_iff_canonical_completion_target
+#check Poincare.canonical_three_sphere_statement_iff_canonical_completion_payload
+#check Poincare.canonical_three_sphere_statement_of_completion_certificate
+#check Poincare.poincareCompletionCertificate_canonical_statement_payload
+#check Poincare.completion_certificate_of_canonical_statement_payload
+#check Poincare.poincareCompletionCertificate_iff_canonical_statement_payload
+#check Poincare.poincareCompletionCertificate_aggregate_canonical_statement_payload
+#check Poincare.completion_certificate_of_aggregate_canonical_statement_payload
+#check Poincare.poincareCompletionCertificate_iff_aggregate_canonical_statement_payload
+#check Poincare.completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement
+#check Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_canonical_three_sphere_statement
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_canonical_three_sphere_statement
+#check Poincare.canonical_completion_payload_of_canonical_three_sphere_statement_eq
+#check Poincare.canonical_completion_target_of_canonical_three_sphere_statement_eq
+#check Poincare.canonical_completion_criterion_of_canonical_three_sphere_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_canonical_completion_target_eq
+#check Poincare.canonical_three_sphere_statement_of_canonical_completion_payload_eq
+#check Poincare.canonical_three_sphere_statement_iff_canonical_completion_target_eq
+#check Poincare.canonical_three_sphere_statement_iff_canonical_completion_payload_eq
+#check Poincare.canonical_three_sphere_statement_of_completion_certificate_eq
+#check Poincare.poincareCompletionCertificate_canonical_statement_payload_eq
+#check Poincare.completion_certificate_of_canonical_statement_payload_eq
+#check Poincare.poincareCompletionCertificate_iff_canonical_statement_payload_eq
+#check Poincare.poincareCompletionCertificate_aggregate_canonical_statement_payload_eq
+#check Poincare.completion_certificate_of_aggregate_canonical_statement_payload_eq
+#check Poincare.poincareCompletionCertificate_iff_aggregate_canonical_statement_payload_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement_eq
+#check Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_canonical_three_sphere_statement_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_canonical_three_sphere_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_package
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_aggregate_extraction_derivation
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_projections
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_extraction_derivation_projections
+#check Poincare.canonical_completion_payload_of_canonical_smooth_three_sphere_statement
+#check Poincare.canonical_completion_target_of_canonical_smooth_three_sphere_statement
+#check Poincare.canonical_completion_criterion_of_canonical_smooth_three_sphere_statement
+#check Poincare.completion_certificate_of_remaining_dependency_and_smooth_statement
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_smooth_statement
+#check Poincare.completion_certificate_of_remaining_dependency_and_canonical_smooth_three_sphere_statement
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_canonical_smooth_three_sphere_statement
+#check Poincare.packaged_smooth_statement_completion_payload_of_remaining_dependency
+#check Poincare.packaged_smooth_statement_completion_payload_of_poincareProofDependencies
+#check Poincare.packaged_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency
+#check Poincare.packaged_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies
+#check Poincare.poincare_statement_of_remaining_dependency_and_packaged_smooth_statement
+#check Poincare.completion_criterion_of_remaining_dependency_and_packaged_smooth_statement
+#check Poincare.poincare_statement_of_poincareProofDependencies_and_packaged_smooth_statement
+#check Poincare.completion_criterion_of_poincareProofDependencies_and_packaged_smooth_statement
+#check Poincare.poincare_statement_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement
+#check Poincare.completion_criterion_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement
+#check Poincare.poincare_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement
+#check Poincare.completion_criterion_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement
+#check Poincare.poincare_completion_payload_of_remaining_dependency_and_packaged_smooth_statement
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement
+#check Poincare.poincare_completion_payload_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement
+#check Poincare.canonical_completion_payload_of_remaining_dependency_and_packaged_smooth_statement
+#check Poincare.canonical_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement
+#check Poincare.canonical_completion_payload_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement
+#check Poincare.canonical_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement
+#check Poincare.canonical_completion_target_of_remaining_dependency_and_packaged_smooth_statement
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_and_packaged_smooth_statement
+#check Poincare.canonical_completion_target_of_poincareProofDependencies_and_packaged_smooth_statement
+#check Poincare.canonical_completion_criterion_of_poincareProofDependencies_and_packaged_smooth_statement
+#check Poincare.canonical_completion_target_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement
+#check Poincare.canonical_completion_target_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement
+#check Poincare.canonical_completion_criterion_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_and_packaged_smooth_statement
+#check Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_and_packaged_smooth_statement
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement
+#check Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement
+#check Poincare.completion_certificate_of_remaining_dependency_and_packaged_smooth_statement
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_packaged_smooth_statement
+#check Poincare.completion_certificate_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement
+#check Poincare.poincareCompletionCertificate_remainingDependencyPackage_packaged_smooth_statement_payload
+#check Poincare.poincareCompletionCertificate_poincareProofDependencies_packaged_smooth_statement_payload
+#check Poincare.poincareCompletionCertificate_remainingDependencyPackage_packaged_canonical_smooth_three_sphere_statement_payload
+#check Poincare.poincareCompletionCertificate_poincareProofDependencies_packaged_canonical_smooth_three_sphere_statement_payload
+#check Poincare.completion_certificate_of_remaining_dependency_package_packaged_smooth_statement_payload
+#check Poincare.completion_certificate_of_poincareProofDependencies_packaged_smooth_statement_payload
+#check Poincare.completion_certificate_of_remaining_dependency_package_packaged_canonical_smooth_three_sphere_statement_payload
+#check Poincare.completion_certificate_of_poincareProofDependencies_packaged_canonical_smooth_three_sphere_statement_payload
+#check Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_packaged_smooth_statement_payload
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_packaged_smooth_statement_payload
+#check Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_packaged_canonical_smooth_three_sphere_statement_payload
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_payload
+#check Poincare.canonicalCompletionTheoremName_eq
+#check Poincare.canonicalCompletionTarget_eq
+#check Poincare.canonicalCompletionTarget_iff_poincareConjectureStatement
+#check Poincare.canonicalCompletionTarget_iff_poincareConjectureStatement_eq
+#check Poincare.canonicalCompletionTarget_eq_completionCriterionAtUniverse
+#check Poincare.canonicalCompletionTarget_iff_completionCriterionAtUniverse
+#check Poincare.canonicalCompletionTarget_iff_completionCriterionAtUniverse_eq
+#check Poincare.extinction_extraction_of_canonical_completion_target
+#check Poincare.extinction_extraction_of_canonical_completion_target_eq
+#check Poincare.canonical_completion_target_of_extinction_and_extraction
+#check Poincare.canonical_completion_target_of_extinction_and_extraction_eq
+#check Poincare.canonicalCompletionTarget_iff_extinction_extraction
+#check Poincare.canonicalCompletionTarget_iff_extinction_extraction_eq
+#check Poincare.completion_criterion_of_canonical_completion_target
+#check Poincare.completion_criterion_of_canonical_completion_target_eq
+#check Poincare.canonical_completion_payload_of_canonical_completion_target
+#check Poincare.canonical_completion_payload_of_canonical_completion_target_eq
+#check Poincare.poincare_completion_payload_of_canonical_completion_target
+#check Poincare.poincare_completion_payload_of_canonical_completion_target_eq
+#check Poincare.canonical_completion_payload_of_poincare_completion_payload
+#check Poincare.canonical_completion_payload_of_poincare_completion_payload_eq
+#check Poincare.canonicalCompletionTarget_of_poincare_completion_payload
+#check Poincare.canonicalCompletionTarget_of_poincare_completion_payload_eq
+#check Poincare.canonical_completion_target_of_canonical_completion_payload
+#check Poincare.canonical_completion_target_of_canonical_completion_payload_eq
+#check Poincare.completion_criterion_of_canonical_completion_payload
+#check Poincare.completion_criterion_of_canonical_completion_payload_eq
+#check Poincare.canonicalCompletionTarget_iff_canonical_completion_payload
+#check Poincare.canonicalCompletionTarget_iff_canonical_completion_payload_eq
+#check Poincare.completionCriterionAtUniverse_iff_canonical_completion_payload
+#check Poincare.completionCriterionAtUniverse_iff_canonical_completion_payload_eq
+#check Poincare.canonical_completion_payload_of_completion_criterion
+#check Poincare.canonical_completion_payload_of_completion_criterion_eq
+#check Poincare.poincare_completion_payload_of_canonical_completion_payload
+#check Poincare.poincare_completion_payload_of_canonical_completion_payload_eq
+#check Poincare.canonical_completion_payload_iff_poincare_completion_payload
+#check Poincare.canonical_completion_payload_iff_poincare_completion_payload_eq
+#check Poincare.canonical_completion_payload_of_extinction_and_extraction
+#check Poincare.canonical_completion_payload_of_extinction_and_extraction_eq
+#check Poincare.canonical_completion_criterion_of_extinction_and_extraction
+#check Poincare.canonical_completion_criterion_of_extinction_and_extraction_eq
+#check Poincare.canonical_completion_payload_of_finite_extinction_and_topology_extraction_statement
+#check Poincare.canonical_completion_payload_of_finite_extinction_and_topology_extraction_statement_eq
+#check Poincare.canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+#check Poincare.canonical_completion_target_of_finite_extinction_and_topology_extraction_statement_eq
+#check Poincare.canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+#check Poincare.canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement_eq
+#check Poincare.canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+#check Poincare.canonical_completion_payload_of_finite_extinction_and_extraction_derivation_eq
+#check Poincare.canonical_completion_target_of_finite_extinction_and_extraction_derivation
+#check Poincare.canonical_completion_target_of_finite_extinction_and_extraction_derivation_eq
+#check Poincare.canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+#check Poincare.canonical_completion_criterion_of_finite_extinction_and_extraction_derivation_eq
+#check Poincare.canonical_completion_target_of_completion_criterion
+#check Poincare.canonical_completion_target_of_completion_criterion_eq
+#check Poincare.finite_extinction_statement_payload_of_smoothability_and_surgery_packages
+#check Poincare.finite_extinction_input_of_smoothability_and_surgery_packages
+#check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages
+#check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation
+#check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_extraction_statement
+#check Poincare.poincare_assembly_inputs_payload_of_surgery_and_extraction_derivation
+#check Poincare.poincare_target_payload_of_surgery_and_topology_packages
+#check Poincare.poincare_target_payload_of_surgery_and_topology_package_extraction_derivation
+#check Poincare.poincare_target_payload_of_surgery_and_topology_extraction_statement
+#check Poincare.poincare_target_payload_of_surgery_and_extraction_derivation
+#check Poincare.poincare_full_assembly_payload_of_surgery_and_topology_packages
+#check Poincare.poincare_statement_of_surgery_and_topology_extraction_statement
+#check Poincare.poincare_completion_payload_of_surgery_and_topology_packages
+#check Poincare.poincare_completion_payload_of_surgery_and_topology_package_extraction_derivation
+#check Poincare.poincare_completion_payload_of_surgery_and_topology_extraction_statement
+#check Poincare.poincare_completion_payload_of_surgery_and_extraction_derivation
+#check Poincare.poincare_statement_of_surgery_and_extraction_derivation
+#check Poincare.poincare_statement_of_surgery_and_topology_package_extraction_derivation
+#check Poincare.canonical_three_sphere_statement_of_surgery_and_topology_packages
+#check Poincare.canonical_three_sphere_statement_of_surgery_and_topology_extraction_statement
+#check Poincare.canonical_three_sphere_statement_of_surgery_and_extraction_derivation
+#check Poincare.canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation
+#check Poincare.canonical_completion_payload_of_surgery_and_topology_packages
+#check Poincare.canonical_completion_payload_of_surgery_and_topology_packages_eq
+#check Poincare.canonical_completion_target_of_surgery_and_topology_packages
+#check Poincare.canonical_completion_target_of_surgery_and_topology_packages_eq
+#check Poincare.canonical_completion_criterion_of_surgery_and_topology_packages
+#check Poincare.canonical_completion_criterion_of_surgery_and_topology_packages_eq
+#check Poincare.canonical_completion_payload_of_surgery_and_topology_package_extraction_derivation
+#check Poincare.canonical_completion_payload_of_surgery_and_topology_package_extraction_derivation_eq
+#check Poincare.canonical_completion_target_of_surgery_and_topology_package_extraction_derivation
+#check Poincare.canonical_completion_target_of_surgery_and_topology_package_extraction_derivation_eq
+#check Poincare.canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation
+#check Poincare.canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation_eq
+#check Poincare.canonical_completion_payload_of_surgery_and_topology_extraction_statement
+#check Poincare.canonical_completion_payload_of_surgery_and_topology_extraction_statement_eq
+#check Poincare.canonical_completion_target_of_surgery_and_topology_extraction_statement
+#check Poincare.canonical_completion_target_of_surgery_and_topology_extraction_statement_eq
+#check Poincare.canonical_completion_criterion_of_surgery_and_topology_extraction_statement
+#check Poincare.canonical_completion_criterion_of_surgery_and_topology_extraction_statement_eq
+#check Poincare.canonical_completion_payload_of_surgery_and_extraction_derivation
+#check Poincare.canonical_completion_payload_of_surgery_and_extraction_derivation_eq
+#check Poincare.canonical_completion_target_of_surgery_and_extraction_derivation
+#check Poincare.canonical_completion_target_of_surgery_and_extraction_derivation_eq
+#check Poincare.canonical_completion_criterion_of_surgery_and_extraction_derivation
+#check Poincare.canonical_completion_criterion_of_surgery_and_extraction_derivation_eq
+#check Poincare.poincare_completion_payload_of_component_requirements
+#check Poincare.poincare_completion_payload_of_component_requirements_eq
+#check Poincare.canonical_completion_payload_of_component_requirements
+#check Poincare.canonical_completion_payload_of_component_requirements_eq
+#check Poincare.canonical_completion_target_of_component_requirements
+#check Poincare.canonical_completion_target_of_component_requirements_eq
+#check Poincare.canonical_completion_criterion_of_component_requirements
+#check Poincare.canonical_completion_criterion_of_component_requirements_eq
+#check Poincare.canonical_three_sphere_statement_of_component_requirements
+#check Poincare.canonical_three_sphere_statement_of_component_requirements_eq
+#check Poincare.poincare_completion_payload_of_component_extraction_derivation_requirements
+#check Poincare.poincare_completion_payload_of_component_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_payload_of_component_extraction_derivation_requirements
+#check Poincare.canonical_completion_payload_of_component_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_target_of_component_extraction_derivation_requirements
+#check Poincare.canonical_completion_target_of_component_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_criterion_of_component_extraction_derivation_requirements
+#check Poincare.canonical_completion_criterion_of_component_extraction_derivation_requirements_eq
+#check Poincare.canonical_three_sphere_statement_of_component_extraction_derivation_requirements
+#check Poincare.canonical_three_sphere_statement_of_component_extraction_derivation_requirements_eq
+#check Poincare.poincare_completion_payload_of_package_layer_requirements
+#check Poincare.poincare_completion_payload_of_package_layer_requirements_eq
+#check Poincare.canonical_completion_payload_of_package_layer_requirements
+#check Poincare.canonical_completion_payload_of_package_layer_requirements_eq
+#check Poincare.canonical_completion_target_of_package_layer_requirements
+#check Poincare.canonical_completion_target_of_package_layer_requirements_eq
+#check Poincare.canonical_completion_criterion_of_package_layer_requirements
+#check Poincare.canonical_completion_criterion_of_package_layer_requirements_eq
+#check Poincare.canonical_three_sphere_statement_of_package_layer_requirements
+#check Poincare.canonical_three_sphere_statement_of_package_layer_requirements_eq
+#check Poincare.poincare_completion_payload_of_package_layer_extraction_derivation_requirements
+#check Poincare.poincare_completion_payload_of_package_layer_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_payload_of_package_layer_extraction_derivation_requirements
+#check Poincare.canonical_completion_payload_of_package_layer_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_target_of_package_layer_extraction_derivation_requirements
+#check Poincare.canonical_completion_target_of_package_layer_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_criterion_of_package_layer_extraction_derivation_requirements
+#check Poincare.canonical_completion_criterion_of_package_layer_extraction_derivation_requirements_eq
+#check Poincare.canonical_three_sphere_statement_of_package_layer_extraction_derivation_requirements
+#check Poincare.canonical_three_sphere_statement_of_package_layer_extraction_derivation_requirements_eq
+#check Poincare.poincare_completion_payload_of_milestone_requirements
+#check Poincare.poincare_completion_payload_of_milestone_requirements_eq
+#check Poincare.canonical_completion_payload_of_milestone_requirements
+#check Poincare.canonical_completion_payload_of_milestone_requirements_eq
+#check Poincare.canonical_completion_target_of_milestone_requirements
+#check Poincare.canonical_completion_target_of_milestone_requirements_eq
+#check Poincare.canonical_completion_criterion_of_milestone_requirements
+#check Poincare.canonical_completion_criterion_of_milestone_requirements_eq
+#check Poincare.poincare_completion_payload_of_milestone_extraction_derivation_requirements
+#check Poincare.poincare_completion_payload_of_milestone_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_payload_of_milestone_extraction_derivation_requirements
+#check Poincare.canonical_completion_payload_of_milestone_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_target_of_milestone_extraction_derivation_requirements
+#check Poincare.canonical_completion_target_of_milestone_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_criterion_of_milestone_extraction_derivation_requirements
+#check Poincare.canonical_completion_criterion_of_milestone_extraction_derivation_requirements_eq
+#check Poincare.canonical_three_sphere_statement_of_milestone_requirements
+#check Poincare.canonical_three_sphere_statement_of_milestone_requirements_eq
+#check Poincare.canonical_three_sphere_statement_of_milestone_extraction_derivation_requirements
+#check Poincare.canonical_three_sphere_statement_of_milestone_extraction_derivation_requirements_eq
+#check Poincare.poincareProofDependencies_components_payload
+#check Poincare.poincareProofDependencies_components_payload_eq
+#check Poincare.poincareProofDependencies_iff_components
+#check Poincare.poincareProofDependencies_of_components_payload
+#check Poincare.poincareProofDependencies_iff_components_eq
+#check Poincare.remainingDependencyPackage_eq
+#check Poincare.remainingDependencyPackage_iff_poincareProofDependencies
+#check Poincare.smoothability_package_of_remaining_dependency_package
+#check Poincare.smoothability_smooth_manifold_statement_of_remaining_dependency_package
+#check Poincare.smooth_manifold_of_remaining_dependency_package
+#check Poincare.smoothability_smooth_manifold_payload_of_remaining_dependency_package
+#check Poincare.smoothability_package_of_remaining_dependency_package_eq
+#check Poincare.smoothability_smooth_manifold_statement_of_remaining_dependency_package_eq
+#check Poincare.smooth_manifold_of_remaining_dependency_package_eq
+#check Poincare.smoothability_smooth_manifold_payload_of_remaining_dependency_package_eq
+#check Poincare.surgery_packages_of_remaining_dependency_package
+#check Poincare.topology_package_of_remaining_dependency_package
+#check Poincare.surgery_packages_of_remaining_dependency_package_eq
+#check Poincare.topology_package_of_remaining_dependency_package_eq
+#check Poincare.remainingDependencyPackage_components_payload
+#check Poincare.remainingDependencyPackage_iff_components
+#check Poincare.remainingDependencyPackage_components_payload_eq
+#check Poincare.remainingDependencyPackage_iff_components_eq
+#check Poincare.remainingDependencyPackage_component_requirements_payload
+#check Poincare.remainingDependencyPackage_iff_component_requirements
+#check Poincare.remainingDependencyPackage_component_requirements_payload_eq
+#check Poincare.remainingDependencyPackage_iff_component_requirements_eq
+#check Poincare.remainingDependencyPackage_package_layer_requirements_payload
+#check Poincare.remainingDependencyPackage_iff_package_layer_requirements
+#check Poincare.remainingDependencyPackage_package_layer_requirements_payload_eq
+#check Poincare.remainingDependencyPackage_iff_package_layer_requirements_eq
+#check Poincare.remainingDependencyPackage_milestone_requirements_payload_eq
+#check Poincare.remainingDependencyPackage_iff_milestone_requirements_eq
+#check Poincare.canonical_completion_payload_of_remaining_dependency_component_requirements
+#check Poincare.canonical_completion_payload_of_remaining_dependency_component_requirements_eq
+#check Poincare.canonical_completion_target_of_remaining_dependency_component_requirements
+#check Poincare.canonical_completion_target_of_remaining_dependency_component_requirements_eq
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_component_requirements
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_component_requirements_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_component_requirements
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_component_requirements_eq
+#check Poincare.canonical_completion_payload_of_remaining_dependency_component_extraction_derivation_requirements
+#check Poincare.canonical_completion_payload_of_remaining_dependency_component_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_target_of_remaining_dependency_component_extraction_derivation_requirements
+#check Poincare.canonical_completion_target_of_remaining_dependency_component_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_component_extraction_derivation_requirements
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_component_extraction_derivation_requirements_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_component_extraction_derivation_requirements
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_component_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_payload_of_remaining_dependency_package_layer_requirements
+#check Poincare.canonical_completion_payload_of_remaining_dependency_package_layer_requirements_eq
+#check Poincare.canonical_completion_target_of_remaining_dependency_package_layer_requirements
+#check Poincare.canonical_completion_target_of_remaining_dependency_package_layer_requirements_eq
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_package_layer_requirements
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_package_layer_requirements_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_package_layer_requirements
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_package_layer_requirements_eq
+#check Poincare.canonical_completion_payload_of_remaining_dependency_package_layer_extraction_derivation_requirements
+#check Poincare.canonical_completion_payload_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_target_of_remaining_dependency_package_layer_extraction_derivation_requirements
+#check Poincare.canonical_completion_target_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_package_layer_extraction_derivation_requirements
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_package_layer_extraction_derivation_requirements
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_payload_of_remaining_dependency_milestone_requirements_eq
+#check Poincare.canonical_completion_target_of_remaining_dependency_milestone_requirements_eq
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_milestone_requirements_eq
+#check Poincare.canonical_completion_payload_of_remaining_dependency_milestone_extraction_derivation_requirements
+#check Poincare.canonical_completion_payload_of_remaining_dependency_milestone_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_target_of_remaining_dependency_milestone_extraction_derivation_requirements
+#check Poincare.canonical_completion_target_of_remaining_dependency_milestone_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_milestone_extraction_derivation_requirements
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_milestone_extraction_derivation_requirements_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_milestone_requirements
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_milestone_requirements_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_milestone_extraction_derivation_requirements
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_milestone_extraction_derivation_requirements_eq
+#check Poincare.poincare_completion_payload_of_remaining_dependency_component_requirements
+#check Poincare.poincare_completion_payload_of_remaining_dependency_component_requirements_eq
+#check Poincare.poincare_statement_of_remaining_dependency_component_requirements
+#check Poincare.poincare_statement_of_remaining_dependency_component_requirements_eq
+#check Poincare.completion_criterion_of_remaining_dependency_component_requirements
+#check Poincare.completion_criterion_of_remaining_dependency_component_requirements_eq
+#check Poincare.poincare_completion_payload_of_remaining_dependency_component_extraction_derivation_requirements
+#check Poincare.poincare_completion_payload_of_remaining_dependency_component_extraction_derivation_requirements_eq
+#check Poincare.poincare_statement_of_remaining_dependency_component_extraction_derivation_requirements
+#check Poincare.poincare_statement_of_remaining_dependency_component_extraction_derivation_requirements_eq
+#check Poincare.completion_criterion_of_remaining_dependency_component_extraction_derivation_requirements
+#check Poincare.completion_criterion_of_remaining_dependency_component_extraction_derivation_requirements_eq
+#check Poincare.poincare_completion_payload_of_remaining_dependency_package_layer_requirements
+#check Poincare.poincare_completion_payload_of_remaining_dependency_package_layer_requirements_eq
+#check Poincare.poincare_statement_of_remaining_dependency_package_layer_requirements
+#check Poincare.poincare_statement_of_remaining_dependency_package_layer_requirements_eq
+#check Poincare.completion_criterion_of_remaining_dependency_package_layer_requirements
+#check Poincare.completion_criterion_of_remaining_dependency_package_layer_requirements_eq
+#check Poincare.poincare_completion_payload_of_remaining_dependency_package_layer_extraction_derivation_requirements
+#check Poincare.poincare_completion_payload_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq
+#check Poincare.poincare_statement_of_remaining_dependency_package_layer_extraction_derivation_requirements
+#check Poincare.poincare_statement_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq
+#check Poincare.completion_criterion_of_remaining_dependency_package_layer_extraction_derivation_requirements
+#check Poincare.completion_criterion_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq
+#check Poincare.poincare_completion_payload_of_remaining_dependency_milestone_requirements
+#check Poincare.poincare_completion_payload_of_remaining_dependency_milestone_requirements_eq
+#check Poincare.poincare_statement_of_remaining_dependency_milestone_requirements
+#check Poincare.poincare_statement_of_remaining_dependency_milestone_requirements_eq
+#check Poincare.completion_criterion_of_remaining_dependency_milestone_requirements
+#check Poincare.completion_criterion_of_remaining_dependency_milestone_requirements_eq
+#check Poincare.poincare_completion_payload_of_remaining_dependency_milestone_extraction_derivation_requirements
+#check Poincare.poincare_completion_payload_of_remaining_dependency_milestone_extraction_derivation_requirements_eq
+#check Poincare.poincare_statement_of_remaining_dependency_milestone_extraction_derivation_requirements
+#check Poincare.poincare_statement_of_remaining_dependency_milestone_extraction_derivation_requirements_eq
+#check Poincare.completion_criterion_of_remaining_dependency_milestone_extraction_derivation_requirements
+#check Poincare.completion_criterion_of_remaining_dependency_milestone_extraction_derivation_requirements_eq
+#check Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_component_requirements
+#check Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_component_requirements_eq
+#check Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_component_extraction_derivation_requirements
+#check Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_component_extraction_derivation_requirements_eq
+#check Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_package_layer_requirements
+#check Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_package_layer_requirements_eq
+#check Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+#check Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq
+#check Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_milestone_requirements
+#check Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_milestone_requirements_eq
+#check Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+#check Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_milestone_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_payload_of_poincareProofDependencies_component_requirements
+#check Poincare.canonical_completion_payload_of_poincareProofDependencies_component_requirements_eq
+#check Poincare.canonical_completion_target_of_poincareProofDependencies_component_requirements
+#check Poincare.canonical_completion_target_of_poincareProofDependencies_component_requirements_eq
+#check Poincare.canonical_completion_criterion_of_poincareProofDependencies_component_requirements
+#check Poincare.canonical_completion_criterion_of_poincareProofDependencies_component_requirements_eq
+#check Poincare.canonical_completion_payload_of_poincareProofDependencies_component_extraction_derivation_requirements
+#check Poincare.canonical_completion_payload_of_poincareProofDependencies_component_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_target_of_poincareProofDependencies_component_extraction_derivation_requirements
+#check Poincare.canonical_completion_target_of_poincareProofDependencies_component_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_criterion_of_poincareProofDependencies_component_extraction_derivation_requirements
+#check Poincare.canonical_completion_criterion_of_poincareProofDependencies_component_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_payload_of_poincareProofDependencies_package_layer_requirements
+#check Poincare.canonical_completion_payload_of_poincareProofDependencies_package_layer_requirements_eq
+#check Poincare.canonical_completion_target_of_poincareProofDependencies_package_layer_requirements
+#check Poincare.canonical_completion_target_of_poincareProofDependencies_package_layer_requirements_eq
+#check Poincare.canonical_completion_criterion_of_poincareProofDependencies_package_layer_requirements
+#check Poincare.canonical_completion_criterion_of_poincareProofDependencies_package_layer_requirements_eq
+#check Poincare.canonical_completion_payload_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+#check Poincare.canonical_completion_payload_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_target_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+#check Poincare.canonical_completion_target_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_criterion_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+#check Poincare.canonical_completion_criterion_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_payload_of_poincareProofDependencies_milestone_requirements
+#check Poincare.canonical_completion_payload_of_poincareProofDependencies_milestone_requirements_eq
+#check Poincare.canonical_completion_target_of_poincareProofDependencies_milestone_requirements
+#check Poincare.canonical_completion_target_of_poincareProofDependencies_milestone_requirements_eq
+#check Poincare.canonical_completion_criterion_of_poincareProofDependencies_milestone_requirements
+#check Poincare.canonical_completion_criterion_of_poincareProofDependencies_milestone_requirements_eq
+#check Poincare.canonical_completion_payload_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+#check Poincare.canonical_completion_payload_of_poincareProofDependencies_milestone_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_target_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+#check Poincare.canonical_completion_target_of_poincareProofDependencies_milestone_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_criterion_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+#check Poincare.canonical_completion_criterion_of_poincareProofDependencies_milestone_extraction_derivation_requirements_eq
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_component_requirements
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_component_requirements_eq
+#check Poincare.poincare_statement_of_poincareProofDependencies_component_requirements
+#check Poincare.poincare_statement_of_poincareProofDependencies_component_requirements_eq
+#check Poincare.completion_criterion_of_poincareProofDependencies_component_requirements
+#check Poincare.completion_criterion_of_poincareProofDependencies_component_requirements_eq
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_component_extraction_derivation_requirements
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_component_extraction_derivation_requirements_eq
+#check Poincare.poincare_statement_of_poincareProofDependencies_component_extraction_derivation_requirements
+#check Poincare.poincare_statement_of_poincareProofDependencies_component_extraction_derivation_requirements_eq
+#check Poincare.completion_criterion_of_poincareProofDependencies_component_extraction_derivation_requirements
+#check Poincare.completion_criterion_of_poincareProofDependencies_component_extraction_derivation_requirements_eq
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_package_layer_requirements
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_package_layer_requirements_eq
+#check Poincare.poincare_statement_of_poincareProofDependencies_package_layer_requirements
+#check Poincare.poincare_statement_of_poincareProofDependencies_package_layer_requirements_eq
+#check Poincare.completion_criterion_of_poincareProofDependencies_package_layer_requirements
+#check Poincare.completion_criterion_of_poincareProofDependencies_package_layer_requirements_eq
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq
+#check Poincare.poincare_statement_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+#check Poincare.poincare_statement_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq
+#check Poincare.completion_criterion_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+#check Poincare.completion_criterion_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_milestone_requirements
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_milestone_requirements_eq
+#check Poincare.poincare_statement_of_poincareProofDependencies_milestone_requirements
+#check Poincare.poincare_statement_of_poincareProofDependencies_milestone_requirements_eq
+#check Poincare.completion_criterion_of_poincareProofDependencies_milestone_requirements
+#check Poincare.completion_criterion_of_poincareProofDependencies_milestone_requirements_eq
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_milestone_extraction_derivation_requirements_eq
+#check Poincare.poincare_statement_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+#check Poincare.poincare_statement_of_poincareProofDependencies_milestone_extraction_derivation_requirements_eq
+#check Poincare.completion_criterion_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+#check Poincare.completion_criterion_of_poincareProofDependencies_milestone_extraction_derivation_requirements_eq
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_component_requirements_to_remaining_dependency_eq
+#check Poincare.poincare_statement_of_poincareProofDependencies_component_requirements_to_remaining_dependency_eq
+#check Poincare.completion_criterion_of_poincareProofDependencies_component_requirements_to_remaining_dependency_eq
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_component_extraction_derivation_requirements_to_remaining_dependency_eq
+#check Poincare.poincare_statement_of_poincareProofDependencies_component_extraction_derivation_requirements_to_remaining_dependency_eq
+#check Poincare.completion_criterion_of_poincareProofDependencies_component_extraction_derivation_requirements_to_remaining_dependency_eq
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_package_layer_requirements_to_remaining_dependency_eq
+#check Poincare.poincare_statement_of_poincareProofDependencies_package_layer_requirements_to_remaining_dependency_eq
+#check Poincare.completion_criterion_of_poincareProofDependencies_package_layer_requirements_to_remaining_dependency_eq
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_to_remaining_dependency_eq
+#check Poincare.poincare_statement_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_to_remaining_dependency_eq
+#check Poincare.completion_criterion_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_to_remaining_dependency_eq
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_milestone_requirements_to_remaining_dependency_eq
+#check Poincare.poincare_statement_of_poincareProofDependencies_milestone_requirements_to_remaining_dependency_eq
+#check Poincare.completion_criterion_of_poincareProofDependencies_milestone_requirements_to_remaining_dependency_eq
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_milestone_extraction_derivation_requirements_to_remaining_dependency_eq
+#check Poincare.poincare_statement_of_poincareProofDependencies_milestone_extraction_derivation_requirements_to_remaining_dependency_eq
+#check Poincare.completion_criterion_of_poincareProofDependencies_milestone_extraction_derivation_requirements_to_remaining_dependency_eq
+#check Poincare.poincare_completion_payload_of_remaining_dependency_package
+#check Poincare.poincare_completion_payload_of_remaining_dependency_package_eq
+#check Poincare.canonical_completion_payload_of_dependencies
+#check Poincare.canonical_completion_payload_of_dependencies_eq
+#check Poincare.canonical_completion_target_of_dependencies
+#check Poincare.canonical_completion_target_of_dependencies_eq
+#check Poincare.canonical_completion_criterion_of_dependencies
+#check Poincare.canonical_completion_criterion_of_dependencies_eq
+#check Poincare.canonical_completion_payload_of_aggregate_extraction_derivation_dependencies
+#check Poincare.canonical_completion_payload_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.canonical_completion_target_of_aggregate_extraction_derivation_dependencies
+#check Poincare.canonical_completion_target_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies
+#check Poincare.canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.canonical_completion_payload_of_dependency_projections
+#check Poincare.canonical_completion_payload_of_dependency_projections_eq
+#check Poincare.canonical_completion_target_of_dependency_projections
+#check Poincare.canonical_completion_target_of_dependency_projections_eq
+#check Poincare.canonical_completion_criterion_of_dependency_projections
+#check Poincare.canonical_completion_criterion_of_dependency_projections_eq
+#check Poincare.canonical_completion_payload_of_extraction_derivation_dependency_projections
+#check Poincare.canonical_completion_payload_of_extraction_derivation_dependency_projections_eq
+#check Poincare.canonical_completion_target_of_extraction_derivation_dependency_projections
+#check Poincare.canonical_completion_target_of_extraction_derivation_dependency_projections_eq
+#check Poincare.canonical_completion_criterion_of_extraction_derivation_dependency_projections
+#check Poincare.canonical_completion_criterion_of_extraction_derivation_dependency_projections_eq
+#check Poincare.PoincareCompletionCertificate
+#check Poincare.poincareCompletionCertificate_theoremName_payload
+#check Poincare.poincareCompletionCertificate_literal_payload
+#check Poincare.completion_certificate_of_literal_payload
+#check Poincare.poincareCompletionCertificate_iff_literal_payload
+#check Poincare.canonical_completion_payload_of_completion_certificate
+#check Poincare.poincare_completion_payload_of_completion_certificate
+#check Poincare.canonical_completion_target_of_completion_certificate
+#check Poincare.target_statement_of_completion_certificate
+#check Poincare.completion_criterion_of_completion_certificate
+#check Poincare.remaining_dependency_package_of_completion_certificate
+#check Poincare.completion_certificate_of_remaining_dependency_and_poincare_payload
+#check Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_poincare_payload
+#check Poincare.completion_certificate_of_remaining_dependency_and_target_statement
+#check Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_target_statement
+#check Poincare.completion_certificate_of_remaining_dependency_and_canonical_payload
+#check Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_canonical_payload
+#check Poincare.completion_certificate_of_remaining_dependency_and_canonical_target
+#check Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_canonical_target
+#check Poincare.completion_certificate_of_remaining_dependency_and_completion_criterion
+#check Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_completion_criterion
+#check Poincare.poincareProofDependencies_of_completion_certificate
+#check Poincare.completion_certificate_of_remaining_dependency_package
+#check Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies
+#check Poincare.completion_certificate_of_poincareProofDependencies
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_poincare_payload
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_poincare_payload
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_canonical_payload
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_canonical_payload
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_target_statement
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_target_statement
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_canonical_target
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_canonical_target
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_completion_criterion
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_completion_criterion
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_poincare_payload_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_poincare_payload_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_canonical_payload_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_canonical_payload_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_target_statement_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_target_statement_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_canonical_target_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_canonical_target_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_completion_criterion_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_completion_criterion_eq
+#check Poincare.poincareCompletionCertificate_aggregate_dependency_payload
+#check Poincare.completion_certificate_of_aggregate_dependency_payload
+#check Poincare.poincareCompletionCertificate_iff_aggregate_dependency_payload
+#check Poincare.poincareCompletionCertificate_project_statement_payload
+#check Poincare.completion_certificate_of_project_statement_payload
+#check Poincare.poincareCompletionCertificate_iff_project_statement_payload
+#check Poincare.poincareCompletionCertificate_theoremName_payload_eq
+#check Poincare.poincareCompletionCertificate_literal_payload_eq
+#check Poincare.completion_certificate_of_literal_payload_eq
+#check Poincare.poincareCompletionCertificate_iff_literal_payload_eq
+#check Poincare.canonical_completion_payload_of_completion_certificate_eq
+#check Poincare.poincare_completion_payload_of_completion_certificate_eq
+#check Poincare.canonical_completion_target_of_completion_certificate_eq
+#check Poincare.target_statement_of_completion_certificate_eq
+#check Poincare.completion_criterion_of_completion_certificate_eq
+#check Poincare.remaining_dependency_package_of_completion_certificate_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_poincare_payload_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_canonical_payload_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_target_statement_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_canonical_target_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_completion_criterion_eq
+#check Poincare.poincareProofDependencies_of_completion_certificate_eq
+#check Poincare.completion_certificate_of_remaining_dependency_package_eq
+#check Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_eq
+#check Poincare.poincareCompletionCertificate_aggregate_dependency_payload_eq
+#check Poincare.completion_certificate_of_aggregate_dependency_payload_eq
+#check Poincare.poincareCompletionCertificate_iff_aggregate_dependency_payload_eq
+#check Poincare.poincareCompletionCertificate_project_statement_payload_eq
+#check Poincare.completion_certificate_of_project_statement_payload_eq
+#check Poincare.poincareCompletionCertificate_iff_project_statement_payload_eq
+#check Poincare.poincareCompletionCertificate_iff_components
+#check Poincare.poincareCompletionCertificate_iff_component_requirements
+#check Poincare.poincareCompletionCertificate_iff_package_layer_requirements
+#check Poincare.poincareCompletionCertificate_iff_milestone_requirements
+#check Poincare.poincareCompletionCertificate_components_payload
+#check Poincare.poincareCompletionCertificate_component_requirements_payload
+#check Poincare.poincareCompletionCertificate_package_layer_requirements_payload
+#check Poincare.poincareCompletionCertificate_milestone_requirements_payload
+#check Poincare.completion_certificate_of_components
+#check Poincare.completion_certificate_of_component_requirements
+#check Poincare.completion_certificate_of_package_layer_requirements
+#check Poincare.completion_certificate_of_milestone_requirements
+#check Poincare.completion_certificate_of_components_payload
+#check Poincare.completion_certificate_of_component_requirements_payload
+#check Poincare.completion_certificate_of_package_layer_requirements_payload
+#check Poincare.completion_certificate_of_milestone_requirements_payload
+#check Poincare.poincareCompletionCertificate_iff_components_eq
+#check Poincare.poincareCompletionCertificate_iff_component_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_package_layer_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_milestone_requirements_eq
+#check Poincare.poincareCompletionCertificate_components_payload_eq
+#check Poincare.poincareCompletionCertificate_component_requirements_payload_eq
+#check Poincare.poincareCompletionCertificate_package_layer_requirements_payload_eq
+#check Poincare.poincareCompletionCertificate_milestone_requirements_payload_eq
+#check Poincare.completion_certificate_of_components_eq
+#check Poincare.completion_certificate_of_component_requirements_eq
+#check Poincare.completion_certificate_of_package_layer_requirements_eq
+#check Poincare.completion_certificate_of_milestone_requirements_eq
+#check Poincare.completion_certificate_of_components_payload_eq
+#check Poincare.completion_certificate_of_component_requirements_payload_eq
+#check Poincare.completion_certificate_of_package_layer_requirements_payload_eq
+#check Poincare.completion_certificate_of_milestone_requirements_payload_eq
+#check Poincare.completion_certificate_of_component_extraction_derivation_requirements
+#check Poincare.completion_certificate_of_component_extraction_derivation_requirements_payload
+#check Poincare.poincareCompletionCertificate_iff_component_extraction_derivation_requirements
+#check Poincare.completion_certificate_of_package_layer_extraction_derivation_requirements
+#check Poincare.completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+#check Poincare.poincareCompletionCertificate_iff_package_layer_extraction_derivation_requirements
+#check Poincare.completion_certificate_of_milestone_extraction_derivation_requirements
+#check Poincare.completion_certificate_of_milestone_extraction_derivation_requirements_payload
+#check Poincare.poincareCompletionCertificate_iff_milestone_extraction_derivation_requirements
+#check Poincare.completion_certificate_of_component_extraction_derivation_requirements_eq
+#check Poincare.completion_certificate_of_component_extraction_derivation_requirements_payload_eq
+#check Poincare.poincareCompletionCertificate_iff_component_extraction_derivation_requirements_eq
+#check Poincare.completion_certificate_of_package_layer_extraction_derivation_requirements_eq
+#check Poincare.completion_certificate_of_package_layer_extraction_derivation_requirements_payload_eq
+#check Poincare.poincareCompletionCertificate_iff_package_layer_extraction_derivation_requirements_eq
+#check Poincare.completion_certificate_of_milestone_extraction_derivation_requirements_eq
+#check Poincare.completion_certificate_of_milestone_extraction_derivation_requirements_payload_eq
+#check Poincare.poincareCompletionCertificate_iff_milestone_extraction_derivation_requirements_eq
+#check Poincare.completion_certificate_of_remaining_dependency_component_requirements
+#check Poincare.poincareCompletionCertificate_iff_remaining_dependency_component_requirements
+#check Poincare.completion_certificate_of_remaining_dependency_package_layer_requirements
+#check Poincare.poincareCompletionCertificate_iff_remaining_dependency_package_layer_requirements
+#check Poincare.completion_certificate_of_remaining_dependency_milestone_requirements
+#check Poincare.poincareCompletionCertificate_iff_remaining_dependency_milestone_requirements
+#check Poincare.completion_certificate_of_poincareProofDependencies_component_requirements
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_component_requirements
+#check Poincare.completion_certificate_of_poincareProofDependencies_package_layer_requirements
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_package_layer_requirements
+#check Poincare.completion_certificate_of_poincareProofDependencies_milestone_requirements
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_milestone_requirements
+#check Poincare.completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements
+#check Poincare.poincareCompletionCertificate_iff_remaining_dependency_component_extraction_derivation_requirements
+#check Poincare.completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements
+#check Poincare.poincareCompletionCertificate_iff_remaining_dependency_package_layer_extraction_derivation_requirements
+#check Poincare.completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements
+#check Poincare.poincareCompletionCertificate_iff_remaining_dependency_milestone_extraction_derivation_requirements
+#check Poincare.completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_component_extraction_derivation_requirements
+#check Poincare.completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_package_layer_extraction_derivation_requirements
+#check Poincare.completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_milestone_extraction_derivation_requirements
+#check Poincare.completion_certificate_of_aggregate_extraction_derivation_dependencies
+#check Poincare.completion_certificate_of_extraction_derivation_dependency_projections
+#check Poincare.poincareCompletionCertificate_iff_aggregate_extraction_derivation_dependencies
+#check Poincare.poincareCompletionCertificate_iff_extraction_derivation_dependency_projections
+#check Poincare.completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_aggregate_extraction_derivation
+#check Poincare.completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_extraction_derivation_projections
+#check Poincare.completion_certificate_of_remaining_dependency_component_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_remaining_dependency_component_requirements_eq
+#check Poincare.completion_certificate_of_remaining_dependency_package_layer_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_remaining_dependency_package_layer_requirements_eq
+#check Poincare.completion_certificate_of_remaining_dependency_milestone_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_remaining_dependency_milestone_requirements_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_component_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_component_requirements_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_package_layer_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_package_layer_requirements_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_milestone_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_milestone_requirements_eq
+#check Poincare.completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_remaining_dependency_component_extraction_derivation_requirements_eq
+#check Poincare.completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_remaining_dependency_package_layer_extraction_derivation_requirements_eq
+#check Poincare.completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_remaining_dependency_milestone_extraction_derivation_requirements_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_component_extraction_derivation_requirements_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_milestone_extraction_derivation_requirements_eq
+#check Poincare.completion_certificate_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.completion_certificate_of_extraction_derivation_dependency_projections_eq
+#check Poincare.poincareCompletionCertificate_iff_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.poincareCompletionCertificate_iff_extraction_derivation_dependency_projections_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_aggregate_extraction_derivation_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_extraction_derivation_projections_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement
+#check Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_canonical_three_sphere_statement
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_canonical_three_sphere_statement
+#check Poincare.canonical_completion_payload_of_canonical_three_sphere_statement_eq
+#check Poincare.canonical_completion_target_of_canonical_three_sphere_statement_eq
+#check Poincare.canonical_completion_criterion_of_canonical_three_sphere_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_canonical_completion_target_eq
+#check Poincare.canonical_three_sphere_statement_of_canonical_completion_payload_eq
+#check Poincare.canonical_three_sphere_statement_iff_canonical_completion_target_eq
+#check Poincare.canonical_three_sphere_statement_iff_canonical_completion_payload_eq
+#check Poincare.canonical_three_sphere_statement_of_completion_certificate_eq
+#check Poincare.poincareCompletionCertificate_canonical_statement_payload_eq
+#check Poincare.completion_certificate_of_canonical_statement_payload_eq
+#check Poincare.poincareCompletionCertificate_iff_canonical_statement_payload_eq
+#check Poincare.poincareCompletionCertificate_aggregate_canonical_statement_payload_eq
+#check Poincare.completion_certificate_of_aggregate_canonical_statement_payload_eq
+#check Poincare.poincareCompletionCertificate_iff_aggregate_canonical_statement_payload_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement_eq
+#check Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_canonical_three_sphere_statement_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_canonical_three_sphere_statement_eq
+#check Poincare.smoothability_moise_local_charts_of_dependencies
+#check Poincare.smoothability_moise_locally_finite_cover_refinement_of_dependencies
+#check Poincare.smoothability_moise_simplicial_complex_of_dependencies
+#check Poincare.smoothability_moise_compatible_chart_triangulations_of_dependencies
+#check Poincare.smoothability_moise_triangulation_of_dependencies
+#check Poincare.smoothability_moise_simplicial_approximation_of_dependencies
+#check Poincare.smoothability_moise_star_neighborhood_basis_of_dependencies
+#check Poincare.smoothability_moise_barycentric_subdivision_of_dependencies
+#check Poincare.smoothability_moise_regular_neighborhood_compatibility_of_dependencies
+#check Poincare.smoothability_moise_triangulation_local_finiteness_of_dependencies
+#check Poincare.smoothability_moise_link_compatibility_of_dependencies
+#check Poincare.smoothability_moise_pl_manifold_recognition_of_dependencies
+#check Poincare.smoothability_moise_triangulation_homeomorphism_of_dependencies
+#check Poincare.smoothability_moise_compatibility_of_dependencies
+#check Poincare.smoothability_moise_triangulation_uniqueness_of_dependencies
+#check Poincare.smoothability_moise_hauptvermutung_dimension_three_of_dependencies
+#check Poincare.smoothability_pl_structure_of_dependencies
+#check Poincare.smoothability_pl_transition_compatibility_of_dependencies
+#check Poincare.smoothability_pl_atlas_of_dependencies
+#check Poincare.smoothability_pl_manifold_atlas_of_dependencies
+#check Poincare.smoothability_pl_collar_neighborhood_compatibility_of_dependencies
+#check Poincare.smoothability_pl_homeomorphism_compatibility_of_dependencies
+#check Poincare.smoothability_pl_atlas_maximality_of_dependencies
+#check Poincare.smoothability_pl_smoothing_existence_of_dependencies
+#check Poincare.smoothability_pl_smoothing_obstruction_vanishing_of_dependencies
+#check Poincare.smoothability_pl_microbundle_smoothing_of_dependencies
+#check Poincare.smoothability_pl_smoothing_of_dependencies
+#check Poincare.smoothability_pl_smoothing_compatibility_of_dependencies
+#check Poincare.smoothability_pl_smoothing_uniqueness_of_dependencies
+#check Poincare.smoothability_pl_smoothing_local_model_compatibility_of_dependencies
+#check Poincare.smoothability_smooth_atlas_construction_of_dependencies
+#check Poincare.smoothability_smooth_atlas_pl_compatibility_of_dependencies
+#check Poincare.smoothability_smooth_atlas_maximality_of_dependencies
+#check Poincare.smoothability_smooth_atlas_uniqueness_of_dependencies
+#check Poincare.smoothability_smooth_structure_uniqueness_of_dependencies
+#check Poincare.smoothability_smooth_transition_compatibility_of_dependencies
+#check Poincare.smoothability_smooth_atlas_transition_smoothness_of_dependencies
+#check Poincare.smoothability_smooth_structure_derivation_of_dependencies
+#check Poincare.smoothability_moise_local_charts_of_dependencies_eq
+#check Poincare.smoothability_moise_triangulation_of_dependencies_eq
+#check Poincare.smoothability_pl_structure_of_dependencies_eq
+#check Poincare.smoothability_pl_atlas_of_dependencies_eq
+#check Poincare.smoothability_pl_smoothing_of_dependencies_eq
+#check Poincare.smoothability_smooth_atlas_construction_of_dependencies_eq
+#check Poincare.smoothability_smooth_transition_compatibility_of_dependencies_eq
+#check Poincare.smoothability_smooth_atlas_transition_smoothness_of_dependencies_eq
+#check Poincare.smoothability_smooth_structure_derivation_of_dependencies_eq
+#check Poincare.smoothability_moise_locally_finite_cover_refinement_of_dependencies_eq
+#check Poincare.smoothability_moise_simplicial_complex_of_dependencies_eq
+#check Poincare.smoothability_moise_compatible_chart_triangulations_of_dependencies_eq
+#check Poincare.smoothability_moise_simplicial_approximation_of_dependencies_eq
+#check Poincare.smoothability_moise_star_neighborhood_basis_of_dependencies_eq
+#check Poincare.smoothability_moise_barycentric_subdivision_of_dependencies_eq
+#check Poincare.smoothability_moise_regular_neighborhood_compatibility_of_dependencies_eq
+#check Poincare.smoothability_moise_triangulation_local_finiteness_of_dependencies_eq
+#check Poincare.smoothability_moise_link_compatibility_of_dependencies_eq
+#check Poincare.smoothability_moise_pl_manifold_recognition_of_dependencies_eq
+#check Poincare.smoothability_moise_triangulation_homeomorphism_of_dependencies_eq
+#check Poincare.smoothability_moise_compatibility_of_dependencies_eq
+#check Poincare.smoothability_moise_triangulation_uniqueness_of_dependencies_eq
+#check Poincare.smoothability_moise_hauptvermutung_dimension_three_of_dependencies_eq
+#check Poincare.smoothability_pl_transition_compatibility_of_dependencies_eq
+#check Poincare.smoothability_pl_manifold_atlas_of_dependencies_eq
+#check Poincare.smoothability_pl_collar_neighborhood_compatibility_of_dependencies_eq
+#check Poincare.smoothability_pl_homeomorphism_compatibility_of_dependencies_eq
+#check Poincare.smoothability_pl_atlas_maximality_of_dependencies_eq
+#check Poincare.smoothability_pl_smoothing_existence_of_dependencies_eq
+#check Poincare.smoothability_pl_smoothing_obstruction_vanishing_of_dependencies_eq
+#check Poincare.smoothability_pl_microbundle_smoothing_of_dependencies_eq
+#check Poincare.smoothability_pl_smoothing_compatibility_of_dependencies_eq
+#check Poincare.smoothability_pl_smoothing_uniqueness_of_dependencies_eq
+#check Poincare.smoothability_pl_smoothing_local_model_compatibility_of_dependencies_eq
+#check Poincare.smoothability_smooth_atlas_pl_compatibility_of_dependencies_eq
+#check Poincare.smoothability_smooth_atlas_maximality_of_dependencies_eq
+#check Poincare.smoothability_smooth_atlas_uniqueness_of_dependencies_eq
+#check Poincare.smoothability_smooth_structure_uniqueness_of_dependencies_eq
+#check Poincare.smoothability_smooth_structure_statement_payload_of_dependencies
+#check Poincare.smoothability_smooth_structure_derivation_statement_of_dependencies
+#check Poincare.smoothability_smooth_structure_statement_payload_of_dependencies_eq
+#check Poincare.smoothability_smooth_structure_derivation_statement_of_dependencies_eq
+#check Poincare.smoothability_package_of_dependencies_eq
+#check Poincare.surgery_packages_of_dependencies_eq
+#check Poincare.topology_package_of_dependencies_eq
+#check Poincare.surgery_package_payload_of_dependencies
+#check Poincare.analytic_foundation_packages_of_dependencies
+#check Poincare.analytic_foundation_packages_of_dependencies_eq
+#check Poincare.analytic_foundation_statement_payload_with_surgery_package_of_dependencies
+#check Poincare.analytic_foundation_statement_payload_of_dependencies
+#check Poincare.analytic_foundation_statements_of_dependencies
+#check Poincare.analytic_foundation_statements_of_dependencies_eq
+#check Poincare.analytic_foundation_derivation_statements_of_dependencies
+#check Poincare.analytic_foundation_derivation_statements_of_dependencies_eq
+#check Poincare.ricci_flow_data_of_dependencies
+#check Poincare.ricci_flow_data_of_dependencies_eq
+#check Poincare.ricci_flow_equation_evidence_of_dependencies
+#check Poincare.ricci_flow_equation_evidence_of_dependencies_eq
+#check Poincare.analytic_foundation_subobligations_of_dependencies
+#check Poincare.analytic_foundation_subobligations_of_dependencies_eq
+#check Poincare.surgery_construction_packages_of_dependencies
+#check Poincare.surgery_construction_statement_payload_with_surgery_package_of_dependencies
+#check Poincare.surgery_construction_statement_payload_of_dependencies
+#check Poincare.surgery_construction_statements_of_dependencies
+#check Poincare.surgery_construction_statements_of_dependencies_eq
+#check Poincare.surgery_construction_subobligations_of_dependencies
+#check Poincare.surgery_construction_subobligations_of_dependencies_eq
+#check Poincare.perelman_control_statement_payload_with_surgery_package_of_dependencies
+#check Poincare.perelman_control_statement_payload_of_dependencies
+#check Poincare.perelman_control_statements_of_dependencies
+#check Poincare.perelman_control_statements_of_dependencies_eq
+#check Poincare.perelman_control_of_dependencies
+#check Poincare.perelman_control_of_dependencies_eq
+#check Poincare.perelman_control_packages_of_dependencies
+#check Poincare.perelman_control_packages_of_dependencies_eq
+#check Poincare.perelman_subobligations_of_dependencies
+#check Poincare.perelman_subobligations_of_dependencies_eq
+#check Poincare.perelman_monotonicity_blowup_subobligations_of_dependencies
+#check Poincare.perelman_monotonicity_blowup_subobligations_of_dependencies_eq
+#check Poincare.finite_extinction_subobligations_statement_payload_with_surgery_package_of_dependencies
+#check Poincare.finite_extinction_subobligations_statement_payload_of_dependencies
+#check Poincare.finite_extinction_subobligations_payload_of_surgery_package
+#check Poincare.finite_extinction_width_statements_of_dependencies
+#check Poincare.finite_extinction_width_statements_of_dependencies_eq
+#check Poincare.finite_extinction_subobligations_statements_of_dependencies
+#check Poincare.finite_extinction_subobligations_statements_of_dependencies_eq
+#check Poincare.finite_extinction_statement_payload_with_surgery_package_of_dependencies
+#check Poincare.finite_extinction_statement_payload_of_dependencies
+#check Poincare.finite_extinction_statement_payload_of_surgery_package
+#check Poincare.finite_extinction_derivation_stack_of_dependencies
+#check Poincare.finite_extinction_derivation_stack_of_dependencies_eq
+#check Poincare.finite_extinction_width_subobligations_of_dependencies
+#check Poincare.finite_extinction_width_subobligations_of_dependencies_eq
+#check Poincare.finite_extinction_subobligations_of_dependencies
+#check Poincare.finite_extinction_subobligations_of_dependencies_eq
+#check Poincare.finite_extinction_statements_of_dependencies_eq
+#check Poincare.finite_extinction_statements_via_subobligations_of_dependencies
+#check Poincare.finite_extinction_statements_via_subobligations_of_dependencies_eq
+#check Poincare.finite_extinction_via_subobligations_of_dependencies
+#check Poincare.finite_extinction_via_subobligations_of_dependencies_eq
+#check Poincare.finite_extinction_of_dependencies_eq
+#check Poincare.topology_classification_payload_of_dependencies
+#check Poincare.topology_classification_payload_of_dependencies_eq
+#check Poincare.topology_decomposition_of_dependencies
+#check Poincare.topology_decomposition_of_dependencies_eq
+#check Poincare.topology_surgery_trace_reconstruction_of_dependencies
+#check Poincare.topology_surgery_trace_reconstruction_of_dependencies_eq
+#check Poincare.topology_surgery_trace_handle_cancellation_of_dependencies
+#check Poincare.topology_surgery_trace_handle_cancellation_of_dependencies_eq
+#check Poincare.topology_component_classification_of_dependencies
+#check Poincare.topology_component_classification_of_dependencies_eq
+#check Poincare.topology_discarded_component_homeomorphism_classification_of_dependencies
+#check Poincare.topology_discarded_component_homeomorphism_classification_of_dependencies_eq
+#check Poincare.topology_component_inventory_of_dependencies
+#check Poincare.topology_component_inventory_of_dependencies_eq
+#check Poincare.topology_component_boundary_sphere_control_of_dependencies
+#check Poincare.topology_component_boundary_sphere_control_of_dependencies_eq
+#check Poincare.three_sphere_recognition_of_dependencies
+#check Poincare.three_sphere_recognition_of_dependencies_eq
+#check Poincare.topology_prime_decomposition_of_dependencies
+#check Poincare.topology_prime_decomposition_of_dependencies_eq
+#check Poincare.topology_prime_decomposition_existence_of_dependencies
+#check Poincare.topology_prime_decomposition_existence_of_dependencies_eq
+#check Poincare.topology_sphere_theorem_application_of_dependencies
+#check Poincare.topology_sphere_theorem_application_of_dependencies_eq
+#check Poincare.topology_embedded_sphere_production_of_dependencies
+#check Poincare.topology_embedded_sphere_production_of_dependencies_eq
+#check Poincare.topology_loop_theorem_application_of_dependencies
+#check Poincare.topology_loop_theorem_application_of_dependencies_eq
+#check Poincare.topology_prime_decomposition_compatibility_of_dependencies
+#check Poincare.topology_prime_decomposition_compatibility_of_dependencies_eq
+#check Poincare.topology_prime_factor_uniqueness_of_dependencies
+#check Poincare.topology_prime_factor_uniqueness_of_dependencies_eq
+#check Poincare.topology_irreducibility_of_dependencies
+#check Poincare.topology_irreducibility_of_dependencies_eq
+#check Poincare.topology_irreducible_factor_recognition_of_dependencies
+#check Poincare.topology_irreducible_factor_recognition_of_dependencies_eq
+#check Poincare.topology_connected_sum_collapse_of_dependencies
+#check Poincare.topology_connected_sum_collapse_of_dependencies_eq
+#check Poincare.topology_connected_sum_fundamental_group_control_of_dependencies
+#check Poincare.topology_connected_sum_fundamental_group_control_of_dependencies_eq
+#check Poincare.topology_connected_sum_van_kampen_of_dependencies
+#check Poincare.topology_connected_sum_van_kampen_of_dependencies_eq
+#check Poincare.topology_simply_connected_prime_factor_control_of_dependencies
+#check Poincare.topology_simply_connected_prime_factor_control_of_dependencies_eq
+#check Poincare.topology_spherical_space_form_reduction_of_dependencies
+#check Poincare.topology_spherical_space_form_reduction_of_dependencies_eq
+#check Poincare.topology_spherical_space_form_classification_of_dependencies
+#check Poincare.topology_spherical_space_form_classification_of_dependencies_eq
+#check Poincare.topology_spherical_quotient_model_of_dependencies
+#check Poincare.topology_spherical_quotient_model_of_dependencies_eq
+#check Poincare.topology_spherical_free_action_of_dependencies
+#check Poincare.topology_spherical_free_action_of_dependencies_eq
+#check Poincare.topology_spherical_universal_cover_of_dependencies
+#check Poincare.topology_spherical_universal_cover_of_dependencies_eq
+#check Poincare.topology_spherical_covering_model_of_dependencies
+#check Poincare.topology_spherical_covering_model_of_dependencies_eq
+#check Poincare.topology_spherical_covering_projection_of_dependencies
+#check Poincare.topology_spherical_covering_projection_of_dependencies_eq
+#check Poincare.topology_spherical_fundamental_group_of_dependencies
+#check Poincare.topology_spherical_fundamental_group_of_dependencies_eq
+#check Poincare.topology_deck_group_identification_of_dependencies
+#check Poincare.topology_deck_group_identification_of_dependencies_eq
+#check Poincare.topology_deck_action_properness_of_dependencies
+#check Poincare.topology_deck_action_properness_of_dependencies_eq
+#check Poincare.topology_deck_group_triviality_of_dependencies
+#check Poincare.topology_deck_group_triviality_of_dependencies_eq
+#check Poincare.topology_deck_action_trivialization_of_dependencies
+#check Poincare.topology_deck_action_trivialization_of_dependencies_eq
+#check Poincare.topology_trivial_deck_quotient_identification_of_dependencies
+#check Poincare.topology_trivial_deck_quotient_identification_of_dependencies_eq
+#check Poincare.topology_simply_connected_recognition_of_dependencies
+#check Poincare.topology_simply_connected_recognition_of_dependencies_eq
+#check Poincare.topology_trivial_spherical_quotient_of_dependencies
+#check Poincare.topology_trivial_spherical_quotient_of_dependencies_eq
+#check Poincare.topology_trivial_quotient_homeomorphism_of_dependencies
+#check Poincare.topology_trivial_quotient_homeomorphism_of_dependencies_eq
+#check Poincare.topology_spherical_homeomorphism_lift_of_dependencies
+#check Poincare.topology_spherical_homeomorphism_lift_of_dependencies_eq
+#check Poincare.topology_classification_subobligations_of_dependencies
+#check Poincare.topology_classification_subobligations_of_dependencies_eq
+#check Poincare.topology_extraction_statement_payload_of_dependencies
+#check Poincare.topology_extraction_statement_payload_of_dependencies_eq
+#check Poincare.topology_derivation_statement_payload_of_dependencies
+#check Poincare.topology_derivation_statement_payload_of_dependencies_eq
+#check Poincare.homeomorphism_of_extinction_and_dependencies
+#check Poincare.homeomorphism_of_extinction_and_dependencies_eq
+#check Poincare.topology_derivation_statement_via_extraction_of_dependencies
+#check Poincare.topology_derivation_statement_via_extraction_of_dependencies_eq
+#check Poincare.topology_homeomorphism_assembly_statement_via_extraction_of_dependencies
+#check Poincare.topology_homeomorphism_assembly_statement_via_extraction_of_dependencies_eq
+#check Poincare.topology_homeomorphism_derivation_statement_via_extraction_of_dependencies
+#check Poincare.topology_homeomorphism_derivation_statement_via_extraction_of_dependencies_eq
+#check Poincare.topology_homeomorphism_assembly_of_dependencies
+#check Poincare.topology_homeomorphism_assembly_of_dependencies_eq
+#check Poincare.topology_homeomorphism_derivation_of_dependencies
+#check Poincare.topology_homeomorphism_derivation_of_dependencies_eq
+#check Poincare.topology_derivation_statement_of_dependencies
+#check Poincare.topology_derivation_statement_of_dependencies_eq
+#check Poincare.topology_homeomorphism_assembly_statement_of_dependencies
+#check Poincare.topology_homeomorphism_assembly_statement_of_dependencies_eq
+#check Poincare.topology_homeomorphism_derivation_statement_of_dependencies
+#check Poincare.topology_homeomorphism_derivation_statement_of_dependencies_eq
+#check Poincare.topology_extraction_payload_of_dependencies
+#check Poincare.topology_extraction_payload_of_dependencies_eq
+#check Poincare.topology_extraction_statement_of_dependencies
+#check Poincare.topology_extraction_statement_of_dependencies_eq
+#check Poincare.topology_extraction_derivation_payload_of_dependencies
+#check Poincare.topology_extraction_derivation_payload_of_dependencies_eq
+#check Poincare.extinction_extraction_of_dependencies_eq
+#check Poincare.poincare_projection_assembly_inputs_payload_of_dependencies
+#check Poincare.poincare_projection_assembly_inputs_payload_of_dependencies_eq
+#check Poincare.poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies
+#check Poincare.poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies_eq
+#check Poincare.poincare_target_payload_of_dependency_projections
+#check Poincare.poincare_target_payload_of_extraction_derivation_dependency_projections
+#check Poincare.poincare_full_assembly_payload_of_dependency_projections
+#check Poincare.poincare_full_assembly_payload_of_extraction_derivation_dependency_projections
+#check Poincare.poincare_assembly_inputs_payload_of_dependencies
+#check Poincare.poincare_assembly_inputs_payload_of_dependencies_eq
+#check Poincare.smoothability_bridge_statement_of_dependencies
+#check Poincare.smoothability_bridge_payload_of_dependencies
+#check Poincare.smoothability_bridge_of_dependencies
+#check Poincare.smoothability_bridge_derivation_of_dependencies
+#check Poincare.smoothability_model_compatibility_of_dependencies
+#check Poincare.smoothability_chart_compatibility_of_dependencies
+#check Poincare.smoothability_subobligations_payload_of_dependencies
+#check Poincare.smoothability_smooth_manifold_statement_of_dependencies
+#check Poincare.smooth_manifold_of_dependencies
+#check Poincare.smoothability_smooth_manifold_payload_of_dependencies
+#check Poincare.smoothability_bridge_statement_of_dependencies_eq
+#check Poincare.smoothability_smooth_structure_statement_payload_of_dependencies_eq
+#check Poincare.smoothability_smooth_structure_derivation_statement_of_dependencies_eq
+#check Poincare.smoothability_smooth_manifold_statement_of_dependencies_eq
+#check Poincare.smooth_manifold_of_dependencies_eq
+#check Poincare.smoothability_smooth_manifold_payload_of_dependencies_eq
+#check Poincare.smoothability_bridge_of_dependencies_eq
+#check Poincare.smoothability_bridge_derivation_of_dependencies_eq
+#check Poincare.smoothability_model_compatibility_of_dependencies_eq
+#check Poincare.smoothability_chart_compatibility_of_dependencies_eq
+#check Poincare.smoothability_bridge_payload_of_dependencies_eq
+#check Poincare.smoothability_subobligations_payload_of_dependencies_eq
+
+#check (Poincare.smoothability_smooth_manifold_statement_of_dependencies :
+  Poincare.PoincareProofDependencies →
+    Poincare.SmoothabilitySmoothManifoldStatement)
+
+#check (Poincare.smooth_manifold_of_dependencies :
+  Poincare.PoincareProofDependencies →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        IsManifold (𝓡 3) ∞ M)
+
+#check (Poincare.smoothability_smooth_manifold_payload_of_dependencies :
+  Poincare.PoincareProofDependencies →
+    Poincare.SmoothabilityBridgeStatement ∧
+      Poincare.SmoothabilitySmoothManifoldStatement)
+
+#check (Poincare.topology_derivation_statement_of_dependencies :
+  ∀ (dependencies : Poincare.PoincareProofDependencies)
+    (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : Poincare.FiniteExtinctionByRicciFlowWithSurgery M),
+      Poincare.ExtinctionTopologyDerivationStatement M extinction
+        (Poincare.homeomorphism_of_extinction_and_dependencies
+          dependencies M extinction))
+
+#check (Poincare.topology_homeomorphism_assembly_statement_of_dependencies :
+  ∀ (dependencies : Poincare.PoincareProofDependencies)
+    (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : Poincare.FiniteExtinctionByRicciFlowWithSurgery M),
+      Poincare.ExtinctionTopologyHomeomorphismAssemblyStatement M extinction
+        (Poincare.homeomorphism_of_extinction_and_dependencies
+          dependencies M extinction))
+
+#check (Poincare.topology_homeomorphism_derivation_statement_of_dependencies :
+  ∀ (dependencies : Poincare.PoincareProofDependencies)
+    (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : Poincare.FiniteExtinctionByRicciFlowWithSurgery M),
+      Poincare.ExtinctionTopologyHomeomorphismDerivationStatement M extinction
+        (Poincare.homeomorphism_of_extinction_and_dependencies
+          dependencies M extinction))
+#check Poincare.smoothability_bridge_derivation_of_dependencies
+#check Poincare.smoothability_model_compatibility_of_dependencies
+#check Poincare.smoothability_chart_compatibility_of_dependencies
+#check Poincare.smoothability_subobligations_payload_of_dependencies
+#check Poincare.smoothability_subobligations_of_dependencies
+#check Poincare.smoothability_subobligations_of_dependencies_eq
+#check Poincare.finite_extinction_statement_payload_of_dependencies
+#check Poincare.finite_extinction_statements_of_dependencies
+#check Poincare.finite_extinction_statements_via_subobligations_of_dependencies
+#check Poincare.poincare_assembly_inputs_payload_of_aggregate_dependencies
+#check Poincare.poincare_assembly_inputs_payload_of_aggregate_dependencies_eq
+#check Poincare.poincare_assembly_inputs_payload_of_aggregate_extraction_derivation_dependencies
+#check Poincare.poincare_assembly_inputs_payload_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.poincare_target_payload_of_aggregate_dependencies
+#check Poincare.poincare_target_payload_of_aggregate_dependencies_eq
+#check Poincare.poincare_target_payload_of_aggregate_extraction_derivation_dependencies
+#check Poincare.poincare_target_payload_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.poincare_full_assembly_payload_of_dependencies
+#check Poincare.poincare_full_assembly_payload_of_dependencies_eq
+#check Poincare.poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
+#check Poincare.poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.poincare_assembly_payload_of_dependencies
+#check Poincare.poincare_assembly_payload_of_dependencies_eq
+#check Poincare.poincare_completion_payload_of_dependencies
+#check Poincare.poincare_completion_payload_of_dependencies_eq
+#check Poincare.poincare_completion_payload_of_aggregate_extraction_derivation_dependencies
+#check Poincare.poincare_completion_payload_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.poincare_statement_of_dependencies
+#check Poincare.poincare_statement_of_dependencies_eq
+#check Poincare.poincare_statement_of_aggregate_extraction_derivation_dependencies
+#check Poincare.poincare_statement_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.canonical_three_sphere_statement_of_dependencies
+#check Poincare.canonical_three_sphere_statement_of_dependencies_eq
+#check Poincare.canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies
+#check Poincare.canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.completion_criterion_of_dependencies
+#check Poincare.completion_criterion_of_dependencies_eq
+#check Poincare.completion_criterion_of_aggregate_extraction_derivation_dependencies
+#check Poincare.completion_criterion_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.poincare_projection_assembly_inputs_payload_of_dependencies
+#check Poincare.poincare_projection_assembly_inputs_payload_of_dependencies_eq
+#check Poincare.poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies
+#check Poincare.poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies_eq
+#check Poincare.poincare_target_payload_of_dependency_projections
+#check Poincare.poincare_target_payload_of_dependency_projections_eq
+#check Poincare.poincare_target_payload_of_extraction_derivation_dependency_projections
+#check Poincare.poincare_target_payload_of_extraction_derivation_dependency_projections_eq
+#check Poincare.poincare_full_assembly_payload_of_dependency_projections
+#check Poincare.poincare_full_assembly_payload_of_dependency_projections_eq
+#check Poincare.poincare_full_assembly_payload_of_extraction_derivation_dependency_projections
+#check Poincare.poincare_full_assembly_payload_of_extraction_derivation_dependency_projections_eq
+#check Poincare.poincare_assembly_inputs_payload_of_dependencies
+#check Poincare.poincare_assembly_inputs_payload_of_dependencies_eq
+#check Poincare.poincare_completion_payload_of_dependency_projections
+#check Poincare.poincare_completion_payload_of_dependency_projections_eq
+#check Poincare.poincare_completion_payload_of_extraction_derivation_dependency_projections
+#check Poincare.poincare_completion_payload_of_extraction_derivation_dependency_projections_eq
+#check Poincare.poincare_statement_of_dependency_projections
+#check Poincare.poincare_statement_of_dependency_projections_eq
+#check Poincare.poincare_statement_of_extraction_derivation_dependency_projections
+#check Poincare.poincare_statement_of_extraction_derivation_dependency_projections_eq
+#check Poincare.canonical_three_sphere_statement_of_dependency_projections
+#check Poincare.canonical_three_sphere_statement_of_dependency_projections_eq
+#check Poincare.canonical_three_sphere_statement_of_extraction_derivation_dependency_projections
+#check Poincare.canonical_three_sphere_statement_of_extraction_derivation_dependency_projections_eq
+#check Poincare.completion_criterion_of_dependency_projections
+#check Poincare.completion_criterion_of_dependency_projections_eq
+#check Poincare.completion_criterion_of_extraction_derivation_dependency_projections
+#check Poincare.completion_criterion_of_extraction_derivation_dependency_projections_eq
+#check Poincare.dependencyPackageLayerRequirement
+#check Poincare.dependencyPackageLayerRequirement_smoothabilityPackage
+#check Poincare.dependencyPackageLayerRequirement_analyticFoundationPackage
+#check Poincare.dependencyPackageLayerRequirement_surgeryPackage
+#check Poincare.dependencyPackageLayerRequirement_finiteExtinctionPackage
+#check Poincare.dependencyPackageLayerRequirement_topologyPackage
+#check Poincare.dependencyPackageLayerRequirement_of_dependencies
+#check Poincare.smoothabilityPackage_requirement_of_dependencies
+#check Poincare.analyticFoundationPackage_requirement_of_dependencies
+#check Poincare.surgeryPackage_requirement_of_dependencies
+#check Poincare.finiteExtinctionPackage_requirement_of_dependencies
+#check Poincare.topologyPackage_requirement_of_dependencies
+#check Poincare.smoothabilityPackage_requirement_of_dependencies_eq
+#check Poincare.analyticFoundationPackage_requirement_of_dependencies_eq
+#check Poincare.surgeryPackage_requirement_of_dependencies_eq
+#check Poincare.finiteExtinctionPackage_requirement_of_dependencies_eq
+#check Poincare.topologyPackage_requirement_of_dependencies_eq
+#check Poincare.dependency_package_layer_requirements_payload_of_dependencies
+#check Poincare.dependency_package_layer_requirements_payload_of_dependencies_eq
+#check Poincare.poincareProofDependencies_iff_package_layer_requirements
+#check Poincare.poincareProofDependencies_of_package_layer_requirements_payload
+#check Poincare.poincareProofDependencies_iff_package_layer_requirements_eq
+#check Poincare.poincare_completion_payload_of_package_layer_requirements
+#check Poincare.canonical_completion_payload_of_package_layer_requirements
+#check Poincare.canonical_completion_target_of_package_layer_requirements
+#check Poincare.canonical_completion_criterion_of_package_layer_requirements
+#check Poincare.remainingDependencyPackage_package_layer_requirements_payload
+#check Poincare.remainingDependencyPackage_iff_package_layer_requirements
+#check Poincare.canonical_completion_payload_of_remaining_dependency_package_layer_requirements
+#check Poincare.canonical_completion_target_of_remaining_dependency_package_layer_requirements
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_package_layer_requirements
+#check Poincare.dependencyMilestoneRequirement
+#check Poincare.dependencyMilestoneRequirement_smoothabilityBridge
+#check Poincare.dependencyMilestoneRequirement_ricciFlowAnalyticFoundation
+#check Poincare.dependencyMilestoneRequirement_ricciFlowWithSurgery
+#check Poincare.dependencyMilestoneRequirement_perelmanSingularityControl
+#check Poincare.dependencyMilestoneRequirement_finiteExtinction
+#check Poincare.dependencyMilestoneRequirement_extinctionToSphereHomeomorphism
+#check Poincare.dependencyMilestoneRequirement_of_dependencies
+#check Poincare.smoothabilityBridge_requirement_of_dependencies
+#check Poincare.ricciFlowAnalyticFoundation_requirement_of_dependencies
+#check Poincare.ricciFlowWithSurgery_requirement_of_dependencies
+#check Poincare.perelmanSingularityControl_requirement_of_dependencies
+#check Poincare.finiteExtinction_requirement_of_dependencies
+#check Poincare.extinctionToSphereHomeomorphism_requirement_of_dependencies
+#check Poincare.dependencyMilestoneRequirement_of_dependencies_eq
+#check Poincare.smoothabilityBridge_requirement_of_dependencies_eq
+#check Poincare.ricciFlowAnalyticFoundation_requirement_of_dependencies_eq
+#check Poincare.ricciFlowWithSurgery_requirement_of_dependencies_eq
+#check Poincare.perelmanSingularityControl_requirement_of_dependencies_eq
+#check Poincare.finiteExtinction_requirement_of_dependencies_eq
+#check Poincare.extinctionToSphereHomeomorphism_requirement_of_dependencies_eq
+#check Poincare.dependency_milestone_requirements_payload_of_dependencies
+#check Poincare.dependency_milestone_requirements_payload_of_dependencies_eq
+#check Poincare.poincareProofDependencies_iff_milestone_requirements
+#check Poincare.poincareProofDependencies_of_milestone_requirements_payload
+#check Poincare.poincareProofDependencies_iff_milestone_requirements_eq
+#check Poincare.poincare_completion_payload_of_milestone_requirements
+#check Poincare.canonical_completion_payload_of_milestone_requirements
+#check Poincare.canonical_completion_target_of_milestone_requirements
+#check Poincare.canonical_completion_criterion_of_milestone_requirements
+#check Poincare.remainingDependencyPackage_milestone_requirements_payload
+#check Poincare.remainingDependencyPackage_iff_milestone_requirements
+#check Poincare.canonical_completion_payload_of_remaining_dependency_milestone_requirements
+#check Poincare.canonical_completion_target_of_remaining_dependency_milestone_requirements
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_milestone_requirements
+#check Poincare.canonical_completion_payload_of_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_target_of_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_criterion_of_canonical_smooth_three_sphere_statement_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_smooth_statement_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_smooth_statement_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_canonical_smooth_three_sphere_statement_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_canonical_smooth_three_sphere_statement_eq
+#check Poincare.packaged_smooth_statement_completion_payload_of_remaining_dependency_eq
+#check Poincare.packaged_smooth_statement_completion_payload_of_poincareProofDependencies_eq
+#check Poincare.packaged_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency_eq
+#check Poincare.packaged_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies_eq
+#check Poincare.canonical_completion_payload_of_remaining_dependency_and_packaged_smooth_statement_eq
+#check Poincare.canonical_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement_eq
+#check Poincare.canonical_completion_payload_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.poincare_statement_of_remaining_dependency_and_packaged_smooth_statement_eq
+#check Poincare.completion_criterion_of_remaining_dependency_and_packaged_smooth_statement_eq
+#check Poincare.poincare_statement_of_poincareProofDependencies_and_packaged_smooth_statement_eq
+#check Poincare.completion_criterion_of_poincareProofDependencies_and_packaged_smooth_statement_eq
+#check Poincare.poincare_statement_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.completion_criterion_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.poincare_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.completion_criterion_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.poincare_completion_payload_of_remaining_dependency_and_packaged_smooth_statement_eq
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement_eq
+#check Poincare.poincare_completion_payload_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.poincare_statement_of_poincareProofDependencies_and_packaged_smooth_statement_to_remaining_dependency_eq
+#check Poincare.completion_criterion_of_poincareProofDependencies_and_packaged_smooth_statement_to_remaining_dependency_eq
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement_to_remaining_dependency_eq
+#check Poincare.poincare_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_remaining_dependency_eq
+#check Poincare.completion_criterion_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_remaining_dependency_eq
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_remaining_dependency_eq
+#check Poincare.canonical_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement_to_remaining_dependency_eq
+#check Poincare.canonical_completion_target_of_poincareProofDependencies_and_packaged_smooth_statement_to_remaining_dependency_eq
+#check Poincare.canonical_completion_criterion_of_poincareProofDependencies_and_packaged_smooth_statement_to_remaining_dependency_eq
+#check Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_and_packaged_smooth_statement_to_remaining_dependency_eq
+#check Poincare.canonical_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_remaining_dependency_eq
+#check Poincare.canonical_completion_target_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_remaining_dependency_eq
+#check Poincare.canonical_completion_criterion_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_remaining_dependency_eq
+#check Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_remaining_dependency_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_packaged_smooth_statement_to_remaining_dependency_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_remaining_dependency_eq
+#check Poincare.packaged_smooth_statement_payload_iff_poincareProofDependencies_remainingDependencyPackage
+#check Poincare.packaged_canonical_smooth_three_sphere_statement_payload_iff_poincareProofDependencies_remainingDependencyPackage
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_packaged_smooth_statement_payload_to_remaining_dependency_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_payload_to_remaining_dependency_eq
+#check Poincare.canonical_completion_target_of_remaining_dependency_and_packaged_smooth_statement_eq
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_and_packaged_smooth_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_and_packaged_smooth_statement_eq
+#check Poincare.canonical_completion_target_of_poincareProofDependencies_and_packaged_smooth_statement_eq
+#check Poincare.canonical_completion_criterion_of_poincareProofDependencies_and_packaged_smooth_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_and_packaged_smooth_statement_eq
+#check Poincare.canonical_completion_target_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_target_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_criterion_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.smoothability_package_smooth_statement_completion_payload
+#check Poincare.poincare_statement_of_smoothability_package_and_smooth_statement
+#check Poincare.completion_criterion_of_smoothability_package_and_smooth_statement
+#check Poincare.poincare_completion_payload_of_smoothability_package_and_smooth_statement
+#check Poincare.canonical_completion_payload_of_smoothability_package_and_smooth_statement
+#check Poincare.canonical_completion_target_of_smoothability_package_and_smooth_statement
+#check Poincare.canonical_completion_criterion_of_smoothability_package_and_smooth_statement
+#check Poincare.canonical_three_sphere_statement_of_smoothability_package_and_smooth_statement
+#check Poincare.smoothability_package_canonical_smooth_three_sphere_statement_completion_payload
+#check Poincare.poincare_statement_of_smoothability_package_and_canonical_smooth_three_sphere_statement
+#check Poincare.completion_criterion_of_smoothability_package_and_canonical_smooth_three_sphere_statement
+#check Poincare.poincare_completion_payload_of_smoothability_package_and_canonical_smooth_three_sphere_statement
+#check Poincare.canonical_completion_payload_of_smoothability_package_and_canonical_smooth_three_sphere_statement
+#check Poincare.canonical_completion_target_of_smoothability_package_and_canonical_smooth_three_sphere_statement
+#check Poincare.canonical_completion_criterion_of_smoothability_package_and_canonical_smooth_three_sphere_statement
+#check Poincare.canonical_three_sphere_statement_of_smoothability_package_and_canonical_smooth_three_sphere_statement
+#check Poincare.smoothability_package_smooth_statement_completion_payload_eq
+#check Poincare.poincare_statement_of_smoothability_package_and_smooth_statement_eq
+#check Poincare.completion_criterion_of_smoothability_package_and_smooth_statement_eq
+#check Poincare.poincare_completion_payload_of_smoothability_package_and_smooth_statement_eq
+#check Poincare.canonical_completion_payload_of_smoothability_package_and_smooth_statement_eq
+#check Poincare.smoothability_package_canonical_smooth_three_sphere_statement_completion_payload_eq
+#check Poincare.poincare_statement_of_smoothability_package_and_canonical_smooth_three_sphere_statement_eq
+#check Poincare.completion_criterion_of_smoothability_package_and_canonical_smooth_three_sphere_statement_eq
+#check Poincare.poincare_completion_payload_of_smoothability_package_and_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_payload_of_smoothability_package_and_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_target_of_smoothability_package_and_smooth_statement_eq
+#check Poincare.canonical_completion_criterion_of_smoothability_package_and_smooth_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_smoothability_package_and_smooth_statement_eq
+#check Poincare.canonical_completion_target_of_smoothability_package_and_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_criterion_of_smoothability_package_and_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_smoothability_package_and_canonical_smooth_three_sphere_statement_eq
+#check Poincare.packaged_smooth_statement_completion_payload_of_remaining_dependency_to_smoothability_package_eq
+#check Poincare.packaged_smooth_statement_completion_payload_of_poincareProofDependencies_to_smoothability_package_eq
+#check Poincare.packaged_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency_to_smoothability_package_eq
+#check Poincare.packaged_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies_to_smoothability_package_eq
+#check Poincare.poincare_statement_of_remaining_dependency_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.poincare_statement_of_poincareProofDependencies_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.completion_criterion_of_remaining_dependency_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.completion_criterion_of_poincareProofDependencies_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.poincare_completion_payload_of_remaining_dependency_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.poincare_statement_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.poincare_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.completion_criterion_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.completion_criterion_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.poincare_completion_payload_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.canonical_completion_payload_of_remaining_dependency_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.canonical_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.canonical_completion_target_of_remaining_dependency_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.canonical_completion_target_of_poincareProofDependencies_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.canonical_completion_criterion_of_poincareProofDependencies_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.canonical_completion_payload_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.canonical_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.canonical_completion_target_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.canonical_completion_target_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.canonical_completion_criterion_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+EOF
+
+if lake env lean "$root_contract_check" >/dev/null 2>&1; then
+  echo "PASS: root module exposes canonical target contracts, canonical assembly bridges, and projection assembly"
+else
+  echo "FAIL: root module does not expose canonical target contracts, canonical assembly bridges, and projection assembly"
+  lake env lean "$root_contract_check" || true
+  status=1
+fi
+
+rm -rf "$root_contract_check_dir"
+root_contract_check_dir=
+root_contract_check=
+
+dependency_claim_pattern='^\s*(noncomputable\s+)?(theorem|lemma|def|abbrev)\s+.*:\s*(Poincare\.)?(PoincareProofDependencies|RemainingDependencyPackage)(\.\{[^}]*\})?\s*(:=|where|by)?$|^\s*example\s*:\s*(Poincare\.)?(PoincareProofDependencies|RemainingDependencyPackage)(\.\{[^}]*\})?\s*(:=|where|by)?$'
+
+if rg -q "$dependency_claim_pattern" Poincare; then
+  echo "FAIL: local declaration claims the aggregate dependency package"
+  rg -n "$dependency_claim_pattern" Poincare
+  status=1
+else
+  echo "PASS: no local declaration claims PoincareProofDependencies"
+fi
+
+direct_target_claim_pattern='^\s*(noncomputable\s+)?(theorem|lemma|def|abbrev)\s+.*:\s*(Poincare\.)?(Smooth)?PoincareConjectureStatement(\.\{[^}]*\})?\s*(:=|where|by)?$|^\s*example\s*:\s*(Poincare\.)?(Smooth)?PoincareConjectureStatement(\.\{[^}]*\})?\s*(:=|where|by)?$'
+alternate_target_claim_hits=$(rg -n "$direct_target_claim_pattern" Poincare Poincare.lean | rg -v '\b(poincare_conjecture|smoothPoincareConjectureStatement_eq)\b' || true)
+if [ -n "$alternate_target_claim_hits" ]; then
+  echo "FAIL: local noncanonical declaration claims a Poincare target statement"
+  printf '%s\n' "$alternate_target_claim_hits"
+  status=1
+else
+  echo "PASS: no local noncanonical declaration claims a Poincare target statement"
+fi
+
+if rg -q '^\s*(noncomputable\s+)?(theorem|lemma|def|abbrev)\s+(Poincare\.)?poincare_conjecture\b' Poincare Poincare.lean; then
+  echo "PASS: local reserved theorem name poincare_conjecture is declared"
+else
+  echo "FAIL: local reserved theorem name poincare_conjecture is absent"
+  status=1
+fi
+
+dependency_contract_check_dir=$(mktemp -d "${TMPDIR:-/tmp}/poincare-dependency-contract.$$-XXXXXX")
+dependency_contract_check="$dependency_contract_check_dir/check.lean"
+cat > "$dependency_contract_check" <<'EOF'
+import Poincare
+
+open scoped Manifold ContDiff
+
+#check (Poincare.threeSphere_eq :
+  Poincare.ThreeSphere =
+    Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))
+
+#check (Poincare.poincareConjectureStatement_eq :
+  Poincare.PoincareConjectureStatement =
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere)))
+
+#check (Poincare.poincareConjectureStatement_iff_canonical_three_sphere_statement :
+  Poincare.PoincareConjectureStatement ↔
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere)))
+
+#check (Poincare.poincareConjectureStatement_iff_canonical_three_sphere_statement_eq :
+  Poincare.poincareConjectureStatement_iff_canonical_three_sphere_statement =
+    Iff.rfl)
+
+#check (Poincare.smoothPoincareConjectureStatement_eq :
+  Poincare.SmoothPoincareConjectureStatement =
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)))
+
+#check (Poincare.smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_statement :
+  Poincare.SmoothPoincareConjectureStatement ↔
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)))
+
+#check (Poincare.smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_statement_eq :
+  Poincare.smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_statement =
+    Iff.rfl)
+
+#check (Poincare.PoincareProofDependencies.smoothability :
+  Poincare.PoincareProofDependencies →
+    Poincare.SmoothabilityPackage)
+
+#check (Poincare.RicciFlowData.satisfies_equation :
+  ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : Poincare.RicciFlowData I n M),
+      Poincare.SatisfiesRicciFlowEquation flow.metric flow.curvature)
+
+#check Poincare.metric_of_ricci_flow_data
+#check Poincare.metric_of_ricci_flow_data_eq
+#check Poincare.curvature_data_of_ricci_flow_data
+#check Poincare.curvature_data_of_ricci_flow_data_eq
+#check Poincare.metric_at_time_of_time_dependent_metric
+#check Poincare.metric_at_time_of_time_dependent_metric_eq
+#check Poincare.metric_at_time_of_ricci_flow_data
+#check Poincare.metric_at_time_of_ricci_flow_data_eq
+#check Poincare.ricci_tensor_field_of_curvature_data
+#check Poincare.ricci_tensor_field_of_curvature_data_eq
+#check Poincare.scalar_curvature_field_of_curvature_data
+#check Poincare.scalar_curvature_field_of_curvature_data_eq
+#check Poincare.ricci_tensor_at_time_of_ricci_tensor_field
+#check Poincare.ricci_tensor_at_time_of_ricci_tensor_field_eq
+#check Poincare.scalar_curvature_at_time_of_scalar_curvature_field
+#check Poincare.scalar_curvature_at_time_of_scalar_curvature_field_eq
+#check Poincare.ricci_tensor_at_time_of_ricci_flow_data
+#check Poincare.ricci_tensor_at_time_of_ricci_flow_data_eq
+#check Poincare.scalar_curvature_at_time_of_ricci_flow_data
+#check Poincare.scalar_curvature_at_time_of_ricci_flow_data_eq
+#check Poincare.ricci_identification_of_curvature_data
+#check Poincare.ricci_identification_of_curvature_data_eq
+#check Poincare.ricci_identification_of_ricci_flow_data
+#check Poincare.ricci_identification_of_ricci_flow_data_eq
+#check Poincare.RicciFlowData.satisfies_equation_eq
+#check Poincare.equation_evidence_of_ricci_flow_data
+#check Poincare.equation_evidence_of_ricci_flow_data_eq
+#check Poincare.ricci_flow_data_of_analytic_foundation_package
+#check Poincare.ricci_flow_data_of_analytic_foundation_package_eq
+#check Poincare.levi_civita_existence_of_analytic_foundation_package
+#check Poincare.levi_civita_uniqueness_of_analytic_foundation_package
+#check Poincare.levi_civita_torsion_free_of_analytic_foundation_package
+#check Poincare.levi_civita_metric_compatibility_of_analytic_foundation_package
+#check Poincare.levi_civita_theory_of_analytic_foundation_package
+#check Poincare.riemann_curvature_construction_of_analytic_foundation_package
+#check Poincare.riemann_curvature_symmetries_of_analytic_foundation_package
+#check Poincare.first_bianchi_identity_of_analytic_foundation_package
+#check Poincare.second_bianchi_identity_of_analytic_foundation_package
+#check Poincare.riemann_curvature_theory_of_analytic_foundation_package
+#check Poincare.ricci_contraction_formula_of_analytic_foundation_package
+#check Poincare.scalar_curvature_contraction_formula_of_analytic_foundation_package
+#check Poincare.ricci_contraction_theory_of_analytic_foundation_package
+#check Poincare.metric_regularity_of_analytic_foundation_package
+#check Poincare.metric_time_derivative_of_analytic_foundation_package
+#check Poincare.scalar_curvature_theory_of_analytic_foundation_package
+#check Poincare.equation_derivation_of_analytic_foundation_package
+#check Poincare.initial_metric_compatibility_of_analytic_foundation_package
+#check Poincare.deturck_gauge_fixing_of_analytic_foundation_package
+#check Poincare.deturck_background_metric_compatibility_of_analytic_foundation_package
+#check Poincare.deturck_vector_field_construction_of_analytic_foundation_package
+#check Poincare.deturck_equation_derivation_of_analytic_foundation_package
+#check Poincare.ricci_deturck_linearization_of_analytic_foundation_package
+#check Poincare.strictly_parabolic_deturck_of_analytic_foundation_package
+#check Poincare.parabolic_linear_theory_of_analytic_foundation_package
+#check Poincare.parabolic_fixed_point_argument_of_analytic_foundation_package
+#check Poincare.deturck_short_time_existence_of_analytic_foundation_package
+#check Poincare.short_time_regularity_bootstrap_of_analytic_foundation_package
+#check Poincare.deturck_diffeomorphism_ode_of_analytic_foundation_package
+#check Poincare.deturck_pullback_equation_identity_of_analytic_foundation_package
+#check Poincare.deturck_pullback_to_ricci_flow_of_analytic_foundation_package
+#check Poincare.short_time_existence_of_analytic_foundation_package
+#check Poincare.maximal_time_interval_of_analytic_foundation_package
+#check Poincare.continuation_criterion_of_analytic_foundation_package
+#check Poincare.curvature_blowup_criterion_of_analytic_foundation_package
+#check Poincare.maximal_solution_extension_of_analytic_foundation_package
+#check Poincare.parabolic_schauder_estimates_of_analytic_foundation_package
+#check Poincare.parabolic_regularity_of_analytic_foundation_package
+#check Poincare.shi_derivative_estimates_of_analytic_foundation_package
+#check Poincare.curvature_derivative_bootstrap_of_analytic_foundation_package
+#check Poincare.hamilton_maximum_principle_of_analytic_foundation_package
+#check Poincare.uniqueness_theory_of_analytic_foundation_package
+#check Poincare.metric_evolution_equation_of_analytic_foundation_package
+#check Poincare.ricci_tensor_evolution_equation_of_analytic_foundation_package
+#check Poincare.scalar_curvature_evolution_equation_of_analytic_foundation_package
+#check Poincare.curvature_norm_evolution_inequality_of_analytic_foundation_package
+#check Poincare.curvature_evolution_of_analytic_foundation_package
+#check Poincare.ricci_identification_of_analytic_foundation_package
+#check Poincare.ricci_identification_of_analytic_foundation_package_eq
+#check Poincare.equation_evidence_of_analytic_foundation_package
+#check Poincare.equation_evidence_of_analytic_foundation_package_eq
+#check Poincare.AnalyticFoundationDerivationStatement
+#check Poincare.AnalyticFoundationSubobligationsPayload
+#check Poincare.RicciFlowAnalyticFoundationStatement
+#check Poincare.analytic_foundation_derivation_statement_of_components
+#check Poincare.analytic_foundation_subobligations_of_derivation_statement
+#check Poincare.analytic_foundation_derivation_statement_of_analytic_foundation_package
+#check Poincare.analytic_foundation_statement_of_analytic_foundation_package
+#check Poincare.analytic_foundation_payload_of_analytic_foundation_package
+#check Poincare.ricci_flow_data_of_analytic_foundation_statement
+#check Poincare.ricci_identification_of_analytic_foundation_statement
+#check Poincare.equation_evidence_of_analytic_foundation_statement
+
+#check (Poincare.finite_extinction_of_surgery_package :
+  ∀ {n : ℕ∞ω}
+    {M : Type} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace Poincare.ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+      Poincare.FiniteExtinctionSurgeryPackage n M →
+        Poincare.FiniteExtinctionByRicciFlowWithSurgery M)
+
+#check Poincare.analytic_foundation_of_surgery_package
+#check Poincare.analytic_foundation_of_surgery_package_eq
+#check Poincare.ricci_flow_data_of_surgery_package
+#check Poincare.ricci_flow_data_of_surgery_package_eq
+#check Poincare.equation_evidence_of_surgery_package
+#check Poincare.equation_evidence_of_surgery_package_eq
+#check Poincare.finite_extinction_of_surgery_package_eq
+#check Poincare.ricci_flow_with_surgery_of_surgery_package
+#check Poincare.surgery_scale_function_of_construction_package
+#check Poincare.surgery_scale_continuity_of_construction_package
+#check Poincare.surgery_scale_separation_of_construction_package
+#check Poincare.surgery_cutoff_parameter_control_of_construction_package
+#check Poincare.surgery_cutoff_smooth_bump_of_construction_package
+#check Poincare.surgery_parameter_selection_of_construction_package
+#check Poincare.strong_delta_neck_detection_of_construction_package
+#check Poincare.surgery_neck_separation_of_construction_package
+#check Poincare.surgery_neck_parametrization_of_construction_package
+#check Poincare.surgery_neck_canonical_coordinates_of_construction_package
+#check Poincare.surgery_neck_decomposition_of_construction_package
+#check Poincare.standard_cap_model_of_construction_package
+#check Poincare.cap_gluing_smoothness_of_construction_package
+#check Poincare.surgery_cap_metric_interpolation_of_construction_package
+#check Poincare.surgery_cap_curvature_estimates_of_construction_package
+#check Poincare.surgery_cap_construction_of_construction_package
+#check Poincare.post_surgery_curvature_pinching_of_construction_package
+#check Poincare.post_surgery_noncollapsing_control_of_construction_package
+#check Poincare.post_surgery_derivative_bounds_of_construction_package
+#check Poincare.post_surgery_canonical_neighborhood_persistence_of_construction_package
+#check Poincare.post_surgery_metric_control_of_construction_package
+#check Poincare.surgery_time_discreteness_of_construction_package
+#check Poincare.surgery_time_local_finiteness_of_construction_package
+#check Poincare.long_time_existence_iteration_of_construction_package
+#check Poincare.long_time_surgery_parameter_coherence_of_construction_package
+#check Poincare.long_time_nonaccumulation_of_construction_package
+#check Poincare.long_time_surgery_continuation_of_construction_package
+#check Poincare.RicciFlowWithSurgeryConstructionStatement
+#check Poincare.ricci_flow_with_surgery_construction_statement_of_components
+#check Poincare.ricci_flow_with_surgery_construction_statement_of_construction_package
+#check Poincare.ricci_flow_with_surgery_of_construction_statement
+#check Poincare.surgery_construction_subobligations_of_statement
+#check Poincare.ricci_flow_with_surgery_of_construction_package
+#check Poincare.surgery_scale_function_of_construction_package_eq
+#check Poincare.surgery_scale_continuity_of_construction_package_eq
+#check Poincare.surgery_scale_separation_of_construction_package_eq
+#check Poincare.surgery_cutoff_parameter_control_of_construction_package_eq
+#check Poincare.surgery_cutoff_smooth_bump_of_construction_package_eq
+#check Poincare.surgery_parameter_selection_of_construction_package_eq
+#check Poincare.strong_delta_neck_detection_of_construction_package_eq
+#check Poincare.surgery_neck_separation_of_construction_package_eq
+#check Poincare.surgery_neck_parametrization_of_construction_package_eq
+#check Poincare.surgery_neck_canonical_coordinates_of_construction_package_eq
+#check Poincare.surgery_neck_decomposition_of_construction_package_eq
+#check Poincare.standard_cap_model_of_construction_package_eq
+#check Poincare.cap_gluing_smoothness_of_construction_package_eq
+#check Poincare.surgery_cap_metric_interpolation_of_construction_package_eq
+#check Poincare.surgery_cap_curvature_estimates_of_construction_package_eq
+#check Poincare.surgery_cap_construction_of_construction_package_eq
+#check Poincare.post_surgery_curvature_pinching_of_construction_package_eq
+#check Poincare.post_surgery_noncollapsing_control_of_construction_package_eq
+#check Poincare.post_surgery_derivative_bounds_of_construction_package_eq
+#check Poincare.post_surgery_canonical_neighborhood_persistence_of_construction_package_eq
+#check Poincare.post_surgery_metric_control_of_construction_package_eq
+#check Poincare.surgery_time_discreteness_of_construction_package_eq
+#check Poincare.surgery_time_local_finiteness_of_construction_package_eq
+#check Poincare.long_time_existence_iteration_of_construction_package_eq
+#check Poincare.long_time_surgery_parameter_coherence_of_construction_package_eq
+#check Poincare.long_time_nonaccumulation_of_construction_package_eq
+#check Poincare.long_time_surgery_continuation_of_construction_package_eq
+#check Poincare.ricci_flow_with_surgery_of_construction_package_eq
+#check Poincare.analytic_foundation_payload_of_surgery_package
+#check Poincare.surgery_construction_package_of_surgery_package
+#check Poincare.surgery_construction_package_of_surgery_package_eq
+#check Poincare.ricci_flow_with_surgery_construction_statement_of_surgery_package
+#check Poincare.surgery_scale_function_of_surgery_package
+#check Poincare.surgery_scale_continuity_of_surgery_package
+#check Poincare.surgery_scale_separation_of_surgery_package
+#check Poincare.surgery_cutoff_parameter_control_of_surgery_package
+#check Poincare.surgery_cutoff_smooth_bump_of_surgery_package
+#check Poincare.surgery_parameter_selection_of_surgery_package
+#check Poincare.strong_delta_neck_detection_of_surgery_package
+#check Poincare.surgery_neck_separation_of_surgery_package
+#check Poincare.surgery_neck_parametrization_of_surgery_package
+#check Poincare.surgery_neck_canonical_coordinates_of_surgery_package
+#check Poincare.surgery_neck_decomposition_of_surgery_package
+#check Poincare.standard_cap_model_of_surgery_package
+#check Poincare.cap_gluing_smoothness_of_surgery_package
+#check Poincare.surgery_cap_metric_interpolation_of_surgery_package
+#check Poincare.surgery_cap_curvature_estimates_of_surgery_package
+#check Poincare.surgery_cap_construction_of_surgery_package
+#check Poincare.post_surgery_curvature_pinching_of_surgery_package
+#check Poincare.post_surgery_noncollapsing_control_of_surgery_package
+#check Poincare.post_surgery_derivative_bounds_of_surgery_package
+#check Poincare.post_surgery_canonical_neighborhood_persistence_of_surgery_package
+#check Poincare.post_surgery_metric_control_of_surgery_package
+#check Poincare.surgery_time_discreteness_of_surgery_package
+#check Poincare.surgery_time_local_finiteness_of_surgery_package
+#check Poincare.long_time_existence_iteration_of_surgery_package
+#check Poincare.long_time_surgery_parameter_coherence_of_surgery_package
+#check Poincare.long_time_nonaccumulation_of_surgery_package
+#check Poincare.long_time_surgery_continuation_of_surgery_package
+#check Poincare.ricci_flow_with_surgery_construction_statement_of_surgery_package_eq
+#check Poincare.ricci_flow_with_surgery_of_surgery_package_eq
+#check Poincare.surgery_scale_function_of_surgery_package_eq
+#check Poincare.surgery_scale_continuity_of_surgery_package_eq
+#check Poincare.surgery_scale_separation_of_surgery_package_eq
+#check Poincare.surgery_cutoff_parameter_control_of_surgery_package_eq
+#check Poincare.surgery_cutoff_smooth_bump_of_surgery_package_eq
+#check Poincare.surgery_parameter_selection_of_surgery_package_eq
+#check Poincare.strong_delta_neck_detection_of_surgery_package_eq
+#check Poincare.surgery_neck_separation_of_surgery_package_eq
+#check Poincare.surgery_neck_parametrization_of_surgery_package_eq
+#check Poincare.surgery_neck_canonical_coordinates_of_surgery_package_eq
+#check Poincare.surgery_neck_decomposition_of_surgery_package_eq
+#check Poincare.standard_cap_model_of_surgery_package_eq
+#check Poincare.cap_gluing_smoothness_of_surgery_package_eq
+#check Poincare.surgery_cap_metric_interpolation_of_surgery_package_eq
+#check Poincare.surgery_cap_curvature_estimates_of_surgery_package_eq
+#check Poincare.surgery_cap_construction_of_surgery_package_eq
+#check Poincare.post_surgery_curvature_pinching_of_surgery_package_eq
+#check Poincare.post_surgery_noncollapsing_control_of_surgery_package_eq
+#check Poincare.post_surgery_derivative_bounds_of_surgery_package_eq
+#check Poincare.post_surgery_canonical_neighborhood_persistence_of_surgery_package_eq
+#check Poincare.post_surgery_metric_control_of_surgery_package_eq
+#check Poincare.surgery_time_discreteness_of_surgery_package_eq
+#check Poincare.surgery_time_local_finiteness_of_surgery_package_eq
+#check Poincare.long_time_existence_iteration_of_surgery_package_eq
+#check Poincare.long_time_surgery_parameter_coherence_of_surgery_package_eq
+#check Poincare.long_time_nonaccumulation_of_surgery_package_eq
+#check Poincare.long_time_surgery_continuation_of_surgery_package_eq
+#check Poincare.f_functional_setup_of_perelman_package
+#check Poincare.entropy_normalization_of_perelman_package
+#check Poincare.entropy_minimizer_existence_of_perelman_package
+#check Poincare.entropy_log_sobolev_control_of_perelman_package
+#check Poincare.conjugate_heat_equation_of_perelman_package
+#check Poincare.adjoint_heat_kernel_of_perelman_package
+#check Poincare.conjugate_heat_kernel_estimates_of_perelman_package
+#check Poincare.w_functional_setup_of_perelman_package
+#check Poincare.entropy_gradient_formula_of_perelman_package
+#check Poincare.entropy_first_variation_of_perelman_package
+#check Poincare.entropy_monotonicity_of_perelman_package
+#check Poincare.entropy_lower_bound_propagation_of_perelman_package
+#check Poincare.entropy_functional_of_perelman_package
+#check Poincare.reduced_length_first_variation_of_perelman_package
+#check Poincare.reduced_distance_existence_of_perelman_package
+#check Poincare.reduced_distance_differential_inequality_of_perelman_package
+#check Poincare.reduced_distance_estimates_of_perelman_package
+#check Poincare.reduced_distance_cut_locus_control_of_perelman_package
+#check Poincare.reduced_jacobian_comparison_of_perelman_package
+#check Poincare.reduced_distance_of_perelman_package
+#check Poincare.reduced_volume_definition_of_perelman_package
+#check Poincare.reduced_volume_derivative_formula_of_perelman_package
+#check Poincare.reduced_volume_rigidity_of_perelman_package
+#check Poincare.reduced_volume_positive_lower_bound_of_perelman_package
+#check Poincare.reduced_volume_limit_rigidity_of_perelman_package
+#check Poincare.reduced_volume_nonincreasing_of_perelman_package
+#check Poincare.kappa_noncollapsing_from_reduced_volume_of_perelman_package
+#check Poincare.no_local_collapsing_contradiction_setup_of_perelman_package
+#check Poincare.collapsed_ball_blowup_of_perelman_package
+#check Poincare.volume_ratio_contradiction_of_perelman_package
+#check Poincare.no_local_collapsing_volume_lower_bound_of_perelman_package
+#check Poincare.kappa_noncollapsing_of_perelman_package
+#check Poincare.hamilton_compactness_of_perelman_package
+#check Poincare.ancient_kappa_solution_limit_extraction_of_perelman_package
+#check Poincare.kappa_solution_pointed_rescaling_of_perelman_package
+#check Poincare.kappa_solution_curvature_normalization_of_perelman_package
+#check Poincare.kappa_solution_structure_of_perelman_package
+#check Poincare.kappa_solution_nonnegative_curvature_operator_of_perelman_package
+#check Poincare.kappa_solution_asymptotic_soliton_of_perelman_package
+#check Poincare.ancient_kappa_solution_compactness_of_perelman_package
+#check Poincare.canonical_neighborhood_scale_control_of_perelman_package
+#check Poincare.canonical_neighborhood_stability_of_perelman_package
+#check Poincare.canonical_neighborhood_persistence_across_scales_of_perelman_package
+#check Poincare.canonical_neighborhood_neck_cap_dichotomy_of_perelman_package
+#check Poincare.canonical_neighborhood_classification_of_perelman_package
+#check Poincare.no_local_collapsing_of_perelman_package
+#check Poincare.reduced_volume_of_perelman_package
+#check Poincare.canonical_neighborhood_of_perelman_package
+#check Poincare.singularity_model_classification_of_perelman_package
+#check Poincare.singularity_model_blowup_classification_of_perelman_package
+#check Poincare.singularity_control_of_perelman_package
+#check Poincare.f_functional_setup_of_perelman_package_eq
+#check Poincare.entropy_normalization_of_perelman_package_eq
+#check Poincare.entropy_minimizer_existence_of_perelman_package_eq
+#check Poincare.entropy_log_sobolev_control_of_perelman_package_eq
+#check Poincare.conjugate_heat_equation_of_perelman_package_eq
+#check Poincare.adjoint_heat_kernel_of_perelman_package_eq
+#check Poincare.conjugate_heat_kernel_estimates_of_perelman_package_eq
+#check Poincare.w_functional_setup_of_perelman_package_eq
+#check Poincare.entropy_gradient_formula_of_perelman_package_eq
+#check Poincare.entropy_first_variation_of_perelman_package_eq
+#check Poincare.entropy_monotonicity_of_perelman_package_eq
+#check Poincare.entropy_lower_bound_propagation_of_perelman_package_eq
+#check Poincare.entropy_functional_of_perelman_package_eq
+#check Poincare.reduced_length_first_variation_of_perelman_package_eq
+#check Poincare.reduced_distance_existence_of_perelman_package_eq
+#check Poincare.reduced_distance_differential_inequality_of_perelman_package_eq
+#check Poincare.reduced_distance_estimates_of_perelman_package_eq
+#check Poincare.reduced_distance_cut_locus_control_of_perelman_package_eq
+#check Poincare.reduced_jacobian_comparison_of_perelman_package_eq
+#check Poincare.reduced_distance_of_perelman_package_eq
+#check Poincare.reduced_volume_definition_of_perelman_package_eq
+#check Poincare.reduced_volume_derivative_formula_of_perelman_package_eq
+#check Poincare.reduced_volume_rigidity_of_perelman_package_eq
+#check Poincare.reduced_volume_positive_lower_bound_of_perelman_package_eq
+#check Poincare.reduced_volume_limit_rigidity_of_perelman_package_eq
+#check Poincare.reduced_volume_nonincreasing_of_perelman_package_eq
+#check Poincare.kappa_noncollapsing_from_reduced_volume_of_perelman_package_eq
+#check Poincare.no_local_collapsing_contradiction_setup_of_perelman_package_eq
+#check Poincare.collapsed_ball_blowup_of_perelman_package_eq
+#check Poincare.volume_ratio_contradiction_of_perelman_package_eq
+#check Poincare.no_local_collapsing_volume_lower_bound_of_perelman_package_eq
+#check Poincare.kappa_noncollapsing_of_perelman_package_eq
+#check Poincare.hamilton_compactness_of_perelman_package_eq
+#check Poincare.ancient_kappa_solution_limit_extraction_of_perelman_package_eq
+#check Poincare.kappa_solution_pointed_rescaling_of_perelman_package_eq
+#check Poincare.kappa_solution_curvature_normalization_of_perelman_package_eq
+#check Poincare.kappa_solution_structure_of_perelman_package_eq
+#check Poincare.kappa_solution_nonnegative_curvature_operator_of_perelman_package_eq
+#check Poincare.kappa_solution_asymptotic_soliton_of_perelman_package_eq
+#check Poincare.ancient_kappa_solution_compactness_of_perelman_package_eq
+#check Poincare.canonical_neighborhood_scale_control_of_perelman_package_eq
+#check Poincare.canonical_neighborhood_stability_of_perelman_package_eq
+#check Poincare.canonical_neighborhood_persistence_across_scales_of_perelman_package_eq
+#check Poincare.canonical_neighborhood_neck_cap_dichotomy_of_perelman_package_eq
+#check Poincare.canonical_neighborhood_classification_of_perelman_package_eq
+#check Poincare.no_local_collapsing_of_perelman_package_eq
+#check Poincare.reduced_volume_of_perelman_package_eq
+#check Poincare.canonical_neighborhood_of_perelman_package_eq
+#check Poincare.singularity_model_classification_of_perelman_package_eq
+#check Poincare.singularity_model_blowup_classification_of_perelman_package_eq
+#check Poincare.singularity_control_of_perelman_package_eq
+#check Poincare.PerelmanSingularityControlStatement
+#check Poincare.perelman_singularity_control_statement_of_components
+#check Poincare.perelman_singularity_control_statement_of_package
+#check Poincare.perelman_singularity_control_of_statement
+#check Poincare.perelman_subobligations_of_statement
+#check Poincare.perelman_monotonicity_blowup_subobligations_of_statement
+#check Poincare.perelman_control_package_of_surgery_package
+#check Poincare.perelman_control_package_of_surgery_package_eq
+#check Poincare.perelman_singularity_control_statement_of_surgery_package
+#check Poincare.f_functional_setup_of_surgery_package
+#check Poincare.entropy_normalization_of_surgery_package
+#check Poincare.entropy_minimizer_existence_of_surgery_package
+#check Poincare.entropy_log_sobolev_control_of_surgery_package
+#check Poincare.conjugate_heat_equation_of_surgery_package
+#check Poincare.adjoint_heat_kernel_of_surgery_package
+#check Poincare.conjugate_heat_kernel_estimates_of_surgery_package
+#check Poincare.w_functional_setup_of_surgery_package
+#check Poincare.entropy_gradient_formula_of_surgery_package
+#check Poincare.entropy_first_variation_of_surgery_package
+#check Poincare.entropy_monotonicity_of_surgery_package
+#check Poincare.entropy_lower_bound_propagation_of_surgery_package
+#check Poincare.entropy_functional_of_surgery_package
+#check Poincare.reduced_length_first_variation_of_surgery_package
+#check Poincare.reduced_distance_existence_of_surgery_package
+#check Poincare.reduced_distance_differential_inequality_of_surgery_package
+#check Poincare.reduced_distance_estimates_of_surgery_package
+#check Poincare.reduced_distance_cut_locus_control_of_surgery_package
+#check Poincare.reduced_jacobian_comparison_of_surgery_package
+#check Poincare.reduced_distance_of_surgery_package
+#check Poincare.reduced_volume_definition_of_surgery_package
+#check Poincare.reduced_volume_derivative_formula_of_surgery_package
+#check Poincare.reduced_volume_rigidity_of_surgery_package
+#check Poincare.reduced_volume_positive_lower_bound_of_surgery_package
+#check Poincare.reduced_volume_limit_rigidity_of_surgery_package
+#check Poincare.reduced_volume_nonincreasing_of_surgery_package
+#check Poincare.kappa_noncollapsing_from_reduced_volume_of_surgery_package
+#check Poincare.no_local_collapsing_contradiction_setup_of_surgery_package
+#check Poincare.collapsed_ball_blowup_of_surgery_package
+#check Poincare.volume_ratio_contradiction_of_surgery_package
+#check Poincare.no_local_collapsing_volume_lower_bound_of_surgery_package
+#check Poincare.kappa_noncollapsing_of_surgery_package
+#check Poincare.hamilton_compactness_of_surgery_package
+#check Poincare.ancient_kappa_solution_limit_extraction_of_surgery_package
+#check Poincare.kappa_solution_pointed_rescaling_of_surgery_package
+#check Poincare.kappa_solution_curvature_normalization_of_surgery_package
+#check Poincare.kappa_solution_structure_of_surgery_package
+#check Poincare.kappa_solution_nonnegative_curvature_operator_of_surgery_package
+#check Poincare.kappa_solution_asymptotic_soliton_of_surgery_package
+#check Poincare.ancient_kappa_solution_compactness_of_surgery_package
+#check Poincare.canonical_neighborhood_scale_control_of_surgery_package
+#check Poincare.canonical_neighborhood_stability_of_surgery_package
+#check Poincare.canonical_neighborhood_persistence_across_scales_of_surgery_package
+#check Poincare.canonical_neighborhood_neck_cap_dichotomy_of_surgery_package
+#check Poincare.canonical_neighborhood_classification_of_surgery_package
+#check Poincare.no_local_collapsing_of_surgery_package
+#check Poincare.reduced_volume_of_surgery_package
+#check Poincare.canonical_neighborhood_of_surgery_package
+#check Poincare.singularity_model_classification_of_surgery_package
+#check Poincare.singularity_model_blowup_classification_of_surgery_package
+#check Poincare.perelman_singularity_control_of_surgery_package
+#check Poincare.perelman_singularity_control_statement_of_surgery_package_eq
+#check Poincare.f_functional_setup_of_surgery_package_eq
+#check Poincare.entropy_normalization_of_surgery_package_eq
+#check Poincare.entropy_minimizer_existence_of_surgery_package_eq
+#check Poincare.entropy_log_sobolev_control_of_surgery_package_eq
+#check Poincare.conjugate_heat_equation_of_surgery_package_eq
+#check Poincare.adjoint_heat_kernel_of_surgery_package_eq
+#check Poincare.conjugate_heat_kernel_estimates_of_surgery_package_eq
+#check Poincare.w_functional_setup_of_surgery_package_eq
+#check Poincare.entropy_gradient_formula_of_surgery_package_eq
+#check Poincare.entropy_first_variation_of_surgery_package_eq
+#check Poincare.entropy_monotonicity_of_surgery_package_eq
+#check Poincare.entropy_lower_bound_propagation_of_surgery_package_eq
+#check Poincare.entropy_functional_of_surgery_package_eq
+#check Poincare.reduced_length_first_variation_of_surgery_package_eq
+#check Poincare.reduced_distance_existence_of_surgery_package_eq
+#check Poincare.reduced_distance_differential_inequality_of_surgery_package_eq
+#check Poincare.reduced_distance_estimates_of_surgery_package_eq
+#check Poincare.reduced_distance_cut_locus_control_of_surgery_package_eq
+#check Poincare.reduced_jacobian_comparison_of_surgery_package_eq
+#check Poincare.reduced_distance_of_surgery_package_eq
+#check Poincare.reduced_volume_definition_of_surgery_package_eq
+#check Poincare.reduced_volume_derivative_formula_of_surgery_package_eq
+#check Poincare.reduced_volume_rigidity_of_surgery_package_eq
+#check Poincare.reduced_volume_positive_lower_bound_of_surgery_package_eq
+#check Poincare.reduced_volume_limit_rigidity_of_surgery_package_eq
+#check Poincare.reduced_volume_nonincreasing_of_surgery_package_eq
+#check Poincare.kappa_noncollapsing_from_reduced_volume_of_surgery_package_eq
+#check Poincare.no_local_collapsing_contradiction_setup_of_surgery_package_eq
+#check Poincare.collapsed_ball_blowup_of_surgery_package_eq
+#check Poincare.volume_ratio_contradiction_of_surgery_package_eq
+#check Poincare.no_local_collapsing_volume_lower_bound_of_surgery_package_eq
+#check Poincare.kappa_noncollapsing_of_surgery_package_eq
+#check Poincare.hamilton_compactness_of_surgery_package_eq
+#check Poincare.ancient_kappa_solution_limit_extraction_of_surgery_package_eq
+#check Poincare.kappa_solution_pointed_rescaling_of_surgery_package_eq
+#check Poincare.kappa_solution_curvature_normalization_of_surgery_package_eq
+#check Poincare.kappa_solution_structure_of_surgery_package_eq
+#check Poincare.kappa_solution_nonnegative_curvature_operator_of_surgery_package_eq
+#check Poincare.kappa_solution_asymptotic_soliton_of_surgery_package_eq
+#check Poincare.ancient_kappa_solution_compactness_of_surgery_package_eq
+#check Poincare.canonical_neighborhood_scale_control_of_surgery_package_eq
+#check Poincare.canonical_neighborhood_stability_of_surgery_package_eq
+#check Poincare.canonical_neighborhood_persistence_across_scales_of_surgery_package_eq
+#check Poincare.canonical_neighborhood_neck_cap_dichotomy_of_surgery_package_eq
+#check Poincare.canonical_neighborhood_classification_of_surgery_package_eq
+#check Poincare.no_local_collapsing_of_surgery_package_eq
+#check Poincare.reduced_volume_of_surgery_package_eq
+#check Poincare.canonical_neighborhood_of_surgery_package_eq
+#check Poincare.singularity_model_classification_of_surgery_package_eq
+#check Poincare.singularity_model_blowup_classification_of_surgery_package_eq
+#check Poincare.perelman_singularity_control_of_surgery_package_eq
+#check Poincare.finite_extinction_fundamental_group_input_of_surgery_package
+#check Poincare.finite_extinction_sweepout_existence_of_surgery_package
+#check Poincare.finite_extinction_sweepout_parameter_space_of_surgery_package
+#check Poincare.finite_extinction_sweepout_continuity_of_surgery_package
+#check Poincare.finite_extinction_sweepout_area_bound_of_surgery_package
+#check Poincare.finite_extinction_sweepout_nontriviality_of_surgery_package
+#check Poincare.finite_extinction_area_functional_setup_of_surgery_package
+#check Poincare.finite_extinction_minmax_width_definition_of_surgery_package
+#check Poincare.finite_extinction_width_compactness_of_surgery_package
+#check Poincare.finite_extinction_width_lower_semicontinuity_of_surgery_package
+#check Poincare.finite_extinction_minimizing_sequence_of_surgery_package
+#check Poincare.finite_extinction_pull_tight_argument_of_surgery_package
+#check Poincare.finite_extinction_minmax_stationarity_of_surgery_package
+#check Poincare.finite_extinction_min_surface_regularity_of_surgery_package
+#check Poincare.finite_extinction_positive_width_of_surgery_package
+#check Poincare.finite_extinction_width_theory_of_surgery_package
+#check Poincare.finite_extinction_first_variation_formula_of_surgery_package
+#check Poincare.finite_extinction_second_variation_inequality_of_surgery_package
+#check Poincare.finite_extinction_gauss_bonnet_estimate_of_surgery_package
+#check Poincare.finite_extinction_scalar_curvature_width_bound_of_surgery_package
+#check Poincare.finite_extinction_width_evolution_of_surgery_package
+#check Poincare.finite_extinction_width_differential_inequality_of_surgery_package
+#check Poincare.finite_extinction_surgery_metric_comparison_of_surgery_package
+#check Poincare.finite_extinction_surgery_width_comparison_map_of_surgery_package
+#check Poincare.finite_extinction_surgery_width_drop_of_surgery_package
+#check Poincare.finite_extinction_surgery_discard_control_of_surgery_package
+#check Poincare.finite_extinction_discarded_component_width_neutrality_of_surgery_package
+#check Poincare.finite_extinction_discarded_component_sweepout_triviality_of_surgery_package
+#check Poincare.finite_extinction_discarded_component_classification_of_surgery_package
+#check Poincare.finite_extinction_surviving_component_tracking_of_surgery_package
+#check Poincare.finite_extinction_component_topology_of_surgery_package
+#check Poincare.finite_extinction_curvature_pinching_of_surgery_package
+#check Poincare.finite_extinction_positive_scalar_curvature_lower_bound_of_surgery_package
+#check Poincare.finite_extinction_positive_scalar_curvature_persistence_of_surgery_package
+#check Poincare.finite_extinction_component_control_of_surgery_package
+#check Poincare.finite_extinction_volume_evolution_formula_of_surgery_package
+#check Poincare.finite_extinction_surgery_volume_nonincrease_of_surgery_package
+#check Poincare.finite_extinction_scalar_curvature_differential_inequality_of_surgery_package
+#check Poincare.finite_extinction_volume_differential_inequality_of_surgery_package
+#check Poincare.finite_extinction_volume_decay_estimate_of_surgery_package
+#check Poincare.finite_extinction_time_bound_of_surgery_package
+#check Poincare.finite_extinction_differential_inequality_integration_of_surgery_package
+#check Poincare.finite_extinction_finite_time_integration_of_surgery_package
+#check Poincare.finite_extinction_surgery_time_summability_of_surgery_package
+#check Poincare.finite_extinction_extinction_time_contradiction_of_surgery_package
+#check Poincare.finite_extinction_derivation_of_surgery_package
+#check Poincare.finite_extinction_conclusion_derivation_of_surgery_package
+#check Poincare.FiniteExtinctionConclusionStatement
+#check Poincare.FiniteExtinctionStatement
+#check Poincare.finite_extinction_conclusion_statement_of_components
+#check Poincare.finite_extinction_conclusion_statement_of_surgery_package
+#check Poincare.finite_extinction_statement_of_surgery_package
+#check Poincare.finite_extinction_conclusion_statement_of_finite_extinction_statement
+#check Poincare.finite_extinction_of_finite_extinction_statement
+#check Poincare.finite_extinction_via_statement_of_surgery_package
+#check Poincare.FiniteExtinctionWidthSubobligationsStatement
+#check Poincare.FiniteExtinctionSubobligationsStatement
+#check Poincare.RicciFlowWithSurgeryConstructionSubobligationsPayload
+#check Poincare.PerelmanSingularityControlSubobligationsPayload
+#check Poincare.PerelmanMonotonicityBlowupSubobligationsPayload
+#check Poincare.surgery_construction_payload_of_construction_package
+#check Poincare.perelman_control_payload_of_package
+#check Poincare.FiniteExtinctionWidthSubobligationsPayload
+#check Poincare.FiniteExtinctionSubobligationsPayload
+#check Poincare.finite_extinction_width_subobligations_statement_of_surgery_package
+#check Poincare.finite_extinction_subobligations_statement_of_surgery_package
+#check Poincare.finite_extinction_width_subobligations_of_statement
+#check Poincare.finite_extinction_subobligations_of_statement
+#check Poincare.finite_extinction_subobligations_payload_of_surgery_package
+#check Poincare.finite_extinction_derivation_of_subobligations_statement
+#check Poincare.finite_extinction_conclusion_statement_of_subobligations_statement
+#check Poincare.finite_extinction_statement_of_subobligations_statement
+#check Poincare.finite_extinction_of_subobligations_statement
+#check Poincare.finite_extinction_statement_payload_of_surgery_package
+#check Poincare.extinction_decomposition_of_topology_package
+#check Poincare.extinction_decomposition_of_topology_package_eq
+#check Poincare.extinction_surgery_trace_reconstruction_of_topology_package
+#check Poincare.extinction_surgery_trace_handle_cancellation_of_topology_package
+#check Poincare.extinction_component_classification_of_topology_package
+#check Poincare.extinction_discarded_component_homeomorphism_classification_of_topology_package
+#check Poincare.extinction_component_inventory_of_topology_package
+#check Poincare.extinction_component_boundary_sphere_control_of_topology_package
+#check Poincare.three_sphere_recognition_of_topology_package
+#check Poincare.extinction_prime_decomposition_of_topology_package
+#check Poincare.extinction_prime_decomposition_of_topology_package_eq
+#check Poincare.extinction_prime_decomposition_existence_of_topology_package
+#check Poincare.extinction_sphere_theorem_application_of_topology_package
+#check Poincare.extinction_embedded_sphere_production_of_topology_package
+#check Poincare.extinction_loop_theorem_application_of_topology_package
+#check Poincare.extinction_prime_decomposition_compatibility_of_topology_package
+#check Poincare.extinction_prime_factor_uniqueness_of_topology_package
+#check Poincare.extinction_irreducibility_of_topology_package
+#check Poincare.extinction_irreducibility_of_topology_package_eq
+#check Poincare.extinction_irreducible_factor_recognition_of_topology_package
+#check Poincare.extinction_connected_sum_collapse_of_topology_package
+#check Poincare.extinction_connected_sum_collapse_of_topology_package_eq
+#check Poincare.extinction_connected_sum_fundamental_group_control_of_topology_package
+#check Poincare.extinction_connected_sum_van_kampen_of_topology_package
+#check Poincare.extinction_simply_connected_prime_factor_control_of_topology_package
+#check Poincare.extinction_spherical_space_form_reduction_of_topology_package
+#check Poincare.extinction_spherical_space_form_reduction_of_topology_package_eq
+#check Poincare.spherical_space_form_classification_of_topology_package
+#check Poincare.spherical_quotient_model_of_topology_package
+#check Poincare.spherical_quotient_model_of_topology_package_eq
+#check Poincare.spherical_free_action_of_topology_package
+#check Poincare.spherical_universal_cover_of_topology_package
+#check Poincare.spherical_covering_model_of_topology_package
+#check Poincare.spherical_covering_projection_of_topology_package
+#check Poincare.spherical_fundamental_group_of_topology_package
+#check Poincare.spherical_fundamental_group_of_topology_package_eq
+#check Poincare.spherical_deck_group_identification_of_topology_package
+#check Poincare.spherical_deck_group_identification_of_topology_package_eq
+#check Poincare.spherical_deck_action_properness_of_topology_package
+#check Poincare.spherical_deck_group_triviality_of_topology_package
+#check Poincare.spherical_deck_group_triviality_of_topology_package_eq
+#check Poincare.spherical_deck_action_trivialization_of_topology_package
+#check Poincare.spherical_trivial_deck_quotient_identification_of_topology_package
+#check Poincare.simply_connected_extinction_recognition_of_topology_package
+#check Poincare.trivial_spherical_quotient_of_topology_package
+#check Poincare.trivial_spherical_quotient_of_topology_package_eq
+#check Poincare.trivial_quotient_homeomorphism_of_topology_package
+#check Poincare.trivial_quotient_homeomorphism_of_topology_package_eq
+#check Poincare.spherical_homeomorphism_lift_of_topology_package
+#check Poincare.spherical_homeomorphism_lift_of_topology_package_eq
+#check Poincare.homeomorphism_of_topology_package
+#check Poincare.homeomorphism_of_topology_package_eq
+#check Poincare.extinction_homeomorphism_assembly_of_topology_package
+#check Poincare.extinction_homeomorphism_assembly_of_topology_package_eq
+#check Poincare.extinction_homeomorphism_derivation_of_topology_package
+#check Poincare.extinction_homeomorphism_derivation_of_topology_package_eq
+#check Poincare.ExtinctionTopologyDerivationStatement
+#check Poincare.ExtinctionTopologyHomeomorphismAssemblyStatement
+#check Poincare.ExtinctionTopologyHomeomorphismDerivationStatement
+#check Poincare.ExtinctionTopologyExtractionStatement
+#check Poincare.ExtinctionTopologyDerivationForExtractionStatement
+#check Poincare.extinction_topology_derivation_statement_of_components
+#check Poincare.extinction_topology_derivation_statement_of_topology_package
+#check Poincare.ExtinctionTopologyClassificationSubobligationsPayload
+#check Poincare.topology_classification_subobligations_of_derivation_statement
+#check Poincare.topology_homeomorphism_assembly_statement_of_derivation_statement
+#check Poincare.topology_homeomorphism_derivation_statement_of_derivation_statement
+#check Poincare.extinction_topology_extraction_statement_of_topology_package
+#check Poincare.topology_derivation_statement_payload_of_extraction_statement
+#check Poincare.homeomorphism_of_topology_extraction_statement
+#check Poincare.extinction_implies_sphere_of_topology_extraction_statement
+#check Poincare.extinction_topology_extraction_statement_of_extraction_and_derivation
+#check Poincare.extinction_topology_extraction_statement_iff_extraction_with_derivation
+#check Poincare.poincare_statement_of_finite_extinction_and_topology_extraction_statement
+#check Poincare.poincare_payload_of_finite_extinction_and_topology_extraction_statement
+#check Poincare.poincare_statement_of_finite_extinction_and_extraction_derivation
+#check Poincare.poincare_payload_of_finite_extinction_and_extraction_derivation
+#check Poincare.topology_extraction_payload_of_topology_package
+#check Poincare.topology_extraction_payload_of_topology_package_eq
+#check Poincare.topology_extraction_statement_payload_of_topology_package
+#check Poincare.extinction_implies_sphere_of_topology_package_eq
+#check Poincare.extinction_surgery_trace_reconstruction_of_topology_package_eq
+#check Poincare.extinction_surgery_trace_handle_cancellation_of_topology_package_eq
+#check Poincare.extinction_component_classification_of_topology_package_eq
+#check Poincare.extinction_discarded_component_homeomorphism_classification_of_topology_package_eq
+#check Poincare.extinction_component_inventory_of_topology_package_eq
+#check Poincare.extinction_component_boundary_sphere_control_of_topology_package_eq
+#check Poincare.three_sphere_recognition_of_topology_package_eq
+#check Poincare.extinction_prime_decomposition_existence_of_topology_package_eq
+#check Poincare.extinction_sphere_theorem_application_of_topology_package_eq
+#check Poincare.extinction_embedded_sphere_production_of_topology_package_eq
+#check Poincare.extinction_loop_theorem_application_of_topology_package_eq
+#check Poincare.extinction_prime_decomposition_compatibility_of_topology_package_eq
+#check Poincare.extinction_prime_factor_uniqueness_of_topology_package_eq
+#check Poincare.extinction_irreducible_factor_recognition_of_topology_package_eq
+#check Poincare.extinction_connected_sum_fundamental_group_control_of_topology_package_eq
+#check Poincare.extinction_connected_sum_van_kampen_of_topology_package_eq
+#check Poincare.extinction_simply_connected_prime_factor_control_of_topology_package_eq
+#check Poincare.spherical_space_form_classification_of_topology_package_eq
+#check Poincare.spherical_free_action_of_topology_package_eq
+#check Poincare.spherical_universal_cover_of_topology_package_eq
+#check Poincare.spherical_covering_model_of_topology_package_eq
+#check Poincare.spherical_covering_projection_of_topology_package_eq
+#check Poincare.spherical_deck_action_properness_of_topology_package_eq
+#check Poincare.spherical_deck_action_trivialization_of_topology_package_eq
+#check Poincare.spherical_trivial_deck_quotient_identification_of_topology_package_eq
+#check Poincare.simply_connected_extinction_recognition_of_topology_package_eq
+#check Poincare.moise_local_charts_of_smoothability_package
+#check Poincare.moise_local_charts_of_smoothability_package_eq
+#check Poincare.moise_locally_finite_cover_refinement_of_smoothability_package
+#check Poincare.moise_simplicial_complex_of_smoothability_package
+#check Poincare.moise_compatible_chart_triangulations_of_smoothability_package
+#check Poincare.moise_triangulation_of_smoothability_package
+#check Poincare.moise_triangulation_of_smoothability_package_eq
+#check Poincare.moise_simplicial_approximation_of_smoothability_package
+#check Poincare.moise_star_neighborhood_basis_of_smoothability_package
+#check Poincare.moise_barycentric_subdivision_of_smoothability_package
+#check Poincare.moise_regular_neighborhood_compatibility_of_smoothability_package
+#check Poincare.moise_triangulation_local_finiteness_of_smoothability_package
+#check Poincare.moise_link_compatibility_of_smoothability_package
+#check Poincare.moise_pl_manifold_recognition_of_smoothability_package
+#check Poincare.moise_triangulation_homeomorphism_of_smoothability_package
+#check Poincare.moise_compatibility_of_smoothability_package
+#check Poincare.moise_triangulation_uniqueness_of_smoothability_package
+#check Poincare.moise_hauptvermutung_dimension_three_of_smoothability_package
+#check Poincare.pl_structure_of_smoothability_package
+#check Poincare.pl_structure_of_smoothability_package_eq
+#check Poincare.pl_transition_compatibility_of_smoothability_package
+#check Poincare.pl_atlas_of_smoothability_package
+#check Poincare.pl_atlas_of_smoothability_package_eq
+#check Poincare.pl_manifold_atlas_of_smoothability_package
+#check Poincare.pl_collar_neighborhood_compatibility_of_smoothability_package
+#check Poincare.pl_homeomorphism_compatibility_of_smoothability_package
+#check Poincare.pl_atlas_maximality_of_smoothability_package
+#check Poincare.pl_smoothing_existence_of_smoothability_package
+#check Poincare.pl_smoothing_obstruction_vanishing_of_smoothability_package
+#check Poincare.pl_microbundle_smoothing_of_smoothability_package
+#check Poincare.pl_smoothing_of_smoothability_package
+#check Poincare.pl_smoothing_of_smoothability_package_eq
+#check Poincare.pl_smoothing_compatibility_of_smoothability_package
+#check Poincare.pl_smoothing_uniqueness_of_smoothability_package
+#check Poincare.pl_smoothing_local_model_compatibility_of_smoothability_package
+#check Poincare.smooth_structure_of_smoothability_package
+#check Poincare.smooth_structure_of_smoothability_package_eq
+#check Poincare.smooth_atlas_construction_of_smoothability_package
+#check Poincare.smooth_atlas_construction_of_smoothability_package_eq
+#check Poincare.smooth_atlas_pl_compatibility_of_smoothability_package
+#check Poincare.smooth_atlas_maximality_of_smoothability_package
+#check Poincare.smooth_atlas_uniqueness_of_smoothability_package
+#check Poincare.smooth_structure_uniqueness_of_smoothability_package
+#check Poincare.smooth_transition_compatibility_of_smoothability_package
+#check Poincare.smooth_transition_compatibility_of_smoothability_package_eq
+#check Poincare.smooth_atlas_transition_smoothness_of_smoothability_package
+#check Poincare.smooth_atlas_transition_smoothness_of_smoothability_package_eq
+#check Poincare.smooth_structure_derivation_of_smoothability_package
+#check Poincare.smooth_structure_derivation_of_smoothability_package_eq
+#check Poincare.smooth_structure_derivation_statement_of_components
+#check Poincare.smooth_structure_derivation_statement_of_smoothability_package
+#check Poincare.smoothability_smooth_structure_statement_payload_of_smoothability_package
+#check Poincare.smoothability_smooth_structure_statement_payload_of_smoothability_package_eq
+#check (show
+  Poincare.SmoothabilityBridgeStatement =
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        ∀ smoothStructure : Poincare.HasThreeManifoldSmoothStructure M,
+          Poincare.SmoothStructureDerivationStatement M smoothStructure →
+            IsManifold Poincare.ThreeManifoldModelWithCorners 1 M) from rfl)
+#check (show
+  Poincare.SmoothabilitySmoothManifoldStatement =
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        IsManifold (𝓡 3) ∞ M) from rfl)
+#check Poincare.smoothability_bridge_of_smoothability_package
+#check Poincare.smoothability_bridge_of_smoothability_package_eq
+#check Poincare.smoothability_smooth_manifold_statement_of_smoothability_package
+#check Poincare.smoothability_smooth_manifold_statement_of_smoothability_package_eq
+#check Poincare.smoothability_bridge_derivation_of_smoothability_package
+#check Poincare.smoothability_bridge_derivation_of_smoothability_package_eq
+#check Poincare.is_manifold_of_smoothability_bridge
+#check Poincare.is_manifold_of_smoothability_bridge_eq
+#check Poincare.smooth_model_compatibility_of_smoothability_package
+#check Poincare.smooth_model_compatibility_of_smoothability_package_eq
+#check Poincare.smooth_chart_compatibility_of_smoothability_package
+#check Poincare.smooth_chart_compatibility_of_smoothability_package_eq
+#check Poincare.SmoothabilitySubobligationsPayload
+#check Poincare.smoothability_subobligations_of_derivation_statement
+#check Poincare.smoothability_bridge_payload_of_smoothability_package
+#check Poincare.smoothability_bridge_payload_of_smoothability_package_eq
+#check Poincare.smoothability_smooth_manifold_payload_of_smoothability_package
+#check Poincare.smoothability_smooth_manifold_payload_of_smoothability_package_eq
+
+#check (Poincare.extinction_implies_sphere_of_topology_package :
+  Poincare.ExtinctionTopologyExtractionPackage →
+    Poincare.ExtinctionImpliesSphereStatement)
+#check Poincare.extinction_implies_sphere_of_topology_package_eq
+
+#check (Poincare.ExtinctionTopologyDerivationForExtractionStatement :
+  Poincare.ExtinctionImpliesSphereStatement → Prop)
+
+#check (Poincare.extinction_topology_extraction_statement_of_extraction_and_derivation :
+  (extractSphere : Poincare.ExtinctionImpliesSphereStatement) →
+    Poincare.ExtinctionTopologyDerivationForExtractionStatement extractSphere →
+      Poincare.ExtinctionTopologyExtractionStatement)
+
+#check (Poincare.extinction_topology_extraction_statement_iff_extraction_with_derivation :
+  Poincare.ExtinctionTopologyExtractionStatement ↔
+    ∃ extractSphere : Poincare.ExtinctionImpliesSphereStatement,
+      Poincare.ExtinctionTopologyDerivationForExtractionStatement extractSphere)
+
+#check (Poincare.poincare_statement_of_finite_extinction_and_topology_extraction_statement :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
+    Poincare.ExtinctionTopologyExtractionStatement →
+      Poincare.PoincareConjectureStatement)
+
+#check (Poincare.poincare_payload_of_finite_extinction_and_topology_extraction_statement :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
+    Poincare.ExtinctionTopologyExtractionStatement →
+      ∃ _target : Poincare.PoincareConjectureStatement,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincare_statement_of_finite_extinction_and_extraction_derivation :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
+    (extractSphere : Poincare.ExtinctionImpliesSphereStatement) →
+      Poincare.ExtinctionTopologyDerivationForExtractionStatement
+        extractSphere →
+        Poincare.PoincareConjectureStatement)
+
+#check (Poincare.poincare_payload_of_finite_extinction_and_extraction_derivation :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
+    (extractSphere : Poincare.ExtinctionImpliesSphereStatement) →
+      Poincare.ExtinctionTopologyDerivationForExtractionStatement
+        extractSphere →
+        ∃ _target : Poincare.PoincareConjectureStatement,
+          ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.smoothable_of_smoothability_package :
+  Poincare.SmoothabilityPackage →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        IsManifold Poincare.ThreeManifoldModelWithCorners 1 M)
+#check Poincare.smoothable_of_smoothability_package_eq
+
+#check (Poincare.smoothability_smooth_manifold_statement_of_smoothability_package :
+  Poincare.SmoothabilityPackage →
+    Poincare.SmoothabilitySmoothManifoldStatement)
+#check Poincare.smoothability_smooth_manifold_statement_of_smoothability_package_eq
+
+#check (Poincare.smooth_manifold_of_smoothability_package :
+  Poincare.SmoothabilityPackage →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        IsManifold (𝓡 3) ∞ M)
+#check Poincare.smooth_manifold_of_smoothability_package_eq
+
+#check (Poincare.smoothability_smooth_manifold_payload_of_smoothability_package :
+  Poincare.SmoothabilityPackage →
+    Poincare.SmoothabilityBridgeStatement ∧
+      Poincare.SmoothabilitySmoothManifoldStatement)
+#check Poincare.smoothability_smooth_manifold_payload_of_smoothability_package_eq
+
+#check (Poincare.poincare_statement_of_extinction_and_extraction :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
+    Poincare.ExtinctionImpliesSphereStatement →
+      Poincare.PoincareConjectureStatement)
+
+#check (Poincare.extinction_extraction_of_poincare_statement :
+  Poincare.PoincareConjectureStatement →
+    Poincare.ExtinctionImpliesSphereStatement)
+
+#check (Poincare.poincare_statement_iff_extinction_extraction :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
+    (Poincare.PoincareConjectureStatement ↔
+      Poincare.ExtinctionImpliesSphereStatement))
+
+#check (Poincare.canonical_three_sphere_statement_of_extinction_and_extraction :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
+    Poincare.ExtinctionImpliesSphereStatement →
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.canonical_three_sphere_statement_iff_extinction_extraction :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
+    ((∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere)) ↔
+      Poincare.ExtinctionImpliesSphereStatement))
+
+#check Poincare.finite_extinction_statement_payload_of_smoothability_and_surgery_packages
+
+#check (Poincare.finite_extinction_input_of_smoothability_and_surgery_packages :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω,
+          Poincare.FiniteExtinctionSurgeryPackage n M)) →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Poincare.FiniteExtinctionByRicciFlowWithSurgery M)
+
+#check (Poincare.poincare_target_payload_of_surgery_and_topology_extraction_statement :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
+    Poincare.ExtinctionTopologyExtractionStatement →
+      ∃ _finiteExtinction :
+        (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace Poincare.ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Poincare.FiniteExtinctionByRicciFlowWithSurgery M),
+      ∃ _topologyStatement : Poincare.ExtinctionTopologyExtractionStatement,
+      ∃ _target : Poincare.PoincareConjectureStatement,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincare_assembly_inputs_payload_of_surgery_and_extraction_derivation :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
+    (extractSphere : Poincare.ExtinctionImpliesSphereStatement) →
+      Poincare.ExtinctionTopologyDerivationForExtractionStatement
+        extractSphere →
+        ∃ _finiteExtinction :
+          (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+            [ChartedSpace Poincare.ThreeManifoldModel M]
+            [SimplyConnectedSpace M] [CompactSpace M],
+              Poincare.FiniteExtinctionByRicciFlowWithSurgery M),
+        ∃ extractSphere : Poincare.ExtinctionImpliesSphereStatement,
+          Poincare.ExtinctionTopologyDerivationForExtractionStatement
+            extractSphere)
+
+#check (Poincare.poincare_target_payload_of_surgery_and_extraction_derivation :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
+    (extractSphere : Poincare.ExtinctionImpliesSphereStatement) →
+      Poincare.ExtinctionTopologyDerivationForExtractionStatement
+        extractSphere →
+        ∃ _finiteExtinction :
+          (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+            [ChartedSpace Poincare.ThreeManifoldModel M]
+            [SimplyConnectedSpace M] [CompactSpace M],
+              Poincare.FiniteExtinctionByRicciFlowWithSurgery M),
+        ∃ extractSphere : Poincare.ExtinctionImpliesSphereStatement,
+        ∃ _derivation :
+          Poincare.ExtinctionTopologyDerivationForExtractionStatement
+            extractSphere,
+        ∃ _target : Poincare.PoincareConjectureStatement,
+          ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincare_full_assembly_payload_of_surgery_and_topology_packages :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
+    Poincare.ExtinctionTopologyExtractionPackage →
+      ∃ _smoothabilityPackage : Poincare.SmoothabilityPackage,
+      ∃ _surgeryPackages :
+        (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace Poincare.ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+            Nonempty (Σ n : ℕ∞ω,
+              Poincare.FiniteExtinctionSurgeryPackage n M)),
+      ∃ _topologyPackage : Poincare.ExtinctionTopologyExtractionPackage,
+      ∃ _finiteExtinction :
+        (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace Poincare.ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Poincare.FiniteExtinctionByRicciFlowWithSurgery M),
+      ∃ _extractSphere : Poincare.ExtinctionImpliesSphereStatement,
+        Poincare.PoincareConjectureStatement)
+
+#check (Poincare.poincare_assembly_payload_of_surgery_and_topology_packages :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
+    Poincare.ExtinctionTopologyExtractionPackage →
+      ∃ _finiteExtinction :
+        (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace Poincare.ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Poincare.FiniteExtinctionByRicciFlowWithSurgery M),
+      ∃ _extractSphere : Poincare.ExtinctionImpliesSphereStatement,
+        Poincare.PoincareConjectureStatement)
+
+#check (Poincare.poincare_statement_of_surgery_and_topology_packages :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
+    Poincare.ExtinctionTopologyExtractionPackage →
+      Poincare.PoincareConjectureStatement)
+
+#check (Poincare.poincare_statement_of_surgery_and_topology_extraction_statement :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
+    Poincare.ExtinctionTopologyExtractionStatement →
+      Poincare.PoincareConjectureStatement)
+
+#check (Poincare.poincare_completion_payload_of_surgery_and_topology_extraction_statement :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
+    Poincare.ExtinctionTopologyExtractionStatement →
+      ∃ _target : Poincare.PoincareConjectureStatement,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincare_completion_payload_of_surgery_and_extraction_derivation :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
+    (extractSphere : Poincare.ExtinctionImpliesSphereStatement) →
+      Poincare.ExtinctionTopologyDerivationForExtractionStatement
+        extractSphere →
+        ∃ _target : Poincare.PoincareConjectureStatement,
+          ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincare_statement_of_surgery_and_extraction_derivation :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
+    (extractSphere : Poincare.ExtinctionImpliesSphereStatement) →
+      Poincare.ExtinctionTopologyDerivationForExtractionStatement
+        extractSphere →
+        Poincare.PoincareConjectureStatement)
+
+#check (Poincare.canonical_three_sphere_statement_of_surgery_and_topology_packages :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
+    Poincare.ExtinctionTopologyExtractionPackage →
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.canonical_three_sphere_statement_of_surgery_and_topology_extraction_statement :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
+    Poincare.ExtinctionTopologyExtractionStatement →
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.canonical_three_sphere_statement_of_surgery_and_extraction_derivation :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
+    (extractSphere : Poincare.ExtinctionImpliesSphereStatement) →
+      Poincare.ExtinctionTopologyDerivationForExtractionStatement
+        extractSphere →
+        ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace Poincare.ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
+    Poincare.ExtinctionTopologyExtractionPackage →
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.poincare_statement_of_canonical_three_sphere_statement :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₜ Poincare.ThreeSphere)) →
+    Poincare.PoincareConjectureStatement)
+
+#check (Poincare.canonical_three_sphere_statement_of_poincare_statement :
+  Poincare.PoincareConjectureStatement →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.canonical_three_sphere_statement_of_poincare_payload :
+  (∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.canonical_three_sphere_statement_iff_poincare_completion_payload :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₜ Poincare.ThreeSphere)) ↔
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_three_sphere_statement_of_completionCriterionAtUniverse :
+  ∀ witness : Type,
+    Poincare.CompletionCriterionAtUniverse witness →
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.canonical_three_sphere_statement_iff_completionCriterionAtUniverse :
+  ∀ witness : Type,
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere)) ↔
+      Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_smooth_three_sphere_statement_of_smooth_statement :
+  Poincare.SmoothPoincareConjectureStatement →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere))
+
+#check (Poincare.canonical_smooth_three_sphere_statement_iff_smooth_statement :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) ↔
+    Poincare.SmoothPoincareConjectureStatement)
+
+#check (Poincare.canonical_three_sphere_statement_of_smooth_statement :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      IsManifold (𝓡 3) ∞ M) →
+    Poincare.SmoothPoincareConjectureStatement →
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.completion_criterion_of_smooth_statement :
+  ∀ witness : Type,
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        IsManifold (𝓡 3) ∞ M) →
+      Poincare.SmoothPoincareConjectureStatement →
+        Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_three_sphere_statement_of_canonical_smooth_three_sphere_statement :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      IsManifold (𝓡 3) ∞ M) →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+#check Poincare.homeomorph_of_diffeomorph_three_sphere_eq
+#check Poincare.poincare_statement_of_canonical_three_sphere_statement_eq
+#check Poincare.poincare_payload_of_canonical_three_sphere_statement_eq
+#check Poincare.completion_criterion_of_canonical_three_sphere_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_poincare_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_poincare_payload_eq
+#check Poincare.canonical_three_sphere_statement_iff_poincare_completion_payload_eq
+#check Poincare.canonical_three_sphere_statement_of_completionCriterionAtUniverse_eq
+#check Poincare.canonical_three_sphere_statement_iff_completionCriterionAtUniverse_eq
+#check Poincare.smooth_statement_of_canonical_three_sphere_statement_eq
+#check Poincare.canonical_smooth_three_sphere_statement_of_smooth_statement_eq
+#check Poincare.canonical_smooth_three_sphere_statement_iff_smooth_statement_eq
+#check Poincare.poincare_statement_of_smooth_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_smooth_statement_eq
+#check Poincare.poincare_payload_of_smooth_statement_eq
+#check Poincare.completion_criterion_of_smooth_statement_eq
+#check Poincare.poincare_statement_of_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_canonical_smooth_three_sphere_statement_eq
+#check Poincare.poincare_payload_of_canonical_smooth_three_sphere_statement_eq
+#check Poincare.completion_criterion_of_canonical_smooth_three_sphere_statement_eq
+
+#check (Poincare.PoincareProofDependencies.surgery :
+  ∀ dependencies : Poincare.PoincareProofDependencies,
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M))
+
+#check Poincare.smoothability_package_of_dependencies_eq
+#check Poincare.surgery_packages_of_dependencies_eq
+#check Poincare.topology_package_of_dependencies_eq
+#check Poincare.surgery_package_payload_of_dependencies
+#check Poincare.analytic_foundation_packages_of_dependencies
+#check Poincare.analytic_foundation_packages_of_dependencies_eq
+#check Poincare.analytic_foundation_statement_payload_with_surgery_package_of_dependencies
+#check Poincare.analytic_foundation_statement_payload_of_dependencies
+#check Poincare.analytic_foundation_statements_of_dependencies
+#check Poincare.analytic_foundation_statements_of_dependencies_eq
+#check Poincare.analytic_foundation_derivation_statements_of_dependencies
+#check Poincare.analytic_foundation_derivation_statements_of_dependencies_eq
+#check Poincare.ricci_flow_data_of_dependencies
+#check Poincare.ricci_flow_data_of_dependencies_eq
+#check Poincare.ricci_flow_equation_evidence_of_dependencies
+#check Poincare.ricci_flow_equation_evidence_of_dependencies_eq
+#check Poincare.analytic_foundation_subobligations_of_dependencies
+#check Poincare.analytic_foundation_subobligations_of_dependencies_eq
+#check Poincare.surgery_construction_packages_of_dependencies
+#check Poincare.surgery_construction_statement_payload_with_surgery_package_of_dependencies
+#check Poincare.surgery_construction_statement_payload_of_dependencies
+#check Poincare.surgery_construction_statements_of_dependencies
+#check Poincare.surgery_construction_statements_of_dependencies_eq
+#check Poincare.surgery_construction_subobligations_of_dependencies
+#check Poincare.surgery_construction_subobligations_of_dependencies_eq
+#check Poincare.perelman_control_statement_payload_with_surgery_package_of_dependencies
+#check Poincare.perelman_control_statement_payload_of_dependencies
+#check Poincare.perelman_control_statements_of_dependencies
+#check Poincare.perelman_control_statements_of_dependencies_eq
+#check Poincare.perelman_control_of_dependencies
+#check Poincare.perelman_control_of_dependencies_eq
+#check Poincare.perelman_control_packages_of_dependencies
+#check Poincare.perelman_control_packages_of_dependencies_eq
+#check Poincare.perelman_subobligations_of_dependencies
+#check Poincare.perelman_subobligations_of_dependencies_eq
+#check Poincare.perelman_monotonicity_blowup_subobligations_of_dependencies
+#check Poincare.perelman_monotonicity_blowup_subobligations_of_dependencies_eq
+#check Poincare.finite_extinction_subobligations_statement_payload_with_surgery_package_of_dependencies
+#check Poincare.finite_extinction_subobligations_statement_payload_of_dependencies
+#check Poincare.finite_extinction_subobligations_payload_of_surgery_package
+#check Poincare.finite_extinction_width_statements_of_dependencies
+#check Poincare.finite_extinction_width_statements_of_dependencies_eq
+#check Poincare.finite_extinction_subobligations_statements_of_dependencies
+#check Poincare.finite_extinction_subobligations_statements_of_dependencies_eq
+#check Poincare.finite_extinction_statement_payload_with_surgery_package_of_dependencies
+#check Poincare.finite_extinction_statement_payload_of_dependencies
+#check Poincare.finite_extinction_statement_payload_of_surgery_package
+#check Poincare.finite_extinction_derivation_stack_of_dependencies
+#check Poincare.finite_extinction_derivation_stack_of_dependencies_eq
+#check Poincare.finite_extinction_width_subobligations_of_dependencies
+#check Poincare.finite_extinction_width_subobligations_of_dependencies_eq
+#check Poincare.finite_extinction_subobligations_of_dependencies
+#check Poincare.finite_extinction_subobligations_of_dependencies_eq
+#check Poincare.finite_extinction_statements_of_dependencies_eq
+#check Poincare.finite_extinction_statements_via_subobligations_of_dependencies
+#check Poincare.finite_extinction_statements_via_subobligations_of_dependencies_eq
+#check Poincare.finite_extinction_via_subobligations_of_dependencies
+#check Poincare.finite_extinction_via_subobligations_of_dependencies_eq
+#check Poincare.finite_extinction_of_dependencies_eq
+#check Poincare.smoothability_moise_local_charts_of_dependencies
+#check Poincare.smoothability_moise_locally_finite_cover_refinement_of_dependencies
+#check Poincare.smoothability_moise_simplicial_complex_of_dependencies
+#check Poincare.smoothability_moise_compatible_chart_triangulations_of_dependencies
+#check Poincare.smoothability_moise_triangulation_of_dependencies
+#check Poincare.smoothability_moise_simplicial_approximation_of_dependencies
+#check Poincare.smoothability_moise_star_neighborhood_basis_of_dependencies
+#check Poincare.smoothability_moise_barycentric_subdivision_of_dependencies
+#check Poincare.smoothability_moise_regular_neighborhood_compatibility_of_dependencies
+#check Poincare.smoothability_moise_triangulation_local_finiteness_of_dependencies
+#check Poincare.smoothability_moise_link_compatibility_of_dependencies
+#check Poincare.smoothability_moise_pl_manifold_recognition_of_dependencies
+#check Poincare.smoothability_moise_triangulation_homeomorphism_of_dependencies
+#check Poincare.smoothability_moise_compatibility_of_dependencies
+#check Poincare.smoothability_moise_triangulation_uniqueness_of_dependencies
+#check Poincare.smoothability_moise_hauptvermutung_dimension_three_of_dependencies
+#check Poincare.smoothability_pl_structure_of_dependencies
+#check Poincare.smoothability_pl_transition_compatibility_of_dependencies
+#check Poincare.smoothability_pl_atlas_of_dependencies
+#check Poincare.smoothability_pl_manifold_atlas_of_dependencies
+#check Poincare.smoothability_pl_collar_neighborhood_compatibility_of_dependencies
+#check Poincare.smoothability_pl_homeomorphism_compatibility_of_dependencies
+#check Poincare.smoothability_pl_atlas_maximality_of_dependencies
+#check Poincare.smoothability_pl_smoothing_existence_of_dependencies
+#check Poincare.smoothability_pl_smoothing_obstruction_vanishing_of_dependencies
+#check Poincare.smoothability_pl_microbundle_smoothing_of_dependencies
+#check Poincare.smoothability_pl_smoothing_of_dependencies
+#check Poincare.smoothability_pl_smoothing_compatibility_of_dependencies
+#check Poincare.smoothability_pl_smoothing_uniqueness_of_dependencies
+#check Poincare.smoothability_pl_smoothing_local_model_compatibility_of_dependencies
+#check Poincare.smoothability_smooth_atlas_construction_of_dependencies
+#check Poincare.smoothability_smooth_atlas_pl_compatibility_of_dependencies
+#check Poincare.smoothability_smooth_atlas_maximality_of_dependencies
+#check Poincare.smoothability_smooth_atlas_uniqueness_of_dependencies
+#check Poincare.smoothability_smooth_structure_uniqueness_of_dependencies
+#check Poincare.smoothability_smooth_transition_compatibility_of_dependencies
+#check Poincare.smoothability_smooth_atlas_transition_smoothness_of_dependencies
+#check Poincare.smoothability_smooth_structure_derivation_of_dependencies
+#check Poincare.smoothability_moise_local_charts_of_dependencies_eq
+#check Poincare.smoothability_moise_triangulation_of_dependencies_eq
+#check Poincare.smoothability_pl_structure_of_dependencies_eq
+#check Poincare.smoothability_pl_atlas_of_dependencies_eq
+#check Poincare.smoothability_pl_smoothing_of_dependencies_eq
+#check Poincare.smoothability_smooth_atlas_construction_of_dependencies_eq
+#check Poincare.smoothability_smooth_transition_compatibility_of_dependencies_eq
+#check Poincare.smoothability_smooth_atlas_transition_smoothness_of_dependencies_eq
+#check Poincare.smoothability_smooth_structure_derivation_of_dependencies_eq
+#check Poincare.smoothability_smooth_structure_statement_payload_of_dependencies
+#check Poincare.smoothability_smooth_structure_derivation_statement_of_dependencies
+#check Poincare.smoothability_smooth_structure_statement_payload_of_dependencies_eq
+#check Poincare.smoothability_smooth_structure_derivation_statement_of_dependencies_eq
+#check Poincare.topology_classification_payload_of_dependencies
+#check Poincare.topology_classification_payload_of_dependencies_eq
+#check Poincare.topology_decomposition_of_dependencies
+#check Poincare.topology_decomposition_of_dependencies_eq
+#check Poincare.topology_surgery_trace_reconstruction_of_dependencies
+#check Poincare.topology_surgery_trace_reconstruction_of_dependencies_eq
+#check Poincare.topology_surgery_trace_handle_cancellation_of_dependencies
+#check Poincare.topology_surgery_trace_handle_cancellation_of_dependencies_eq
+#check Poincare.topology_component_classification_of_dependencies
+#check Poincare.topology_component_classification_of_dependencies_eq
+#check Poincare.topology_discarded_component_homeomorphism_classification_of_dependencies
+#check Poincare.topology_discarded_component_homeomorphism_classification_of_dependencies_eq
+#check Poincare.topology_component_inventory_of_dependencies
+#check Poincare.topology_component_inventory_of_dependencies_eq
+#check Poincare.topology_component_boundary_sphere_control_of_dependencies
+#check Poincare.topology_component_boundary_sphere_control_of_dependencies_eq
+#check Poincare.three_sphere_recognition_of_dependencies
+#check Poincare.three_sphere_recognition_of_dependencies_eq
+#check Poincare.topology_prime_decomposition_of_dependencies
+#check Poincare.topology_prime_decomposition_of_dependencies_eq
+#check Poincare.topology_prime_decomposition_existence_of_dependencies
+#check Poincare.topology_prime_decomposition_existence_of_dependencies_eq
+#check Poincare.topology_sphere_theorem_application_of_dependencies
+#check Poincare.topology_sphere_theorem_application_of_dependencies_eq
+#check Poincare.topology_embedded_sphere_production_of_dependencies
+#check Poincare.topology_embedded_sphere_production_of_dependencies_eq
+#check Poincare.topology_loop_theorem_application_of_dependencies
+#check Poincare.topology_loop_theorem_application_of_dependencies_eq
+#check Poincare.topology_prime_decomposition_compatibility_of_dependencies
+#check Poincare.topology_prime_decomposition_compatibility_of_dependencies_eq
+#check Poincare.topology_prime_factor_uniqueness_of_dependencies
+#check Poincare.topology_prime_factor_uniqueness_of_dependencies_eq
+#check Poincare.topology_irreducibility_of_dependencies
+#check Poincare.topology_irreducibility_of_dependencies_eq
+#check Poincare.topology_irreducible_factor_recognition_of_dependencies
+#check Poincare.topology_irreducible_factor_recognition_of_dependencies_eq
+#check Poincare.topology_connected_sum_collapse_of_dependencies
+#check Poincare.topology_connected_sum_collapse_of_dependencies_eq
+#check Poincare.topology_connected_sum_fundamental_group_control_of_dependencies
+#check Poincare.topology_connected_sum_fundamental_group_control_of_dependencies_eq
+#check Poincare.topology_connected_sum_van_kampen_of_dependencies
+#check Poincare.topology_connected_sum_van_kampen_of_dependencies_eq
+#check Poincare.topology_simply_connected_prime_factor_control_of_dependencies
+#check Poincare.topology_simply_connected_prime_factor_control_of_dependencies_eq
+#check Poincare.topology_spherical_space_form_reduction_of_dependencies
+#check Poincare.topology_spherical_space_form_reduction_of_dependencies_eq
+#check Poincare.topology_spherical_space_form_classification_of_dependencies
+#check Poincare.topology_spherical_space_form_classification_of_dependencies_eq
+#check Poincare.topology_spherical_quotient_model_of_dependencies
+#check Poincare.topology_spherical_quotient_model_of_dependencies_eq
+#check Poincare.topology_spherical_free_action_of_dependencies
+#check Poincare.topology_spherical_free_action_of_dependencies_eq
+#check Poincare.topology_spherical_universal_cover_of_dependencies
+#check Poincare.topology_spherical_universal_cover_of_dependencies_eq
+#check Poincare.topology_spherical_covering_model_of_dependencies
+#check Poincare.topology_spherical_covering_model_of_dependencies_eq
+#check Poincare.topology_spherical_covering_projection_of_dependencies
+#check Poincare.topology_spherical_covering_projection_of_dependencies_eq
+#check Poincare.topology_spherical_fundamental_group_of_dependencies
+#check Poincare.topology_spherical_fundamental_group_of_dependencies_eq
+#check Poincare.topology_deck_group_identification_of_dependencies
+#check Poincare.topology_deck_group_identification_of_dependencies_eq
+#check Poincare.topology_deck_action_properness_of_dependencies
+#check Poincare.topology_deck_action_properness_of_dependencies_eq
+#check Poincare.topology_deck_group_triviality_of_dependencies
+#check Poincare.topology_deck_group_triviality_of_dependencies_eq
+#check Poincare.topology_deck_action_trivialization_of_dependencies
+#check Poincare.topology_deck_action_trivialization_of_dependencies_eq
+#check Poincare.topology_trivial_deck_quotient_identification_of_dependencies
+#check Poincare.topology_trivial_deck_quotient_identification_of_dependencies_eq
+#check Poincare.topology_simply_connected_recognition_of_dependencies
+#check Poincare.topology_simply_connected_recognition_of_dependencies_eq
+#check Poincare.topology_trivial_spherical_quotient_of_dependencies
+#check Poincare.topology_trivial_spherical_quotient_of_dependencies_eq
+#check Poincare.topology_trivial_quotient_homeomorphism_of_dependencies
+#check Poincare.topology_trivial_quotient_homeomorphism_of_dependencies_eq
+#check Poincare.topology_spherical_homeomorphism_lift_of_dependencies
+#check Poincare.topology_spherical_homeomorphism_lift_of_dependencies_eq
+#check Poincare.topology_classification_subobligations_of_dependencies
+#check Poincare.topology_classification_subobligations_of_dependencies_eq
+#check Poincare.topology_extraction_statement_payload_of_dependencies
+#check Poincare.topology_extraction_statement_payload_of_dependencies_eq
+#check Poincare.topology_derivation_statement_payload_of_dependencies
+#check Poincare.topology_derivation_statement_payload_of_dependencies_eq
+#check Poincare.homeomorphism_of_extinction_and_dependencies
+#check Poincare.homeomorphism_of_extinction_and_dependencies_eq
+#check Poincare.topology_derivation_statement_via_extraction_of_dependencies
+#check Poincare.topology_derivation_statement_via_extraction_of_dependencies_eq
+#check Poincare.topology_homeomorphism_assembly_statement_via_extraction_of_dependencies
+#check Poincare.topology_homeomorphism_assembly_statement_via_extraction_of_dependencies_eq
+#check Poincare.topology_homeomorphism_derivation_statement_via_extraction_of_dependencies
+#check Poincare.topology_homeomorphism_derivation_statement_via_extraction_of_dependencies_eq
+#check Poincare.topology_homeomorphism_assembly_of_dependencies
+#check Poincare.topology_homeomorphism_assembly_of_dependencies_eq
+#check Poincare.topology_homeomorphism_derivation_of_dependencies
+#check Poincare.topology_homeomorphism_derivation_of_dependencies_eq
+#check Poincare.topology_derivation_statement_of_dependencies
+#check Poincare.topology_derivation_statement_of_dependencies_eq
+#check Poincare.topology_homeomorphism_assembly_statement_of_dependencies
+#check Poincare.topology_homeomorphism_assembly_statement_of_dependencies_eq
+#check Poincare.topology_homeomorphism_derivation_statement_of_dependencies
+#check Poincare.topology_homeomorphism_derivation_statement_of_dependencies_eq
+#check Poincare.topology_extraction_payload_of_dependencies
+#check Poincare.topology_extraction_payload_of_dependencies_eq
+#check Poincare.topology_extraction_statement_of_dependencies
+#check Poincare.topology_extraction_statement_of_dependencies_eq
+#check Poincare.topology_extraction_derivation_payload_of_dependencies
+#check Poincare.topology_extraction_derivation_payload_of_dependencies_eq
+#check Poincare.extinction_extraction_of_dependencies_eq
+#check Poincare.smoothability_bridge_statement_of_dependencies
+#check Poincare.smoothability_bridge_payload_of_dependencies
+#check Poincare.smoothability_bridge_of_dependencies_eq
+#check Poincare.smoothability_bridge_derivation_of_dependencies_eq
+#check Poincare.smoothability_model_compatibility_of_dependencies_eq
+#check Poincare.smoothability_chart_compatibility_of_dependencies_eq
+#check Poincare.smoothability_bridge_payload_of_dependencies_eq
+#check Poincare.smoothability_subobligations_payload_of_dependencies_eq
+
+#check (Poincare.topology_derivation_statement_of_dependencies :
+  ∀ (dependencies : Poincare.PoincareProofDependencies)
+    (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : Poincare.FiniteExtinctionByRicciFlowWithSurgery M),
+      Poincare.ExtinctionTopologyDerivationStatement M extinction
+        (Poincare.homeomorphism_of_extinction_and_dependencies
+          dependencies M extinction))
+
+#check (Poincare.topology_homeomorphism_assembly_statement_of_dependencies :
+  ∀ (dependencies : Poincare.PoincareProofDependencies)
+    (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : Poincare.FiniteExtinctionByRicciFlowWithSurgery M),
+      Poincare.ExtinctionTopologyHomeomorphismAssemblyStatement M extinction
+        (Poincare.homeomorphism_of_extinction_and_dependencies
+          dependencies M extinction))
+
+#check (Poincare.topology_homeomorphism_derivation_statement_of_dependencies :
+  ∀ (dependencies : Poincare.PoincareProofDependencies)
+    (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : Poincare.FiniteExtinctionByRicciFlowWithSurgery M),
+      Poincare.ExtinctionTopologyHomeomorphismDerivationStatement M extinction
+        (Poincare.homeomorphism_of_extinction_and_dependencies
+          dependencies M extinction))
+#check Poincare.smoothability_bridge_derivation_of_dependencies
+#check Poincare.smoothability_model_compatibility_of_dependencies
+#check Poincare.smoothability_chart_compatibility_of_dependencies
+#check Poincare.smoothability_bridge_of_dependencies_eq
+#check Poincare.smoothability_bridge_derivation_of_dependencies_eq
+#check Poincare.smoothability_model_compatibility_of_dependencies_eq
+#check Poincare.smoothability_chart_compatibility_of_dependencies_eq
+#check Poincare.smoothability_subobligations_payload_of_dependencies
+#check Poincare.smoothability_bridge_payload_of_dependencies_eq
+#check Poincare.smoothability_subobligations_payload_of_dependencies_eq
+#check Poincare.smoothability_subobligations_of_dependencies
+#check Poincare.smoothability_subobligations_of_dependencies_eq
+#check Poincare.finite_extinction_statement_payload_of_dependencies
+#check Poincare.finite_extinction_statements_of_dependencies
+#check Poincare.finite_extinction_statements_via_subobligations_of_dependencies
+
+#check Poincare.finite_extinction_statement_payload_of_smoothability_and_surgery_packages
+#check Poincare.finite_extinction_input_of_smoothability_and_surgery_packages
+#check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages
+#check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation
+#check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_extraction_statement
+#check Poincare.poincare_target_payload_of_surgery_and_topology_packages
+#check Poincare.poincare_target_payload_of_surgery_and_topology_package_extraction_derivation
+#check Poincare.poincare_target_payload_of_surgery_and_topology_extraction_statement
+#check Poincare.poincare_full_assembly_payload_of_surgery_and_topology_packages
+#check Poincare.poincare_statement_of_surgery_and_topology_extraction_statement
+#check Poincare.poincare_assembly_inputs_payload_of_aggregate_dependencies
+#check Poincare.poincare_assembly_inputs_payload_of_aggregate_dependencies_eq
+#check Poincare.poincare_assembly_inputs_payload_of_aggregate_extraction_derivation_dependencies
+#check Poincare.poincare_assembly_inputs_payload_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.poincare_target_payload_of_aggregate_dependencies
+#check Poincare.poincare_target_payload_of_aggregate_dependencies_eq
+#check Poincare.poincare_target_payload_of_aggregate_extraction_derivation_dependencies
+#check Poincare.poincare_target_payload_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.poincare_full_assembly_payload_of_dependencies
+#check Poincare.poincare_full_assembly_payload_of_dependencies_eq
+#check Poincare.poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
+#check Poincare.poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.poincare_assembly_payload_of_dependencies
+#check Poincare.poincare_assembly_payload_of_dependencies_eq
+#check Poincare.poincare_completion_payload_of_dependencies
+#check Poincare.poincare_completion_payload_of_dependencies_eq
+#check Poincare.poincare_completion_payload_of_aggregate_extraction_derivation_dependencies
+#check Poincare.poincare_completion_payload_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.poincare_statement_of_dependencies
+#check Poincare.poincare_statement_of_dependencies_eq
+#check Poincare.poincare_statement_of_aggregate_extraction_derivation_dependencies
+#check Poincare.poincare_statement_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.canonical_three_sphere_statement_of_dependencies
+#check Poincare.canonical_three_sphere_statement_of_dependencies_eq
+#check Poincare.canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies
+#check Poincare.canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.completion_criterion_of_dependencies
+#check Poincare.completion_criterion_of_dependencies_eq
+#check Poincare.completion_criterion_of_aggregate_extraction_derivation_dependencies
+#check Poincare.completion_criterion_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.poincare_target_payload_of_dependency_projections
+#check Poincare.poincare_target_payload_of_dependency_projections_eq
+#check Poincare.poincare_target_payload_of_extraction_derivation_dependency_projections
+#check Poincare.poincare_target_payload_of_extraction_derivation_dependency_projections_eq
+#check Poincare.poincare_full_assembly_payload_of_dependency_projections_eq
+#check Poincare.poincare_full_assembly_payload_of_extraction_derivation_dependency_projections
+#check Poincare.poincare_full_assembly_payload_of_extraction_derivation_dependency_projections_eq
+#check Poincare.poincare_completion_payload_of_dependency_projections_eq
+#check Poincare.poincare_completion_payload_of_extraction_derivation_dependency_projections
+#check Poincare.poincare_completion_payload_of_extraction_derivation_dependency_projections_eq
+#check Poincare.poincare_statement_of_dependency_projections_eq
+#check Poincare.poincare_statement_of_extraction_derivation_dependency_projections_eq
+#check Poincare.canonical_three_sphere_statement_of_dependency_projections_eq
+#check Poincare.canonical_three_sphere_statement_of_extraction_derivation_dependency_projections_eq
+#check Poincare.completion_criterion_of_dependency_projections_eq
+#check Poincare.completion_criterion_of_extraction_derivation_dependency_projections_eq
+#check Poincare.poincare_statement_of_extraction_derivation_dependency_projections
+#check Poincare.canonical_three_sphere_statement_of_dependency_projections
+#check Poincare.canonical_three_sphere_statement_of_extraction_derivation_dependency_projections
+#check Poincare.completion_criterion_of_extraction_derivation_dependency_projections
+
+#check (Poincare.PoincareProofDependencies.topology :
+  Poincare.PoincareProofDependencies →
+    Poincare.ExtinctionTopologyExtractionPackage)
+
+#check (Poincare.poincareProofDependencies_components_payload :
+  Poincare.PoincareProofDependencies →
+    ∃ _smoothability : Poincare.SmoothabilityPackage,
+    ∃ _surgery :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)),
+      Poincare.ExtinctionTopologyExtractionPackage)
+
+#check Poincare.poincareProofDependencies_components_payload_eq
+
+#check (Poincare.poincareProofDependencies_iff_components :
+  Poincare.PoincareProofDependencies ↔
+    ∃ _smoothability : Poincare.SmoothabilityPackage,
+    ∃ _surgery :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)),
+      Poincare.ExtinctionTopologyExtractionPackage)
+
+#check Poincare.poincareProofDependencies_of_components_payload
+#check Poincare.poincareProofDependencies_iff_components_eq
+
+#check (Poincare.poincare_statement_of_dependencies :
+  Poincare.PoincareProofDependencies →
+    Poincare.PoincareConjectureStatement)
+
+#check (Poincare.canonical_three_sphere_statement_of_dependencies :
+  Poincare.PoincareProofDependencies →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies :
+  Poincare.PoincareProofDependencies →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.remainingDependencyPackage_eq :
+  Poincare.RemainingDependencyPackage = Poincare.PoincareProofDependencies)
+
+#check (Poincare.remainingDependencyPackage_iff_poincareProofDependencies :
+  Poincare.RemainingDependencyPackage ↔ Poincare.PoincareProofDependencies)
+
+#check (Poincare.smoothability_package_of_remaining_dependency_package :
+  Poincare.RemainingDependencyPackage →
+    Poincare.SmoothabilityPackage)
+
+#check (Poincare.smoothability_smooth_manifold_statement_of_remaining_dependency_package :
+  Poincare.RemainingDependencyPackage →
+    Poincare.SmoothabilitySmoothManifoldStatement)
+
+#check (Poincare.smooth_manifold_of_remaining_dependency_package :
+  Poincare.RemainingDependencyPackage →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        IsManifold (𝓡 3) ∞ M)
+
+#check (Poincare.smoothability_smooth_manifold_payload_of_remaining_dependency_package :
+  Poincare.RemainingDependencyPackage →
+    Poincare.SmoothabilityBridgeStatement ∧
+      Poincare.SmoothabilitySmoothManifoldStatement)
+
+#check Poincare.smoothability_package_of_remaining_dependency_package_eq
+#check Poincare.smoothability_smooth_manifold_statement_of_remaining_dependency_package_eq
+#check Poincare.smooth_manifold_of_remaining_dependency_package_eq
+#check Poincare.smoothability_smooth_manifold_payload_of_remaining_dependency_package_eq
+
+#check (Poincare.surgery_packages_of_remaining_dependency_package :
+  ∀ dependencies : Poincare.RemainingDependencyPackage,
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M))
+
+#check (Poincare.topology_package_of_remaining_dependency_package :
+  Poincare.RemainingDependencyPackage →
+    Poincare.ExtinctionTopologyExtractionPackage)
+
+#check Poincare.surgery_packages_of_remaining_dependency_package_eq
+#check Poincare.topology_package_of_remaining_dependency_package_eq
+
+#check (Poincare.remainingDependencyPackage_components_payload :
+  Poincare.RemainingDependencyPackage →
+    ∃ _smoothability : Poincare.SmoothabilityPackage,
+    ∃ _surgery :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)),
+      Poincare.ExtinctionTopologyExtractionPackage)
+
+#check (Poincare.remainingDependencyPackage_iff_components :
+  Poincare.RemainingDependencyPackage ↔
+    ∃ _smoothability : Poincare.SmoothabilityPackage,
+    ∃ _surgery :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)),
+      Poincare.ExtinctionTopologyExtractionPackage)
+
+#check Poincare.remainingDependencyPackage_components_payload_eq
+#check Poincare.remainingDependencyPackage_iff_components_eq
+
+#check (Poincare.remainingDependencyPackage_component_requirements_payload :
+  Poincare.RemainingDependencyPackage →
+    ∃ _smoothability :
+      Poincare.dependencyComponentRequirement
+        Poincare.DependencyComponentSlot.smoothabilityComponent,
+    ∃ _surgery :
+      Poincare.dependencyComponentRequirement
+        Poincare.DependencyComponentSlot.surgeryComponent,
+      Poincare.dependencyComponentRequirement
+        Poincare.DependencyComponentSlot.topologyComponent)
+
+#check (Poincare.remainingDependencyPackage_iff_component_requirements :
+  Poincare.RemainingDependencyPackage ↔
+    ∃ _smoothability :
+      Poincare.dependencyComponentRequirement
+        Poincare.DependencyComponentSlot.smoothabilityComponent,
+    ∃ _surgery :
+      Poincare.dependencyComponentRequirement
+        Poincare.DependencyComponentSlot.surgeryComponent,
+      Poincare.dependencyComponentRequirement
+        Poincare.DependencyComponentSlot.topologyComponent)
+
+#check (Poincare.remainingDependencyPackage_package_layer_requirements_payload :
+  Poincare.RemainingDependencyPackage →
+    ∃ _smoothability :
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.smoothabilityPackage,
+    ∃ _analytic :
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.analyticFoundationPackage,
+    ∃ _surgery :
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.surgeryPackage,
+    ∃ _finiteExtinction :
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.finiteExtinctionPackage,
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.topologyPackage)
+
+#check (Poincare.remainingDependencyPackage_iff_package_layer_requirements :
+  Poincare.RemainingDependencyPackage ↔
+    ∃ _smoothability :
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.smoothabilityPackage,
+    ∃ _analytic :
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.analyticFoundationPackage,
+    ∃ _surgery :
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.surgeryPackage,
+    ∃ _finiteExtinction :
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.finiteExtinctionPackage,
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.topologyPackage)
+
+#check (Poincare.remainingDependencyPackage_milestone_requirements_payload :
+  Poincare.RemainingDependencyPackage →
+    ∃ _smoothabilityBridge :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.smoothabilityBridge,
+    ∃ _ricciFlowAnalyticFoundation :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.ricciFlowAnalyticFoundation,
+    ∃ _ricciFlowWithSurgery :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.ricciFlowWithSurgery,
+    ∃ _perelmanSingularityControl :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.perelmanSingularityControl,
+    ∃ _finiteExtinction :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.finiteExtinction,
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.extinctionToSphereHomeomorphism)
+
+#check (Poincare.remainingDependencyPackage_iff_milestone_requirements :
+  Poincare.RemainingDependencyPackage ↔
+    ∃ _smoothabilityBridge :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.smoothabilityBridge,
+    ∃ _ricciFlowAnalyticFoundation :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.ricciFlowAnalyticFoundation,
+    ∃ _ricciFlowWithSurgery :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.ricciFlowWithSurgery,
+    ∃ _perelmanSingularityControl :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.perelmanSingularityControl,
+    ∃ _finiteExtinction :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.finiteExtinction,
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.extinctionToSphereHomeomorphism)
+
+#check Poincare.remainingDependencyPackage_component_requirements_payload_eq
+#check Poincare.remainingDependencyPackage_iff_component_requirements_eq
+#check Poincare.remainingDependencyPackage_package_layer_requirements_payload_eq
+#check Poincare.remainingDependencyPackage_iff_package_layer_requirements_eq
+#check Poincare.remainingDependencyPackage_milestone_requirements_payload_eq
+#check Poincare.remainingDependencyPackage_iff_milestone_requirements_eq
+
+#check (Poincare.canonical_completion_payload_of_remaining_dependency_component_requirements :
+  Poincare.RemainingDependencyPackage →
+    ∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+#check Poincare.canonical_completion_payload_of_remaining_dependency_component_requirements_eq
+
+#check (Poincare.canonical_completion_target_of_remaining_dependency_component_requirements :
+  Poincare.RemainingDependencyPackage →
+    Poincare.canonicalCompletionTarget)
+#check Poincare.canonical_completion_target_of_remaining_dependency_component_requirements_eq
+
+#check (Poincare.canonical_completion_criterion_of_remaining_dependency_component_requirements :
+  ∀ witness : Type,
+    Poincare.RemainingDependencyPackage →
+      Poincare.CompletionCriterionAtUniverse witness)
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_component_requirements_eq
+
+#check (Poincare.canonical_three_sphere_statement_of_remaining_dependency_component_requirements :
+  Poincare.RemainingDependencyPackage →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_component_requirements_eq
+
+#check (Poincare.canonical_three_sphere_statement_of_remaining_dependency_component_extraction_derivation_requirements :
+  Poincare.RemainingDependencyPackage →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+#check Poincare.canonical_completion_payload_of_remaining_dependency_component_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_target_of_remaining_dependency_component_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_component_extraction_derivation_requirements_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_component_extraction_derivation_requirements_eq
+
+#check (Poincare.canonical_completion_payload_of_remaining_dependency_package_layer_requirements :
+  Poincare.RemainingDependencyPackage →
+    ∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+#check Poincare.canonical_completion_payload_of_remaining_dependency_package_layer_requirements_eq
+
+#check (Poincare.canonical_completion_target_of_remaining_dependency_package_layer_requirements :
+  Poincare.RemainingDependencyPackage →
+    Poincare.canonicalCompletionTarget)
+#check Poincare.canonical_completion_target_of_remaining_dependency_package_layer_requirements_eq
+
+#check (Poincare.canonical_completion_criterion_of_remaining_dependency_package_layer_requirements :
+  ∀ witness : Type,
+    Poincare.RemainingDependencyPackage →
+      Poincare.CompletionCriterionAtUniverse witness)
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_package_layer_requirements_eq
+
+#check (Poincare.canonical_three_sphere_statement_of_remaining_dependency_package_layer_requirements :
+  Poincare.RemainingDependencyPackage →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_package_layer_requirements_eq
+
+#check (Poincare.canonical_three_sphere_statement_of_remaining_dependency_package_layer_extraction_derivation_requirements :
+  Poincare.RemainingDependencyPackage →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+#check Poincare.canonical_completion_payload_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_target_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq
+
+#check (Poincare.canonical_completion_payload_of_remaining_dependency_milestone_requirements :
+  Poincare.RemainingDependencyPackage →
+    ∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+#check Poincare.canonical_completion_payload_of_remaining_dependency_milestone_requirements_eq
+
+#check (Poincare.canonical_completion_target_of_remaining_dependency_milestone_requirements :
+  Poincare.RemainingDependencyPackage →
+    Poincare.canonicalCompletionTarget)
+#check Poincare.canonical_completion_target_of_remaining_dependency_milestone_requirements_eq
+
+#check (Poincare.canonical_completion_criterion_of_remaining_dependency_milestone_requirements :
+  ∀ witness : Type,
+    Poincare.RemainingDependencyPackage →
+      Poincare.CompletionCriterionAtUniverse witness)
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_milestone_requirements_eq
+
+#check (Poincare.canonical_three_sphere_statement_of_remaining_dependency_milestone_requirements :
+  Poincare.RemainingDependencyPackage →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_milestone_requirements_eq
+
+#check (Poincare.canonical_three_sphere_statement_of_remaining_dependency_milestone_extraction_derivation_requirements :
+  Poincare.RemainingDependencyPackage →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+#check Poincare.canonical_completion_payload_of_remaining_dependency_milestone_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_target_of_remaining_dependency_milestone_extraction_derivation_requirements_eq
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_milestone_extraction_derivation_requirements_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_milestone_extraction_derivation_requirements_eq
+
+#check (Poincare.poincare_completion_payload_of_remaining_dependency_package :
+  Poincare.RemainingDependencyPackage →
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check Poincare.poincare_completion_payload_of_remaining_dependency_package_eq
+
+#check (Poincare.canonical_completion_payload_of_dependencies :
+  Poincare.RemainingDependencyPackage →
+    ∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check Poincare.canonical_completion_payload_of_dependencies_eq
+
+#check (Poincare.canonical_completion_target_of_dependencies :
+  Poincare.RemainingDependencyPackage →
+    Poincare.canonicalCompletionTarget)
+
+#check Poincare.canonical_completion_target_of_dependencies_eq
+
+#check (Poincare.canonical_completion_criterion_of_dependencies :
+  ∀ witness : Type,
+    Poincare.RemainingDependencyPackage →
+      Poincare.CompletionCriterionAtUniverse witness)
+
+#check Poincare.canonical_completion_criterion_of_dependencies_eq
+
+#check (Poincare.canonical_completion_payload_of_aggregate_extraction_derivation_dependencies :
+  Poincare.RemainingDependencyPackage →
+    ∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check Poincare.canonical_completion_payload_of_aggregate_extraction_derivation_dependencies_eq
+
+#check (Poincare.canonical_completion_target_of_aggregate_extraction_derivation_dependencies :
+  Poincare.RemainingDependencyPackage →
+    Poincare.canonicalCompletionTarget)
+
+#check Poincare.canonical_completion_target_of_aggregate_extraction_derivation_dependencies_eq
+
+#check (Poincare.canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies :
+  ∀ witness : Type,
+    Poincare.RemainingDependencyPackage →
+      Poincare.CompletionCriterionAtUniverse witness)
+
+#check Poincare.canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies_eq
+
+#check (Poincare.PoincareCompletionCertificate : Prop)
+
+#check (Poincare.poincareCompletionCertificate_theoremName_payload :
+  Poincare.PoincareCompletionCertificate →
+    ∃ theoremName : String, theoremName = "poincare_conjecture")
+
+#check (Poincare.poincareCompletionCertificate_literal_payload :
+  Poincare.PoincareCompletionCertificate →
+    ∃ theoremName : String,
+      theoremName = "poincare_conjecture" ∧
+      Poincare.RemainingDependencyPackage ∧
+      Poincare.canonicalCompletionTarget ∧
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.completion_certificate_of_literal_payload :
+  (∃ theoremName : String,
+    theoremName = "poincare_conjecture" ∧
+    Poincare.RemainingDependencyPackage ∧
+    Poincare.canonicalCompletionTarget ∧
+    ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.poincareCompletionCertificate_iff_literal_payload :
+  Poincare.PoincareCompletionCertificate ↔
+    ∃ theoremName : String,
+      theoremName = "poincare_conjecture" ∧
+      Poincare.RemainingDependencyPackage ∧
+      Poincare.canonicalCompletionTarget ∧
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_payload_of_completion_certificate :
+  Poincare.PoincareCompletionCertificate →
+    ∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincare_completion_payload_of_completion_certificate :
+  Poincare.PoincareCompletionCertificate →
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_target_of_completion_certificate :
+  Poincare.PoincareCompletionCertificate →
+    Poincare.canonicalCompletionTarget)
+
+#check (Poincare.target_statement_of_completion_certificate :
+  Poincare.PoincareCompletionCertificate →
+    Poincare.PoincareConjectureStatement)
+
+#check (Poincare.completion_criterion_of_completion_certificate :
+  ∀ witness : Type,
+    Poincare.PoincareCompletionCertificate →
+      Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.remaining_dependency_package_of_completion_certificate :
+  Poincare.PoincareCompletionCertificate →
+    Poincare.RemainingDependencyPackage)
+
+#check (Poincare.completion_certificate_of_remaining_dependency_and_poincare_payload :
+  Poincare.RemainingDependencyPackage →
+    (∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_poincare_payload :
+  Poincare.PoincareCompletionCertificate ↔
+    Poincare.RemainingDependencyPackage ∧
+      ∃ _target : Poincare.PoincareConjectureStatement,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.completion_certificate_of_remaining_dependency_and_canonical_payload :
+  Poincare.RemainingDependencyPackage →
+    (∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_canonical_payload :
+  Poincare.PoincareCompletionCertificate ↔
+    Poincare.RemainingDependencyPackage ∧
+      ∃ _target : Poincare.canonicalCompletionTarget,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.completion_certificate_of_remaining_dependency_and_target_statement :
+  Poincare.RemainingDependencyPackage →
+    Poincare.PoincareConjectureStatement →
+      Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_target_statement :
+  Poincare.PoincareCompletionCertificate ↔
+    Poincare.RemainingDependencyPackage ∧
+      Poincare.PoincareConjectureStatement)
+
+#check (Poincare.completion_certificate_of_remaining_dependency_and_canonical_target :
+  Poincare.RemainingDependencyPackage →
+    Poincare.canonicalCompletionTarget →
+      Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_canonical_target :
+  Poincare.PoincareCompletionCertificate ↔
+    Poincare.RemainingDependencyPackage ∧
+      Poincare.canonicalCompletionTarget)
+
+#check (Poincare.completion_certificate_of_remaining_dependency_and_completion_criterion :
+  Poincare.RemainingDependencyPackage →
+    ∀ witness : Type,
+      Poincare.CompletionCriterionAtUniverse witness →
+        Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_completion_criterion :
+  ∀ witness : Type,
+    Poincare.PoincareCompletionCertificate ↔
+      Poincare.RemainingDependencyPackage ∧
+        Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincareProofDependencies_of_completion_certificate :
+  Poincare.PoincareCompletionCertificate →
+    Poincare.PoincareProofDependencies)
+
+#check (Poincare.completion_certificate_of_remaining_dependency_package :
+  Poincare.RemainingDependencyPackage →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage :
+  Poincare.PoincareCompletionCertificate ↔
+    Poincare.RemainingDependencyPackage)
+
+#check (Poincare.poincareCompletionCertificate_iff_poincareProofDependencies :
+  Poincare.PoincareCompletionCertificate ↔
+    Poincare.PoincareProofDependencies)
+
+#check (Poincare.completion_certificate_of_poincareProofDependencies :
+  Poincare.PoincareProofDependencies →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.completion_certificate_of_poincareProofDependencies_and_poincare_payload :
+  Poincare.PoincareProofDependencies →
+    (∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+      Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_poincare_payload :
+  Poincare.PoincareCompletionCertificate ↔
+    Poincare.PoincareProofDependencies ∧
+      ∃ _target : Poincare.PoincareConjectureStatement,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.completion_certificate_of_poincareProofDependencies_and_canonical_payload :
+  Poincare.PoincareProofDependencies →
+    (∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+      Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_canonical_payload :
+  Poincare.PoincareCompletionCertificate ↔
+    Poincare.PoincareProofDependencies ∧
+      ∃ _target : Poincare.canonicalCompletionTarget,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.completion_certificate_of_poincareProofDependencies_and_target_statement :
+  Poincare.PoincareProofDependencies →
+    Poincare.PoincareConjectureStatement →
+      Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_target_statement :
+  Poincare.PoincareCompletionCertificate ↔
+    Poincare.PoincareProofDependencies ∧
+      Poincare.PoincareConjectureStatement)
+
+#check (Poincare.completion_certificate_of_poincareProofDependencies_and_canonical_target :
+  Poincare.PoincareProofDependencies →
+    Poincare.canonicalCompletionTarget →
+      Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_canonical_target :
+  Poincare.PoincareCompletionCertificate ↔
+    Poincare.PoincareProofDependencies ∧
+      Poincare.canonicalCompletionTarget)
+
+#check (Poincare.completion_certificate_of_poincareProofDependencies_and_completion_criterion :
+  Poincare.PoincareProofDependencies →
+    ∀ witness : Type,
+      Poincare.CompletionCriterionAtUniverse witness →
+        Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_completion_criterion :
+  ∀ witness : Type,
+    Poincare.PoincareCompletionCertificate ↔
+      Poincare.PoincareProofDependencies ∧
+        Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincareCompletionCertificate_aggregate_dependency_payload :
+  Poincare.PoincareCompletionCertificate →
+    ∃ theoremName : String,
+      theoremName = "poincare_conjecture" ∧
+      Poincare.PoincareProofDependencies ∧
+      Poincare.canonicalCompletionTarget ∧
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.completion_certificate_of_aggregate_dependency_payload :
+  (∃ theoremName : String,
+    theoremName = "poincare_conjecture" ∧
+    Poincare.PoincareProofDependencies ∧
+    Poincare.canonicalCompletionTarget ∧
+    ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.poincareCompletionCertificate_iff_aggregate_dependency_payload :
+  Poincare.PoincareCompletionCertificate ↔
+    ∃ theoremName : String,
+      theoremName = "poincare_conjecture" ∧
+      Poincare.PoincareProofDependencies ∧
+      Poincare.canonicalCompletionTarget ∧
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincareCompletionCertificate_project_statement_payload :
+  Poincare.PoincareCompletionCertificate →
+    ∃ theoremName : String,
+      theoremName = "poincare_conjecture" ∧
+      Poincare.PoincareProofDependencies ∧
+      Poincare.PoincareConjectureStatement ∧
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.completion_certificate_of_project_statement_payload :
+  (∃ theoremName : String,
+    theoremName = "poincare_conjecture" ∧
+    Poincare.PoincareProofDependencies ∧
+    Poincare.PoincareConjectureStatement ∧
+    ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.poincareCompletionCertificate_iff_project_statement_payload :
+  Poincare.PoincareCompletionCertificate ↔
+    ∃ theoremName : String,
+      theoremName = "poincare_conjecture" ∧
+      Poincare.PoincareProofDependencies ∧
+      Poincare.PoincareConjectureStatement ∧
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check Poincare.poincareCompletionCertificate_theoremName_payload_eq
+#check Poincare.poincareCompletionCertificate_literal_payload_eq
+#check Poincare.completion_certificate_of_literal_payload_eq
+#check Poincare.poincareCompletionCertificate_iff_literal_payload_eq
+#check Poincare.canonical_completion_payload_of_completion_certificate_eq
+#check Poincare.poincare_completion_payload_of_completion_certificate_eq
+#check Poincare.canonical_completion_target_of_completion_certificate_eq
+#check Poincare.target_statement_of_completion_certificate_eq
+#check Poincare.completion_criterion_of_completion_certificate_eq
+#check Poincare.remaining_dependency_package_of_completion_certificate_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_poincare_payload_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_canonical_payload_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_target_statement_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_canonical_target_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_completion_criterion_eq
+#check Poincare.poincareProofDependencies_of_completion_certificate_eq
+#check Poincare.completion_certificate_of_remaining_dependency_package_eq
+#check Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_eq
+#check Poincare.poincareCompletionCertificate_aggregate_dependency_payload_eq
+#check Poincare.completion_certificate_of_aggregate_dependency_payload_eq
+#check Poincare.poincareCompletionCertificate_iff_aggregate_dependency_payload_eq
+#check Poincare.poincareCompletionCertificate_project_statement_payload_eq
+#check Poincare.completion_certificate_of_project_statement_payload_eq
+#check Poincare.poincareCompletionCertificate_iff_project_statement_payload_eq
+
+#check (Poincare.poincareCompletionCertificate_iff_components :
+  Poincare.PoincareCompletionCertificate ↔
+    ∃ _smoothability : Poincare.SmoothabilityPackage,
+    ∃ _surgery :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)),
+      Poincare.ExtinctionTopologyExtractionPackage)
+
+#check (Poincare.poincareCompletionCertificate_iff_component_requirements :
+  Poincare.PoincareCompletionCertificate ↔
+    ∃ _smoothability :
+      Poincare.dependencyComponentRequirement
+        Poincare.DependencyComponentSlot.smoothabilityComponent,
+    ∃ _surgery :
+      Poincare.dependencyComponentRequirement
+        Poincare.DependencyComponentSlot.surgeryComponent,
+      Poincare.dependencyComponentRequirement
+        Poincare.DependencyComponentSlot.topologyComponent)
+
+#check (Poincare.poincareCompletionCertificate_iff_package_layer_requirements :
+  Poincare.PoincareCompletionCertificate ↔
+    ∃ _smoothability :
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.smoothabilityPackage,
+    ∃ _analytic :
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.analyticFoundationPackage,
+    ∃ _surgery :
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.surgeryPackage,
+    ∃ _finiteExtinction :
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.finiteExtinctionPackage,
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.topologyPackage)
+
+#check (Poincare.poincareCompletionCertificate_iff_milestone_requirements :
+  Poincare.PoincareCompletionCertificate ↔
+    ∃ _smoothabilityBridge :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.smoothabilityBridge,
+    ∃ _ricciFlowAnalyticFoundation :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.ricciFlowAnalyticFoundation,
+    ∃ _ricciFlowWithSurgery :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.ricciFlowWithSurgery,
+    ∃ _perelmanSingularityControl :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.perelmanSingularityControl,
+    ∃ _finiteExtinction :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.finiteExtinction,
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.extinctionToSphereHomeomorphism)
+
+#check Poincare.poincareCompletionCertificate_components_payload
+#check Poincare.poincareCompletionCertificate_component_requirements_payload
+#check Poincare.poincareCompletionCertificate_package_layer_requirements_payload
+#check Poincare.poincareCompletionCertificate_milestone_requirements_payload
+#check Poincare.poincareCompletionCertificate_iff_components_eq
+#check Poincare.poincareCompletionCertificate_iff_component_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_package_layer_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_milestone_requirements_eq
+#check Poincare.poincareCompletionCertificate_components_payload_eq
+#check Poincare.poincareCompletionCertificate_component_requirements_payload_eq
+#check Poincare.poincareCompletionCertificate_package_layer_requirements_payload_eq
+#check Poincare.poincareCompletionCertificate_milestone_requirements_payload_eq
+#check Poincare.completion_certificate_of_components_eq
+#check Poincare.completion_certificate_of_component_requirements_eq
+#check Poincare.completion_certificate_of_package_layer_requirements_eq
+#check Poincare.completion_certificate_of_milestone_requirements_eq
+#check Poincare.completion_certificate_of_components_payload_eq
+#check Poincare.completion_certificate_of_component_requirements_payload_eq
+#check Poincare.completion_certificate_of_package_layer_requirements_payload_eq
+#check Poincare.completion_certificate_of_milestone_requirements_payload_eq
+#check Poincare.poincareCompletionCertificate_literal_payload
+#check Poincare.completion_certificate_of_literal_payload
+#check Poincare.poincareCompletionCertificate_iff_literal_payload
+
+#check Poincare.completion_certificate_of_remaining_dependency_and_canonical_payload
+#check Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_canonical_payload
+#check Poincare.completion_certificate_of_remaining_dependency_and_target_statement
+#check Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_target_statement
+#check Poincare.completion_certificate_of_remaining_dependency_and_canonical_target
+#check Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_canonical_target
+#check Poincare.completion_certificate_of_remaining_dependency_and_completion_criterion
+#check Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_completion_criterion
+#check Poincare.poincareProofDependencies_of_completion_certificate
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies
+#check Poincare.completion_certificate_of_poincareProofDependencies
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_poincare_payload
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_poincare_payload
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_canonical_payload
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_canonical_payload
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_target_statement
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_target_statement
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_canonical_target
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_canonical_target
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_completion_criterion
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_completion_criterion
+#check Poincare.poincareCompletionCertificate_aggregate_dependency_payload
+#check Poincare.completion_certificate_of_aggregate_dependency_payload
+#check Poincare.poincareCompletionCertificate_iff_aggregate_dependency_payload
+#check Poincare.poincareCompletionCertificate_project_statement_payload
+#check Poincare.completion_certificate_of_project_statement_payload
+#check Poincare.poincareCompletionCertificate_iff_project_statement_payload
+#check Poincare.poincareCompletionCertificate_theoremName_payload_eq
+#check Poincare.poincareCompletionCertificate_literal_payload_eq
+#check Poincare.completion_certificate_of_literal_payload_eq
+#check Poincare.poincareCompletionCertificate_iff_literal_payload_eq
+#check Poincare.canonical_completion_payload_of_completion_certificate_eq
+#check Poincare.poincare_completion_payload_of_completion_certificate_eq
+#check Poincare.canonical_completion_target_of_completion_certificate_eq
+#check Poincare.target_statement_of_completion_certificate_eq
+#check Poincare.completion_criterion_of_completion_certificate_eq
+#check Poincare.remaining_dependency_package_of_completion_certificate_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_poincare_payload_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_canonical_payload_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_target_statement_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_canonical_target_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_completion_criterion_eq
+#check Poincare.poincareProofDependencies_of_completion_certificate_eq
+#check Poincare.completion_certificate_of_remaining_dependency_package_eq
+#check Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_eq
+#check Poincare.poincareCompletionCertificate_aggregate_dependency_payload_eq
+#check Poincare.completion_certificate_of_aggregate_dependency_payload_eq
+#check Poincare.poincareCompletionCertificate_iff_aggregate_dependency_payload_eq
+#check Poincare.poincareCompletionCertificate_project_statement_payload_eq
+#check Poincare.completion_certificate_of_project_statement_payload_eq
+#check Poincare.poincareCompletionCertificate_iff_project_statement_payload_eq
+
+#check Poincare.completion_certificate_of_components
+#check Poincare.completion_certificate_of_component_requirements
+#check Poincare.completion_certificate_of_package_layer_requirements
+#check Poincare.completion_certificate_of_milestone_requirements
+#check Poincare.completion_certificate_of_components_payload
+#check Poincare.completion_certificate_of_component_requirements_payload
+#check Poincare.completion_certificate_of_package_layer_requirements_payload
+#check Poincare.completion_certificate_of_milestone_requirements_payload
+#check Poincare.poincareCompletionCertificate_iff_components_eq
+#check Poincare.poincareCompletionCertificate_iff_component_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_package_layer_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_milestone_requirements_eq
+#check Poincare.poincareCompletionCertificate_components_payload_eq
+#check Poincare.poincareCompletionCertificate_component_requirements_payload_eq
+#check Poincare.poincareCompletionCertificate_package_layer_requirements_payload_eq
+#check Poincare.poincareCompletionCertificate_milestone_requirements_payload_eq
+#check Poincare.completion_certificate_of_components_eq
+#check Poincare.completion_certificate_of_component_requirements_eq
+#check Poincare.completion_certificate_of_package_layer_requirements_eq
+#check Poincare.completion_certificate_of_milestone_requirements_eq
+#check Poincare.completion_certificate_of_components_payload_eq
+#check Poincare.completion_certificate_of_component_requirements_payload_eq
+#check Poincare.completion_certificate_of_package_layer_requirements_payload_eq
+#check Poincare.completion_certificate_of_milestone_requirements_payload_eq
+
+#check Poincare.completion_certificate_of_component_extraction_derivation_requirements
+#check Poincare.completion_certificate_of_component_extraction_derivation_requirements_payload
+#check Poincare.poincareCompletionCertificate_iff_component_extraction_derivation_requirements
+#check Poincare.completion_certificate_of_package_layer_extraction_derivation_requirements
+#check Poincare.completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+#check Poincare.poincareCompletionCertificate_iff_package_layer_extraction_derivation_requirements
+#check Poincare.completion_certificate_of_milestone_extraction_derivation_requirements
+#check Poincare.completion_certificate_of_milestone_extraction_derivation_requirements_payload
+#check Poincare.poincareCompletionCertificate_iff_milestone_extraction_derivation_requirements
+#check Poincare.completion_certificate_of_component_extraction_derivation_requirements_eq
+#check Poincare.completion_certificate_of_component_extraction_derivation_requirements_payload_eq
+#check Poincare.poincareCompletionCertificate_iff_component_extraction_derivation_requirements_eq
+#check Poincare.completion_certificate_of_package_layer_extraction_derivation_requirements_eq
+#check Poincare.completion_certificate_of_package_layer_extraction_derivation_requirements_payload_eq
+#check Poincare.poincareCompletionCertificate_iff_package_layer_extraction_derivation_requirements_eq
+#check Poincare.completion_certificate_of_milestone_extraction_derivation_requirements_eq
+#check Poincare.completion_certificate_of_milestone_extraction_derivation_requirements_payload_eq
+#check Poincare.poincareCompletionCertificate_iff_milestone_extraction_derivation_requirements_eq
+#check Poincare.completion_certificate_of_remaining_dependency_component_requirements
+#check Poincare.poincareCompletionCertificate_iff_remaining_dependency_component_requirements
+#check Poincare.completion_certificate_of_remaining_dependency_package_layer_requirements
+#check Poincare.poincareCompletionCertificate_iff_remaining_dependency_package_layer_requirements
+#check Poincare.completion_certificate_of_remaining_dependency_milestone_requirements
+#check Poincare.poincareCompletionCertificate_iff_remaining_dependency_milestone_requirements
+#check Poincare.completion_certificate_of_poincareProofDependencies_component_requirements
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_component_requirements
+#check Poincare.completion_certificate_of_poincareProofDependencies_package_layer_requirements
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_package_layer_requirements
+#check Poincare.completion_certificate_of_poincareProofDependencies_milestone_requirements
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_milestone_requirements
+#check Poincare.completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements
+#check Poincare.poincareCompletionCertificate_iff_remaining_dependency_component_extraction_derivation_requirements
+#check Poincare.completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements
+#check Poincare.poincareCompletionCertificate_iff_remaining_dependency_package_layer_extraction_derivation_requirements
+#check Poincare.completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements
+#check Poincare.poincareCompletionCertificate_iff_remaining_dependency_milestone_extraction_derivation_requirements
+#check Poincare.completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_component_extraction_derivation_requirements
+#check Poincare.completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_package_layer_extraction_derivation_requirements
+#check Poincare.completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_milestone_extraction_derivation_requirements
+
+#check (Poincare.completion_certificate_of_aggregate_extraction_derivation_dependencies :
+  Poincare.RemainingDependencyPackage →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.completion_certificate_of_extraction_derivation_dependency_projections :
+  Poincare.RemainingDependencyPackage →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.poincareCompletionCertificate_iff_aggregate_extraction_derivation_dependencies :
+  Poincare.PoincareCompletionCertificate ↔
+    Poincare.RemainingDependencyPackage)
+
+#check (Poincare.poincareCompletionCertificate_iff_extraction_derivation_dependency_projections :
+  Poincare.PoincareCompletionCertificate ↔
+    Poincare.RemainingDependencyPackage)
+
+#check (Poincare.completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation :
+  Poincare.PoincareProofDependencies →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_aggregate_extraction_derivation :
+  Poincare.PoincareCompletionCertificate ↔
+    Poincare.PoincareProofDependencies)
+
+#check (Poincare.completion_certificate_of_poincareProofDependencies_extraction_derivation_projections :
+  Poincare.PoincareProofDependencies →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_extraction_derivation_projections :
+  Poincare.PoincareCompletionCertificate ↔
+    Poincare.PoincareProofDependencies)
+
+#check Poincare.completion_certificate_of_remaining_dependency_component_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_remaining_dependency_component_requirements_eq
+#check Poincare.completion_certificate_of_remaining_dependency_package_layer_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_remaining_dependency_package_layer_requirements_eq
+#check Poincare.completion_certificate_of_remaining_dependency_milestone_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_remaining_dependency_milestone_requirements_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_component_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_component_requirements_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_package_layer_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_package_layer_requirements_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_milestone_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_milestone_requirements_eq
+#check Poincare.completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_remaining_dependency_component_extraction_derivation_requirements_eq
+#check Poincare.completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_remaining_dependency_package_layer_extraction_derivation_requirements_eq
+#check Poincare.completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_remaining_dependency_milestone_extraction_derivation_requirements_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_component_extraction_derivation_requirements_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_milestone_extraction_derivation_requirements_eq
+#check Poincare.completion_certificate_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.completion_certificate_of_extraction_derivation_dependency_projections_eq
+#check Poincare.poincareCompletionCertificate_iff_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.poincareCompletionCertificate_iff_extraction_derivation_dependency_projections_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_aggregate_extraction_derivation_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_extraction_derivation_projections_eq
+
+#check (Poincare.completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement :
+  Poincare.RemainingDependencyPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere)) →
+      Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_canonical_three_sphere_statement :
+  Poincare.PoincareCompletionCertificate ↔
+    Poincare.RemainingDependencyPackage ∧
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement :
+  Poincare.PoincareProofDependencies →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere)) →
+      Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_canonical_three_sphere_statement :
+  Poincare.PoincareCompletionCertificate ↔
+    Poincare.PoincareProofDependencies ∧
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check Poincare.canonical_completion_payload_of_canonical_three_sphere_statement_eq
+#check Poincare.canonical_completion_target_of_canonical_three_sphere_statement_eq
+#check Poincare.canonical_completion_criterion_of_canonical_three_sphere_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_canonical_completion_target_eq
+#check Poincare.canonical_three_sphere_statement_of_canonical_completion_payload_eq
+#check Poincare.canonical_three_sphere_statement_iff_canonical_completion_target_eq
+#check Poincare.canonical_three_sphere_statement_iff_canonical_completion_payload_eq
+#check Poincare.canonical_three_sphere_statement_of_completion_certificate_eq
+#check Poincare.poincareCompletionCertificate_canonical_statement_payload_eq
+#check Poincare.completion_certificate_of_canonical_statement_payload_eq
+#check Poincare.poincareCompletionCertificate_iff_canonical_statement_payload_eq
+#check Poincare.poincareCompletionCertificate_aggregate_canonical_statement_payload_eq
+#check Poincare.completion_certificate_of_aggregate_canonical_statement_payload_eq
+#check Poincare.poincareCompletionCertificate_iff_aggregate_canonical_statement_payload_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement_eq
+#check Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_canonical_three_sphere_statement_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement_eq
+#check Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_canonical_three_sphere_statement_eq
+
+#check (Poincare.canonical_completion_payload_of_surgery_and_topology_packages :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
+    Poincare.ExtinctionTopologyExtractionPackage →
+      ∃ _target : Poincare.canonicalCompletionTarget,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_target_of_surgery_and_topology_packages :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
+    Poincare.ExtinctionTopologyExtractionPackage →
+      Poincare.canonicalCompletionTarget)
+
+#check (Poincare.canonical_completion_criterion_of_surgery_and_topology_packages :
+  ∀ witness : Type,
+    Poincare.SmoothabilityPackage →
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
+      Poincare.ExtinctionTopologyExtractionPackage →
+        Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_payload_of_surgery_and_topology_extraction_statement :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
+    Poincare.ExtinctionTopologyExtractionStatement →
+      ∃ _target : Poincare.canonicalCompletionTarget,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_target_of_surgery_and_topology_extraction_statement :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
+    Poincare.ExtinctionTopologyExtractionStatement →
+      Poincare.canonicalCompletionTarget)
+
+#check (Poincare.canonical_completion_criterion_of_surgery_and_topology_extraction_statement :
+  ∀ witness : Type,
+    Poincare.SmoothabilityPackage →
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
+      Poincare.ExtinctionTopologyExtractionStatement →
+        Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_payload_of_surgery_and_extraction_derivation :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
+    (extractSphere : Poincare.ExtinctionImpliesSphereStatement) →
+      Poincare.ExtinctionTopologyDerivationForExtractionStatement
+        extractSphere →
+        ∃ _target : Poincare.canonicalCompletionTarget,
+          ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_target_of_surgery_and_extraction_derivation :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
+    (extractSphere : Poincare.ExtinctionImpliesSphereStatement) →
+      Poincare.ExtinctionTopologyDerivationForExtractionStatement
+        extractSphere →
+        Poincare.canonicalCompletionTarget)
+
+#check (Poincare.canonical_completion_criterion_of_surgery_and_extraction_derivation :
+  ∀ witness : Type,
+    Poincare.SmoothabilityPackage →
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
+      (extractSphere : Poincare.ExtinctionImpliesSphereStatement) →
+        Poincare.ExtinctionTopologyDerivationForExtractionStatement
+          extractSphere →
+          Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincare_completion_payload_of_component_requirements :
+  Poincare.dependencyComponentRequirement
+      Poincare.DependencyComponentSlot.smoothabilityComponent →
+    Poincare.dependencyComponentRequirement
+      Poincare.DependencyComponentSlot.surgeryComponent →
+    Poincare.dependencyComponentRequirement
+      Poincare.DependencyComponentSlot.topologyComponent →
+      ∃ _target : Poincare.PoincareConjectureStatement,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_payload_of_component_requirements :
+  Poincare.dependencyComponentRequirement
+      Poincare.DependencyComponentSlot.smoothabilityComponent →
+    Poincare.dependencyComponentRequirement
+      Poincare.DependencyComponentSlot.surgeryComponent →
+    Poincare.dependencyComponentRequirement
+      Poincare.DependencyComponentSlot.topologyComponent →
+      ∃ _target : Poincare.canonicalCompletionTarget,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_target_of_component_requirements :
+  Poincare.dependencyComponentRequirement
+      Poincare.DependencyComponentSlot.smoothabilityComponent →
+    Poincare.dependencyComponentRequirement
+      Poincare.DependencyComponentSlot.surgeryComponent →
+    Poincare.dependencyComponentRequirement
+      Poincare.DependencyComponentSlot.topologyComponent →
+      Poincare.canonicalCompletionTarget)
+
+#check (Poincare.canonical_completion_criterion_of_component_requirements :
+  ∀ witness : Type,
+    Poincare.dependencyComponentRequirement
+        Poincare.DependencyComponentSlot.smoothabilityComponent →
+      Poincare.dependencyComponentRequirement
+        Poincare.DependencyComponentSlot.surgeryComponent →
+      Poincare.dependencyComponentRequirement
+        Poincare.DependencyComponentSlot.topologyComponent →
+        Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_three_sphere_statement_of_component_requirements :
+  Poincare.dependencyComponentRequirement
+      Poincare.DependencyComponentSlot.smoothabilityComponent →
+    Poincare.dependencyComponentRequirement
+      Poincare.DependencyComponentSlot.surgeryComponent →
+    Poincare.dependencyComponentRequirement
+      Poincare.DependencyComponentSlot.topologyComponent →
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.poincare_completion_payload_of_package_layer_requirements :
+  Poincare.dependencyPackageLayerRequirement
+      Poincare.DependencyPackageLayer.smoothabilityPackage →
+    Poincare.dependencyPackageLayerRequirement
+      Poincare.DependencyPackageLayer.analyticFoundationPackage →
+    Poincare.dependencyPackageLayerRequirement
+      Poincare.DependencyPackageLayer.surgeryPackage →
+    Poincare.dependencyPackageLayerRequirement
+      Poincare.DependencyPackageLayer.finiteExtinctionPackage →
+    Poincare.dependencyPackageLayerRequirement
+      Poincare.DependencyPackageLayer.topologyPackage →
+      ∃ _target : Poincare.PoincareConjectureStatement,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_payload_of_package_layer_requirements :
+  Poincare.dependencyPackageLayerRequirement
+      Poincare.DependencyPackageLayer.smoothabilityPackage →
+    Poincare.dependencyPackageLayerRequirement
+      Poincare.DependencyPackageLayer.analyticFoundationPackage →
+    Poincare.dependencyPackageLayerRequirement
+      Poincare.DependencyPackageLayer.surgeryPackage →
+    Poincare.dependencyPackageLayerRequirement
+      Poincare.DependencyPackageLayer.finiteExtinctionPackage →
+    Poincare.dependencyPackageLayerRequirement
+      Poincare.DependencyPackageLayer.topologyPackage →
+      ∃ _target : Poincare.canonicalCompletionTarget,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_target_of_package_layer_requirements :
+  Poincare.dependencyPackageLayerRequirement
+      Poincare.DependencyPackageLayer.smoothabilityPackage →
+    Poincare.dependencyPackageLayerRequirement
+      Poincare.DependencyPackageLayer.analyticFoundationPackage →
+    Poincare.dependencyPackageLayerRequirement
+      Poincare.DependencyPackageLayer.surgeryPackage →
+    Poincare.dependencyPackageLayerRequirement
+      Poincare.DependencyPackageLayer.finiteExtinctionPackage →
+    Poincare.dependencyPackageLayerRequirement
+      Poincare.DependencyPackageLayer.topologyPackage →
+      Poincare.canonicalCompletionTarget)
+
+#check (Poincare.canonical_completion_criterion_of_package_layer_requirements :
+  ∀ witness : Type,
+    Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.smoothabilityPackage →
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.analyticFoundationPackage →
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.surgeryPackage →
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.finiteExtinctionPackage →
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.topologyPackage →
+        Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_three_sphere_statement_of_package_layer_requirements :
+  Poincare.dependencyPackageLayerRequirement
+      Poincare.DependencyPackageLayer.smoothabilityPackage →
+    Poincare.dependencyPackageLayerRequirement
+      Poincare.DependencyPackageLayer.analyticFoundationPackage →
+    Poincare.dependencyPackageLayerRequirement
+      Poincare.DependencyPackageLayer.surgeryPackage →
+    Poincare.dependencyPackageLayerRequirement
+      Poincare.DependencyPackageLayer.finiteExtinctionPackage →
+    Poincare.dependencyPackageLayerRequirement
+      Poincare.DependencyPackageLayer.topologyPackage →
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.poincare_completion_payload_of_milestone_requirements :
+  Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.smoothabilityBridge →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.ricciFlowAnalyticFoundation →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.ricciFlowWithSurgery →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.perelmanSingularityControl →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.finiteExtinction →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.extinctionToSphereHomeomorphism →
+      ∃ _target : Poincare.PoincareConjectureStatement,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_payload_of_milestone_requirements :
+  Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.smoothabilityBridge →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.ricciFlowAnalyticFoundation →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.ricciFlowWithSurgery →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.perelmanSingularityControl →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.finiteExtinction →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.extinctionToSphereHomeomorphism →
+      ∃ _target : Poincare.canonicalCompletionTarget,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_target_of_milestone_requirements :
+  Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.smoothabilityBridge →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.ricciFlowAnalyticFoundation →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.ricciFlowWithSurgery →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.perelmanSingularityControl →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.finiteExtinction →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.extinctionToSphereHomeomorphism →
+      Poincare.canonicalCompletionTarget)
+
+#check (Poincare.canonical_completion_criterion_of_milestone_requirements :
+  ∀ witness : Type,
+    Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.smoothabilityBridge →
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.ricciFlowAnalyticFoundation →
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.ricciFlowWithSurgery →
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.perelmanSingularityControl →
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.finiteExtinction →
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.extinctionToSphereHomeomorphism →
+        Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_three_sphere_statement_of_milestone_requirements :
+  Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.smoothabilityBridge →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.ricciFlowAnalyticFoundation →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.ricciFlowWithSurgery →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.perelmanSingularityControl →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.finiteExtinction →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.extinctionToSphereHomeomorphism →
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.canonical_completion_payload_of_dependency_projections :
+  Poincare.RemainingDependencyPackage →
+    ∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check Poincare.canonical_completion_payload_of_dependency_projections_eq
+
+#check (Poincare.poincare_full_assembly_payload_of_dependency_projections :
+  Poincare.PoincareProofDependencies →
+    ∃ _smoothabilityPackage : Poincare.SmoothabilityPackage,
+    ∃ _surgeryPackages :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)),
+    ∃ _topologyPackage : Poincare.ExtinctionTopologyExtractionPackage,
+    ∃ _finiteExtinction :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Poincare.FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ _extractSphere : Poincare.ExtinctionImpliesSphereStatement,
+      Poincare.PoincareConjectureStatement)
+
+#check (Poincare.poincare_target_payload_of_extraction_derivation_dependency_projections :
+  Poincare.PoincareProofDependencies →
+    ∃ _finiteExtinction :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Poincare.FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ extractSphere : Poincare.ExtinctionImpliesSphereStatement,
+    ∃ _derivation :
+      Poincare.ExtinctionTopologyDerivationForExtractionStatement
+        extractSphere,
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincare_full_assembly_payload_of_extraction_derivation_dependency_projections :
+  Poincare.PoincareProofDependencies →
+    ∃ _smoothabilityPackage : Poincare.SmoothabilityPackage,
+    ∃ _surgeryPackages :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)),
+    ∃ extractSphere : Poincare.ExtinctionImpliesSphereStatement,
+    ∃ _derivation :
+      Poincare.ExtinctionTopologyDerivationForExtractionStatement
+        extractSphere,
+      Poincare.PoincareConjectureStatement)
+
+#check (Poincare.canonical_completion_target_of_dependency_projections :
+  Poincare.RemainingDependencyPackage →
+    Poincare.canonicalCompletionTarget)
+
+#check Poincare.canonical_completion_target_of_dependency_projections_eq
+
+#check (Poincare.canonical_completion_criterion_of_dependency_projections :
+  ∀ witness : Type,
+    Poincare.RemainingDependencyPackage →
+      Poincare.CompletionCriterionAtUniverse witness)
+
+#check Poincare.canonical_completion_criterion_of_dependency_projections_eq
+
+#check (Poincare.canonical_completion_payload_of_extraction_derivation_dependency_projections :
+  Poincare.RemainingDependencyPackage →
+    ∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check Poincare.canonical_completion_payload_of_extraction_derivation_dependency_projections_eq
+
+#check (Poincare.canonical_completion_target_of_extraction_derivation_dependency_projections :
+  Poincare.RemainingDependencyPackage →
+    Poincare.canonicalCompletionTarget)
+
+#check Poincare.canonical_completion_target_of_extraction_derivation_dependency_projections_eq
+
+#check (Poincare.canonical_completion_criterion_of_extraction_derivation_dependency_projections :
+  ∀ witness : Type,
+    Poincare.RemainingDependencyPackage →
+      Poincare.CompletionCriterionAtUniverse witness)
+
+#check Poincare.canonical_completion_criterion_of_extraction_derivation_dependency_projections_eq
+
+#check (Poincare.completionCriterionAtUniverse_eq :
+  ∀ witness : Type,
+    Poincare.CompletionCriterionAtUniverse witness =
+      Poincare.PoincareConjectureStatement)
+
+#check (Poincare.completionCriterionAtUniverse_iff_poincareConjectureStatement :
+  ∀ witness : Type,
+    Poincare.CompletionCriterionAtUniverse witness ↔
+      Poincare.PoincareConjectureStatement)
+
+#check (Poincare.completionCriterionAtUniverse_iff_poincareConjectureStatement_eq :
+  ∀ witness : Type,
+    Poincare.completionCriterionAtUniverse_iff_poincareConjectureStatement witness =
+      Iff.rfl)
+
+#check (Poincare.completionCriterionAtUniverse_of_completionCriterionAtUniverse :
+  ∀ source target : Type,
+    Poincare.CompletionCriterionAtUniverse source →
+      Poincare.CompletionCriterionAtUniverse target)
+
+#check (Poincare.completionCriterionAtUniverse_of_completionCriterionAtUniverse_eq :
+  ∀ source target : Type,
+    ∀ h : Poincare.CompletionCriterionAtUniverse source,
+      Poincare.completionCriterionAtUniverse_of_completionCriterionAtUniverse
+        source target h = h)
+
+#check (Poincare.completionCriterionAtUniverse_iff_completionCriterionAtUniverse :
+  ∀ source target : Type,
+    Poincare.CompletionCriterionAtUniverse source ↔
+      Poincare.CompletionCriterionAtUniverse target)
+
+#check (Poincare.completionCriterionAtUniverse_iff_completionCriterionAtUniverse_eq :
+  ∀ source target : Type,
+    Poincare.completionCriterionAtUniverse_iff_completionCriterionAtUniverse
+      source target = Iff.rfl)
+
+#check (Poincare.completionCriterionAtUniverse_of_poincareConjectureStatement :
+  ∀ witness : Type,
+    Poincare.PoincareConjectureStatement →
+      Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.completionCriterionAtUniverse_of_poincareConjectureStatement_eq :
+  ∀ witness : Type,
+    ∀ h : Poincare.PoincareConjectureStatement,
+      Poincare.completionCriterionAtUniverse_of_poincareConjectureStatement
+        witness h = h)
+
+#check (Poincare.poincare_completion_payload_of_poincareConjectureStatement :
+  Poincare.PoincareConjectureStatement →
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincare_completion_payload_of_poincareConjectureStatement_eq :
+  ∀ h : Poincare.PoincareConjectureStatement,
+    Poincare.poincare_completion_payload_of_poincareConjectureStatement h =
+      ⟨h, fun witness =>
+        Poincare.completionCriterionAtUniverse_of_poincareConjectureStatement
+          witness h⟩)
+
+#check (Poincare.poincareConjectureStatement_of_poincare_completion_payload :
+  (∃ _target : Poincare.PoincareConjectureStatement,
+    ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    Poincare.PoincareConjectureStatement)
+
+#check (Poincare.poincareConjectureStatement_of_poincare_completion_payload_eq :
+  ∀ payload :
+      (∃ _target : Poincare.PoincareConjectureStatement,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness),
+    Poincare.poincareConjectureStatement_of_poincare_completion_payload payload =
+      (by
+        rcases payload with ⟨target, _criterion⟩
+        exact target))
+
+#check (Poincare.completionCriterionAtUniverse_of_poincare_completion_payload :
+  ∀ witness : Type,
+    (∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+      Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.completionCriterionAtUniverse_of_poincare_completion_payload_eq :
+  ∀ witness : Type,
+    ∀ payload :
+        (∃ _target : Poincare.PoincareConjectureStatement,
+          ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness),
+      Poincare.completionCriterionAtUniverse_of_poincare_completion_payload
+        witness payload =
+        (by
+          rcases payload with ⟨_target, criterion⟩
+          exact criterion witness))
+
+#check (Poincare.poincare_completion_payload_of_completionCriterionAtUniverse :
+  ∀ witness : Type,
+    Poincare.CompletionCriterionAtUniverse witness →
+      ∃ _target : Poincare.PoincareConjectureStatement,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincare_completion_payload_of_completionCriterionAtUniverse_eq :
+  ∀ witness : Type,
+    ∀ h : Poincare.CompletionCriterionAtUniverse witness,
+      Poincare.poincare_completion_payload_of_completionCriterionAtUniverse
+        witness h =
+        Poincare.poincare_completion_payload_of_poincareConjectureStatement
+          (Poincare.poincareConjectureStatement_of_completionCriterionAtUniverse
+            witness h))
+
+#check (Poincare.poincareConjectureStatement_iff_poincare_completion_payload :
+  Poincare.PoincareConjectureStatement ↔
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincareConjectureStatement_iff_poincare_completion_payload_eq :
+  Poincare.poincareConjectureStatement_iff_poincare_completion_payload =
+    ⟨Poincare.poincare_completion_payload_of_poincareConjectureStatement,
+      Poincare.poincareConjectureStatement_of_poincare_completion_payload⟩)
+
+#check (Poincare.poincareConjectureStatement_of_completionCriterionAtUniverse :
+  ∀ witness : Type,
+    Poincare.CompletionCriterionAtUniverse witness →
+      Poincare.PoincareConjectureStatement)
+
+#check (Poincare.poincareConjectureStatement_of_completionCriterionAtUniverse_eq :
+  ∀ witness : Type,
+    ∀ h : Poincare.CompletionCriterionAtUniverse witness,
+      Poincare.poincareConjectureStatement_of_completionCriterionAtUniverse
+        witness h = h)
+
+#check (Poincare.completionCriterionAtUniverse_iff_poincare_completion_payload :
+  ∀ witness : Type,
+    Poincare.CompletionCriterionAtUniverse witness ↔
+      ∃ _target : Poincare.PoincareConjectureStatement,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.completionCriterionAtUniverse_iff_poincare_completion_payload_eq :
+  ∀ witness : Type,
+    Poincare.completionCriterionAtUniverse_iff_poincare_completion_payload witness =
+      (Poincare.completionCriterionAtUniverse_iff_poincareConjectureStatement
+        witness).trans
+          Poincare.poincareConjectureStatement_iff_poincare_completion_payload)
+
+#check (Poincare.canonicalCompletionTheoremName_eq :
+  Poincare.canonicalCompletionTheoremName = "poincare_conjecture")
+
+#check (Poincare.canonicalCompletionTarget_eq :
+  Poincare.canonicalCompletionTarget =
+    Poincare.PoincareConjectureStatement)
+
+#check (Poincare.canonicalCompletionTarget_iff_poincareConjectureStatement :
+  Poincare.canonicalCompletionTarget ↔
+    Poincare.PoincareConjectureStatement)
+
+#check (Poincare.canonicalCompletionTarget_iff_poincareConjectureStatement_eq :
+  Poincare.canonicalCompletionTarget_iff_poincareConjectureStatement =
+    Iff.rfl)
+
+#check (Poincare.canonicalCompletionTarget_iff_completionCriterionAtUniverse :
+  ∀ witness : Type,
+    Poincare.canonicalCompletionTarget ↔
+      Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonicalCompletionTarget_iff_completionCriterionAtUniverse_eq :
+  ∀ witness : Type,
+    Poincare.canonicalCompletionTarget_iff_completionCriterionAtUniverse witness =
+      Iff.rfl)
+
+#check (Poincare.extinction_extraction_of_canonical_completion_target :
+  Poincare.canonicalCompletionTarget →
+    Poincare.ExtinctionImpliesSphereStatement)
+
+#check (Poincare.extinction_extraction_of_canonical_completion_target_eq :
+  ∀ target : Poincare.canonicalCompletionTarget,
+    Poincare.extinction_extraction_of_canonical_completion_target target =
+      Poincare.extinction_extraction_of_poincare_statement target)
+
+#check (Poincare.canonical_completion_target_of_extinction_and_extraction :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
+    Poincare.ExtinctionImpliesSphereStatement →
+      Poincare.canonicalCompletionTarget)
+
+#check (Poincare.canonical_completion_target_of_extinction_and_extraction_eq :
+  ∀ finiteExtinction :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Poincare.FiniteExtinctionByRicciFlowWithSurgery M),
+    ∀ extractSphere : Poincare.ExtinctionImpliesSphereStatement,
+      Poincare.canonical_completion_target_of_extinction_and_extraction
+        finiteExtinction extractSphere =
+        Poincare.poincare_statement_of_extinction_and_extraction
+          finiteExtinction extractSphere)
+
+#check (Poincare.canonicalCompletionTarget_iff_extinction_extraction :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
+    (Poincare.canonicalCompletionTarget ↔
+      Poincare.ExtinctionImpliesSphereStatement))
+
+#check (Poincare.canonicalCompletionTarget_iff_extinction_extraction_eq :
+  ∀ finiteExtinction :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Poincare.FiniteExtinctionByRicciFlowWithSurgery M),
+    Poincare.canonicalCompletionTarget_iff_extinction_extraction
+      finiteExtinction =
+      Poincare.poincare_statement_iff_extinction_extraction
+        finiteExtinction)
+
+#check (Poincare.canonical_completion_payload_of_canonical_completion_target :
+  Poincare.canonicalCompletionTarget →
+    ∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.completion_criterion_of_canonical_completion_target_eq :
+  ∀ witness : Type,
+    ∀ target : Poincare.canonicalCompletionTarget,
+      Poincare.completion_criterion_of_canonical_completion_target
+        witness target = target)
+
+#check (Poincare.canonical_completion_payload_of_canonical_completion_target_eq :
+  ∀ target : Poincare.canonicalCompletionTarget,
+    Poincare.canonical_completion_payload_of_canonical_completion_target target =
+      ⟨target, fun witness =>
+        Poincare.completion_criterion_of_canonical_completion_target
+          witness target⟩)
+
+#check (Poincare.poincare_completion_payload_of_canonical_completion_target :
+  Poincare.canonicalCompletionTarget →
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincare_completion_payload_of_canonical_completion_target_eq :
+  ∀ target : Poincare.canonicalCompletionTarget,
+    Poincare.poincare_completion_payload_of_canonical_completion_target target =
+      ⟨target, fun witness =>
+        Poincare.completion_criterion_of_canonical_completion_target
+          witness target⟩)
+
+#check (Poincare.canonical_completion_payload_of_poincare_completion_payload :
+  (∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    ∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_payload_of_poincare_completion_payload_eq :
+  ∀ payload :
+      (∃ _target : Poincare.PoincareConjectureStatement,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness),
+    Poincare.canonical_completion_payload_of_poincare_completion_payload payload =
+      (by
+        rcases payload with ⟨target, criterion⟩
+        exact ⟨target, criterion⟩))
+
+#check (Poincare.canonical_completion_target_of_canonical_completion_payload :
+  (∃ _target : Poincare.canonicalCompletionTarget,
+    ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    Poincare.canonicalCompletionTarget)
+
+#check (Poincare.canonical_completion_target_of_canonical_completion_payload_eq :
+  ∀ payload :
+      (∃ _target : Poincare.canonicalCompletionTarget,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness),
+    Poincare.canonical_completion_target_of_canonical_completion_payload payload =
+      (by
+        rcases payload with ⟨target, _criterion⟩
+        exact target))
+
+#check (Poincare.canonicalCompletionTarget_of_poincare_completion_payload :
+  (∃ _target : Poincare.PoincareConjectureStatement,
+    ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    Poincare.canonicalCompletionTarget)
+
+#check (Poincare.canonicalCompletionTarget_of_poincare_completion_payload_eq :
+  ∀ payload :
+      (∃ _target : Poincare.PoincareConjectureStatement,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness),
+    Poincare.canonicalCompletionTarget_of_poincare_completion_payload payload =
+      Poincare.canonical_completion_target_of_canonical_completion_payload
+        (Poincare.canonical_completion_payload_of_poincare_completion_payload
+          payload))
+
+#check (Poincare.completion_criterion_of_canonical_completion_payload :
+  ∀ witness : Type,
+    (∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+      Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.completion_criterion_of_canonical_completion_payload_eq :
+  ∀ witness : Type,
+    ∀ payload :
+        (∃ _target : Poincare.canonicalCompletionTarget,
+          ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness),
+      Poincare.completion_criterion_of_canonical_completion_payload
+        witness payload =
+        (by
+          rcases payload with ⟨_target, criterion⟩
+          exact criterion witness))
+
+#check (Poincare.canonicalCompletionTarget_iff_canonical_completion_payload :
+  Poincare.canonicalCompletionTarget ↔
+    ∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonicalCompletionTarget_iff_canonical_completion_payload_eq :
+  Poincare.canonicalCompletionTarget_iff_canonical_completion_payload =
+    ⟨Poincare.canonical_completion_payload_of_canonical_completion_target,
+      Poincare.canonical_completion_target_of_canonical_completion_payload⟩)
+
+#check (Poincare.completionCriterionAtUniverse_iff_canonical_completion_payload :
+  ∀ witness : Type,
+    Poincare.CompletionCriterionAtUniverse witness ↔
+      ∃ _target : Poincare.canonicalCompletionTarget,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.completionCriterionAtUniverse_iff_canonical_completion_payload_eq :
+  ∀ witness : Type,
+    Poincare.completionCriterionAtUniverse_iff_canonical_completion_payload witness =
+      (Poincare.canonicalCompletionTarget_iff_completionCriterionAtUniverse
+        witness).symm.trans
+          Poincare.canonicalCompletionTarget_iff_canonical_completion_payload)
+
+#check (Poincare.canonical_completion_payload_of_completion_criterion :
+  ∀ witness : Type,
+    Poincare.CompletionCriterionAtUniverse witness →
+      ∃ _target : Poincare.canonicalCompletionTarget,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_payload_of_completion_criterion_eq :
+  ∀ witness : Type,
+    ∀ criterion : Poincare.CompletionCriterionAtUniverse witness,
+      Poincare.canonical_completion_payload_of_completion_criterion
+        witness criterion =
+        (Poincare.completionCriterionAtUniverse_iff_canonical_completion_payload
+          witness).mp criterion)
+
+#check (Poincare.poincare_completion_payload_of_canonical_completion_payload :
+  (∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincare_completion_payload_of_canonical_completion_payload_eq :
+  ∀ payload :
+      (∃ _target : Poincare.canonicalCompletionTarget,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness),
+    Poincare.poincare_completion_payload_of_canonical_completion_payload
+      payload =
+      (by
+        rcases payload with ⟨target, criterion⟩
+        exact ⟨target, criterion⟩))
+
+#check (Poincare.canonical_completion_payload_iff_poincare_completion_payload :
+  (∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) ↔
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_payload_iff_poincare_completion_payload_eq :
+  Poincare.canonical_completion_payload_iff_poincare_completion_payload =
+    ⟨Poincare.poincare_completion_payload_of_canonical_completion_payload,
+      Poincare.canonical_completion_payload_of_poincare_completion_payload⟩)
+
+#check (Poincare.canonical_three_sphere_statement_of_canonical_completion_target :
+  Poincare.canonicalCompletionTarget →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.canonical_three_sphere_statement_of_canonical_completion_payload :
+  (∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.canonical_three_sphere_statement_iff_canonical_completion_target :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₜ Poincare.ThreeSphere)) ↔
+    Poincare.canonicalCompletionTarget)
+
+#check (Poincare.canonical_three_sphere_statement_iff_canonical_completion_payload :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₜ Poincare.ThreeSphere)) ↔
+    ∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_three_sphere_statement_of_completion_certificate :
+  Poincare.PoincareCompletionCertificate →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.poincareCompletionCertificate_canonical_statement_payload :
+  Poincare.PoincareCompletionCertificate →
+    ∃ theoremName : String,
+      theoremName = "poincare_conjecture" ∧
+      Poincare.RemainingDependencyPackage ∧
+      Poincare.canonicalCompletionTarget ∧
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ Poincare.ThreeSphere)) ∧
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.completion_certificate_of_canonical_statement_payload :
+  (∃ theoremName : String,
+      theoremName = "poincare_conjecture" ∧
+      Poincare.RemainingDependencyPackage ∧
+      Poincare.canonicalCompletionTarget ∧
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ Poincare.ThreeSphere)) ∧
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.poincareCompletionCertificate_iff_canonical_statement_payload :
+  Poincare.PoincareCompletionCertificate ↔
+    ∃ theoremName : String,
+      theoremName = "poincare_conjecture" ∧
+      Poincare.RemainingDependencyPackage ∧
+      Poincare.canonicalCompletionTarget ∧
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ Poincare.ThreeSphere)) ∧
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincareCompletionCertificate_aggregate_canonical_statement_payload :
+  Poincare.PoincareCompletionCertificate →
+    ∃ theoremName : String,
+      theoremName = "poincare_conjecture" ∧
+      Poincare.PoincareProofDependencies ∧
+      Poincare.canonicalCompletionTarget ∧
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ Poincare.ThreeSphere)) ∧
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.completion_certificate_of_aggregate_canonical_statement_payload :
+  (∃ theoremName : String,
+      theoremName = "poincare_conjecture" ∧
+      Poincare.PoincareProofDependencies ∧
+      Poincare.canonicalCompletionTarget ∧
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ Poincare.ThreeSphere)) ∧
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.poincareCompletionCertificate_iff_aggregate_canonical_statement_payload :
+  Poincare.PoincareCompletionCertificate ↔
+    ∃ theoremName : String,
+      theoremName = "poincare_conjecture" ∧
+      Poincare.PoincareProofDependencies ∧
+      Poincare.canonicalCompletionTarget ∧
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ Poincare.ThreeSphere)) ∧
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_three_sphere_statement_of_remaining_dependency_package :
+  Poincare.RemainingDependencyPackage →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.canonical_three_sphere_statement_of_remaining_dependency_aggregate_extraction_derivation :
+  Poincare.RemainingDependencyPackage →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.canonical_three_sphere_statement_of_remaining_dependency_projections :
+  Poincare.RemainingDependencyPackage →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.canonical_three_sphere_statement_of_remaining_dependency_extraction_derivation_projections :
+  Poincare.RemainingDependencyPackage →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.completion_certificate_of_remaining_dependency_and_smooth_statement :
+  Poincare.RemainingDependencyPackage →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      IsManifold (𝓡 3) ∞ M) →
+  Poincare.SmoothPoincareConjectureStatement →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.completion_certificate_of_poincareProofDependencies_and_smooth_statement :
+  Poincare.PoincareProofDependencies →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      IsManifold (𝓡 3) ∞ M) →
+  Poincare.SmoothPoincareConjectureStatement →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.completion_certificate_of_remaining_dependency_and_canonical_smooth_three_sphere_statement :
+  Poincare.RemainingDependencyPackage →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      IsManifold (𝓡 3) ∞ M) →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.completion_certificate_of_poincareProofDependencies_and_canonical_smooth_three_sphere_statement :
+  Poincare.PoincareProofDependencies →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      IsManifold (𝓡 3) ∞ M) →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.packaged_smooth_statement_completion_payload_of_remaining_dependency :
+  Poincare.RemainingDependencyPackage →
+  Poincare.SmoothPoincareConjectureStatement →
+    ∃ _smoothManifold : Poincare.SmoothabilitySmoothManifoldStatement,
+    ∃ _smoothStatement : Poincare.SmoothPoincareConjectureStatement,
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.packaged_smooth_statement_completion_payload_of_poincareProofDependencies :
+  Poincare.PoincareProofDependencies →
+  Poincare.SmoothPoincareConjectureStatement →
+    ∃ _smoothManifold : Poincare.SmoothabilitySmoothManifoldStatement,
+    ∃ _smoothStatement : Poincare.SmoothPoincareConjectureStatement,
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.packaged_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency :
+  Poincare.RemainingDependencyPackage →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    ∃ _smoothManifold : Poincare.SmoothabilitySmoothManifoldStatement,
+    ∃ _canonicalSmoothStatement :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [IsManifold (𝓡 3) ∞ M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)),
+    ∃ _smoothStatement : Poincare.SmoothPoincareConjectureStatement,
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.packaged_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies :
+  Poincare.PoincareProofDependencies →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    ∃ _smoothManifold : Poincare.SmoothabilitySmoothManifoldStatement,
+    ∃ _canonicalSmoothStatement :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [IsManifold (𝓡 3) ∞ M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)),
+    ∃ _smoothStatement : Poincare.SmoothPoincareConjectureStatement,
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincare_statement_of_remaining_dependency_and_packaged_smooth_statement :
+  Poincare.RemainingDependencyPackage →
+  Poincare.SmoothPoincareConjectureStatement →
+    Poincare.PoincareConjectureStatement)
+
+#check (Poincare.completion_criterion_of_remaining_dependency_and_packaged_smooth_statement :
+  (witness : Type) →
+  Poincare.RemainingDependencyPackage →
+  Poincare.SmoothPoincareConjectureStatement →
+    Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincare_statement_of_poincareProofDependencies_and_packaged_smooth_statement :
+  Poincare.PoincareProofDependencies →
+  Poincare.SmoothPoincareConjectureStatement →
+    Poincare.PoincareConjectureStatement)
+
+#check (Poincare.completion_criterion_of_poincareProofDependencies_and_packaged_smooth_statement :
+  (witness : Type) →
+  Poincare.PoincareProofDependencies →
+  Poincare.SmoothPoincareConjectureStatement →
+    Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincare_statement_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement :
+  Poincare.RemainingDependencyPackage →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    Poincare.PoincareConjectureStatement)
+
+#check (Poincare.completion_criterion_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement :
+  (witness : Type) →
+  Poincare.RemainingDependencyPackage →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincare_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement :
+  Poincare.PoincareProofDependencies →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    Poincare.PoincareConjectureStatement)
+
+#check (Poincare.completion_criterion_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement :
+  (witness : Type) →
+  Poincare.PoincareProofDependencies →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincare_completion_payload_of_remaining_dependency_and_packaged_smooth_statement :
+  Poincare.RemainingDependencyPackage →
+  Poincare.SmoothPoincareConjectureStatement →
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincare_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement :
+  Poincare.PoincareProofDependencies →
+  Poincare.SmoothPoincareConjectureStatement →
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincare_completion_payload_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement :
+  Poincare.RemainingDependencyPackage →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincare_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement :
+  Poincare.PoincareProofDependencies →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_payload_of_remaining_dependency_and_packaged_smooth_statement :
+  Poincare.RemainingDependencyPackage →
+  Poincare.SmoothPoincareConjectureStatement →
+    ∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement :
+  Poincare.PoincareProofDependencies →
+  Poincare.SmoothPoincareConjectureStatement →
+    ∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_payload_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement :
+  Poincare.RemainingDependencyPackage →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    ∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement :
+  Poincare.PoincareProofDependencies →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    ∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_target_of_remaining_dependency_and_packaged_smooth_statement :
+  Poincare.RemainingDependencyPackage →
+  Poincare.SmoothPoincareConjectureStatement →
+    Poincare.canonicalCompletionTarget)
+
+#check (Poincare.canonical_completion_criterion_of_remaining_dependency_and_packaged_smooth_statement :
+  (witness : Type) →
+  Poincare.RemainingDependencyPackage →
+  Poincare.SmoothPoincareConjectureStatement →
+    Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_target_of_poincareProofDependencies_and_packaged_smooth_statement :
+  Poincare.PoincareProofDependencies →
+  Poincare.SmoothPoincareConjectureStatement →
+    Poincare.canonicalCompletionTarget)
+
+#check (Poincare.canonical_completion_criterion_of_poincareProofDependencies_and_packaged_smooth_statement :
+  (witness : Type) →
+  Poincare.PoincareProofDependencies →
+  Poincare.SmoothPoincareConjectureStatement →
+    Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_target_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement :
+  Poincare.RemainingDependencyPackage →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    Poincare.canonicalCompletionTarget)
+
+#check (Poincare.canonical_completion_criterion_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement :
+  (witness : Type) →
+  Poincare.RemainingDependencyPackage →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_target_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement :
+  Poincare.PoincareProofDependencies →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    Poincare.canonicalCompletionTarget)
+
+#check (Poincare.canonical_completion_criterion_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement :
+  (witness : Type) →
+  Poincare.PoincareProofDependencies →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_three_sphere_statement_of_remaining_dependency_and_packaged_smooth_statement :
+  Poincare.RemainingDependencyPackage →
+  Poincare.SmoothPoincareConjectureStatement →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_and_packaged_smooth_statement :
+  Poincare.PoincareProofDependencies →
+  Poincare.SmoothPoincareConjectureStatement →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.canonical_three_sphere_statement_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement :
+  Poincare.RemainingDependencyPackage →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement :
+  Poincare.PoincareProofDependencies →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.completion_certificate_of_remaining_dependency_and_packaged_smooth_statement :
+  Poincare.RemainingDependencyPackage →
+  Poincare.SmoothPoincareConjectureStatement →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.completion_certificate_of_poincareProofDependencies_and_packaged_smooth_statement :
+  Poincare.PoincareProofDependencies →
+  Poincare.SmoothPoincareConjectureStatement →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.completion_certificate_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement :
+  Poincare.RemainingDependencyPackage →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.completion_certificate_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement :
+  Poincare.PoincareProofDependencies →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.poincareCompletionCertificate_remainingDependencyPackage_packaged_smooth_statement_payload :
+  Poincare.PoincareCompletionCertificate →
+  Poincare.SmoothPoincareConjectureStatement →
+    ∃ _dependencies : Poincare.RemainingDependencyPackage,
+    ∃ _smoothManifold : Poincare.SmoothabilitySmoothManifoldStatement,
+    ∃ _smoothStatement : Poincare.SmoothPoincareConjectureStatement,
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincareCompletionCertificate_poincareProofDependencies_packaged_smooth_statement_payload :
+  Poincare.PoincareCompletionCertificate →
+  Poincare.SmoothPoincareConjectureStatement →
+    ∃ _dependencies : Poincare.PoincareProofDependencies,
+    ∃ _smoothManifold : Poincare.SmoothabilitySmoothManifoldStatement,
+    ∃ _smoothStatement : Poincare.SmoothPoincareConjectureStatement,
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincareCompletionCertificate_remainingDependencyPackage_packaged_canonical_smooth_three_sphere_statement_payload :
+  Poincare.PoincareCompletionCertificate →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    ∃ _dependencies : Poincare.RemainingDependencyPackage,
+    ∃ _smoothManifold : Poincare.SmoothabilitySmoothManifoldStatement,
+    ∃ _canonicalSmoothStatement :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [IsManifold (𝓡 3) ∞ M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)),
+    ∃ _smoothStatement : Poincare.SmoothPoincareConjectureStatement,
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincareCompletionCertificate_poincareProofDependencies_packaged_canonical_smooth_three_sphere_statement_payload :
+  Poincare.PoincareCompletionCertificate →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    ∃ _dependencies : Poincare.PoincareProofDependencies,
+    ∃ _smoothManifold : Poincare.SmoothabilitySmoothManifoldStatement,
+    ∃ _canonicalSmoothStatement :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [IsManifold (𝓡 3) ∞ M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)),
+    ∃ _smoothStatement : Poincare.SmoothPoincareConjectureStatement,
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.completion_certificate_of_remaining_dependency_package_packaged_smooth_statement_payload :
+  (∃ _dependencies : Poincare.RemainingDependencyPackage,
+    ∃ _smoothManifold : Poincare.SmoothabilitySmoothManifoldStatement,
+    ∃ _smoothStatement : Poincare.SmoothPoincareConjectureStatement,
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.completion_certificate_of_poincareProofDependencies_packaged_smooth_statement_payload :
+  (∃ _dependencies : Poincare.PoincareProofDependencies,
+    ∃ _smoothManifold : Poincare.SmoothabilitySmoothManifoldStatement,
+    ∃ _smoothStatement : Poincare.SmoothPoincareConjectureStatement,
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.completion_certificate_of_remaining_dependency_package_packaged_canonical_smooth_three_sphere_statement_payload :
+  (∃ _dependencies : Poincare.RemainingDependencyPackage,
+    ∃ _smoothManifold : Poincare.SmoothabilitySmoothManifoldStatement,
+    ∃ _canonicalSmoothStatement :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [IsManifold (𝓡 3) ∞ M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)),
+    ∃ _smoothStatement : Poincare.SmoothPoincareConjectureStatement,
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.completion_certificate_of_poincareProofDependencies_packaged_canonical_smooth_three_sphere_statement_payload :
+  (∃ _dependencies : Poincare.PoincareProofDependencies,
+    ∃ _smoothManifold : Poincare.SmoothabilitySmoothManifoldStatement,
+    ∃ _canonicalSmoothStatement :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [IsManifold (𝓡 3) ∞ M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)),
+    ∃ _smoothStatement : Poincare.SmoothPoincareConjectureStatement,
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_packaged_smooth_statement_payload :
+  Poincare.SmoothPoincareConjectureStatement →
+    (Poincare.PoincareCompletionCertificate ↔
+      ∃ _dependencies : Poincare.RemainingDependencyPackage,
+      ∃ _smoothManifold : Poincare.SmoothabilitySmoothManifoldStatement,
+      ∃ _smoothStatement : Poincare.SmoothPoincareConjectureStatement,
+      ∃ _target : Poincare.PoincareConjectureStatement,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness))
+
+#check (Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_packaged_smooth_statement_payload :
+  Poincare.SmoothPoincareConjectureStatement →
+    (Poincare.PoincareCompletionCertificate ↔
+      ∃ _dependencies : Poincare.PoincareProofDependencies,
+      ∃ _smoothManifold : Poincare.SmoothabilitySmoothManifoldStatement,
+      ∃ _smoothStatement : Poincare.SmoothPoincareConjectureStatement,
+      ∃ _target : Poincare.PoincareConjectureStatement,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness))
+
+#check (Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_packaged_canonical_smooth_three_sphere_statement_payload :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    (Poincare.PoincareCompletionCertificate ↔
+      ∃ _dependencies : Poincare.RemainingDependencyPackage,
+      ∃ _smoothManifold : Poincare.SmoothabilitySmoothManifoldStatement,
+      ∃ _canonicalSmoothStatement :
+        (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [IsManifold (𝓡 3) ∞ M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)),
+      ∃ _smoothStatement : Poincare.SmoothPoincareConjectureStatement,
+      ∃ _target : Poincare.PoincareConjectureStatement,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness))
+
+#check (Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_payload :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    (Poincare.PoincareCompletionCertificate ↔
+      ∃ _dependencies : Poincare.PoincareProofDependencies,
+      ∃ _smoothManifold : Poincare.SmoothabilitySmoothManifoldStatement,
+      ∃ _canonicalSmoothStatement :
+        (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [IsManifold (𝓡 3) ∞ M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)),
+      ∃ _smoothStatement : Poincare.SmoothPoincareConjectureStatement,
+      ∃ _target : Poincare.PoincareConjectureStatement,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness))
+
+#check (Poincare.canonical_completion_target_of_canonical_completion_payload :
+  (∃ _target : Poincare.canonicalCompletionTarget,
+    ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    Poincare.canonicalCompletionTarget)
+
+#check (Poincare.canonicalCompletionTarget_of_poincare_completion_payload :
+  (∃ _target : Poincare.PoincareConjectureStatement,
+    ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    Poincare.canonicalCompletionTarget)
+
+#check (Poincare.completion_criterion_of_canonical_completion_payload :
+  ∀ witness : Type,
+    (∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+      Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonicalCompletionTarget_iff_canonical_completion_payload :
+  Poincare.canonicalCompletionTarget ↔
+    ∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.completionCriterionAtUniverse_iff_canonical_completion_payload :
+  ∀ witness : Type,
+    Poincare.CompletionCriterionAtUniverse witness ↔
+      ∃ _target : Poincare.canonicalCompletionTarget,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_payload_of_completion_criterion :
+  ∀ witness : Type,
+    Poincare.CompletionCriterionAtUniverse witness →
+      ∃ _target : Poincare.canonicalCompletionTarget,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincare_completion_payload_of_canonical_completion_payload :
+  (∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_payload_iff_poincare_completion_payload :
+  (∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) ↔
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_payload_of_extinction_and_extraction :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
+    Poincare.ExtinctionImpliesSphereStatement →
+      ∃ _target : Poincare.canonicalCompletionTarget,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check Poincare.canonical_completion_payload_of_extinction_and_extraction_eq
+
+#check (Poincare.canonical_completion_criterion_of_extinction_and_extraction :
+  ∀ witness : Type,
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
+      Poincare.ExtinctionImpliesSphereStatement →
+        Poincare.CompletionCriterionAtUniverse witness)
+
+#check Poincare.canonical_completion_criterion_of_extinction_and_extraction_eq
+
+#check
+  (Poincare.canonical_completion_payload_of_finite_extinction_and_topology_extraction_statement :
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
+      Poincare.ExtinctionTopologyExtractionStatement →
+        ∃ _target : Poincare.canonicalCompletionTarget,
+          ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check Poincare.canonical_completion_payload_of_finite_extinction_and_topology_extraction_statement_eq
+
+#check
+  (Poincare.canonical_completion_target_of_finite_extinction_and_topology_extraction_statement :
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
+      Poincare.ExtinctionTopologyExtractionStatement →
+        Poincare.canonicalCompletionTarget)
+
+#check Poincare.canonical_completion_target_of_finite_extinction_and_topology_extraction_statement_eq
+
+#check
+  (Poincare.canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement :
+    ∀ witness : Type,
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
+        Poincare.ExtinctionTopologyExtractionStatement →
+          Poincare.CompletionCriterionAtUniverse witness)
+
+#check Poincare.canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement_eq
+
+#check
+  (Poincare.canonical_completion_payload_of_finite_extinction_and_extraction_derivation :
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
+      (extractSphere : Poincare.ExtinctionImpliesSphereStatement) →
+        Poincare.ExtinctionTopologyDerivationForExtractionStatement
+          extractSphere →
+          ∃ _target : Poincare.canonicalCompletionTarget,
+            ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check Poincare.canonical_completion_payload_of_finite_extinction_and_extraction_derivation_eq
+
+#check
+  (Poincare.canonical_completion_target_of_finite_extinction_and_extraction_derivation :
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
+      (extractSphere : Poincare.ExtinctionImpliesSphereStatement) →
+        Poincare.ExtinctionTopologyDerivationForExtractionStatement
+          extractSphere →
+          Poincare.canonicalCompletionTarget)
+
+#check Poincare.canonical_completion_target_of_finite_extinction_and_extraction_derivation_eq
+
+#check
+  (Poincare.canonical_completion_criterion_of_finite_extinction_and_extraction_derivation :
+    ∀ witness : Type,
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
+        (extractSphere : Poincare.ExtinctionImpliesSphereStatement) →
+          Poincare.ExtinctionTopologyDerivationForExtractionStatement
+            extractSphere →
+            Poincare.CompletionCriterionAtUniverse witness)
+
+#check Poincare.canonical_completion_criterion_of_finite_extinction_and_extraction_derivation_eq
+
+#check Poincare.canonical_completion_target_of_completion_criterion_eq
+#check Poincare.canonical_completion_payload_of_surgery_and_topology_packages_eq
+#check Poincare.canonical_completion_target_of_surgery_and_topology_packages_eq
+#check Poincare.canonical_completion_criterion_of_surgery_and_topology_packages_eq
+#check Poincare.canonical_completion_payload_of_surgery_and_topology_extraction_statement_eq
+#check Poincare.canonical_completion_target_of_surgery_and_topology_extraction_statement_eq
+#check Poincare.canonical_completion_criterion_of_surgery_and_topology_extraction_statement_eq
+#check Poincare.canonical_completion_payload_of_surgery_and_extraction_derivation_eq
+#check Poincare.canonical_completion_target_of_surgery_and_extraction_derivation_eq
+#check Poincare.canonical_completion_criterion_of_surgery_and_extraction_derivation_eq
+#check Poincare.canonical_completion_payload_of_surgery_and_topology_package_extraction_derivation_eq
+#check Poincare.canonical_completion_target_of_surgery_and_topology_package_extraction_derivation_eq
+#check Poincare.canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation_eq
+
+#check (Poincare.dependencyMilestoneLedger_length :
+  Poincare.dependencyMilestoneLedger.length = 6)
+
+#check (Poincare.smoothabilityBridge_mem_dependencyMilestoneLedger :
+  Poincare.DependencyMilestone.smoothabilityBridge ∈
+    Poincare.dependencyMilestoneLedger)
+
+#check (Poincare.ricciFlowAnalyticFoundation_mem_dependencyMilestoneLedger :
+  Poincare.DependencyMilestone.ricciFlowAnalyticFoundation ∈
+    Poincare.dependencyMilestoneLedger)
+
+#check (Poincare.ricciFlowWithSurgery_mem_dependencyMilestoneLedger :
+  Poincare.DependencyMilestone.ricciFlowWithSurgery ∈
+    Poincare.dependencyMilestoneLedger)
+
+#check (Poincare.perelmanSingularityControl_mem_dependencyMilestoneLedger :
+  Poincare.DependencyMilestone.perelmanSingularityControl ∈
+    Poincare.dependencyMilestoneLedger)
+
+#check (Poincare.finiteExtinction_mem_dependencyMilestoneLedger :
+  Poincare.DependencyMilestone.finiteExtinction ∈
+    Poincare.dependencyMilestoneLedger)
+
+#check (Poincare.extinctionToSphereHomeomorphism_mem_dependencyMilestoneLedger :
+  Poincare.DependencyMilestone.extinctionToSphereHomeomorphism ∈
+    Poincare.dependencyMilestoneLedger)
+
+#check (Poincare.dependencyMilestoneLedger_nodup :
+  Poincare.dependencyMilestoneLedger.Nodup)
+
+#check Poincare.dependencyLayerForMilestone_smoothabilityBridge
+#check Poincare.dependencyLayerForMilestone_ricciFlowAnalyticFoundation
+#check Poincare.dependencyLayerForMilestone_ricciFlowWithSurgery
+#check Poincare.dependencyLayerForMilestone_perelmanSingularityControl
+#check Poincare.dependencyLayerForMilestone_finiteExtinction
+#check Poincare.dependencyLayerForMilestone_extinctionToSphereHomeomorphism
+
+#check (Poincare.dependency_ledger_has_package_layers :
+    Poincare.dependencyMilestoneLedger.map Poincare.dependencyLayerForMilestone =
+    [ Poincare.DependencyPackageLayer.smoothabilityPackage
+    , Poincare.DependencyPackageLayer.analyticFoundationPackage
+    , Poincare.DependencyPackageLayer.surgeryPackage
+    , Poincare.DependencyPackageLayer.surgeryPackage
+    , Poincare.DependencyPackageLayer.finiteExtinctionPackage
+    , Poincare.DependencyPackageLayer.topologyPackage
+    ])
+
+#check (Poincare.dependency_ledger_package_layer_mem :
+  ∀ layer : Poincare.DependencyPackageLayer,
+    layer ∈
+      Poincare.dependencyMilestoneLedger.map Poincare.dependencyLayerForMilestone ↔
+      layer = Poincare.DependencyPackageLayer.smoothabilityPackage ∨
+      layer = Poincare.DependencyPackageLayer.analyticFoundationPackage ∨
+      layer = Poincare.DependencyPackageLayer.surgeryPackage ∨
+      layer = Poincare.DependencyPackageLayer.finiteExtinctionPackage ∨
+      layer = Poincare.DependencyPackageLayer.topologyPackage)
+
+#check (Poincare.dependencyComponentForPackageLayer_smoothabilityPackage :
+  Poincare.dependencyComponentForPackageLayer
+      Poincare.DependencyPackageLayer.smoothabilityPackage =
+    Poincare.DependencyComponentSlot.smoothabilityComponent)
+
+#check (Poincare.dependencyComponentForPackageLayer_analyticFoundationPackage :
+  Poincare.dependencyComponentForPackageLayer
+      Poincare.DependencyPackageLayer.analyticFoundationPackage =
+    Poincare.DependencyComponentSlot.surgeryComponent)
+
+#check (Poincare.dependencyComponentForPackageLayer_surgeryPackage :
+  Poincare.dependencyComponentForPackageLayer
+      Poincare.DependencyPackageLayer.surgeryPackage =
+    Poincare.DependencyComponentSlot.surgeryComponent)
+
+#check (Poincare.dependencyComponentForPackageLayer_finiteExtinctionPackage :
+  Poincare.dependencyComponentForPackageLayer
+      Poincare.DependencyPackageLayer.finiteExtinctionPackage =
+    Poincare.DependencyComponentSlot.surgeryComponent)
+
+#check (Poincare.dependencyComponentForPackageLayer_topologyPackage :
+  Poincare.dependencyComponentForPackageLayer
+      Poincare.DependencyPackageLayer.topologyPackage =
+    Poincare.DependencyComponentSlot.topologyComponent)
+
+#check (Poincare.dependencyComponentForMilestone_smoothabilityBridge :
+  Poincare.dependencyComponentForMilestone
+      Poincare.DependencyMilestone.smoothabilityBridge =
+    Poincare.DependencyComponentSlot.smoothabilityComponent)
+
+#check (Poincare.dependencyComponentForMilestone_ricciFlowAnalyticFoundation :
+  Poincare.dependencyComponentForMilestone
+      Poincare.DependencyMilestone.ricciFlowAnalyticFoundation =
+    Poincare.DependencyComponentSlot.surgeryComponent)
+
+#check (Poincare.dependencyComponentForMilestone_ricciFlowWithSurgery :
+  Poincare.dependencyComponentForMilestone
+      Poincare.DependencyMilestone.ricciFlowWithSurgery =
+    Poincare.DependencyComponentSlot.surgeryComponent)
+
+#check (Poincare.dependencyComponentForMilestone_perelmanSingularityControl :
+  Poincare.dependencyComponentForMilestone
+      Poincare.DependencyMilestone.perelmanSingularityControl =
+    Poincare.DependencyComponentSlot.surgeryComponent)
+
+#check (Poincare.dependencyComponentForMilestone_finiteExtinction :
+  Poincare.dependencyComponentForMilestone
+      Poincare.DependencyMilestone.finiteExtinction =
+    Poincare.DependencyComponentSlot.surgeryComponent)
+
+#check (Poincare.dependencyComponentForMilestone_extinctionToSphereHomeomorphism :
+  Poincare.dependencyComponentForMilestone
+      Poincare.DependencyMilestone.extinctionToSphereHomeomorphism =
+    Poincare.DependencyComponentSlot.topologyComponent)
+
+#check (Poincare.dependencyComponentRequirement_smoothabilityComponent :
+  Poincare.dependencyComponentRequirement
+      Poincare.DependencyComponentSlot.smoothabilityComponent =
+    Poincare.SmoothabilityPackage)
+
+#check (Poincare.dependencyComponentRequirement_surgeryComponent :
+  Poincare.dependencyComponentRequirement
+      Poincare.DependencyComponentSlot.surgeryComponent =
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)))
+
+#check (Poincare.dependencyComponentRequirement_topologyComponent :
+  Poincare.dependencyComponentRequirement
+      Poincare.DependencyComponentSlot.topologyComponent =
+    Poincare.ExtinctionTopologyExtractionPackage)
+
+#check (Poincare.dependency_component_requirements_payload_of_dependencies :
+  Poincare.PoincareProofDependencies →
+    ∃ _smoothability :
+      Poincare.dependencyComponentRequirement
+        Poincare.DependencyComponentSlot.smoothabilityComponent,
+    ∃ _surgery :
+      Poincare.dependencyComponentRequirement
+        Poincare.DependencyComponentSlot.surgeryComponent,
+      Poincare.dependencyComponentRequirement
+        Poincare.DependencyComponentSlot.topologyComponent)
+
+#check (Poincare.poincareProofDependencies_iff_component_requirements :
+  Poincare.PoincareProofDependencies ↔
+    ∃ _smoothability :
+      Poincare.dependencyComponentRequirement
+        Poincare.DependencyComponentSlot.smoothabilityComponent,
+    ∃ _surgery :
+      Poincare.dependencyComponentRequirement
+        Poincare.DependencyComponentSlot.surgeryComponent,
+      Poincare.dependencyComponentRequirement
+        Poincare.DependencyComponentSlot.topologyComponent)
+
+#check Poincare.dependency_component_requirements_payload_of_dependencies_eq
+#check Poincare.poincareProofDependencies_of_component_requirements_payload
+#check Poincare.poincareProofDependencies_iff_component_requirements_eq
+
+#check (Poincare.dependencyPackageLayerRequirement_analyticFoundationPackage :
+  Poincare.dependencyPackageLayerRequirement
+      Poincare.DependencyPackageLayer.analyticFoundationPackage =
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω,
+          Poincare.RicciFlowAnalyticFoundationPackage
+            Poincare.ThreeManifoldModelWithCorners n M)))
+
+#check (Poincare.dependencyPackageLayerRequirement_surgeryPackage :
+  Poincare.dependencyPackageLayerRequirement
+      Poincare.DependencyPackageLayer.surgeryPackage =
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : Poincare.RicciFlowData
+          Poincare.ThreeManifoldModelWithCorners n M,
+          Poincare.RicciFlowWithSurgeryConstructionPackage
+              (n := n) (M := M) flow ∧
+            Poincare.PerelmanSingularityControlPackage
+              (n := n) (M := M) flow))
+
+#check (Poincare.dependencyPackageLayerRequirement_finiteExtinctionPackage :
+  Poincare.dependencyPackageLayerRequirement
+      Poincare.DependencyPackageLayer.finiteExtinctionPackage =
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)))
+
+#check Poincare.smoothabilityPackage_requirement_of_dependencies_eq
+#check Poincare.analyticFoundationPackage_requirement_of_dependencies_eq
+#check Poincare.surgeryPackage_requirement_of_dependencies_eq
+#check Poincare.finiteExtinctionPackage_requirement_of_dependencies_eq
+#check Poincare.topologyPackage_requirement_of_dependencies_eq
+
+#check (Poincare.dependency_package_layer_requirements_payload_of_dependencies :
+  Poincare.PoincareProofDependencies →
+    ∃ _smoothability :
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.smoothabilityPackage,
+    ∃ _analytic :
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.analyticFoundationPackage,
+    ∃ _surgery :
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.surgeryPackage,
+    ∃ _finiteExtinction :
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.finiteExtinctionPackage,
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.topologyPackage)
+
+#check (Poincare.poincareProofDependencies_iff_package_layer_requirements :
+  Poincare.PoincareProofDependencies ↔
+    ∃ _smoothability :
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.smoothabilityPackage,
+    ∃ _analytic :
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.analyticFoundationPackage,
+    ∃ _surgery :
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.surgeryPackage,
+    ∃ _finiteExtinction :
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.finiteExtinctionPackage,
+      Poincare.dependencyPackageLayerRequirement
+        Poincare.DependencyPackageLayer.topologyPackage)
+
+#check Poincare.dependency_package_layer_requirements_payload_of_dependencies_eq
+#check Poincare.poincareProofDependencies_of_package_layer_requirements_payload
+#check Poincare.poincareProofDependencies_iff_package_layer_requirements_eq
+
+#check (Poincare.dependencyMilestoneRequirement_smoothabilityBridge :
+  Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.smoothabilityBridge =
+    Poincare.SmoothabilityPackage)
+
+#check (Poincare.dependencyMilestoneRequirement_ricciFlowAnalyticFoundation :
+  Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.ricciFlowAnalyticFoundation =
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω,
+          Poincare.RicciFlowAnalyticFoundationPackage
+            Poincare.ThreeManifoldModelWithCorners n M)))
+
+#check (Poincare.dependencyMilestoneRequirement_ricciFlowWithSurgery :
+  Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.ricciFlowWithSurgery =
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : Poincare.RicciFlowData
+          Poincare.ThreeManifoldModelWithCorners n M,
+          Poincare.RicciFlowWithSurgeryConstructionPackage
+              (n := n) (M := M) flow ∧
+            Poincare.PerelmanSingularityControlPackage
+              (n := n) (M := M) flow))
+
+#check (Poincare.dependencyMilestoneRequirement_perelmanSingularityControl :
+  Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.perelmanSingularityControl =
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : Poincare.RicciFlowData
+          Poincare.ThreeManifoldModelWithCorners n M,
+          Poincare.RicciFlowWithSurgeryConstructionPackage
+              (n := n) (M := M) flow ∧
+            Poincare.PerelmanSingularityControlPackage
+              (n := n) (M := M) flow))
+
+#check (Poincare.dependencyMilestoneRequirement_finiteExtinction :
+  Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.finiteExtinction =
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)))
+
+#check (Poincare.dependencyMilestoneRequirement_extinctionToSphereHomeomorphism :
+  Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.extinctionToSphereHomeomorphism =
+    Poincare.ExtinctionTopologyExtractionPackage)
+
+#check (Poincare.dependencyMilestoneRequirement_of_dependencies :
+  ∀ (dependencies : Poincare.PoincareProofDependencies)
+    (milestone : Poincare.DependencyMilestone),
+      Poincare.dependencyMilestoneRequirement milestone)
+
+#check (Poincare.smoothabilityBridge_requirement_of_dependencies :
+  Poincare.PoincareProofDependencies →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.smoothabilityBridge)
+
+#check (Poincare.ricciFlowAnalyticFoundation_requirement_of_dependencies :
+  Poincare.PoincareProofDependencies →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.ricciFlowAnalyticFoundation)
+
+#check (Poincare.ricciFlowWithSurgery_requirement_of_dependencies :
+  Poincare.PoincareProofDependencies →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.ricciFlowWithSurgery)
+
+#check (Poincare.perelmanSingularityControl_requirement_of_dependencies :
+  Poincare.PoincareProofDependencies →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.perelmanSingularityControl)
+
+#check (Poincare.finiteExtinction_requirement_of_dependencies :
+  Poincare.PoincareProofDependencies →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.finiteExtinction)
+
+#check (Poincare.extinctionToSphereHomeomorphism_requirement_of_dependencies :
+  Poincare.PoincareProofDependencies →
+    Poincare.dependencyMilestoneRequirement
+      Poincare.DependencyMilestone.extinctionToSphereHomeomorphism)
+
+#check Poincare.dependencyMilestoneRequirement_of_dependencies_eq
+#check Poincare.smoothabilityBridge_requirement_of_dependencies_eq
+#check Poincare.ricciFlowAnalyticFoundation_requirement_of_dependencies_eq
+#check Poincare.ricciFlowWithSurgery_requirement_of_dependencies_eq
+#check Poincare.perelmanSingularityControl_requirement_of_dependencies_eq
+#check Poincare.finiteExtinction_requirement_of_dependencies_eq
+#check Poincare.extinctionToSphereHomeomorphism_requirement_of_dependencies_eq
+
+#check (Poincare.dependency_milestone_requirements_payload_of_dependencies :
+  Poincare.PoincareProofDependencies →
+    ∃ _smoothabilityBridge :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.smoothabilityBridge,
+    ∃ _ricciFlowAnalyticFoundation :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.ricciFlowAnalyticFoundation,
+    ∃ _ricciFlowWithSurgery :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.ricciFlowWithSurgery,
+    ∃ _perelmanSingularityControl :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.perelmanSingularityControl,
+    ∃ _finiteExtinction :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.finiteExtinction,
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.extinctionToSphereHomeomorphism)
+
+#check (Poincare.poincareProofDependencies_iff_milestone_requirements :
+  Poincare.PoincareProofDependencies ↔
+    ∃ _smoothabilityBridge :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.smoothabilityBridge,
+    ∃ _ricciFlowAnalyticFoundation :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.ricciFlowAnalyticFoundation,
+    ∃ _ricciFlowWithSurgery :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.ricciFlowWithSurgery,
+    ∃ _perelmanSingularityControl :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.perelmanSingularityControl,
+    ∃ _finiteExtinction :
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.finiteExtinction,
+      Poincare.dependencyMilestoneRequirement
+        Poincare.DependencyMilestone.extinctionToSphereHomeomorphism)
+
+#check Poincare.dependency_milestone_requirements_payload_of_dependencies_eq
+#check Poincare.poincareProofDependencies_of_milestone_requirements_payload
+#check Poincare.poincareProofDependencies_iff_milestone_requirements_eq
+
+#check (Poincare.dependency_ledger_has_component_slots :
+    Poincare.dependencyMilestoneLedger.map
+      Poincare.dependencyComponentForMilestone =
+    [ Poincare.DependencyComponentSlot.smoothabilityComponent
+    , Poincare.DependencyComponentSlot.surgeryComponent
+    , Poincare.DependencyComponentSlot.surgeryComponent
+    , Poincare.DependencyComponentSlot.surgeryComponent
+    , Poincare.DependencyComponentSlot.surgeryComponent
+    , Poincare.DependencyComponentSlot.topologyComponent
+    ])
+
+#check (Poincare.dependency_ledger_component_slot_mem :
+  ∀ slot : Poincare.DependencyComponentSlot,
+    slot ∈
+      Poincare.dependencyMilestoneLedger.map
+        Poincare.dependencyComponentForMilestone ↔
+      slot = Poincare.DependencyComponentSlot.smoothabilityComponent ∨
+      slot = Poincare.DependencyComponentSlot.surgeryComponent ∨
+      slot = Poincare.DependencyComponentSlot.topologyComponent)
+
+#check Poincare.canonical_completion_payload_of_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_target_of_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_criterion_of_canonical_smooth_three_sphere_statement_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_smooth_statement_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_smooth_statement_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_canonical_smooth_three_sphere_statement_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_canonical_smooth_three_sphere_statement_eq
+#check Poincare.packaged_smooth_statement_completion_payload_of_remaining_dependency_eq
+#check Poincare.packaged_smooth_statement_completion_payload_of_poincareProofDependencies_eq
+#check Poincare.packaged_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency_eq
+#check Poincare.packaged_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies_eq
+#check Poincare.canonical_completion_payload_of_remaining_dependency_and_packaged_smooth_statement_eq
+#check Poincare.canonical_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement_eq
+#check Poincare.canonical_completion_payload_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.poincare_statement_of_remaining_dependency_and_packaged_smooth_statement_eq
+#check Poincare.completion_criterion_of_remaining_dependency_and_packaged_smooth_statement_eq
+#check Poincare.poincare_statement_of_poincareProofDependencies_and_packaged_smooth_statement_eq
+#check Poincare.completion_criterion_of_poincareProofDependencies_and_packaged_smooth_statement_eq
+#check Poincare.poincare_statement_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.completion_criterion_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.poincare_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.completion_criterion_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.poincare_completion_payload_of_remaining_dependency_and_packaged_smooth_statement_eq
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement_eq
+#check Poincare.poincare_completion_payload_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_target_of_remaining_dependency_and_packaged_smooth_statement_eq
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_and_packaged_smooth_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_and_packaged_smooth_statement_eq
+#check Poincare.canonical_completion_target_of_poincareProofDependencies_and_packaged_smooth_statement_eq
+#check Poincare.canonical_completion_criterion_of_poincareProofDependencies_and_packaged_smooth_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_and_packaged_smooth_statement_eq
+#check Poincare.canonical_completion_target_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_target_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_criterion_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.smoothability_package_smooth_statement_completion_payload
+#check Poincare.poincare_statement_of_smoothability_package_and_smooth_statement
+#check Poincare.completion_criterion_of_smoothability_package_and_smooth_statement
+#check Poincare.poincare_completion_payload_of_smoothability_package_and_smooth_statement
+#check Poincare.canonical_completion_payload_of_smoothability_package_and_smooth_statement
+#check Poincare.canonical_completion_target_of_smoothability_package_and_smooth_statement
+#check Poincare.canonical_completion_criterion_of_smoothability_package_and_smooth_statement
+#check Poincare.canonical_three_sphere_statement_of_smoothability_package_and_smooth_statement
+#check Poincare.smoothability_package_canonical_smooth_three_sphere_statement_completion_payload
+#check Poincare.poincare_statement_of_smoothability_package_and_canonical_smooth_three_sphere_statement
+#check Poincare.completion_criterion_of_smoothability_package_and_canonical_smooth_three_sphere_statement
+#check Poincare.poincare_completion_payload_of_smoothability_package_and_canonical_smooth_three_sphere_statement
+#check Poincare.canonical_completion_payload_of_smoothability_package_and_canonical_smooth_three_sphere_statement
+#check Poincare.canonical_completion_target_of_smoothability_package_and_canonical_smooth_three_sphere_statement
+#check Poincare.canonical_completion_criterion_of_smoothability_package_and_canonical_smooth_three_sphere_statement
+#check Poincare.canonical_three_sphere_statement_of_smoothability_package_and_canonical_smooth_three_sphere_statement
+#check Poincare.smoothability_package_smooth_statement_completion_payload_eq
+#check Poincare.poincare_statement_of_smoothability_package_and_smooth_statement_eq
+#check Poincare.completion_criterion_of_smoothability_package_and_smooth_statement_eq
+#check Poincare.poincare_completion_payload_of_smoothability_package_and_smooth_statement_eq
+#check Poincare.canonical_completion_payload_of_smoothability_package_and_smooth_statement_eq
+#check Poincare.canonical_completion_target_of_smoothability_package_and_smooth_statement_eq
+#check Poincare.canonical_completion_criterion_of_smoothability_package_and_smooth_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_smoothability_package_and_smooth_statement_eq
+#check Poincare.smoothability_package_canonical_smooth_three_sphere_statement_completion_payload_eq
+#check Poincare.poincare_statement_of_smoothability_package_and_canonical_smooth_three_sphere_statement_eq
+#check Poincare.completion_criterion_of_smoothability_package_and_canonical_smooth_three_sphere_statement_eq
+#check Poincare.poincare_completion_payload_of_smoothability_package_and_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_payload_of_smoothability_package_and_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_target_of_smoothability_package_and_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_criterion_of_smoothability_package_and_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_smoothability_package_and_canonical_smooth_three_sphere_statement_eq
+#check Poincare.packaged_smooth_statement_completion_payload_of_remaining_dependency_to_smoothability_package_eq
+#check Poincare.packaged_smooth_statement_completion_payload_of_poincareProofDependencies_to_smoothability_package_eq
+#check Poincare.packaged_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency_to_smoothability_package_eq
+#check Poincare.packaged_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies_to_smoothability_package_eq
+#check Poincare.poincare_statement_of_remaining_dependency_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.poincare_statement_of_poincareProofDependencies_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.completion_criterion_of_remaining_dependency_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.completion_criterion_of_poincareProofDependencies_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.poincare_completion_payload_of_remaining_dependency_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.poincare_statement_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.poincare_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.completion_criterion_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.completion_criterion_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.poincare_completion_payload_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.poincare_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.canonical_completion_payload_of_remaining_dependency_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.canonical_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.canonical_completion_target_of_remaining_dependency_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.canonical_completion_target_of_poincareProofDependencies_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.canonical_completion_criterion_of_poincareProofDependencies_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.canonical_completion_payload_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.canonical_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.canonical_completion_target_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.canonical_completion_target_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.canonical_completion_criterion_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.canonical_completion_criterion_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.canonical_three_sphere_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_packaged_smooth_statement_to_smoothability_package_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_smoothability_package_eq
+EOF
+
+if lake env lean "$dependency_contract_check" >/dev/null 2>&1; then
+  echo "PASS: Lean confirms projection lemmas, target contracts, aggregate dependency contracts, ledger crosswalk with package layers/component slots, and milestone-requirement routes"
+else
+  echo "FAIL: Lean cannot confirm projection lemmas, target contracts, aggregate dependency contracts, ledger crosswalk with package layers/component slots, and milestone-requirement routes"
+  lake env lean "$dependency_contract_check" || true
+  status=1
+fi
+
+rm -rf "$dependency_contract_check_dir"
+dependency_contract_check_dir=
+dependency_contract_check=
+
+completion_check_dir=$(mktemp -d "${TMPDIR:-/tmp}/poincare-completion-check.$$-XXXXXX")
+completion_check="$completion_check_dir/check.lean"
+cat > "$completion_check" <<'EOF'
+import Poincare
+
+#check (Poincare.poincare_conjecture : Poincare.PoincareConjectureStatement)
+EOF
+
+if lake env lean "$completion_check" >/dev/null 2>&1; then
+  echo "PASS: Lean confirms Poincare.poincare_conjecture has type PoincareConjectureStatement"
+  axiom_check="$completion_check_dir/axioms.lean"
+  cat > "$axiom_check" <<'EOF'
+import Poincare
+
+#print axioms Poincare.poincare_conjecture
+EOF
+  echo "INFO: canonical theorem axiom footprint:"
+  lake env lean "$axiom_check" || true
+else
+  echo "FAIL: Lean cannot confirm Poincare.poincare_conjecture : PoincareConjectureStatement"
+  if rg -q 'PoincareConjectureStatement' Poincare; then
+    echo "Related local references are conditional statements or definitions:"
+    rg -n '^\s*(def|theorem|lemma)\s+.*PoincareConjectureStatement|:\s*PoincareConjectureStatement' Poincare
+  fi
+  status=1
+fi
+
+rm -rf "$completion_check_dir"
+completion_check_dir=
+completion_check=
+
+if rg -q '\b(opaque|axiom|constant|postulate|sorry|admit)\b' Poincare Poincare.lean; then
+  echo "FAIL: local proof placeholders remain"
+  rg -n '\b(opaque|axiom|constant|postulate|sorry|admit)\b' Poincare Poincare.lean
+  status=1
+else
+  echo "PASS: no local opaque/axiom/constant/postulate/sorry/admit placeholders"
+fi
+
+if rg -q '^\s*proof_wanted\b' Poincare Poincare.lean; then
+  echo "FAIL: local proof_wanted declarations remain"
+  rg -n '^\s*proof_wanted\b' Poincare Poincare.lean
+  status=1
+else
+  echo "PASS: no local proof_wanted declarations"
+fi
+
+if [ "$status" -eq 0 ]; then
+  echo "COMPLETION: achieved"
+else
+  echo "COMPLETION: not achieved"
+fi
+
+exit "$status"

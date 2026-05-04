@@ -1,0 +1,679 @@
+/-
+Small proof-bearing assembly lemmas around the statement layer.
+
+These lemmas do not prove the Poincare Conjecture. They record safe consequences
+that can be used once future proof-bearing dependency theorems exist.
+-/
+
+import Poincare.Statement
+
+universe u
+
+open scoped Manifold ContDiff
+
+namespace Poincare
+
+/--
+A diffeomorphism to the standard 3-sphere gives a homeomorphism to the standard
+3-sphere.
+
+This is a real Lean theorem using mathlib's `Diffeomorph.toHomeomorph`, but it
+is only an assembly lemma. It does not construct the required diffeomorphism.
+-/
+theorem homeomorph_of_diffeomorph_three_sphere
+    {M : Type u} [TopologicalSpace M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M] :
+    Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) →
+      Nonempty (M ≃ₜ ThreeSphere) := by
+  rintro ⟨h⟩
+  exact ⟨h.toHomeomorph⟩
+
+/--
+If the canonical 3-dimensional topological Poincare statement is available as a
+proof-bearing theorem, then it proves this project's target proposition.
+
+This theorem deliberately takes the canonical statement as an explicit argument;
+it does not use mathlib's current `proof_wanted` declaration.
+-/
+theorem poincare_statement_of_canonical_three_sphere_statement
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    PoincareConjectureStatement.{u} := by
+  intro M _ _ _ _ _
+  exact h M
+
+/--
+The canonical 3-dimensional topological Poincare statement exposes both the
+project target and the universe-indexed completion criterion as a single
+payload.
+-/
+theorem poincare_payload_of_canonical_three_sphere_statement
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let target : PoincareConjectureStatement.{u} :=
+    poincare_statement_of_canonical_three_sphere_statement h
+  exact poincare_completion_payload_of_poincareConjectureStatement target
+
+/--
+The canonical 3-dimensional topological Poincare statement also discharges the
+explicit universe-indexed completion criterion.
+-/
+theorem completion_criterion_of_canonical_three_sphere_statement
+    (witness : Type u)
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    CompletionCriterionAtUniverse witness := by
+  rcases poincare_payload_of_canonical_three_sphere_statement h with
+    ⟨_target, criterion⟩
+  exact criterion witness
+
+/--
+A proof of the project target statement exposes the canonical topological
+3-sphere statement shape.
+-/
+theorem canonical_three_sphere_statement_of_poincare_statement
+    (h : PoincareConjectureStatement.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) :=
+  h
+
+/--
+The project completion payload exposes the canonical topological 3-sphere
+statement shape.
+-/
+theorem canonical_three_sphere_statement_of_poincare_payload
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) :=
+  canonical_three_sphere_statement_of_poincare_statement
+    (poincareConjectureStatement_of_poincare_completion_payload payload)
+
+/--
+The canonical topological 3-sphere statement is equivalent to the project
+completion payload.
+-/
+theorem canonical_three_sphere_statement_iff_poincare_completion_payload :
+    (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) ↔
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincareConjectureStatement_iff_canonical_three_sphere_statement.symm.trans
+    poincareConjectureStatement_iff_poincare_completion_payload
+
+/--
+The explicit universe-indexed completion criterion exposes the canonical
+topological 3-sphere statement shape.
+-/
+theorem canonical_three_sphere_statement_of_completionCriterionAtUniverse
+    (witness : Type u) (criterion : CompletionCriterionAtUniverse witness) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) :=
+  canonical_three_sphere_statement_of_poincare_statement
+    (poincareConjectureStatement_of_completionCriterionAtUniverse
+      witness criterion)
+
+/--
+The canonical topological 3-sphere statement is equivalent to the explicit
+universe-indexed completion criterion.
+-/
+theorem canonical_three_sphere_statement_iff_completionCriterionAtUniverse
+    (witness : Type u) :
+    (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) ↔
+      CompletionCriterionAtUniverse witness :=
+  poincareConjectureStatement_iff_canonical_three_sphere_statement.symm.trans
+    (completionCriterionAtUniverse_iff_poincareConjectureStatement witness).symm
+
+/--
+If the canonical 3-dimensional smooth Poincare statement is available as a
+proof-bearing theorem, then it proves this project's smooth target proposition.
+
+This theorem deliberately takes the canonical statement as an explicit argument;
+it does not use mathlib's current `proof_wanted` declaration.
+-/
+theorem smooth_statement_of_canonical_three_sphere_statement
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    SmoothPoincareConjectureStatement.{u} := by
+  intro M _ _ _ _ _ _
+  exact h M
+
+/--
+A proof of the project smooth target statement exposes the canonical smooth
+3-sphere statement shape.
+-/
+theorem canonical_smooth_three_sphere_statement_of_smooth_statement
+    (h : SmoothPoincareConjectureStatement.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) :=
+  h
+
+/--
+The canonical smooth 3-sphere statement shape is equivalent to the project smooth
+target statement.
+-/
+theorem canonical_smooth_three_sphere_statement_iff_smooth_statement :
+    (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) ↔
+      SmoothPoincareConjectureStatement.{u} :=
+  smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_statement.symm
+
+/--
+If every target topological 3-manifold has the smooth structure required by the
+smooth Poincare statement, then the smooth statement implies the topological
+target statement.
+
+This is conditional assembly only: it does not prove the smooth Poincare
+statement or the smoothability input.
+-/
+theorem poincare_statement_of_smooth_statement
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  intro M _ _ _ _ _
+  letI : IsManifold (𝓡 3) ∞ M := smoothable M
+  exact homeomorph_of_diffeomorph_three_sphere (smoothStatement M)
+
+/--
+The smooth Poincare statement plus the smoothability input exposes the
+canonical topological 3-sphere statement shape.
+-/
+theorem canonical_three_sphere_statement_of_smooth_statement
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) :=
+  canonical_three_sphere_statement_of_poincare_statement
+    (poincare_statement_of_smooth_statement smoothable smoothStatement)
+
+/--
+The smooth Poincare statement plus the smoothability input exposes the
+topological target and completion criterion as one payload.
+-/
+theorem poincare_payload_of_smooth_statement
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let target : PoincareConjectureStatement.{u} :=
+    poincare_statement_of_smooth_statement smoothable smoothStatement
+  exact poincare_completion_payload_of_poincareConjectureStatement target
+
+/--
+The smooth Poincare statement plus the smoothability input discharges the
+explicit universe-indexed completion criterion.
+-/
+theorem completion_criterion_of_smooth_statement
+    (witness : Type u)
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    CompletionCriterionAtUniverse witness := by
+  rcases poincare_payload_of_smooth_statement smoothable smoothStatement with
+    ⟨_target, criterion⟩
+  exact criterion witness
+
+/--
+The canonical smooth 3-dimensional Poincare statement, together with the
+smoothability input, proves the project's topological target statement.
+
+This is the direct assembly path to use if mathlib's smooth 3D statement becomes
+proof-bearing before the local Ricci-flow dependency package is completed.
+-/
+theorem poincare_statement_of_canonical_smooth_three_sphere_statement
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    PoincareConjectureStatement.{u} := by
+  rcases poincare_payload_of_smooth_statement smoothable
+      (smooth_statement_of_canonical_three_sphere_statement h) with
+    ⟨target, _criterion⟩
+  exact target
+
+/--
+The canonical smooth 3-dimensional Poincare statement, together with
+smoothability, exposes the canonical topological 3-sphere statement shape.
+-/
+theorem canonical_three_sphere_statement_of_canonical_smooth_three_sphere_statement
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) :=
+  canonical_three_sphere_statement_of_smooth_statement smoothable
+    (smooth_statement_of_canonical_three_sphere_statement h)
+
+/--
+The canonical smooth 3-dimensional Poincare statement, together with
+smoothability, exposes the topological target and completion criterion as one
+payload.
+-/
+theorem poincare_payload_of_canonical_smooth_three_sphere_statement
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let smoothStatement : SmoothPoincareConjectureStatement.{u} :=
+    smooth_statement_of_canonical_three_sphere_statement h
+  rcases poincare_payload_of_smooth_statement smoothable smoothStatement with
+    ⟨target, criterion⟩
+  exact ⟨target, criterion⟩
+
+/--
+The canonical smooth 3-dimensional Poincare statement, together with
+smoothability, also discharges the explicit completion criterion.
+-/
+theorem completion_criterion_of_canonical_smooth_three_sphere_statement
+    (witness : Type u)
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    CompletionCriterionAtUniverse witness := by
+  rcases poincare_payload_of_canonical_smooth_three_sphere_statement
+      smoothable h with
+    ⟨_target, criterion⟩
+  exact criterion witness
+
+/--
+The diffeomorphism-to-homeomorphism bridge is exactly the projection through
+`Diffeomorph.toHomeomorph`.
+-/
+theorem homeomorph_of_diffeomorph_three_sphere_eq
+    {M : Type u} [TopologicalSpace M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M] :
+    homeomorph_of_diffeomorph_three_sphere (M := M) =
+      (fun witness => by
+        rcases witness with ⟨h⟩
+        exact ⟨h.toHomeomorph⟩) := by
+  apply Subsingleton.elim
+
+/--
+The canonical topological statement proves the project target by direct
+specialization.
+-/
+theorem poincare_statement_of_canonical_three_sphere_statement_eq
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_statement_of_canonical_three_sphere_statement h =
+      (by
+        intro M _ _ _ _ _
+        exact h M) := by
+  apply Subsingleton.elim
+
+/--
+The canonical topological statement payload is built from its named project
+target projection.
+-/
+theorem poincare_payload_of_canonical_three_sphere_statement_eq
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_payload_of_canonical_three_sphere_statement h =
+      (by
+        let target : PoincareConjectureStatement.{u} :=
+          poincare_statement_of_canonical_three_sphere_statement h
+        exact poincare_completion_payload_of_poincareConjectureStatement target) := by
+  apply Subsingleton.elim
+
+/--
+The canonical topological statement criterion is selected from the named
+payload.
+-/
+theorem completion_criterion_of_canonical_three_sphere_statement_eq
+    (witness : Type u)
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    completion_criterion_of_canonical_three_sphere_statement witness h =
+      (by
+        rcases poincare_payload_of_canonical_three_sphere_statement h with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The project target exposes the canonical topological statement by the identity
+projection.
+-/
+theorem canonical_three_sphere_statement_of_poincare_statement_eq
+    (h : PoincareConjectureStatement.{u}) :
+    canonical_three_sphere_statement_of_poincare_statement h = h := by
+  apply Subsingleton.elim
+
+/--
+The project payload exposes the canonical topological statement through its
+project target projection.
+-/
+theorem canonical_three_sphere_statement_of_poincare_payload_eq
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    canonical_three_sphere_statement_of_poincare_payload payload =
+      canonical_three_sphere_statement_of_poincare_statement
+        (poincareConjectureStatement_of_poincare_completion_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The canonical topological statement/completion-payload iff is the composition
+of the statement iff with the project completion-payload iff.
+-/
+theorem canonical_three_sphere_statement_iff_poincare_completion_payload_eq :
+    canonical_three_sphere_statement_iff_poincare_completion_payload =
+      poincareConjectureStatement_iff_canonical_three_sphere_statement.symm.trans
+        poincareConjectureStatement_iff_poincare_completion_payload := by
+  apply Subsingleton.elim
+
+/--
+The explicit completion criterion exposes the canonical statement through its
+project target projection.
+-/
+theorem canonical_three_sphere_statement_of_completionCriterionAtUniverse_eq
+    (witness : Type u) (criterion : CompletionCriterionAtUniverse witness) :
+    canonical_three_sphere_statement_of_completionCriterionAtUniverse
+      witness criterion =
+      canonical_three_sphere_statement_of_poincare_statement
+        (poincareConjectureStatement_of_completionCriterionAtUniverse
+          witness criterion) := by
+  apply Subsingleton.elim
+
+/--
+The canonical topological statement/completion-criterion iff is the composition
+of the statement iff with the criterion iff.
+-/
+theorem canonical_three_sphere_statement_iff_completionCriterionAtUniverse_eq
+    (witness : Type u) :
+    canonical_three_sphere_statement_iff_completionCriterionAtUniverse
+      witness =
+      poincareConjectureStatement_iff_canonical_three_sphere_statement.symm.trans
+        (completionCriterionAtUniverse_iff_poincareConjectureStatement
+          witness).symm := by
+  apply Subsingleton.elim
+
+/--
+The canonical smooth statement proves the project smooth target by direct
+specialization.
+-/
+theorem smooth_statement_of_canonical_three_sphere_statement_eq
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    smooth_statement_of_canonical_three_sphere_statement h =
+      (by
+        intro M _ _ _ _ _ _
+        exact h M) := by
+  apply Subsingleton.elim
+
+/--
+The project smooth target exposes the canonical smooth statement by the
+identity projection.
+-/
+theorem canonical_smooth_three_sphere_statement_of_smooth_statement_eq
+    (h : SmoothPoincareConjectureStatement.{u}) :
+    canonical_smooth_three_sphere_statement_of_smooth_statement h = h := by
+  apply Subsingleton.elim
+
+/--
+The canonical smooth statement iff is the reverse of the statement-layer
+canonical smooth iff.
+-/
+theorem canonical_smooth_three_sphere_statement_iff_smooth_statement_eq :
+    canonical_smooth_three_sphere_statement_iff_smooth_statement =
+      smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_statement.symm := by
+  apply Subsingleton.elim
+
+/--
+The smooth statement and smoothability input prove the project target by
+specializing the supplied smooth structure and forgetting the diffeomorphism.
+-/
+theorem poincare_statement_of_smooth_statement_eq
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    poincare_statement_of_smooth_statement smoothable smoothStatement =
+      (by
+        intro M _ _ _ _ _
+        letI : IsManifold (𝓡 3) ∞ M := smoothable M
+        exact homeomorph_of_diffeomorph_three_sphere (smoothStatement M)) := by
+  apply Subsingleton.elim
+
+/--
+The smooth statement canonical topological projection factors through the named
+project target projection.
+-/
+theorem canonical_three_sphere_statement_of_smooth_statement_eq
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    canonical_three_sphere_statement_of_smooth_statement
+      smoothable smoothStatement =
+      canonical_three_sphere_statement_of_poincare_statement
+        (poincare_statement_of_smooth_statement smoothable smoothStatement) := by
+  apply Subsingleton.elim
+
+/--
+The smooth statement project payload is built from the named smooth project
+target projection.
+-/
+theorem poincare_payload_of_smooth_statement_eq
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    poincare_payload_of_smooth_statement smoothable smoothStatement =
+      (by
+        let target : PoincareConjectureStatement.{u} :=
+          poincare_statement_of_smooth_statement smoothable smoothStatement
+        exact poincare_completion_payload_of_poincareConjectureStatement
+          target) := by
+  apply Subsingleton.elim
+
+/--
+The smooth statement completion criterion is selected from the named smooth
+project payload.
+-/
+theorem completion_criterion_of_smooth_statement_eq
+    (witness : Type u)
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    completion_criterion_of_smooth_statement
+      witness smoothable smoothStatement =
+      (by
+        rcases poincare_payload_of_smooth_statement
+            smoothable smoothStatement with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The canonical smooth statement project target factors through the induced
+project smooth statement and its named smooth payload.
+-/
+theorem poincare_statement_of_canonical_smooth_three_sphere_statement_eq
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    poincare_statement_of_canonical_smooth_three_sphere_statement
+      smoothable h =
+      (by
+        rcases poincare_payload_of_smooth_statement smoothable
+            (smooth_statement_of_canonical_three_sphere_statement h) with
+          ⟨target, _criterion⟩
+        exact target) := by
+  apply Subsingleton.elim
+
+/--
+The canonical smooth statement canonical topological projection factors through
+the induced project smooth statement.
+-/
+theorem canonical_three_sphere_statement_of_canonical_smooth_three_sphere_statement_eq
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    canonical_three_sphere_statement_of_canonical_smooth_three_sphere_statement
+      smoothable h =
+      canonical_three_sphere_statement_of_smooth_statement smoothable
+        (smooth_statement_of_canonical_three_sphere_statement h) := by
+  apply Subsingleton.elim
+
+/--
+The canonical smooth statement project payload is selected from the induced
+project smooth statement and the smooth assembly payload.
+-/
+theorem poincare_payload_of_canonical_smooth_three_sphere_statement_eq
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    poincare_payload_of_canonical_smooth_three_sphere_statement
+      smoothable h =
+      (by
+        let smoothStatement : SmoothPoincareConjectureStatement.{u} :=
+          smooth_statement_of_canonical_three_sphere_statement h
+        rcases poincare_payload_of_smooth_statement
+            smoothable smoothStatement with
+          ⟨target, criterion⟩
+        exact ⟨target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The canonical smooth statement completion criterion is selected from the named
+canonical smooth project payload.
+-/
+theorem completion_criterion_of_canonical_smooth_three_sphere_statement_eq
+    (witness : Type u)
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    completion_criterion_of_canonical_smooth_three_sphere_statement
+      witness smoothable h =
+      (by
+        rcases poincare_payload_of_canonical_smooth_three_sphere_statement
+            smoothable h with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+end Poincare
