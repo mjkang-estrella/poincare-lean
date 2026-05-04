@@ -707,7 +707,11 @@ The current artifact is intentionally conservative:
   with `dependencyPackageLayerRequirement`, proves package-layer requirement
   projections from `PoincareProofDependencies`, and records
   `dependency_package_layer_requirements_payload_of_dependencies` plus
-  `poincareProofDependencies_iff_package_layer_requirements`. The package
+  `poincareProofDependencies_iff_package_layer_requirements`. Generic
+  package-layer projections now have equality contracts for all five concrete
+  layers, including the analytic and surgery routes obtained by unpacking the
+  stored surgery-family field, and the package-layer payload is pinned to the
+  tuple of generic package-layer projections. The package
   layers still fold to the three aggregate dependency components with
   `DependencyComponentSlot`, `dependencyComponentForPackageLayer`,
   `dependencyComponentForMilestone`, `dependencyComponentRequirement`,
@@ -734,7 +738,9 @@ The current artifact is intentionally conservative:
   and milestone projection wrappers are now pinned to their generic component,
   package-layer, or milestone projection routes. The component-slot payload is
   pinned both to the stored dependency fields and to the named component-slot
-  projection tuple.
+  projection tuple. The six milestone projections are also pinned directly to
+  their assigned package-layer projections, and the milestone payload is pinned
+  to the corresponding package-layer tuple.
 - `Poincare/CompletionTarget.lean` records the canonical completion theorem name,
   proves by definitional equality that the canonical target is exactly the
   project statement and the explicit completion criterion, proves iff contracts

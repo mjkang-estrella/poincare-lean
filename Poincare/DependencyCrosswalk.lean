@@ -475,6 +475,66 @@ theorem dependencyPackageLayerRequirement_of_dependencies
   · exact dependencies.topology
   · exact dependencies.smoothability
 
+/--
+The generic analytic package-layer projection is obtained from the stored
+surgery family by projecting each surgery package's analytic-foundation package.
+-/
+theorem dependencyPackageLayerRequirement_of_dependencies_analyticFoundationPackage_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependencyPackageLayerRequirement_of_dependencies dependencies
+        DependencyPackageLayer.analyticFoundationPackage =
+      (by
+        intro M _ _ _ _ _ _
+        rcases dependencies.surgery M with ⟨⟨n, package⟩⟩
+        exact ⟨⟨n, analytic_foundation_of_surgery_package package⟩⟩) := by
+  apply Subsingleton.elim
+
+/--
+The generic surgery package-layer projection is obtained from the stored
+surgery family by unpacking each surgery package into construction and
+Perelman-control packages.
+-/
+theorem dependencyPackageLayerRequirement_of_dependencies_surgeryPackage_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependencyPackageLayerRequirement_of_dependencies dependencies
+        DependencyPackageLayer.surgeryPackage =
+      (by
+        intro M _ _ _ _ _ _
+        rcases dependencies.surgery M with ⟨⟨n, package⟩⟩
+        let flow := ricci_flow_data_of_surgery_package package
+        let constructionPackage :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow :=
+          surgery_construction_package_of_surgery_package package
+        let controlPackage :
+            PerelmanSingularityControlPackage (n := n) (M := M) flow :=
+          perelman_control_package_of_surgery_package package
+        exact ⟨n, flow, constructionPackage, controlPackage⟩) := by
+  apply Subsingleton.elim
+
+/-- The generic finite-extinction package-layer projection is the stored surgery field. -/
+theorem dependencyPackageLayerRequirement_of_dependencies_finiteExtinctionPackage_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependencyPackageLayerRequirement_of_dependencies dependencies
+        DependencyPackageLayer.finiteExtinctionPackage =
+      dependencies.surgery :=
+  rfl
+
+/-- The generic topology package-layer projection is the stored topology field. -/
+theorem dependencyPackageLayerRequirement_of_dependencies_topologyPackage_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependencyPackageLayerRequirement_of_dependencies dependencies
+        DependencyPackageLayer.topologyPackage =
+      dependencies.topology :=
+  rfl
+
+/-- The generic smoothability package-layer projection is the stored smoothability field. -/
+theorem dependencyPackageLayerRequirement_of_dependencies_smoothabilityPackage_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependencyPackageLayerRequirement_of_dependencies dependencies
+        DependencyPackageLayer.smoothabilityPackage =
+      dependencies.smoothability :=
+  rfl
+
 /-- Aggregate dependencies supply the smoothability package-layer requirement. -/
 theorem smoothabilityPackage_requirement_of_dependencies
     (dependencies : PoincareProofDependencies.{u}) :
@@ -606,6 +666,26 @@ theorem dependency_package_layer_requirements_payload_of_dependencies_eq
       , surgeryPackage_requirement_of_dependencies dependencies
       , finiteExtinctionPackage_requirement_of_dependencies dependencies
       , topologyPackage_requirement_of_dependencies dependencies
+      ⟩ := by
+  apply Subsingleton.elim
+
+/--
+The package-layer payload is also the tuple of the generic package-layer
+projections in package-layer order.
+-/
+theorem dependency_package_layer_requirements_payload_of_dependencies_to_generic_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependency_package_layer_requirements_payload_of_dependencies dependencies =
+      ⟨ dependencyPackageLayerRequirement_of_dependencies dependencies
+          DependencyPackageLayer.smoothabilityPackage
+      , dependencyPackageLayerRequirement_of_dependencies dependencies
+          DependencyPackageLayer.analyticFoundationPackage
+      , dependencyPackageLayerRequirement_of_dependencies dependencies
+          DependencyPackageLayer.surgeryPackage
+      , dependencyPackageLayerRequirement_of_dependencies dependencies
+          DependencyPackageLayer.finiteExtinctionPackage
+      , dependencyPackageLayerRequirement_of_dependencies dependencies
+          DependencyPackageLayer.topologyPackage
       ⟩ := by
   apply Subsingleton.elim
 
@@ -799,6 +879,66 @@ theorem dependencyMilestoneRequirement_of_dependencies_eq
   cases milestone <;> rfl
 
 /--
+The smoothability milestone projection is the smoothability package-layer
+projection.
+-/
+theorem smoothabilityBridge_requirement_of_dependencies_to_package_layer_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    smoothabilityBridge_requirement_of_dependencies dependencies =
+      smoothabilityPackage_requirement_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The analytic-foundation milestone projection is the analytic package-layer
+projection.
+-/
+theorem ricciFlowAnalyticFoundation_requirement_of_dependencies_to_package_layer_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    ricciFlowAnalyticFoundation_requirement_of_dependencies dependencies =
+      analyticFoundationPackage_requirement_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The Ricci-flow-with-surgery milestone projection is the surgery package-layer
+projection.
+-/
+theorem ricciFlowWithSurgery_requirement_of_dependencies_to_package_layer_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    ricciFlowWithSurgery_requirement_of_dependencies dependencies =
+      surgeryPackage_requirement_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The Perelman-control milestone projection is the surgery package-layer
+projection.
+-/
+theorem perelmanSingularityControl_requirement_of_dependencies_to_package_layer_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    perelmanSingularityControl_requirement_of_dependencies dependencies =
+      surgeryPackage_requirement_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The finite-extinction milestone projection is the finite-extinction
+package-layer projection.
+-/
+theorem finiteExtinction_requirement_of_dependencies_to_package_layer_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    finiteExtinction_requirement_of_dependencies dependencies =
+      finiteExtinctionPackage_requirement_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The topology-extraction milestone projection is the topology package-layer
+projection.
+-/
+theorem extinctionToSphereHomeomorphism_requirement_of_dependencies_to_package_layer_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    extinctionToSphereHomeomorphism_requirement_of_dependencies dependencies =
+      topologyPackage_requirement_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
 The smoothability milestone projection is the generic milestone projection at
 the smoothability milestone.
 -/
@@ -906,6 +1046,22 @@ theorem dependency_milestone_requirements_payload_of_dependencies_eq
       , perelmanSingularityControl_requirement_of_dependencies dependencies
       , finiteExtinction_requirement_of_dependencies dependencies
       , extinctionToSphereHomeomorphism_requirement_of_dependencies dependencies
+      ⟩ := by
+  apply Subsingleton.elim
+
+/--
+The milestone payload is also the tuple of package-layer projections assigned
+to the six ledger milestones.
+-/
+theorem dependency_milestone_requirements_payload_of_dependencies_to_package_layer_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependency_milestone_requirements_payload_of_dependencies dependencies =
+      ⟨ smoothabilityPackage_requirement_of_dependencies dependencies
+      , analyticFoundationPackage_requirement_of_dependencies dependencies
+      , surgeryPackage_requirement_of_dependencies dependencies
+      , surgeryPackage_requirement_of_dependencies dependencies
+      , finiteExtinctionPackage_requirement_of_dependencies dependencies
+      , topologyPackage_requirement_of_dependencies dependencies
       ⟩ := by
   apply Subsingleton.elim
 
