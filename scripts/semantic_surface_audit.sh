@@ -5165,6 +5165,10 @@ set_option linter.unusedVariables false
     (slot : Poincare.DependencyComponentSlot),
       Poincare.dependencyComponentRequirement slot)
 
+#check Poincare.dependencyComponentRequirement_of_dependencies_smoothabilityComponent_eq
+#check Poincare.dependencyComponentRequirement_of_dependencies_surgeryComponent_eq
+#check Poincare.dependencyComponentRequirement_of_dependencies_topologyComponent_eq
+
 #check (Poincare.smoothabilityComponent_requirement_of_dependencies :
   Poincare.PoincareProofDependencies →
     Poincare.dependencyComponentRequirement
@@ -5183,6 +5187,9 @@ set_option linter.unusedVariables false
 #check Poincare.smoothabilityComponent_requirement_of_dependencies_eq
 #check Poincare.surgeryComponent_requirement_of_dependencies_eq
 #check Poincare.topologyComponent_requirement_of_dependencies_eq
+#check Poincare.smoothabilityComponent_requirement_of_dependencies_to_field_eq
+#check Poincare.surgeryComponent_requirement_of_dependencies_to_field_eq
+#check Poincare.topologyComponent_requirement_of_dependencies_to_field_eq
 
 #check (Poincare.dependency_component_requirements_payload_of_dependencies :
   Poincare.PoincareProofDependencies →
@@ -5207,6 +5214,7 @@ set_option linter.unusedVariables false
         Poincare.DependencyComponentSlot.topologyComponent)
 
 #check Poincare.dependency_component_requirements_payload_of_dependencies_eq
+#check Poincare.dependency_component_requirements_payload_of_dependencies_to_named_projections_eq
 #check Poincare.poincareProofDependencies_of_component_requirements_payload
 #check Poincare.poincareProofDependencies_iff_component_requirements_eq
 

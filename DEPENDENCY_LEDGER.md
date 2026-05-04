@@ -752,9 +752,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   `dependencyComponentRequirement`. The component route also has the generic
   projection `dependencyComponentRequirement_of_dependencies`, named
   smoothability/surgery/topology component projections, and equality contracts
-  pinning those wrappers to the generic component-slot route. It also names the
-  package-layer propositions with `dependencyPackageLayerRequirement`, proves
-  package-layer requirement projections from `PoincareProofDependencies`, and records
+  pinning those wrappers to the generic component-slot route and to the stored
+  `PoincareProofDependencies` fields. It also names the package-layer
+  propositions with `dependencyPackageLayerRequirement`, proves package-layer
+  requirement projections from `PoincareProofDependencies`, and records
   `dependency_package_layer_requirements_payload_of_dependencies` plus
   `poincareProofDependencies_iff_package_layer_requirements`. The component
   route records `dependency_component_requirements_payload_of_dependencies`,
@@ -773,7 +774,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   `PoincareProofDependencies` are named and the three iff routes are pinned to
   the named forward/reverse maps. The individual component-slot, package-layer,
   and milestone projection wrappers are now pinned to their generic component,
-  package-layer, or milestone projection routes.
+  package-layer, or milestone projection routes. The component-slot payload is
+  pinned both to the stored dependency fields and to the named component-slot
+  projection tuple.
 - `Poincare/CompletionTarget.lean` records the canonical completion theorem name,
   target, and remaining dependency package, with `rfl` lemmas tying the target
   back to `PoincareConjectureStatement` and the explicit completion criterion,

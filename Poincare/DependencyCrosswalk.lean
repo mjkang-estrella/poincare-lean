@@ -187,6 +187,33 @@ theorem dependencyComponentRequirement_of_dependencies
   · exact dependencies.surgery
   · exact dependencies.topology
 
+/--
+The generic smoothability component projection is the stored smoothability
+field.
+-/
+theorem dependencyComponentRequirement_of_dependencies_smoothabilityComponent_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependencyComponentRequirement_of_dependencies dependencies
+      DependencyComponentSlot.smoothabilityComponent =
+      dependencies.smoothability :=
+  rfl
+
+/-- The generic surgery component projection is the stored surgery field. -/
+theorem dependencyComponentRequirement_of_dependencies_surgeryComponent_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependencyComponentRequirement_of_dependencies dependencies
+      DependencyComponentSlot.surgeryComponent =
+      dependencies.surgery :=
+  rfl
+
+/-- The generic topology component projection is the stored topology field. -/
+theorem dependencyComponentRequirement_of_dependencies_topologyComponent_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependencyComponentRequirement_of_dependencies dependencies
+      DependencyComponentSlot.topologyComponent =
+      dependencies.topology :=
+  rfl
+
 /-- Aggregate dependencies supply the smoothability component requirement. -/
 theorem smoothabilityComponent_requirement_of_dependencies
     (dependencies : PoincareProofDependencies.{u}) :
@@ -242,6 +269,27 @@ theorem topologyComponent_requirement_of_dependencies_eq
         DependencyComponentSlot.topologyComponent :=
   rfl
 
+/-- The named smoothability component projection is the stored smoothability field. -/
+theorem smoothabilityComponent_requirement_of_dependencies_to_field_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    smoothabilityComponent_requirement_of_dependencies dependencies =
+      dependencies.smoothability :=
+  rfl
+
+/-- The named surgery component projection is the stored surgery field. -/
+theorem surgeryComponent_requirement_of_dependencies_to_field_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    surgeryComponent_requirement_of_dependencies dependencies =
+      dependencies.surgery :=
+  rfl
+
+/-- The named topology component projection is the stored topology field. -/
+theorem topologyComponent_requirement_of_dependencies_to_field_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topologyComponent_requirement_of_dependencies dependencies =
+      dependencies.topology :=
+  rfl
+
 /--
 A completed aggregate dependency package supplies the requirements for exactly
 the three aggregate component slots.
@@ -264,6 +312,17 @@ The aggregate dependency component-slot payload is the tuple of the stored
 component fields under the component-slot requirement aliases.
 -/
 theorem dependency_component_requirements_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependency_component_requirements_payload_of_dependencies dependencies =
+      ⟨dependencies.smoothability, dependencies.surgery,
+        dependencies.topology⟩ := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency component-slot payload is also the tuple of the named
+component-slot projections.
+-/
+theorem dependency_component_requirements_payload_of_dependencies_to_named_projections_eq
     (dependencies : PoincareProofDependencies.{u}) :
     dependency_component_requirements_payload_of_dependencies dependencies =
       ⟨ smoothabilityComponent_requirement_of_dependencies dependencies
