@@ -20,6 +20,15 @@ theorem threeSphere_self_homeomorph :
   ⟨Homeomorph.refl ThreeSphere⟩
 
 /--
+The self-homeomorphism witness for the standard sphere is the reflexive
+homeomorphism.
+-/
+theorem threeSphere_self_homeomorph_eq :
+    threeSphere_self_homeomorph =
+      ⟨Homeomorph.refl ThreeSphere⟩ := by
+  apply Subsingleton.elim
+
+/--
 Homeomorphism recognition composes through an intermediate space.
 
 This is a small proof-bearing topology lemma used by the extraction layer: once
@@ -35,6 +44,20 @@ theorem homeomorph_to_threeSphere_of_homeomorph
   exact ⟨eMN.trans eN⟩
 
 /--
+The intermediate-space transport lemma is exactly composition of the supplied
+homeomorphisms.
+-/
+theorem homeomorph_to_threeSphere_of_homeomorph_eq
+    {M N : Type u} [TopologicalSpace M] [TopologicalSpace N]
+    (hMN : Nonempty (M ≃ₜ N)) (hN : Nonempty (N ≃ₜ ThreeSphere)) :
+    homeomorph_to_threeSphere_of_homeomorph hMN hN =
+      (by
+        rcases hMN with ⟨eMN⟩
+        rcases hN with ⟨eN⟩
+        exact ⟨eMN.trans eN⟩) := by
+  apply Subsingleton.elim
+
+/--
 Homeomorphism recognition can also be transported along a homeomorphism whose
 direction is opposite the final target direction.
 -/
@@ -45,6 +68,20 @@ theorem homeomorph_to_threeSphere_of_homeomorph_source
   rcases hNM with ⟨eNM⟩
   rcases hN with ⟨eN⟩
   exact ⟨eNM.symm.trans eN⟩
+
+/--
+The source-side transport lemma is exactly inverse-then-composition of the
+supplied homeomorphisms.
+-/
+theorem homeomorph_to_threeSphere_of_homeomorph_source_eq
+    {M N : Type u} [TopologicalSpace M] [TopologicalSpace N]
+    (hNM : Nonempty (N ≃ₜ M)) (hN : Nonempty (N ≃ₜ ThreeSphere)) :
+    homeomorph_to_threeSphere_of_homeomorph_source hNM hN =
+      (by
+        rcases hNM with ⟨eNM⟩
+        rcases hN with ⟨eN⟩
+        exact ⟨eNM.symm.trans eN⟩) := by
+  apply Subsingleton.elim
 
 /--
 Being homeomorphic to the standard 3-sphere is invariant under replacing the
@@ -88,6 +125,19 @@ theorem homeomorph_to_threeSphere_of_threeSphere_homeomorph
   exact ⟨e.symm⟩
 
 /--
+The target-side recognition lemma is exactly inversion of the supplied
+homeomorphism from the standard sphere.
+-/
+theorem homeomorph_to_threeSphere_of_threeSphere_homeomorph_eq
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (ThreeSphere ≃ₜ M)) :
+    homeomorph_to_threeSphere_of_threeSphere_homeomorph h =
+      (by
+        rcases h with ⟨e⟩
+        exact ⟨e.symm⟩) := by
+  apply Subsingleton.elim
+
+/--
 The same recognition data can be used in the reverse direction by inverting the
 homeomorphism to the standard sphere.
 -/
@@ -97,6 +147,19 @@ theorem threeSphere_homeomorph_of_homeomorph_to_threeSphere
     Nonempty (ThreeSphere ≃ₜ M) := by
   rcases h with ⟨e⟩
   exact ⟨e.symm⟩
+
+/--
+The reverse target-side recognition lemma is exactly inversion of the supplied
+homeomorphism to the standard sphere.
+-/
+theorem threeSphere_homeomorph_of_homeomorph_to_threeSphere_eq
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    threeSphere_homeomorph_of_homeomorph_to_threeSphere h =
+      (by
+        rcases h with ⟨e⟩
+        exact ⟨e.symm⟩) := by
+  apply Subsingleton.elim
 
 /--
 Being homeomorphic to the standard 3-sphere is independent of which side of the

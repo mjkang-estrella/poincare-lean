@@ -1271,17 +1271,23 @@ set_option linter.unusedVariables false
 #check (Poincare.threeSphere_self_homeomorph :
   Nonempty (Poincare.ThreeSphere ≃ₜ Poincare.ThreeSphere))
 
+#check Poincare.threeSphere_self_homeomorph_eq
+
 #check (Poincare.homeomorph_to_threeSphere_of_homeomorph :
   ∀ {M N : Type} [TopologicalSpace M] [TopologicalSpace N],
     Nonempty (M ≃ₜ N) →
       Nonempty (N ≃ₜ Poincare.ThreeSphere) →
         Nonempty (M ≃ₜ Poincare.ThreeSphere))
 
+#check Poincare.homeomorph_to_threeSphere_of_homeomorph_eq
+
 #check (Poincare.homeomorph_to_threeSphere_of_homeomorph_source :
   ∀ {M N : Type} [TopologicalSpace M] [TopologicalSpace N],
     Nonempty (N ≃ₜ M) →
       Nonempty (N ≃ₜ Poincare.ThreeSphere) →
         Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check Poincare.homeomorph_to_threeSphere_of_homeomorph_source_eq
 
 #check (Poincare.homeomorph_to_threeSphere_iff_of_homeomorph :
   ∀ {M N : Type} [TopologicalSpace M] [TopologicalSpace N],
@@ -1296,10 +1302,14 @@ set_option linter.unusedVariables false
     Nonempty (Poincare.ThreeSphere ≃ₜ M) →
       Nonempty (M ≃ₜ Poincare.ThreeSphere))
 
+#check Poincare.homeomorph_to_threeSphere_of_threeSphere_homeomorph_eq
+
 #check (Poincare.threeSphere_homeomorph_of_homeomorph_to_threeSphere :
   ∀ {M : Type} [TopologicalSpace M],
     Nonempty (M ≃ₜ Poincare.ThreeSphere) →
       Nonempty (Poincare.ThreeSphere ≃ₜ M))
+
+#check Poincare.threeSphere_homeomorph_of_homeomorph_to_threeSphere_eq
 
 #check (Poincare.homeomorph_to_threeSphere_iff_threeSphere_homeomorph :
   ∀ {M : Type} [TopologicalSpace M],

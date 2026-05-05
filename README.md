@@ -374,7 +374,10 @@ The current artifact is intentionally conservative:
   simply connected recognition, final package homeomorphism,
   trivial-quotient homeomorphism, homeomorphism-lift, assembly/derivation,
   extraction payloads, and final extractor; theorem-shaped package-statement
-  routes remain explicit where the projection is not just a stored field.
+  routes remain explicit where the projection is not just a stored field. The
+  concrete homeomorphism glue for the standard sphere's self-homeomorphism,
+  intermediate-space composition, opposite-direction source transport, and both
+  inverse-direction recognition maps now also has direct equality contracts.
   The dependency-level classification payload
   `topology_classification_payload_of_dependencies` now centralizes the
   post-extinction classification stack, and the individual dependency-level

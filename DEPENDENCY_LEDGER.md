@@ -565,7 +565,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   `ThreeSphere` recognition under replacing the source by a homeomorphic space,
   the reverse homeomorphism from `ThreeSphere`, the iff between the two
   homeomorphism directions, and the inverse-direction recognition lemma from a
-  homeomorphism out of `ThreeSphere`.
+  homeomorphism out of `ThreeSphere`. The self, intermediate-composition,
+  opposite-source, and inverse-direction recognition maps now have direct
+  equality contracts.
 - `Poincare/Smoothability.lean` defines no-constructor interfaces for the
   smoothability bridge from the topological statement to the smooth structure
   needed by the surgery layer, including Moise local charts,

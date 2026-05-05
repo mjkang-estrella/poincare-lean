@@ -2926,18 +2926,28 @@ do
 done
 check_decl "standard sphere self-homeomorphism theorem is declared" \
   '^theorem threeSphere_self_homeomorph\b' Poincare/TopologyExtraction.lean
+check_decl "standard sphere self-homeomorphism equality contract is declared" \
+  '^theorem threeSphere_self_homeomorph_eq\b' Poincare/TopologyExtraction.lean
 check_decl "homeomorphism transitivity to standard sphere theorem is declared" \
   '^theorem homeomorph_to_threeSphere_of_homeomorph\b' Poincare/TopologyExtraction.lean
+check_decl "homeomorphism transitivity to standard sphere equality contract is declared" \
+  '^theorem homeomorph_to_threeSphere_of_homeomorph_eq\b' Poincare/TopologyExtraction.lean
 check_decl "opposite-direction homeomorphism to standard sphere theorem is declared" \
   '^theorem homeomorph_to_threeSphere_of_homeomorph_source\b' Poincare/TopologyExtraction.lean
+check_decl "opposite-direction homeomorphism to standard sphere equality contract is declared" \
+  '^theorem homeomorph_to_threeSphere_of_homeomorph_source_eq\b' Poincare/TopologyExtraction.lean
 check_decl "homeomorphism invariance of standard sphere recognition theorem is declared" \
   '^theorem homeomorph_to_threeSphere_iff_of_homeomorph\b' Poincare/TopologyExtraction.lean
 check_decl "homeomorphism invariance of standard sphere recognition equality contract is declared" \
   '^theorem homeomorph_to_threeSphere_iff_of_homeomorph_eq\b' Poincare/TopologyExtraction.lean
 check_decl "inverse homeomorphism to standard sphere theorem is declared" \
   '^theorem homeomorph_to_threeSphere_of_threeSphere_homeomorph\b' Poincare/TopologyExtraction.lean
+check_decl "inverse homeomorphism to standard sphere equality contract is declared" \
+  '^theorem homeomorph_to_threeSphere_of_threeSphere_homeomorph_eq\b' Poincare/TopologyExtraction.lean
 check_decl "standard sphere reverse homeomorphism theorem is declared" \
   '^theorem threeSphere_homeomorph_of_homeomorph_to_threeSphere\b' Poincare/TopologyExtraction.lean
+check_decl "standard sphere reverse homeomorphism equality contract is declared" \
+  '^theorem threeSphere_homeomorph_of_homeomorph_to_threeSphere_eq\b' Poincare/TopologyExtraction.lean
 check_decl "standard sphere homeomorphism direction iff theorem is declared" \
   '^theorem homeomorph_to_threeSphere_iff_threeSphere_homeomorph\b' Poincare/TopologyExtraction.lean
 check_decl "standard sphere homeomorphism direction iff equality contract is declared" \
@@ -6461,12 +6471,17 @@ open scoped Manifold ContDiff
 #check Poincare.smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_statement
 #check Poincare.smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_statement_eq
 #check Poincare.threeSphere_self_homeomorph
+#check Poincare.threeSphere_self_homeomorph_eq
 #check Poincare.homeomorph_to_threeSphere_of_homeomorph
+#check Poincare.homeomorph_to_threeSphere_of_homeomorph_eq
 #check Poincare.homeomorph_to_threeSphere_of_homeomorph_source
+#check Poincare.homeomorph_to_threeSphere_of_homeomorph_source_eq
 #check Poincare.homeomorph_to_threeSphere_iff_of_homeomorph
 #check Poincare.homeomorph_to_threeSphere_iff_of_homeomorph_eq
 #check Poincare.homeomorph_to_threeSphere_of_threeSphere_homeomorph
+#check Poincare.homeomorph_to_threeSphere_of_threeSphere_homeomorph_eq
 #check Poincare.threeSphere_homeomorph_of_homeomorph_to_threeSphere
+#check Poincare.threeSphere_homeomorph_of_homeomorph_to_threeSphere_eq
 #check Poincare.homeomorph_to_threeSphere_iff_threeSphere_homeomorph
 #check Poincare.homeomorph_to_threeSphere_iff_threeSphere_homeomorph_eq
 #check Poincare.extinction_decomposition_of_topology_package
