@@ -235,6 +235,88 @@ theorem canonical_smooth_three_sphere_statement_iff_smooth_statement :
   smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_statement.symm
 
 /--
+The project smooth target also exposes the reverse canonical smooth statement
+shape, where the standard 3-sphere is the source of the diffeomorphism.
+-/
+theorem reverse_canonical_smooth_three_sphere_statement_of_smooth_statement
+    (h : SmoothPoincareConjectureStatement.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M) := by
+  intro M _ _ _ _ _ _
+  exact threeSphere_diffeomorph_of_diffeomorph_to_threeSphere (h M)
+
+/--
+The reverse canonical smooth statement proves this project's smooth target
+statement by inverting each supplied diffeomorphism.
+-/
+theorem smooth_statement_of_reverse_canonical_smooth_three_sphere_statement
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    SmoothPoincareConjectureStatement.{u} := by
+  intro M _ _ _ _ _ _
+  exact diffeomorph_to_threeSphere_of_threeSphere_diffeomorph (h M)
+
+/--
+The reverse canonical smooth statement also exposes the forward canonical
+smooth 3-sphere statement shape.
+-/
+theorem canonical_smooth_three_sphere_statement_of_reverse_canonical_smooth_three_sphere_statement
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) :=
+  canonical_smooth_three_sphere_statement_of_smooth_statement
+    (smooth_statement_of_reverse_canonical_smooth_three_sphere_statement h)
+
+/--
+The reverse canonical smooth statement shape is equivalent to the project smooth
+target statement.
+-/
+theorem reverse_canonical_smooth_three_sphere_statement_iff_smooth_statement :
+    (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) ↔
+      SmoothPoincareConjectureStatement.{u} := by
+  constructor
+  · exact smooth_statement_of_reverse_canonical_smooth_three_sphere_statement
+  · exact reverse_canonical_smooth_three_sphere_statement_of_smooth_statement
+
+/--
+The two canonical smooth statement shapes are equivalent; the difference is
+only the side on which the standard 3-sphere is written.
+-/
+theorem canonical_smooth_three_sphere_statement_iff_reverse_canonical_smooth_three_sphere_statement :
+    (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) ↔
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [IsManifold (𝓡 3) ∞ M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M) := by
+  constructor
+  · intro h M _ _ _ _ _ _
+    exact threeSphere_diffeomorph_of_diffeomorph_to_threeSphere (h M)
+  · intro h M _ _ _ _ _ _
+    exact diffeomorph_to_threeSphere_of_threeSphere_diffeomorph (h M)
+
+/--
 If every target topological 3-manifold has the smooth structure required by the
 smooth Poincare statement, then the smooth statement implies the topological
 target statement.
@@ -695,6 +777,80 @@ canonical smooth iff.
 theorem canonical_smooth_three_sphere_statement_iff_smooth_statement_eq :
     canonical_smooth_three_sphere_statement_iff_smooth_statement =
       smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_statement.symm := by
+  apply Subsingleton.elim
+
+/--
+The project smooth statement exposes the reverse canonical smooth statement by
+inverting the supplied diffeomorphism.
+-/
+theorem reverse_canonical_smooth_three_sphere_statement_of_smooth_statement_eq
+    (h : SmoothPoincareConjectureStatement.{u}) :
+    reverse_canonical_smooth_three_sphere_statement_of_smooth_statement h =
+      (by
+        intro M _ _ _ _ _ _
+        exact threeSphere_diffeomorph_of_diffeomorph_to_threeSphere
+          (h M)) := by
+  apply Subsingleton.elim
+
+/--
+The reverse canonical smooth statement proves the project smooth statement by
+inverting the supplied diffeomorphism.
+-/
+theorem smooth_statement_of_reverse_canonical_smooth_three_sphere_statement_eq
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    smooth_statement_of_reverse_canonical_smooth_three_sphere_statement h =
+      (by
+        intro M _ _ _ _ _ _
+        exact diffeomorph_to_threeSphere_of_threeSphere_diffeomorph
+          (h M)) := by
+  apply Subsingleton.elim
+
+/--
+The forward canonical smooth statement projection from the reverse shape
+factors through the named project smooth statement projection.
+-/
+theorem canonical_smooth_three_sphere_statement_of_reverse_canonical_smooth_three_sphere_statement_eq
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    canonical_smooth_three_sphere_statement_of_reverse_canonical_smooth_three_sphere_statement h =
+      canonical_smooth_three_sphere_statement_of_smooth_statement
+        (smooth_statement_of_reverse_canonical_smooth_three_sphere_statement
+          h) := by
+  apply Subsingleton.elim
+
+/--
+The reverse canonical smooth/project smooth iff is the pair of named statement
+projections.
+-/
+theorem reverse_canonical_smooth_three_sphere_statement_iff_smooth_statement_eq :
+    reverse_canonical_smooth_three_sphere_statement_iff_smooth_statement =
+      (by
+        constructor
+        · exact smooth_statement_of_reverse_canonical_smooth_three_sphere_statement
+        · exact reverse_canonical_smooth_three_sphere_statement_of_smooth_statement) := by
+  apply Subsingleton.elim
+
+/--
+The forward/reverse canonical smooth iff is the pair of named
+inverse-diffeomorphism conversions.
+-/
+theorem canonical_smooth_three_sphere_statement_iff_reverse_canonical_smooth_three_sphere_statement_eq :
+    canonical_smooth_three_sphere_statement_iff_reverse_canonical_smooth_three_sphere_statement =
+      (by
+        constructor
+        · intro h M _ _ _ _ _ _
+          exact threeSphere_diffeomorph_of_diffeomorph_to_threeSphere
+            (h M)
+        · intro h M _ _ _ _ _ _
+          exact diffeomorph_to_threeSphere_of_threeSphere_diffeomorph
+            (h M)) := by
   apply Subsingleton.elim
 
 /--

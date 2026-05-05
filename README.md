@@ -46,6 +46,11 @@ The current artifact is intentionally conservative:
   `canonical_three_sphere_statement_of_smooth_statement` and
   `canonical_three_sphere_statement_of_reverse_smooth_statement` and
   `canonical_three_sphere_statement_of_canonical_smooth_three_sphere_statement`.
+  At the smooth statement layer,
+  `reverse_canonical_smooth_three_sphere_statement_iff_smooth_statement` and
+  `canonical_smooth_three_sphere_statement_iff_reverse_canonical_smooth_three_sphere_statement`
+  pin the `S^3 -> M` and `M -> S^3` canonical smooth shapes to the same local
+  smooth target.
   Equality contracts now pin these statement-layer bridges, payload
   constructors, criterion projections, and canonical-statement iff routes to
   their named assembly paths.

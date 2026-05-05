@@ -83,6 +83,14 @@ It is not a proof. It is a work breakdown for future Lean development.
 - `Poincare/Assembly.lean` exposes the reverse smooth canonical statement route
   through `canonical_smooth_three_sphere_statement_of_smooth_statement` and
   `canonical_smooth_three_sphere_statement_iff_smooth_statement`.
+- `Poincare/Assembly.lean` also exposes
+  `reverse_canonical_smooth_three_sphere_statement_of_smooth_statement`,
+  `smooth_statement_of_reverse_canonical_smooth_three_sphere_statement`,
+  `canonical_smooth_three_sphere_statement_of_reverse_canonical_smooth_three_sphere_statement`,
+  `reverse_canonical_smooth_three_sphere_statement_iff_smooth_statement`, and
+  `canonical_smooth_three_sphere_statement_iff_reverse_canonical_smooth_three_sphere_statement`,
+  so the canonical smooth statement shape is invariant under writing the
+  supplied diffeomorphism as `M -> S^3` or `S^3 -> M`.
 - `Poincare/Assembly.lean` now pins the statement-layer bridge surface with
   equality contracts for the canonical topological route, smoothability plus
   smooth-statement route, canonical smooth route, payload constructors,
