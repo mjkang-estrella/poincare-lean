@@ -4749,6 +4749,44 @@ set_option linter.unusedVariables false
         Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
       Poincare.CompletionCriterionAtUniverse witness)
 
+#check (Poincare.canonical_completion_payload_of_reverse_canonical_smooth_three_sphere_statement :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      IsManifold (𝓡 3) ∞ M) →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) →
+    ∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonical_completion_target_of_reverse_canonical_smooth_three_sphere_statement :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      IsManifold (𝓡 3) ∞ M) →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) →
+    Poincare.canonicalCompletionTarget)
+
+#check (Poincare.canonical_completion_criterion_of_reverse_canonical_smooth_three_sphere_statement :
+  ∀ witness : Type,
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        IsManifold (𝓡 3) ∞ M) →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) →
+      Poincare.CompletionCriterionAtUniverse witness)
+
 #check (Poincare.completion_certificate_of_remaining_dependency_and_smooth_statement :
   Poincare.RemainingDependencyPackage →
   (∀ (M : Type) [TopologicalSpace M] [T2Space M]
@@ -4791,6 +4829,32 @@ set_option linter.unusedVariables false
     [IsManifold (𝓡 3) ∞ M]
     [SimplyConnectedSpace M] [CompactSpace M],
       Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.completion_certificate_of_remaining_dependency_and_reverse_canonical_smooth_three_sphere_statement :
+  Poincare.RemainingDependencyPackage →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      IsManifold (𝓡 3) ∞ M) →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.completion_certificate_of_poincareProofDependencies_and_reverse_canonical_smooth_three_sphere_statement :
+  Poincare.PoincareProofDependencies →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      IsManifold (𝓡 3) ∞ M) →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) →
     Poincare.PoincareCompletionCertificate)
 
 #check (Poincare.packaged_smooth_statement_completion_payload_of_remaining_dependency :
@@ -5736,10 +5800,15 @@ set_option linter.unusedVariables false
 #check Poincare.canonical_completion_payload_of_canonical_smooth_three_sphere_statement_eq
 #check Poincare.canonical_completion_target_of_canonical_smooth_three_sphere_statement_eq
 #check Poincare.canonical_completion_criterion_of_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_payload_of_reverse_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_target_of_reverse_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_criterion_of_reverse_canonical_smooth_three_sphere_statement_eq
 #check Poincare.completion_certificate_of_remaining_dependency_and_smooth_statement_eq
 #check Poincare.completion_certificate_of_poincareProofDependencies_and_smooth_statement_eq
 #check Poincare.completion_certificate_of_remaining_dependency_and_canonical_smooth_three_sphere_statement_eq
 #check Poincare.completion_certificate_of_poincareProofDependencies_and_canonical_smooth_three_sphere_statement_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_reverse_canonical_smooth_three_sphere_statement_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_reverse_canonical_smooth_three_sphere_statement_eq
 #check Poincare.remaining_dependency_package_of_completion_certificate_of_remaining_dependency_and_smooth_statement_eq
 #check Poincare.poincareProofDependencies_of_completion_certificate_of_poincareProofDependencies_and_smooth_statement_eq
 #check Poincare.remaining_dependency_package_of_completion_certificate_of_remaining_dependency_and_canonical_smooth_three_sphere_statement_eq
@@ -6090,7 +6159,7 @@ canonical_statement_payload_bridge_count=$(
   rg -c 'canonical_completion_payload_of_poincare_completion_payload' \
     Poincare/CanonicalBridges.lean || true
 )
-if [ "$canonical_statement_payload_bridge_count" != "18" ]; then
+if [ "$canonical_statement_payload_bridge_count" != "20" ]; then
   echo "FAIL: canonical statement, smooth certificate, and packaged smooth bridges should consume the shared Poincare-completion bridge"
   rg -n 'canonical_completion_payload_of_poincare_completion_payload' \
     Poincare/CanonicalBridges.lean || true

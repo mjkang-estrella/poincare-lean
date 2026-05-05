@@ -54,9 +54,10 @@ The current artifact is intentionally conservative:
   Equality contracts now pin these statement-layer bridges, payload
   constructors, criterion projections, and canonical-statement iff routes to
   their named assembly paths.
-- `Poincare/CanonicalBridges.lean` connects the canonical topological and smooth
-  mathlib-shaped 3-sphere statement inputs to canonical completion payloads that
-  carry both the canonical target and the universe-indexed completion criterion;
+- `Poincare/CanonicalBridges.lean` connects the canonical topological, smooth,
+  and reverse-direction smooth mathlib-shaped 3-sphere statement inputs to
+  canonical completion payloads that carry both the canonical target and the
+  universe-indexed completion criterion;
   those payloads now consume the assembly-layer payloads, target and criterion
   projections destructure them, and the reverse canonical statement/certificate
   bridges expose the canonical topological statement from the canonical target,

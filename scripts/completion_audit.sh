@@ -749,6 +749,12 @@ check_decl "canonical target bridge from smooth statement is declared" \
   '^theorem canonical_completion_target_of_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
 check_decl "canonical criterion bridge from smooth statement is declared" \
   '^theorem canonical_completion_criterion_of_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "canonical payload bridge from reverse smooth statement is declared" \
+  '^theorem canonical_completion_payload_of_reverse_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "canonical target bridge from reverse smooth statement is declared" \
+  '^theorem canonical_completion_target_of_reverse_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "canonical criterion bridge from reverse smooth statement is declared" \
+  '^theorem canonical_completion_criterion_of_reverse_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency plus smooth statement certificate constructor is declared" \
   '^theorem completion_certificate_of_remaining_dependency_and_smooth_statement\b' Poincare/CanonicalBridges.lean
 check_decl "aggregate dependencies plus smooth statement certificate constructor is declared" \
@@ -757,6 +763,10 @@ check_decl "remaining dependency plus canonical smooth statement certificate con
   '^theorem completion_certificate_of_remaining_dependency_and_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
 check_decl "aggregate dependencies plus canonical smooth statement certificate constructor is declared" \
   '^theorem completion_certificate_of_poincareProofDependencies_and_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency plus reverse canonical smooth statement certificate constructor is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_and_reverse_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependencies plus reverse canonical smooth statement certificate constructor is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_and_reverse_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency packaged smooth route completion payload is declared" \
   '^theorem packaged_smooth_statement_completion_payload_of_remaining_dependency\b' Poincare/CanonicalBridges.lean
 check_decl "aggregate dependency packaged smooth route completion payload is declared" \
@@ -875,6 +885,12 @@ check_decl "canonical smooth statement target equality contract is declared" \
   '^theorem canonical_completion_target_of_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
 check_decl "canonical smooth statement criterion equality contract is declared" \
   '^theorem canonical_completion_criterion_of_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "reverse canonical smooth statement payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_reverse_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "reverse canonical smooth statement target equality contract is declared" \
+  '^theorem canonical_completion_target_of_reverse_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "reverse canonical smooth statement criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_reverse_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency smooth statement certificate equality contract is declared" \
   '^theorem completion_certificate_of_remaining_dependency_and_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
 check_decl "aggregate dependency smooth statement certificate equality contract is declared" \
@@ -883,6 +899,10 @@ check_decl "remaining dependency canonical smooth statement certificate equality
   '^theorem completion_certificate_of_remaining_dependency_and_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
 check_decl "aggregate dependency canonical smooth statement certificate equality contract is declared" \
   '^theorem completion_certificate_of_poincareProofDependencies_and_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency reverse canonical smooth statement certificate equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_and_reverse_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency reverse canonical smooth statement certificate equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_and_reverse_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency smooth statement certificate projection roundtrip contract is declared" \
   '^theorem remaining_dependency_package_of_completion_certificate_of_remaining_dependency_and_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
 check_decl "aggregate dependency smooth statement certificate projection roundtrip contract is declared" \
@@ -5588,10 +5608,15 @@ open scoped Manifold ContDiff
 #check Poincare.canonical_completion_payload_of_canonical_smooth_three_sphere_statement
 #check Poincare.canonical_completion_target_of_canonical_smooth_three_sphere_statement
 #check Poincare.canonical_completion_criterion_of_canonical_smooth_three_sphere_statement
+#check Poincare.canonical_completion_payload_of_reverse_canonical_smooth_three_sphere_statement
+#check Poincare.canonical_completion_target_of_reverse_canonical_smooth_three_sphere_statement
+#check Poincare.canonical_completion_criterion_of_reverse_canonical_smooth_three_sphere_statement
 #check Poincare.completion_certificate_of_remaining_dependency_and_smooth_statement
 #check Poincare.completion_certificate_of_poincareProofDependencies_and_smooth_statement
 #check Poincare.completion_certificate_of_remaining_dependency_and_canonical_smooth_three_sphere_statement
 #check Poincare.completion_certificate_of_poincareProofDependencies_and_canonical_smooth_three_sphere_statement
+#check Poincare.completion_certificate_of_remaining_dependency_and_reverse_canonical_smooth_three_sphere_statement
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_reverse_canonical_smooth_three_sphere_statement
 #check Poincare.packaged_smooth_statement_completion_payload_of_remaining_dependency
 #check Poincare.packaged_smooth_statement_completion_payload_of_poincareProofDependencies
 #check Poincare.packaged_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency
@@ -6820,10 +6845,15 @@ open scoped Manifold ContDiff
 #check Poincare.canonical_completion_payload_of_canonical_smooth_three_sphere_statement_eq
 #check Poincare.canonical_completion_target_of_canonical_smooth_three_sphere_statement_eq
 #check Poincare.canonical_completion_criterion_of_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_payload_of_reverse_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_target_of_reverse_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_criterion_of_reverse_canonical_smooth_three_sphere_statement_eq
 #check Poincare.completion_certificate_of_remaining_dependency_and_smooth_statement_eq
 #check Poincare.completion_certificate_of_poincareProofDependencies_and_smooth_statement_eq
 #check Poincare.completion_certificate_of_remaining_dependency_and_canonical_smooth_three_sphere_statement_eq
 #check Poincare.completion_certificate_of_poincareProofDependencies_and_canonical_smooth_three_sphere_statement_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_reverse_canonical_smooth_three_sphere_statement_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_reverse_canonical_smooth_three_sphere_statement_eq
 #check Poincare.remaining_dependency_package_of_completion_certificate_of_remaining_dependency_and_smooth_statement_eq
 #check Poincare.poincareProofDependencies_of_completion_certificate_of_poincareProofDependencies_and_smooth_statement_eq
 #check Poincare.remaining_dependency_package_of_completion_certificate_of_remaining_dependency_and_canonical_smooth_three_sphere_statement_eq
@@ -10691,6 +10721,32 @@ open scoped Manifold ContDiff
       Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
     Poincare.PoincareCompletionCertificate)
 
+#check (Poincare.completion_certificate_of_remaining_dependency_and_reverse_canonical_smooth_three_sphere_statement :
+  Poincare.RemainingDependencyPackage →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      IsManifold (𝓡 3) ∞ M) →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) →
+    Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.completion_certificate_of_poincareProofDependencies_and_reverse_canonical_smooth_three_sphere_statement :
+  Poincare.PoincareProofDependencies →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      IsManifold (𝓡 3) ∞ M) →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) →
+    Poincare.PoincareCompletionCertificate)
+
 #check (Poincare.packaged_smooth_statement_completion_payload_of_remaining_dependency :
   Poincare.RemainingDependencyPackage →
   Poincare.SmoothPoincareConjectureStatement →
@@ -11714,10 +11770,15 @@ open scoped Manifold ContDiff
 #check Poincare.canonical_completion_payload_of_canonical_smooth_three_sphere_statement_eq
 #check Poincare.canonical_completion_target_of_canonical_smooth_three_sphere_statement_eq
 #check Poincare.canonical_completion_criterion_of_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_payload_of_reverse_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_target_of_reverse_canonical_smooth_three_sphere_statement_eq
+#check Poincare.canonical_completion_criterion_of_reverse_canonical_smooth_three_sphere_statement_eq
 #check Poincare.completion_certificate_of_remaining_dependency_and_smooth_statement_eq
 #check Poincare.completion_certificate_of_poincareProofDependencies_and_smooth_statement_eq
 #check Poincare.completion_certificate_of_remaining_dependency_and_canonical_smooth_three_sphere_statement_eq
 #check Poincare.completion_certificate_of_poincareProofDependencies_and_canonical_smooth_three_sphere_statement_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_reverse_canonical_smooth_three_sphere_statement_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_reverse_canonical_smooth_three_sphere_statement_eq
 #check Poincare.remaining_dependency_package_of_completion_certificate_of_remaining_dependency_and_smooth_statement_eq
 #check Poincare.poincareProofDependencies_of_completion_certificate_of_poincareProofDependencies_and_smooth_statement_eq
 #check Poincare.remaining_dependency_package_of_completion_certificate_of_remaining_dependency_and_canonical_smooth_three_sphere_statement_eq

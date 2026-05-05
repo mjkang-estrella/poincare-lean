@@ -103,6 +103,16 @@ It is not a proof. It is a work breakdown for future Lean development.
   projection certified extraction routes, and records a literal reserved-name
   certificate payload carrying that canonical statement with the target and
   criterion at both the remaining-dependency and aggregate-dependency surfaces.
+- `Poincare/CanonicalBridges.lean` also lifts the reverse canonical smooth
+  statement route through
+  `canonical_completion_payload_of_reverse_canonical_smooth_three_sphere_statement`,
+  `canonical_completion_target_of_reverse_canonical_smooth_three_sphere_statement`,
+  `canonical_completion_criterion_of_reverse_canonical_smooth_three_sphere_statement`,
+  `completion_certificate_of_remaining_dependency_and_reverse_canonical_smooth_three_sphere_statement`,
+  and
+  `completion_certificate_of_poincareProofDependencies_and_reverse_canonical_smooth_three_sphere_statement`,
+  so a proof-bearing smooth theorem stated with diffeomorphisms `S^3 -> M`
+  reaches the canonical payload and checked-certificate surfaces directly.
 - `Poincare/CanonicalBridges.lean` also exposes the canonical topological
   statement from packaged smooth-route endpoints via
   `canonical_three_sphere_statement_of_remaining_dependency_and_packaged_smooth_statement`,
