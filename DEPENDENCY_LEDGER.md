@@ -229,7 +229,8 @@ It is not a proof. It is a work breakdown for future Lean development.
   `canonical_three_sphere_statement_of_extinction_and_extraction` and the
   equivalence `canonical_three_sphere_statement_iff_extinction_extraction`
   expose the same boundary at the mathlib-shaped topological statement. Those
-  target and canonical endpoint equivalences now have equality contracts
+  target assembly, reverse extraction, payload, canonical endpoint, and
+  endpoint equivalence routes now have equality contracts.
   pinning them to their named projection/constructor pairs.
 - `Poincare/RicciFlow.lean` defines the time-dependent metric, Ricci tensor,
   Ricci-identification, curvature-data, and Ricci-flow equation interfaces, plus

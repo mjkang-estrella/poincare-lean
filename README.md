@@ -127,7 +127,8 @@ The current artifact is intentionally conservative:
   `canonical_three_sphere_statement_of_extinction_and_extraction` and the
   equivalence `canonical_three_sphere_statement_iff_extinction_extraction`
   expose the same boundary at the mathlib-shaped topological statement. Those
-  target and canonical endpoint equivalences now have equality contracts
+  target assembly, reverse extraction, payload, canonical endpoint, and
+  endpoint equivalence routes now have equality contracts.
   pinning them to their named projection/constructor pairs.
 - `Poincare/RicciFlow.lean` defines a minimal typed API for time-dependent
   Riemannian metrics, candidate Ricci tensor fields, Ricci-identification

@@ -1493,10 +1493,12 @@ set_option linter.unusedVariables false
       Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
     Poincare.ExtinctionImpliesSphereStatement →
       Poincare.PoincareConjectureStatement)
+#check Poincare.poincare_statement_of_extinction_and_extraction_eq
 
 #check (Poincare.extinction_extraction_of_poincare_statement :
   Poincare.PoincareConjectureStatement →
     Poincare.ExtinctionImpliesSphereStatement)
+#check Poincare.extinction_extraction_of_poincare_statement_eq
 
 #check (Poincare.poincare_statement_iff_extinction_extraction :
   (∀ (M : Type) [TopologicalSpace M] [T2Space M]
@@ -1516,6 +1518,7 @@ set_option linter.unusedVariables false
     Poincare.ExtinctionImpliesSphereStatement →
       ∃ _target : Poincare.PoincareConjectureStatement,
         ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+#check Poincare.poincare_payload_of_extinction_and_extraction_eq
 
 #check (Poincare.canonical_three_sphere_statement_of_extinction_and_extraction :
   (∀ (M : Type) [TopologicalSpace M] [T2Space M]
@@ -1527,6 +1530,7 @@ set_option linter.unusedVariables false
         [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
         [SimplyConnectedSpace M] [CompactSpace M],
           Nonempty (M ≃ₜ Poincare.ThreeSphere))
+#check Poincare.canonical_three_sphere_statement_of_extinction_and_extraction_eq
 
 #check (Poincare.canonical_three_sphere_statement_iff_extinction_extraction :
   (∀ (M : Type) [TopologicalSpace M] [T2Space M]

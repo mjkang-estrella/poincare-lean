@@ -61,6 +61,25 @@ theorem poincare_statement_of_extinction_and_extraction
   exact extractSphere M (finiteExtinction M)
 
 /--
+The extinction/extraction assembly theorem is exactly the pointwise application
+of the post-extinction topology extraction theorem to the finite-extinction
+witness for the same target manifold.
+-/
+theorem poincare_statement_of_extinction_and_extraction_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    poincare_statement_of_extinction_and_extraction
+        finiteExtinction extractSphere =
+      (by
+        intro M _ _ _ _ _
+        exact extractSphere M (finiteExtinction M)) := by
+  apply Subsingleton.elim
+
+/--
 Conversely, a proof of the project target supplies the theorem-shaped
 post-extinction extraction interface. The extinction input is unused because
 the target already gives the homeomorphism conclusion for every closed simply
@@ -71,6 +90,18 @@ theorem extinction_extraction_of_poincare_statement
     ExtinctionImpliesSphereStatement.{u} := by
   intro M _ _ _ _ _ _extinction
   exact target M
+
+/--
+The reverse extraction projection is exactly the target proof applied to the
+same target manifold, with the finite-extinction input unused.
+-/
+theorem extinction_extraction_of_poincare_statement_eq
+    (target : PoincareConjectureStatement.{u}) :
+    extinction_extraction_of_poincare_statement target =
+      (by
+        intro M _ _ _ _ _ _extinction
+        exact target M) := by
+  apply Subsingleton.elim
 
 /--
 Once finite extinction is available for every target 3-manifold, the Poincare
@@ -125,6 +156,27 @@ theorem poincare_payload_of_extinction_and_extraction
   exact poincare_completion_payload_of_poincareConjectureStatement target
 
 /--
+The extinction/extraction payload is exactly the project completion payload
+constructed from the named extinction/extraction target assembly route.
+-/
+theorem poincare_payload_of_extinction_and_extraction_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    poincare_payload_of_extinction_and_extraction
+        finiteExtinction extractSphere =
+      (by
+        let target : PoincareConjectureStatement.{u} :=
+          poincare_statement_of_extinction_and_extraction
+            finiteExtinction extractSphere
+        exact poincare_completion_payload_of_poincareConjectureStatement
+          target) := by
+  apply Subsingleton.elim
+
+/--
 Finite extinction plus the post-extinction topological extraction theorem
 also exposes the canonical mathlib-shaped topological 3-sphere statement.
 -/
@@ -142,6 +194,24 @@ theorem canonical_three_sphere_statement_of_extinction_and_extraction
   canonical_three_sphere_statement_of_poincare_statement
     (poincare_statement_of_extinction_and_extraction
       finiteExtinction extractSphere)
+
+/--
+The canonical topological statement route is exactly the canonical statement
+projection applied to the named extinction/extraction target assembly theorem.
+-/
+theorem canonical_three_sphere_statement_of_extinction_and_extraction_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    canonical_three_sphere_statement_of_extinction_and_extraction
+        finiteExtinction extractSphere =
+      canonical_three_sphere_statement_of_poincare_statement
+        (poincare_statement_of_extinction_and_extraction
+          finiteExtinction extractSphere) := by
+  apply Subsingleton.elim
 
 /--
 Once finite extinction is available for every target 3-manifold, the canonical

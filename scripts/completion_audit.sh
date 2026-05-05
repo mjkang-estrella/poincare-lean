@@ -493,16 +493,26 @@ check_decl "analytic foundation statement Ricci-identification bridge is declare
   '^theorem ricci_identification_of_analytic_foundation_statement\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation statement equation evidence bridge is declared" \
   '^theorem equation_evidence_of_analytic_foundation_statement\b' Poincare/AnalyticFoundation.lean
+check_decl "finite-extinction/extraction assembly theorem is declared" \
+  '^theorem poincare_statement_of_extinction_and_extraction\b' Poincare/RicciFlowInterface.lean
+check_decl "finite-extinction/extraction assembly equality contract is declared" \
+  '^theorem poincare_statement_of_extinction_and_extraction_eq\b' Poincare/RicciFlowInterface.lean
 check_decl "finite-extinction/extraction assembly payload theorem is declared" \
   '^theorem poincare_payload_of_extinction_and_extraction\b' Poincare/RicciFlowInterface.lean
+check_decl "finite-extinction/extraction assembly payload equality contract is declared" \
+  '^theorem poincare_payload_of_extinction_and_extraction_eq\b' Poincare/RicciFlowInterface.lean
 check_decl "Poincare target to extinction-extraction theorem is declared" \
   '^theorem extinction_extraction_of_poincare_statement\b' Poincare/RicciFlowInterface.lean
+check_decl "Poincare target to extinction-extraction equality contract is declared" \
+  '^theorem extinction_extraction_of_poincare_statement_eq\b' Poincare/RicciFlowInterface.lean
 check_decl "finite-extinction equivalence to extraction theorem is declared" \
   '^theorem poincare_statement_iff_extinction_extraction\b' Poincare/RicciFlowInterface.lean
 check_decl "finite-extinction equivalence to extraction equality contract is declared" \
   '^theorem poincare_statement_iff_extinction_extraction_eq\b' Poincare/RicciFlowInterface.lean
 check_decl "finite-extinction/extraction canonical statement theorem is declared" \
   '^theorem canonical_three_sphere_statement_of_extinction_and_extraction\b' Poincare/RicciFlowInterface.lean
+check_decl "finite-extinction/extraction canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_extinction_and_extraction_eq\b' Poincare/RicciFlowInterface.lean
 check_decl "finite-extinction canonical statement equivalence to extraction theorem is declared" \
   '^theorem canonical_three_sphere_statement_iff_extinction_extraction\b' Poincare/RicciFlowInterface.lean
 check_decl "finite-extinction canonical statement equivalence equality contract is declared" \
@@ -7093,11 +7103,16 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_of_subobligations_statement_eq
 #check Poincare.finite_extinction_statement_payload_of_surgery_package
 #check Poincare.finite_extinction_statement_payload_of_surgery_package_eq
+#check Poincare.poincare_statement_of_extinction_and_extraction
+#check Poincare.poincare_statement_of_extinction_and_extraction_eq
 #check Poincare.extinction_extraction_of_poincare_statement
+#check Poincare.extinction_extraction_of_poincare_statement_eq
 #check Poincare.poincare_statement_iff_extinction_extraction
 #check Poincare.poincare_statement_iff_extinction_extraction_eq
 #check Poincare.poincare_payload_of_extinction_and_extraction
+#check Poincare.poincare_payload_of_extinction_and_extraction_eq
 #check Poincare.canonical_three_sphere_statement_of_extinction_and_extraction
+#check Poincare.canonical_three_sphere_statement_of_extinction_and_extraction_eq
 #check Poincare.canonical_three_sphere_statement_iff_extinction_extraction
 #check Poincare.canonical_three_sphere_statement_iff_extinction_extraction_eq
 #check Poincare.poincare_statement_of_canonical_three_sphere_statement
@@ -9920,10 +9935,12 @@ open scoped Manifold ContDiff
       Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
     Poincare.ExtinctionImpliesSphereStatement →
       Poincare.PoincareConjectureStatement)
+#check Poincare.poincare_statement_of_extinction_and_extraction_eq
 
 #check (Poincare.extinction_extraction_of_poincare_statement :
   Poincare.PoincareConjectureStatement →
     Poincare.ExtinctionImpliesSphereStatement)
+#check Poincare.extinction_extraction_of_poincare_statement_eq
 
 #check (Poincare.poincare_statement_iff_extinction_extraction :
   (∀ (M : Type) [TopologicalSpace M] [T2Space M]
@@ -9943,6 +9960,7 @@ open scoped Manifold ContDiff
         [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
         [SimplyConnectedSpace M] [CompactSpace M],
           Nonempty (M ≃ₜ Poincare.ThreeSphere))
+#check Poincare.canonical_three_sphere_statement_of_extinction_and_extraction_eq
 
 #check (Poincare.canonical_three_sphere_statement_iff_extinction_extraction :
   (∀ (M : Type) [TopologicalSpace M] [T2Space M]
