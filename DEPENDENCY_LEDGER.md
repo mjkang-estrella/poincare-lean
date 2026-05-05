@@ -1259,7 +1259,8 @@ It is not a proof. It is a work breakdown for future Lean development.
   including the converted remaining-dependency package stored by each aggregate
   dependency route.
   Their certificate constructors now also have canonical/project payload,
-  target, criterion, and canonical topological statement
+  target, criterion, canonical topological statement, and full
+  canonical-statement artifact payload
   projection-after-constructor contracts back to the named raw, certified,
   aggregate, and projection routes that built the certificates.
   The certificate-layer equality contracts now pin the reserved-name, literal
