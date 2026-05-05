@@ -7803,6 +7803,20 @@ theorem canonical_three_sphere_statement_of_dependency_projections_to_topology_s
   apply Subsingleton.elim
 
 /--
+The dependency projection canonical topological statement factors through the
+final extractor selected by the stored topology package.
+-/
+theorem canonical_three_sphere_statement_of_dependency_projections_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_three_sphere_statement_of_dependency_projections dependencies =
+      canonical_three_sphere_statement_of_poincare_statement
+        (poincare_statement_of_extinction_and_extraction
+          (finite_extinction_of_dependencies dependencies)
+          (extinction_implies_sphere_of_topology_package
+            dependencies.topology)) := by
+  apply Subsingleton.elim
+
+/--
 The certified extraction-derivation projection route exposes the canonical
 mathlib-shaped topological 3-sphere statement.
 -/
@@ -7841,6 +7855,26 @@ theorem canonical_three_sphere_statement_of_extraction_derivation_dependency_pro
       (by
         rcases topology_extraction_derivation_payload_of_dependencies
             dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_three_sphere_statement_of_poincare_statement
+            (poincare_statement_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_of_dependencies dependencies)
+              extractSphere derivation)) := by
+  apply Subsingleton.elim
+
+/--
+The certified extraction-derivation dependency projection canonical topological
+statement factors through the extraction/derivation payload selected from the
+stored topology package.
+-/
+theorem canonical_three_sphere_statement_of_extraction_derivation_dependency_projections_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_three_sphere_statement_of_extraction_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
           ⟨extractSphere, derivation⟩
         exact
           canonical_three_sphere_statement_of_poincare_statement
