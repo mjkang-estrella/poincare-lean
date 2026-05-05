@@ -3544,6 +3544,8 @@ check_decl "dependency analytic foundation sub-obligations equality contract is 
   '^theorem analytic_foundation_subobligations_of_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency surgery construction package projection theorem is declared" \
   '^theorem surgery_construction_packages_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency surgery construction package equality contract is declared" \
+  '^theorem surgery_construction_packages_of_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency surgery construction package-routed statement payload theorem is declared" \
   '^theorem surgery_construction_statement_payload_with_surgery_package_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency surgery construction package-routed statement payload equality contract is declared" \
@@ -8011,6 +8013,7 @@ open scoped Manifold ContDiff
 #check Poincare.analytic_foundation_subobligations_of_dependencies
 #check Poincare.analytic_foundation_subobligations_of_dependencies_eq
 #check Poincare.surgery_construction_packages_of_dependencies
+#check Poincare.surgery_construction_packages_of_dependencies_eq
 #check Poincare.surgery_construction_statement_payload_with_surgery_package_of_dependencies
 #check Poincare.surgery_construction_statement_payload_with_surgery_package_of_dependencies_eq
 #check Poincare.surgery_construction_statement_payload_of_dependencies
@@ -10096,6 +10099,7 @@ open scoped Manifold ContDiff
 #check Poincare.analytic_foundation_subobligations_of_dependencies
 #check Poincare.analytic_foundation_subobligations_of_dependencies_eq
 #check Poincare.surgery_construction_packages_of_dependencies
+#check Poincare.surgery_construction_packages_of_dependencies_eq
 #check Poincare.surgery_construction_statement_payload_with_surgery_package_of_dependencies
 #check Poincare.surgery_construction_statement_payload_with_surgery_package_of_dependencies_eq
 #check Poincare.surgery_construction_statement_payload_of_dependencies

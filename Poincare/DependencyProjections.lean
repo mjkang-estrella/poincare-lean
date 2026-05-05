@@ -1560,6 +1560,22 @@ theorem surgery_construction_packages_of_dependencies
   exact ⟨n, flow, constructionPackage⟩
 
 /--
+The dependency-level surgery-construction package projection is selected from
+the shared surgery-package payload.
+-/
+theorem surgery_construction_packages_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    surgery_construction_packages_of_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases surgery_package_payload_of_dependencies dependencies M with
+          ⟨n, _package, _analyticPackage, _analyticPackage_eq, flow,
+            _flow_eq, constructionPackage, _constructionPackage_heq,
+            _controlPackage, _controlPackage_heq⟩
+        exact ⟨n, flow, constructionPackage⟩) := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package exposes the surgery-construction payload through
 the same finite-extinction surgery package selected from the dependency family,
 with equality contracts for the projected flow and construction package route.

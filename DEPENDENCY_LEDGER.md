@@ -361,7 +361,8 @@ It is not a proof. It is a work breakdown for future Lean development.
   construction package, theorem-shaped construction statement, construction
   sub-obligation payload, and aggregate Ricci-flow-with-surgery witness by
   destructuring the shared dependency surgery package payload and then the
-  package-level construction payload bridge.
+  package-level construction payload bridge; the construction-package projection
+  itself is pinned to the same shared payload.
   Equality contracts for the construction package projection spine now tie the
   surgery scales, cutoff controls, neck data, cap data, post-surgery estimates,
   surgery-time controls, long-time continuation data, and aggregate

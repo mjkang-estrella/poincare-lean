@@ -2436,6 +2436,7 @@ set_option linter.unusedVariables false
             Poincare.ThreeManifoldModelWithCorners n M,
             Poincare.AnalyticFoundationSubobligationsPayload flow)
 #check Poincare.surgery_construction_packages_of_dependencies
+#check Poincare.surgery_construction_packages_of_dependencies_eq
 #check Poincare.surgery_construction_statement_payload_with_surgery_package_of_dependencies
 #check Poincare.surgery_construction_statement_payload_with_surgery_package_of_dependencies_eq
 #check Poincare.surgery_construction_statement_payload_of_dependencies
@@ -6948,7 +6949,7 @@ surgery_package_payload_count=$(
   rg -c 'surgery_package_payload_of_dependencies' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$surgery_package_payload_count" != "15" ]; then
+if [ "$surgery_package_payload_count" != "16" ]; then
   echo "FAIL: dependency surgery projections should consume the shared surgery package payload"
   rg -n 'surgery_package_payload_of_dependencies' \
     Poincare/DependencyProjections.lean || true
