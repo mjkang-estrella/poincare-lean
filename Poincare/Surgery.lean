@@ -6283,6 +6283,35 @@ theorem finite_extinction_conclusion_statement_of_surgery_package
     (finite_extinction_conclusion_derivation_of_surgery_package package)
 
 /--
+The completed surgery package route to the fixed-flow finite-extinction
+conclusion statement is exactly the component assembly route applied to the
+package projections.
+-/
+theorem finite_extinction_conclusion_statement_of_surgery_package_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M) :
+    finite_extinction_conclusion_statement_of_surgery_package package =
+      finite_extinction_conclusion_statement_of_components
+        (ricci_flow_data_of_surgery_package package)
+        (ricci_flow_with_surgery_of_surgery_package package)
+        (perelman_singularity_control_of_surgery_package package)
+        (finite_extinction_of_surgery_package package)
+        (finite_extinction_fundamental_group_input_of_surgery_package package)
+        (finite_extinction_sweepout_existence_of_surgery_package package)
+        (finite_extinction_width_theory_of_surgery_package package)
+        (finite_extinction_width_evolution_of_surgery_package package)
+        (finite_extinction_surgery_discard_control_of_surgery_package package)
+        (finite_extinction_curvature_pinching_of_surgery_package package)
+        (finite_extinction_component_control_of_surgery_package package)
+        (finite_extinction_time_bound_of_surgery_package package)
+        (finite_extinction_derivation_of_surgery_package package)
+        (finite_extinction_conclusion_derivation_of_surgery_package package) := by
+  apply Subsingleton.elim
+
+/--
 A completed surgery package supplies the theorem-shaped finite-extinction
 statement.
 -/
@@ -6298,6 +6327,24 @@ theorem finite_extinction_statement_of_surgery_package
     perelman_singularity_control_of_surgery_package package,
     finite_extinction_of_surgery_package package,
     finite_extinction_conclusion_statement_of_surgery_package package⟩
+
+/--
+The completed surgery package route to the theorem-shaped finite-extinction
+statement is exactly the bundled statement built from the package projections.
+-/
+theorem finite_extinction_statement_of_surgery_package_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M) :
+    finite_extinction_statement_of_surgery_package package =
+      ⟨ricci_flow_data_of_surgery_package package,
+        ricci_flow_with_surgery_of_surgery_package package,
+        perelman_singularity_control_of_surgery_package package,
+        finite_extinction_of_surgery_package package,
+        finite_extinction_conclusion_statement_of_surgery_package package⟩ := by
+  apply Subsingleton.elim
 
 /--
 The theorem-shaped finite-extinction statement exposes its fixed-flow
@@ -6348,6 +6395,21 @@ theorem finite_extinction_via_statement_of_surgery_package
     FiniteExtinctionByRicciFlowWithSurgery M :=
   finite_extinction_of_finite_extinction_statement
     (finite_extinction_statement_of_surgery_package package)
+
+/--
+The statement-mediated finite-extinction projection from a completed surgery
+package is exactly finite-extinction extraction from the package statement.
+-/
+theorem finite_extinction_via_statement_of_surgery_package_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M) :
+    finite_extinction_via_statement_of_surgery_package package =
+      finite_extinction_of_finite_extinction_statement
+        (finite_extinction_statement_of_surgery_package package) := by
+  apply Subsingleton.elim
 
 /--
 The fixed-flow finite-extinction width statement: the sweepout, min-max width,
@@ -6644,6 +6706,58 @@ theorem finite_extinction_width_subobligations_statement_of_surgery_package
     finite_extinction_component_topology_of_surgery_package package⟩
 
 /--
+The completed surgery package route to the theorem-shaped finite-extinction
+width sub-obligation statement is exactly the bundled package projections.
+-/
+theorem finite_extinction_width_subobligations_statement_of_surgery_package_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M) :
+    finite_extinction_width_subobligations_statement_of_surgery_package
+        package =
+      ⟨finite_extinction_fundamental_group_input_of_surgery_package package,
+        finite_extinction_sweepout_existence_of_surgery_package package,
+        finite_extinction_sweepout_parameter_space_of_surgery_package package,
+        finite_extinction_sweepout_continuity_of_surgery_package package,
+        finite_extinction_sweepout_area_bound_of_surgery_package package,
+        finite_extinction_sweepout_nontriviality_of_surgery_package package,
+        finite_extinction_area_functional_setup_of_surgery_package package,
+        finite_extinction_minmax_width_definition_of_surgery_package package,
+        finite_extinction_width_compactness_of_surgery_package package,
+        finite_extinction_width_lower_semicontinuity_of_surgery_package package,
+        finite_extinction_minimizing_sequence_of_surgery_package package,
+        finite_extinction_pull_tight_argument_of_surgery_package package,
+        finite_extinction_minmax_stationarity_of_surgery_package package,
+        finite_extinction_min_surface_regularity_of_surgery_package package,
+        finite_extinction_positive_width_of_surgery_package package,
+        finite_extinction_width_theory_of_surgery_package package,
+        finite_extinction_first_variation_formula_of_surgery_package package,
+        finite_extinction_second_variation_inequality_of_surgery_package package,
+        finite_extinction_gauss_bonnet_estimate_of_surgery_package package,
+        finite_extinction_scalar_curvature_width_bound_of_surgery_package
+          package,
+        finite_extinction_width_evolution_of_surgery_package package,
+        finite_extinction_width_differential_inequality_of_surgery_package
+          package,
+        finite_extinction_surgery_metric_comparison_of_surgery_package package,
+        finite_extinction_surgery_width_comparison_map_of_surgery_package
+          package,
+        finite_extinction_surgery_width_drop_of_surgery_package package,
+        finite_extinction_surgery_discard_control_of_surgery_package package,
+        finite_extinction_discarded_component_width_neutrality_of_surgery_package
+          package,
+        finite_extinction_discarded_component_sweepout_triviality_of_surgery_package
+          package,
+        finite_extinction_discarded_component_classification_of_surgery_package
+          package,
+        finite_extinction_surviving_component_tracking_of_surgery_package
+          package,
+        finite_extinction_component_topology_of_surgery_package package⟩ := by
+  apply Subsingleton.elim
+
+/--
 A completed surgery package assembles the theorem-shaped finite-extinction full
 sub-obligation statement.
 -/
@@ -6712,6 +6826,80 @@ theorem finite_extinction_subobligations_statement_of_surgery_package
     finite_extinction_derivation_of_surgery_package package,
     finite_extinction_of_surgery_package package,
     finite_extinction_conclusion_derivation_of_surgery_package package⟩
+
+/--
+The completed surgery package route to the theorem-shaped finite-extinction
+full sub-obligation statement is exactly the bundled package projections.
+-/
+theorem finite_extinction_subobligations_statement_of_surgery_package_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M) :
+    finite_extinction_subobligations_statement_of_surgery_package package =
+      ⟨finite_extinction_fundamental_group_input_of_surgery_package package,
+        finite_extinction_sweepout_existence_of_surgery_package package,
+        finite_extinction_sweepout_parameter_space_of_surgery_package package,
+        finite_extinction_sweepout_continuity_of_surgery_package package,
+        finite_extinction_sweepout_area_bound_of_surgery_package package,
+        finite_extinction_sweepout_nontriviality_of_surgery_package package,
+        finite_extinction_area_functional_setup_of_surgery_package package,
+        finite_extinction_minmax_width_definition_of_surgery_package package,
+        finite_extinction_width_compactness_of_surgery_package package,
+        finite_extinction_width_lower_semicontinuity_of_surgery_package package,
+        finite_extinction_minimizing_sequence_of_surgery_package package,
+        finite_extinction_pull_tight_argument_of_surgery_package package,
+        finite_extinction_minmax_stationarity_of_surgery_package package,
+        finite_extinction_min_surface_regularity_of_surgery_package package,
+        finite_extinction_positive_width_of_surgery_package package,
+        finite_extinction_width_theory_of_surgery_package package,
+        finite_extinction_first_variation_formula_of_surgery_package package,
+        finite_extinction_second_variation_inequality_of_surgery_package package,
+        finite_extinction_gauss_bonnet_estimate_of_surgery_package package,
+        finite_extinction_scalar_curvature_width_bound_of_surgery_package
+          package,
+        finite_extinction_width_evolution_of_surgery_package package,
+        finite_extinction_width_differential_inequality_of_surgery_package
+          package,
+        finite_extinction_surgery_metric_comparison_of_surgery_package package,
+        finite_extinction_surgery_width_comparison_map_of_surgery_package
+          package,
+        finite_extinction_surgery_width_drop_of_surgery_package package,
+        finite_extinction_surgery_discard_control_of_surgery_package package,
+        finite_extinction_discarded_component_width_neutrality_of_surgery_package
+          package,
+        finite_extinction_discarded_component_sweepout_triviality_of_surgery_package
+          package,
+        finite_extinction_discarded_component_classification_of_surgery_package
+          package,
+        finite_extinction_surviving_component_tracking_of_surgery_package
+          package,
+        finite_extinction_component_topology_of_surgery_package package,
+        finite_extinction_curvature_pinching_of_surgery_package package,
+        finite_extinction_positive_scalar_curvature_lower_bound_of_surgery_package
+          package,
+        finite_extinction_positive_scalar_curvature_persistence_of_surgery_package
+          package,
+        finite_extinction_component_control_of_surgery_package package,
+        finite_extinction_volume_evolution_formula_of_surgery_package package,
+        finite_extinction_surgery_volume_nonincrease_of_surgery_package package,
+        finite_extinction_scalar_curvature_differential_inequality_of_surgery_package
+          package,
+        finite_extinction_volume_differential_inequality_of_surgery_package
+          package,
+        finite_extinction_volume_decay_estimate_of_surgery_package package,
+        finite_extinction_time_bound_of_surgery_package package,
+        finite_extinction_differential_inequality_integration_of_surgery_package
+          package,
+        finite_extinction_finite_time_integration_of_surgery_package package,
+        finite_extinction_surgery_time_summability_of_surgery_package package,
+        finite_extinction_extinction_time_contradiction_of_surgery_package
+          package,
+        finite_extinction_derivation_of_surgery_package package,
+        finite_extinction_of_surgery_package package,
+        finite_extinction_conclusion_derivation_of_surgery_package package⟩ := by
+  apply Subsingleton.elim
 
 /--
 Semantic alias for the width-analysis sub-obligation payload exposed by a
@@ -7066,6 +7254,36 @@ theorem finite_extinction_subobligations_payload_of_surgery_package
     widthSubobligations, subobligations,
     finite_extinction_statement_of_surgery_package package⟩
 
+/--
+The completed surgery package route to the finite-extinction sub-obligation
+payload is exactly the statement-mediated width/full sub-obligation payload
+bundle and package statement extraction.
+-/
+theorem finite_extinction_subobligations_payload_of_surgery_package_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M) :
+    finite_extinction_subobligations_payload_of_surgery_package package =
+      (by
+        let flow := ricci_flow_data_of_surgery_package package
+        let surgery := ricci_flow_with_surgery_of_surgery_package package
+        let control := perelman_singularity_control_of_surgery_package package
+        let widthStatement :=
+          finite_extinction_width_subobligations_statement_of_surgery_package
+            package
+        let subobligationsStatement :=
+          finite_extinction_subobligations_statement_of_surgery_package package
+        let widthSubobligations :=
+          finite_extinction_width_subobligations_of_statement widthStatement
+        let subobligations :=
+          finite_extinction_subobligations_of_statement subobligationsStatement
+        exact ⟨flow, surgery, control, widthStatement,
+          subobligationsStatement, widthSubobligations, subobligations,
+          finite_extinction_statement_of_surgery_package package⟩) := by
+  apply Subsingleton.elim
+
 /-- The full finite-extinction statement exposes the derivation certificate. -/
 theorem finite_extinction_derivation_of_subobligations_statement
     {n : ℕ∞ω}
@@ -7209,6 +7427,36 @@ theorem finite_extinction_statement_payload_of_surgery_package
   exact ⟨flow, surgery, control, packageStatement, subobligationsStatement,
     viaSubobligationsStatement, derivation,
     finite_extinction_of_subobligations_statement subobligationsStatement⟩
+
+/--
+The completed surgery package route to the finite-extinction statement payload
+is exactly the statement payload, full sub-obligation statement, rebuilt
+statement, derivation certificate, and extinction witness extracted from the
+sub-obligation route.
+-/
+theorem finite_extinction_statement_payload_of_surgery_package_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M) :
+    finite_extinction_statement_payload_of_surgery_package package =
+      (by
+        rcases finite_extinction_subobligations_payload_of_surgery_package
+            package with
+          ⟨flow, surgery, control, _widthStatement, subobligationsStatement,
+            _widthSubobligations, _subobligations, packageStatement⟩
+        let viaSubobligationsStatement :=
+          finite_extinction_statement_of_subobligations_statement
+            subobligationsStatement
+        let derivation :=
+          finite_extinction_derivation_of_subobligations_statement
+            subobligationsStatement
+        exact ⟨flow, surgery, control, packageStatement,
+          subobligationsStatement, viaSubobligationsStatement, derivation,
+          finite_extinction_of_subobligations_statement
+            subobligationsStatement⟩) := by
+  apply Subsingleton.elim
 
 section SurgeryPackageFiniteExtinctionProjectionEqualities
 

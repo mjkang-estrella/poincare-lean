@@ -409,6 +409,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   `finite_extinction_statement_payload_of_surgery_package` centralize the
   width/full sub-obligation statement payloads and the rebuilt
   finite-extinction statement/derivation/extinction route.
+  Equality contracts now pin the package-level finite-extinction conclusion
+  statement, theorem-shaped statement, statement-mediated extinction witness,
+  width/full sub-obligation statements, and both package-level payload routes to
+  those explicit component and statement-mediated assemblies.
   The dependency-level finite-extinction route now exposes
   `finite_extinction_subobligations_statement_payload_of_dependencies`, which
   packages the width/full sub-obligation statements, their statement-mediated
@@ -770,6 +774,7 @@ It is not a proof. It is a work breakdown for future Lean development.
   package-level finite-extinction payloads
   `finite_extinction_subobligations_payload_of_surgery_package` and
   `finite_extinction_statement_payload_of_surgery_package`,
+  finite-extinction package route equality contracts,
   `finite_extinction_subobligations_statement_payload_of_dependencies`,
   statement-mediated finite-extinction width/full sub-obligation outputs
   through explicit statement destructuring,
