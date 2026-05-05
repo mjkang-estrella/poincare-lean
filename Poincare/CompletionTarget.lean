@@ -7450,6 +7450,24 @@ theorem completion_certificate_of_components_eq
   apply Subsingleton.elim
 
 /--
+The raw-component certificate constructor is the remaining-dependency
+certificate constructor applied to the corresponding component package.
+-/
+theorem completion_certificate_of_components_to_remaining_dependency_eq
+    (smoothability : SmoothabilityPackage.{u})
+    (surgery :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topology : ExtinctionTopologyExtractionPackage.{u}) :
+    completion_certificate_of_components smoothability surgery topology =
+      completion_certificate_of_remaining_dependency_package
+        ⟨smoothability, surgery, topology⟩ := by
+  apply Subsingleton.elim
+
+/--
 The three dependency component-slot requirements produce the checked
 completion certificate.
 -/
@@ -7480,6 +7498,25 @@ theorem completion_certificate_of_component_requirements_eq
       poincareCompletionCertificate_iff_component_requirements.mpr
         ⟨smoothabilityRequirement, surgeryRequirement,
           topologyRequirement⟩ := by
+  apply Subsingleton.elim
+
+/--
+The component-slot certificate constructor is the remaining-dependency
+certificate constructor applied to the package reconstructed from the slots.
+-/
+theorem completion_certificate_of_component_requirements_to_remaining_dependency_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    completion_certificate_of_component_requirements
+      smoothabilityRequirement surgeryRequirement topologyRequirement =
+      completion_certificate_of_remaining_dependency_package
+        (remainingDependencyPackage_iff_component_requirements.mpr
+          ⟨smoothabilityRequirement, surgeryRequirement,
+            topologyRequirement⟩) := by
   apply Subsingleton.elim
 
 /--
@@ -7529,6 +7566,33 @@ theorem completion_certificate_of_package_layer_requirements_eq
       poincareCompletionCertificate_iff_package_layer_requirements.mpr
         ⟨smoothabilityRequirement, analyticRequirement, surgeryRequirement,
           finiteExtinctionRequirement, topologyRequirement⟩ := by
+  apply Subsingleton.elim
+
+/--
+The package-layer certificate constructor is the remaining-dependency
+certificate constructor applied to the package reconstructed from the layers.
+-/
+theorem completion_certificate_of_package_layer_requirements_to_remaining_dependency_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    completion_certificate_of_package_layer_requirements
+      smoothabilityRequirement analyticRequirement surgeryRequirement
+      finiteExtinctionRequirement topologyRequirement =
+      completion_certificate_of_remaining_dependency_package
+        (remainingDependencyPackage_iff_package_layer_requirements.mpr
+          ⟨smoothabilityRequirement, analyticRequirement, surgeryRequirement,
+            finiteExtinctionRequirement, topologyRequirement⟩) := by
   apply Subsingleton.elim
 
 /--
@@ -7589,6 +7653,38 @@ theorem completion_certificate_of_milestone_requirements_eq
   apply Subsingleton.elim
 
 /--
+The milestone certificate constructor is the remaining-dependency certificate
+constructor applied to the package reconstructed from the milestone payload.
+-/
+theorem completion_certificate_of_milestone_requirements_to_remaining_dependency_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    completion_certificate_of_milestone_requirements
+      smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+      ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+      finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement =
+      completion_certificate_of_remaining_dependency_package
+        (remainingDependencyPackage_iff_milestone_requirements.mpr
+          ⟨smoothabilityBridgeRequirement, ricciFlowAnalyticFoundationRequirement,
+            ricciFlowWithSurgeryRequirement, perelmanSingularityControlRequirement,
+            finiteExtinctionRequirement,
+            extinctionToSphereHomeomorphismRequirement⟩) := by
+  apply Subsingleton.elim
+
+/--
 The raw aggregate component payload reconstructs the checked completion
 certificate.
 -/
@@ -7628,6 +7724,25 @@ theorem completion_certificate_of_components_payload_eq
   apply Subsingleton.elim
 
 /--
+The raw-component payload certificate constructor is the remaining-dependency
+certificate constructor applied to the package reconstructed from the payload.
+-/
+theorem completion_certificate_of_components_payload_to_remaining_dependency_eq
+    (payload :
+      ∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+        ExtinctionTopologyExtractionPackage.{u}) :
+    completion_certificate_of_components_payload payload =
+      completion_certificate_of_remaining_dependency_package
+        (remainingDependencyPackage_iff_components.mpr payload) := by
+  apply Subsingleton.elim
+
+/--
 The component-slot requirement payload reconstructs the checked completion
 certificate.
 -/
@@ -7663,6 +7778,23 @@ theorem completion_certificate_of_component_requirements_payload_eq
         exact completion_certificate_of_component_requirements
           smoothabilityRequirement surgeryRequirement
           topologyRequirement) := by
+  apply Subsingleton.elim
+
+/--
+The component-slot payload certificate constructor is the remaining-dependency
+certificate constructor applied to the package reconstructed from the payload.
+-/
+theorem completion_certificate_of_component_requirements_payload_to_remaining_dependency_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    completion_certificate_of_component_requirements_payload payload =
+      completion_certificate_of_remaining_dependency_package
+        (remainingDependencyPackage_iff_component_requirements.mpr
+          payload) := by
   apply Subsingleton.elim
 
 /--
@@ -7727,6 +7859,31 @@ theorem completion_certificate_of_package_layer_requirements_payload_eq
         exact completion_certificate_of_package_layer_requirements
           smoothabilityRequirement analyticRequirement surgeryRequirement
           finiteExtinctionRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+/--
+The package-layer payload certificate constructor is the remaining-dependency
+certificate constructor applied to the package reconstructed from the payload.
+-/
+theorem completion_certificate_of_package_layer_requirements_payload_to_remaining_dependency_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    completion_certificate_of_package_layer_requirements_payload payload =
+      completion_certificate_of_remaining_dependency_package
+        (remainingDependencyPackage_iff_package_layer_requirements.mpr
+          payload) := by
   apply Subsingleton.elim
 
 /--
@@ -7805,6 +7962,32 @@ theorem completion_certificate_of_milestone_requirements_payload_eq
           perelmanSingularityControlRequirement
           finiteExtinctionRequirement
           extinctionToSphereHomeomorphismRequirement) := by
+  apply Subsingleton.elim
+
+/--
+The milestone payload certificate constructor is the remaining-dependency
+certificate constructor applied to the package reconstructed from the payload.
+-/
+theorem completion_certificate_of_milestone_requirements_payload_to_remaining_dependency_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    completion_certificate_of_milestone_requirements_payload payload =
+      completion_certificate_of_remaining_dependency_package
+        (remainingDependencyPackage_iff_milestone_requirements.mpr payload) := by
   apply Subsingleton.elim
 
 /--

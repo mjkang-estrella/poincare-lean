@@ -1134,7 +1134,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   `completion_certificate_of_component_requirements`,
   `completion_certificate_of_package_layer_requirements`, and
   `completion_certificate_of_milestone_requirements` build the certificate
-  directly from those presentations.
+  directly from those presentations. Those constructors and their payload
+  variants are pinned back to
+  `completion_certificate_of_remaining_dependency_package` after reconstructing
+  the corresponding remaining-dependency package.
   `completion_certificate_of_remaining_dependency_package`,
   `completion_certificate_of_component_extraction_derivation_requirements`,
   `completion_certificate_of_component_extraction_derivation_requirements_payload`,
