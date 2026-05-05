@@ -411,6 +411,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   `finite_extinction_statement_payload_of_surgery_package` centralize the
   width/full sub-obligation statement payloads and the rebuilt
   finite-extinction statement/derivation/extinction route.
+  The finite-extinction conclusion component assembler is pinned to the exact
+  tuple of finite-fundamental-group, sweepout, width, surgery-discard,
+  curvature, time-bound, derivation, and conclusion-derivation witnesses.
   Equality contracts now pin the package-level finite-extinction conclusion
   statement, theorem-shaped statement, statement-mediated extinction witness,
   width/full sub-obligation statements, and both package-level payload routes to

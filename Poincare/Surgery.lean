@@ -3705,6 +3705,50 @@ theorem finite_extinction_conclusion_statement_of_components
     derivation, conclusionDerivation⟩
 
 /--
+The fixed-flow finite-extinction conclusion component assembler is exactly the
+tuple of width, surgery-discard, curvature, time-bound, derivation, and
+conclusion-derivation witnesses.
+-/
+theorem finite_extinction_conclusion_statement_of_components_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (finiteFundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
+    (sweepout :
+      HasFiniteExtinctionSweepoutExistence M finiteFundamentalGroup)
+    (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control)
+    (widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory)
+    (surgeryDiscardControl :
+      HasFiniteExtinctionSurgeryDiscardControl
+        flow surgery control widthTheory widthEvolution)
+    (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control)
+    (componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching)
+    (timeBound :
+      HasFiniteExtinctionTimeBound
+        flow surgery control pinching componentControl)
+    (derivation : HasFiniteExtinctionDerivation flow surgery control)
+    (conclusionDerivation :
+      HasFiniteExtinctionConclusionDerivation
+        flow surgery control pinching componentControl timeBound derivation
+        finiteExtinction) :
+    finite_extinction_conclusion_statement_of_components
+        flow surgery control finiteExtinction finiteFundamentalGroup sweepout
+        widthTheory widthEvolution surgeryDiscardControl pinching
+        componentControl timeBound derivation conclusionDerivation =
+      (by
+        exact ⟨finiteFundamentalGroup, sweepout, widthTheory, widthEvolution,
+          surgeryDiscardControl, pinching, componentControl, timeBound,
+          derivation, conclusionDerivation⟩) := by
+  apply Subsingleton.elim
+
+/--
 A package of future geometric-analysis inputs sufficient to produce finite
 extinction for a smooth compact simply connected 3-manifold.
 -/

@@ -868,6 +868,7 @@ open scoped Manifold ContDiff
 #check Poincare.FiniteExtinctionConclusionStatement
 #check Poincare.FiniteExtinctionStatement
 #check Poincare.finite_extinction_conclusion_statement_of_components
+#check Poincare.finite_extinction_conclusion_statement_of_components_eq
 #check Poincare.finite_extinction_conclusion_statement_of_surgery_package
 #check Poincare.finite_extinction_conclusion_statement_of_surgery_package_eq
 #check Poincare.finite_extinction_statement_of_surgery_package

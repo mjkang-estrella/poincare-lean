@@ -1123,6 +1123,7 @@ import Poincare
 #print axioms Poincare.FiniteExtinctionConclusionStatement
 #print axioms Poincare.FiniteExtinctionStatement
 #print axioms Poincare.finite_extinction_conclusion_statement_of_components
+#print axioms Poincare.finite_extinction_conclusion_statement_of_components_eq
 #print axioms Poincare.finite_extinction_conclusion_statement_of_surgery_package
 #print axioms Poincare.finite_extinction_conclusion_statement_of_surgery_package_eq
 #print axioms Poincare.finite_extinction_statement_of_surgery_package
