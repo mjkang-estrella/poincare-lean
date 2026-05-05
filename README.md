@@ -1152,7 +1152,9 @@ The current artifact is intentionally conservative:
   and
   `poincareCompletionCertificate_iff_poincareProofDependencies_extraction_derivation_projections`,
   make those certified certificate routes reversible at both dependency-package
-  surfaces.
+  surfaces. Those dependency-package routes now also have
+  projection-after-constructor round-trip contracts back to the
+  remaining-dependency or aggregate dependency package they were built from.
   The certificate-layer equality contracts now pin the reserved-name, literal
   payload, canonical payload, target/criterion projection, remaining/aggregate
   dependency, and project-statement routes to their named projections and
