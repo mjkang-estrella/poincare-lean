@@ -1259,9 +1259,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   including the converted remaining-dependency package stored by each aggregate
   dependency route.
   Their certificate constructors now also have theorem-name, literal full
-  payload, canonical/project payload, target, criterion, aggregate-dependency
-  full payload, project-statement full payload, canonical topological statement,
-  and full
+  payload projection/reconstruction, canonical/project payload, target,
+  criterion, aggregate-dependency full payload, project-statement full payload,
+  canonical topological statement, and full
   canonical-statement artifact payload at both the remaining-dependency and
   aggregate proof-dependency payload surfaces
   projection-after-constructor contracts back to the named raw, certified,
