@@ -7083,6 +7083,51 @@ theorem finite_extinction_width_subobligations_of_statement
     discardedComponentSweepoutTriviality, discardedComponentClassification,
     survivingComponentTracking, componentTopology⟩
 
+/--
+The width statement bridge exposes exactly the width and surgery-discard
+sub-obligation components stored in the theorem-shaped width statement.
+-/
+theorem finite_extinction_width_subobligations_of_statement_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    (statement :
+      FiniteExtinctionWidthSubobligationsStatement flow surgery control) :
+    finite_extinction_width_subobligations_of_statement statement =
+      (by
+        rcases statement with
+          ⟨finiteFundamentalGroup, sweepout, sweepoutParameterSpace,
+            sweepoutContinuity, sweepoutAreaBound, sweepoutNontriviality,
+            areaFunctional, widthDefinition, widthCompactness,
+            widthLowerSemicontinuity, minimizingSequence, pullTightArgument,
+            minMaxStationarity, minSurfaceRegularity, positiveWidth,
+            widthTheory, firstVariationFormula, secondVariationInequality,
+            gaussBonnetEstimate, scalarCurvatureWidthBound, widthEvolution,
+            widthDifferentialInequality, surgeryMetricComparison,
+            surgeryWidthComparisonMap, surgeryWidthDrop, surgeryDiscardControl,
+            discardedComponentWidthNeutrality,
+            discardedComponentSweepoutTriviality,
+            discardedComponentClassification, survivingComponentTracking,
+            componentTopology⟩
+        exact ⟨finiteFundamentalGroup, sweepout, sweepoutParameterSpace,
+          sweepoutContinuity, sweepoutAreaBound, sweepoutNontriviality,
+          areaFunctional, widthDefinition, widthCompactness,
+          widthLowerSemicontinuity, minimizingSequence, pullTightArgument,
+          minMaxStationarity, minSurfaceRegularity, positiveWidth,
+          widthTheory, firstVariationFormula, secondVariationInequality,
+          gaussBonnetEstimate, scalarCurvatureWidthBound, widthEvolution,
+          widthDifferentialInequality, surgeryMetricComparison,
+          surgeryWidthComparisonMap, surgeryWidthDrop, surgeryDiscardControl,
+          discardedComponentWidthNeutrality,
+          discardedComponentSweepoutTriviality,
+          discardedComponentClassification, survivingComponentTracking,
+          componentTopology⟩) := by
+  apply Subsingleton.elim
+
 /-- The full statement exposes the named finite-extinction sub-obligations. -/
 theorem finite_extinction_subobligations_of_statement
     {n : ℕ∞ω}
@@ -7252,6 +7297,62 @@ theorem finite_extinction_subobligations_of_statement
     volumeDecayEstimate, timeBound, differentialInequalityIntegration,
     finiteTimeIntegration, surgeryTimeSummability, extinctionTimeContradiction,
     derivation, extinction, conclusionDerivation⟩
+
+/--
+The full statement bridge exposes exactly the finite-extinction
+sub-obligation components stored in the theorem-shaped full statement.
+-/
+theorem finite_extinction_subobligations_of_statement_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    (statement : FiniteExtinctionSubobligationsStatement flow surgery control) :
+    finite_extinction_subobligations_of_statement statement =
+      (by
+        rcases statement with
+          ⟨finiteFundamentalGroup, sweepout, sweepoutParameterSpace,
+            sweepoutContinuity, sweepoutAreaBound, sweepoutNontriviality,
+            areaFunctional, widthDefinition, widthCompactness,
+            widthLowerSemicontinuity, minimizingSequence, pullTightArgument,
+            minMaxStationarity, minSurfaceRegularity, positiveWidth,
+            widthTheory, firstVariationFormula, secondVariationInequality,
+            gaussBonnetEstimate, scalarCurvatureWidthBound, widthEvolution,
+            widthDifferentialInequality, surgeryMetricComparison,
+            surgeryWidthComparisonMap, surgeryWidthDrop, surgeryDiscardControl,
+            discardedComponentWidthNeutrality,
+            discardedComponentSweepoutTriviality,
+            discardedComponentClassification, survivingComponentTracking,
+            componentTopology, pinching, positiveScalarCurvatureLowerBound,
+            positiveScalarCurvaturePersistence, componentControl,
+            volumeEvolutionFormula, surgeryVolumeNonincrease,
+            scalarCurvatureDifferentialInequality,
+            volumeDifferentialInequality, volumeDecayEstimate, timeBound,
+            differentialInequalityIntegration, finiteTimeIntegration,
+            surgeryTimeSummability, extinctionTimeContradiction, derivation,
+            extinction, conclusionDerivation⟩
+        exact ⟨finiteFundamentalGroup, sweepout, sweepoutParameterSpace,
+          sweepoutContinuity, sweepoutAreaBound, sweepoutNontriviality,
+          areaFunctional, widthDefinition, widthCompactness,
+          widthLowerSemicontinuity, minimizingSequence, pullTightArgument,
+          minMaxStationarity, minSurfaceRegularity, positiveWidth, widthTheory,
+          firstVariationFormula, secondVariationInequality, gaussBonnetEstimate,
+          scalarCurvatureWidthBound, widthEvolution, widthDifferentialInequality,
+          surgeryMetricComparison, surgeryWidthComparisonMap, surgeryWidthDrop,
+          surgeryDiscardControl, discardedComponentWidthNeutrality,
+          discardedComponentSweepoutTriviality, discardedComponentClassification,
+          survivingComponentTracking, componentTopology, pinching,
+          positiveScalarCurvatureLowerBound, positiveScalarCurvaturePersistence,
+          componentControl, volumeEvolutionFormula, surgeryVolumeNonincrease,
+          scalarCurvatureDifferentialInequality, volumeDifferentialInequality,
+          volumeDecayEstimate, timeBound, differentialInequalityIntegration,
+          finiteTimeIntegration, surgeryTimeSummability,
+          extinctionTimeContradiction, derivation, extinction,
+          conclusionDerivation⟩) := by
+  apply Subsingleton.elim
 
 /--
 A completed surgery package exposes the theorem-shaped finite-extinction width

@@ -418,6 +418,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   extraction, derivation extraction from a full sub-obligation statement, and
   the rebuilt conclusion/statement/extinction routes all have equality
   contracts.
+  The width and full finite-extinction sub-obligation statement destructuring
+  bridges now also have equality contracts pinning them to the exposed stored
+  components.
   The dependency-level finite-extinction route now exposes
   `finite_extinction_subobligations_statement_payload_of_dependencies`, which
   packages the width/full sub-obligation statements, their statement-mediated
@@ -781,6 +784,7 @@ It is not a proof. It is a work breakdown for future Lean development.
   `finite_extinction_statement_payload_of_surgery_package`,
   finite-extinction package route equality contracts,
   finite-extinction statement bridge equality contracts,
+  finite-extinction sub-obligation bridge equality contracts,
   `finite_extinction_subobligations_statement_payload_of_dependencies`,
   statement-mediated finite-extinction width/full sub-obligation outputs
   through explicit statement destructuring,
