@@ -341,7 +341,8 @@ It is not a proof. It is a work breakdown for future Lean development.
   heterogeneous equality contracts tying the construction and Perelman-control
   packages to the corresponding projections from the same finite-extinction
   surgery package; the analytic, surgery-construction, Perelman, and
-  finite-extinction dependency payloads use that named bridge. The
+  finite-extinction dependency payloads use that named bridge, with an equality
+  contract pinning the bridge to the stored surgery family. The
   dependency-level analytic-foundation package projection is now pinned to
   mapping that stored surgery family to each analytic subpackage. The
   package-routed payloads
@@ -350,9 +351,11 @@ It is not a proof. It is a work breakdown for future Lean development.
   `perelman_control_statement_payload_with_surgery_package_of_dependencies`,
   `finite_extinction_subobligations_statement_payload_with_surgery_package_of_dependencies`,
   and `finite_extinction_statement_payload_with_surgery_package_of_dependencies`
-  keep the selected surgery package in the payload and pin the downstream flow,
-  construction, Perelman, statement, derivation, and extinction routes back to
-  that package. The
+  keep the selected surgery package in the payload. Equality contracts now pin
+  the analytic, construction, and Perelman payload routes and their simplified
+  dependency payloads back to the shared surgery package, while the
+  finite-extinction routes pin statement, derivation, and extinction fields back
+  to that package. The
   dependency-level surgery-construction route now exposes
   `surgery_construction_statement_payload_of_dependencies`, which packages the
   construction package, theorem-shaped construction statement, construction

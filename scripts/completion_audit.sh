@@ -3508,14 +3508,20 @@ check_decl "surgery dependency projection equality contract is declared" \
   '^theorem surgery_packages_of_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency surgery package payload theorem is declared" \
   '^theorem surgery_package_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency surgery package payload equality contract is declared" \
+  '^theorem surgery_package_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency analytic foundation projection theorem is declared" \
   '^theorem analytic_foundation_packages_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency analytic foundation projection equality contract is declared" \
   '^theorem analytic_foundation_packages_of_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency analytic foundation package-routed statement payload theorem is declared" \
   '^theorem analytic_foundation_statement_payload_with_surgery_package_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency analytic foundation package-routed statement payload equality contract is declared" \
+  '^theorem analytic_foundation_statement_payload_with_surgery_package_of_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency analytic foundation statement payload theorem is declared" \
   '^theorem analytic_foundation_statement_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency analytic foundation statement payload equality contract is declared" \
+  '^theorem analytic_foundation_statement_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency analytic foundation statement projection theorem is declared" \
   '^theorem analytic_foundation_statements_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency analytic foundation statement projection equality contract is declared" \
@@ -3540,8 +3546,12 @@ check_decl "dependency surgery construction package projection theorem is declar
   '^theorem surgery_construction_packages_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency surgery construction package-routed statement payload theorem is declared" \
   '^theorem surgery_construction_statement_payload_with_surgery_package_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency surgery construction package-routed statement payload equality contract is declared" \
+  '^theorem surgery_construction_statement_payload_with_surgery_package_of_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency surgery construction statement payload theorem is declared" \
   '^theorem surgery_construction_statement_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency surgery construction statement payload equality contract is declared" \
+  '^theorem surgery_construction_statement_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency surgery construction statement projection theorem is declared" \
   '^theorem surgery_construction_statements_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency surgery construction statement equality contract is declared" \
@@ -3552,8 +3562,12 @@ check_decl "dependency surgery construction sub-obligations equality contract is
   '^theorem surgery_construction_subobligations_of_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency Perelman control statement payload theorem is declared" \
   '^theorem perelman_control_statement_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency Perelman control statement payload equality contract is declared" \
+  '^theorem perelman_control_statement_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency Perelman control package-routed statement payload theorem is declared" \
   '^theorem perelman_control_statement_payload_with_surgery_package_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency Perelman control package-routed statement payload equality contract is declared" \
+  '^theorem perelman_control_statement_payload_with_surgery_package_of_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency Perelman control statement projection theorem is declared" \
   '^theorem perelman_control_statements_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency Perelman control statement equality contract is declared" \
@@ -7979,10 +7993,13 @@ open scoped Manifold ContDiff
 #check Poincare.surgery_packages_of_dependencies_eq
 #check Poincare.topology_package_of_dependencies_eq
 #check Poincare.surgery_package_payload_of_dependencies
+#check Poincare.surgery_package_payload_of_dependencies_eq
 #check Poincare.analytic_foundation_packages_of_dependencies
 #check Poincare.analytic_foundation_packages_of_dependencies_eq
 #check Poincare.analytic_foundation_statement_payload_with_surgery_package_of_dependencies
+#check Poincare.analytic_foundation_statement_payload_with_surgery_package_of_dependencies_eq
 #check Poincare.analytic_foundation_statement_payload_of_dependencies
+#check Poincare.analytic_foundation_statement_payload_of_dependencies_eq
 #check Poincare.analytic_foundation_statements_of_dependencies
 #check Poincare.analytic_foundation_statements_of_dependencies_eq
 #check Poincare.analytic_foundation_derivation_statements_of_dependencies
@@ -7995,13 +8012,17 @@ open scoped Manifold ContDiff
 #check Poincare.analytic_foundation_subobligations_of_dependencies_eq
 #check Poincare.surgery_construction_packages_of_dependencies
 #check Poincare.surgery_construction_statement_payload_with_surgery_package_of_dependencies
+#check Poincare.surgery_construction_statement_payload_with_surgery_package_of_dependencies_eq
 #check Poincare.surgery_construction_statement_payload_of_dependencies
+#check Poincare.surgery_construction_statement_payload_of_dependencies_eq
 #check Poincare.surgery_construction_statements_of_dependencies
 #check Poincare.surgery_construction_statements_of_dependencies_eq
 #check Poincare.surgery_construction_subobligations_of_dependencies
 #check Poincare.surgery_construction_subobligations_of_dependencies_eq
 #check Poincare.perelman_control_statement_payload_with_surgery_package_of_dependencies
+#check Poincare.perelman_control_statement_payload_with_surgery_package_of_dependencies_eq
 #check Poincare.perelman_control_statement_payload_of_dependencies
+#check Poincare.perelman_control_statement_payload_of_dependencies_eq
 #check Poincare.perelman_control_statements_of_dependencies
 #check Poincare.perelman_control_statements_of_dependencies_eq
 #check Poincare.perelman_control_of_dependencies
@@ -10057,10 +10078,13 @@ open scoped Manifold ContDiff
 #check Poincare.surgery_packages_of_dependencies_eq
 #check Poincare.topology_package_of_dependencies_eq
 #check Poincare.surgery_package_payload_of_dependencies
+#check Poincare.surgery_package_payload_of_dependencies_eq
 #check Poincare.analytic_foundation_packages_of_dependencies
 #check Poincare.analytic_foundation_packages_of_dependencies_eq
 #check Poincare.analytic_foundation_statement_payload_with_surgery_package_of_dependencies
+#check Poincare.analytic_foundation_statement_payload_with_surgery_package_of_dependencies_eq
 #check Poincare.analytic_foundation_statement_payload_of_dependencies
+#check Poincare.analytic_foundation_statement_payload_of_dependencies_eq
 #check Poincare.analytic_foundation_statements_of_dependencies
 #check Poincare.analytic_foundation_statements_of_dependencies_eq
 #check Poincare.analytic_foundation_derivation_statements_of_dependencies
@@ -10073,13 +10097,17 @@ open scoped Manifold ContDiff
 #check Poincare.analytic_foundation_subobligations_of_dependencies_eq
 #check Poincare.surgery_construction_packages_of_dependencies
 #check Poincare.surgery_construction_statement_payload_with_surgery_package_of_dependencies
+#check Poincare.surgery_construction_statement_payload_with_surgery_package_of_dependencies_eq
 #check Poincare.surgery_construction_statement_payload_of_dependencies
+#check Poincare.surgery_construction_statement_payload_of_dependencies_eq
 #check Poincare.surgery_construction_statements_of_dependencies
 #check Poincare.surgery_construction_statements_of_dependencies_eq
 #check Poincare.surgery_construction_subobligations_of_dependencies
 #check Poincare.surgery_construction_subobligations_of_dependencies_eq
 #check Poincare.perelman_control_statement_payload_with_surgery_package_of_dependencies
+#check Poincare.perelman_control_statement_payload_with_surgery_package_of_dependencies_eq
 #check Poincare.perelman_control_statement_payload_of_dependencies
+#check Poincare.perelman_control_statement_payload_of_dependencies_eq
 #check Poincare.perelman_control_statements_of_dependencies
 #check Poincare.perelman_control_statements_of_dependencies_eq
 #check Poincare.perelman_control_of_dependencies

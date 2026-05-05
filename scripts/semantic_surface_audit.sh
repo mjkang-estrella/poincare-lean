@@ -2409,11 +2409,14 @@ set_option linter.unusedVariables false
             (n := n) (M := M) flow,
           HEq controlPackage
             (Poincare.perelman_control_package_of_surgery_package package))
+#check Poincare.surgery_package_payload_of_dependencies_eq
 #check Poincare.ricci_flow_data_of_dependencies
 #check Poincare.analytic_foundation_packages_of_dependencies
 #check Poincare.analytic_foundation_packages_of_dependencies_eq
 #check Poincare.analytic_foundation_statement_payload_with_surgery_package_of_dependencies
+#check Poincare.analytic_foundation_statement_payload_with_surgery_package_of_dependencies_eq
 #check Poincare.analytic_foundation_statement_payload_of_dependencies
+#check Poincare.analytic_foundation_statement_payload_of_dependencies_eq
 #check Poincare.analytic_foundation_statements_of_dependencies
 #check Poincare.analytic_foundation_statements_of_dependencies_eq
 #check Poincare.analytic_foundation_derivation_statements_of_dependencies
@@ -2434,13 +2437,17 @@ set_option linter.unusedVariables false
             Poincare.AnalyticFoundationSubobligationsPayload flow)
 #check Poincare.surgery_construction_packages_of_dependencies
 #check Poincare.surgery_construction_statement_payload_with_surgery_package_of_dependencies
+#check Poincare.surgery_construction_statement_payload_with_surgery_package_of_dependencies_eq
 #check Poincare.surgery_construction_statement_payload_of_dependencies
+#check Poincare.surgery_construction_statement_payload_of_dependencies_eq
 #check Poincare.surgery_construction_statements_of_dependencies
 #check Poincare.surgery_construction_statements_of_dependencies_eq
 #check Poincare.surgery_construction_subobligations_of_dependencies
 #check Poincare.surgery_construction_subobligations_of_dependencies_eq
 #check Poincare.perelman_control_statement_payload_with_surgery_package_of_dependencies
+#check Poincare.perelman_control_statement_payload_with_surgery_package_of_dependencies_eq
 #check Poincare.perelman_control_statement_payload_of_dependencies
+#check Poincare.perelman_control_statement_payload_of_dependencies_eq
 #check Poincare.perelman_control_statements_of_dependencies
 #check Poincare.perelman_control_statements_of_dependencies_eq
 #check Poincare.perelman_control_of_dependencies
@@ -6941,7 +6948,7 @@ surgery_package_payload_count=$(
   rg -c 'surgery_package_payload_of_dependencies' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$surgery_package_payload_count" != "10" ]; then
+if [ "$surgery_package_payload_count" != "15" ]; then
   echo "FAIL: dependency surgery projections should consume the shared surgery package payload"
   rg -n 'surgery_package_payload_of_dependencies' \
     Poincare/DependencyProjections.lean || true
@@ -6952,7 +6959,7 @@ package_routed_dependency_payload_count=$(
   rg -c 'with_surgery_package_of_dependencies' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$package_routed_dependency_payload_count" != "16" ]; then
+if [ "$package_routed_dependency_payload_count" != "25" ]; then
   echo "FAIL: dependency surgery payloads should expose package-routed contracts and consume them"
   rg -n 'with_surgery_package_of_dependencies' \
     Poincare/DependencyProjections.lean || true
@@ -6963,8 +6970,8 @@ raw_dependency_surgery_projection_count=$(
   rg -c 'surgery_packages_of_dependencies dependencies M' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$raw_dependency_surgery_projection_count" != "2" ]; then
-  echo "FAIL: dependency surgery package payload and its equality contract should be the only direct aggregate surgery projection consumers"
+if [ "$raw_dependency_surgery_projection_count" != "3" ]; then
+  echo "FAIL: dependency surgery package payload and its equality contracts should be the only direct aggregate surgery projection consumers"
   rg -n 'surgery_packages_of_dependencies dependencies M' \
     Poincare/DependencyProjections.lean || true
   exit 1
@@ -6982,7 +6989,7 @@ analytic_package_payload_count=$(
   rg -c 'analytic_foundation_payload_of_surgery_package' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$analytic_package_payload_count" != "1" ]; then
+if [ "$analytic_package_payload_count" != "2" ]; then
   echo "FAIL: dependency analytic-foundation projections should consume the surgery analytic payload"
   rg -n 'analytic_foundation_payload_of_surgery_package' \
     Poincare/DependencyProjections.lean || true
@@ -7267,7 +7274,7 @@ surgery_package_payload_count=$(
   rg -c 'surgery_construction_payload_of_construction_package' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$surgery_package_payload_count" != "1" ]; then
+if [ "$surgery_package_payload_count" != "2" ]; then
   echo "FAIL: dependency surgery projections bypass the construction package payload"
   rg -n 'surgery_construction_payload_of_construction_package' \
     Poincare/DependencyProjections.lean || true
@@ -7286,7 +7293,7 @@ perelman_package_payload_count=$(
   rg -c 'perelman_control_payload_of_package' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$perelman_package_payload_count" != "1" ]; then
+if [ "$perelman_package_payload_count" != "2" ]; then
   echo "FAIL: dependency Perelman projections bypass the package payload"
   rg -n 'perelman_control_payload_of_package' \
     Poincare/DependencyProjections.lean || true

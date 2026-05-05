@@ -1175,6 +1175,29 @@ theorem surgery_package_payload_of_dependencies
     HEq.rfl, controlPackage, HEq.rfl⟩
 
 /--
+The shared dependency surgery-package payload is selected from the stored
+finite-extinction surgery package family and its package projections.
+-/
+theorem surgery_package_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    surgery_package_payload_of_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases surgery_packages_of_dependencies dependencies M with
+          ⟨⟨n, package⟩⟩
+        let analyticPackage := analytic_foundation_of_surgery_package package
+        let flow := ricci_flow_data_of_surgery_package package
+        let constructionPackage :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow :=
+          surgery_construction_package_of_surgery_package package
+        let controlPackage :
+            PerelmanSingularityControlPackage (n := n) (M := M) flow :=
+          perelman_control_package_of_surgery_package package
+        exact ⟨n, package, analyticPackage, rfl, flow, rfl,
+          constructionPackage, HEq.rfl, controlPackage, HEq.rfl⟩) := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies analytic-foundation packages for every
 target manifold after smoothability regularity has been installed.
 -/
@@ -1249,6 +1272,29 @@ theorem analytic_foundation_statement_payload_with_surgery_package_of_dependenci
     derivationStatement, subobligations, equationEvidence⟩
 
 /--
+The dependency-level surgery-package analytic payload is selected from the
+shared surgery-package payload and the surgery-package analytic payload.
+-/
+theorem analytic_foundation_statement_payload_with_surgery_package_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    analytic_foundation_statement_payload_with_surgery_package_of_dependencies
+      dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases surgery_package_payload_of_dependencies dependencies M with
+          ⟨n, surgeryPackage, _analyticPackage, _analyticPackage_eq, _flow,
+            _flow_eq, _constructionPackage, _constructionPackage_heq,
+            _controlPackage, _controlPackage_heq⟩
+        let package := analytic_foundation_of_surgery_package surgeryPackage
+        let flow := ricci_flow_data_of_surgery_package surgeryPackage
+        rcases analytic_foundation_payload_of_surgery_package
+            surgeryPackage with
+          ⟨statement, derivationStatement, subobligations, equationEvidence⟩
+        exact ⟨n, surgeryPackage, package, rfl, flow, rfl, statement,
+          derivationStatement, subobligations, equationEvidence⟩) := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package exposes the fixed analytic-foundation payload:
 the projected analytic package, its theorem-shaped statement, the fixed-flow
 derivation statement, the statement-mediated analytic sub-obligation stack, and
@@ -1286,6 +1332,26 @@ theorem analytic_foundation_statement_payload_of_dependencies
   exact ⟨n, analytic_foundation_of_surgery_package surgeryPackage, flow,
     flow_eq, statement, derivationStatement, subobligations,
     equationEvidence⟩
+
+/--
+The dependency-level analytic payload is selected from the package-routed
+analytic payload by dropping the surgery package witness.
+-/
+theorem analytic_foundation_statement_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    analytic_foundation_statement_payload_of_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            analytic_foundation_statement_payload_with_surgery_package_of_dependencies
+              dependencies M with
+          ⟨n, surgeryPackage, package, package_eq, flow, flow_eq, statement,
+            derivationStatement, subobligations, equationEvidence⟩
+        subst package
+        exact ⟨n, analytic_foundation_of_surgery_package surgeryPackage, flow,
+          flow_eq, statement, derivationStatement, subobligations,
+          equationEvidence⟩) := by
+  apply Subsingleton.elim
 
 /--
 A completed dependency package supplies theorem-shaped analytic foundation
@@ -1534,6 +1600,31 @@ theorem surgery_construction_statement_payload_with_surgery_package_of_dependenc
     statement, subobligations, withSurgery⟩
 
 /--
+The dependency-level surgery-package construction payload is selected from the
+shared surgery-package payload and the construction-package payload.
+-/
+theorem surgery_construction_statement_payload_with_surgery_package_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    surgery_construction_statement_payload_with_surgery_package_of_dependencies
+      dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases surgery_package_payload_of_dependencies dependencies M with
+          ⟨n, surgeryPackage, _analyticPackage, _analyticPackage_eq, _flow,
+            _flow_eq, _constructionPackage, _constructionPackage_heq,
+            _controlPackage, _controlPackage_heq⟩
+        let flow := ricci_flow_data_of_surgery_package surgeryPackage
+        let constructionPackage :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow :=
+          surgery_construction_package_of_surgery_package surgeryPackage
+        rcases surgery_construction_payload_of_construction_package
+            constructionPackage with
+          ⟨statement, subobligations, withSurgery⟩
+        exact ⟨n, surgeryPackage, flow, rfl, constructionPackage, HEq.rfl,
+          statement, subobligations, withSurgery⟩) := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package exposes the fixed surgery-construction payload:
 the projected construction package, its theorem-shaped construction statement,
 the statement's sub-obligation stack, and the Ricci-flow-with-surgery witness
@@ -1560,6 +1651,25 @@ theorem surgery_construction_statement_payload_of_dependencies
     ⟨n, _surgeryPackage, flow, _flow_eq, constructionPackage,
       _constructionPackage_heq, statement, subobligations, withSurgery⟩
   exact ⟨n, flow, constructionPackage, statement, subobligations, withSurgery⟩
+
+/--
+The dependency-level surgery-construction payload is selected from the
+package-routed construction payload by dropping the surgery package witness.
+-/
+theorem surgery_construction_statement_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    surgery_construction_statement_payload_of_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            surgery_construction_statement_payload_with_surgery_package_of_dependencies
+              dependencies M with
+          ⟨n, _surgeryPackage, flow, _flow_eq, constructionPackage,
+            _constructionPackage_heq, statement, subobligations,
+            withSurgery⟩
+        exact ⟨n, flow, constructionPackage, statement, subobligations,
+          withSurgery⟩) := by
+  apply Subsingleton.elim
 
 /--
 A completed dependency package supplies theorem-shaped surgery-construction
@@ -1677,6 +1787,32 @@ theorem perelman_control_statement_payload_with_surgery_package_of_dependencies
     statement, subobligations, monotonicityBlowupSubobligations, control⟩
 
 /--
+The dependency-level surgery-package Perelman-control payload is selected from
+the shared surgery-package payload and the Perelman package payload.
+-/
+theorem perelman_control_statement_payload_with_surgery_package_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    perelman_control_statement_payload_with_surgery_package_of_dependencies
+      dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases surgery_package_payload_of_dependencies dependencies M with
+          ⟨n, surgeryPackage, _analyticPackage, _analyticPackage_eq, _flow,
+            _flow_eq, _constructionPackage, _constructionPackage_heq,
+            _controlPackage, _controlPackage_heq⟩
+        let flow := ricci_flow_data_of_surgery_package surgeryPackage
+        let controlPackage :
+            PerelmanSingularityControlPackage (n := n) (M := M) flow :=
+          perelman_control_package_of_surgery_package surgeryPackage
+        rcases perelman_control_payload_of_package controlPackage with
+          ⟨statement, subobligations, monotonicityBlowupSubobligations,
+            control⟩
+        exact ⟨n, surgeryPackage, flow, rfl, controlPackage, HEq.rfl,
+          statement, subobligations, monotonicityBlowupSubobligations,
+          control⟩) := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies theorem-shaped Perelman
 singularity-control statements for its projected Ricci-flow data.
 -/
@@ -1705,6 +1841,25 @@ theorem perelman_control_statement_payload_of_dependencies
       monotonicityBlowupSubobligations, control⟩
   exact ⟨n, flow, controlPackage, statement, subobligations,
     monotonicityBlowupSubobligations, control⟩
+
+/--
+The dependency-level Perelman-control payload is selected from the
+package-routed Perelman payload by dropping the surgery package witness.
+-/
+theorem perelman_control_statement_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    perelman_control_statement_payload_of_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            perelman_control_statement_payload_with_surgery_package_of_dependencies
+              dependencies M with
+          ⟨n, _surgeryPackage, flow, _flow_eq, controlPackage,
+            _controlPackage_heq, statement, subobligations,
+            monotonicityBlowupSubobligations, control⟩
+        exact ⟨n, flow, controlPackage, statement, subobligations,
+          monotonicityBlowupSubobligations, control⟩) := by
+  apply Subsingleton.elim
 
 /--
 A completed dependency package supplies theorem-shaped Perelman
