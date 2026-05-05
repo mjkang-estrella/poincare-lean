@@ -3345,6 +3345,302 @@ theorem completion_certificate_of_poincareProofDependencies_and_reverse_canonica
   apply Subsingleton.elim
 
 /--
+A checked completion certificate and supplied smooth data expose the
+remaining-dependency non-packaged smooth route payload.
+-/
+theorem poincareCompletionCertificate_remainingDependencyPackage_smooth_statement_payload
+    (certificate : PoincareCompletionCertificate.{u})
+    (smoothable : SmoothabilitySmoothManifoldStatement.{u})
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    ∃ _dependencies : RemainingDependencyPackage.{u},
+    ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+    ∃ _smoothStatement : SmoothPoincareConjectureStatement.{u},
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let dependencies : RemainingDependencyPackage.{u} :=
+    remaining_dependency_package_of_completion_certificate certificate
+  rcases poincare_payload_of_smooth_statement smoothable smoothStatement with
+    ⟨target, criterion⟩
+  exact ⟨dependencies, smoothable, smoothStatement, target, criterion⟩
+
+/--
+A checked completion certificate and supplied smooth data expose the
+aggregate-dependency non-packaged smooth route payload.
+-/
+theorem poincareCompletionCertificate_poincareProofDependencies_smooth_statement_payload
+    (certificate : PoincareCompletionCertificate.{u})
+    (smoothable : SmoothabilitySmoothManifoldStatement.{u})
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    ∃ _dependencies : PoincareProofDependencies.{u},
+    ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+    ∃ _smoothStatement : SmoothPoincareConjectureStatement.{u},
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let dependencies : PoincareProofDependencies.{u} :=
+    poincareProofDependencies_of_completion_certificate certificate
+  rcases poincare_payload_of_smooth_statement smoothable smoothStatement with
+    ⟨target, criterion⟩
+  exact ⟨dependencies, smoothable, smoothStatement, target, criterion⟩
+
+/--
+A remaining-dependency non-packaged smooth route payload reconstructs the
+checked completion certificate.
+-/
+theorem completion_certificate_of_remaining_dependency_package_smooth_statement_payload
+    (payload :
+      ∃ _dependencies : RemainingDependencyPackage.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _smoothStatement : SmoothPoincareConjectureStatement.{u},
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    PoincareCompletionCertificate.{u} := by
+  rcases payload with
+    ⟨dependencies, smoothable, smoothStatement, _target, _criterion⟩
+  exact
+    completion_certificate_of_remaining_dependency_and_smooth_statement
+      dependencies smoothable smoothStatement
+
+/--
+An aggregate-dependency non-packaged smooth route payload reconstructs the
+checked completion certificate.
+-/
+theorem completion_certificate_of_poincareProofDependencies_smooth_statement_payload
+    (payload :
+      ∃ _dependencies : PoincareProofDependencies.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _smoothStatement : SmoothPoincareConjectureStatement.{u},
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    PoincareCompletionCertificate.{u} := by
+  rcases payload with
+    ⟨dependencies, smoothable, smoothStatement, _target, _criterion⟩
+  exact
+    completion_certificate_of_poincareProofDependencies_and_smooth_statement
+      dependencies smoothable smoothStatement
+
+/--
+With smooth data supplied as explicit inputs, checked completion is equivalent
+to the remaining-dependency non-packaged smooth route payload.
+-/
+theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_smooth_statement_payload
+    (smoothable : SmoothabilitySmoothManifoldStatement.{u})
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    PoincareCompletionCertificate.{u} ↔
+      ∃ _dependencies : RemainingDependencyPackage.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _smoothStatement : SmoothPoincareConjectureStatement.{u},
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  constructor
+  · intro certificate
+    exact
+      poincareCompletionCertificate_remainingDependencyPackage_smooth_statement_payload
+        certificate smoothable smoothStatement
+  · intro payload
+    exact
+      completion_certificate_of_remaining_dependency_package_smooth_statement_payload
+        payload
+
+/--
+The remaining-dependency non-packaged smooth certificate equivalence is the pair
+of its named payload projection and payload constructor.
+-/
+theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_smooth_statement_payload_eq
+    (smoothable : SmoothabilitySmoothManifoldStatement.{u})
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    poincareCompletionCertificate_iff_remainingDependencyPackage_and_smooth_statement_payload
+        smoothable smoothStatement =
+      (by
+        constructor
+        · intro certificate
+          exact
+            poincareCompletionCertificate_remainingDependencyPackage_smooth_statement_payload
+              certificate smoothable smoothStatement
+        · intro payload
+          exact
+            completion_certificate_of_remaining_dependency_package_smooth_statement_payload
+              payload) := by
+  apply Subsingleton.elim
+
+/--
+With smooth data supplied as explicit inputs, checked completion is equivalent
+to the aggregate-dependency non-packaged smooth route payload.
+-/
+theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_smooth_statement_payload
+    (smoothable : SmoothabilitySmoothManifoldStatement.{u})
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    PoincareCompletionCertificate.{u} ↔
+      ∃ _dependencies : PoincareProofDependencies.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _smoothStatement : SmoothPoincareConjectureStatement.{u},
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  constructor
+  · intro certificate
+    exact
+      poincareCompletionCertificate_poincareProofDependencies_smooth_statement_payload
+        certificate smoothable smoothStatement
+  · intro payload
+    exact
+      completion_certificate_of_poincareProofDependencies_smooth_statement_payload
+        payload
+
+/--
+The aggregate non-packaged smooth certificate equivalence is the pair of its
+named payload projection and payload constructor.
+-/
+theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_smooth_statement_payload_eq
+    (smoothable : SmoothabilitySmoothManifoldStatement.{u})
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    poincareCompletionCertificate_iff_poincareProofDependencies_and_smooth_statement_payload
+        smoothable smoothStatement =
+      (by
+        constructor
+        · intro certificate
+          exact
+            poincareCompletionCertificate_poincareProofDependencies_smooth_statement_payload
+              certificate smoothable smoothStatement
+        · intro payload
+          exact
+            completion_certificate_of_poincareProofDependencies_smooth_statement_payload
+              payload) := by
+  apply Subsingleton.elim
+
+/--
+Projecting the remaining-dependency non-packaged smooth payload from the
+certificate reconstructed from such a payload returns the original payload.
+-/
+theorem poincareCompletionCertificate_remainingDependencyPackage_smooth_statement_payload_of_completion_certificate_of_remaining_dependency_package_smooth_statement_payload_eq
+    (smoothable : SmoothabilitySmoothManifoldStatement.{u})
+    (smoothStatement : SmoothPoincareConjectureStatement.{u})
+    (payload :
+      ∃ _dependencies : RemainingDependencyPackage.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _smoothStatement : SmoothPoincareConjectureStatement.{u},
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_remainingDependencyPackage_smooth_statement_payload
+      (completion_certificate_of_remaining_dependency_package_smooth_statement_payload
+        payload)
+      smoothable smoothStatement = payload := by
+  apply Subsingleton.elim
+
+/--
+Projecting the aggregate non-packaged smooth payload from the certificate
+reconstructed from such a payload returns the original payload.
+-/
+theorem poincareCompletionCertificate_poincareProofDependencies_smooth_statement_payload_of_completion_certificate_of_poincareProofDependencies_smooth_statement_payload_eq
+    (smoothable : SmoothabilitySmoothManifoldStatement.{u})
+    (smoothStatement : SmoothPoincareConjectureStatement.{u})
+    (payload :
+      ∃ _dependencies : PoincareProofDependencies.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _smoothStatement : SmoothPoincareConjectureStatement.{u},
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_poincareProofDependencies_smooth_statement_payload
+      (completion_certificate_of_poincareProofDependencies_smooth_statement_payload
+        payload)
+      smoothable smoothStatement = payload := by
+  apply Subsingleton.elim
+
+/--
+Reconstructing from the remaining-dependency non-packaged smooth payload exposed
+by the named route gives back the named route certificate.
+-/
+theorem completion_certificate_of_remaining_dependency_package_smooth_statement_payload_of_remaining_dependency_and_smooth_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothable : SmoothabilitySmoothManifoldStatement.{u})
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    completion_certificate_of_remaining_dependency_package_smooth_statement_payload
+      (poincareCompletionCertificate_remainingDependencyPackage_smooth_statement_payload
+        (completion_certificate_of_remaining_dependency_and_smooth_statement
+          dependencies smoothable smoothStatement)
+        smoothable smoothStatement) =
+      completion_certificate_of_remaining_dependency_and_smooth_statement
+        dependencies smoothable smoothStatement := by
+  apply Subsingleton.elim
+
+/--
+Reconstructing from the aggregate non-packaged smooth payload exposed by the
+named route gives back the named aggregate route certificate.
+-/
+theorem completion_certificate_of_poincareProofDependencies_smooth_statement_payload_of_poincareProofDependencies_and_smooth_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (smoothable : SmoothabilitySmoothManifoldStatement.{u})
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    completion_certificate_of_poincareProofDependencies_smooth_statement_payload
+      (poincareCompletionCertificate_poincareProofDependencies_smooth_statement_payload
+        (completion_certificate_of_poincareProofDependencies_and_smooth_statement
+          dependencies smoothable smoothStatement)
+        smoothable smoothStatement) =
+      completion_certificate_of_poincareProofDependencies_and_smooth_statement
+        dependencies smoothable smoothStatement := by
+  apply Subsingleton.elim
+
+/--
+The aggregate and remaining-dependency non-packaged smooth route payload shapes
+are equivalent by the dependency-package equivalence.
+-/
+theorem smooth_statement_payload_iff_poincareProofDependencies_remainingDependencyPackage :
+    (∃ _dependencies : PoincareProofDependencies.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _smoothStatement : SmoothPoincareConjectureStatement.{u},
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ↔
+    (∃ _dependencies : RemainingDependencyPackage.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _smoothStatement : SmoothPoincareConjectureStatement.{u},
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  constructor
+  · rintro ⟨dependencies, smoothable, smoothStatement, target, criterion⟩
+    exact
+      ⟨remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies,
+        smoothable, smoothStatement, target, criterion⟩
+  · rintro ⟨dependencies, smoothable, smoothStatement, target, criterion⟩
+    exact
+      ⟨remainingDependencyPackage_iff_poincareProofDependencies.mp dependencies,
+        smoothable, smoothStatement, target, criterion⟩
+
+/--
+The non-packaged smooth aggregate/remaining payload equivalence is exactly the
+componentwise dependency conversion.
+-/
+theorem smooth_statement_payload_iff_poincareProofDependencies_remainingDependencyPackage_eq :
+    smooth_statement_payload_iff_poincareProofDependencies_remainingDependencyPackage.{u} =
+      (by
+        constructor
+        · rintro ⟨dependencies, smoothable, smoothStatement, target,
+            criterion⟩
+          exact
+            ⟨remainingDependencyPackage_iff_poincareProofDependencies.mpr
+                dependencies,
+              smoothable, smoothStatement, target, criterion⟩
+        · rintro ⟨dependencies, smoothable, smoothStatement, target,
+            criterion⟩
+          exact
+            ⟨remainingDependencyPackage_iff_poincareProofDependencies.mp
+                dependencies,
+              smoothable, smoothStatement, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate non-packaged smooth certificate equivalence factors through the
+remaining-dependency equivalence via the payload dependency conversion.
+-/
+theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_smooth_statement_payload_to_remaining_dependency_eq
+    (smoothable : SmoothabilitySmoothManifoldStatement.{u})
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    (poincareCompletionCertificate_iff_poincareProofDependencies_and_smooth_statement_payload
+        smoothable smoothStatement).trans
+      smooth_statement_payload_iff_poincareProofDependencies_remainingDependencyPackage =
+      poincareCompletionCertificate_iff_remainingDependencyPackage_and_smooth_statement_payload
+        smoothable smoothStatement := by
+  apply Subsingleton.elim
+
+/--
 A checked completion certificate and supplied canonical-smooth data expose the
 remaining-dependency non-packaged canonical-smooth route payload.
 -/

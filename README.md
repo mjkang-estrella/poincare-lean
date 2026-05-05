@@ -100,11 +100,11 @@ The current artifact is intentionally conservative:
   constructors. The packaged reverse canonical-smooth certificate constructors
   also have projection round-trips for their dependency package, project target,
   project payload, canonical payload, canonical target, completion criterion, and
-  canonical topological statement. The non-packaged canonical-smooth and reverse
-  canonical-smooth completion certificate constructors now expose the same
-  dependency, canonical statement, canonical target, criterion, project-payload,
-  canonical-payload, and target-statement projection round-trips at both
-  dependency-package surfaces. Those non-packaged smooth routes now have
+  canonical topological statement. The non-packaged smooth, canonical-smooth,
+  and reverse canonical-smooth completion certificate constructors now expose
+  the same dependency, canonical statement, canonical target, criterion,
+  project-payload, canonical-payload, and target-statement projection round-trips
+  at both dependency-package surfaces. Those non-packaged smooth routes now have
   explicit certificate payload
   projections, payload constructors, iff contracts, projection-after-constructor
   round-trips, constructor reconstruction contracts, and an aggregate/remaining
