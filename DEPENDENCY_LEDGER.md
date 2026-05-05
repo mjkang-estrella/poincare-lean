@@ -1292,6 +1292,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   payload, project target statement, canonical target, completion criterion,
   and canonical topological statement after the canonical-statement, smooth,
   canonical-smooth, packaged smooth, and packaged canonical-smooth constructors,
+  and the base remaining-dependency plus aggregate-dependency constructors now
+  also round-trip their dependency projection after the canonical-payload,
+  target-statement, canonical-target, completion-criterion, and aggregate
+  project-payload routes,
   while the completion-target constructors
   `completion_certificate_of_*requirements_payload` and
   `completion_certificate_of_components_payload` rebuild checked certificates
