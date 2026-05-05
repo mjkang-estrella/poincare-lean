@@ -234,7 +234,10 @@ The current artifact is intentionally conservative:
   Package-to-payload bridges
   `surgery_construction_payload_of_construction_package` and
   `perelman_control_payload_of_package` centralize the package, theorem-shaped
-  statement, named sub-obligation payload, and aggregate witness routes.
+  statement, named sub-obligation payload, and aggregate witness routes; direct
+  equality contracts pin the surgery construction package's theorem-shaped
+  statement route to the component assembly route and its bundled payload to the
+  named statement, sub-obligation payload, and aggregate witness extraction.
   The dependency-level `surgery_package_payload_of_dependencies` now
   centralizes the raw aggregate surgery package together with its analytic
   foundation, projected flow, construction package, and Perelman control
@@ -651,6 +654,8 @@ The current artifact is intentionally conservative:
   conjunction. It also exposes surgery construction packages, package-level
   surgery-construction payloads via
   `surgery_construction_payload_of_construction_package`,
+  whose statement route and bundled payload are pinned by direct equality
+  contracts,
   `surgery_construction_statement_payload_of_dependencies`,
   statement-mediated surgery construction outputs, surgery construction
   sub-obligations, Perelman control packages, package-level Perelman payloads

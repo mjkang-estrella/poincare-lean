@@ -405,6 +405,36 @@ theorem ricci_flow_with_surgery_construction_statement_of_construction_package
     package.withSurgery
 
 /--
+The construction-package route to the theorem-shaped construction statement is
+exactly the component assembly route applied to the package fields.
+-/
+theorem ricci_flow_with_surgery_construction_statement_of_construction_package_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (package : RicciFlowWithSurgeryConstructionPackage flow) :
+    ricci_flow_with_surgery_construction_statement_of_construction_package
+      package =
+      ricci_flow_with_surgery_construction_statement_of_components flow
+        package.scaleFunction package.scaleContinuity package.scaleSeparation
+        package.cutoffParameterControl package.cutoffSmoothBump
+        package.parameterSelection package.strongDeltaNeckDetection
+        package.neckSeparation package.neckParametrization
+        package.neckCanonicalCoordinates package.neckDecomposition
+        package.standardCapModel package.capGluingSmoothness
+        package.capMetricInterpolation package.capCurvatureEstimates
+        package.capConstruction package.postSurgeryCurvaturePinching
+        package.postSurgeryNoncollapsing package.postSurgeryDerivativeBounds
+        package.postSurgeryCanonicalNeighborhoodPersistence
+        package.metricControl package.surgeryTimeDiscreteness
+        package.surgeryTimeLocalFiniteness
+        package.longTimeExistenceIteration package.longTimeParameterCoherence
+        package.longTimeNonaccumulation package.longTimeContinuation
+        package.withSurgery := by
+  apply Subsingleton.elim
+
+/--
 The theorem-shaped surgery-construction statement supplies the aggregate
 Ricci-flow-with-surgery interface.
 -/
@@ -523,6 +553,28 @@ theorem surgery_construction_payload_of_construction_package
     surgery_construction_subobligations_of_statement statement
   exact ⟨statement, subobligations,
     ricci_flow_with_surgery_of_construction_statement statement⟩
+
+/--
+The construction-package payload is exactly the named construction statement,
+its statement-mediated sub-obligation payload, and the aggregate surgery
+witness extracted from that statement.
+-/
+theorem surgery_construction_payload_of_construction_package_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (package : RicciFlowWithSurgeryConstructionPackage flow) :
+    surgery_construction_payload_of_construction_package package =
+      (by
+        let statement :=
+          ricci_flow_with_surgery_construction_statement_of_construction_package
+            package
+        let subobligations :=
+          surgery_construction_subobligations_of_statement statement
+        exact ⟨statement, subobligations,
+          ricci_flow_with_surgery_of_construction_statement statement⟩) := by
+  apply Subsingleton.elim
 
 /-- Project surgery-scale-function evidence from a construction package. -/
 theorem surgery_scale_function_of_construction_package

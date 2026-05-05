@@ -1749,6 +1749,8 @@ check_decl "surgery construction component assembly theorem is declared" \
   '^theorem ricci_flow_with_surgery_construction_statement_of_components\b' Poincare/Surgery.lean
 check_decl "surgery construction package statement projection is declared" \
   '^theorem ricci_flow_with_surgery_construction_statement_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction package statement projection equality contract is declared" \
+  '^theorem ricci_flow_with_surgery_construction_statement_of_construction_package_eq\b' Poincare/Surgery.lean
 check_decl "surgery construction statement aggregate bridge is declared" \
   '^theorem ricci_flow_with_surgery_of_construction_statement\b' Poincare/Surgery.lean
 check_decl "surgery construction sub-obligation payload alias is declared" \
@@ -1757,6 +1759,8 @@ check_decl "surgery construction statement sub-obligation projection is declared
   '^theorem surgery_construction_subobligations_of_statement\b' Poincare/Surgery.lean
 check_decl "surgery construction package payload theorem is declared" \
   '^theorem surgery_construction_payload_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction package payload equality contract is declared" \
+  '^theorem surgery_construction_payload_of_construction_package_eq\b' Poincare/Surgery.lean
 check_decl "surgery construction aggregate projection is declared" \
   '^theorem ricci_flow_with_surgery_of_construction_package\b' Poincare/Surgery.lean
 for decl in \
@@ -6894,6 +6898,7 @@ open scoped Manifold ContDiff
 #check Poincare.PerelmanSingularityControlSubobligationsPayload
 #check Poincare.PerelmanMonotonicityBlowupSubobligationsPayload
 #check Poincare.surgery_construction_payload_of_construction_package
+#check Poincare.surgery_construction_payload_of_construction_package_eq
 #check Poincare.perelman_control_payload_of_package
 #check Poincare.FiniteExtinctionWidthSubobligationsPayload
 #check Poincare.FiniteExtinctionSubobligationsPayload
@@ -8991,6 +8996,7 @@ open scoped Manifold ContDiff
 #check Poincare.RicciFlowWithSurgeryConstructionStatement
 #check Poincare.ricci_flow_with_surgery_construction_statement_of_components
 #check Poincare.ricci_flow_with_surgery_construction_statement_of_construction_package
+#check Poincare.ricci_flow_with_surgery_construction_statement_of_construction_package_eq
 #check Poincare.ricci_flow_with_surgery_of_construction_statement
 #check Poincare.surgery_construction_subobligations_of_statement
 #check Poincare.ricci_flow_with_surgery_of_construction_package
@@ -9357,6 +9363,7 @@ open scoped Manifold ContDiff
 #check Poincare.PerelmanSingularityControlSubobligationsPayload
 #check Poincare.PerelmanMonotonicityBlowupSubobligationsPayload
 #check Poincare.surgery_construction_payload_of_construction_package
+#check Poincare.surgery_construction_payload_of_construction_package_eq
 #check Poincare.perelman_control_payload_of_package
 #check Poincare.FiniteExtinctionWidthSubobligationsPayload
 #check Poincare.FiniteExtinctionSubobligationsPayload
