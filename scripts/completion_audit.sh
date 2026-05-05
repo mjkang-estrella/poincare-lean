@@ -402,6 +402,10 @@ check_decl "analytic foundation Ricci-flow data projection is declared" \
   '^def ricci_flow_data_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation Ricci-flow data projection equality theorem is declared" \
   '^@\[simp\] theorem ricci_flow_data_of_analytic_foundation_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation package sub-obligation bridge is declared" \
+  '^theorem analytic_foundation_subobligations_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation package sub-obligation equality contract is declared" \
+  '^theorem analytic_foundation_subobligations_of_analytic_foundation_package_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation Levi-Civita existence projection theorem is declared" \
   '^theorem levi_civita_existence_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation Levi-Civita uniqueness projection theorem is declared" \
@@ -1925,6 +1929,10 @@ check_decl "surgery construction package payload theorem is declared" \
   '^theorem surgery_construction_payload_of_construction_package\b' Poincare/Surgery.lean
 check_decl "surgery construction package payload equality contract is declared" \
   '^theorem surgery_construction_payload_of_construction_package_eq\b' Poincare/Surgery.lean
+check_decl "surgery construction package sub-obligation bridge is declared" \
+  '^theorem surgery_construction_subobligations_of_construction_package\b' Poincare/Surgery.lean
+check_decl "surgery construction package sub-obligation equality contract is declared" \
+  '^theorem surgery_construction_subobligations_of_construction_package_eq\b' Poincare/Surgery.lean
 check_decl "surgery construction aggregate projection is declared" \
   '^theorem ricci_flow_with_surgery_of_construction_package\b' Poincare/Surgery.lean
 for decl in \
@@ -2144,6 +2152,14 @@ check_decl "Perelman package payload theorem is declared" \
   '^theorem perelman_control_payload_of_package\b' Poincare/Surgery.lean
 check_decl "Perelman package payload equality contract is declared" \
   '^theorem perelman_control_payload_of_package_eq\b' Poincare/Surgery.lean
+check_decl "Perelman package full sub-obligation bridge is declared" \
+  '^theorem perelman_subobligations_of_package\b' Poincare/Surgery.lean
+check_decl "Perelman package full sub-obligation equality contract is declared" \
+  '^theorem perelman_subobligations_of_package_eq\b' Poincare/Surgery.lean
+check_decl "Perelman package monotonicity/blow-up bridge is declared" \
+  '^theorem perelman_monotonicity_blowup_subobligations_of_package\b' Poincare/Surgery.lean
+check_decl "Perelman package monotonicity/blow-up equality contract is declared" \
+  '^theorem perelman_monotonicity_blowup_subobligations_of_package_eq\b' Poincare/Surgery.lean
 check_decl "Perelman package F-functional setup projection is declared" \
   '^theorem f_functional_setup_of_perelman_package\b' Poincare/Surgery.lean
 check_decl "Perelman package entropy normalization projection is declared" \
@@ -3126,6 +3142,10 @@ check_decl "topology package extraction-derivation payload equality contract is 
   '^theorem topology_extraction_derivation_payload_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
 check_decl "topology package extraction statement payload bridge is declared" \
   '^theorem topology_extraction_statement_payload_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package classification sub-obligation bridge is declared" \
+  '^theorem topology_classification_subobligations_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package classification sub-obligation equality contract is declared" \
+  '^theorem topology_classification_subobligations_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
 for topology_statement_route_contract in \
   extinction_topology_extraction_statement_of_topology_package_eq \
   topology_derivation_statement_payload_of_extraction_statement_eq \
@@ -3314,6 +3334,10 @@ check_decl "smoothability derivation statement sub-obligation projection is decl
   '^theorem smoothability_subobligations_of_derivation_statement\b' Poincare/Smoothability.lean
 check_decl "smoothability derivation statement sub-obligation equality contract is declared" \
   '^theorem smoothability_subobligations_of_derivation_statement_eq\b' Poincare/Smoothability.lean
+check_decl "smoothability package sub-obligation bridge is declared" \
+  '^theorem smoothability_subobligations_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package sub-obligation equality contract is declared" \
+  '^theorem smoothability_subobligations_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package Moise local chart projection is declared" \
   '^theorem moise_local_charts_of_smoothability_package\b' Poincare/Smoothability.lean
 check_decl "smoothability package Moise local chart equality contract is declared" \

@@ -807,6 +807,37 @@ theorem surgery_construction_payload_of_construction_package_eq
           ricci_flow_with_surgery_of_construction_statement statement⟩) := by
   apply Subsingleton.elim
 
+/--
+A completed surgery-construction package directly exposes the named
+construction sub-obligation payload for its fixed Ricci-flow data.
+-/
+theorem surgery_construction_subobligations_of_construction_package
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (package : RicciFlowWithSurgeryConstructionPackage flow) :
+    RicciFlowWithSurgeryConstructionSubobligationsPayload flow :=
+  surgery_construction_subobligations_of_statement
+    (ricci_flow_with_surgery_construction_statement_of_construction_package
+      package)
+
+/--
+The package-level surgery-construction sub-obligation bridge is exactly the
+statement bridge applied to the package's theorem-shaped construction statement.
+-/
+theorem surgery_construction_subobligations_of_construction_package_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (package : RicciFlowWithSurgeryConstructionPackage flow) :
+    surgery_construction_subobligations_of_construction_package package =
+      surgery_construction_subobligations_of_statement
+        (ricci_flow_with_surgery_construction_statement_of_construction_package
+          package) := by
+  apply Subsingleton.elim
+
 /-- Project surgery-scale-function evidence from a construction package. -/
 theorem surgery_scale_function_of_construction_package
     {n : ℕ∞ω}
@@ -2890,6 +2921,64 @@ theorem perelman_control_payload_of_package_eq
           perelman_monotonicity_blowup_subobligations_of_statement statement
         exact ⟨statement, subobligations, monotonicityBlowupSubobligations,
           perelman_singularity_control_of_statement statement⟩) := by
+  apply Subsingleton.elim
+
+/--
+A completed Perelman package directly exposes the full named singularity-control
+sub-obligation payload through its theorem-shaped statement.
+-/
+theorem perelman_subobligations_of_package
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (package : PerelmanSingularityControlPackage flow) :
+    PerelmanSingularityControlSubobligationsPayload flow :=
+  perelman_subobligations_of_statement
+    (perelman_singularity_control_statement_of_package package)
+
+/--
+The package-level full Perelman sub-obligation bridge is exactly the statement
+bridge applied to the package's theorem-shaped singularity-control statement.
+-/
+theorem perelman_subobligations_of_package_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (package : PerelmanSingularityControlPackage flow) :
+    perelman_subobligations_of_package package =
+      perelman_subobligations_of_statement
+        (perelman_singularity_control_statement_of_package package) := by
+  apply Subsingleton.elim
+
+/--
+A completed Perelman package directly exposes the monotonicity, blow-up,
+compactness, and canonical-neighborhood sub-obligation payload.
+-/
+theorem perelman_monotonicity_blowup_subobligations_of_package
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (package : PerelmanSingularityControlPackage flow) :
+    PerelmanMonotonicityBlowupSubobligationsPayload flow :=
+  perelman_monotonicity_blowup_subobligations_of_statement
+    (perelman_singularity_control_statement_of_package package)
+
+/--
+The package-level Perelman monotonicity/blow-up bridge is exactly the statement
+bridge applied to the package's theorem-shaped singularity-control statement.
+-/
+theorem perelman_monotonicity_blowup_subobligations_of_package_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (package : PerelmanSingularityControlPackage flow) :
+    perelman_monotonicity_blowup_subobligations_of_package package =
+      perelman_monotonicity_blowup_subobligations_of_statement
+        (perelman_singularity_control_statement_of_package package) := by
   apply Subsingleton.elim
 
 /-- Project F-functional setup evidence from a Perelman control package. -/

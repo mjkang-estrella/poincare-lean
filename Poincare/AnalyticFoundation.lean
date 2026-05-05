@@ -2328,6 +2328,42 @@ theorem analytic_foundation_payload_of_analytic_foundation_package_eq
   apply Subsingleton.elim
 
 /--
+A completed analytic-foundation package directly exposes the named analytic
+sub-obligation payload for its projected Ricci-flow data.
+-/
+theorem analytic_foundation_subobligations_of_analytic_foundation_package
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    AnalyticFoundationSubobligationsPayload
+      (ricci_flow_data_of_analytic_foundation_package package) :=
+  analytic_foundation_subobligations_of_derivation_statement
+    (ricci_flow_data_of_analytic_foundation_package package)
+    (analytic_foundation_derivation_statement_of_analytic_foundation_package
+      package)
+
+/--
+The package-level analytic sub-obligation bridge is exactly the derivation
+statement bridge applied to the package's projected flow data and derivation
+statement.
+-/
+theorem analytic_foundation_subobligations_of_analytic_foundation_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    analytic_foundation_subobligations_of_analytic_foundation_package
+        package =
+      analytic_foundation_subobligations_of_derivation_statement
+        (ricci_flow_data_of_analytic_foundation_package package)
+        (analytic_foundation_derivation_statement_of_analytic_foundation_package
+          package) := by
+  apply Subsingleton.elim
+
+/--
 The theorem-shaped analytic foundation statement supplies Ricci-flow data
 together with its fixed-flow derivation statement.
 -/

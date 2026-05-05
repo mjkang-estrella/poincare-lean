@@ -5298,6 +5298,42 @@ theorem topology_extraction_statement_payload_of_topology_package_eq
   apply Subsingleton.elim
 
 /--
+A completed topology package directly exposes the named post-extinction
+classification sub-obligation payload for each finite-extinction input.
+-/
+theorem topology_classification_subobligations_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ExtinctionTopologyClassificationSubobligationsPayload M extinction :=
+  topology_classification_subobligations_of_derivation_statement M extinction
+    (homeomorphism_of_topology_package package M extinction)
+    (extinction_topology_derivation_statement_of_topology_package
+      package M extinction)
+
+/--
+The package-level topology classification bridge is exactly the derivation
+statement bridge applied to the package's projected homeomorphism and
+fixed-extinction derivation statement.
+-/
+theorem topology_classification_subobligations_of_topology_package_eq
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_classification_subobligations_of_topology_package
+        package M extinction =
+      topology_classification_subobligations_of_derivation_statement
+        M extinction
+        (homeomorphism_of_topology_package package M extinction)
+        (extinction_topology_derivation_statement_of_topology_package
+          package M extinction) := by
+  apply Subsingleton.elim
+
+/--
 Any completed topology extraction package supplies the existing extraction
 interface consumed by the final Poincare assembly theorem.
 -/

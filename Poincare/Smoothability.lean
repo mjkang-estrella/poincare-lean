@@ -3334,4 +3334,41 @@ theorem smoothability_bridge_payload_of_smoothability_package_eq
           (smooth_chart_compatibility_of_smoothability_package package M)⟩ := by
   apply Subsingleton.elim
 
+/--
+A completed smoothability package directly exposes the named smoothability
+sub-obligation payload for each topological three-manifold input.
+-/
+theorem smoothability_subobligations_of_smoothability_package
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    SmoothabilitySubobligationsPayload M :=
+  smoothability_subobligations_of_derivation_statement M
+    (smooth_structure_of_smoothability_package package M)
+    (smooth_structure_derivation_statement_of_smoothability_package package M)
+    (smoothable_of_smoothability_package package M)
+    (smoothability_bridge_derivation_of_smoothability_package package M)
+    (smooth_model_compatibility_of_smoothability_package package M)
+    (smooth_chart_compatibility_of_smoothability_package package M)
+
+/--
+The package-level smoothability sub-obligation bridge is exactly the derivation
+statement bridge applied to the package projections.
+-/
+theorem smoothability_subobligations_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    smoothability_subobligations_of_smoothability_package package M =
+      smoothability_subobligations_of_derivation_statement M
+        (smooth_structure_of_smoothability_package package M)
+        (smooth_structure_derivation_statement_of_smoothability_package package M)
+        (smoothable_of_smoothability_package package M)
+        (smoothability_bridge_derivation_of_smoothability_package package M)
+        (smooth_model_compatibility_of_smoothability_package package M)
+        (smooth_chart_compatibility_of_smoothability_package package M) := by
+  apply Subsingleton.elim
+
 end Poincare
