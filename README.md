@@ -677,7 +677,10 @@ The current artifact is intentionally conservative:
   equality contracts pinning them to the finite-extinction/topology-statement
   and certified extractor/derivation routes. The remaining-dependency canonical
   statement endpoints are also pinned to their named canonical targets, including
-  the projection and certified projection target routes.
+  the projection and certified projection target routes. The ordinary
+  projection route now also reconstructs a checked completion certificate, with
+  round-trip contracts for the remaining-dependency package, canonical payload,
+  project payload, target, and criterion projections.
   It also exposes the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/

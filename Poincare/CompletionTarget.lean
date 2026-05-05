@@ -9429,6 +9429,18 @@ theorem completion_certificate_of_aggregate_extraction_derivation_dependencies
 
 /--
 A completed remaining-dependency package produces a completion certificate
+through the projection-based dependency route.
+-/
+theorem completion_certificate_of_dependency_projections
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareCompletionCertificate.{u} := by
+  rcases canonical_completion_payload_of_dependency_projections
+      dependencies with
+    ⟨target, criterion⟩
+  exact ⟨canonicalCompletionTheoremName, rfl, dependencies, target, criterion⟩
+
+/--
+A completed remaining-dependency package produces a completion certificate
 through the certified extraction-derivation projection route.
 -/
 theorem completion_certificate_of_extraction_derivation_dependency_projections
@@ -9451,6 +9463,15 @@ theorem poincareCompletionCertificate_iff_aggregate_extraction_derivation_depend
 
 /--
 The completion certificate is equivalent to the remaining dependency package when
+the certificate is reconstructed through the projection-based dependency route.
+-/
+theorem poincareCompletionCertificate_iff_dependency_projections :
+    PoincareCompletionCertificate.{u} ↔ RemainingDependencyPackage.{u} :=
+  ⟨remaining_dependency_package_of_completion_certificate,
+    completion_certificate_of_dependency_projections⟩
+
+/--
+The completion certificate is equivalent to the remaining dependency package when
 the certificate is reconstructed through the certified extraction-derivation
 projection route.
 -/
@@ -9470,6 +9491,16 @@ theorem completion_certificate_of_poincareProofDependencies_aggregate_extraction
     (remainingDependencyPackage_iff_poincareProofDependencies.mpr dependencies)
 
 /--
+The aggregate proof dependency package produces the checked completion
+certificate through the projection-based dependency route.
+-/
+theorem completion_certificate_of_poincareProofDependencies_projections
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_dependency_projections
+    (remainingDependencyPackage_iff_poincareProofDependencies.mpr dependencies)
+
+/--
 The completion certificate is equivalent to the aggregate proof dependency
 package through the certified extraction-derivation aggregate route.
 -/
@@ -9477,6 +9508,15 @@ theorem poincareCompletionCertificate_iff_poincareProofDependencies_aggregate_ex
     PoincareCompletionCertificate.{u} ↔ PoincareProofDependencies.{u} :=
   ⟨poincareProofDependencies_of_completion_certificate,
     completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation⟩
+
+/--
+The completion certificate is equivalent to the aggregate proof dependency
+package through the projection-based dependency route.
+-/
+theorem poincareCompletionCertificate_iff_poincareProofDependencies_projections :
+    PoincareCompletionCertificate.{u} ↔ PoincareProofDependencies.{u} :=
+  ⟨poincareProofDependencies_of_completion_certificate,
+    completion_certificate_of_poincareProofDependencies_projections⟩
 
 /--
 The aggregate proof dependency package produces the checked completion
@@ -10100,6 +10140,41 @@ theorem completion_certificate_of_aggregate_extraction_derivation_dependencies_e
   apply Subsingleton.elim
 
 /--
+The projection-based certificate constructor is exactly the record built from
+the canonical dependency-projection payload.
+-/
+theorem completion_certificate_of_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_dependency_projections dependencies =
+      (by
+        rcases
+          canonical_completion_payload_of_dependency_projections dependencies
+        with
+          ⟨target, criterion⟩
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, dependencies, target,
+            criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The projection-based certificate constructor factors through the
+finite-extinction plus theorem-shaped topology-extraction canonical payload.
+-/
+theorem completion_certificate_of_dependency_projections_to_topology_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_dependency_projections dependencies =
+      (by
+        rcases
+          canonical_completion_payload_of_finite_extinction_and_topology_extraction_statement
+            (finite_extinction_of_dependencies dependencies)
+            (topology_extraction_statement_of_dependencies dependencies) with
+          ⟨target, criterion⟩
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, dependencies, target,
+            criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
 The extraction-derivation projection certificate constructor is exactly the
 record built from the canonical projection extraction-derivation payload.
 -/
@@ -10129,6 +10204,16 @@ theorem poincareCompletionCertificate_iff_aggregate_extraction_derivation_depend
   apply Subsingleton.elim
 
 /--
+The projection-based dependency equivalence is the remaining-dependency
+projection paired with the projection certificate constructor.
+-/
+theorem poincareCompletionCertificate_iff_dependency_projections_eq :
+    poincareCompletionCertificate_iff_dependency_projections =
+      ⟨remaining_dependency_package_of_completion_certificate,
+        completion_certificate_of_dependency_projections⟩ := by
+  apply Subsingleton.elim
+
+/--
 The extraction-derivation projection equivalence is the remaining-dependency
 projection paired with the projection certificate constructor.
 -/
@@ -10153,6 +10238,20 @@ theorem completion_certificate_of_poincareProofDependencies_aggregate_extraction
   apply Subsingleton.elim
 
 /--
+The aggregate-dependency projection constructor is exactly the
+remaining-dependency projection constructor after converting aggregate
+dependencies.
+-/
+theorem completion_certificate_of_poincareProofDependencies_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_poincareProofDependencies_projections
+      dependencies =
+      completion_certificate_of_dependency_projections
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate-dependency extraction-derivation equivalence is the aggregate
 dependency projection paired with its certificate constructor.
 -/
@@ -10160,6 +10259,16 @@ theorem poincareCompletionCertificate_iff_poincareProofDependencies_aggregate_ex
     poincareCompletionCertificate_iff_poincareProofDependencies_aggregate_extraction_derivation =
       ⟨poincareProofDependencies_of_completion_certificate,
         completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation⟩ := by
+  apply Subsingleton.elim
+
+/--
+The aggregate-dependency projection equivalence is the aggregate dependency
+projection paired with its certificate constructor.
+-/
+theorem poincareCompletionCertificate_iff_poincareProofDependencies_projections_eq :
+    poincareCompletionCertificate_iff_poincareProofDependencies_projections =
+      ⟨poincareProofDependencies_of_completion_certificate,
+        completion_certificate_of_poincareProofDependencies_projections⟩ := by
   apply Subsingleton.elim
 
 /--
@@ -10264,6 +10373,17 @@ theorem remaining_dependency_package_of_completion_certificate_of_aggregate_extr
   apply Subsingleton.elim
 
 /--
+Projecting dependencies from the remaining-dependency projection route returns
+the input remaining-dependency package.
+-/
+theorem remaining_dependency_package_of_completion_certificate_of_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    remaining_dependency_package_of_completion_certificate
+      (completion_certificate_of_dependency_projections dependencies) =
+      dependencies := by
+  apply Subsingleton.elim
+
+/--
 Projecting dependencies from the remaining-dependency extraction-derivation
 projection route returns the input remaining-dependency package.
 -/
@@ -10348,6 +10468,17 @@ theorem poincareProofDependencies_of_completion_certificate_of_poincareProofDepe
     (dependencies : PoincareProofDependencies.{u}) :
     poincareProofDependencies_of_completion_certificate
       (completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
+        dependencies) = dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting aggregate dependencies from the projection route returns the input
+aggregate dependency package.
+-/
+theorem poincareProofDependencies_of_completion_certificate_of_poincareProofDependencies_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareProofDependencies_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_projections
         dependencies) = dependencies := by
   apply Subsingleton.elim
 
@@ -10567,6 +10698,17 @@ theorem canonical_completion_payload_of_completion_certificate_of_aggregate_extr
 
 /--
 Projecting the canonical completion payload from the remaining-dependency
+projection route returns the route payload.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_dependency_projections dependencies) =
+      canonical_completion_payload_of_dependency_projections dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical completion payload from the remaining-dependency
 extraction-derivation projection route returns the route payload.
 -/
 theorem canonical_completion_payload_of_completion_certificate_of_extraction_derivation_dependency_projections_eq
@@ -10774,6 +10916,17 @@ theorem poincare_completion_payload_of_completion_certificate_of_aggregate_extra
         dependencies) =
       poincare_completion_payload_of_aggregate_extraction_derivation_dependencies
         dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from the remaining-dependency
+projection route returns the route payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_dependency_projections dependencies) =
+      poincare_completion_payload_of_dependency_projections dependencies := by
   apply Subsingleton.elim
 
 /--
@@ -12623,6 +12776,28 @@ theorem completion_criterion_of_completion_certificate_of_aggregate_extraction_d
       (completion_certificate_of_aggregate_extraction_derivation_dependencies
         dependencies) =
       canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies
+        witness dependencies := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    target_statement_of_completion_certificate
+      (completion_certificate_of_dependency_projections dependencies) =
+      canonical_completion_target_of_dependency_projections dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_target_of_completion_certificate_of_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_dependency_projections dependencies) =
+      canonical_completion_target_of_dependency_projections dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_criterion_of_completion_certificate_of_dependency_projections_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_dependency_projections dependencies) =
+      canonical_completion_criterion_of_dependency_projections
         witness dependencies := by
   apply Subsingleton.elim
 
