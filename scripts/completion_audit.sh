@@ -5381,6 +5381,8 @@ do
 done
 check_decl "completion certificate proposition is declared" \
   '^def PoincareCompletionCertificate\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate proposition equality contract is declared" \
+  '^theorem poincareCompletionCertificate_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate theorem-name payload theorem is declared" \
   '^theorem poincareCompletionCertificate_theoremName_payload\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate literal full payload theorem is declared" \

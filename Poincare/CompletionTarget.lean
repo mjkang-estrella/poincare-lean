@@ -6066,6 +6066,20 @@ def PoincareCompletionCertificate : Prop :=
     canonicalCompletionTarget.{u} ∧
     ∀ witness : Type u, CompletionCriterionAtUniverse witness
 
+/--
+The checked completion certificate is exactly the reserved theorem name together
+with the remaining dependency package, canonical target, and universe-indexed
+completion criterion.
+-/
+theorem poincareCompletionCertificate_eq :
+    PoincareCompletionCertificate.{u} =
+      (∃ theoremName : String,
+        theoremName = canonicalCompletionTheoremName ∧
+        RemainingDependencyPackage.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :=
+  rfl
+
 /-- A completion certificate uses the reserved theorem name `poincare_conjecture`. -/
 theorem poincareCompletionCertificate_theoremName_payload
     (certificate : PoincareCompletionCertificate.{u}) :

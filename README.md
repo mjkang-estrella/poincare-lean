@@ -27,7 +27,9 @@ The current artifact is intentionally conservative:
 - The theorem-shaped boundary statements for finite-extinction extraction,
   analytic foundation, smoothability, finite extinction, and topology extraction
   now have direct equality contracts pinning them to their exact universal or
-  existential proposition shapes.
+  existential proposition shapes. The checked completion certificate proposition
+  is also pinned to the reserved theorem name, remaining dependency package,
+  canonical target, and universe-indexed completion criterion it records.
 - `Poincare/Assembly.lean` contains small proof-bearing assembly lemmas that do
   not prove Poincare, such as turning a diffeomorphism on either side of `S^3`
   into a homeomorphism to `S^3`, recording the equivalence between those two

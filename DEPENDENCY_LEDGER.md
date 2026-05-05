@@ -27,7 +27,9 @@ It is not a proof. It is a work breakdown for future Lean development.
 - The theorem-shaped boundary statements for finite-extinction extraction,
   analytic foundation, smoothability, finite extinction, and topology extraction
   now have direct equality contracts pinning them to their exact universal or
-  existential proposition shapes.
+  existential proposition shapes. The checked completion certificate proposition
+  is also pinned to the reserved theorem name, remaining dependency package,
+  canonical target, and universe-indexed completion criterion it records.
 - `scripts/audit_formalization.sh` passes.
 - `Poincare/Assembly.lean` contains a proof-bearing support lemma showing that
   a diffeomorphism to `S^3` gives a homeomorphism to `S^3`; it also handles the

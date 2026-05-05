@@ -4452,6 +4452,8 @@ set_option linter.unusedVariables false
 
 #check (Poincare.PoincareCompletionCertificate : Prop)
 
+#check Poincare.poincareCompletionCertificate_eq
+
 #check (Poincare.poincareCompletionCertificate_theoremName_payload :
   Poincare.PoincareCompletionCertificate →
     ∃ theoremName : String, theoremName = "poincare_conjecture")
