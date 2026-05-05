@@ -5545,6 +5545,81 @@ theorem topology_extraction_statement_of_dependencies_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level topology extraction payload is the dependency-level
+theorem-shaped topology statement paired with its statement-mediated final
+extractor.
+-/
+theorem topology_extraction_payload_of_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topology_extraction_payload_of_dependencies dependencies =
+      ⟨topology_extraction_statement_of_dependencies dependencies,
+        extinction_implies_sphere_of_topology_extraction_statement
+          (topology_extraction_statement_of_dependencies dependencies)⟩ := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level fixed-extinction topology payload is selected by
+destructuring the dependency-level theorem-shaped topology statement.
+-/
+theorem topology_extraction_statement_payload_of_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_dependencies
+      dependencies M extinction =
+      (by
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies dependencies
+        rcases topology_derivation_statement_payload_of_extraction_statement
+            topologyStatement M extinction with
+          ⟨homeomorphism, derivationStatement⟩
+        let classificationSubobligations :=
+          topology_classification_subobligations_of_derivation_statement M
+            extinction homeomorphism derivationStatement
+        exact ⟨topologyStatement, homeomorphism, derivationStatement,
+          classificationSubobligations,
+          topology_homeomorphism_assembly_statement_of_derivation_statement M
+            extinction homeomorphism derivationStatement,
+          topology_homeomorphism_derivation_statement_of_derivation_statement M
+            extinction homeomorphism derivationStatement⟩) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level fixed-extinction derivation payload is the payload of the
+dependency-level theorem-shaped topology statement.
+-/
+theorem topology_derivation_statement_payload_of_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_derivation_statement_payload_of_dependencies
+      dependencies M extinction =
+      topology_derivation_statement_payload_of_extraction_statement
+        (topology_extraction_statement_of_dependencies dependencies)
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level fixed-extinction homeomorphism is the homeomorphism
+projection from the dependency-level theorem-shaped topology statement.
+-/
+theorem homeomorphism_of_extinction_and_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    homeomorphism_of_extinction_and_dependencies dependencies M extinction =
+      homeomorphism_of_topology_extraction_statement
+        (topology_extraction_statement_of_dependencies dependencies)
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies the theorem-shaped smoothability bridge
 used by the surgery layer.
 -/
@@ -6182,6 +6257,29 @@ theorem topology_extraction_derivation_payload_of_dependencies_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level final extractor agrees with the extractor mediated by the
+dependency-level theorem-shaped topology statement.
+-/
+theorem extinction_extraction_of_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    extinction_extraction_of_dependencies dependencies =
+      extinction_implies_sphere_of_topology_extraction_statement
+        (topology_extraction_statement_of_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level extraction/derivation payload is the forward direction of
+the extraction/derivation equivalence for the dependency-level topology
+statement.
+-/
+theorem topology_extraction_derivation_payload_of_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topology_extraction_derivation_payload_of_dependencies dependencies =
+      extinction_topology_extraction_statement_iff_extraction_with_derivation.mp
+        (topology_extraction_statement_of_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies the two theorem-shaped inputs consumed
 by the final finite-extinction/topology-extraction assembly theorem through the
 projection route.
@@ -6207,6 +6305,19 @@ theorem poincare_projection_assembly_inputs_payload_of_dependencies_eq
     poincare_projection_assembly_inputs_payload_of_dependencies dependencies =
       ⟨finite_extinction_of_dependencies dependencies,
         extinction_extraction_of_dependencies dependencies⟩ := by
+  apply Subsingleton.elim
+
+/--
+The dependency projection assembly-input payload is the dependency-level finite
+extinction route paired with the extractor mediated by the dependency-level
+theorem-shaped topology statement.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_projection_assembly_inputs_payload_of_dependencies dependencies =
+      ⟨finite_extinction_of_dependencies dependencies,
+        extinction_implies_sphere_of_topology_extraction_statement
+          (topology_extraction_statement_of_dependencies dependencies)⟩ := by
   apply Subsingleton.elim
 
 /--
@@ -6240,6 +6351,24 @@ theorem poincare_projection_assembly_inputs_payload_of_extraction_derivation_dep
       (by
         rcases topology_extraction_derivation_payload_of_dependencies
             dependencies with
+          ⟨extractSphere, derivation⟩
+        exact ⟨finite_extinction_of_dependencies dependencies, extractSphere,
+          derivation⟩) := by
+  apply Subsingleton.elim
+
+/--
+The certified dependency projection assembly-input payload is selected from
+the extractor/derivation decomposition of the dependency-level topology
+statement.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies
+      dependencies =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_derivation.mp
+              (topology_extraction_statement_of_dependencies dependencies) with
           ⟨extractSphere, derivation⟩
         exact ⟨finite_extinction_of_dependencies dependencies, extractSphere,
           derivation⟩) := by
@@ -6281,6 +6410,26 @@ theorem poincare_target_payload_of_dependency_projections_eq
           ⟨finiteExtinction, extraction⟩
         rcases poincare_payload_of_extinction_and_extraction
             finiteExtinction extraction with
+          ⟨target, criterion⟩
+        exact ⟨finiteExtinction, extraction, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The dependency projection target payload factors through the named
+finite-extinction plus theorem-shaped topology-extraction assembly route.
+-/
+theorem poincare_target_payload_of_dependency_projections_to_topology_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_target_payload_of_dependency_projections dependencies =
+      (by
+        let finiteExtinction := finite_extinction_of_dependencies dependencies
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies dependencies
+        let extraction :=
+          extinction_implies_sphere_of_topology_extraction_statement
+            topologyStatement
+        rcases poincare_payload_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement with
           ⟨target, criterion⟩
         exact ⟨finiteExtinction, extraction, target, criterion⟩) := by
   apply Subsingleton.elim
@@ -6329,6 +6478,26 @@ theorem poincare_target_payload_of_extraction_derivation_dependency_projections_
           (smoothability_package_of_dependencies dependencies)
           (surgery_packages_of_dependencies dependencies)
           extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+The certified dependency projection target payload also factors through the
+finite-extinction plus extractor/derivation topology assembly route.
+-/
+theorem poincare_target_payload_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_target_payload_of_extraction_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation with
+          ⟨target, criterion⟩
+        exact ⟨finite_extinction_of_dependencies dependencies,
+          extractSphere, derivation, target, criterion⟩) := by
   apply Subsingleton.elim
 
 /--
@@ -6480,6 +6649,18 @@ theorem poincare_completion_payload_of_dependency_projections_eq
   apply Subsingleton.elim
 
 /--
+The dependency projection completion payload is the payload of the named
+finite-extinction plus theorem-shaped topology-extraction route.
+-/
+theorem poincare_completion_payload_of_dependency_projections_to_topology_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_dependency_projections dependencies =
+      poincare_payload_of_finite_extinction_and_topology_extraction_statement
+        (finite_extinction_of_dependencies dependencies)
+        (topology_extraction_statement_of_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The extraction-derivation projection route exposes the local target and
 universe-indexed completion criterion as one payload.
 -/
@@ -6509,6 +6690,24 @@ theorem poincare_completion_payload_of_extraction_derivation_dependency_projecti
   apply Subsingleton.elim
 
 /--
+The certified dependency projection completion payload is the payload of the
+named finite-extinction plus extractor/derivation route.
+-/
+theorem poincare_completion_payload_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_extraction_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency package also proves the Poincare target through the
 full finite-extinction and post-extinction extraction projection payload.
 -/
@@ -6531,6 +6730,18 @@ theorem poincare_statement_of_dependency_projections_eq
             dependencies with
           ⟨target, _criterion⟩
         exact target) := by
+  apply Subsingleton.elim
+
+/--
+The dependency projection Poincare statement is the target of the named
+finite-extinction plus theorem-shaped topology-extraction route.
+-/
+theorem poincare_statement_of_dependency_projections_to_topology_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_statement_of_dependency_projections dependencies =
+      poincare_statement_of_finite_extinction_and_topology_extraction_statement
+        (finite_extinction_of_dependencies dependencies)
+        (topology_extraction_statement_of_dependencies dependencies) := by
   apply Subsingleton.elim
 
 /--
@@ -6560,6 +6771,24 @@ theorem poincare_statement_of_extraction_derivation_dependency_projections_eq
             dependencies with
           ⟨target, _criterion⟩
         exact target) := by
+  apply Subsingleton.elim
+
+/--
+The certified dependency projection Poincare statement is the target of the
+named finite-extinction plus extractor/derivation route.
+-/
+theorem poincare_statement_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_statement_of_extraction_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          poincare_statement_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
   apply Subsingleton.elim
 
 /--

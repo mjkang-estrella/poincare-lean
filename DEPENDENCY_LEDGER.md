@@ -521,7 +521,13 @@ It is not a proof. It is a work breakdown for future Lean development.
   `topology_extraction_derivation_payload_of_dependencies_eq`, and
   `extinction_extraction_of_dependencies_eq` pin those dependency-level
   topology extraction payloads, statements, derivation evidence, and final
-  extractor back to the stored topology package route.
+  extractor back to the stored topology package route. The matching
+  dependency-level statement-route contracts pin the payload, fixed-extinction
+  payload, derivation payload, homeomorphism projection, final extractor,
+  certified extractor/derivation payload, and projection target, completion,
+  and statement routes to `topology_extraction_statement_of_dependencies`, the
+  finite-extinction plus topology-statement assembly route, and the certified
+  extractor/derivation assembly route.
   `ExtinctionTopologyDerivationForExtractionStatement`,
   `extinction_topology_extraction_statement_of_extraction_and_derivation`, and
   `extinction_topology_extraction_statement_iff_extraction_with_derivation`
