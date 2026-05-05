@@ -954,12 +954,20 @@ check_decl "certificate aggregate dependency packaged canonical smooth statement
   '^theorem poincareCompletionCertificate_poincareProofDependencies_packaged_canonical_smooth_three_sphere_statement_payload_eq\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency packaged smooth statement payload certificate constructor is declared" \
   '^theorem completion_certificate_of_remaining_dependency_package_packaged_smooth_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged smooth statement payload certificate constructor equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_package_packaged_smooth_statement_payload_eq\b' Poincare/CanonicalBridges.lean
 check_decl "aggregate dependency packaged smooth statement payload certificate constructor is declared" \
   '^theorem completion_certificate_of_poincareProofDependencies_packaged_smooth_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged smooth statement payload certificate constructor equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_packaged_smooth_statement_payload_eq\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency packaged canonical smooth statement payload certificate constructor is declared" \
   '^theorem completion_certificate_of_remaining_dependency_package_packaged_canonical_smooth_three_sphere_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged canonical smooth statement payload certificate constructor equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_package_packaged_canonical_smooth_three_sphere_statement_payload_eq\b' Poincare/CanonicalBridges.lean
 check_decl "aggregate dependency packaged canonical smooth statement payload certificate constructor is declared" \
   '^theorem completion_certificate_of_poincareProofDependencies_packaged_canonical_smooth_three_sphere_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged canonical smooth statement payload certificate constructor equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_packaged_canonical_smooth_three_sphere_statement_payload_eq\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency packaged smooth statement certificate iff payload is declared" \
   '^theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_packaged_smooth_statement_payload\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency packaged smooth statement certificate iff equality contract is declared" \
@@ -1026,8 +1034,12 @@ check_decl "aggregate dependency non-packaged smooth certificate payload equalit
   '^theorem poincareCompletionCertificate_poincareProofDependencies_smooth_statement_payload_eq\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency non-packaged smooth payload certificate constructor is declared" \
   '^theorem completion_certificate_of_remaining_dependency_package_smooth_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency non-packaged smooth payload certificate constructor equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_package_smooth_statement_payload_eq\b' Poincare/CanonicalBridges.lean
 check_decl "aggregate dependency non-packaged smooth payload certificate constructor is declared" \
   '^theorem completion_certificate_of_poincareProofDependencies_smooth_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency non-packaged smooth payload certificate constructor equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_smooth_statement_payload_eq\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency non-packaged smooth payload certificate iff is declared" \
   '^theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_smooth_statement_payload\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency non-packaged smooth payload certificate iff equality contract is declared" \
@@ -1060,8 +1072,12 @@ check_decl "aggregate dependency non-packaged canonical smooth certificate paylo
   '^theorem poincareCompletionCertificate_poincareProofDependencies_canonical_smooth_three_sphere_statement_payload_eq\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency non-packaged canonical smooth payload certificate constructor is declared" \
   '^theorem completion_certificate_of_remaining_dependency_package_canonical_smooth_three_sphere_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency non-packaged canonical smooth payload certificate constructor equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_package_canonical_smooth_three_sphere_statement_payload_eq\b' Poincare/CanonicalBridges.lean
 check_decl "aggregate dependency non-packaged canonical smooth payload certificate constructor is declared" \
   '^theorem completion_certificate_of_poincareProofDependencies_canonical_smooth_three_sphere_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency non-packaged canonical smooth payload certificate constructor equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_canonical_smooth_three_sphere_statement_payload_eq\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency non-packaged canonical smooth payload certificate iff is declared" \
   '^theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_canonical_smooth_three_sphere_statement_payload\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency non-packaged canonical smooth payload certificate iff equality contract is declared" \
@@ -1094,8 +1110,12 @@ check_decl "aggregate dependency non-packaged reverse canonical smooth certifica
   '^theorem poincareCompletionCertificate_poincareProofDependencies_reverse_canonical_smooth_three_sphere_statement_payload_eq\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency non-packaged reverse canonical smooth payload certificate constructor is declared" \
   '^theorem completion_certificate_of_remaining_dependency_package_reverse_canonical_smooth_three_sphere_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency non-packaged reverse canonical smooth payload certificate constructor equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_package_reverse_canonical_smooth_three_sphere_statement_payload_eq\b' Poincare/CanonicalBridges.lean
 check_decl "aggregate dependency non-packaged reverse canonical smooth payload certificate constructor is declared" \
   '^theorem completion_certificate_of_poincareProofDependencies_reverse_canonical_smooth_three_sphere_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency non-packaged reverse canonical smooth payload certificate constructor equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_reverse_canonical_smooth_three_sphere_statement_payload_eq\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency non-packaged reverse canonical smooth payload certificate iff is declared" \
   '^theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_reverse_canonical_smooth_three_sphere_statement_payload\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency non-packaged reverse canonical smooth payload certificate iff equality contract is declared" \
@@ -1392,8 +1412,12 @@ check_decl "aggregate dependency packaged reverse canonical smooth certificate p
   '^theorem poincareCompletionCertificate_poincareProofDependencies_packaged_reverse_canonical_smooth_three_sphere_statement_payload_eq\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency packaged reverse canonical smooth payload certificate constructor is declared" \
   '^theorem completion_certificate_of_remaining_dependency_package_packaged_reverse_canonical_smooth_three_sphere_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged reverse canonical smooth payload certificate constructor equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_package_packaged_reverse_canonical_smooth_three_sphere_statement_payload_eq\b' Poincare/CanonicalBridges.lean
 check_decl "aggregate dependency packaged reverse canonical smooth payload certificate constructor is declared" \
   '^theorem completion_certificate_of_poincareProofDependencies_packaged_reverse_canonical_smooth_three_sphere_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged reverse canonical smooth payload certificate constructor equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_packaged_reverse_canonical_smooth_three_sphere_statement_payload_eq\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency packaged reverse canonical smooth payload certificate iff is declared" \
   '^theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_packaged_reverse_canonical_smooth_three_sphere_statement_payload\b' Poincare/CanonicalBridges.lean
 check_decl "aggregate dependency packaged reverse canonical smooth payload certificate iff is declared" \

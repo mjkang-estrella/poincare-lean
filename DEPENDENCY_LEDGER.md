@@ -1550,6 +1550,8 @@ It is not a proof. It is a work breakdown for future Lean development.
   remaining-dependency and aggregate payloads, and the matching packaged
   certificate payload projections are pinned to the exact component payload
   assemblers for smooth, canonical-smooth, and reverse canonical-smooth routes.
+  The reverse payload-to-certificate constructors are pinned to the matching
+  payload destructors across the same route family.
   The smooth and packaged-smooth
   routes now also
   have equality contracts pinning their canonical payload, certificate

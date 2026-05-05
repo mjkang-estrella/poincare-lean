@@ -1457,6 +1457,8 @@ The current artifact is intentionally conservative:
   remaining-dependency and aggregate payloads, and the packaged certificate
   payload projections themselves are pinned to the exact component payload
   assemblers for smooth, canonical-smooth, and reverse canonical-smooth routes.
+  The reverse payload-to-certificate constructors are pinned to the matching
+  payload destructors across the same route family.
   The smooth and packaged-smooth
   routes now also
   have equality contracts pinning their canonical payload, certificate

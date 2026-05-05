@@ -4726,6 +4726,329 @@ theorem poincareCompletionCertificate_poincareProofDependencies_reverse_canonica
   apply Subsingleton.elim
 
 /--
+The remaining-dependency packaged smooth payload certificate constructor is
+exactly the constructor obtained by destructuring the payload and using the
+stored dependency package and packaged smooth statement.
+-/
+theorem completion_certificate_of_remaining_dependency_package_packaged_smooth_statement_payload_eq
+    (payload :
+      ∃ _dependencies : RemainingDependencyPackage.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _smoothStatement : SmoothPoincareConjectureStatement.{u},
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_remaining_dependency_package_packaged_smooth_statement_payload
+        payload =
+      (by
+        rcases payload with
+          ⟨dependencies, _smoothManifold, smoothStatement, _target,
+            _criterion⟩
+        exact completion_certificate_of_remaining_dependency_and_packaged_smooth_statement
+          dependencies smoothStatement) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate packaged smooth payload certificate constructor is exactly the
+constructor obtained by destructuring the payload and using the stored aggregate
+dependency package and packaged smooth statement.
+-/
+theorem completion_certificate_of_poincareProofDependencies_packaged_smooth_statement_payload_eq
+    (payload :
+      ∃ _dependencies : PoincareProofDependencies.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _smoothStatement : SmoothPoincareConjectureStatement.{u},
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_poincareProofDependencies_packaged_smooth_statement_payload
+        payload =
+      (by
+        rcases payload with
+          ⟨dependencies, _smoothManifold, smoothStatement, _target,
+            _criterion⟩
+        exact
+          completion_certificate_of_poincareProofDependencies_and_packaged_smooth_statement
+            dependencies smoothStatement) := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency packaged canonical-smooth payload certificate
+constructor is exactly the constructor obtained by destructuring the payload and
+using the stored dependency package and packaged canonical smooth statement.
+-/
+theorem completion_certificate_of_remaining_dependency_package_packaged_canonical_smooth_three_sphere_statement_payload_eq
+    (payload :
+      ∃ _dependencies : RemainingDependencyPackage.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _canonicalSmoothStatement :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [IsManifold (𝓡 3) ∞ M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)),
+      ∃ _smoothStatement : SmoothPoincareConjectureStatement.{u},
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_remaining_dependency_package_packaged_canonical_smooth_three_sphere_statement_payload
+        payload =
+      (by
+        rcases payload with
+          ⟨dependencies, _smoothManifold, canonicalSmoothStatement,
+            _smoothStatement, _target, _criterion⟩
+        exact
+          completion_certificate_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement
+            dependencies canonicalSmoothStatement) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate packaged canonical-smooth payload certificate constructor is
+exactly the constructor obtained by destructuring the payload and using the
+stored aggregate dependency package and packaged canonical smooth statement.
+-/
+theorem completion_certificate_of_poincareProofDependencies_packaged_canonical_smooth_three_sphere_statement_payload_eq
+    (payload :
+      ∃ _dependencies : PoincareProofDependencies.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _canonicalSmoothStatement :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [IsManifold (𝓡 3) ∞ M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)),
+      ∃ _smoothStatement : SmoothPoincareConjectureStatement.{u},
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_poincareProofDependencies_packaged_canonical_smooth_three_sphere_statement_payload
+        payload =
+      (by
+        rcases payload with
+          ⟨dependencies, _smoothManifold, canonicalSmoothStatement,
+            _smoothStatement, _target, _criterion⟩
+        exact
+          completion_certificate_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement
+            dependencies canonicalSmoothStatement) := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency packaged reverse canonical-smooth payload certificate
+constructor is exactly the constructor obtained by destructuring the payload and
+using the stored dependency package and packaged reverse canonical smooth
+statement.
+-/
+theorem completion_certificate_of_remaining_dependency_package_packaged_reverse_canonical_smooth_three_sphere_statement_payload_eq
+    (payload :
+      ∃ _dependencies : RemainingDependencyPackage.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _reverseCanonicalSmoothStatement :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [IsManifold (𝓡 3) ∞ M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)),
+      ∃ _smoothStatement : SmoothPoincareConjectureStatement.{u},
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_remaining_dependency_package_packaged_reverse_canonical_smooth_three_sphere_statement_payload
+        payload =
+      (by
+        rcases payload with
+          ⟨dependencies, _smoothManifold, reverseCanonicalSmoothStatement,
+            _smoothStatement, _target, _criterion⟩
+        exact
+          completion_certificate_of_remaining_dependency_and_packaged_reverse_canonical_smooth_three_sphere_statement
+            dependencies reverseCanonicalSmoothStatement) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate packaged reverse canonical-smooth payload certificate constructor
+is exactly the constructor obtained by destructuring the payload and using the
+stored aggregate dependency package and packaged reverse canonical smooth
+statement.
+-/
+theorem completion_certificate_of_poincareProofDependencies_packaged_reverse_canonical_smooth_three_sphere_statement_payload_eq
+    (payload :
+      ∃ _dependencies : PoincareProofDependencies.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _reverseCanonicalSmoothStatement :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [IsManifold (𝓡 3) ∞ M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)),
+      ∃ _smoothStatement : SmoothPoincareConjectureStatement.{u},
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_poincareProofDependencies_packaged_reverse_canonical_smooth_three_sphere_statement_payload
+        payload =
+      (by
+        rcases payload with
+          ⟨dependencies, _smoothManifold, reverseCanonicalSmoothStatement,
+            _smoothStatement, _target, _criterion⟩
+        exact
+          completion_certificate_of_poincareProofDependencies_and_packaged_reverse_canonical_smooth_three_sphere_statement
+            dependencies reverseCanonicalSmoothStatement) := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency non-packaged smooth payload certificate constructor is
+exactly the constructor obtained by destructuring the payload and using the
+stored dependency package, smoothability input, and smooth statement.
+-/
+theorem completion_certificate_of_remaining_dependency_package_smooth_statement_payload_eq
+    (payload :
+      ∃ _dependencies : RemainingDependencyPackage.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _smoothStatement : SmoothPoincareConjectureStatement.{u},
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_remaining_dependency_package_smooth_statement_payload
+        payload =
+      (by
+        rcases payload with
+          ⟨dependencies, smoothable, smoothStatement, _target, _criterion⟩
+        exact
+          completion_certificate_of_remaining_dependency_and_smooth_statement
+            dependencies smoothable smoothStatement) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate non-packaged smooth payload certificate constructor is exactly the
+constructor obtained by destructuring the payload and using the stored aggregate
+dependency package, smoothability input, and smooth statement.
+-/
+theorem completion_certificate_of_poincareProofDependencies_smooth_statement_payload_eq
+    (payload :
+      ∃ _dependencies : PoincareProofDependencies.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _smoothStatement : SmoothPoincareConjectureStatement.{u},
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_poincareProofDependencies_smooth_statement_payload
+        payload =
+      (by
+        rcases payload with
+          ⟨dependencies, smoothable, smoothStatement, _target, _criterion⟩
+        exact
+          completion_certificate_of_poincareProofDependencies_and_smooth_statement
+            dependencies smoothable smoothStatement) := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency non-packaged canonical-smooth payload certificate
+constructor is exactly the constructor obtained by destructuring the payload and
+using the stored dependency package, smoothability input, and canonical smooth
+statement.
+-/
+theorem completion_certificate_of_remaining_dependency_package_canonical_smooth_three_sphere_statement_payload_eq
+    (payload :
+      ∃ _dependencies : RemainingDependencyPackage.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _canonicalSmoothStatement :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [IsManifold (𝓡 3) ∞ M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)),
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_remaining_dependency_package_canonical_smooth_three_sphere_statement_payload
+        payload =
+      (by
+        rcases payload with
+          ⟨dependencies, smoothable, canonicalSmoothStatement, _target,
+            _criterion⟩
+        exact
+          completion_certificate_of_remaining_dependency_and_canonical_smooth_three_sphere_statement
+            dependencies smoothable canonicalSmoothStatement) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate non-packaged canonical-smooth payload certificate constructor is
+exactly the constructor obtained by destructuring the payload and using the
+stored aggregate dependency package, smoothability input, and canonical smooth
+statement.
+-/
+theorem completion_certificate_of_poincareProofDependencies_canonical_smooth_three_sphere_statement_payload_eq
+    (payload :
+      ∃ _dependencies : PoincareProofDependencies.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _canonicalSmoothStatement :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [IsManifold (𝓡 3) ∞ M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)),
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_poincareProofDependencies_canonical_smooth_three_sphere_statement_payload
+        payload =
+      (by
+        rcases payload with
+          ⟨dependencies, smoothable, canonicalSmoothStatement, _target,
+            _criterion⟩
+        exact
+          completion_certificate_of_poincareProofDependencies_and_canonical_smooth_three_sphere_statement
+            dependencies smoothable canonicalSmoothStatement) := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency non-packaged reverse canonical-smooth payload
+certificate constructor is exactly the constructor obtained by destructuring the
+payload and using the stored dependency package, smoothability input, and
+reverse canonical smooth statement.
+-/
+theorem completion_certificate_of_remaining_dependency_package_reverse_canonical_smooth_three_sphere_statement_payload_eq
+    (payload :
+      ∃ _dependencies : RemainingDependencyPackage.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _reverseCanonicalSmoothStatement :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [IsManifold (𝓡 3) ∞ M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)),
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_remaining_dependency_package_reverse_canonical_smooth_three_sphere_statement_payload
+        payload =
+      (by
+        rcases payload with
+          ⟨dependencies, smoothable, reverseCanonicalSmoothStatement, _target,
+            _criterion⟩
+        exact
+          completion_certificate_of_remaining_dependency_and_reverse_canonical_smooth_three_sphere_statement
+            dependencies smoothable reverseCanonicalSmoothStatement) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate non-packaged reverse canonical-smooth payload certificate
+constructor is exactly the constructor obtained by destructuring the payload and
+using the stored aggregate dependency package, smoothability input, and reverse
+canonical smooth statement.
+-/
+theorem completion_certificate_of_poincareProofDependencies_reverse_canonical_smooth_three_sphere_statement_payload_eq
+    (payload :
+      ∃ _dependencies : PoincareProofDependencies.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _reverseCanonicalSmoothStatement :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [IsManifold (𝓡 3) ∞ M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)),
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_poincareProofDependencies_reverse_canonical_smooth_three_sphere_statement_payload
+        payload =
+      (by
+        rcases payload with
+          ⟨dependencies, smoothable, reverseCanonicalSmoothStatement, _target,
+            _criterion⟩
+        exact
+          completion_certificate_of_poincareProofDependencies_and_reverse_canonical_smooth_three_sphere_statement
+            dependencies smoothable reverseCanonicalSmoothStatement) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate and remaining-dependency non-packaged reverse route payload shapes
 are equivalent by the dependency-package equivalence.
 -/
