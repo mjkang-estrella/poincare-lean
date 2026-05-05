@@ -6048,6 +6048,22 @@ theorem completion_certificate_of_literal_payload_eq
   apply Subsingleton.elim
 
 /--
+Projecting the literal payload from the literal-payload certificate constructor
+recovers the supplied payload.
+-/
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_literal_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        RemainingDependencyPackage.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_literal_payload payload) =
+      payload := by
+  apply Subsingleton.elim
+
+/--
 The checked completion certificate is equivalent to its literal reserved-name
 artifact payload.
 -/
@@ -7102,6 +7118,22 @@ theorem completion_certificate_of_aggregate_dependency_payload_eq
   apply Subsingleton.elim
 
 /--
+Projecting the aggregate dependency payload from the aggregate-payload
+certificate constructor recovers the supplied payload.
+-/
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_aggregate_dependency_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_aggregate_dependency_payload payload) =
+      payload := by
+  apply Subsingleton.elim
+
+/--
 The checked completion certificate is equivalent to the full artifact payload
 whose dependency field is the aggregate proof dependency package.
 -/
@@ -7199,6 +7231,22 @@ theorem completion_certificate_of_project_statement_payload_eq
             remainingDependencyPackage_iff_poincareProofDependencies.mpr
               dependencies,
             target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project-statement payload from the project-payload certificate
+constructor recovers the supplied payload.
+-/
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_project_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        PoincareConjectureStatement.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_project_statement_payload payload) =
+      payload := by
   apply Subsingleton.elim
 
 /--

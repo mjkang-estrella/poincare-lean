@@ -1080,6 +1080,8 @@ The current artifact is intentionally conservative:
   `completion_certificate_of_project_statement_payload`, and
   `poincareCompletionCertificate_iff_project_statement_payload` identify the
   analogous full payload with the project Poincare statement named directly.
+  The literal, aggregate-dependency, and project-statement full payload
+  constructors now have projection-after-constructor round-trip contracts.
   `poincareCompletionCertificate_iff_components`,
   `poincareCompletionCertificate_iff_component_requirements`,
   `poincareCompletionCertificate_iff_package_layer_requirements`, and
