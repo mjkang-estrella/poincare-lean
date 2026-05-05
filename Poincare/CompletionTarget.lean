@@ -2919,6 +2919,16 @@ theorem remainingDependencyPackage_components_payload_eq
   apply Subsingleton.elim
 
 /--
+The remaining-dependency component payload is the aggregate dependency
+component payload under the remaining-dependency abbreviation.
+-/
+theorem remainingDependencyPackage_components_payload_to_aggregate_payload_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    remainingDependencyPackage_components_payload dependencies =
+      poincareProofDependencies_components_payload dependencies := by
+  apply Subsingleton.elim
+
+/--
 The remaining dependency package is equivalent to exactly the three component
 inputs represented by the aggregate proof dependency package.
 -/
@@ -7184,6 +7194,34 @@ theorem poincareCompletionCertificate_components_payload_eq
     (certificate : PoincareCompletionCertificate.{u}) :
     poincareCompletionCertificate_components_payload certificate =
       poincareCompletionCertificate_iff_components.mp certificate := by
+  apply Subsingleton.elim
+
+/--
+The raw-component certificate payload is the remaining-dependency component
+payload projected from the certificate.
+-/
+theorem poincareCompletionCertificate_components_payload_to_remaining_dependency_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    poincareCompletionCertificate_components_payload certificate =
+      remainingDependencyPackage_components_payload
+        (remaining_dependency_package_of_completion_certificate
+          certificate) := by
+  apply Subsingleton.elim
+
+/--
+The raw-component certificate payload is the tuple of stored fields from the
+certificate's remaining-dependency package.
+-/
+theorem poincareCompletionCertificate_components_payload_to_fields_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    poincareCompletionCertificate_components_payload certificate =
+      ⟨ (remaining_dependency_package_of_completion_certificate
+            certificate).smoothability
+      , (remaining_dependency_package_of_completion_certificate
+            certificate).surgery
+      , (remaining_dependency_package_of_completion_certificate
+            certificate).topology
+      ⟩ := by
   apply Subsingleton.elim
 
 /--

@@ -909,7 +909,7 @@ The current artifact is intentionally conservative:
   them to the stored smoothability component of the remaining-dependency package.
   The surgery-family projection, topology-extraction projection, raw component
   payload, and component equivalence are pinned to the same stored
-  remaining-dependency fields and aggregate component equivalence.
+  remaining-dependency fields and aggregate component payload/equivalence.
   The component-slot, package-layer, and milestone requirement payload/iff
   routes are likewise pinned to the corresponding aggregate dependency
   crosswalk payloads and equivalences.
@@ -1087,8 +1087,10 @@ The current artifact is intentionally conservative:
   `poincareCompletionCertificate_component_requirements_payload`,
   `poincareCompletionCertificate_package_layer_requirements_payload`, and
   `poincareCompletionCertificate_milestone_requirements_payload` project those
-  presentations back out of the certificate. The component-slot, package-layer,
-  and milestone certificate payloads are pinned back to the certificate's
+  presentations back out of the certificate. The raw-component certificate
+  payload is pinned back to the certificate's remaining-dependency component
+  payload and stored fields, while the component-slot, package-layer, and
+  milestone certificate payloads are pinned back to the certificate's
   remaining-dependency payloads and to the corresponding component,
   generic-package, or milestone-assigned package-layer projection tuples.
   `completion_certificate_of_components`,

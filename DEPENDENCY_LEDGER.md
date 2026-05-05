@@ -948,7 +948,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   package with the aggregate package and its three component inputs. The theorem
   `remainingDependencyPackage_components_payload` exposes those components from
   the completion-target boundary, with named smoothability, surgery, and
-  topology projections. The theorem
+  topology projections. The raw component payload is pinned to the stored
+  remaining-dependency fields and aggregate component payload/equivalence. The
+  theorem
   `remainingDependencyPackage_component_requirements_payload`, together with
   `remainingDependencyPackage_iff_component_requirements`, exposes the same
   boundary through the component-slot requirements named by the crosswalk; its
@@ -1122,8 +1124,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   `poincareCompletionCertificate_component_requirements_payload`,
   `poincareCompletionCertificate_package_layer_requirements_payload`, and
   `poincareCompletionCertificate_milestone_requirements_payload` project those
-  presentations back out of the certificate. The component-slot, package-layer,
-  and milestone certificate payloads are pinned back to the certificate's
+  presentations back out of the certificate. The raw-component certificate
+  payload is pinned back to the certificate's remaining-dependency component
+  payload and stored fields, while the component-slot, package-layer, and
+  milestone certificate payloads are pinned back to the certificate's
   remaining-dependency payloads and to the corresponding component,
   generic-package, or milestone-assigned package-layer projection tuples.
   `completion_certificate_of_components`,
