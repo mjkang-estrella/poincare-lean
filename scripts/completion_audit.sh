@@ -2870,6 +2870,8 @@ check_decl "topology component assembly theorem for derivation statement is decl
   '^theorem extinction_topology_derivation_statement_of_components\b' Poincare/TopologyExtraction.lean
 check_decl "topology package derivation statement projection is declared" \
   '^theorem extinction_topology_derivation_statement_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package derivation statement equality contract is declared" \
+  '^theorem extinction_topology_derivation_statement_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
 check_decl "topology classification sub-obligations payload alias is declared" \
   '^abbrev ExtinctionTopologyClassificationSubobligationsPayload\b' Poincare/TopologyExtraction.lean
 check_decl "topology derivation statement classification bridge is declared" \
@@ -6643,6 +6645,7 @@ open scoped Manifold ContDiff
 #check Poincare.ExtinctionTopologyDerivationForExtractionStatement
 #check Poincare.extinction_topology_derivation_statement_of_components
 #check Poincare.extinction_topology_derivation_statement_of_topology_package
+#check Poincare.extinction_topology_derivation_statement_of_topology_package_eq
 #check Poincare.ExtinctionTopologyClassificationSubobligationsPayload
 #check Poincare.topology_classification_subobligations_of_derivation_statement
 #check Poincare.topology_homeomorphism_assembly_statement_of_derivation_statement
@@ -9596,6 +9599,7 @@ open scoped Manifold ContDiff
 #check Poincare.ExtinctionTopologyDerivationForExtractionStatement
 #check Poincare.extinction_topology_derivation_statement_of_components
 #check Poincare.extinction_topology_derivation_statement_of_topology_package
+#check Poincare.extinction_topology_derivation_statement_of_topology_package_eq
 #check Poincare.ExtinctionTopologyClassificationSubobligationsPayload
 #check Poincare.topology_classification_subobligations_of_derivation_statement
 #check Poincare.topology_homeomorphism_assembly_statement_of_derivation_statement

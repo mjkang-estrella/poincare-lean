@@ -488,7 +488,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   simply connected recognition, the package homeomorphism, trivial-quotient
   homeomorphism, homeomorphism-lift, assembly/derivation, extraction payloads,
   and final extractor, while theorem-shaped statement routes remain explicit
-  where the projection is not just a stored field; the
+  where the projection is not just a stored field. The fixed-manifold topology
+  derivation statement route is now pinned directly to the component assembly
+  route applied to the package projections; the
   dependency-level classification payload
   `topology_classification_payload_of_dependencies` centralizes the
   post-extinction classification stack, and the individual dependency-level

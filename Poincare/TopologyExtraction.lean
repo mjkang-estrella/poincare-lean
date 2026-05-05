@@ -3345,6 +3345,88 @@ theorem extinction_topology_derivation_statement_of_topology_package
     (extinction_homeomorphism_derivation_of_topology_package package M extinction)
 
 /--
+The completed topology package route to the fixed-manifold topology derivation
+statement is exactly the component assembly route applied to the package
+projections.
+-/
+theorem extinction_topology_derivation_statement_of_topology_package_eq
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    extinction_topology_derivation_statement_of_topology_package
+        package M extinction =
+      extinction_topology_derivation_statement_of_components M extinction
+        (homeomorphism_of_topology_package package M extinction)
+        (extinction_decomposition_of_topology_package package M extinction)
+        (extinction_surgery_trace_reconstruction_of_topology_package
+          package M extinction)
+        (extinction_surgery_trace_handle_cancellation_of_topology_package
+          package M extinction)
+        (extinction_component_classification_of_topology_package
+          package M extinction)
+        (extinction_discarded_component_homeomorphism_classification_of_topology_package
+          package M extinction)
+        (extinction_component_inventory_of_topology_package package M extinction)
+        (extinction_component_boundary_sphere_control_of_topology_package
+          package M extinction)
+        (extinction_prime_decomposition_of_topology_package package M extinction)
+        (extinction_prime_decomposition_existence_of_topology_package
+          package M extinction)
+        (extinction_sphere_theorem_application_of_topology_package
+          package M extinction)
+        (extinction_embedded_sphere_production_of_topology_package
+          package M extinction)
+        (extinction_loop_theorem_application_of_topology_package
+          package M extinction)
+        (extinction_prime_decomposition_compatibility_of_topology_package
+          package M extinction)
+        (extinction_prime_factor_uniqueness_of_topology_package
+          package M extinction)
+        (extinction_irreducibility_of_topology_package package M extinction)
+        (extinction_irreducible_factor_recognition_of_topology_package
+          package M extinction)
+        (extinction_connected_sum_collapse_of_topology_package
+          package M extinction)
+        (extinction_connected_sum_fundamental_group_control_of_topology_package
+          package M extinction)
+        (extinction_connected_sum_van_kampen_of_topology_package
+          package M extinction)
+        (extinction_simply_connected_prime_factor_control_of_topology_package
+          package M extinction)
+        (extinction_spherical_space_form_reduction_of_topology_package
+          package M extinction)
+        (spherical_space_form_classification_of_topology_package
+          package M extinction)
+        (spherical_quotient_model_of_topology_package package M extinction)
+        (spherical_free_action_of_topology_package package M extinction)
+        (spherical_universal_cover_of_topology_package package M extinction)
+        (spherical_covering_model_of_topology_package package M extinction)
+        (spherical_covering_projection_of_topology_package package M extinction)
+        (spherical_fundamental_group_of_topology_package package M extinction)
+        (spherical_deck_group_identification_of_topology_package
+          package M extinction)
+        (spherical_deck_action_properness_of_topology_package
+          package M extinction)
+        (spherical_deck_group_triviality_of_topology_package
+          package M extinction)
+        (spherical_deck_action_trivialization_of_topology_package
+          package M extinction)
+        (spherical_trivial_deck_quotient_identification_of_topology_package
+          package M extinction)
+        (trivial_spherical_quotient_of_topology_package package M extinction)
+        (trivial_quotient_homeomorphism_of_topology_package package M extinction)
+        (spherical_homeomorphism_lift_of_topology_package package M extinction)
+        (simply_connected_extinction_recognition_of_topology_package
+          package M extinction)
+        (extinction_homeomorphism_assembly_of_topology_package
+          package M extinction)
+        (extinction_homeomorphism_derivation_of_topology_package
+          package M extinction) := by
+  apply Subsingleton.elim
+
+/--
 Semantic alias for the full post-extinction classification sub-obligation
 payload exposed by a fixed-manifold topology derivation statement.
 -/
