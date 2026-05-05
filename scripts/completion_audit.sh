@@ -2109,8 +2109,12 @@ check_decl "Perelman statement aggregate bridge equality contract is declared" \
   '^theorem perelman_singularity_control_of_statement_eq\b' Poincare/Surgery.lean
 check_decl "Perelman statement sub-obligation payload alias is declared" \
   '^abbrev PerelmanSingularityControlSubobligationsPayload\b' Poincare/Surgery.lean
+check_decl "Perelman statement sub-obligation payload equality contract is declared" \
+  '^theorem perelmanSingularityControlSubobligationsPayload_eq\b' Poincare/Surgery.lean
 check_decl "Perelman monotonicity/blow-up payload alias is declared" \
   '^abbrev PerelmanMonotonicityBlowupSubobligationsPayload\b' Poincare/Surgery.lean
+check_decl "Perelman monotonicity/blow-up payload equality contract is declared" \
+  '^theorem perelmanMonotonicityBlowupSubobligationsPayload_eq\b' Poincare/Surgery.lean
 check_decl "Perelman statement sub-obligations bridge is declared" \
   '^theorem perelman_subobligations_of_statement\b' Poincare/Surgery.lean
 check_decl "Perelman statement sub-obligations bridge equality contract is declared" \
@@ -7416,7 +7420,9 @@ open scoped Manifold ContDiff
 #check Poincare.RicciFlowWithSurgeryConstructionSubobligationsPayload
 #check Poincare.ricciFlowWithSurgeryConstructionSubobligationsPayload_eq
 #check Poincare.PerelmanSingularityControlSubobligationsPayload
+#check Poincare.perelmanSingularityControlSubobligationsPayload_eq
 #check Poincare.PerelmanMonotonicityBlowupSubobligationsPayload
+#check Poincare.perelmanMonotonicityBlowupSubobligationsPayload_eq
 #check Poincare.surgery_construction_payload_of_construction_package
 #check Poincare.surgery_construction_payload_of_construction_package_eq
 #check Poincare.perelman_control_payload_of_package
@@ -9978,7 +9984,9 @@ open scoped Manifold ContDiff
 #check Poincare.RicciFlowWithSurgeryConstructionSubobligationsPayload
 #check Poincare.ricciFlowWithSurgeryConstructionSubobligationsPayload_eq
 #check Poincare.PerelmanSingularityControlSubobligationsPayload
+#check Poincare.perelmanSingularityControlSubobligationsPayload_eq
 #check Poincare.PerelmanMonotonicityBlowupSubobligationsPayload
+#check Poincare.perelmanMonotonicityBlowupSubobligationsPayload_eq
 #check Poincare.surgery_construction_payload_of_construction_package
 #check Poincare.surgery_construction_payload_of_construction_package_eq
 #check Poincare.perelman_control_payload_of_package

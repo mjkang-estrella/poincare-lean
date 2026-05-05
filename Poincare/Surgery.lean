@@ -2399,6 +2399,71 @@ abbrev PerelmanSingularityControlSubobligationsPayload
   HasPerelmanSingularityControl (n := n) (M := M) flow
 
 /--
+The complete Perelman sub-obligation payload alias is definitionally the
+entropy, conjugate-heat, reduced-distance, reduced-volume, noncollapsing,
+kappa-solution, canonical-neighborhood, singularity-model, and aggregate
+singularity-control witness stack for the fixed flow.
+-/
+theorem perelmanSingularityControlSubobligationsPayload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    PerelmanSingularityControlSubobligationsPayload flow =
+      (HasPerelmanFFunctionalSetup flow ∧
+      HasPerelmanEntropyNormalization flow ∧
+      HasPerelmanEntropyMinimizerExistence flow ∧
+      HasPerelmanEntropyLogSobolevControl flow ∧
+      HasConjugateHeatEquationTheory flow ∧
+      HasAdjointHeatKernelConstruction flow ∧
+      HasPerelmanConjugateHeatKernelEstimates flow ∧
+      HasPerelmanWFunctionalSetup flow ∧
+      HasPerelmanEntropyGradientFormula flow ∧
+      HasPerelmanEntropyFirstVariation flow ∧
+      HasPerelmanEntropyMonotonicity flow ∧
+      HasPerelmanEntropyLowerBoundPropagation flow ∧
+      HasPerelmanEntropyFunctional flow ∧
+      HasPerelmanReducedLengthFirstVariation flow ∧
+      HasPerelmanReducedDistanceExistence flow ∧
+      HasPerelmanReducedDistanceDifferentialInequality flow ∧
+      HasPerelmanReducedDistanceEstimates flow ∧
+      HasPerelmanReducedDistanceCutLocusControl flow ∧
+      HasPerelmanReducedJacobianComparison flow ∧
+      HasPerelmanReducedDistanceTheory flow ∧
+      HasPerelmanReducedVolumeDefinition flow ∧
+      HasPerelmanReducedVolumeDerivativeFormula flow ∧
+      HasPerelmanReducedVolumeRigidity flow ∧
+      HasPerelmanReducedVolumePositiveLowerBound flow ∧
+      HasPerelmanReducedVolumeLimitRigidity flow ∧
+      HasPerelmanReducedVolumeNonincreasing flow ∧
+      HasPerelmanKappaNoncollapsingFromReducedVolume flow ∧
+      HasPerelmanNoLocalCollapsingContradictionSetup flow ∧
+      HasPerelmanCollapsedBallBlowup flow ∧
+      HasPerelmanVolumeRatioContradiction flow ∧
+      HasNoLocalCollapsingVolumeLowerBound flow ∧
+      HasPerelmanKappaNoncollapsingQuantification flow ∧
+      HasHamiltonCompactnessTheorem flow ∧
+      HasAncientKappaSolutionLimitExtraction flow ∧
+      HasKappaSolutionPointedRescaling flow ∧
+      HasKappaSolutionCurvatureNormalization flow ∧
+      HasKappaSolutionStructureTheory flow ∧
+      HasKappaSolutionNonnegativeCurvatureOperator flow ∧
+      HasKappaSolutionAsymptoticSoliton flow ∧
+      HasAncientKappaSolutionCompactness flow ∧
+      HasCanonicalNeighborhoodScaleControl flow ∧
+      HasCanonicalNeighborhoodStability flow ∧
+      HasCanonicalNeighborhoodPersistenceAcrossScales flow ∧
+      HasCanonicalNeighborhoodNeckCapDichotomy flow ∧
+      HasCanonicalNeighborhoodClassification flow ∧
+      HasPerelmanNoLocalCollapsing flow ∧
+      HasPerelmanReducedVolumeMonotonicity flow ∧
+      HasCanonicalNeighborhoodTheorem flow ∧
+      HasSingularityModelClassification flow ∧
+      HasSingularityModelBlowupClassification flow ∧
+      HasPerelmanSingularityControl (n := n) (M := M) flow) :=
+  rfl
+
+/--
 Semantic alias for the Perelman monotonicity, blow-up, compactness, and
 canonical-neighborhood payload before the aggregate singularity-control theorem.
 -/
@@ -2452,6 +2517,65 @@ abbrev PerelmanMonotonicityBlowupSubobligationsPayload
   HasCanonicalNeighborhoodPersistenceAcrossScales flow ∧
   HasCanonicalNeighborhoodNeckCapDichotomy flow ∧
   HasCanonicalNeighborhoodClassification flow
+
+/--
+The Perelman monotonicity/blow-up sub-obligation payload alias is
+definitionally the entropy, conjugate-heat, reduced-distance, reduced-volume,
+noncollapsing, compactness, kappa-solution, and canonical-neighborhood witness
+stack before aggregate singularity control.
+-/
+theorem perelmanMonotonicityBlowupSubobligationsPayload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    PerelmanMonotonicityBlowupSubobligationsPayload flow =
+      (HasPerelmanFFunctionalSetup flow ∧
+      HasPerelmanEntropyNormalization flow ∧
+      HasPerelmanEntropyMinimizerExistence flow ∧
+      HasPerelmanEntropyLogSobolevControl flow ∧
+      HasConjugateHeatEquationTheory flow ∧
+      HasAdjointHeatKernelConstruction flow ∧
+      HasPerelmanConjugateHeatKernelEstimates flow ∧
+      HasPerelmanWFunctionalSetup flow ∧
+      HasPerelmanEntropyGradientFormula flow ∧
+      HasPerelmanEntropyFirstVariation flow ∧
+      HasPerelmanEntropyMonotonicity flow ∧
+      HasPerelmanEntropyLowerBoundPropagation flow ∧
+      HasPerelmanEntropyFunctional flow ∧
+      HasPerelmanReducedLengthFirstVariation flow ∧
+      HasPerelmanReducedDistanceExistence flow ∧
+      HasPerelmanReducedDistanceDifferentialInequality flow ∧
+      HasPerelmanReducedDistanceEstimates flow ∧
+      HasPerelmanReducedDistanceCutLocusControl flow ∧
+      HasPerelmanReducedJacobianComparison flow ∧
+      HasPerelmanReducedDistanceTheory flow ∧
+      HasPerelmanReducedVolumeDefinition flow ∧
+      HasPerelmanReducedVolumeDerivativeFormula flow ∧
+      HasPerelmanReducedVolumeRigidity flow ∧
+      HasPerelmanReducedVolumePositiveLowerBound flow ∧
+      HasPerelmanReducedVolumeLimitRigidity flow ∧
+      HasPerelmanReducedVolumeNonincreasing flow ∧
+      HasPerelmanKappaNoncollapsingFromReducedVolume flow ∧
+      HasPerelmanNoLocalCollapsingContradictionSetup flow ∧
+      HasPerelmanCollapsedBallBlowup flow ∧
+      HasPerelmanVolumeRatioContradiction flow ∧
+      HasNoLocalCollapsingVolumeLowerBound flow ∧
+      HasPerelmanKappaNoncollapsingQuantification flow ∧
+      HasHamiltonCompactnessTheorem flow ∧
+      HasAncientKappaSolutionLimitExtraction flow ∧
+      HasKappaSolutionPointedRescaling flow ∧
+      HasKappaSolutionCurvatureNormalization flow ∧
+      HasKappaSolutionStructureTheory flow ∧
+      HasKappaSolutionNonnegativeCurvatureOperator flow ∧
+      HasKappaSolutionAsymptoticSoliton flow ∧
+      HasAncientKappaSolutionCompactness flow ∧
+      HasCanonicalNeighborhoodScaleControl flow ∧
+      HasCanonicalNeighborhoodStability flow ∧
+      HasCanonicalNeighborhoodPersistenceAcrossScales flow ∧
+      HasCanonicalNeighborhoodNeckCapDichotomy flow ∧
+      HasCanonicalNeighborhoodClassification flow) :=
+  rfl
 
 /--
 The theorem-shaped Perelman statement exposes the complete named
