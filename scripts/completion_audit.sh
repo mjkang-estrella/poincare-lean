@@ -4869,6 +4869,17 @@ check_decl "canonical completion criterion projection theorem is declared" \
   '^theorem canonical_completion_criterion_of_dependency_projections\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion criterion projection equality contract is declared" \
   '^theorem canonical_completion_criterion_of_dependency_projections_eq\b' Poincare/CompletionTarget.lean
+for canonical_dependency_statement_route_contract in \
+  canonical_completion_payload_of_dependency_projections_to_topology_statement_eq \
+  canonical_completion_target_of_dependency_projections_to_topology_statement_eq \
+  canonical_completion_criterion_of_dependency_projections_to_topology_statement_eq \
+  canonical_completion_payload_of_extraction_derivation_dependency_projections_to_finite_extinction_eq \
+  canonical_completion_target_of_extraction_derivation_dependency_projections_to_finite_extinction_eq \
+  canonical_completion_criterion_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
+do
+  check_decl "canonical dependency statement route contract ${canonical_dependency_statement_route_contract} is declared" \
+    "^theorem ${canonical_dependency_statement_route_contract}\\b" Poincare/CompletionTarget.lean
+done
 check_decl "completion certificate proposition is declared" \
   '^def PoincareCompletionCertificate\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate theorem-name payload theorem is declared" \
@@ -7131,10 +7142,18 @@ open scoped Manifold ContDiff
 #check Poincare.canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies_eq
 #check Poincare.canonical_completion_payload_of_dependency_projections
 #check Poincare.canonical_completion_payload_of_dependency_projections_eq
+#check Poincare.canonical_completion_payload_of_dependency_projections_to_topology_statement_eq
 #check Poincare.canonical_completion_target_of_dependency_projections
 #check Poincare.canonical_completion_target_of_dependency_projections_eq
+#check Poincare.canonical_completion_target_of_dependency_projections_to_topology_statement_eq
 #check Poincare.canonical_completion_criterion_of_dependency_projections
 #check Poincare.canonical_completion_criterion_of_dependency_projections_eq
+#check Poincare.canonical_completion_payload_of_dependency_projections_to_topology_statement_eq
+#check Poincare.canonical_completion_target_of_dependency_projections_to_topology_statement_eq
+#check Poincare.canonical_completion_criterion_of_dependency_projections_to_topology_statement_eq
+#check Poincare.canonical_completion_payload_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
+#check Poincare.canonical_completion_target_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
+#check Poincare.canonical_completion_criterion_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
 #check Poincare.canonical_completion_payload_of_extraction_derivation_dependency_projections
 #check Poincare.canonical_completion_payload_of_extraction_derivation_dependency_projections_eq
 #check Poincare.canonical_completion_target_of_extraction_derivation_dependency_projections
@@ -11419,6 +11438,7 @@ open scoped Manifold ContDiff
       Poincare.CompletionCriterionAtUniverse witness)
 
 #check Poincare.canonical_completion_criterion_of_dependency_projections_eq
+#check Poincare.canonical_completion_criterion_of_dependency_projections_to_topology_statement_eq
 
 #check (Poincare.canonical_completion_payload_of_extraction_derivation_dependency_projections :
   Poincare.RemainingDependencyPackage →
@@ -11426,12 +11446,14 @@ open scoped Manifold ContDiff
       ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
 
 #check Poincare.canonical_completion_payload_of_extraction_derivation_dependency_projections_eq
+#check Poincare.canonical_completion_payload_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
 
 #check (Poincare.canonical_completion_target_of_extraction_derivation_dependency_projections :
   Poincare.RemainingDependencyPackage →
     Poincare.canonicalCompletionTarget)
 
 #check Poincare.canonical_completion_target_of_extraction_derivation_dependency_projections_eq
+#check Poincare.canonical_completion_target_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
 
 #check (Poincare.canonical_completion_criterion_of_extraction_derivation_dependency_projections :
   ∀ witness : Type,
@@ -11439,6 +11461,7 @@ open scoped Manifold ContDiff
       Poincare.CompletionCriterionAtUniverse witness)
 
 #check Poincare.canonical_completion_criterion_of_extraction_derivation_dependency_projections_eq
+#check Poincare.canonical_completion_criterion_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
 
 #check (Poincare.completionCriterionAtUniverse_eq :
   ∀ witness : Type,

@@ -987,6 +987,11 @@ It is not a proof. It is a work breakdown for future Lean development.
   `canonical_completion_target_of_extraction_derivation_dependency_projections`,
   and
   `canonical_completion_criterion_of_extraction_derivation_dependency_projections`.
+  The projection-route canonical payload, target, and criterion contracts now
+  also factor through finite extinction plus
+  `topology_extraction_statement_of_dependencies`; the certified
+  extraction-derivation canonical contracts factor through finite extinction
+  plus the dependency-level extractor/derivation payload.
   Equality contracts now pin the remaining-dependency project payload, aggregate
   canonical payload/target/criterion, aggregate certified payload/target/criterion,
   projection-route payload/target/criterion, and certified projection-route

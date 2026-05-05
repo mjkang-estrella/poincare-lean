@@ -5809,6 +5809,18 @@ theorem canonical_completion_payload_of_dependency_projections_eq
   apply Subsingleton.elim
 
 /--
+The dependency projection canonical payload is the finite-extinction plus
+theorem-shaped topology-extraction canonical route.
+-/
+theorem canonical_completion_payload_of_dependency_projections_to_topology_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_payload_of_dependency_projections dependencies =
+      canonical_completion_payload_of_finite_extinction_and_topology_extraction_statement
+        (finite_extinction_of_dependencies dependencies)
+        (topology_extraction_statement_of_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The projection-based dependency assembly route also proves the canonical
 completion target, extracted from the final canonical-completion payload.
 -/
@@ -5831,6 +5843,18 @@ theorem canonical_completion_target_of_dependency_projections_eq
             dependencies with
           ⟨target, _criterion⟩
         exact target) := by
+  apply Subsingleton.elim
+
+/--
+The dependency projection canonical target is the target projection of the
+finite-extinction plus theorem-shaped topology-extraction canonical route.
+-/
+theorem canonical_completion_target_of_dependency_projections_to_topology_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_dependency_projections dependencies =
+      canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+        (finite_extinction_of_dependencies dependencies)
+        (topology_extraction_statement_of_dependencies dependencies) := by
   apply Subsingleton.elim
 
 /--
@@ -5861,6 +5885,20 @@ theorem canonical_completion_criterion_of_dependency_projections_eq
   apply Subsingleton.elim
 
 /--
+The dependency projection completion criterion is the criterion projection of
+the finite-extinction plus theorem-shaped topology-extraction canonical route.
+-/
+theorem canonical_completion_criterion_of_dependency_projections_to_topology_statement_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_dependency_projections
+      witness dependencies =
+      canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+        witness
+        (finite_extinction_of_dependencies dependencies)
+        (topology_extraction_statement_of_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The certified extraction-derivation projection route also proves the canonical
 completion target.
 -/
@@ -5884,6 +5922,25 @@ theorem canonical_completion_payload_of_extraction_derivation_dependency_project
       canonical_completion_payload_of_poincare_completion_payload
         (poincare_completion_payload_of_extraction_derivation_dependency_projections
           dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The certified dependency projection canonical payload is the finite-extinction
+plus extractor/derivation canonical route selected from the dependency
+topology payload.
+-/
+theorem canonical_completion_payload_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_payload_of_extraction_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
   apply Subsingleton.elim
 
 /--
@@ -5916,6 +5973,24 @@ theorem canonical_completion_target_of_extraction_derivation_dependency_projecti
   apply Subsingleton.elim
 
 /--
+The certified dependency projection canonical target is the target projection
+of the finite-extinction plus extractor/derivation canonical route.
+-/
+theorem canonical_completion_target_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_extraction_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
 The certified extraction-derivation projection route also discharges the
 explicit universe-indexed completion criterion through its canonical-completion
 payload.
@@ -5943,6 +6018,25 @@ theorem canonical_completion_criterion_of_extraction_derivation_dependency_proje
             dependencies with
           ⟨_target, criterion⟩
         exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The certified dependency projection completion criterion is the criterion
+projection of the finite-extinction plus extractor/derivation canonical route.
+-/
+theorem canonical_completion_criterion_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_extraction_derivation_dependency_projections
+      witness dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+            witness
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
   apply Subsingleton.elim
 
 /--
