@@ -2745,6 +2745,29 @@ theorem finite_extinction_width_subobligations_of_dependencies_eq
   dsimp
 
 /--
+The dependency-level finite-extinction width sub-obligation projection follows
+the direct surgery-package route selected by the aggregate dependencies.
+-/
+theorem finite_extinction_width_subobligations_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      finite_extinction_subobligations_statement_payload_with_surgery_package_of_dependencies
+        dependencies M
+    finite_extinction_width_subobligations_of_dependencies dependencies M =
+      ⟨payload.choose,
+        ricci_flow_data_of_surgery_package payload.choose_spec.choose,
+        ricci_flow_with_surgery_of_surgery_package payload.choose_spec.choose,
+        perelman_singularity_control_of_surgery_package
+          payload.choose_spec.choose,
+        finite_extinction_width_subobligations_of_surgery_package
+          payload.choose_spec.choose⟩ := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies the named finite-extinction
 sub-obligations and the certificate tying them to the finite-extinction
 conclusion.
@@ -2931,6 +2954,29 @@ theorem finite_extinction_subobligations_of_dependencies_eq
         payload.choose_spec.choose_spec.choose_spec.choose,
         payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose⟩ := by
   dsimp
+
+/--
+The dependency-level finite-extinction full sub-obligation projection follows
+the direct surgery-package route selected by the aggregate dependencies.
+-/
+theorem finite_extinction_subobligations_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      finite_extinction_subobligations_statement_payload_with_surgery_package_of_dependencies
+        dependencies M
+    finite_extinction_subobligations_of_dependencies dependencies M =
+      ⟨payload.choose,
+        ricci_flow_data_of_surgery_package payload.choose_spec.choose,
+        ricci_flow_with_surgery_of_surgery_package payload.choose_spec.choose,
+        perelman_singularity_control_of_surgery_package
+          payload.choose_spec.choose,
+        finite_extinction_subobligations_of_surgery_package
+          payload.choose_spec.choose⟩ := by
+  apply Subsingleton.elim
 
 /-- A completed dependency package supplies the topology extraction package. -/
 theorem topology_package_of_dependencies

@@ -2634,6 +2634,10 @@ set_option linter.unusedVariables false
 #check Poincare.finite_extinction_subobligations_statement_payload_of_dependencies_eq
 #check Poincare.finite_extinction_subobligations_payload_of_surgery_package
 #check Poincare.finite_extinction_subobligations_payload_of_surgery_package_eq
+#check Poincare.finite_extinction_width_subobligations_of_surgery_package
+#check Poincare.finite_extinction_width_subobligations_of_surgery_package_eq
+#check Poincare.finite_extinction_subobligations_of_surgery_package
+#check Poincare.finite_extinction_subobligations_of_surgery_package_eq
 #check Poincare.finite_extinction_width_statements_of_dependencies
 #check Poincare.finite_extinction_width_statements_of_dependencies_eq
 #check Poincare.finite_extinction_subobligations_statements_of_dependencies
@@ -2650,6 +2654,8 @@ set_option linter.unusedVariables false
 #check Poincare.finite_extinction_width_subobligations_of_dependencies_eq
 #check Poincare.finite_extinction_subobligations_of_dependencies
 #check Poincare.finite_extinction_subobligations_of_dependencies_eq
+#check Poincare.finite_extinction_width_subobligations_of_dependencies_to_package_eq
+#check Poincare.finite_extinction_subobligations_of_dependencies_to_package_eq
 #check Poincare.finite_extinction_statements_of_dependencies_eq
 #check Poincare.finite_extinction_statements_via_subobligations_of_dependencies
 #check Poincare.finite_extinction_statements_via_subobligations_of_dependencies_eq
@@ -7256,7 +7262,7 @@ package_routed_dependency_payload_count=$(
   rg -c 'with_surgery_package_of_dependencies' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$package_routed_dependency_payload_count" != "25" ]; then
+if [ "$package_routed_dependency_payload_count" != "27" ]; then
   echo "FAIL: dependency surgery payloads should expose package-routed contracts and consume them"
   rg -n 'with_surgery_package_of_dependencies' \
     Poincare/DependencyProjections.lean || true

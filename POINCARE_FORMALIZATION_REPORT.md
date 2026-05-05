@@ -324,8 +324,9 @@ equality or heterogeneous-equality contracts.
 The finite-extinction package bridge is now pinned directly: equality contracts
 identify the package-level conclusion statement, theorem-shaped statement,
 statement-mediated extinction witness, width/full sub-obligation statements,
-and the two bundled payload routes with their component assembly and
-statement-mediated extraction definitions.
+the direct package-level width/full sub-obligation routes, and the two bundled
+payload routes with their component assembly and statement-mediated extraction
+definitions.
 The finite-extinction statement bridge is pinned too: equality contracts now
 identify theorem-shaped conclusion payload extraction, direct extinction witness
 extraction, derivation extraction from the full sub-obligation statement, the
@@ -337,7 +338,10 @@ The dependency-level finite-extinction width/full statement, width/full
 sub-obligation, derivation-stack, and statement-route projections now have
 equality contracts back to fields selected from
 `finite_extinction_subobligations_statement_payload_of_dependencies` and
-`finite_extinction_statement_payload_of_dependencies`.
+`finite_extinction_statement_payload_of_dependencies`. The width/full
+sub-obligation projections are also pinned to the direct package-level
+finite-extinction sub-obligation routes selected by
+`finite_extinction_subobligations_statement_payload_with_surgery_package_of_dependencies`.
 
 `Poincare/TopologyExtraction.lean` now names the full classification stack as
 `ExtinctionTopologyClassificationSubobligationsPayload`. The dependency-level

@@ -8678,6 +8678,73 @@ theorem finite_extinction_subobligations_payload_of_surgery_package_eq
           finite_extinction_statement_of_surgery_package package⟩) := by
   apply Subsingleton.elim
 
+/--
+A completed surgery package exposes the finite-extinction width
+sub-obligation payload directly through its theorem-shaped width statement.
+-/
+theorem finite_extinction_width_subobligations_of_surgery_package
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M) :
+    FiniteExtinctionWidthSubobligationsPayload
+      (ricci_flow_data_of_surgery_package package)
+      (ricci_flow_with_surgery_of_surgery_package package)
+      (perelman_singularity_control_of_surgery_package package) :=
+  finite_extinction_width_subobligations_of_statement
+    (finite_extinction_width_subobligations_statement_of_surgery_package
+      package)
+
+/--
+The direct surgery-package width sub-obligation route is exactly the
+statement-mediated route through the package's theorem-shaped width statement.
+-/
+theorem finite_extinction_width_subobligations_of_surgery_package_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M) :
+    finite_extinction_width_subobligations_of_surgery_package package =
+      finite_extinction_width_subobligations_of_statement
+        (finite_extinction_width_subobligations_statement_of_surgery_package
+          package) := by
+  apply Subsingleton.elim
+
+/--
+A completed surgery package exposes the full finite-extinction sub-obligation
+payload directly through its theorem-shaped full sub-obligation statement.
+-/
+theorem finite_extinction_subobligations_of_surgery_package
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M) :
+    FiniteExtinctionSubobligationsPayload
+      (ricci_flow_data_of_surgery_package package)
+      (ricci_flow_with_surgery_of_surgery_package package)
+      (perelman_singularity_control_of_surgery_package package) :=
+  finite_extinction_subobligations_of_statement
+    (finite_extinction_subobligations_statement_of_surgery_package package)
+
+/--
+The direct surgery-package full sub-obligation route is exactly the
+statement-mediated route through the package's theorem-shaped full statement.
+-/
+theorem finite_extinction_subobligations_of_surgery_package_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M) :
+    finite_extinction_subobligations_of_surgery_package package =
+      finite_extinction_subobligations_of_statement
+        (finite_extinction_subobligations_statement_of_surgery_package
+          package) := by
+  apply Subsingleton.elim
+
 /-- The full finite-extinction statement exposes the derivation certificate. -/
 theorem finite_extinction_derivation_of_subobligations_statement
     {n : ℕ∞ω}
