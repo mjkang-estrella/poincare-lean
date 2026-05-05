@@ -489,11 +489,13 @@ It is not a proof. It is a work breakdown for future Lean development.
   homeomorphism, homeomorphism-lift, assembly/derivation, extraction payloads,
   and final extractor, while theorem-shaped statement routes remain explicit
   where the projection is not just a stored field. The fixed-manifold topology
-  derivation statement route is now pinned directly to the component assembly
-  route applied to the package projections, and the full classification
-  sub-obligation bridge plus the narrower homeomorphism assembly/derivation
-  statement bridges are pinned to their destructuring routes from the full
-  derivation statement; the
+  derivation component assembler is now pinned to the exact tuple of
+  post-extinction topology components; the package-level topology derivation
+  statement route is also pinned directly to that component assembly route
+  applied to the package projections. The full classification sub-obligation
+  bridge plus the narrower homeomorphism assembly/derivation statement bridges
+  are pinned to their destructuring routes from the full derivation statement;
+  the
   dependency-level classification payload
   `topology_classification_payload_of_dependencies` centralizes the
   post-extinction classification stack, and the individual dependency-level
