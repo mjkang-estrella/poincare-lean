@@ -680,7 +680,8 @@ The current artifact is intentionally conservative:
   the projection and certified projection target routes. The ordinary
   projection route now also reconstructs a checked completion certificate, with
   round-trip contracts for the remaining-dependency package, canonical payload,
-  project payload, target, and criterion projections.
+  project payload, target, criterion, canonical topological statement, and
+  literal/aggregate canonical-statement payload projections.
   It also exposes the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/
