@@ -58,6 +58,38 @@ theorem finite_extinction_statement_payload_of_smoothability_and_surgery_package
     finiteExtinction⟩
 
 /--
+The smoothability/surgery finite-extinction statement payload is obtained by
+installing the smoothability package evidence, selecting the surgery package,
+and unpacking the package-level finite-extinction payload.
+-/
+theorem finite_extinction_statement_payload_of_smoothability_and_surgery_packages_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+    finite_extinction_statement_payload_of_smoothability_and_surgery_packages
+      smoothabilityPackage surgeryPackages =
+      (by
+        intro M _ _ _ _ _
+        let manifoldEvidence : IsManifold ThreeManifoldModelWithCorners 1 M :=
+          smoothable_of_smoothability_package smoothabilityPackage M
+        letI : IsManifold ThreeManifoldModelWithCorners 1 M :=
+          manifoldEvidence
+        rcases surgeryPackages M with ⟨⟨n, package⟩⟩
+        rcases finite_extinction_statement_payload_of_surgery_package
+            package with
+          ⟨flow, surgery, control, packageStatement,
+            subobligationsStatement, viaSubobligationsStatement, derivation,
+            finiteExtinction⟩
+        exact ⟨manifoldEvidence, n, flow, surgery, control,
+          packageStatement, subobligationsStatement,
+          viaSubobligationsStatement, derivation, finiteExtinction⟩) := by
+  apply Subsingleton.elim
+
+/--
 The explicit smoothability and surgery package route supplies the final
 finite-extinction input consumed by the Poincare assembly theorem through the
 named theorem-shaped finite-extinction payload.
@@ -81,6 +113,31 @@ theorem finite_extinction_input_of_smoothability_and_surgery_packages
       _packageStatement, _subobligationsStatement,
       _viaSubobligationsStatement, _derivation, finiteExtinction⟩
   exact finiteExtinction
+
+/--
+The smoothability/surgery finite-extinction input is the final witness
+projected out of the named finite-extinction statement payload.
+-/
+theorem finite_extinction_input_of_smoothability_and_surgery_packages_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+    finite_extinction_input_of_smoothability_and_surgery_packages
+      smoothabilityPackage surgeryPackages =
+      (by
+        intro M _ _ _ _ _
+        rcases
+            finite_extinction_statement_payload_of_smoothability_and_surgery_packages
+              smoothabilityPackage surgeryPackages M with
+          ⟨_manifoldEvidence, _n, _flow, _surgery, _control,
+            _packageStatement, _subobligationsStatement,
+            _viaSubobligationsStatement, _derivation, finiteExtinction⟩
+        exact finiteExtinction) := by
+  apply Subsingleton.elim
 
 /--
 The explicit package route supplies the two theorem-shaped inputs consumed by

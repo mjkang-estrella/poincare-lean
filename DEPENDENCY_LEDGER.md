@@ -625,8 +625,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   and `finite_extinction_input_of_smoothability_and_surgery_packages`, which
   carry the smoothability-installed manifold evidence, theorem-shaped
   finite-extinction statement, sub-obligation statement route, derivation
-  certificate, and final finite-extinction witness. The extinction-to-sphere
-  input is extracted by destructuring
+  certificate, and final finite-extinction witness; equality contracts pin both
+  the statement payload and the projected finite-extinction input to this route.
+  The extinction-to-sphere input is extracted by destructuring
   `topology_extraction_payload_of_topology_package`, so the full assembly
   layer consumes the package-level topology extraction payload instead of the
   raw final topology projection. The named

@@ -3176,8 +3176,12 @@ check_decl "smoothability package bridge payload equality contract is declared" 
   '^theorem smoothability_bridge_payload_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "full-assembly finite-extinction statement payload theorem is declared" \
   '^theorem finite_extinction_statement_payload_of_smoothability_and_surgery_packages\b' Poincare/FullAssembly.lean
+check_decl "full-assembly finite-extinction statement payload equality contract is declared" \
+  '^theorem finite_extinction_statement_payload_of_smoothability_and_surgery_packages_eq\b' Poincare/FullAssembly.lean
 check_decl "full-assembly finite-extinction input theorem is declared" \
   '^theorem finite_extinction_input_of_smoothability_and_surgery_packages\b' Poincare/FullAssembly.lean
+check_decl "full-assembly finite-extinction input equality contract is declared" \
+  '^theorem finite_extinction_input_of_smoothability_and_surgery_packages_eq\b' Poincare/FullAssembly.lean
 check_decl "explicit package-route assembly inputs payload theorem is declared" \
   '^theorem poincare_assembly_inputs_payload_of_surgery_and_topology_packages\b' Poincare/FullAssembly.lean
 check_decl "explicit package-route assembly inputs payload equality contract is declared" \
@@ -7131,7 +7135,9 @@ open scoped Manifold ContDiff
 #check Poincare.canonical_completion_target_of_completion_criterion
 #check Poincare.canonical_completion_target_of_completion_criterion_eq
 #check Poincare.finite_extinction_statement_payload_of_smoothability_and_surgery_packages
+#check Poincare.finite_extinction_statement_payload_of_smoothability_and_surgery_packages_eq
 #check Poincare.finite_extinction_input_of_smoothability_and_surgery_packages
+#check Poincare.finite_extinction_input_of_smoothability_and_surgery_packages_eq
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages_eq
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation
@@ -9627,6 +9633,7 @@ open scoped Manifold ContDiff
       Poincare.ExtinctionImpliesSphereStatement))
 
 #check Poincare.finite_extinction_statement_payload_of_smoothability_and_surgery_packages
+#check Poincare.finite_extinction_statement_payload_of_smoothability_and_surgery_packages_eq
 
 #check (Poincare.finite_extinction_input_of_smoothability_and_surgery_packages :
   Poincare.SmoothabilityPackage →
@@ -9640,6 +9647,7 @@ open scoped Manifold ContDiff
       [ChartedSpace Poincare.ThreeManifoldModel M]
       [SimplyConnectedSpace M] [CompactSpace M],
         Poincare.FiniteExtinctionByRicciFlowWithSurgery M)
+#check Poincare.finite_extinction_input_of_smoothability_and_surgery_packages_eq
 
 #check (Poincare.poincare_target_payload_of_surgery_and_topology_extraction_statement :
   Poincare.SmoothabilityPackage →
@@ -10306,7 +10314,9 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_statements_via_subobligations_of_dependencies
 
 #check Poincare.finite_extinction_statement_payload_of_smoothability_and_surgery_packages
+#check Poincare.finite_extinction_statement_payload_of_smoothability_and_surgery_packages_eq
 #check Poincare.finite_extinction_input_of_smoothability_and_surgery_packages
+#check Poincare.finite_extinction_input_of_smoothability_and_surgery_packages_eq
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages_eq
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation

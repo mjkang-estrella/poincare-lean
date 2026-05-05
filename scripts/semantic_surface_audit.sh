@@ -1467,6 +1467,7 @@ set_option linter.unusedVariables false
 #check Poincare.canonical_three_sphere_statement_iff_extinction_extraction_eq
 
 #check Poincare.finite_extinction_statement_payload_of_smoothability_and_surgery_packages
+#check Poincare.finite_extinction_statement_payload_of_smoothability_and_surgery_packages_eq
 
 #check (Poincare.finite_extinction_input_of_smoothability_and_surgery_packages :
   Poincare.SmoothabilityPackage →
@@ -1480,6 +1481,7 @@ set_option linter.unusedVariables false
       [ChartedSpace Poincare.ThreeManifoldModel M]
       [SimplyConnectedSpace M] [CompactSpace M],
         Poincare.FiniteExtinctionByRicciFlowWithSurgery M)
+#check Poincare.finite_extinction_input_of_smoothability_and_surgery_packages_eq
 
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages_eq
