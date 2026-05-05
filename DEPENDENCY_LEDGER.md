@@ -608,8 +608,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   PL-structure, PL transition compatibility, PL-atlas/manifold/collar/
   homeomorphism compatibility, PL-atlas maximality, PL smoothing existence,
   obstruction, microbundle, theorem, compatibility, uniqueness, local-model
-  compatibility, smooth-structure, smooth-atlas, transition, and
-  smooth-structure derivation projections.
+  compatibility, smooth-structure, smooth-atlas construction, smooth-atlas
+  PL compatibility/maximality/uniqueness, smooth-structure uniqueness,
+  transition, and smooth-structure derivation projections.
   Dependency-level equality contracts
   now pin the full direct Moise/PL/smoothing/smooth-atlas/transition/derivation
   projection spine to the stored aggregate smoothability field. The dependency-level

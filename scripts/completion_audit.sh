@@ -3182,12 +3182,20 @@ check_decl "smoothability package smooth-atlas construction equality contract is
   '^theorem smooth_atlas_construction_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package smooth-atlas PL-compatibility projection is declared" \
   '^theorem smooth_atlas_pl_compatibility_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package smooth-atlas PL-compatibility equality contract is declared" \
+  '^theorem smooth_atlas_pl_compatibility_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package smooth-atlas maximality projection is declared" \
   '^theorem smooth_atlas_maximality_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package smooth-atlas maximality equality contract is declared" \
+  '^theorem smooth_atlas_maximality_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package smooth-atlas uniqueness projection is declared" \
   '^theorem smooth_atlas_uniqueness_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package smooth-atlas uniqueness equality contract is declared" \
+  '^theorem smooth_atlas_uniqueness_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package smooth-structure uniqueness projection is declared" \
   '^theorem smooth_structure_uniqueness_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package smooth-structure uniqueness equality contract is declared" \
+  '^theorem smooth_structure_uniqueness_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package smooth-transition compatibility projection is declared" \
   '^theorem smooth_transition_compatibility_of_smoothability_package\b' Poincare/Smoothability.lean
 check_decl "smoothability package smooth-transition compatibility equality contract is declared" \
@@ -6727,9 +6735,13 @@ open scoped Manifold ContDiff
 #check Poincare.smooth_atlas_construction_of_smoothability_package
 #check Poincare.smooth_atlas_construction_of_smoothability_package_eq
 #check Poincare.smooth_atlas_pl_compatibility_of_smoothability_package
+#check Poincare.smooth_atlas_pl_compatibility_of_smoothability_package_eq
 #check Poincare.smooth_atlas_maximality_of_smoothability_package
+#check Poincare.smooth_atlas_maximality_of_smoothability_package_eq
 #check Poincare.smooth_atlas_uniqueness_of_smoothability_package
+#check Poincare.smooth_atlas_uniqueness_of_smoothability_package_eq
 #check Poincare.smooth_structure_uniqueness_of_smoothability_package
+#check Poincare.smooth_structure_uniqueness_of_smoothability_package_eq
 #check Poincare.smooth_transition_compatibility_of_smoothability_package
 #check Poincare.smooth_transition_compatibility_of_smoothability_package_eq
 #check Poincare.smooth_atlas_transition_smoothness_of_smoothability_package
@@ -9638,9 +9650,13 @@ open scoped Manifold ContDiff
 #check Poincare.smooth_atlas_construction_of_smoothability_package
 #check Poincare.smooth_atlas_construction_of_smoothability_package_eq
 #check Poincare.smooth_atlas_pl_compatibility_of_smoothability_package
+#check Poincare.smooth_atlas_pl_compatibility_of_smoothability_package_eq
 #check Poincare.smooth_atlas_maximality_of_smoothability_package
+#check Poincare.smooth_atlas_maximality_of_smoothability_package_eq
 #check Poincare.smooth_atlas_uniqueness_of_smoothability_package
+#check Poincare.smooth_atlas_uniqueness_of_smoothability_package_eq
 #check Poincare.smooth_structure_uniqueness_of_smoothability_package
+#check Poincare.smooth_structure_uniqueness_of_smoothability_package_eq
 #check Poincare.smooth_transition_compatibility_of_smoothability_package
 #check Poincare.smooth_transition_compatibility_of_smoothability_package_eq
 #check Poincare.smooth_atlas_transition_smoothness_of_smoothability_package

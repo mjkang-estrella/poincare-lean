@@ -2209,6 +2209,16 @@ theorem smooth_atlas_pl_compatibility_of_smoothability_package
       (smooth_structure_of_smoothability_package package M) :=
   package.smoothAtlasPLCompatibility M
 
+/-- The named smooth-atlas/PL-atlas compatibility projection is the stored package field. -/
+theorem smooth_atlas_pl_compatibility_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    smooth_atlas_pl_compatibility_of_smoothability_package package M =
+      package.smoothAtlasPLCompatibility M :=
+  rfl
+
 /-- A completed smoothability package supplies smooth atlas maximality. -/
 theorem smooth_atlas_maximality_of_smoothability_package
     (package : SmoothabilityPackage.{u})
@@ -2223,6 +2233,16 @@ theorem smooth_atlas_maximality_of_smoothability_package
       (smooth_structure_of_smoothability_package package M) :=
   package.smoothAtlasMaximality M
 
+/-- The named smooth-atlas maximality projection is the stored package field. -/
+theorem smooth_atlas_maximality_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    smooth_atlas_maximality_of_smoothability_package package M =
+      package.smoothAtlasMaximality M :=
+  rfl
+
 /-- A completed smoothability package supplies smooth atlas uniqueness evidence. -/
 theorem smooth_atlas_uniqueness_of_smoothability_package
     (package : SmoothabilityPackage.{u})
@@ -2233,6 +2253,16 @@ theorem smooth_atlas_uniqueness_of_smoothability_package
       (smooth_structure_of_smoothability_package package M) :=
   package.smoothAtlasUniqueness M
 
+/-- The named smooth-atlas uniqueness projection is the stored package field. -/
+theorem smooth_atlas_uniqueness_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    smooth_atlas_uniqueness_of_smoothability_package package M =
+      package.smoothAtlasUniqueness M :=
+  rfl
+
 /-- A completed smoothability package supplies smooth-structure uniqueness. -/
 theorem smooth_structure_uniqueness_of_smoothability_package
     (package : SmoothabilityPackage.{u})
@@ -2242,6 +2272,16 @@ theorem smooth_structure_uniqueness_of_smoothability_package
     HasSmoothStructureUniquenessUpToDiffeomorphism M
       (smooth_structure_of_smoothability_package package M) :=
   package.smoothStructureUniquenessUpToDiffeomorphism M
+
+/-- The named smooth-structure uniqueness projection is the stored package field. -/
+theorem smooth_structure_uniqueness_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    smooth_structure_uniqueness_of_smoothability_package package M =
+      package.smoothStructureUniquenessUpToDiffeomorphism M :=
+  rfl
 
 /-- A completed smoothability package supplies smooth transition compatibility. -/
 theorem smooth_transition_compatibility_of_smoothability_package
