@@ -1898,6 +1898,8 @@ check_decl "surgery construction statement aggregate bridge equality contract is
   '^theorem ricci_flow_with_surgery_of_construction_statement_eq\b' Poincare/Surgery.lean
 check_decl "surgery construction sub-obligation payload alias is declared" \
   '^abbrev RicciFlowWithSurgeryConstructionSubobligationsPayload\b' Poincare/Surgery.lean
+check_decl "surgery construction sub-obligation payload equality contract is declared" \
+  '^theorem ricciFlowWithSurgeryConstructionSubobligationsPayload_eq\b' Poincare/Surgery.lean
 check_decl "surgery construction statement sub-obligation projection is declared" \
   '^theorem surgery_construction_subobligations_of_statement\b' Poincare/Surgery.lean
 check_decl "surgery construction statement sub-obligation equality contract is declared" \
@@ -7412,6 +7414,7 @@ open scoped Manifold ContDiff
 #check Poincare.FiniteExtinctionSubobligationsStatement
 #check Poincare.finiteExtinctionSubobligationsStatement_eq
 #check Poincare.RicciFlowWithSurgeryConstructionSubobligationsPayload
+#check Poincare.ricciFlowWithSurgeryConstructionSubobligationsPayload_eq
 #check Poincare.PerelmanSingularityControlSubobligationsPayload
 #check Poincare.PerelmanMonotonicityBlowupSubobligationsPayload
 #check Poincare.surgery_construction_payload_of_construction_package
@@ -9973,6 +9976,7 @@ open scoped Manifold ContDiff
 #check Poincare.FiniteExtinctionSubobligationsStatement
 #check Poincare.finiteExtinctionSubobligationsStatement_eq
 #check Poincare.RicciFlowWithSurgeryConstructionSubobligationsPayload
+#check Poincare.ricciFlowWithSurgeryConstructionSubobligationsPayload_eq
 #check Poincare.PerelmanSingularityControlSubobligationsPayload
 #check Poincare.PerelmanMonotonicityBlowupSubobligationsPayload
 #check Poincare.surgery_construction_payload_of_construction_package

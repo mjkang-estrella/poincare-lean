@@ -634,6 +634,47 @@ abbrev RicciFlowWithSurgeryConstructionSubobligationsPayload
   HasRicciFlowWithSurgery n M
 
 /--
+The surgery-construction sub-obligation payload alias is definitionally the
+scale, cutoff, neck, cap, post-surgery, surgery-time, long-time, and aggregate
+surgery witness stack for the fixed flow.
+-/
+theorem ricciFlowWithSurgeryConstructionSubobligationsPayload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    RicciFlowWithSurgeryConstructionSubobligationsPayload flow =
+      (HasSurgeryScaleFunction flow ∧
+      HasSurgeryScaleContinuity flow ∧
+      HasSurgeryScaleSeparation flow ∧
+      HasSurgeryCutoffParameterControl flow ∧
+      HasSurgeryCutoffSmoothBumpFunction flow ∧
+      HasSurgeryParameterSelection flow ∧
+      HasStrongDeltaNeckDetection flow ∧
+      HasSurgeryNeckSeparation flow ∧
+      HasSurgeryNeckParametrization flow ∧
+      HasSurgeryNeckCanonicalCoordinates flow ∧
+      HasSurgeryNeckDecomposition flow ∧
+      HasStandardCapModel flow ∧
+      HasCapGluingSmoothness flow ∧
+      HasSurgeryCapMetricInterpolation flow ∧
+      HasSurgeryCapCurvatureEstimates flow ∧
+      HasSurgeryCapConstruction flow ∧
+      HasPostSurgeryCurvaturePinching flow ∧
+      HasPostSurgeryNoncollapsingControl flow ∧
+      HasPostSurgeryDerivativeBounds flow ∧
+      HasPostSurgeryCanonicalNeighborhoodPersistence flow ∧
+      HasPostSurgeryMetricControl flow ∧
+      HasSurgeryTimeDiscreteness flow ∧
+      HasSurgeryTimeLocalFiniteness flow ∧
+      HasLongTimeExistenceIteration flow ∧
+      HasLongTimeSurgeryParameterCoherence flow ∧
+      HasLongTimeNonaccumulation flow ∧
+      HasLongTimeSurgeryContinuation flow ∧
+      HasRicciFlowWithSurgery n M) :=
+  rfl
+
+/--
 The theorem-shaped surgery-construction statement exposes the named scale,
 neck, cap, post-surgery, long-time continuation, and aggregate surgery
 sub-obligations.
