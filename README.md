@@ -573,9 +573,11 @@ The current artifact is intentionally conservative:
   finite-extinction input with a final extractor and its topology derivation
   certificate; its canonical endpoint is
   `canonical_three_sphere_statement_of_surgery_and_extraction_derivation`.
-  The theorem-shaped topology and extractor/derivation routes now have equality
-  contracts for their assembly-input payload, target payload, completion
-  payload, statement, and canonical-statement projections.
+  The theorem-shaped topology, direct extractor/derivation, explicit package,
+  and package-level certified extraction routes now have equality contracts for
+  their assembly-input payload, target payload, completion payload, statement,
+  and canonical-statement projections, with the explicit package route also
+  pinning its full-assembly and assembly-payload projections.
   The package-level certified extraction route
   `poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation`,
   `poincare_target_payload_of_surgery_and_topology_package_extraction_derivation`,

@@ -1482,7 +1482,9 @@ set_option linter.unusedVariables false
         Poincare.FiniteExtinctionByRicciFlowWithSurgery M)
 
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages
+#check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages_eq
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation
+#check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation_eq
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_extraction_statement
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_extraction_statement_eq
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_extraction_derivation
@@ -1504,6 +1506,7 @@ set_option linter.unusedVariables false
       ∃ _extractSphere : Poincare.ExtinctionImpliesSphereStatement,
       ∃ _target : Poincare.PoincareConjectureStatement,
         ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+#check Poincare.poincare_target_payload_of_surgery_and_topology_packages_eq
 
 #check (Poincare.poincare_target_payload_of_surgery_and_topology_extraction_statement :
   Poincare.SmoothabilityPackage →
@@ -1585,6 +1588,7 @@ set_option linter.unusedVariables false
           extractSphere,
       ∃ _target : Poincare.PoincareConjectureStatement,
         ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+#check Poincare.poincare_target_payload_of_surgery_and_topology_package_extraction_derivation_eq
 
 #check (Poincare.poincare_full_assembly_payload_of_surgery_and_topology_packages :
   Poincare.SmoothabilityPackage →
@@ -1610,6 +1614,7 @@ set_option linter.unusedVariables false
             Poincare.FiniteExtinctionByRicciFlowWithSurgery M),
       ∃ _extractSphere : Poincare.ExtinctionImpliesSphereStatement,
         Poincare.PoincareConjectureStatement)
+#check Poincare.poincare_full_assembly_payload_of_surgery_and_topology_packages_eq
 
 #check (Poincare.poincare_assembly_payload_of_surgery_and_topology_packages :
   Poincare.SmoothabilityPackage →
@@ -1626,6 +1631,7 @@ set_option linter.unusedVariables false
             Poincare.FiniteExtinctionByRicciFlowWithSurgery M),
       ∃ _extractSphere : Poincare.ExtinctionImpliesSphereStatement,
         Poincare.PoincareConjectureStatement)
+#check Poincare.poincare_assembly_payload_of_surgery_and_topology_packages_eq
 
 #check (Poincare.poincare_completion_payload_of_surgery_and_topology_packages :
   Poincare.SmoothabilityPackage →
@@ -1637,6 +1643,7 @@ set_option linter.unusedVariables false
     Poincare.ExtinctionTopologyExtractionPackage →
       ∃ _target : Poincare.PoincareConjectureStatement,
         ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+#check Poincare.poincare_completion_payload_of_surgery_and_topology_packages_eq
 
 #check (Poincare.poincare_completion_payload_of_surgery_and_topology_package_extraction_derivation :
   Poincare.SmoothabilityPackage →
@@ -1648,6 +1655,7 @@ set_option linter.unusedVariables false
     Poincare.ExtinctionTopologyExtractionPackage →
       ∃ _target : Poincare.PoincareConjectureStatement,
         ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+#check Poincare.poincare_completion_payload_of_surgery_and_topology_package_extraction_derivation_eq
 
 #check (Poincare.poincare_completion_payload_of_surgery_and_topology_extraction_statement :
   Poincare.SmoothabilityPackage →
@@ -1684,6 +1692,7 @@ set_option linter.unusedVariables false
         Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
     Poincare.ExtinctionTopologyExtractionPackage →
       Poincare.PoincareConjectureStatement)
+#check Poincare.poincare_statement_of_surgery_and_topology_packages_eq
 
 #check (Poincare.poincare_statement_of_surgery_and_topology_package_extraction_derivation :
   Poincare.SmoothabilityPackage →
@@ -1694,6 +1703,7 @@ set_option linter.unusedVariables false
         Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
     Poincare.ExtinctionTopologyExtractionPackage →
       Poincare.PoincareConjectureStatement)
+#check Poincare.poincare_statement_of_surgery_and_topology_package_extraction_derivation_eq
 
 #check (Poincare.poincare_statement_of_surgery_and_topology_extraction_statement :
   Poincare.SmoothabilityPackage →
@@ -1731,6 +1741,7 @@ set_option linter.unusedVariables false
         [ChartedSpace Poincare.ThreeManifoldModel M]
         [SimplyConnectedSpace M] [CompactSpace M],
           Nonempty (M ≃ₜ Poincare.ThreeSphere))
+#check Poincare.canonical_three_sphere_statement_of_surgery_and_topology_packages_eq
 
 #check (Poincare.canonical_three_sphere_statement_of_surgery_and_topology_extraction_statement :
   Poincare.SmoothabilityPackage →
@@ -1774,6 +1785,7 @@ set_option linter.unusedVariables false
         [ChartedSpace Poincare.ThreeManifoldModel M]
         [SimplyConnectedSpace M] [CompactSpace M],
           Nonempty (M ≃ₜ Poincare.ThreeSphere))
+#check Poincare.canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation_eq
 
 #check (Poincare.poincare_statement_of_canonical_three_sphere_statement :
   (∀ (M : Type) [TopologicalSpace M] [T2Space M]
@@ -7144,12 +7156,12 @@ if [ "$aggregate_extraction_derivation_completion_payload_count" != "6" ]; then
 fi
 
 explicit_target_payload_count=$(
-  rg -c 'poincare_target_payload_of_surgery_and_topology_packages' \
+  rg -c '\bpoincare_target_payload_of_surgery_and_topology_packages\b' \
     Poincare/FullAssembly.lean || true
 )
-if [ "$explicit_target_payload_count" != "3" ]; then
+if [ "$explicit_target_payload_count" != "6" ]; then
   echo "FAIL: explicit package full/completion routes should consume the explicit target payload"
-  rg -n 'poincare_target_payload_of_surgery_and_topology_packages' \
+  rg -n '\bpoincare_target_payload_of_surgery_and_topology_packages\b' \
     Poincare/FullAssembly.lean || true
   exit 1
 fi
@@ -7158,7 +7170,7 @@ explicit_direct_extinction_payload_count=$(
   rg -c 'poincare_payload_of_extinction_and_extraction' \
     Poincare/FullAssembly.lean || true
 )
-if [ "$explicit_direct_extinction_payload_count" != "1" ]; then
+if [ "$explicit_direct_extinction_payload_count" != "2" ]; then
   echo "FAIL: explicit package final target assembly should be centralized in the explicit target payload"
   rg -n 'poincare_payload_of_extinction_and_extraction' \
     Poincare/FullAssembly.lean || true
