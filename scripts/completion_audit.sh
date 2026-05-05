@@ -3239,6 +3239,8 @@ check_decl "smoothability smooth-structure derivation interface is declared" \
   '^inductive HasSmoothStructureDerivation\b' Poincare/Smoothability.lean
 check_decl "smoothability smooth-structure derivation statement is declared" \
   '^def SmoothStructureDerivationStatement\b' Poincare/Smoothability.lean
+check_decl "smoothability smooth-structure derivation statement shape contract is declared" \
+  '^theorem smoothStructureDerivationStatement_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability component assembly theorem for smooth-structure derivation statement is declared" \
   '^theorem smooth_structure_derivation_statement_of_components\b' Poincare/Smoothability.lean
 check_decl "smoothability component assembly equality contract is declared" \
@@ -7080,6 +7082,7 @@ open scoped Manifold ContDiff
 #check Poincare.smooth_atlas_transition_smoothness_of_smoothability_package_eq
 #check Poincare.smooth_structure_derivation_of_smoothability_package
 #check Poincare.smooth_structure_derivation_of_smoothability_package_eq
+#check Poincare.smoothStructureDerivationStatement_eq
 #check Poincare.smooth_structure_derivation_statement_of_components
 #check Poincare.smooth_structure_derivation_statement_of_components_eq
 #check Poincare.smooth_structure_derivation_statement_of_smoothability_package
@@ -10165,6 +10168,7 @@ open scoped Manifold ContDiff
 #check Poincare.smooth_atlas_transition_smoothness_of_smoothability_package_eq
 #check Poincare.smooth_structure_derivation_of_smoothability_package
 #check Poincare.smooth_structure_derivation_of_smoothability_package_eq
+#check Poincare.smoothStructureDerivationStatement_eq
 #check Poincare.smooth_structure_derivation_statement_of_components
 #check Poincare.smooth_structure_derivation_statement_of_components_eq
 #check Poincare.smooth_structure_derivation_statement_of_smoothability_package

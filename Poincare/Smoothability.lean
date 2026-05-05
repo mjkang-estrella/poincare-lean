@@ -550,6 +550,117 @@ def SmoothStructureDerivationStatement
       smoothTransitionCompatibility smoothAtlasTransitionSmoothness
 
 /--
+The smooth-structure derivation statement is exactly the listed Moise, PL,
+smoothing, smooth-atlas, transition, and derivation witness stack.
+-/
+theorem smoothStructureDerivationStatement_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (smoothStructure : HasThreeManifoldSmoothStructure M) :
+    SmoothStructureDerivationStatement M smoothStructure =
+      (∃ localCharts : HasMoiseLocalTriangulationCharts M,
+      ∃ locallyFiniteCoverRefinement :
+        HasMoiseLocallyFiniteCoverRefinement M localCharts,
+      ∃ simplicialComplex : HasMoiseSimplicialComplex M localCharts,
+      ∃ compatibleChartTriangulations :
+        HasMoiseCompatibleChartTriangulations
+          M localCharts simplicialComplex,
+      ∃ triangulation : HasMoiseTriangulation M,
+      ∃ simplicialApproximation :
+        HasMoiseSimplicialApproximation
+          M localCharts simplicialComplex triangulation,
+      ∃ starNeighborhoodBasis :
+        HasMoiseStarNeighborhoodBasis M localCharts triangulation,
+      ∃ barycentricSubdivision :
+        HasMoiseBarycentricSubdivisionControl M triangulation,
+      ∃ regularNeighborhoodCompatibility :
+        HasMoiseRegularNeighborhoodCompatibility M triangulation,
+      ∃ triangulationLocalFiniteness :
+        HasMoiseTriangulationLocalFiniteness M triangulation,
+      ∃ linkCompatibility :
+        HasMoiseLinkCompatibility M triangulation,
+      ∃ plManifoldRecognition :
+        HasMoisePLManifoldRecognition M triangulation linkCompatibility,
+      ∃ triangulationHomeomorphism :
+        HasMoiseTriangulationHomeomorphism M localCharts triangulation,
+      ∃ moiseCompatibility :
+        HasMoiseTriangulationCompatibility M localCharts triangulation,
+      ∃ triangulationUniqueness :
+        HasMoiseTriangulationUniqueness M triangulation,
+      ∃ hauptvermutungDimensionThree :
+        HasMoiseHauptvermutungDimensionThree
+          M triangulation triangulationUniqueness,
+      ∃ plStructure : HasCompatiblePLStructure M triangulation,
+      ∃ plTransitionCompatibility :
+        HasPLTransitionCompatibility M triangulation plStructure,
+      ∃ plAtlas : HasCompatiblePLAtlas M triangulation plStructure,
+      ∃ plManifoldAtlas :
+        HasPLManifoldAtlas M triangulation plStructure plAtlas,
+      ∃ plCollarNeighborhoodCompatibility :
+        HasPLCollarNeighborhoodCompatibility
+          M triangulation plStructure plAtlas,
+      ∃ plHomeomorphismCompatibility :
+        HasPLHomeomorphismCompatibility
+          M localCharts triangulation plStructure plAtlas,
+      ∃ plAtlasMaximality :
+        HasPLAtlasMaximality M triangulation plStructure plAtlas,
+      ∃ plSmoothingExistence :
+        HasPLSmoothingExistence M triangulation plStructure plAtlas,
+      ∃ plSmoothingObstructionVanishing :
+        HasPLSmoothingObstructionVanishing M triangulation plStructure plAtlas,
+      ∃ plMicrobundleSmoothing :
+        HasPLMicrobundleSmoothing
+          M triangulation plStructure plAtlas plSmoothingExistence
+          plSmoothingObstructionVanishing,
+      ∃ plSmoothing :
+        HasPLSmoothingTheorem M triangulation plStructure plAtlas,
+      ∃ plSmoothingCompatibility :
+        HasPLSmoothingCompatibility
+          M triangulation plStructure plAtlas plSmoothing,
+      ∃ plSmoothingUniqueness :
+        HasPLSmoothingUniqueness
+          M triangulation plStructure plAtlas plSmoothing,
+      ∃ plSmoothingLocalModelCompatibility :
+        HasPLSmoothingLocalModelCompatibility
+          M triangulation plStructure plAtlas plSmoothing,
+      ∃ smoothAtlasConstruction :
+        HasSmoothAtlasConstruction
+          M triangulation plStructure plAtlas plSmoothing smoothStructure,
+      ∃ smoothAtlasPLCompatibility :
+        HasSmoothAtlasPLCompatibility
+          M triangulation plStructure plAtlas plSmoothing smoothStructure,
+      ∃ smoothAtlasMaximality :
+        HasSmoothAtlasMaximality
+          M triangulation plStructure plAtlas plSmoothing smoothStructure,
+      ∃ smoothAtlasUniqueness :
+        HasSmoothAtlasUniqueness M smoothStructure,
+      ∃ smoothStructureUniqueness :
+        HasSmoothStructureUniquenessUpToDiffeomorphism M smoothStructure,
+      ∃ smoothTransitionCompatibility :
+        HasSmoothTransitionCompatibility M smoothStructure,
+      ∃ smoothAtlasTransitionSmoothness :
+        HasSmoothAtlasTransitionSmoothness
+          M smoothStructure smoothTransitionCompatibility,
+        HasSmoothStructureDerivation
+          M localCharts locallyFiniteCoverRefinement simplicialComplex
+          compatibleChartTriangulations triangulation simplicialApproximation
+          starNeighborhoodBasis barycentricSubdivision
+          regularNeighborhoodCompatibility triangulationLocalFiniteness
+          linkCompatibility plManifoldRecognition triangulationHomeomorphism
+          moiseCompatibility triangulationUniqueness hauptvermutungDimensionThree
+          plStructure plTransitionCompatibility plAtlas plManifoldAtlas
+          plCollarNeighborhoodCompatibility plHomeomorphismCompatibility
+          plAtlasMaximality plSmoothingExistence
+          plSmoothingObstructionVanishing plMicrobundleSmoothing plSmoothing
+          plSmoothingCompatibility plSmoothingUniqueness
+          plSmoothingLocalModelCompatibility smoothStructure
+          smoothAtlasConstruction smoothAtlasPLCompatibility
+          smoothAtlasMaximality smoothAtlasUniqueness smoothStructureUniqueness
+          smoothTransitionCompatibility smoothAtlasTransitionSmoothness) :=
+  rfl
+
+/--
 Assemble the packaged smooth-structure derivation statement from the named
 Moise, PL, smoothing, and smooth-atlas components.
 -/
