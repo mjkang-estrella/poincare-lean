@@ -10237,6 +10237,26 @@ theorem poincareCompletionCertificate_iff_dependency_projections_eq :
   apply Subsingleton.elim
 
 /--
+The projection-based dependency equivalence is also the remaining-dependency
+projection paired directly with the finite-extinction plus theorem-shaped
+topology-extraction certificate constructor.
+-/
+theorem poincareCompletionCertificate_iff_dependency_projections_to_topology_statement_eq :
+    poincareCompletionCertificate_iff_dependency_projections =
+      ⟨remaining_dependency_package_of_completion_certificate,
+        fun dependencies =>
+          (by
+            rcases
+              canonical_completion_payload_of_finite_extinction_and_topology_extraction_statement
+                (finite_extinction_of_dependencies dependencies)
+                (topology_extraction_statement_of_dependencies dependencies) with
+              ⟨target, criterion⟩
+            exact
+              ⟨canonicalCompletionTheoremName, rfl, dependencies, target,
+                criterion⟩)⟩ := by
+  apply Subsingleton.elim
+
+/--
 The extraction-derivation projection equivalence is the remaining-dependency
 projection paired with the projection certificate constructor.
 -/
@@ -10244,6 +10264,29 @@ theorem poincareCompletionCertificate_iff_extraction_derivation_dependency_proje
     poincareCompletionCertificate_iff_extraction_derivation_dependency_projections =
       ⟨remaining_dependency_package_of_completion_certificate,
         completion_certificate_of_extraction_derivation_dependency_projections⟩ := by
+  apply Subsingleton.elim
+
+/--
+The extraction-derivation projection equivalence is also the remaining-dependency
+projection paired directly with the finite-extinction plus certified
+extractor/derivation certificate constructor.
+-/
+theorem poincareCompletionCertificate_iff_extraction_derivation_dependency_projections_to_finite_extinction_eq :
+    poincareCompletionCertificate_iff_extraction_derivation_dependency_projections =
+      ⟨remaining_dependency_package_of_completion_certificate,
+        fun dependencies =>
+          (by
+            rcases topology_extraction_derivation_payload_of_dependencies
+                dependencies with
+              ⟨extractSphere, derivation⟩
+            rcases
+              canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+                (finite_extinction_of_dependencies dependencies)
+                extractSphere derivation with
+              ⟨target, criterion⟩
+            exact
+              ⟨canonicalCompletionTheoremName, rfl, dependencies, target,
+                criterion⟩)⟩ := by
   apply Subsingleton.elim
 
 /--
@@ -10321,6 +10364,32 @@ theorem poincareCompletionCertificate_iff_poincareProofDependencies_projections_
   apply Subsingleton.elim
 
 /--
+The aggregate projection equivalence is also the aggregate dependency projection
+paired directly with the finite-extinction plus theorem-shaped
+topology-extraction certificate constructor after converting dependencies.
+-/
+theorem poincareCompletionCertificate_iff_poincareProofDependencies_projections_to_topology_statement_eq :
+    poincareCompletionCertificate_iff_poincareProofDependencies_projections =
+      ⟨poincareProofDependencies_of_completion_certificate,
+        fun dependencies =>
+          (by
+            rcases
+              canonical_completion_payload_of_finite_extinction_and_topology_extraction_statement
+                (finite_extinction_of_dependencies
+                  (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+                    dependencies))
+                (topology_extraction_statement_of_dependencies
+                  (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+                    dependencies)) with
+              ⟨target, criterion⟩
+            exact
+              ⟨canonicalCompletionTheoremName, rfl,
+                remainingDependencyPackage_iff_poincareProofDependencies.mpr
+                  dependencies,
+                target, criterion⟩)⟩ := by
+  apply Subsingleton.elim
+
+/--
 The aggregate-dependency extraction-derivation projection constructor is exactly
 the remaining-dependency projection constructor after converting aggregate
 dependencies.
@@ -10371,6 +10440,35 @@ theorem poincareCompletionCertificate_iff_poincareProofDependencies_extraction_d
     poincareCompletionCertificate_iff_poincareProofDependencies_extraction_derivation_projections =
       ⟨poincareProofDependencies_of_completion_certificate,
         completion_certificate_of_poincareProofDependencies_extraction_derivation_projections⟩ := by
+  apply Subsingleton.elim
+
+/--
+The aggregate extraction-derivation projection equivalence is also the aggregate
+dependency projection paired directly with the finite-extinction plus certified
+extractor/derivation certificate constructor after converting dependencies.
+-/
+theorem poincareCompletionCertificate_iff_poincareProofDependencies_extraction_derivation_projections_to_finite_extinction_eq :
+    poincareCompletionCertificate_iff_poincareProofDependencies_extraction_derivation_projections =
+      ⟨poincareProofDependencies_of_completion_certificate,
+        fun dependencies =>
+          (by
+            rcases
+              topology_extraction_derivation_payload_of_dependencies
+                (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+                  dependencies) with
+              ⟨extractSphere, derivation⟩
+            rcases
+              canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+                (finite_extinction_of_dependencies
+                  (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+                    dependencies))
+                extractSphere derivation with
+              ⟨target, criterion⟩
+            exact
+              ⟨canonicalCompletionTheoremName, rfl,
+                remainingDependencyPackage_iff_poincareProofDependencies.mpr
+                  dependencies,
+                target, criterion⟩)⟩ := by
   apply Subsingleton.elim
 
 /--

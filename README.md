@@ -1236,7 +1236,11 @@ The current artifact is intentionally conservative:
   and
   `poincareCompletionCertificate_iff_poincareProofDependencies_extraction_derivation_projections`,
   make those certified certificate routes reversible at both dependency-package
-  surfaces. Those dependency-package routes now also have
+  surfaces. The projection and certified projection iff contracts are also
+  pinned directly to the finite-extinction plus theorem-shaped
+  topology-extraction endpoint and the finite-extinction plus
+  extractor/derivation endpoint at both dependency-package surfaces. Those
+  dependency-package routes now also have
   projection-after-constructor round-trip contracts back to the
   remaining-dependency or aggregate dependency package they were built from,
   including the converted remaining-dependency package stored by each aggregate
