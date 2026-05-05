@@ -81,6 +81,9 @@ The current artifact is intentionally conservative:
   equivalences, certificate iff factorizations, plus the packaged reverse
   canonical-smooth canonical routes, checked-certificate constructors, and
   certificate-payload equivalences. The packaged smooth, packaged
+  canonical-smooth, and packaged reverse canonical-smooth payload constructors
+  now also reconstruct their route completion certificates from the assembled
+  route payload endpoints. The packaged smooth, packaged
   canonical-smooth, and packaged reverse canonical-smooth certificate
   equivalences are also pinned directly to
   their named projection/constructor pairs, and their aggregate/remaining
@@ -1260,7 +1263,10 @@ The current artifact is intentionally conservative:
   `packaged_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies`,
   which record the package's `C∞` smoothability statement, the smooth,
   canonical-smooth, or reverse canonical-smooth input, the induced topological target, and the completion
-  criterion. The matching canonical payload routes
+  criterion. The packaged smooth-route payload constructors now have reverse
+  reconstruction contracts for the smooth, canonical-smooth, and reverse
+  canonical-smooth route payload endpoints at both dependency surfaces. The
+  matching canonical payload routes
   `canonical_completion_payload_of_remaining_dependency_and_packaged_smooth_statement`,
   `canonical_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement`,
   `canonical_completion_payload_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement`,
@@ -1326,8 +1332,9 @@ The current artifact is intentionally conservative:
   so a proof-bearing smooth statement can use the dependency package's own `C∞`
   smoothability output to reconstruct the checked completion certificate at both
   dependency package surfaces. Those smooth and packaged smooth certificate
-  constructors now also have dependency projection round-trip contracts at both
-  the remaining-dependency and aggregate-dependency surfaces. The standalone
+  constructors now also have dependency projection round-trip contracts and
+  packaged payload reconstruction contracts at both the remaining-dependency
+  and aggregate-dependency surfaces. The standalone
   smoothability-package route
   `smoothability_package_smooth_statement_completion_payload` and its
   canonical-smooth and reverse canonical-smooth variants now also show that a
