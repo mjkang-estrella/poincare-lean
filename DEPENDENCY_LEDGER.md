@@ -1277,7 +1277,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   certificates directly from those packaged payloads, and the
   `poincareCompletionCertificate_iff_*packaged*payload` contracts make the
   supplied smooth/canonical-smooth packaged payload routes reversible at the
-  checked certificate surface. The smooth and packaged-smooth routes now also
+  checked certificate surface. Those packaged payload constructors now also
+  have projection-after-constructor round-trip contracts back to their
+  remaining-dependency and aggregate payloads. The smooth and packaged-smooth
+  routes now also
   have equality contracts pinning their canonical payload, certificate
   constructor, packaged payload, project target/criterion, project completion
   payload, canonical-payload conversion, canonical target, canonical criterion,
