@@ -8071,6 +8071,23 @@ abbrev FiniteExtinctionWidthSubobligationsPayload
   FiniteExtinctionWidthSubobligationsStatement flow surgery control
 
 /--
+The width-analysis payload alias is definitionally the theorem-shaped
+finite-extinction width sub-obligation statement for the fixed flow, surgery
+witness, and Perelman control witness.
+-/
+theorem finiteExtinctionWidthSubobligationsPayload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow) :
+    FiniteExtinctionWidthSubobligationsPayload flow surgery control =
+      FiniteExtinctionWidthSubobligationsStatement flow surgery control :=
+  rfl
+
+/--
 Semantic alias for the full finite-extinction sub-obligation payload exposed by
 a theorem-shaped finite-extinction full statement.
 -/
@@ -8084,6 +8101,23 @@ abbrev FiniteExtinctionSubobligationsPayload
     (control : HasPerelmanSingularityControl (n := n) (M := M) flow) :
     Prop :=
   FiniteExtinctionSubobligationsStatement flow surgery control
+
+/--
+The full finite-extinction payload alias is definitionally the theorem-shaped
+finite-extinction full sub-obligation statement for the fixed flow, surgery
+witness, and Perelman control witness.
+-/
+theorem finiteExtinctionSubobligationsPayload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow) :
+    FiniteExtinctionSubobligationsPayload flow surgery control =
+      FiniteExtinctionSubobligationsStatement flow surgery control :=
+  rfl
 
 /-- The width statement exposes the named width/surgery-discard sub-obligations. -/
 theorem finite_extinction_width_subobligations_of_statement

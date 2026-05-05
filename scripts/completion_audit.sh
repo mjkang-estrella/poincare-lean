@@ -2786,8 +2786,12 @@ check_decl "finite-extinction full sub-obligations statement shape contract is d
   '^theorem finiteExtinctionSubobligationsStatement_eq\b' Poincare/Surgery.lean
 check_decl "finite-extinction width sub-obligation payload alias is declared" \
   '^abbrev FiniteExtinctionWidthSubobligationsPayload\b' Poincare/Surgery.lean
+check_decl "finite-extinction width sub-obligation payload equality contract is declared" \
+  '^theorem finiteExtinctionWidthSubobligationsPayload_eq\b' Poincare/Surgery.lean
 check_decl "finite-extinction full sub-obligation payload alias is declared" \
   '^abbrev FiniteExtinctionSubobligationsPayload\b' Poincare/Surgery.lean
+check_decl "finite-extinction full sub-obligation payload equality contract is declared" \
+  '^theorem finiteExtinctionSubobligationsPayload_eq\b' Poincare/Surgery.lean
 check_decl "surgery package finite-extinction width statement projection is declared" \
   '^theorem finite_extinction_width_subobligations_statement_of_surgery_package\b' Poincare/Surgery.lean
 check_decl "surgery package finite-extinction width statement equality contract is declared" \
@@ -7428,7 +7432,9 @@ open scoped Manifold ContDiff
 #check Poincare.perelman_control_payload_of_package
 #check Poincare.perelman_control_payload_of_package_eq
 #check Poincare.FiniteExtinctionWidthSubobligationsPayload
+#check Poincare.finiteExtinctionWidthSubobligationsPayload_eq
 #check Poincare.FiniteExtinctionSubobligationsPayload
+#check Poincare.finiteExtinctionSubobligationsPayload_eq
 #check Poincare.finite_extinction_width_subobligations_statement_of_surgery_package
 #check Poincare.finite_extinction_width_subobligations_statement_of_surgery_package_eq
 #check Poincare.finite_extinction_subobligations_statement_of_surgery_package
@@ -9992,7 +9998,9 @@ open scoped Manifold ContDiff
 #check Poincare.perelman_control_payload_of_package
 #check Poincare.perelman_control_payload_of_package_eq
 #check Poincare.FiniteExtinctionWidthSubobligationsPayload
+#check Poincare.finiteExtinctionWidthSubobligationsPayload_eq
 #check Poincare.FiniteExtinctionSubobligationsPayload
+#check Poincare.finiteExtinctionSubobligationsPayload_eq
 #check Poincare.finite_extinction_width_subobligations_statement_of_surgery_package
 #check Poincare.finite_extinction_width_subobligations_statement_of_surgery_package_eq
 #check Poincare.finite_extinction_subobligations_statement_of_surgery_package
