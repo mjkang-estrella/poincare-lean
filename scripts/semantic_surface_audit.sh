@@ -582,6 +582,7 @@ set_option linter.unusedVariables false
 #check Poincare.AnalyticFoundationDerivationStatement
 #check Poincare.AnalyticFoundationSubobligationsPayload
 #check Poincare.RicciFlowAnalyticFoundationStatement
+#check Poincare.ricciFlowAnalyticFoundationStatement_eq
 #check Poincare.analytic_foundation_derivation_statement_of_components
 #check Poincare.analytic_foundation_derivation_statement_of_components_eq
 #check Poincare.analytic_foundation_subobligations_of_derivation_statement
@@ -1062,6 +1063,7 @@ set_option linter.unusedVariables false
 #check Poincare.finite_extinction_conclusion_derivation_of_surgery_package_eq
 #check Poincare.FiniteExtinctionConclusionStatement
 #check Poincare.FiniteExtinctionStatement
+#check Poincare.finiteExtinctionStatement_eq
 #check Poincare.finite_extinction_conclusion_statement_of_components
 #check Poincare.finite_extinction_conclusion_statement_of_components_eq
 #check Poincare.finite_extinction_conclusion_statement_of_surgery_package
@@ -1142,8 +1144,12 @@ set_option linter.unusedVariables false
   Poincare.ExtinctionTopologyExtractionPackage →
     Poincare.ExtinctionTopologyExtractionStatement)
 
+#check Poincare.extinctionTopologyExtractionStatement_eq
+
 #check (Poincare.ExtinctionTopologyDerivationForExtractionStatement :
   Poincare.ExtinctionImpliesSphereStatement → Prop)
+
+#check Poincare.extinctionTopologyDerivationForExtractionStatement_eq
 
 #check Poincare.topology_derivation_statement_payload_of_extraction_statement
 #check Poincare.homeomorphism_of_topology_extraction_statement
@@ -1517,6 +1523,7 @@ set_option linter.unusedVariables false
 #check Poincare.smooth_structure_derivation_statement_of_smoothability_package_eq
 #check Poincare.smoothability_smooth_structure_statement_payload_of_smoothability_package
 #check Poincare.smoothability_smooth_structure_statement_payload_of_smoothability_package_eq
+#check Poincare.smoothabilityBridgeStatement_eq
 #check (show
   Poincare.SmoothabilityBridgeStatement =
     (∀ (M : Type) [TopologicalSpace M] [T2Space M]
@@ -1525,6 +1532,7 @@ set_option linter.unusedVariables false
         ∀ smoothStructure : Poincare.HasThreeManifoldSmoothStructure M,
           Poincare.SmoothStructureDerivationStatement M smoothStructure →
             IsManifold Poincare.ThreeManifoldModelWithCorners 1 M) from rfl)
+#check Poincare.smoothabilitySmoothManifoldStatement_eq
 #check Poincare.smoothability_bridge_of_smoothability_package
 #check Poincare.smoothability_bridge_of_smoothability_package_eq
 #check Poincare.smoothability_bridge_derivation_of_smoothability_package
@@ -1548,6 +1556,7 @@ set_option linter.unusedVariables false
       Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
     Poincare.ExtinctionImpliesSphereStatement →
       Poincare.PoincareConjectureStatement)
+#check Poincare.extinctionImpliesSphereStatement_eq
 #check Poincare.poincare_statement_of_extinction_and_extraction_eq
 
 #check (Poincare.extinction_extraction_of_poincare_statement :

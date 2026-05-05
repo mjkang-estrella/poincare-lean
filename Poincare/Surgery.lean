@@ -4050,6 +4050,25 @@ def FiniteExtinctionStatement
       flow surgery control finiteExtinction
 
 /--
+The theorem-shaped finite-extinction interface is exactly existence of a flow,
+surgery construction, Perelman control, finite-extinction witness, and checked
+finite-extinction conclusion statement.
+-/
+theorem finiteExtinctionStatement_eq
+    (n : ℕ∞ω)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    FiniteExtinctionStatement n M =
+      (∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+      ∃ surgery : HasRicciFlowWithSurgery n M,
+      ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+      ∃ finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M,
+        FiniteExtinctionConclusionStatement
+          flow surgery control finiteExtinction) :=
+  rfl
+
+/--
 Assemble the fixed-flow finite-extinction conclusion statement from the named
 finite-extinction components.
 -/

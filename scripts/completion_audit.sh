@@ -367,6 +367,8 @@ check_decl "analytic foundation sub-obligations payload alias is declared" \
   '^abbrev AnalyticFoundationSubobligationsPayload\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation theorem-shaped statement is declared" \
   '^def RicciFlowAnalyticFoundationStatement\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation theorem-shaped statement equality contract is declared" \
+  '^theorem ricciFlowAnalyticFoundationStatement_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation component assembly theorem is declared" \
   '^theorem analytic_foundation_derivation_statement_of_components\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation component assembly equality contract is declared" \
@@ -560,6 +562,8 @@ check_decl "analytic foundation statement equation evidence bridge is declared" 
   '^theorem equation_evidence_of_analytic_foundation_statement\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation statement equation evidence equality theorem is declared" \
   '^theorem equation_evidence_of_analytic_foundation_statement_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "extinction-implies-sphere statement equality contract is declared" \
+  '^theorem extinctionImpliesSphereStatement_eq\b' Poincare/RicciFlowInterface.lean
 check_decl "finite-extinction/extraction assembly theorem is declared" \
   '^theorem poincare_statement_of_extinction_and_extraction\b' Poincare/RicciFlowInterface.lean
 check_decl "finite-extinction/extraction assembly equality contract is declared" \
@@ -2730,6 +2734,8 @@ check_decl "finite-extinction conclusion statement is declared" \
   '^def FiniteExtinctionConclusionStatement\b' Poincare/Surgery.lean
 check_decl "finite-extinction statement is declared" \
   '^def FiniteExtinctionStatement\b' Poincare/Surgery.lean
+check_decl "finite-extinction statement equality contract is declared" \
+  '^theorem finiteExtinctionStatement_eq\b' Poincare/Surgery.lean
 check_decl "finite-extinction component assembly theorem is declared" \
   '^theorem finite_extinction_conclusion_statement_of_components\b' Poincare/Surgery.lean
 check_decl "finite-extinction component assembly equality contract is declared" \
@@ -3011,8 +3017,12 @@ check_decl "topology homeomorphism derivation statement is declared" \
   '^def ExtinctionTopologyHomeomorphismDerivationStatement\b' Poincare/TopologyExtraction.lean
 check_decl "topology extraction statement is declared" \
   '^def ExtinctionTopologyExtractionStatement\b' Poincare/TopologyExtraction.lean
+check_decl "topology extraction statement equality contract is declared" \
+  '^theorem extinctionTopologyExtractionStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "topology derivation-for-extraction statement is declared" \
   '^def ExtinctionTopologyDerivationForExtractionStatement\b' Poincare/TopologyExtraction.lean
+check_decl "topology derivation-for-extraction statement equality contract is declared" \
+  '^theorem extinctionTopologyDerivationForExtractionStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "topology component assembly theorem for derivation statement is declared" \
   '^theorem extinction_topology_derivation_statement_of_components\b' Poincare/TopologyExtraction.lean
 check_decl "topology component assembly theorem equality contract is declared" \
@@ -3233,8 +3243,12 @@ check_decl "smoothability component assembly equality contract is declared" \
   '^theorem smooth_structure_derivation_statement_of_components_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability bridge statement is declared" \
   '^def SmoothabilityBridgeStatement\b' Poincare/Smoothability.lean
+check_decl "smoothability bridge statement equality contract is declared" \
+  '^theorem smoothabilityBridgeStatement_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability C-infinity smooth-manifold statement is declared" \
   '^def SmoothabilitySmoothManifoldStatement\b' Poincare/Smoothability.lean
+check_decl "smoothability C-infinity smooth-manifold statement equality contract is declared" \
+  '^theorem smoothabilitySmoothManifoldStatement_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability bridge derivation interface is declared" \
   '^inductive HasSmoothabilityBridgeDerivation\b' Poincare/Smoothability.lean
 check_decl "smoothability smooth-model compatibility interface is declared" \

@@ -621,6 +621,20 @@ def RicciFlowAnalyticFoundationStatement
   ∃ flow : RicciFlowData I n M, AnalyticFoundationDerivationStatement flow
 
 /--
+The theorem-shaped analytic-foundation interface is exactly existence of
+Ricci-flow data equipped with the fixed-flow analytic derivation statement.
+-/
+theorem ricciFlowAnalyticFoundationStatement_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    (I : ModelWithCorners ℝ E H) (n : ℕ∞ω)
+    (M : Type*) [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M] :
+    RicciFlowAnalyticFoundationStatement I n M =
+      (∃ flow : RicciFlowData I n M,
+        AnalyticFoundationDerivationStatement flow) :=
+  rfl
+
+/--
 Assemble the fixed-flow analytic derivation statement from the named analytic
 foundation components.
 -/

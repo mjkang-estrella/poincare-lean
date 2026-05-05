@@ -454,7 +454,10 @@ import Poincare
 #print axioms Poincare.ExtinctionTopologyHomeomorphismAssemblyStatement
 #print axioms Poincare.ExtinctionTopologyHomeomorphismDerivationStatement
 #print axioms Poincare.ExtinctionTopologyExtractionStatement
+#print axioms Poincare.extinctionTopologyExtractionStatement_eq
 #print axioms Poincare.ExtinctionTopologyDerivationForExtractionStatement
+#print axioms Poincare.extinctionTopologyDerivationForExtractionStatement_eq
+#print axioms Poincare.extinctionImpliesSphereStatement_eq
 #print axioms Poincare.extinction_topology_derivation_statement_of_components
 #print axioms Poincare.extinction_topology_derivation_statement_of_components_eq
 #print axioms Poincare.extinction_topology_derivation_statement_of_topology_package
@@ -579,6 +582,8 @@ import Poincare
 #print axioms Poincare.smoothability_smooth_structure_statement_payload_of_smoothability_package
 #print axioms Poincare.smoothability_smooth_structure_statement_payload_of_smoothability_package_eq
 #print axioms Poincare.SmoothabilityBridgeStatement
+#print axioms Poincare.smoothabilityBridgeStatement_eq
+#print axioms Poincare.smoothabilitySmoothManifoldStatement_eq
 #print axioms Poincare.smoothability_bridge_of_smoothability_package
 #print axioms Poincare.smoothability_bridge_of_smoothability_package_eq
 #print axioms Poincare.smoothability_bridge_derivation_of_smoothability_package
@@ -722,6 +727,7 @@ import Poincare
 #print axioms Poincare.equation_evidence_of_analytic_foundation_package_eq
 #print axioms Poincare.AnalyticFoundationDerivationStatement
 #print axioms Poincare.RicciFlowAnalyticFoundationStatement
+#print axioms Poincare.ricciFlowAnalyticFoundationStatement_eq
 #print axioms Poincare.analytic_foundation_derivation_statement_of_components
 #print axioms Poincare.analytic_foundation_derivation_statement_of_components_eq
 #print axioms Poincare.analytic_foundation_subobligations_of_derivation_statement
@@ -1187,6 +1193,7 @@ import Poincare
 #print axioms Poincare.finite_extinction_conclusion_derivation_of_surgery_package_eq
 #print axioms Poincare.FiniteExtinctionConclusionStatement
 #print axioms Poincare.FiniteExtinctionStatement
+#print axioms Poincare.finiteExtinctionStatement_eq
 #print axioms Poincare.finite_extinction_conclusion_statement_of_components
 #print axioms Poincare.finite_extinction_conclusion_statement_of_components_eq
 #print axioms Poincare.finite_extinction_conclusion_statement_of_surgery_package

@@ -825,6 +825,21 @@ def SmoothabilityBridgeStatement : Prop :=
           IsManifold ThreeManifoldModelWithCorners 1 M
 
 /--
+The theorem-shaped smoothability bridge is exactly the universal conversion from
+the raw three-manifold smooth structure plus its derivation to the manifold
+instance consumed by the surgery layer.
+-/
+theorem smoothabilityBridgeStatement_eq :
+    SmoothabilityBridgeStatement.{u} =
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          ∀ smoothStructure : HasThreeManifoldSmoothStructure M,
+            SmoothStructureDerivationStatement M smoothStructure →
+              IsManifold ThreeManifoldModelWithCorners 1 M) :=
+  rfl
+
+/--
 The theorem-shaped `C∞` smooth-manifold output consumed by the canonical smooth
 Poincare statement.
 -/
@@ -833,6 +848,18 @@ def SmoothabilitySmoothManifoldStatement : Prop :=
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M],
       IsManifold (𝓡 3) ∞ M
+
+/--
+The theorem-shaped smooth-manifold output is exactly the universal `C∞`
+manifold instance for closed simply connected topological 3-manifolds.
+-/
+theorem smoothabilitySmoothManifoldStatement_eq :
+    SmoothabilitySmoothManifoldStatement.{u} =
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M) :=
+  rfl
 
 /--
 Interface certifying that the theorem-shaped smoothability bridge follows from

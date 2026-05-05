@@ -42,6 +42,19 @@ def ExtinctionImpliesSphereStatement : Prop :=
         Nonempty (M ≃ₜ ThreeSphere)
 
 /--
+The theorem-shaped finite-extinction-to-sphere interface is exactly the stated
+universal homeomorphism extractor.
+-/
+theorem extinctionImpliesSphereStatement_eq :
+    ExtinctionImpliesSphereStatement.{u} =
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M →
+            Nonempty (M ≃ₜ ThreeSphere)) :=
+  rfl
+
+/--
 If future Ricci-flow work supplies finite extinction for every compact simply
 connected 3-manifold, and future topology work extracts a sphere homeomorphism
 from finite extinction, then the Poincare statement follows.

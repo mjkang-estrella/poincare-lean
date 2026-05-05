@@ -38,6 +38,7 @@ open scoped Manifold ContDiff
 
 #check Poincare.threeSphere_eq
 #check Poincare.poincareConjectureStatement_eq
+#check Poincare.extinctionImpliesSphereStatement_eq
 #check Poincare.poincareConjectureStatement_iff_canonical_three_sphere_statement
 #check Poincare.poincareConjectureStatement_iff_canonical_three_sphere_statement_eq
 #check Poincare.completionCriterionAtUniverse_iff_poincareConjectureStatement
@@ -149,7 +150,9 @@ open scoped Manifold ContDiff
 #check Poincare.ExtinctionTopologyHomeomorphismAssemblyStatement
 #check Poincare.ExtinctionTopologyHomeomorphismDerivationStatement
 #check Poincare.ExtinctionTopologyExtractionStatement
+#check Poincare.extinctionTopologyExtractionStatement_eq
 #check Poincare.ExtinctionTopologyDerivationForExtractionStatement
+#check Poincare.extinctionTopologyDerivationForExtractionStatement_eq
 #check Poincare.extinction_topology_derivation_statement_of_components
 #check Poincare.extinction_topology_derivation_statement_of_components_eq
 #check Poincare.extinction_topology_derivation_statement_of_topology_package
@@ -301,6 +304,7 @@ open scoped Manifold ContDiff
 #check Poincare.smooth_structure_derivation_statement_of_smoothability_package_eq
 #check Poincare.smoothability_smooth_structure_statement_payload_of_smoothability_package
 #check Poincare.smoothability_smooth_structure_statement_payload_of_smoothability_package_eq
+#check Poincare.smoothabilityBridgeStatement_eq
 #check (show
   Poincare.SmoothabilityBridgeStatement =
     (∀ (M : Type) [TopologicalSpace M] [T2Space M]
@@ -315,6 +319,7 @@ open scoped Manifold ContDiff
       [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
       [SimplyConnectedSpace M] [CompactSpace M],
         IsManifold (𝓡 3) ∞ M) from rfl)
+#check Poincare.smoothabilitySmoothManifoldStatement_eq
 #check Poincare.smoothability_bridge_of_smoothability_package
 #check Poincare.smoothability_bridge_of_smoothability_package_eq
 #check Poincare.smoothability_smooth_manifold_statement_of_smoothability_package
@@ -467,6 +472,7 @@ open scoped Manifold ContDiff
 #check Poincare.AnalyticFoundationDerivationStatement
 #check Poincare.AnalyticFoundationSubobligationsPayload
 #check Poincare.RicciFlowAnalyticFoundationStatement
+#check Poincare.ricciFlowAnalyticFoundationStatement_eq
 #check Poincare.analytic_foundation_derivation_statement_of_components
 #check Poincare.analytic_foundation_derivation_statement_of_components_eq
 #check Poincare.analytic_foundation_subobligations_of_derivation_statement
@@ -932,6 +938,7 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_conclusion_derivation_of_surgery_package_eq
 #check Poincare.FiniteExtinctionConclusionStatement
 #check Poincare.FiniteExtinctionStatement
+#check Poincare.finiteExtinctionStatement_eq
 #check Poincare.finite_extinction_conclusion_statement_of_components
 #check Poincare.finite_extinction_conclusion_statement_of_components_eq
 #check Poincare.finite_extinction_conclusion_statement_of_surgery_package

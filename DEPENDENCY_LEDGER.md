@@ -24,6 +24,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   and target/criterion iff contracts for that payload. Equality contracts now pin
   those canonical-statement, witness-transfer, target/criterion projection, and
   target/criterion payload routes to their named statement-layer constructions.
+- The theorem-shaped boundary statements for finite-extinction extraction,
+  analytic foundation, smoothability, finite extinction, and topology extraction
+  now have direct equality contracts pinning them to their exact universal or
+  existential proposition shapes.
 - `scripts/audit_formalization.sh` passes.
 - `Poincare/Assembly.lean` contains a proof-bearing support lemma showing that
   a diffeomorphism to `S^3` gives a homeomorphism to `S^3`; it also handles the

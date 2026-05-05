@@ -1332,6 +1332,20 @@ def ExtinctionTopologyExtractionStatement : Prop :=
         ExtinctionTopologyDerivationStatement M extinction homeomorphism
 
 /--
+The theorem-shaped topology-extraction interface is exactly the universal
+post-extinction homeomorphism plus derivation statement.
+-/
+theorem extinctionTopologyExtractionStatement_eq :
+    ExtinctionTopologyExtractionStatement.{u} =
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        (extinction : FiniteExtinctionByRicciFlowWithSurgery M),
+          ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+            ExtinctionTopologyDerivationStatement M extinction homeomorphism) :=
+  rfl
+
+/--
 The derivation evidence corresponding to a particular theorem-shaped
 finite-extinction-to-sphere extractor.
 
@@ -1347,6 +1361,21 @@ def ExtinctionTopologyDerivationForExtractionStatement
     (extinction : FiniteExtinctionByRicciFlowWithSurgery M),
       ExtinctionTopologyDerivationStatement M extinction
         (extractSphere M extinction)
+
+/--
+The derivation evidence for a theorem-shaped extractor is exactly the universal
+fixed-homeomorphism derivation statement for the extractor's chosen output.
+-/
+theorem extinctionTopologyDerivationForExtractionStatement_eq
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    ExtinctionTopologyDerivationForExtractionStatement extractSphere =
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        (extinction : FiniteExtinctionByRicciFlowWithSurgery M),
+          ExtinctionTopologyDerivationStatement M extinction
+            (extractSphere M extinction)) :=
+  rfl
 
 /--
 Assemble the fixed-manifold topology derivation statement from the named
