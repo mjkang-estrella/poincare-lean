@@ -6481,6 +6481,101 @@ theorem completion_certificate_of_remaining_dependency_package_eq
   apply Subsingleton.elim
 
 /--
+Projecting the remaining-dependency package from the project-payload certificate
+constructor recovers the supplied package.
+-/
+theorem remaining_dependency_package_of_completion_certificate_of_remaining_dependency_and_poincare_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    remaining_dependency_package_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_and_poincare_payload
+        dependencies payload) =
+      dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from the project-payload certificate
+constructor recovers the supplied payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_remaining_dependency_and_poincare_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_and_poincare_payload
+        dependencies payload) =
+      payload := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical completion payload from the canonical-payload
+certificate constructor recovers the supplied payload.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_canonical_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_and_canonical_payload
+        dependencies payload) =
+      payload := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project target from the target-statement certificate constructor
+recovers the supplied target.
+-/
+theorem target_statement_of_completion_certificate_of_remaining_dependency_and_target_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    target_statement_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_and_target_statement
+        dependencies target) =
+      target := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical target from the canonical-target certificate constructor
+recovers the supplied target.
+-/
+theorem canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_canonical_target_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_and_canonical_target
+        dependencies target) =
+      target := by
+  apply Subsingleton.elim
+
+/--
+Projecting the universe-indexed completion criterion from the criterion
+certificate constructor recovers the supplied criterion at the same witness.
+-/
+theorem completion_criterion_of_completion_certificate_of_remaining_dependency_and_completion_criterion_eq
+    (dependencies : RemainingDependencyPackage.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_remaining_dependency_and_completion_criterion
+        dependencies witness criterion) =
+      criterion := by
+  apply Subsingleton.elim
+
+/--
+Projecting the remaining-dependency package from the aggregate remaining-package
+certificate constructor recovers the supplied package.
+-/
+theorem remaining_dependency_package_of_completion_certificate_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    remaining_dependency_package_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_package dependencies) =
+      dependencies := by
+  apply Subsingleton.elim
+
+/--
 The completion certificate is equivalent to the remaining dependency package.
 It adds checked artifact accounting, not an additional mathematical assumption.
 -/

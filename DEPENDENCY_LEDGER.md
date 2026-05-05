@@ -1104,7 +1104,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   corresponding aggregate dependency plus payload, target, and criterion
   constructors and iff routes now have equality contracts pinning them to the
   remaining-dependency certificate constructors they delegate to after the
-  `remainingDependencyPackage_iff_poincareProofDependencies` conversion. The
+  `remainingDependencyPackage_iff_poincareProofDependencies` conversion.
+  The remaining-dependency payload, target, criterion, and package constructors
+  now also have projection-after-constructor round-trip contracts. The
   theorems
   `poincareCompletionCertificate_aggregate_dependency_payload`,
   `completion_certificate_of_aggregate_dependency_payload`, and
