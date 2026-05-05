@@ -10479,4 +10479,216 @@ theorem canonical_completion_payload_of_completion_certificate_of_poincareProofD
           dependencies) := by
   apply Subsingleton.elim
 
+/--
+Projecting the project completion payload from the remaining-dependency raw
+component route returns the route payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_remaining_dependency_component_requirements_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_component_requirements
+        dependencies) =
+      poincare_completion_payload_of_remaining_dependency_component_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from the remaining-dependency raw
+package-layer route returns the route payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_remaining_dependency_package_layer_requirements_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_package_layer_requirements
+        dependencies) =
+      poincare_completion_payload_of_remaining_dependency_package_layer_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from the remaining-dependency raw
+milestone route returns the route payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_remaining_dependency_milestone_requirements_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_milestone_requirements
+        dependencies) =
+      poincare_completion_payload_of_remaining_dependency_milestone_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from the remaining-dependency
+certified component route returns the route payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements
+        dependencies) =
+      poincare_completion_payload_of_remaining_dependency_component_extraction_derivation_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from the remaining-dependency
+certified package-layer route returns the route payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements
+        dependencies) =
+      poincare_completion_payload_of_remaining_dependency_package_layer_extraction_derivation_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from the remaining-dependency
+certified milestone route returns the route payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements
+        dependencies) =
+      poincare_completion_payload_of_remaining_dependency_milestone_extraction_derivation_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from the remaining-dependency
+aggregate extraction-derivation route returns the route payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_aggregate_extraction_derivation_dependencies_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_aggregate_extraction_derivation_dependencies
+        dependencies) =
+      poincare_completion_payload_of_aggregate_extraction_derivation_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from the remaining-dependency
+extraction-derivation projection route returns the route payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_extraction_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_extraction_derivation_dependency_projections
+        dependencies) =
+      poincare_completion_payload_of_extraction_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from the aggregate raw component
+route returns the aggregate route payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_component_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_component_requirements
+        dependencies) =
+      poincare_completion_payload_of_poincareProofDependencies_component_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from the aggregate raw package-layer
+route returns the aggregate route payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_package_layer_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_package_layer_requirements
+        dependencies) =
+      poincare_completion_payload_of_poincareProofDependencies_package_layer_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from the aggregate raw milestone
+route returns the aggregate route payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_milestone_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_milestone_requirements
+        dependencies) =
+      poincare_completion_payload_of_poincareProofDependencies_milestone_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from the aggregate certified
+component route returns the aggregate route payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements
+        dependencies) =
+      poincare_completion_payload_of_poincareProofDependencies_component_extraction_derivation_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from the aggregate certified
+package-layer route returns the aggregate route payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+        dependencies) =
+      poincare_completion_payload_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from the aggregate certified
+milestone route returns the aggregate route payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+        dependencies) =
+      poincare_completion_payload_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from the aggregate
+extraction-derivation route returns the converted remaining-dependency route
+payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
+        dependencies) =
+      poincare_completion_payload_of_aggregate_extraction_derivation_dependencies
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from the aggregate
+extraction-derivation projection route returns the converted projection route
+payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+        dependencies) =
+      poincare_completion_payload_of_extraction_derivation_dependency_projections
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
 end Poincare
