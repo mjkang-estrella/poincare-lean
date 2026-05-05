@@ -692,7 +692,8 @@ The current artifact is intentionally conservative:
   extractor/derivation route at both the remaining-dependency and aggregate
   proof-dependency surfaces. Those direct topology and extractor/derivation
   endpoints are now also pinned through the literal and aggregate
-  canonical-statement payload projections for both projection certificates.
+  canonical-statement payload projections and constructors for both projection
+  certificates.
   It also exposes the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/
@@ -1263,8 +1264,8 @@ The current artifact is intentionally conservative:
   extractor/derivation route for its certificate, canonical/project payloads,
   target, criterion, and canonical topological statement at both
   remaining-dependency and aggregate surfaces. The matching literal and
-  aggregate canonical-statement payload projections now also point directly at
-  those topology and extractor/derivation endpoints.
+  aggregate canonical-statement payload projections and constructors now also
+  point directly at those topology and extractor/derivation endpoints.
   The certificate-layer equality contracts now pin the reserved-name, literal
   payload, canonical payload, target/criterion projection, remaining/aggregate
   dependency, and project-statement routes to their named projections and
