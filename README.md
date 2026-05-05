@@ -904,7 +904,9 @@ The current artifact is intentionally conservative:
   `remainingDependencyPackage_eq`,
   `remainingDependencyPackage_iff_poincareProofDependencies`, and
   `remainingDependencyPackage_iff_components` identify the remaining-dependency
-  package with the aggregate package and its three component inputs. The theorem
+  package with the aggregate package and its three component inputs; the
+  remaining/aggregate iff bridge now also has an equality contract pinning it to
+  the definitional equivalence. The theorem
   `remainingDependencyPackage_components_payload` exposes those components from
   the completion-target boundary, with named smoothability, surgery, and
   topology projections. The smoothability package, theorem-shaped `C∞`

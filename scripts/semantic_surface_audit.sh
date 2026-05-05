@@ -3237,6 +3237,8 @@ set_option linter.unusedVariables false
 #check (Poincare.remainingDependencyPackage_iff_poincareProofDependencies :
   Poincare.RemainingDependencyPackage ↔ Poincare.PoincareProofDependencies)
 
+#check Poincare.remainingDependencyPackage_iff_poincareProofDependencies_eq
+
 #check (Poincare.smoothability_package_of_remaining_dependency_package :
   Poincare.RemainingDependencyPackage →
     Poincare.SmoothabilityPackage)

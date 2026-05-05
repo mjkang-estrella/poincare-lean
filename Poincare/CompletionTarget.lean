@@ -2782,6 +2782,15 @@ theorem remainingDependencyPackage_iff_poincareProofDependencies :
     RemainingDependencyPackage.{u} ↔ PoincareProofDependencies.{u} :=
   Iff.rfl
 
+/--
+The remaining-dependency and aggregate proof-dependency equivalence is the
+definitional equivalence exposed as a named contract.
+-/
+theorem remainingDependencyPackage_iff_poincareProofDependencies_eq :
+    remainingDependencyPackage_iff_poincareProofDependencies =
+      Iff.rfl := by
+  apply Subsingleton.elim
+
 /-- The remaining dependency package supplies the smoothability package. -/
 theorem smoothability_package_of_remaining_dependency_package
     (dependencies : RemainingDependencyPackage.{u}) :

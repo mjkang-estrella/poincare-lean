@@ -3927,6 +3927,8 @@ check_decl "remaining dependency package equality contract is declared" \
   '^theorem remainingDependencyPackage_eq\b' Poincare/CompletionTarget.lean
 check_decl "remaining dependency package iff contract is declared" \
   '^theorem remainingDependencyPackage_iff_poincareProofDependencies\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package iff equality contract is declared" \
+  '^theorem remainingDependencyPackage_iff_poincareProofDependencies_eq\b' Poincare/CompletionTarget.lean
 check_decl "remaining dependency smoothability projection theorem is declared" \
   '^theorem smoothability_package_of_remaining_dependency_package\b' Poincare/CompletionTarget.lean
 check_decl "remaining dependency C-infinity smooth-manifold statement theorem is declared" \
@@ -5721,6 +5723,7 @@ open scoped Manifold ContDiff
 #check Poincare.poincareProofDependencies_iff_components_eq
 #check Poincare.remainingDependencyPackage_eq
 #check Poincare.remainingDependencyPackage_iff_poincareProofDependencies
+#check Poincare.remainingDependencyPackage_iff_poincareProofDependencies_eq
 #check Poincare.smoothability_package_of_remaining_dependency_package
 #check Poincare.smoothability_smooth_manifold_statement_of_remaining_dependency_package
 #check Poincare.smooth_manifold_of_remaining_dependency_package
