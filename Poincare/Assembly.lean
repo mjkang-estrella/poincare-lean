@@ -29,6 +29,53 @@ theorem homeomorph_of_diffeomorph_three_sphere
   exact ⟨h.toHomeomorph⟩
 
 /--
+A diffeomorphism from the standard 3-sphere to `M` also gives a homeomorphism
+from `M` back to the standard 3-sphere.
+-/
+theorem homeomorph_of_threeSphere_diffeomorph
+    {M : Type u} [TopologicalSpace M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M] :
+    Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M) →
+      Nonempty (M ≃ₜ ThreeSphere) := by
+  rintro ⟨h⟩
+  exact ⟨h.symm.toHomeomorph⟩
+
+/--
+Invert a diffeomorphism from `M` to the standard 3-sphere.
+-/
+theorem threeSphere_diffeomorph_of_diffeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M] :
+    Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) →
+      Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M) := by
+  rintro ⟨h⟩
+  exact ⟨h.symm⟩
+
+/--
+Invert a diffeomorphism from the standard 3-sphere to `M`.
+-/
+theorem diffeomorph_to_threeSphere_of_threeSphere_diffeomorph
+    {M : Type u} [TopologicalSpace M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M] :
+    Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M) →
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) := by
+  rintro ⟨h⟩
+  exact ⟨h.symm⟩
+
+/--
+Being diffeomorphic to the standard 3-sphere is independent of which side of
+the diffeomorphism the standard sphere is written on.
+-/
+theorem diffeomorph_to_threeSphere_iff_threeSphere_diffeomorph
+    {M : Type u} [TopologicalSpace M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M] :
+    Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) ↔
+      Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M) := by
+  constructor
+  · exact threeSphere_diffeomorph_of_diffeomorph_to_threeSphere
+  · exact diffeomorph_to_threeSphere_of_threeSphere_diffeomorph
+
+/--
 If the canonical 3-dimensional topological Poincare statement is available as a
 proof-bearing theorem, then it proves this project's target proposition.
 
@@ -362,6 +409,55 @@ theorem homeomorph_of_diffeomorph_three_sphere_eq
       (fun witness => by
         rcases witness with ⟨h⟩
         exact ⟨h.toHomeomorph⟩) := by
+  apply Subsingleton.elim
+
+/--
+The reverse-direction diffeomorphism-to-homeomorphism bridge inverts the
+diffeomorphism and forgets it to a homeomorphism.
+-/
+theorem homeomorph_of_threeSphere_diffeomorph_eq
+    {M : Type u} [TopologicalSpace M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M] :
+    homeomorph_of_threeSphere_diffeomorph (M := M) =
+      (fun witness => by
+        rcases witness with ⟨h⟩
+        exact ⟨h.symm.toHomeomorph⟩) := by
+  apply Subsingleton.elim
+
+/-- The forward smooth-direction inversion bridge uses `Diffeomorph.symm`. -/
+theorem threeSphere_diffeomorph_of_diffeomorph_to_threeSphere_eq
+    {M : Type u} [TopologicalSpace M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M] :
+    threeSphere_diffeomorph_of_diffeomorph_to_threeSphere (M := M) =
+      (fun witness => by
+        rcases witness with ⟨h⟩
+        exact ⟨h.symm⟩) := by
+  apply Subsingleton.elim
+
+/-- The reverse smooth-direction inversion bridge uses `Diffeomorph.symm`. -/
+theorem diffeomorph_to_threeSphere_of_threeSphere_diffeomorph_eq
+    {M : Type u} [TopologicalSpace M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M] :
+    diffeomorph_to_threeSphere_of_threeSphere_diffeomorph (M := M) =
+      (fun witness => by
+        rcases witness with ⟨h⟩
+        exact ⟨h.symm⟩) := by
+  apply Subsingleton.elim
+
+/--
+The smooth target-side equivalence is the pair of named inverse-diffeomorphism
+conversions.
+-/
+theorem diffeomorph_to_threeSphere_iff_threeSphere_diffeomorph_eq
+    {M : Type u} [TopologicalSpace M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M] :
+    (diffeomorph_to_threeSphere_iff_threeSphere_diffeomorph :
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) ↔
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) =
+      (by
+        constructor
+        · exact threeSphere_diffeomorph_of_diffeomorph_to_threeSphere
+        · exact diffeomorph_to_threeSphere_of_threeSphere_diffeomorph) := by
   apply Subsingleton.elim
 
 /--

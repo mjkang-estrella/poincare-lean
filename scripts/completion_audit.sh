@@ -539,8 +539,24 @@ check_decl "project smooth statement exposes canonical smooth statement bridge i
   '^theorem canonical_smooth_three_sphere_statement_of_smooth_statement\b' Poincare/Assembly.lean
 check_decl "canonical smooth statement to project smooth statement equivalence is declared" \
   '^theorem canonical_smooth_three_sphere_statement_iff_smooth_statement\b' Poincare/Assembly.lean
+check_decl "reverse diffeomorphism-to-homeomorphism bridge is declared" \
+  '^theorem homeomorph_of_threeSphere_diffeomorph\b' Poincare/Assembly.lean
+check_decl "forward diffeomorphism inversion bridge is declared" \
+  '^theorem threeSphere_diffeomorph_of_diffeomorph_to_threeSphere\b' Poincare/Assembly.lean
+check_decl "reverse diffeomorphism inversion bridge is declared" \
+  '^theorem diffeomorph_to_threeSphere_of_threeSphere_diffeomorph\b' Poincare/Assembly.lean
+check_decl "diffeomorphism target-side equivalence is declared" \
+  '^theorem diffeomorph_to_threeSphere_iff_threeSphere_diffeomorph\b' Poincare/Assembly.lean
 check_decl "diffeomorphism-to-homeomorphism equality contract is declared" \
   '^theorem homeomorph_of_diffeomorph_three_sphere_eq\b' Poincare/Assembly.lean
+check_decl "reverse diffeomorphism-to-homeomorphism equality contract is declared" \
+  '^theorem homeomorph_of_threeSphere_diffeomorph_eq\b' Poincare/Assembly.lean
+check_decl "forward diffeomorphism inversion equality contract is declared" \
+  '^theorem threeSphere_diffeomorph_of_diffeomorph_to_threeSphere_eq\b' Poincare/Assembly.lean
+check_decl "reverse diffeomorphism inversion equality contract is declared" \
+  '^theorem diffeomorph_to_threeSphere_of_threeSphere_diffeomorph_eq\b' Poincare/Assembly.lean
+check_decl "diffeomorphism target-side equivalence equality contract is declared" \
+  '^theorem diffeomorph_to_threeSphere_iff_threeSphere_diffeomorph_eq\b' Poincare/Assembly.lean
 check_decl "canonical topological target equality contract is declared" \
   '^theorem poincare_statement_of_canonical_three_sphere_statement_eq\b' Poincare/Assembly.lean
 check_decl "canonical topological payload equality contract is declared" \
@@ -5432,6 +5448,14 @@ open scoped Manifold ContDiff
 #check Poincare.canonical_smooth_three_sphere_statement_of_smooth_statement
 #check Poincare.canonical_smooth_three_sphere_statement_iff_smooth_statement
 #check Poincare.homeomorph_of_diffeomorph_three_sphere_eq
+#check Poincare.homeomorph_of_threeSphere_diffeomorph
+#check Poincare.homeomorph_of_threeSphere_diffeomorph_eq
+#check Poincare.threeSphere_diffeomorph_of_diffeomorph_to_threeSphere
+#check Poincare.diffeomorph_to_threeSphere_of_threeSphere_diffeomorph
+#check Poincare.diffeomorph_to_threeSphere_iff_threeSphere_diffeomorph
+#check Poincare.threeSphere_diffeomorph_of_diffeomorph_to_threeSphere_eq
+#check Poincare.diffeomorph_to_threeSphere_of_threeSphere_diffeomorph_eq
+#check Poincare.diffeomorph_to_threeSphere_iff_threeSphere_diffeomorph_eq
 #check Poincare.poincare_statement_of_canonical_three_sphere_statement_eq
 #check Poincare.poincare_payload_of_canonical_three_sphere_statement_eq
 #check Poincare.completion_criterion_of_canonical_three_sphere_statement_eq

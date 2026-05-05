@@ -25,8 +25,9 @@ The current artifact is intentionally conservative:
   Ricci-flow and topology proof obligations as data, not as proved
   propositions.
 - `Poincare/Assembly.lean` contains small proof-bearing assembly lemmas that do
-  not prove Poincare, such as turning a diffeomorphism to `S^3` into a
-  homeomorphism to `S^3` and reducing the topological target to the smooth
+  not prove Poincare, such as turning a diffeomorphism on either side of `S^3`
+  into a homeomorphism to `S^3`, recording the equivalence between those two
+  diffeomorphism directions, and reducing the topological target to the smooth
   Poincare statement plus a smoothability hypothesis. It also bridges both the
   canonical topological and smooth mathlib-shaped 3-sphere statements into the
   local target statements when supplied as explicit proof-bearing inputs, and

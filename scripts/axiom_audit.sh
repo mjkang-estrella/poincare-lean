@@ -28,6 +28,10 @@ cat > "$check_file" <<'EOF'
 import Poincare
 
 #print axioms Poincare.homeomorph_of_diffeomorph_three_sphere
+#print axioms Poincare.homeomorph_of_threeSphere_diffeomorph
+#print axioms Poincare.threeSphere_diffeomorph_of_diffeomorph_to_threeSphere
+#print axioms Poincare.diffeomorph_to_threeSphere_of_threeSphere_diffeomorph
+#print axioms Poincare.diffeomorph_to_threeSphere_iff_threeSphere_diffeomorph
 #print axioms Poincare.threeSphere_self_homeomorph
 #print axioms Poincare.homeomorph_to_threeSphere_of_homeomorph
 #print axioms Poincare.homeomorph_to_threeSphere_of_homeomorph_source
@@ -814,6 +818,10 @@ import Poincare
 #print axioms Poincare.canonical_smooth_three_sphere_statement_of_smooth_statement
 #print axioms Poincare.canonical_smooth_three_sphere_statement_iff_smooth_statement
 #print axioms Poincare.homeomorph_of_diffeomorph_three_sphere_eq
+#print axioms Poincare.homeomorph_of_threeSphere_diffeomorph_eq
+#print axioms Poincare.threeSphere_diffeomorph_of_diffeomorph_to_threeSphere_eq
+#print axioms Poincare.diffeomorph_to_threeSphere_of_threeSphere_diffeomorph_eq
+#print axioms Poincare.diffeomorph_to_threeSphere_iff_threeSphere_diffeomorph_eq
 #print axioms Poincare.poincare_statement_of_canonical_three_sphere_statement_eq
 #print axioms Poincare.poincare_payload_of_canonical_three_sphere_statement_eq
 #print axioms Poincare.completion_criterion_of_canonical_three_sphere_statement_eq

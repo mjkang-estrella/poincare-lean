@@ -26,7 +26,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   target/criterion payload routes to their named statement-layer constructions.
 - `scripts/audit_formalization.sh` passes.
 - `Poincare/Assembly.lean` contains a proof-bearing support lemma showing that
-  a diffeomorphism to `S^3` gives a homeomorphism to `S^3`.
+  a diffeomorphism to `S^3` gives a homeomorphism to `S^3`; it also handles the
+  reverse smooth input direction `S^3 → M` by inversion and records the
+  equivalence between the two diffeomorphism directions.
 - `Poincare/Assembly.lean` also proves that this project's statement follows
   from an explicit proof-bearing theorem with the canonical mathlib 3D
   topological Poincare statement shape.

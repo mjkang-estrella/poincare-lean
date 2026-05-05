@@ -79,6 +79,24 @@ set_option linter.unusedVariables false
         Nonempty (M ≃ₜ Poincare.ThreeSphere))
 #check Poincare.homeomorph_of_diffeomorph_three_sphere_eq
 
+#check (Poincare.homeomorph_of_threeSphere_diffeomorph :
+  ∀ {M : Type} [TopologicalSpace M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M],
+      Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M) →
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+#check Poincare.homeomorph_of_threeSphere_diffeomorph_eq
+
+#check (Poincare.diffeomorph_to_threeSphere_iff_threeSphere_diffeomorph :
+  ∀ {M : Type} [TopologicalSpace M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere) ↔
+        Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M))
+#check Poincare.threeSphere_diffeomorph_of_diffeomorph_to_threeSphere
+#check Poincare.diffeomorph_to_threeSphere_of_threeSphere_diffeomorph
+#check Poincare.threeSphere_diffeomorph_of_diffeomorph_to_threeSphere_eq
+#check Poincare.diffeomorph_to_threeSphere_of_threeSphere_diffeomorph_eq
+#check Poincare.diffeomorph_to_threeSphere_iff_threeSphere_diffeomorph_eq
+
 #check (Poincare.RicciFlowData.satisfies_equation :
   ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type} [TopologicalSpace H]
