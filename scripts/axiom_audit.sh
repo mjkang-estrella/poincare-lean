@@ -982,6 +982,7 @@ import Poincare
 #print axioms Poincare.singularity_model_blowup_classification_of_perelman_package_eq
 #print axioms Poincare.singularity_control_of_perelman_package_eq
 #print axioms Poincare.PerelmanSingularityControlStatement
+#print axioms Poincare.perelmanSingularityControlStatement_eq
 #print axioms Poincare.perelman_singularity_control_statement_of_components
 #print axioms Poincare.perelman_singularity_control_statement_of_components_eq
 #print axioms Poincare.perelman_singularity_control_statement_of_package

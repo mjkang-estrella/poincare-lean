@@ -1780,6 +1780,101 @@ def PerelmanSingularityControlStatement
     HasPerelmanSingularityControl flow
 
 /--
+The fixed-flow Perelman singularity-control statement is exactly the listed
+entropy, conjugate-heat, reduced-distance, reduced-volume, noncollapsing,
+kappa-solution, canonical-neighborhood, singularity-model, and aggregate
+control witness stack.
+-/
+theorem perelmanSingularityControlStatement_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    PerelmanSingularityControlStatement flow =
+      (∃ _fFunctionalSetup : HasPerelmanFFunctionalSetup flow,
+      ∃ _entropyNormalization : HasPerelmanEntropyNormalization flow,
+      ∃ _entropyMinimizerExistence :
+        HasPerelmanEntropyMinimizerExistence flow,
+      ∃ _entropyLogSobolevControl :
+        HasPerelmanEntropyLogSobolevControl flow,
+      ∃ _conjugateHeatEquation : HasConjugateHeatEquationTheory flow,
+      ∃ _adjointHeatKernel : HasAdjointHeatKernelConstruction flow,
+      ∃ _conjugateHeatKernelEstimates :
+        HasPerelmanConjugateHeatKernelEstimates flow,
+      ∃ _wFunctionalSetup : HasPerelmanWFunctionalSetup flow,
+      ∃ _entropyGradientFormula : HasPerelmanEntropyGradientFormula flow,
+      ∃ _entropyFirstVariation : HasPerelmanEntropyFirstVariation flow,
+      ∃ _entropyMonotonicity : HasPerelmanEntropyMonotonicity flow,
+      ∃ _entropyLowerBoundPropagation :
+        HasPerelmanEntropyLowerBoundPropagation flow,
+      ∃ _entropyFunctional : HasPerelmanEntropyFunctional flow,
+      ∃ _reducedLengthFirstVariation :
+        HasPerelmanReducedLengthFirstVariation flow,
+      ∃ _reducedDistanceExistence : HasPerelmanReducedDistanceExistence flow,
+      ∃ _reducedDistanceDifferentialInequality :
+        HasPerelmanReducedDistanceDifferentialInequality flow,
+      ∃ _reducedDistanceEstimates : HasPerelmanReducedDistanceEstimates flow,
+      ∃ _reducedDistanceCutLocusControl :
+        HasPerelmanReducedDistanceCutLocusControl flow,
+      ∃ _reducedJacobianComparison :
+        HasPerelmanReducedJacobianComparison flow,
+      ∃ _reducedDistance : HasPerelmanReducedDistanceTheory flow,
+      ∃ _reducedVolumeDefinition : HasPerelmanReducedVolumeDefinition flow,
+      ∃ _reducedVolumeDerivativeFormula :
+        HasPerelmanReducedVolumeDerivativeFormula flow,
+      ∃ _reducedVolumeRigidity : HasPerelmanReducedVolumeRigidity flow,
+      ∃ _reducedVolumePositiveLowerBound :
+        HasPerelmanReducedVolumePositiveLowerBound flow,
+      ∃ _reducedVolumeLimitRigidity :
+        HasPerelmanReducedVolumeLimitRigidity flow,
+      ∃ _reducedVolumeNonincreasing :
+        HasPerelmanReducedVolumeNonincreasing flow,
+      ∃ _kappaNoncollapsingFromReducedVolume :
+        HasPerelmanKappaNoncollapsingFromReducedVolume flow,
+      ∃ _noLocalCollapsingContradictionSetup :
+        HasPerelmanNoLocalCollapsingContradictionSetup flow,
+      ∃ _collapsedBallBlowup : HasPerelmanCollapsedBallBlowup flow,
+      ∃ _volumeRatioContradiction :
+        HasPerelmanVolumeRatioContradiction flow,
+      ∃ _noLocalCollapsingVolumeLowerBound :
+        HasNoLocalCollapsingVolumeLowerBound flow,
+      ∃ _kappaNoncollapsing :
+        HasPerelmanKappaNoncollapsingQuantification flow,
+      ∃ _hamiltonCompactness : HasHamiltonCompactnessTheorem flow,
+      ∃ _ancientKappaSolutionLimitExtraction :
+        HasAncientKappaSolutionLimitExtraction flow,
+      ∃ _kappaSolutionPointedRescaling :
+        HasKappaSolutionPointedRescaling flow,
+      ∃ _kappaSolutionCurvatureNormalization :
+        HasKappaSolutionCurvatureNormalization flow,
+      ∃ _kappaSolutionStructure : HasKappaSolutionStructureTheory flow,
+      ∃ _kappaSolutionNonnegativeCurvatureOperator :
+        HasKappaSolutionNonnegativeCurvatureOperator flow,
+      ∃ _kappaSolutionAsymptoticSoliton :
+        HasKappaSolutionAsymptoticSoliton flow,
+      ∃ _ancientKappaSolutionCompactness :
+        HasAncientKappaSolutionCompactness flow,
+      ∃ _canonicalNeighborhoodScaleControl :
+        HasCanonicalNeighborhoodScaleControl flow,
+      ∃ _canonicalNeighborhoodStability :
+        HasCanonicalNeighborhoodStability flow,
+      ∃ _canonicalNeighborhoodPersistenceAcrossScales :
+        HasCanonicalNeighborhoodPersistenceAcrossScales flow,
+      ∃ _canonicalNeighborhoodNeckCapDichotomy :
+        HasCanonicalNeighborhoodNeckCapDichotomy flow,
+      ∃ _canonicalNeighborhoodClassification :
+        HasCanonicalNeighborhoodClassification flow,
+      ∃ _noLocalCollapsing : HasPerelmanNoLocalCollapsing flow,
+      ∃ _reducedVolume : HasPerelmanReducedVolumeMonotonicity flow,
+      ∃ _canonicalNeighborhood : HasCanonicalNeighborhoodTheorem flow,
+      ∃ _singularityModelClassification :
+        HasSingularityModelClassification flow,
+      ∃ _singularityModelBlowupClassification :
+        HasSingularityModelBlowupClassification flow,
+        HasPerelmanSingularityControl flow) :=
+  rfl
+
+/--
 Assemble the fixed-flow Perelman singularity-control statement from the named
 control components.
 -/
