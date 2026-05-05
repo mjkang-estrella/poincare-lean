@@ -346,7 +346,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   reduced-distance, reduced-volume, noncollapsing, kappa-solution,
   canonical-neighborhood, singularity-model, and aggregate control witnesses,
   and the Perelman package statement and bundled statement/sub-obligation/
-  monotonicity payload are now pinned the same way. The
+  monotonicity payload are now pinned the same way. Statement-destructuring
+  equality contracts pin the surgery aggregate and sub-obligation bridges, and
+  the Perelman aggregate, full sub-obligation, and monotonicity/blow-up bridges,
+  to the exact witness stacks they destructure. The
   dependency-level `surgery_package_payload_of_dependencies` now
   centralizes the raw aggregate surgery package with its analytic foundation,
   projected flow, construction package, and Perelman control package. Its

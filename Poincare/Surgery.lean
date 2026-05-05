@@ -524,6 +524,35 @@ theorem ricci_flow_with_surgery_of_construction_statement
   exact withSurgery
 
 /--
+The construction-statement aggregate bridge is exactly the final
+Ricci-flow-with-surgery witness stored in the theorem-shaped construction
+statement.
+-/
+theorem ricci_flow_with_surgery_of_construction_statement_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (statement : RicciFlowWithSurgeryConstructionStatement flow) :
+    ricci_flow_with_surgery_of_construction_statement statement =
+      (by
+        rcases statement with
+          ⟨_scaleFunction, _scaleContinuity, _scaleSeparation,
+            _cutoffParameterControl, _cutoffSmoothBump, _parameterSelection,
+            _strongDeltaNeckDetection, _neckSeparation, _neckParametrization,
+            _neckCanonicalCoordinates, _neckDecomposition, _standardCapModel,
+            _capGluingSmoothness, _capMetricInterpolation,
+            _capCurvatureEstimates, _capConstruction,
+            _postSurgeryCurvaturePinching, _postSurgeryNoncollapsing,
+            _postSurgeryDerivativeBounds,
+            _postSurgeryCanonicalNeighborhoodPersistence, _metricControl,
+            _surgeryTimeDiscreteness, _surgeryTimeLocalFiniteness,
+            _longTimeExistenceIteration, _longTimeParameterCoherence,
+            _longTimeNonaccumulation, _longTimeContinuation, withSurgery⟩
+        exact withSurgery) := by
+  apply Subsingleton.elim
+
+/--
 Semantic alias for the named surgery-construction sub-obligation payload exposed
 by a theorem-shaped construction statement.
 -/
@@ -594,6 +623,44 @@ theorem surgery_construction_subobligations_of_statement
     metricControl, surgeryTimeDiscreteness, surgeryTimeLocalFiniteness,
     longTimeExistenceIteration, longTimeParameterCoherence,
     longTimeNonaccumulation, longTimeContinuation, withSurgery⟩
+
+/--
+The surgery-construction statement bridge exposes exactly the scale, cutoff,
+neck, cap, post-surgery, surgery-time, long-time, and aggregate surgery
+components stored in the theorem-shaped construction statement.
+-/
+theorem surgery_construction_subobligations_of_statement_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (statement : RicciFlowWithSurgeryConstructionStatement flow) :
+    surgery_construction_subobligations_of_statement statement =
+      (by
+        rcases statement with
+          ⟨scaleFunction, scaleContinuity, scaleSeparation,
+            cutoffParameterControl, cutoffSmoothBump, parameterSelection,
+            strongDeltaNeckDetection, neckSeparation, neckParametrization,
+            neckCanonicalCoordinates, neckDecomposition, standardCapModel,
+            capGluingSmoothness, capMetricInterpolation, capCurvatureEstimates,
+            capConstruction, postSurgeryCurvaturePinching,
+            postSurgeryNoncollapsing, postSurgeryDerivativeBounds,
+            postSurgeryCanonicalNeighborhoodPersistence, metricControl,
+            surgeryTimeDiscreteness, surgeryTimeLocalFiniteness,
+            longTimeExistenceIteration, longTimeParameterCoherence,
+            longTimeNonaccumulation, longTimeContinuation, withSurgery⟩
+        exact ⟨scaleFunction, scaleContinuity, scaleSeparation,
+          cutoffParameterControl, cutoffSmoothBump, parameterSelection,
+          strongDeltaNeckDetection, neckSeparation, neckParametrization,
+          neckCanonicalCoordinates, neckDecomposition, standardCapModel,
+          capGluingSmoothness, capMetricInterpolation, capCurvatureEstimates,
+          capConstruction, postSurgeryCurvaturePinching,
+          postSurgeryNoncollapsing, postSurgeryDerivativeBounds,
+          postSurgeryCanonicalNeighborhoodPersistence, metricControl,
+          surgeryTimeDiscreteness, surgeryTimeLocalFiniteness,
+          longTimeExistenceIteration, longTimeParameterCoherence,
+          longTimeNonaccumulation, longTimeContinuation, withSurgery⟩) := by
+  apply Subsingleton.elim
 
 /--
 A completed construction package exposes the theorem-shaped construction
@@ -2048,6 +2115,50 @@ theorem perelman_singularity_control_of_statement
   exact control
 
 /--
+The Perelman statement aggregate bridge is exactly the final
+singularity-control witness stored in the theorem-shaped Perelman statement.
+-/
+theorem perelman_singularity_control_of_statement_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (statement : PerelmanSingularityControlStatement flow) :
+    perelman_singularity_control_of_statement statement =
+      (by
+        rcases statement with
+          ⟨_fFunctionalSetup, _entropyNormalization,
+            _entropyMinimizerExistence, _entropyLogSobolevControl,
+            _conjugateHeatEquation, _adjointHeatKernel,
+            _conjugateHeatKernelEstimates, _wFunctionalSetup,
+            _entropyGradientFormula, _entropyFirstVariation,
+            _entropyMonotonicity, _entropyLowerBoundPropagation,
+            _entropyFunctional, _reducedLengthFirstVariation,
+            _reducedDistanceExistence, _reducedDistanceDifferentialInequality,
+            _reducedDistanceEstimates, _reducedDistanceCutLocusControl,
+            _reducedJacobianComparison, _reducedDistance,
+            _reducedVolumeDefinition, _reducedVolumeDerivativeFormula,
+            _reducedVolumeRigidity, _reducedVolumePositiveLowerBound,
+            _reducedVolumeLimitRigidity, _reducedVolumeNonincreasing,
+            _kappaNoncollapsingFromReducedVolume,
+            _noLocalCollapsingContradictionSetup, _collapsedBallBlowup,
+            _volumeRatioContradiction, _noLocalCollapsingVolumeLowerBound,
+            _kappaNoncollapsing, _hamiltonCompactness,
+            _ancientKappaSolutionLimitExtraction, _kappaSolutionPointedRescaling,
+            _kappaSolutionCurvatureNormalization, _kappaSolutionStructure,
+            _kappaSolutionNonnegativeCurvatureOperator,
+            _kappaSolutionAsymptoticSoliton, _ancientKappaSolutionCompactness,
+            _canonicalNeighborhoodScaleControl, _canonicalNeighborhoodStability,
+            _canonicalNeighborhoodPersistenceAcrossScales,
+            _canonicalNeighborhoodNeckCapDichotomy,
+            _canonicalNeighborhoodClassification, _noLocalCollapsing,
+            _reducedVolume, _canonicalNeighborhood,
+            _singularityModelClassification,
+            _singularityModelBlowupClassification, control⟩
+        exact control) := by
+  apply Subsingleton.elim
+
+/--
 Semantic alias for the complete Perelman sub-obligation payload exposed by a
 theorem-shaped singularity-control statement.
 -/
@@ -2225,6 +2336,74 @@ theorem perelman_subobligations_of_statement
     control⟩
 
 /--
+The Perelman statement bridge exposes exactly the full entropy,
+conjugate-heat, reduced-distance, reduced-volume, noncollapsing,
+kappa-solution, canonical-neighborhood, singularity-model, and aggregate
+sub-obligation stack stored in the theorem-shaped Perelman statement.
+-/
+theorem perelman_subobligations_of_statement_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (statement : PerelmanSingularityControlStatement flow) :
+    perelman_subobligations_of_statement statement =
+      (by
+        rcases statement with
+          ⟨fFunctionalSetup, entropyNormalization, entropyMinimizerExistence,
+            entropyLogSobolevControl, conjugateHeatEquation, adjointHeatKernel,
+            conjugateHeatKernelEstimates, wFunctionalSetup,
+            entropyGradientFormula, entropyFirstVariation, entropyMonotonicity,
+            entropyLowerBoundPropagation, entropyFunctional,
+            reducedLengthFirstVariation, reducedDistanceExistence,
+            reducedDistanceDifferentialInequality, reducedDistanceEstimates,
+            reducedDistanceCutLocusControl, reducedJacobianComparison,
+            reducedDistance, reducedVolumeDefinition,
+            reducedVolumeDerivativeFormula, reducedVolumeRigidity,
+            reducedVolumePositiveLowerBound, reducedVolumeLimitRigidity,
+            reducedVolumeNonincreasing, kappaNoncollapsingFromReducedVolume,
+            noLocalCollapsingContradictionSetup, collapsedBallBlowup,
+            volumeRatioContradiction, noLocalCollapsingVolumeLowerBound,
+            kappaNoncollapsing, hamiltonCompactness,
+            ancientKappaSolutionLimitExtraction, kappaSolutionPointedRescaling,
+            kappaSolutionCurvatureNormalization, kappaSolutionStructure,
+            kappaSolutionNonnegativeCurvatureOperator,
+            kappaSolutionAsymptoticSoliton, ancientKappaSolutionCompactness,
+            canonicalNeighborhoodScaleControl, canonicalNeighborhoodStability,
+            canonicalNeighborhoodPersistenceAcrossScales,
+            canonicalNeighborhoodNeckCapDichotomy,
+            canonicalNeighborhoodClassification, noLocalCollapsing,
+            reducedVolume, canonicalNeighborhood, singularityModelClassification,
+            singularityModelBlowupClassification, control⟩
+        exact ⟨fFunctionalSetup, entropyNormalization,
+          entropyMinimizerExistence, entropyLogSobolevControl,
+          conjugateHeatEquation, adjointHeatKernel,
+          conjugateHeatKernelEstimates, wFunctionalSetup,
+          entropyGradientFormula, entropyFirstVariation, entropyMonotonicity,
+          entropyLowerBoundPropagation, entropyFunctional,
+          reducedLengthFirstVariation, reducedDistanceExistence,
+          reducedDistanceDifferentialInequality, reducedDistanceEstimates,
+          reducedDistanceCutLocusControl, reducedJacobianComparison,
+          reducedDistance, reducedVolumeDefinition,
+          reducedVolumeDerivativeFormula, reducedVolumeRigidity,
+          reducedVolumePositiveLowerBound, reducedVolumeLimitRigidity,
+          reducedVolumeNonincreasing, kappaNoncollapsingFromReducedVolume,
+          noLocalCollapsingContradictionSetup, collapsedBallBlowup,
+          volumeRatioContradiction, noLocalCollapsingVolumeLowerBound,
+          kappaNoncollapsing, hamiltonCompactness,
+          ancientKappaSolutionLimitExtraction, kappaSolutionPointedRescaling,
+          kappaSolutionCurvatureNormalization, kappaSolutionStructure,
+          kappaSolutionNonnegativeCurvatureOperator,
+          kappaSolutionAsymptoticSoliton, ancientKappaSolutionCompactness,
+          canonicalNeighborhoodScaleControl, canonicalNeighborhoodStability,
+          canonicalNeighborhoodPersistenceAcrossScales,
+          canonicalNeighborhoodNeckCapDichotomy,
+          canonicalNeighborhoodClassification, noLocalCollapsing,
+          reducedVolume, canonicalNeighborhood, singularityModelClassification,
+          singularityModelBlowupClassification, control⟩) := by
+  apply Subsingleton.elim
+
+/--
 The theorem-shaped Perelman statement exposes the monotonicity, blow-up, and
 canonical-neighborhood inputs used before the aggregate theorem.
 -/
@@ -2281,6 +2460,73 @@ theorem perelman_monotonicity_blowup_subobligations_of_statement
     canonicalNeighborhoodStability,
     canonicalNeighborhoodPersistenceAcrossScales,
     canonicalNeighborhoodNeckCapDichotomy, canonicalNeighborhoodClassification⟩
+
+/--
+The Perelman monotonicity/blow-up statement bridge exposes exactly the
+entropy, conjugate-heat, reduced-distance, reduced-volume, noncollapsing,
+kappa-solution compactness, and canonical-neighborhood inputs stored before the
+aggregate singularity-control witness.
+-/
+theorem perelman_monotonicity_blowup_subobligations_of_statement_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (statement : PerelmanSingularityControlStatement flow) :
+    perelman_monotonicity_blowup_subobligations_of_statement statement =
+      (by
+        rcases statement with
+          ⟨fFunctionalSetup, entropyNormalization, entropyMinimizerExistence,
+            entropyLogSobolevControl, conjugateHeatEquation, adjointHeatKernel,
+            conjugateHeatKernelEstimates, wFunctionalSetup,
+            entropyGradientFormula, entropyFirstVariation, entropyMonotonicity,
+            entropyLowerBoundPropagation, entropyFunctional,
+            reducedLengthFirstVariation, reducedDistanceExistence,
+            reducedDistanceDifferentialInequality, reducedDistanceEstimates,
+            reducedDistanceCutLocusControl, reducedJacobianComparison,
+            reducedDistance, reducedVolumeDefinition,
+            reducedVolumeDerivativeFormula, reducedVolumeRigidity,
+            reducedVolumePositiveLowerBound, reducedVolumeLimitRigidity,
+            reducedVolumeNonincreasing, kappaNoncollapsingFromReducedVolume,
+            noLocalCollapsingContradictionSetup, collapsedBallBlowup,
+            volumeRatioContradiction, noLocalCollapsingVolumeLowerBound,
+            kappaNoncollapsing, hamiltonCompactness,
+            ancientKappaSolutionLimitExtraction, kappaSolutionPointedRescaling,
+            kappaSolutionCurvatureNormalization, kappaSolutionStructure,
+            kappaSolutionNonnegativeCurvatureOperator,
+            kappaSolutionAsymptoticSoliton, ancientKappaSolutionCompactness,
+            canonicalNeighborhoodScaleControl, canonicalNeighborhoodStability,
+            canonicalNeighborhoodPersistenceAcrossScales,
+            canonicalNeighborhoodNeckCapDichotomy,
+            canonicalNeighborhoodClassification, _noLocalCollapsing,
+            _reducedVolume, _canonicalNeighborhood,
+            _singularityModelClassification,
+            _singularityModelBlowupClassification, _control⟩
+        exact ⟨fFunctionalSetup, entropyNormalization,
+          entropyMinimizerExistence, entropyLogSobolevControl,
+          conjugateHeatEquation, adjointHeatKernel,
+          conjugateHeatKernelEstimates, wFunctionalSetup,
+          entropyGradientFormula, entropyFirstVariation, entropyMonotonicity,
+          entropyLowerBoundPropagation, entropyFunctional,
+          reducedLengthFirstVariation, reducedDistanceExistence,
+          reducedDistanceDifferentialInequality, reducedDistanceEstimates,
+          reducedDistanceCutLocusControl, reducedJacobianComparison,
+          reducedDistance, reducedVolumeDefinition,
+          reducedVolumeDerivativeFormula, reducedVolumeRigidity,
+          reducedVolumePositiveLowerBound, reducedVolumeLimitRigidity,
+          reducedVolumeNonincreasing, kappaNoncollapsingFromReducedVolume,
+          noLocalCollapsingContradictionSetup, collapsedBallBlowup,
+          volumeRatioContradiction, noLocalCollapsingVolumeLowerBound,
+          kappaNoncollapsing, hamiltonCompactness,
+          ancientKappaSolutionLimitExtraction, kappaSolutionPointedRescaling,
+          kappaSolutionCurvatureNormalization, kappaSolutionStructure,
+          kappaSolutionNonnegativeCurvatureOperator,
+          kappaSolutionAsymptoticSoliton, ancientKappaSolutionCompactness,
+          canonicalNeighborhoodScaleControl, canonicalNeighborhoodStability,
+          canonicalNeighborhoodPersistenceAcrossScales,
+          canonicalNeighborhoodNeckCapDichotomy,
+          canonicalNeighborhoodClassification⟩) := by
+  apply Subsingleton.elim
 
 /--
 A completed Perelman package exposes the theorem-shaped singularity-control

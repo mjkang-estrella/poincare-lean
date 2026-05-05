@@ -247,6 +247,9 @@ The current artifact is intentionally conservative:
   noncollapsing, kappa-solution, canonical-neighborhood, singularity-model, and
   aggregate control witnesses, and the Perelman package statement and bundled
   statement/sub-obligation/monotonicity payload are now pinned the same way.
+  Statement-destructuring equality contracts now pin the surgery aggregate and
+  sub-obligation bridges, and the Perelman aggregate, full sub-obligation, and
+  monotonicity/blow-up bridges, to the exact witness stacks they destructure.
   The dependency-level `surgery_package_payload_of_dependencies` now
   centralizes the raw aggregate surgery package together with its analytic
   foundation, projected flow, construction package, and Perelman control
