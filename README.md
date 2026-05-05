@@ -100,10 +100,14 @@ The current artifact is intentionally conservative:
   constructors. The packaged reverse canonical-smooth certificate constructors
   also have projection round-trips for their dependency package, project target,
   project payload, canonical payload, canonical target, completion criterion, and
-  canonical topological statement. The certificate layer also exposes a literal
-  reserved-name payload that records the canonical statement alongside the
-  remaining dependency package, canonical target, and completion criterion, plus
-  the same payload shape with the aggregate dependency package named directly.
+  canonical topological statement. The non-packaged reverse canonical-smooth
+  completion certificate constructors now expose the same dependency, canonical
+  statement, canonical target, criterion, project-payload, canonical-payload, and
+  target-statement projection round-trips at both dependency-package surfaces.
+  The certificate layer also exposes a literal reserved-name payload that
+  records the canonical statement alongside the remaining dependency package,
+  canonical target, and completion criterion, plus the same payload shape with
+  the aggregate dependency package named directly.
 - `Poincare/RicciFlowInterface.lean` exposes the finite-extinction and
   topological-extraction interface where future Ricci-flow formalization should
   plug in. It now also exposes

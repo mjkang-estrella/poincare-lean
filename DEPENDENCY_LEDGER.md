@@ -146,6 +146,12 @@ It is not a proof. It is a work breakdown for future Lean development.
   `poincareCompletionCertificate_*packaged_reverse*payload` projections,
   payload-to-certificate constructors, iff contracts, and
   projection-after-constructor contracts at both dependency-package surfaces.
+- `Poincare/CanonicalBridges.lean` now also gives the non-packaged reverse
+  canonical-smooth checked certificate constructors the same projection
+  round-trips at remaining-dependency and aggregate-dependency surfaces:
+  dependency package, canonical topological statement, canonical target,
+  completion criterion, project completion payload, canonical completion payload,
+  and project target statement.
 - `Poincare/CanonicalBridges.lean` now pins the aggregate packaged smooth and
   packaged canonical-smooth project routes, canonical completion payloads,
   canonical targets, canonical criteria, and canonical topological statement
