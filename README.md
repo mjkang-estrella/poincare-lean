@@ -315,8 +315,9 @@ The current artifact is intentionally conservative:
   direct statement, the full sub-obligation statement, the rebuilt statement,
   the derivation certificate, and the extinction witness by destructuring the
   package-level statement payload; equality contracts pin both the
-  surgery-package-enriched payload and the simplified dependency payload to
-  those named destructuring routes; the width/full
+  surgery-package-enriched and simplified dependency payloads for the
+  sub-obligation and final statement routes to those named destructuring
+  routes; the width/full
   statement projections,
   derivation stack, full sub-obligation projection, statement projections,
   and final finite-extinction theorem destructure those payloads. The

@@ -1959,6 +1959,44 @@ theorem finite_extinction_subobligations_statement_payload_with_surgery_package_
     widthSubobligations, subobligations, packageStatement, rfl⟩
 
 /--
+The dependency-level surgery-package finite-extinction sub-obligation payload is
+selected from the named surgery package payload and the package-level
+sub-obligation statement projections.
+-/
+theorem finite_extinction_subobligations_statement_payload_with_surgery_package_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    finite_extinction_subobligations_statement_payload_with_surgery_package_of_dependencies
+      dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases surgery_package_payload_of_dependencies dependencies M with
+          ⟨n, surgeryPackage, _analyticPackage, _analyticPackage_eq, _flow,
+            _flow_eq, _constructionPackage, _constructionPackage_heq,
+            _controlPackage, _controlPackage_heq⟩
+        let flow := ricci_flow_data_of_surgery_package surgeryPackage
+        let surgery := ricci_flow_with_surgery_of_surgery_package
+          surgeryPackage
+        let control := perelman_singularity_control_of_surgery_package
+          surgeryPackage
+        let widthStatement :=
+          finite_extinction_width_subobligations_statement_of_surgery_package
+            surgeryPackage
+        let subobligationsStatement :=
+          finite_extinction_subobligations_statement_of_surgery_package
+            surgeryPackage
+        let widthSubobligations :=
+          finite_extinction_width_subobligations_of_statement widthStatement
+        let subobligations :=
+          finite_extinction_subobligations_of_statement
+            subobligationsStatement
+        let packageStatement := finite_extinction_statement_of_surgery_package
+          surgeryPackage
+        exact ⟨n, surgeryPackage, flow, rfl, surgery, rfl, control, HEq.rfl,
+          widthStatement, HEq.rfl, subobligationsStatement, HEq.rfl,
+          widthSubobligations, subobligations, packageStatement, rfl⟩) := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies theorem-shaped finite-extinction width
 sub-obligation statements for every target manifold.
 -/
@@ -1993,6 +2031,30 @@ theorem finite_extinction_subobligations_statement_payload_of_dependencies
   exact ⟨n, flow, surgery, control,
     widthStatement, subobligationsStatement, widthSubobligations,
     subobligations, packageStatement⟩
+
+/--
+The dependency-level finite-extinction sub-obligation payload is selected from
+the named surgery-package payload by dropping the package and equality
+witnesses.
+-/
+theorem finite_extinction_subobligations_statement_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    finite_extinction_subobligations_statement_payload_of_dependencies
+      dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            finite_extinction_subobligations_statement_payload_with_surgery_package_of_dependencies
+              dependencies M with
+          ⟨n, _surgeryPackage, flow, _flow_eq, surgery, _surgery_eq,
+            control, _control_heq, widthStatement, _widthStatement_heq,
+            subobligationsStatement, _subobligationsStatement_heq,
+            widthSubobligations, subobligations, packageStatement,
+            _packageStatement_eq⟩
+        exact ⟨n, flow, surgery, control,
+          widthStatement, subobligationsStatement, widthSubobligations,
+          subobligations, packageStatement⟩) := by
+  apply Subsingleton.elim
 
 /--
 A completed dependency package supplies theorem-shaped finite-extinction width

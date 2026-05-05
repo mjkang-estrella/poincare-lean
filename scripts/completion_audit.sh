@@ -3576,8 +3576,12 @@ check_decl "dependency Perelman monotonicity/blow-up equality contract is declar
   '^theorem perelman_monotonicity_blowup_subobligations_of_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency finite-extinction sub-obligations statement payload theorem is declared" \
   '^theorem finite_extinction_subobligations_statement_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency finite-extinction sub-obligations statement payload equality contract is declared" \
+  '^theorem finite_extinction_subobligations_statement_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency finite-extinction package-routed sub-obligations statement payload theorem is declared" \
   '^theorem finite_extinction_subobligations_statement_payload_with_surgery_package_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency finite-extinction package-routed sub-obligations statement payload equality contract is declared" \
+  '^theorem finite_extinction_subobligations_statement_payload_with_surgery_package_of_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency finite-extinction width statement projection theorem is declared" \
   '^theorem finite_extinction_width_statements_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency finite-extinction width statement equality contract is declared" \
@@ -8009,7 +8013,9 @@ open scoped Manifold ContDiff
 #check Poincare.perelman_monotonicity_blowup_subobligations_of_dependencies
 #check Poincare.perelman_monotonicity_blowup_subobligations_of_dependencies_eq
 #check Poincare.finite_extinction_subobligations_statement_payload_with_surgery_package_of_dependencies
+#check Poincare.finite_extinction_subobligations_statement_payload_with_surgery_package_of_dependencies_eq
 #check Poincare.finite_extinction_subobligations_statement_payload_of_dependencies
+#check Poincare.finite_extinction_subobligations_statement_payload_of_dependencies_eq
 #check Poincare.finite_extinction_subobligations_payload_of_surgery_package
 #check Poincare.finite_extinction_width_statements_of_dependencies
 #check Poincare.finite_extinction_width_statements_of_dependencies_eq
@@ -10085,7 +10091,9 @@ open scoped Manifold ContDiff
 #check Poincare.perelman_monotonicity_blowup_subobligations_of_dependencies
 #check Poincare.perelman_monotonicity_blowup_subobligations_of_dependencies_eq
 #check Poincare.finite_extinction_subobligations_statement_payload_with_surgery_package_of_dependencies
+#check Poincare.finite_extinction_subobligations_statement_payload_with_surgery_package_of_dependencies_eq
 #check Poincare.finite_extinction_subobligations_statement_payload_of_dependencies
+#check Poincare.finite_extinction_subobligations_statement_payload_of_dependencies_eq
 #check Poincare.finite_extinction_subobligations_payload_of_surgery_package
 #check Poincare.finite_extinction_width_statements_of_dependencies
 #check Poincare.finite_extinction_width_statements_of_dependencies_eq

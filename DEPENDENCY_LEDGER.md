@@ -408,8 +408,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   plus
   `finite_extinction_statement_payload_of_dependencies`, which also carries
   the derivation certificate by destructuring the package-level statement
-  payload; equality contracts pin both the surgery-package-enriched payload
-  and the simplified dependency payload to those named destructuring routes;
+  payload; equality contracts pin both the surgery-package-enriched and
+  simplified dependency payloads for the sub-obligation and final statement
+  routes to those named destructuring routes;
   the width/full statement projections, derivation
   stack, full sub-obligation projection, statement projections, and final
   finite-extinction theorem destructure those payloads. The dependency-level

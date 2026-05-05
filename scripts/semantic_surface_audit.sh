@@ -2452,7 +2452,9 @@ set_option linter.unusedVariables false
 #check Poincare.perelman_monotonicity_blowup_subobligations_of_dependencies
 #check Poincare.perelman_monotonicity_blowup_subobligations_of_dependencies_eq
 #check Poincare.finite_extinction_subobligations_statement_payload_with_surgery_package_of_dependencies
+#check Poincare.finite_extinction_subobligations_statement_payload_with_surgery_package_of_dependencies_eq
 #check Poincare.finite_extinction_subobligations_statement_payload_of_dependencies
+#check Poincare.finite_extinction_subobligations_statement_payload_of_dependencies_eq
 #check Poincare.finite_extinction_subobligations_payload_of_surgery_package
 #check Poincare.finite_extinction_width_statements_of_dependencies
 #check Poincare.finite_extinction_width_statements_of_dependencies_eq
@@ -6939,7 +6941,7 @@ surgery_package_payload_count=$(
   rg -c 'surgery_package_payload_of_dependencies' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$surgery_package_payload_count" != "9" ]; then
+if [ "$surgery_package_payload_count" != "10" ]; then
   echo "FAIL: dependency surgery projections should consume the shared surgery package payload"
   rg -n 'surgery_package_payload_of_dependencies' \
     Poincare/DependencyProjections.lean || true
@@ -6950,7 +6952,7 @@ package_routed_dependency_payload_count=$(
   rg -c 'with_surgery_package_of_dependencies' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$package_routed_dependency_payload_count" != "13" ]; then
+if [ "$package_routed_dependency_payload_count" != "16" ]; then
   echo "FAIL: dependency surgery payloads should expose package-routed contracts and consume them"
   rg -n 'with_surgery_package_of_dependencies' \
     Poincare/DependencyProjections.lean || true
@@ -7327,8 +7329,8 @@ finite_extinction_width_statement_route_count=$(
   rg -c '\bfinite_extinction_width_subobligations_of_statement\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$finite_extinction_width_statement_route_count" != "1" ]; then
-  echo "FAIL: dependency finite-extinction package-routed payload should rebuild the named width sub-obligations once"
+if [ "$finite_extinction_width_statement_route_count" != "2" ]; then
+  echo "FAIL: dependency finite-extinction package-routed payload and contract should rebuild the named width sub-obligations"
   rg -n '\bfinite_extinction_width_subobligations_of_statement\b' \
     Poincare/DependencyProjections.lean || true
   exit 1
@@ -7338,8 +7340,8 @@ finite_extinction_full_statement_route_count=$(
   rg -c '\bfinite_extinction_subobligations_of_statement\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$finite_extinction_full_statement_route_count" != "1" ]; then
-  echo "FAIL: dependency finite-extinction package-routed payload should rebuild the named full sub-obligations once"
+if [ "$finite_extinction_full_statement_route_count" != "2" ]; then
+  echo "FAIL: dependency finite-extinction package-routed payload and contract should rebuild the named full sub-obligations"
   rg -n '\bfinite_extinction_subobligations_of_statement\b' \
     Poincare/DependencyProjections.lean || true
   exit 1
