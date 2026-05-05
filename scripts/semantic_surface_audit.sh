@@ -5753,6 +5753,11 @@ set_option linter.unusedVariables false
       Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
     Poincare.PoincareCompletionCertificate)
 
+#check Poincare.completion_certificate_of_remaining_dependency_and_packaged_smooth_statement_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_packaged_smooth_statement_eq
+#check Poincare.completion_certificate_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq
+#check Poincare.completion_certificate_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq
+
 #check (Poincare.poincareCompletionCertificate_remainingDependencyPackage_packaged_smooth_statement_payload :
   Poincare.PoincareCompletionCertificate →
   Poincare.SmoothPoincareConjectureStatement →

@@ -1424,10 +1424,12 @@ The current artifact is intentionally conservative:
   `completion_certificate_of_poincareProofDependencies_and_packaged_reverse_canonical_smooth_three_sphere_statement`,
   so a proof-bearing smooth statement can use the dependency package's own `C∞`
   smoothability output to reconstruct the checked completion certificate at both
-  dependency package surfaces. Those smooth and packaged smooth certificate
-  constructors now also have dependency projection round-trip contracts and
-  packaged payload reconstruction contracts at both the remaining-dependency
-  and aggregate-dependency surfaces. The standalone
+  dependency package surfaces. The smooth and canonical-smooth packaged
+  certificate constructors are pinned directly to their canonical-payload
+  certificate routes, and those smooth and packaged smooth certificate
+  constructors also have dependency projection round-trip contracts and packaged
+  payload reconstruction contracts at both the remaining-dependency and
+  aggregate-dependency surfaces. The standalone
   smoothability-package route
   `smoothability_package_smooth_statement_completion_payload` and its
   canonical-smooth and reverse canonical-smooth variants now also show that a
