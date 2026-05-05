@@ -142,7 +142,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   with direct aggregate-to-remaining equality contracts and certificate
   projection round-trips for the dependency package, project target, project
   payload, canonical payload, canonical target, completion criterion, and
-  canonical topological statement.
+  canonical topological statement. The same route now also has direct
+  `poincareCompletionCertificate_*packaged_reverse*payload` projections,
+  payload-to-certificate constructors, iff contracts, and
+  projection-after-constructor contracts at both dependency-package surfaces.
 - `Poincare/CanonicalBridges.lean` now pins the aggregate packaged smooth and
   packaged canonical-smooth project routes, canonical completion payloads,
   canonical targets, canonical criteria, and canonical topological statement
@@ -152,9 +155,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   constructors, payload proposition equivalences, and certificate iff
   factorizations are pinned to the remaining-dependency surface as well. The
   packaged smooth and packaged canonical-smooth certificate equivalences are
-  also pinned directly to their named projection/constructor pairs, and their
-  aggregate/remaining payload equivalences are pinned to the componentwise
-  dependency conversion. The
+  also pinned directly to their named projection/constructor pairs, and the
+  packaged reverse canonical-smooth payload equivalences now have the same
+  checked-certificate reversibility. Their aggregate/remaining payload
+  equivalences are pinned to the componentwise dependency conversion. The
   dependency-packaged smooth payloads are also pinned to the standalone
   `SmoothabilityPackage` payloads obtained by projecting the smoothability
   component, including their project target, criterion, and project
@@ -1341,9 +1345,8 @@ It is not a proof. It is a work breakdown for future Lean development.
   certificates directly from those packaged payloads, and the
   `poincareCompletionCertificate_iff_*packaged*payload` contracts make the
   supplied smooth/canonical-smooth packaged payload routes reversible at the
-  checked certificate surface, while the packaged reverse canonical-smooth route
-  reconstructs checked certificates directly from the supplied reverse canonical
-  smooth statement and the package's `C∞` smoothability output. Those packaged payload constructors now also
+  checked certificate surface for the smooth, canonical-smooth, and reverse
+  canonical-smooth routes. Those packaged payload constructors now also
   have projection-after-constructor round-trip contracts back to their
   remaining-dependency and aggregate payloads. The smooth and packaged-smooth
   routes now also
@@ -1389,7 +1392,7 @@ It is not a proof. It is a work breakdown for future Lean development.
   records `smoothability_package_smooth_statement_completion_payload`,
   `poincare_completion_payload_of_smoothability_package_and_smooth_statement`,
   `canonical_completion_payload_of_smoothability_package_and_smooth_statement`,
-  and their canonical-smooth variants, showing that a `SmoothabilityPackage`
+  and their canonical-smooth and reverse canonical-smooth variants, showing that a `SmoothabilityPackage`
   alone supplies the `C∞` smooth-manifold input needed to turn a smooth
   proof-bearing Poincare statement into the project target, canonical completion
   payload, and canonical topological statement without the surgery/topology

@@ -66,8 +66,9 @@ The current artifact is intentionally conservative:
   packaged canonical-smooth routes, with reverse canonical-smooth packaged
   payloads now lifted through the target, criterion, project-payload, canonical
   payload, canonical target, canonical criterion, canonical statement, and
-  checked-certificate surfaces at both dependency-package layers. It also exposes a standalone
-  `SmoothabilityPackage` route from a proof-bearing smooth or canonical-smooth
+  checked-certificate surfaces at both dependency-package layers. It also exposes
+  standalone `SmoothabilityPackage` routes from a proof-bearing smooth,
+  canonical-smooth, or reverse canonical-smooth
   Poincare statement to the project target, canonical completion payload, and
   canonical topological statement. Direct equality contracts now pin the
   aggregate packaged smooth, packaged canonical-smooth, and packaged reverse
@@ -78,13 +79,16 @@ The current artifact is intentionally conservative:
   aggregate-to-remaining pinning now covers the packaged smooth and packaged
   canonical-smooth completion certificate constructors, payload proposition
   equivalences, certificate iff factorizations, plus the packaged reverse
-  canonical-smooth canonical routes and checked-certificate constructors. The packaged smooth and
-  packaged canonical-smooth certificate equivalences are also pinned directly to
+  canonical-smooth canonical routes, checked-certificate constructors, and
+  certificate-payload equivalences. The packaged smooth, packaged
+  canonical-smooth, and packaged reverse canonical-smooth certificate
+  equivalences are also pinned directly to
   their named projection/constructor pairs, and their aggregate/remaining
   payload equivalences are pinned to the componentwise dependency conversion.
   The dependency-packaged
   smooth payload routes are also pinned back to the standalone
-  `SmoothabilityPackage` payload routes obtained by projecting the package's
+  `SmoothabilityPackage` payload routes, including the reverse canonical-smooth
+  standalone route, obtained by projecting the package's
   smoothability component, including their project target, criterion, and
   project completion-payload, canonical payload, canonical target, canonical
   criterion, canonical statement projections, and checked completion-certificate
@@ -1270,10 +1274,8 @@ The current artifact is intentionally conservative:
   `completion_certificate_of_*packaged*payload` constructors rebuild checked
   certificates directly from those packaged payloads, and the
   `poincareCompletionCertificate_iff_*packaged*payload` contracts make the
-  supplied smooth/canonical-smooth packaged payload routes reversible at the
-  checked certificate surface, while the packaged reverse canonical-smooth route
-  reconstructs checked certificates directly from the supplied reverse canonical
-  smooth statement and the package's `C∞` smoothability output. Those packaged payload constructors now also
+  supplied smooth/canonical-smooth/reverse-canonical-smooth packaged payload
+  routes reversible at the checked certificate surface. Those packaged payload constructors now also
   have projection-after-constructor round-trip contracts back to their
   remaining-dependency and aggregate payloads. The smooth and packaged-smooth
   routes now also
@@ -1317,7 +1319,8 @@ The current artifact is intentionally conservative:
   the remaining-dependency and aggregate-dependency surfaces. The standalone
   smoothability-package route
   `smoothability_package_smooth_statement_completion_payload` and its
-  canonical-smooth variant now also show that a `SmoothabilityPackage` alone
+  canonical-smooth and reverse canonical-smooth variants now also show that a
+  `SmoothabilityPackage` alone
   supplies the `C∞` smooth-manifold input needed to turn a proof-bearing smooth
   Poincare statement into the project target, canonical completion payload, and
   canonical topological 3-sphere statement, without requiring the surgery or
