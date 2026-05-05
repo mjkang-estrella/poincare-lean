@@ -70,7 +70,9 @@ The current artifact is intentionally conservative:
   standalone `SmoothabilityPackage` routes from a proof-bearing smooth,
   canonical-smooth, or reverse canonical-smooth
   Poincare statement to the project target, canonical completion payload, and
-  canonical topological statement. Direct equality contracts now pin the
+  canonical topological statement. Those standalone route payloads now have
+  reconstruction contracts from their named project and canonical completion
+  payload endpoints. Direct equality contracts now pin the
   aggregate packaged smooth, packaged canonical-smooth, and packaged reverse
   canonical-smooth project routes,
   canonical payloads, canonical targets, canonical criteria, and canonical

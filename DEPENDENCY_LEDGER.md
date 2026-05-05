@@ -167,7 +167,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   component, including their project target, criterion, and project
   completion-payload, canonical payload, canonical target, canonical criterion,
   canonical statement projections, and checked completion-certificate
-  constructors.
+  constructors. The standalone smoothability-package smooth,
+  canonical-smooth, and reverse canonical-smooth route payloads now also have
+  reconstruction contracts from their named project and canonical completion
+  payload endpoints.
 - `Poincare/CanonicalBridges.lean` also exposes standalone smoothability-package
   smooth routes via `smoothability_package_smooth_statement_completion_payload`
   and

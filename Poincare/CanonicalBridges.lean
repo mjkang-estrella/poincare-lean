@@ -5873,6 +5873,148 @@ theorem canonical_three_sphere_statement_of_smoothability_package_and_canonical_
   apply Subsingleton.elim
 
 /--
+The standalone smoothability-package/project-smooth full route payload can be
+rebuilt from its named project completion payload endpoint.
+-/
+theorem smoothability_package_smooth_statement_completion_payload_of_poincare_completion_payload_eq
+    (package : SmoothabilityPackage.{u})
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    smoothability_package_smooth_statement_completion_payload
+      package smoothStatement =
+      (by
+        rcases poincare_completion_payload_of_smoothability_package_and_smooth_statement
+            package smoothStatement with
+          ⟨target, criterion⟩
+        exact
+          ⟨smoothability_smooth_manifold_statement_of_smoothability_package
+            package,
+            smoothStatement, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The standalone smoothability-package/canonical-smooth full route payload can be
+rebuilt from its named project completion payload endpoint.
+-/
+theorem smoothability_package_canonical_smooth_three_sphere_statement_completion_payload_of_poincare_completion_payload_eq
+    (package : SmoothabilityPackage.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    smoothability_package_canonical_smooth_three_sphere_statement_completion_payload
+      package h =
+      (by
+        let smoothStatement : SmoothPoincareConjectureStatement.{u} :=
+          smooth_statement_of_canonical_three_sphere_statement h
+        rcases
+            poincare_completion_payload_of_smoothability_package_and_canonical_smooth_three_sphere_statement
+              package h with
+          ⟨target, criterion⟩
+        exact
+          ⟨smoothability_smooth_manifold_statement_of_smoothability_package
+            package,
+            h, smoothStatement, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The standalone smoothability-package/reverse-canonical-smooth full route payload
+can be rebuilt from its named project completion payload endpoint.
+-/
+theorem smoothability_package_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_poincare_completion_payload_eq
+    (package : SmoothabilityPackage.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    smoothability_package_reverse_canonical_smooth_three_sphere_statement_completion_payload
+      package h =
+      (by
+        let smoothStatement : SmoothPoincareConjectureStatement.{u} :=
+          smooth_statement_of_reverse_canonical_smooth_three_sphere_statement h
+        rcases
+            poincare_completion_payload_of_smoothability_package_and_reverse_canonical_smooth_three_sphere_statement
+              package h with
+          ⟨target, criterion⟩
+        exact
+          ⟨smoothability_smooth_manifold_statement_of_smoothability_package
+            package,
+            h, smoothStatement, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The standalone smoothability-package/project-smooth full route payload can be
+rebuilt from its named canonical completion payload endpoint.
+-/
+theorem smoothability_package_smooth_statement_completion_payload_of_canonical_completion_payload_eq
+    (package : SmoothabilityPackage.{u})
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    smoothability_package_smooth_statement_completion_payload
+      package smoothStatement =
+      (by
+        rcases canonical_completion_payload_of_smoothability_package_and_smooth_statement
+            package smoothStatement with
+          ⟨target, criterion⟩
+        exact
+          ⟨smoothability_smooth_manifold_statement_of_smoothability_package
+            package,
+            smoothStatement, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The standalone smoothability-package/canonical-smooth full route payload can be
+rebuilt from its named canonical completion payload endpoint.
+-/
+theorem smoothability_package_canonical_smooth_three_sphere_statement_completion_payload_of_canonical_completion_payload_eq
+    (package : SmoothabilityPackage.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    smoothability_package_canonical_smooth_three_sphere_statement_completion_payload
+      package h =
+      (by
+        let smoothStatement : SmoothPoincareConjectureStatement.{u} :=
+          smooth_statement_of_canonical_three_sphere_statement h
+        rcases
+            canonical_completion_payload_of_smoothability_package_and_canonical_smooth_three_sphere_statement
+              package h with
+          ⟨target, criterion⟩
+        exact
+          ⟨smoothability_smooth_manifold_statement_of_smoothability_package
+            package,
+            h, smoothStatement, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The standalone smoothability-package/reverse-canonical-smooth full route payload
+can be rebuilt from its named canonical completion payload endpoint.
+-/
+theorem smoothability_package_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_canonical_completion_payload_eq
+    (package : SmoothabilityPackage.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    smoothability_package_reverse_canonical_smooth_three_sphere_statement_completion_payload
+      package h =
+      (by
+        let smoothStatement : SmoothPoincareConjectureStatement.{u} :=
+          smooth_statement_of_reverse_canonical_smooth_three_sphere_statement h
+        rcases
+            canonical_completion_payload_of_smoothability_package_and_reverse_canonical_smooth_three_sphere_statement
+              package h with
+          ⟨target, criterion⟩
+        exact
+          ⟨smoothability_smooth_manifold_statement_of_smoothability_package
+            package,
+            h, smoothStatement, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
 The remaining-dependency packaged smooth payload is exactly the standalone
 smoothability-package smooth payload for the projected smoothability component.
 -/
