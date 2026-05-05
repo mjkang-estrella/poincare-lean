@@ -681,7 +681,11 @@ The current artifact is intentionally conservative:
   projection route now also reconstructs a checked completion certificate, with
   round-trip contracts for the remaining-dependency package, canonical payload,
   project payload, target, criterion, canonical topological statement, and
-  literal/aggregate canonical-statement payload projections.
+  literal/aggregate canonical-statement payload projections. Its aggregate
+  `PoincareProofDependencies` certificate view is also pinned directly to the
+  finite-extinction plus theorem-shaped topology-extraction route for the
+  certificate, canonical/project payloads, target, criterion, and canonical
+  topological statement.
   It also exposes the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/
@@ -1242,7 +1246,10 @@ The current artifact is intentionally conservative:
   target/criterion projections, aggregate-dependency payload,
   project-statement payload, theorem-name payload, literal payload, and the
   reverse literal, aggregate-dependency, and project-statement payload
-  constructors.
+  constructors, with direct finite-extinction plus theorem-shaped
+  topology-extraction contracts for the aggregate projection certificate,
+  canonical/project payloads, target, criterion, and canonical topological
+  statement.
   The certificate-layer equality contracts now pin the reserved-name, literal
   payload, canonical payload, target/criterion projection, remaining/aggregate
   dependency, and project-statement routes to their named projections and
