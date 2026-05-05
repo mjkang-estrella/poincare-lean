@@ -6274,6 +6274,24 @@ theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_poincar
       dependencies payload
 
 /--
+The remaining-dependency plus project-payload certificate equivalence is the
+pair of the named certificate projection and named constructor.
+-/
+theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_poincare_payload_eq :
+    poincareCompletionCertificate_iff_remainingDependencyPackage_and_poincare_payload =
+      (by
+        constructor
+        · intro certificate
+          exact ⟨remaining_dependency_package_of_completion_certificate
+            certificate,
+            poincare_completion_payload_of_completion_certificate
+              certificate⟩
+        · rintro ⟨dependencies, payload⟩
+          exact completion_certificate_of_remaining_dependency_and_poincare_payload
+            dependencies payload) := by
+  apply Subsingleton.elim
+
+/--
 A remaining-dependency package and an explicit canonical completion payload
 reconstruct the checked completion certificate.
 -/
@@ -6322,6 +6340,24 @@ theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_canonic
       dependencies payload
 
 /--
+The remaining-dependency plus canonical-payload certificate equivalence is the
+pair of the named certificate projection and named constructor.
+-/
+theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_canonical_payload_eq :
+    poincareCompletionCertificate_iff_remainingDependencyPackage_and_canonical_payload =
+      (by
+        constructor
+        · intro certificate
+          exact ⟨remaining_dependency_package_of_completion_certificate
+            certificate,
+            canonical_completion_payload_of_completion_certificate
+              certificate⟩
+        · rintro ⟨dependencies, payload⟩
+          exact completion_certificate_of_remaining_dependency_and_canonical_payload
+            dependencies payload) := by
+  apply Subsingleton.elim
+
+/--
 A remaining-dependency package and a proof of the project target statement
 reconstruct the checked completion certificate.
 -/
@@ -6362,6 +6398,23 @@ theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_target_
   · rintro ⟨dependencies, target⟩
     exact completion_certificate_of_remaining_dependency_and_target_statement
       dependencies target
+
+/--
+The remaining-dependency plus project-target certificate equivalence is the pair
+of the named certificate projection and named constructor.
+-/
+theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_target_statement_eq :
+    poincareCompletionCertificate_iff_remainingDependencyPackage_and_target_statement =
+      (by
+        constructor
+        · intro certificate
+          exact ⟨remaining_dependency_package_of_completion_certificate
+            certificate,
+            target_statement_of_completion_certificate certificate⟩
+        · rintro ⟨dependencies, target⟩
+          exact completion_certificate_of_remaining_dependency_and_target_statement
+            dependencies target) := by
+  apply Subsingleton.elim
 
 /--
 A remaining-dependency package and a proof of the canonical completion target
@@ -6406,6 +6459,24 @@ theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_canonic
       dependencies target
 
 /--
+The remaining-dependency plus canonical-target certificate equivalence is the
+pair of the named certificate projection and named constructor.
+-/
+theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_canonical_target_eq :
+    poincareCompletionCertificate_iff_remainingDependencyPackage_and_canonical_target =
+      (by
+        constructor
+        · intro certificate
+          exact ⟨remaining_dependency_package_of_completion_certificate
+            certificate,
+            canonical_completion_target_of_completion_certificate
+              certificate⟩
+        · rintro ⟨dependencies, target⟩
+          exact completion_certificate_of_remaining_dependency_and_canonical_target
+            dependencies target) := by
+  apply Subsingleton.elim
+
+/--
 A remaining-dependency package and a proof of the explicit universe-indexed
 completion criterion reconstruct the checked completion certificate.
 -/
@@ -6447,6 +6518,26 @@ theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_complet
   · rintro ⟨dependencies, criterion⟩
     exact completion_certificate_of_remaining_dependency_and_completion_criterion
       dependencies witness criterion
+
+/--
+The remaining-dependency plus completion-criterion certificate equivalence is
+the pair of the named certificate projection and named constructor.
+-/
+theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_completion_criterion_eq
+    (witness : Type u) :
+    poincareCompletionCertificate_iff_remainingDependencyPackage_and_completion_criterion
+        witness =
+      (by
+        constructor
+        · intro certificate
+          exact ⟨remaining_dependency_package_of_completion_certificate
+            certificate,
+            completion_criterion_of_completion_certificate witness
+              certificate⟩
+        · rintro ⟨dependencies, criterion⟩
+          exact completion_certificate_of_remaining_dependency_and_completion_criterion
+            dependencies witness criterion) := by
+  apply Subsingleton.elim
 
 /--
 A completion certificate also exposes the aggregate proof dependency package

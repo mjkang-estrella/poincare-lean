@@ -1295,7 +1295,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   and the base remaining-dependency plus aggregate-dependency constructors now
   also round-trip their dependency projection after the canonical-payload,
   target-statement, canonical-target, completion-criterion, and aggregate
-  project-payload routes,
+  project-payload routes. The base remaining-dependency payload/target/criterion
+  equivalences are now pinned to their named projection/constructor pairs as
+  equality contracts,
   while the completion-target constructors
   `completion_certificate_of_*requirements_payload` and
   `completion_certificate_of_components_payload` rebuild checked certificates
