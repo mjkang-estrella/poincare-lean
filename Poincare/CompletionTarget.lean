@@ -12193,7 +12193,22 @@ theorem poincareCompletionCertificate_theoremName_payload_of_completion_certific
       ⟨"poincare_conjecture", rfl⟩ := by
   apply Subsingleton.elim
 
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_dependency_projections_to_topology_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_dependency_projections dependencies) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
 theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_extraction_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_extraction_derivation_dependency_projections
+        dependencies) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
     (dependencies : RemainingDependencyPackage.{u}) :
     poincareCompletionCertificate_theoremName_payload
       (completion_certificate_of_extraction_derivation_dependency_projections
@@ -12265,7 +12280,23 @@ theorem poincareCompletionCertificate_theoremName_payload_of_completion_certific
       ⟨"poincare_conjecture", rfl⟩ := by
   apply Subsingleton.elim
 
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_poincareProofDependencies_projections_to_topology_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_poincareProofDependencies_projections
+        dependencies) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
 theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+        dependencies) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_to_finite_extinction_eq
     (dependencies : PoincareProofDependencies.{u}) :
     poincareCompletionCertificate_theoremName_payload
       (completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
