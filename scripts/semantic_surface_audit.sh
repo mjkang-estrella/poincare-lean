@@ -1083,6 +1083,7 @@ set_option linter.unusedVariables false
 #check Poincare.FiniteExtinctionWidthSubobligationsStatement
 #check Poincare.finiteExtinctionWidthSubobligationsStatement_eq
 #check Poincare.FiniteExtinctionSubobligationsStatement
+#check Poincare.finiteExtinctionSubobligationsStatement_eq
 #check Poincare.RicciFlowWithSurgeryConstructionSubobligationsPayload
 #check Poincare.PerelmanSingularityControlSubobligationsPayload
 #check Poincare.PerelmanMonotonicityBlowupSubobligationsPayload

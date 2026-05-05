@@ -7499,6 +7499,153 @@ def FiniteExtinctionSubobligationsStatement
       extinction
 
 /--
+The fixed-flow finite-extinction full sub-obligation statement is exactly the
+listed width, curvature, volume-decay, derivation, extinction, and
+conclusion-derivation witness stack.
+-/
+theorem finiteExtinctionSubobligationsStatement_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow) :
+    FiniteExtinctionSubobligationsStatement flow surgery control =
+      (∃ _finiteFundamentalGroup :
+        HasFiniteExtinctionFundamentalGroupInput M,
+      ∃ sweepout :
+        HasFiniteExtinctionSweepoutExistence M _finiteFundamentalGroup,
+      ∃ _sweepoutParameterSpace :
+        HasFiniteExtinctionSweepoutParameterSpace M _finiteFundamentalGroup,
+      ∃ _sweepoutContinuity :
+        HasFiniteExtinctionSweepoutContinuity
+          M _finiteFundamentalGroup sweepout,
+      ∃ _sweepoutAreaBound :
+        HasFiniteExtinctionSweepoutAreaBound
+          M _finiteFundamentalGroup sweepout,
+      ∃ _sweepoutNontriviality :
+        HasFiniteExtinctionSweepoutNontriviality
+          M _finiteFundamentalGroup sweepout,
+      ∃ _areaFunctional :
+        HasFiniteExtinctionAreaFunctionalSetup
+          flow surgery control _finiteFundamentalGroup sweepout,
+      ∃ widthDefinition :
+        HasFiniteExtinctionMinMaxWidthDefinition
+          flow surgery control _finiteFundamentalGroup sweepout,
+      ∃ _widthCompactness :
+        HasFiniteExtinctionWidthCompactness
+          flow surgery control _finiteFundamentalGroup sweepout widthDefinition,
+      ∃ _widthLowerSemicontinuity :
+        HasFiniteExtinctionWidthLowerSemicontinuity
+          flow surgery control _finiteFundamentalGroup sweepout widthDefinition,
+      ∃ _minimizingSequence :
+        HasFiniteExtinctionMinimizingSequence
+          flow surgery control _finiteFundamentalGroup sweepout widthDefinition,
+      ∃ _pullTightArgument :
+        HasFiniteExtinctionPullTightArgument
+          flow surgery control _finiteFundamentalGroup sweepout widthDefinition,
+      ∃ _minMaxStationarity :
+        HasFiniteExtinctionMinMaxStationarity
+          flow surgery control _finiteFundamentalGroup sweepout widthDefinition,
+      ∃ _minSurfaceRegularity :
+        HasFiniteExtinctionMinSurfaceRegularity
+          flow surgery control _finiteFundamentalGroup sweepout widthDefinition,
+      ∃ _positiveWidth :
+        HasFiniteExtinctionPositiveWidth
+          flow surgery control _finiteFundamentalGroup sweepout widthDefinition,
+      ∃ widthTheory : HasFiniteExtinctionWidthTheory flow surgery control,
+      ∃ _firstVariationFormula :
+        HasFiniteExtinctionFirstVariationFormula
+          flow surgery control widthTheory,
+      ∃ _secondVariationInequality :
+        HasFiniteExtinctionSecondVariationInequality
+          flow surgery control widthTheory,
+      ∃ _gaussBonnetEstimate :
+        HasFiniteExtinctionGaussBonnetEstimate
+          flow surgery control widthTheory,
+      ∃ _scalarCurvatureWidthBound :
+        HasFiniteExtinctionScalarCurvatureWidthBound
+          flow surgery control widthTheory,
+      ∃ widthEvolution :
+        HasFiniteExtinctionWidthEvolution flow surgery control widthTheory,
+      ∃ _widthDifferentialInequality :
+        HasFiniteExtinctionWidthDifferentialInequality
+          flow surgery control widthTheory,
+      ∃ _surgeryMetricComparison :
+        HasFiniteExtinctionSurgeryMetricComparison
+          flow surgery control widthTheory widthEvolution,
+      ∃ _surgeryWidthComparisonMap :
+        HasFiniteExtinctionSurgeryWidthComparisonMap
+          flow surgery control widthTheory widthEvolution,
+      ∃ _surgeryWidthDrop :
+        HasFiniteExtinctionSurgeryWidthDrop
+          flow surgery control widthTheory widthEvolution,
+      ∃ surgeryDiscardControl :
+        HasFiniteExtinctionSurgeryDiscardControl
+          flow surgery control widthTheory widthEvolution,
+      ∃ _discardedComponentWidthNeutrality :
+        HasFiniteExtinctionDiscardedComponentWidthNeutrality
+          flow surgery control widthTheory widthEvolution surgeryDiscardControl,
+      ∃ _discardedComponentSweepoutTriviality :
+        HasFiniteExtinctionDiscardedComponentSweepoutTriviality
+          flow surgery control widthTheory widthEvolution surgeryDiscardControl,
+      ∃ _discardedComponentClassification :
+        HasFiniteExtinctionDiscardedComponentClassification
+          flow surgery control widthTheory widthEvolution surgeryDiscardControl,
+      ∃ _survivingComponentTracking :
+        HasFiniteExtinctionSurvivingComponentTracking
+          flow surgery control widthTheory widthEvolution surgeryDiscardControl,
+      ∃ _componentTopology :
+        HasFiniteExtinctionComponentTopology
+          flow surgery control widthTheory widthEvolution surgeryDiscardControl,
+      ∃ pinching : HasFiniteExtinctionCurvaturePinching flow surgery control,
+      ∃ _positiveScalarCurvatureLowerBound :
+        HasFiniteExtinctionPositiveScalarCurvatureLowerBound
+          flow surgery control pinching,
+      ∃ _positiveScalarCurvaturePersistence :
+        HasFiniteExtinctionPositiveScalarCurvaturePersistence
+          flow surgery control pinching,
+      ∃ componentControl :
+        HasFiniteExtinctionComponentControl flow surgery control pinching,
+      ∃ _volumeEvolutionFormula :
+        HasFiniteExtinctionVolumeEvolutionFormula
+          flow surgery control pinching componentControl,
+      ∃ _surgeryVolumeNonincrease :
+        HasFiniteExtinctionSurgeryVolumeNonincrease
+          flow surgery control pinching componentControl,
+      ∃ _scalarCurvatureDifferentialInequality :
+        HasFiniteExtinctionScalarCurvatureDifferentialInequality
+          flow surgery control pinching componentControl,
+      ∃ _volumeDifferentialInequality :
+        HasFiniteExtinctionVolumeDifferentialInequality
+          flow surgery control pinching componentControl,
+      ∃ _volumeDecayEstimate :
+        HasFiniteExtinctionVolumeDecayEstimate
+          flow surgery control pinching componentControl,
+      ∃ timeBound :
+        HasFiniteExtinctionTimeBound
+          flow surgery control pinching componentControl,
+      ∃ _differentialInequalityIntegration :
+        HasFiniteExtinctionDifferentialInequalityIntegration
+          flow surgery control pinching componentControl timeBound,
+      ∃ _finiteTimeIntegration :
+        HasFiniteExtinctionFiniteTimeIntegration
+          flow surgery control pinching componentControl timeBound,
+      ∃ _surgeryTimeSummability :
+        HasFiniteExtinctionSurgeryTimeSummability
+          flow surgery control pinching componentControl timeBound,
+      ∃ _extinctionTimeContradiction :
+        HasFiniteExtinctionExtinctionTimeContradiction
+          flow surgery control pinching componentControl timeBound,
+      ∃ derivation : HasFiniteExtinctionDerivation flow surgery control,
+      ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+        HasFiniteExtinctionConclusionDerivation
+          flow surgery control pinching componentControl timeBound derivation
+          extinction) :=
+  rfl
+
+/--
 A completed surgery package assembles the theorem-shaped finite-extinction
 width sub-obligation statement.
 -/

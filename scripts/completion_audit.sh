@@ -2774,6 +2774,8 @@ check_decl "finite-extinction width sub-obligations statement shape contract is 
   '^theorem finiteExtinctionWidthSubobligationsStatement_eq\b' Poincare/Surgery.lean
 check_decl "finite-extinction full sub-obligations statement is declared" \
   '^def FiniteExtinctionSubobligationsStatement\b' Poincare/Surgery.lean
+check_decl "finite-extinction full sub-obligations statement shape contract is declared" \
+  '^theorem finiteExtinctionSubobligationsStatement_eq\b' Poincare/Surgery.lean
 check_decl "finite-extinction width sub-obligation payload alias is declared" \
   '^abbrev FiniteExtinctionWidthSubobligationsPayload\b' Poincare/Surgery.lean
 check_decl "finite-extinction full sub-obligation payload alias is declared" \
@@ -7390,6 +7392,7 @@ open scoped Manifold ContDiff
 #check Poincare.FiniteExtinctionWidthSubobligationsStatement
 #check Poincare.finiteExtinctionWidthSubobligationsStatement_eq
 #check Poincare.FiniteExtinctionSubobligationsStatement
+#check Poincare.finiteExtinctionSubobligationsStatement_eq
 #check Poincare.RicciFlowWithSurgeryConstructionSubobligationsPayload
 #check Poincare.PerelmanSingularityControlSubobligationsPayload
 #check Poincare.PerelmanMonotonicityBlowupSubobligationsPayload
@@ -9949,6 +9952,7 @@ open scoped Manifold ContDiff
 #check Poincare.FiniteExtinctionWidthSubobligationsStatement
 #check Poincare.finiteExtinctionWidthSubobligationsStatement_eq
 #check Poincare.FiniteExtinctionSubobligationsStatement
+#check Poincare.finiteExtinctionSubobligationsStatement_eq
 #check Poincare.RicciFlowWithSurgeryConstructionSubobligationsPayload
 #check Poincare.PerelmanSingularityControlSubobligationsPayload
 #check Poincare.PerelmanMonotonicityBlowupSubobligationsPayload
