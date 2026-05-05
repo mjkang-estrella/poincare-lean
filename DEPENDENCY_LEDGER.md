@@ -640,6 +640,8 @@ It is not a proof. It is a work breakdown for future Lean development.
   compatibility plus full sub-obligation route. Equality contracts now tie the
   smooth-structure derivation component assembler to the exact tuple of Moise,
   PL, smoothing, smooth-atlas, transition, and derivation witnesses; the
+  package-level derivation statement route is pinned back to that component
+  assembler; the
   derivation-statement sub-obligation bridge is pinned to the exact
   Moise/PL/smoothing/smooth-atlas/bridge witness stack; the package bridge,
   canonical smooth-manifold statement, bridge application, surgery-model and

@@ -2663,6 +2663,59 @@ theorem smooth_structure_derivation_statement_of_smoothability_package
     (package.smoothStructureDerivation M)
 
 /--
+The package-level smooth-structure derivation statement is exactly the component
+assembler applied to the stored Moise, PL, smoothing, smooth-atlas, and
+smooth-structure derivation fields.
+-/
+theorem smooth_structure_derivation_statement_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    smooth_structure_derivation_statement_of_smoothability_package package M =
+      smooth_structure_derivation_statement_of_components M
+        (package.moiseLocalCharts M)
+        (package.moiseLocallyFiniteCoverRefinement M)
+        (package.moiseSimplicialComplex M)
+        (package.moiseCompatibleChartTriangulations M)
+        (package.moiseTriangulation M)
+        (package.moiseSimplicialApproximation M)
+        (package.moiseStarNeighborhoodBasis M)
+        (package.moiseBarycentricSubdivision M)
+        (package.moiseRegularNeighborhoodCompatibility M)
+        (package.moiseTriangulationLocalFiniteness M)
+        (package.moiseLinkCompatibility M)
+        (package.moisePLManifoldRecognition M)
+        (package.moiseTriangulationHomeomorphism M)
+        (package.moiseCompatibility M)
+        (package.moiseTriangulationUniqueness M)
+        (package.moiseHauptvermutungDimensionThree M)
+        (package.plStructure M)
+        (package.plTransitionCompatibility M)
+        (package.plAtlas M)
+        (package.plManifoldAtlas M)
+        (package.plCollarNeighborhoodCompatibility M)
+        (package.plHomeomorphismCompatibility M)
+        (package.plAtlasMaximality M)
+        (package.plSmoothingExistence M)
+        (package.plSmoothingObstructionVanishing M)
+        (package.plMicrobundleSmoothing M)
+        (package.plSmoothing M)
+        (package.plSmoothingCompatibility M)
+        (package.plSmoothingUniqueness M)
+        (package.plSmoothingLocalModelCompatibility M)
+        (package.smoothStructure M)
+        (package.smoothAtlasConstruction M)
+        (package.smoothAtlasPLCompatibility M)
+        (package.smoothAtlasMaximality M)
+        (package.smoothAtlasUniqueness M)
+        (package.smoothStructureUniquenessUpToDiffeomorphism M)
+        (package.smoothTransitionCompatibility M)
+        (package.smoothAtlasTransitionSmoothness M)
+        (package.smoothStructureDerivation M) :=
+  rfl
+
+/--
 A completed smoothability package exposes the component smooth-structure
 derivation certificate together with the theorem-shaped derivation statement.
 -/

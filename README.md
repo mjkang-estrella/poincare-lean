@@ -549,7 +549,8 @@ The current artifact is intentionally conservative:
   smooth-structure derivation statement route and the bridge/model/chart
   compatibility plus full sub-obligation route. The smooth-structure
   derivation component assembler is pinned to the exact tuple of Moise, PL,
-  smoothing, smooth-atlas, transition, and derivation witnesses, and the
+  smoothing, smooth-atlas, transition, and derivation witnesses, the package-level
+  derivation statement route is pinned back to that component assembler, and the
   derivation-statement sub-obligation bridge is pinned to the exact
   Moise/PL/smoothing/smooth-atlas/bridge witness stack. Equality contracts now
   tie the package bridge, canonical smooth-manifold statement,
