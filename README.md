@@ -318,6 +318,11 @@ The current artifact is intentionally conservative:
   statement, theorem-shaped statement, statement-mediated extinction witness,
   width/full sub-obligation statements, and both package-level payload routes to
   those explicit component and statement-mediated assemblies.
+  The statement-level finite-extinction bridges are pinned as well: conclusion
+  payload extraction from a theorem-shaped statement, finite-extinction witness
+  extraction, derivation extraction from a full sub-obligation statement, and
+  the rebuilt conclusion/statement/extinction routes all have equality
+  contracts.
   The dependency-level finite-extinction route now exposes
   `finite_extinction_subobligations_statement_payload_of_dependencies`,
   which packages the width sub-obligation statement, full sub-obligation
@@ -685,6 +690,7 @@ The current artifact is intentionally conservative:
   `finite_extinction_subobligations_payload_of_surgery_package` and
   `finite_extinction_statement_payload_of_surgery_package`,
   finite-extinction package route equality contracts,
+  finite-extinction statement bridge equality contracts,
   `finite_extinction_subobligations_statement_payload_of_dependencies`,
   statement-mediated finite-extinction width/full sub-obligation outputs
   through explicit statement destructuring,

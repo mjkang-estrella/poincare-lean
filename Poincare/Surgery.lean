@@ -6367,6 +6367,25 @@ theorem finite_extinction_conclusion_statement_of_finite_extinction_statement
   exact ⟨flow, surgery, control, finiteExtinction, conclusionStatement⟩
 
 /--
+The theorem-shaped finite-extinction statement exposes exactly its stored
+fixed-flow conclusion statement payload.
+-/
+theorem finite_extinction_conclusion_statement_of_finite_extinction_statement_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (statement : FiniteExtinctionStatement n M) :
+    finite_extinction_conclusion_statement_of_finite_extinction_statement
+        statement =
+      (by
+        rcases statement with
+          ⟨flow, surgery, control, finiteExtinction, conclusionStatement⟩
+        exact ⟨flow, surgery, control, finiteExtinction,
+          conclusionStatement⟩) := by
+  apply Subsingleton.elim
+
+/--
 The theorem-shaped finite-extinction statement supplies the existing
 finite-extinction interface.
 -/
@@ -6381,6 +6400,25 @@ theorem finite_extinction_of_finite_extinction_statement
       statement with
     ⟨_flow, _surgery, _control, finiteExtinction, _conclusionStatement⟩
   exact finiteExtinction
+
+/--
+The finite-extinction witness extracted from a theorem-shaped statement is
+exactly the finite-extinction component exposed by its conclusion payload.
+-/
+theorem finite_extinction_of_finite_extinction_statement_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (statement : FiniteExtinctionStatement n M) :
+    finite_extinction_of_finite_extinction_statement statement =
+      (by
+        rcases finite_extinction_conclusion_statement_of_finite_extinction_statement
+            statement with
+          ⟨_flow, _surgery, _control, finiteExtinction,
+            _conclusionStatement⟩
+        exact finiteExtinction) := by
+  apply Subsingleton.elim
 
 /--
 Statement-mediated projection of finite extinction from a completed surgery
@@ -7318,6 +7356,45 @@ theorem finite_extinction_derivation_of_subobligations_statement
   exact derivation
 
 /--
+The derivation extracted from a full finite-extinction sub-obligation statement
+is exactly its stored derivation component.
+-/
+theorem finite_extinction_derivation_of_subobligations_statement_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    (statement : FiniteExtinctionSubobligationsStatement flow surgery control) :
+    finite_extinction_derivation_of_subobligations_statement statement =
+      (by
+        rcases statement with
+          ⟨_finiteFundamentalGroup, _sweepout, _sweepoutParameterSpace,
+            _sweepoutContinuity, _sweepoutAreaBound, _sweepoutNontriviality,
+            _areaFunctional, _widthDefinition, _widthCompactness,
+            _widthLowerSemicontinuity, _minimizingSequence, _pullTightArgument,
+            _minMaxStationarity, _minSurfaceRegularity, _positiveWidth,
+            _widthTheory, _firstVariationFormula, _secondVariationInequality,
+            _gaussBonnetEstimate, _scalarCurvatureWidthBound, _widthEvolution,
+            _widthDifferentialInequality, _surgeryMetricComparison,
+            _surgeryWidthComparisonMap, _surgeryWidthDrop,
+            _surgeryDiscardControl, _discardedComponentWidthNeutrality,
+            _discardedComponentSweepoutTriviality,
+            _discardedComponentClassification, _survivingComponentTracking,
+            _componentTopology, _pinching, _positiveScalarCurvatureLowerBound,
+            _positiveScalarCurvaturePersistence, _componentControl,
+            _volumeEvolutionFormula, _surgeryVolumeNonincrease,
+            _scalarCurvatureDifferentialInequality,
+            _volumeDifferentialInequality, _volumeDecayEstimate, _timeBound,
+            _differentialInequalityIntegration, _finiteTimeIntegration,
+            _surgeryTimeSummability, _extinctionTimeContradiction, derivation,
+            _extinction, _conclusionDerivation⟩
+        exact derivation) := by
+  apply Subsingleton.elim
+
+/--
 The full finite-extinction sub-obligation statement assembles the
 theorem-shaped conclusion statement for its projected extinction proof.
 -/
@@ -7360,6 +7437,51 @@ theorem finite_extinction_conclusion_statement_of_subobligations_statement
       componentControl timeBound derivation conclusionDerivation⟩
 
 /--
+The fixed-flow conclusion statement rebuilt from a full finite-extinction
+sub-obligation statement is exactly the component assembly route applied to its
+stored components.
+-/
+theorem finite_extinction_conclusion_statement_of_subobligations_statement_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    (statement : FiniteExtinctionSubobligationsStatement flow surgery control) :
+    finite_extinction_conclusion_statement_of_subobligations_statement
+        statement =
+      (by
+        rcases statement with
+          ⟨finiteFundamentalGroup, sweepout, _sweepoutParameterSpace,
+            _sweepoutContinuity, _sweepoutAreaBound, _sweepoutNontriviality,
+            _areaFunctional, _widthDefinition, _widthCompactness,
+            _widthLowerSemicontinuity, _minimizingSequence, _pullTightArgument,
+            _minMaxStationarity, _minSurfaceRegularity, _positiveWidth,
+            widthTheory, _firstVariationFormula, _secondVariationInequality,
+            _gaussBonnetEstimate, _scalarCurvatureWidthBound, widthEvolution,
+            _widthDifferentialInequality, _surgeryMetricComparison,
+            _surgeryWidthComparisonMap, _surgeryWidthDrop,
+            surgeryDiscardControl, _discardedComponentWidthNeutrality,
+            _discardedComponentSweepoutTriviality,
+            _discardedComponentClassification, _survivingComponentTracking,
+            _componentTopology, pinching, _positiveScalarCurvatureLowerBound,
+            _positiveScalarCurvaturePersistence, componentControl,
+            _volumeEvolutionFormula, _surgeryVolumeNonincrease,
+            _scalarCurvatureDifferentialInequality,
+            _volumeDifferentialInequality, _volumeDecayEstimate, timeBound,
+            _differentialInequalityIntegration, _finiteTimeIntegration,
+            _surgeryTimeSummability, _extinctionTimeContradiction, derivation,
+            extinction, conclusionDerivation⟩
+        exact ⟨extinction,
+          finite_extinction_conclusion_statement_of_components
+            flow surgery control extinction finiteFundamentalGroup sweepout
+            widthTheory widthEvolution surgeryDiscardControl pinching
+            componentControl timeBound derivation conclusionDerivation⟩) := by
+  apply Subsingleton.elim
+
+/--
 The full finite-extinction sub-obligation statement assembles the
 theorem-shaped finite-extinction statement, rather than only exposing the raw
 extinction witness.
@@ -7379,6 +7501,29 @@ theorem finite_extinction_statement_of_subobligations_statement
     ⟨finiteExtinction, conclusionStatement⟩
   exact ⟨flow, surgery, control, finiteExtinction, conclusionStatement⟩
 
+/--
+The theorem-shaped finite-extinction statement rebuilt from a full
+sub-obligation statement is exactly the package of the fixed flow, surgery,
+control, extracted finite-extinction witness, and rebuilt conclusion statement.
+-/
+theorem finite_extinction_statement_of_subobligations_statement_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    (statement : FiniteExtinctionSubobligationsStatement flow surgery control) :
+    finite_extinction_statement_of_subobligations_statement statement =
+      (by
+        rcases finite_extinction_conclusion_statement_of_subobligations_statement
+            statement with
+          ⟨finiteExtinction, conclusionStatement⟩
+        exact ⟨flow, surgery, control, finiteExtinction,
+          conclusionStatement⟩) := by
+  apply Subsingleton.elim
+
 /-- The full finite-extinction statement exposes the extinction conclusion. -/
 theorem finite_extinction_of_subobligations_statement
     {n : ℕ∞ω}
@@ -7392,6 +7537,24 @@ theorem finite_extinction_of_subobligations_statement
     FiniteExtinctionByRicciFlowWithSurgery M := by
   exact finite_extinction_of_finite_extinction_statement
     (finite_extinction_statement_of_subobligations_statement statement)
+
+/--
+The finite-extinction witness extracted from a full sub-obligation statement is
+exactly the witness extracted from the theorem-shaped statement rebuilt from it.
+-/
+theorem finite_extinction_of_subobligations_statement_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    (statement : FiniteExtinctionSubobligationsStatement flow surgery control) :
+    finite_extinction_of_subobligations_statement statement =
+      finite_extinction_of_finite_extinction_statement
+        (finite_extinction_statement_of_subobligations_statement statement) := by
+  apply Subsingleton.elim
 
 /--
 A completed surgery package exposes the package-level finite-extinction

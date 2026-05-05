@@ -2597,8 +2597,12 @@ check_decl "surgery package finite-extinction statement equality contract is dec
   '^theorem finite_extinction_statement_of_surgery_package_eq\b' Poincare/Surgery.lean
 check_decl "finite-extinction statement conclusion payload bridge is declared" \
   '^theorem finite_extinction_conclusion_statement_of_finite_extinction_statement\b' Poincare/Surgery.lean
+check_decl "finite-extinction statement conclusion payload equality contract is declared" \
+  '^theorem finite_extinction_conclusion_statement_of_finite_extinction_statement_eq\b' Poincare/Surgery.lean
 check_decl "finite-extinction statement bridge is declared" \
   '^theorem finite_extinction_of_finite_extinction_statement\b' Poincare/Surgery.lean
+check_decl "finite-extinction statement bridge equality contract is declared" \
+  '^theorem finite_extinction_of_finite_extinction_statement_eq\b' Poincare/Surgery.lean
 check_decl "surgery package statement-mediated finite-extinction projection is declared" \
   '^theorem finite_extinction_via_statement_of_surgery_package\b' Poincare/Surgery.lean
 check_decl "surgery package statement-mediated finite-extinction equality contract is declared" \
@@ -2629,12 +2633,20 @@ check_decl "surgery package finite-extinction sub-obligations payload equality c
   '^theorem finite_extinction_subobligations_payload_of_surgery_package_eq\b' Poincare/Surgery.lean
 check_decl "finite-extinction sub-obligations derivation bridge is declared" \
   '^theorem finite_extinction_derivation_of_subobligations_statement\b' Poincare/Surgery.lean
+check_decl "finite-extinction sub-obligations derivation equality contract is declared" \
+  '^theorem finite_extinction_derivation_of_subobligations_statement_eq\b' Poincare/Surgery.lean
 check_decl "finite-extinction sub-obligations conclusion-statement bridge is declared" \
   '^theorem finite_extinction_conclusion_statement_of_subobligations_statement\b' Poincare/Surgery.lean
+check_decl "finite-extinction sub-obligations conclusion-statement equality contract is declared" \
+  '^theorem finite_extinction_conclusion_statement_of_subobligations_statement_eq\b' Poincare/Surgery.lean
 check_decl "finite-extinction sub-obligations finite-extinction statement bridge is declared" \
   '^theorem finite_extinction_statement_of_subobligations_statement\b' Poincare/Surgery.lean
+check_decl "finite-extinction sub-obligations finite-extinction statement equality contract is declared" \
+  '^theorem finite_extinction_statement_of_subobligations_statement_eq\b' Poincare/Surgery.lean
 check_decl "finite-extinction sub-obligations conclusion bridge is declared" \
   '^theorem finite_extinction_of_subobligations_statement\b' Poincare/Surgery.lean
+check_decl "finite-extinction sub-obligations conclusion equality contract is declared" \
+  '^theorem finite_extinction_of_subobligations_statement_eq\b' Poincare/Surgery.lean
 check_decl "surgery package finite-extinction statement payload is declared" \
   '^theorem finite_extinction_statement_payload_of_surgery_package\b' Poincare/Surgery.lean
 check_decl "surgery package finite-extinction statement payload equality contract is declared" \
@@ -6997,7 +7009,9 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_statement_of_surgery_package
 #check Poincare.finite_extinction_statement_of_surgery_package_eq
 #check Poincare.finite_extinction_conclusion_statement_of_finite_extinction_statement
+#check Poincare.finite_extinction_conclusion_statement_of_finite_extinction_statement_eq
 #check Poincare.finite_extinction_of_finite_extinction_statement
+#check Poincare.finite_extinction_of_finite_extinction_statement_eq
 #check Poincare.finite_extinction_via_statement_of_surgery_package
 #check Poincare.finite_extinction_via_statement_of_surgery_package_eq
 #check Poincare.FiniteExtinctionWidthSubobligationsStatement
@@ -7020,9 +7034,13 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_subobligations_payload_of_surgery_package
 #check Poincare.finite_extinction_subobligations_payload_of_surgery_package_eq
 #check Poincare.finite_extinction_derivation_of_subobligations_statement
+#check Poincare.finite_extinction_derivation_of_subobligations_statement_eq
 #check Poincare.finite_extinction_conclusion_statement_of_subobligations_statement
+#check Poincare.finite_extinction_conclusion_statement_of_subobligations_statement_eq
 #check Poincare.finite_extinction_statement_of_subobligations_statement
+#check Poincare.finite_extinction_statement_of_subobligations_statement_eq
 #check Poincare.finite_extinction_of_subobligations_statement
+#check Poincare.finite_extinction_of_subobligations_statement_eq
 #check Poincare.finite_extinction_statement_payload_of_surgery_package
 #check Poincare.finite_extinction_statement_payload_of_surgery_package_eq
 #check Poincare.extinction_extraction_of_poincare_statement
@@ -9473,7 +9491,9 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_statement_of_surgery_package
 #check Poincare.finite_extinction_statement_of_surgery_package_eq
 #check Poincare.finite_extinction_conclusion_statement_of_finite_extinction_statement
+#check Poincare.finite_extinction_conclusion_statement_of_finite_extinction_statement_eq
 #check Poincare.finite_extinction_of_finite_extinction_statement
+#check Poincare.finite_extinction_of_finite_extinction_statement_eq
 #check Poincare.finite_extinction_via_statement_of_surgery_package
 #check Poincare.finite_extinction_via_statement_of_surgery_package_eq
 #check Poincare.FiniteExtinctionWidthSubobligationsStatement
@@ -9496,9 +9516,13 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_subobligations_payload_of_surgery_package
 #check Poincare.finite_extinction_subobligations_payload_of_surgery_package_eq
 #check Poincare.finite_extinction_derivation_of_subobligations_statement
+#check Poincare.finite_extinction_derivation_of_subobligations_statement_eq
 #check Poincare.finite_extinction_conclusion_statement_of_subobligations_statement
+#check Poincare.finite_extinction_conclusion_statement_of_subobligations_statement_eq
 #check Poincare.finite_extinction_statement_of_subobligations_statement
+#check Poincare.finite_extinction_statement_of_subobligations_statement_eq
 #check Poincare.finite_extinction_of_subobligations_statement
+#check Poincare.finite_extinction_of_subobligations_statement_eq
 #check Poincare.finite_extinction_statement_payload_of_surgery_package
 #check Poincare.finite_extinction_statement_payload_of_surgery_package_eq
 #check Poincare.extinction_decomposition_of_topology_package
