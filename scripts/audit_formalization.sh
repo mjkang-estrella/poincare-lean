@@ -75,6 +75,7 @@ echo "No disallowed proof placeholders or false proof claims detected."
 
 sh scripts/interface_audit.sh
 sh scripts/mathlib_gap_audit.sh
+sh scripts/shape_contract_audit.sh
 sh scripts/semantic_surface_audit.sh
 sh scripts/root_import_audit.sh
 sh scripts/axiom_audit.sh

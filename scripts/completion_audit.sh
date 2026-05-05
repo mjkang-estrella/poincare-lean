@@ -22,6 +22,9 @@ sh scripts/root_import_audit.sh
 echo "== Axiom footprint gate =="
 sh scripts/axiom_audit.sh
 
+echo "== Shape contract gate =="
+sh scripts/shape_contract_audit.sh
+
 echo "== Objective =="
 cat <<'TEXT'
 Implement a complete Lean proof of the Poincare Conjecture:
@@ -95,13 +98,15 @@ check_present "Mathlib gap analysis" "MATHLIB_GAP_ANALYSIS.md"
 check_present "External research status" "EXTERNAL_RESEARCH_STATUS.md"
 check_present "Progress report" "POINCARE_FORMALIZATION_REPORT.md"
 check_present "Generated current status" "CURRENT_STATUS.md"
+check_present "Shape contract audit" "scripts/shape_contract_audit.sh"
 
 if rg -q '^- Completion: not achieved$' CURRENT_STATUS.md &&
     rg -q '^- Axiom footprint audit status: 0$' CURRENT_STATUS.md &&
+    rg -q '^- Shape contract audit status: 0$' CURRENT_STATUS.md &&
     rg -q '^- Completion audit status: 1$' CURRENT_STATUS.md; then
-  echo "PASS: generated status snapshot records clean axiom audit and incomplete completion audit"
+  echo "PASS: generated status snapshot records clean axiom/shape audits and incomplete completion audit"
 else
-  echo "FAIL: generated status snapshot does not record the current axiom/completion state"
+  echo "FAIL: generated status snapshot does not record the current axiom/shape/completion state"
   status=1
 fi
 
