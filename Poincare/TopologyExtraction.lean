@@ -3768,6 +3768,60 @@ theorem topology_classification_subobligations_of_derivation_statement
     simplyConnectedRecognition⟩
 
 /--
+The classification-subobligation bridge from a full topology derivation
+statement exposes exactly the post-extinction classification components stored
+in it.
+-/
+theorem topology_classification_subobligations_of_derivation_statement_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (derivationStatement :
+      ExtinctionTopologyDerivationStatement M extinction homeomorphism) :
+    topology_classification_subobligations_of_derivation_statement
+        M extinction homeomorphism derivationStatement =
+      (by
+        rcases derivationStatement with
+          ⟨decomposition, surgeryTraceReconstruction,
+            surgeryTraceHandleCancellation, componentClassification,
+            discardedComponentHomeomorphismClassification, componentInventory,
+            componentBoundarySphereControl, primeDecomposition,
+            primeDecompositionExistence, sphereTheoremApplication,
+            embeddedSphereProduction, loopTheoremApplication,
+            primeDecompositionCompatibility, primeFactorUniqueness,
+            irreducibility, irreducibleFactorRecognition, connectedSumCollapse,
+            connectedSumFundamentalGroupControl, connectedSumVanKampen,
+            simplyConnectedPrimeFactorControl, sphericalReduction,
+            sphericalClassification, quotientModel, sphericalFreeAction,
+            universalCover, sphericalCoveringModel, sphericalCoveringProjection,
+            fundamentalGroupComputation, deckGroupIdentification,
+            deckActionProperness, deckGroupTriviality, deckActionTrivialization,
+            trivialDeckQuotientIdentification, trivialQuotient,
+            trivialQuotientHomeomorphism, sphericalHomeomorphismLift,
+            simplyConnectedRecognition, _homeomorphismAssembly,
+            _homeomorphismDerivation⟩
+        exact ⟨decomposition, surgeryTraceReconstruction,
+          surgeryTraceHandleCancellation, componentClassification,
+          discardedComponentHomeomorphismClassification, componentInventory,
+          componentBoundarySphereControl, primeDecomposition,
+          primeDecompositionExistence, sphereTheoremApplication,
+          embeddedSphereProduction, loopTheoremApplication,
+          primeDecompositionCompatibility, primeFactorUniqueness,
+          irreducibility, irreducibleFactorRecognition, connectedSumCollapse,
+          connectedSumFundamentalGroupControl, connectedSumVanKampen,
+          simplyConnectedPrimeFactorControl, sphericalReduction,
+          sphericalClassification, quotientModel, sphericalFreeAction,
+          universalCover, sphericalCoveringModel, sphericalCoveringProjection,
+          fundamentalGroupComputation, deckGroupIdentification,
+          deckActionProperness, deckGroupTriviality, deckActionTrivialization,
+          trivialDeckQuotientIdentification, trivialQuotient,
+          trivialQuotientHomeomorphism, sphericalHomeomorphismLift,
+          simplyConnectedRecognition⟩) := by
+  apply Subsingleton.elim
+
+/--
 The fixed-manifold homeomorphism assembly statement: the post-extinction
 classification, quotient, deck-group, and simply-connected recognition data
 assemble the projected homeomorphism to the standard 3-sphere.
