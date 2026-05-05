@@ -869,7 +869,9 @@ The current artifact is intentionally conservative:
   equality contracts now pin the six-case milestone-to-layer map, the five-case
   layer-to-component fold, the milestone-to-component composition, and the
   component-slot, package-layer, and milestone requirement maps to their
-  explicit definitions. Generic
+  explicit definitions. The named milestone-layer, package-layer-to-component,
+  and milestone-to-component case theorems are also pinned to their direct
+  `rfl` proofs. Generic
   package-layer projections now have equality contracts for all five concrete
   layers, including the analytic and surgery routes obtained by unpacking the
   stored surgery-family field, and the package-layer payload is pinned to the

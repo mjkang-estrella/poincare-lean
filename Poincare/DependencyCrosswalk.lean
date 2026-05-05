@@ -150,6 +150,48 @@ theorem dependencyComponentForPackageLayer_topologyPackage :
       DependencyComponentSlot.topologyComponent :=
   rfl
 
+/-- The smoothability package-layer component theorem is the direct `rfl` proof. -/
+theorem dependencyComponentForPackageLayer_smoothabilityPackage_eq :
+    dependencyComponentForPackageLayer_smoothabilityPackage =
+      (rfl :
+        dependencyComponentForPackageLayer DependencyPackageLayer.smoothabilityPackage =
+          DependencyComponentSlot.smoothabilityComponent) :=
+  rfl
+
+/-- The analytic package-layer component theorem is the direct `rfl` proof. -/
+theorem dependencyComponentForPackageLayer_analyticFoundationPackage_eq :
+    dependencyComponentForPackageLayer_analyticFoundationPackage =
+      (rfl :
+        dependencyComponentForPackageLayer
+            DependencyPackageLayer.analyticFoundationPackage =
+          DependencyComponentSlot.surgeryComponent) :=
+  rfl
+
+/-- The surgery package-layer component theorem is the direct `rfl` proof. -/
+theorem dependencyComponentForPackageLayer_surgeryPackage_eq :
+    dependencyComponentForPackageLayer_surgeryPackage =
+      (rfl :
+        dependencyComponentForPackageLayer DependencyPackageLayer.surgeryPackage =
+          DependencyComponentSlot.surgeryComponent) :=
+  rfl
+
+/-- The finite-extinction package-layer component theorem is the direct `rfl` proof. -/
+theorem dependencyComponentForPackageLayer_finiteExtinctionPackage_eq :
+    dependencyComponentForPackageLayer_finiteExtinctionPackage =
+      (rfl :
+        dependencyComponentForPackageLayer
+            DependencyPackageLayer.finiteExtinctionPackage =
+          DependencyComponentSlot.surgeryComponent) :=
+  rfl
+
+/-- The topology package-layer component theorem is the direct `rfl` proof. -/
+theorem dependencyComponentForPackageLayer_topologyPackage_eq :
+    dependencyComponentForPackageLayer_topologyPackage =
+      (rfl :
+        dependencyComponentForPackageLayer DependencyPackageLayer.topologyPackage =
+          DependencyComponentSlot.topologyComponent) :=
+  rfl
+
 /-- The smoothability milestone is carried by the smoothability component. -/
 theorem dependencyComponentForMilestone_smoothabilityBridge :
     dependencyComponentForMilestone DependencyMilestone.smoothabilityBridge =
@@ -184,6 +226,57 @@ theorem dependencyComponentForMilestone_finiteExtinction :
 theorem dependencyComponentForMilestone_extinctionToSphereHomeomorphism :
     dependencyComponentForMilestone DependencyMilestone.extinctionToSphereHomeomorphism =
       DependencyComponentSlot.topologyComponent :=
+  rfl
+
+/-- The smoothability milestone component theorem is the direct `rfl` proof. -/
+theorem dependencyComponentForMilestone_smoothabilityBridge_eq :
+    dependencyComponentForMilestone_smoothabilityBridge =
+      (rfl :
+        dependencyComponentForMilestone DependencyMilestone.smoothabilityBridge =
+          DependencyComponentSlot.smoothabilityComponent) :=
+  rfl
+
+/-- The analytic-foundation milestone component theorem is the direct `rfl` proof. -/
+theorem dependencyComponentForMilestone_ricciFlowAnalyticFoundation_eq :
+    dependencyComponentForMilestone_ricciFlowAnalyticFoundation =
+      (rfl :
+        dependencyComponentForMilestone
+            DependencyMilestone.ricciFlowAnalyticFoundation =
+          DependencyComponentSlot.surgeryComponent) :=
+  rfl
+
+/-- The Ricci-flow-with-surgery milestone component theorem is the direct `rfl` proof. -/
+theorem dependencyComponentForMilestone_ricciFlowWithSurgery_eq :
+    dependencyComponentForMilestone_ricciFlowWithSurgery =
+      (rfl :
+        dependencyComponentForMilestone DependencyMilestone.ricciFlowWithSurgery =
+          DependencyComponentSlot.surgeryComponent) :=
+  rfl
+
+/-- The Perelman-control milestone component theorem is the direct `rfl` proof. -/
+theorem dependencyComponentForMilestone_perelmanSingularityControl_eq :
+    dependencyComponentForMilestone_perelmanSingularityControl =
+      (rfl :
+        dependencyComponentForMilestone
+            DependencyMilestone.perelmanSingularityControl =
+          DependencyComponentSlot.surgeryComponent) :=
+  rfl
+
+/-- The finite-extinction milestone component theorem is the direct `rfl` proof. -/
+theorem dependencyComponentForMilestone_finiteExtinction_eq :
+    dependencyComponentForMilestone_finiteExtinction =
+      (rfl :
+        dependencyComponentForMilestone DependencyMilestone.finiteExtinction =
+          DependencyComponentSlot.surgeryComponent) :=
+  rfl
+
+/-- The topology-extraction milestone component theorem is the direct `rfl` proof. -/
+theorem dependencyComponentForMilestone_extinctionToSphereHomeomorphism_eq :
+    dependencyComponentForMilestone_extinctionToSphereHomeomorphism =
+      (rfl :
+        dependencyComponentForMilestone
+            DependencyMilestone.extinctionToSphereHomeomorphism =
+          DependencyComponentSlot.topologyComponent) :=
   rfl
 
 /-- The proposition represented by each aggregate dependency component slot. -/
@@ -1300,6 +1393,57 @@ theorem dependencyLayerForMilestone_finiteExtinction :
 theorem dependencyLayerForMilestone_extinctionToSphereHomeomorphism :
     dependencyLayerForMilestone DependencyMilestone.extinctionToSphereHomeomorphism =
       DependencyPackageLayer.topologyPackage :=
+  rfl
+
+/-- The smoothability milestone-layer theorem is the direct `rfl` proof. -/
+theorem dependencyLayerForMilestone_smoothabilityBridge_eq :
+    dependencyLayerForMilestone_smoothabilityBridge =
+      (rfl :
+        dependencyLayerForMilestone DependencyMilestone.smoothabilityBridge =
+          DependencyPackageLayer.smoothabilityPackage) :=
+  rfl
+
+/-- The analytic-foundation milestone-layer theorem is the direct `rfl` proof. -/
+theorem dependencyLayerForMilestone_ricciFlowAnalyticFoundation_eq :
+    dependencyLayerForMilestone_ricciFlowAnalyticFoundation =
+      (rfl :
+        dependencyLayerForMilestone
+            DependencyMilestone.ricciFlowAnalyticFoundation =
+          DependencyPackageLayer.analyticFoundationPackage) :=
+  rfl
+
+/-- The Ricci-flow-with-surgery milestone-layer theorem is the direct `rfl` proof. -/
+theorem dependencyLayerForMilestone_ricciFlowWithSurgery_eq :
+    dependencyLayerForMilestone_ricciFlowWithSurgery =
+      (rfl :
+        dependencyLayerForMilestone DependencyMilestone.ricciFlowWithSurgery =
+          DependencyPackageLayer.surgeryPackage) :=
+  rfl
+
+/-- The Perelman-control milestone-layer theorem is the direct `rfl` proof. -/
+theorem dependencyLayerForMilestone_perelmanSingularityControl_eq :
+    dependencyLayerForMilestone_perelmanSingularityControl =
+      (rfl :
+        dependencyLayerForMilestone
+            DependencyMilestone.perelmanSingularityControl =
+          DependencyPackageLayer.surgeryPackage) :=
+  rfl
+
+/-- The finite-extinction milestone-layer theorem is the direct `rfl` proof. -/
+theorem dependencyLayerForMilestone_finiteExtinction_eq :
+    dependencyLayerForMilestone_finiteExtinction =
+      (rfl :
+        dependencyLayerForMilestone DependencyMilestone.finiteExtinction =
+          DependencyPackageLayer.finiteExtinctionPackage) :=
+  rfl
+
+/-- The topology-extraction milestone-layer theorem is the direct `rfl` proof. -/
+theorem dependencyLayerForMilestone_extinctionToSphereHomeomorphism_eq :
+    dependencyLayerForMilestone_extinctionToSphereHomeomorphism =
+      (rfl :
+        dependencyLayerForMilestone
+            DependencyMilestone.extinctionToSphereHomeomorphism =
+          DependencyPackageLayer.topologyPackage) :=
   rfl
 
 /--

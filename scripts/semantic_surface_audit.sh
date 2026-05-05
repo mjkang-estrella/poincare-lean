@@ -6124,6 +6124,13 @@ set_option linter.unusedVariables false
       Poincare.DependencyMilestone.extinctionToSphereHomeomorphism =
     Poincare.DependencyPackageLayer.topologyPackage)
 
+#check Poincare.dependencyLayerForMilestone_smoothabilityBridge_eq
+#check Poincare.dependencyLayerForMilestone_ricciFlowAnalyticFoundation_eq
+#check Poincare.dependencyLayerForMilestone_ricciFlowWithSurgery_eq
+#check Poincare.dependencyLayerForMilestone_perelmanSingularityControl_eq
+#check Poincare.dependencyLayerForMilestone_finiteExtinction_eq
+#check Poincare.dependencyLayerForMilestone_extinctionToSphereHomeomorphism_eq
+
 #check (Poincare.dependency_ledger_has_package_layers :
     Poincare.dependencyMilestoneLedger.map Poincare.dependencyLayerForMilestone =
     [ Poincare.DependencyPackageLayer.smoothabilityPackage
@@ -6171,6 +6178,12 @@ set_option linter.unusedVariables false
       Poincare.DependencyPackageLayer.topologyPackage =
     Poincare.DependencyComponentSlot.topologyComponent)
 
+#check Poincare.dependencyComponentForPackageLayer_smoothabilityPackage_eq
+#check Poincare.dependencyComponentForPackageLayer_analyticFoundationPackage_eq
+#check Poincare.dependencyComponentForPackageLayer_surgeryPackage_eq
+#check Poincare.dependencyComponentForPackageLayer_finiteExtinctionPackage_eq
+#check Poincare.dependencyComponentForPackageLayer_topologyPackage_eq
+
 #check (Poincare.dependencyComponentForMilestone_smoothabilityBridge :
   Poincare.dependencyComponentForMilestone
       Poincare.DependencyMilestone.smoothabilityBridge =
@@ -6200,6 +6213,13 @@ set_option linter.unusedVariables false
   Poincare.dependencyComponentForMilestone
       Poincare.DependencyMilestone.extinctionToSphereHomeomorphism =
     Poincare.DependencyComponentSlot.topologyComponent)
+
+#check Poincare.dependencyComponentForMilestone_smoothabilityBridge_eq
+#check Poincare.dependencyComponentForMilestone_ricciFlowAnalyticFoundation_eq
+#check Poincare.dependencyComponentForMilestone_ricciFlowWithSurgery_eq
+#check Poincare.dependencyComponentForMilestone_perelmanSingularityControl_eq
+#check Poincare.dependencyComponentForMilestone_finiteExtinction_eq
+#check Poincare.dependencyComponentForMilestone_extinctionToSphereHomeomorphism_eq
 
 #check Poincare.dependencyComponentForMilestone_eq
 #check Poincare.dependencyComponentRequirement_eq
