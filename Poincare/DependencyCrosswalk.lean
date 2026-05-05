@@ -330,6 +330,38 @@ theorem dependencyComponentRequirement_topologyComponent :
       ExtinctionTopologyExtractionPackage.{u} :=
   rfl
 
+/-- The smoothability component requirement theorem is the direct `rfl` proof. -/
+theorem dependencyComponentRequirement_smoothabilityComponent_eq :
+    dependencyComponentRequirement_smoothabilityComponent.{u} =
+      (rfl :
+        dependencyComponentRequirement.{u}
+            DependencyComponentSlot.smoothabilityComponent =
+          SmoothabilityPackage.{u}) := by
+  apply Subsingleton.elim
+
+/-- The surgery component requirement theorem is the direct `rfl` proof. -/
+theorem dependencyComponentRequirement_surgeryComponent_eq :
+    dependencyComponentRequirement_surgeryComponent.{u} =
+      (rfl :
+        dependencyComponentRequirement.{u}
+            DependencyComponentSlot.surgeryComponent =
+          (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+            [ChartedSpace ThreeManifoldModel M]
+            [SimplyConnectedSpace M] [CompactSpace M]
+            [IsManifold ThreeManifoldModelWithCorners 1 M],
+              Nonempty (Σ n : ℕ∞ω,
+                FiniteExtinctionSurgeryPackage n M))) := by
+  apply Subsingleton.elim
+
+/-- The topology component requirement theorem is the direct `rfl` proof. -/
+theorem dependencyComponentRequirement_topologyComponent_eq :
+    dependencyComponentRequirement_topologyComponent.{u} =
+      (rfl :
+        dependencyComponentRequirement.{u}
+            DependencyComponentSlot.topologyComponent =
+          ExtinctionTopologyExtractionPackage.{u}) := by
+  apply Subsingleton.elim
+
 /-- A completed aggregate dependency package supplies every component-slot requirement. -/
 theorem dependencyComponentRequirement_of_dependencies
     (dependencies : PoincareProofDependencies.{u})
@@ -339,6 +371,23 @@ theorem dependencyComponentRequirement_of_dependencies
   · exact dependencies.smoothability
   · exact dependencies.surgery
   · exact dependencies.topology
+
+/--
+The generic component-slot projection from dependencies is exactly the
+destructor that returns the stored field for the requested component slot.
+-/
+theorem dependencyComponentRequirement_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependencyComponentRequirement_of_dependencies dependencies =
+      (fun
+        | DependencyComponentSlot.smoothabilityComponent =>
+            dependencies.smoothability
+        | DependencyComponentSlot.surgeryComponent =>
+            dependencies.surgery
+        | DependencyComponentSlot.topologyComponent =>
+            dependencies.topology) := by
+  funext slot
+  cases slot <;> apply Subsingleton.elim
 
 /--
 The generic smoothability component projection is the stored smoothability
@@ -650,6 +699,71 @@ theorem dependencyPackageLayerRequirement_topologyPackage :
       ExtinctionTopologyExtractionPackage.{u} :=
   rfl
 
+/-- The smoothability package-layer requirement theorem is the direct `rfl` proof. -/
+theorem dependencyPackageLayerRequirement_smoothabilityPackage_eq :
+    dependencyPackageLayerRequirement_smoothabilityPackage.{u} =
+      (rfl :
+        dependencyPackageLayerRequirement.{u}
+            DependencyPackageLayer.smoothabilityPackage =
+          SmoothabilityPackage.{u}) := by
+  apply Subsingleton.elim
+
+/-- The analytic package-layer requirement theorem is the direct `rfl` proof. -/
+theorem dependencyPackageLayerRequirement_analyticFoundationPackage_eq :
+    dependencyPackageLayerRequirement_analyticFoundationPackage.{u} =
+      (rfl :
+        dependencyPackageLayerRequirement.{u}
+            DependencyPackageLayer.analyticFoundationPackage =
+          (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+            [ChartedSpace ThreeManifoldModel M]
+            [SimplyConnectedSpace M] [CompactSpace M]
+            [IsManifold ThreeManifoldModelWithCorners 1 M],
+              Nonempty (Σ n : ℕ∞ω,
+                RicciFlowAnalyticFoundationPackage
+                  ThreeManifoldModelWithCorners n M))) := by
+  apply Subsingleton.elim
+
+/-- The surgery package-layer requirement theorem is the direct `rfl` proof. -/
+theorem dependencyPackageLayerRequirement_surgeryPackage_eq :
+    dependencyPackageLayerRequirement_surgeryPackage.{u} =
+      (rfl :
+        dependencyPackageLayerRequirement.{u}
+            DependencyPackageLayer.surgeryPackage =
+          (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+            [ChartedSpace ThreeManifoldModel M]
+            [SimplyConnectedSpace M] [CompactSpace M]
+            [IsManifold ThreeManifoldModelWithCorners 1 M],
+              ∃ n : ℕ∞ω,
+              ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+                  RicciFlowWithSurgeryConstructionPackage
+                    (n := n) (M := M) flow ∧
+                  PerelmanSingularityControlPackage
+                    (n := n) (M := M) flow)) := by
+  apply Subsingleton.elim
+
+/-- The finite-extinction package-layer requirement theorem is the direct `rfl` proof. -/
+theorem dependencyPackageLayerRequirement_finiteExtinctionPackage_eq :
+    dependencyPackageLayerRequirement_finiteExtinctionPackage.{u} =
+      (rfl :
+        dependencyPackageLayerRequirement.{u}
+            DependencyPackageLayer.finiteExtinctionPackage =
+          (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+            [ChartedSpace ThreeManifoldModel M]
+            [SimplyConnectedSpace M] [CompactSpace M]
+            [IsManifold ThreeManifoldModelWithCorners 1 M],
+              Nonempty (Σ n : ℕ∞ω,
+                FiniteExtinctionSurgeryPackage n M))) := by
+  apply Subsingleton.elim
+
+/-- The topology package-layer requirement theorem is the direct `rfl` proof. -/
+theorem dependencyPackageLayerRequirement_topologyPackage_eq :
+    dependencyPackageLayerRequirement_topologyPackage.{u} =
+      (rfl :
+        dependencyPackageLayerRequirement.{u}
+            DependencyPackageLayer.topologyPackage =
+          ExtinctionTopologyExtractionPackage.{u}) := by
+  apply Subsingleton.elim
+
 /-- A completed aggregate dependency package supplies every package-layer requirement. -/
 theorem dependencyPackageLayerRequirement_of_dependencies
     (dependencies : PoincareProofDependencies.{u})
@@ -672,6 +786,42 @@ theorem dependencyPackageLayerRequirement_of_dependencies
   · exact dependencies.surgery
   · exact dependencies.topology
   · exact dependencies.smoothability
+
+/--
+The generic package-layer projection from dependencies is exactly the five-case
+destructor that projects the requested layer from the stored aggregate fields.
+-/
+theorem dependencyPackageLayerRequirement_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependencyPackageLayerRequirement_of_dependencies dependencies =
+      (fun
+        | DependencyPackageLayer.analyticFoundationPackage =>
+            by
+              intro M _ _ _ _ _ _
+              rcases dependencies.surgery M with ⟨⟨n, package⟩⟩
+              exact ⟨⟨n, analytic_foundation_of_surgery_package package⟩⟩
+        | DependencyPackageLayer.surgeryPackage =>
+            by
+              intro M _ _ _ _ _ _
+              rcases dependencies.surgery M with ⟨⟨n, package⟩⟩
+              let flow := ricci_flow_data_of_surgery_package package
+              let constructionPackage :
+                  RicciFlowWithSurgeryConstructionPackage
+                    (n := n) (M := M) flow :=
+                surgery_construction_package_of_surgery_package package
+              let controlPackage :
+                  PerelmanSingularityControlPackage
+                    (n := n) (M := M) flow :=
+                perelman_control_package_of_surgery_package package
+              exact ⟨n, flow, constructionPackage, controlPackage⟩
+        | DependencyPackageLayer.finiteExtinctionPackage =>
+            dependencies.surgery
+        | DependencyPackageLayer.topologyPackage =>
+            dependencies.topology
+        | DependencyPackageLayer.smoothabilityPackage =>
+            dependencies.smoothability) := by
+  funext layer
+  cases layer <;> apply Subsingleton.elim
 
 /--
 The generic analytic package-layer projection is obtained from the stored
@@ -1033,6 +1183,89 @@ theorem dependencyMilestoneRequirement_extinctionToSphereHomeomorphism :
     dependencyMilestoneRequirement.{u} DependencyMilestone.extinctionToSphereHomeomorphism =
       ExtinctionTopologyExtractionPackage.{u} :=
   rfl
+
+/-- The smoothability milestone requirement theorem is the direct `rfl` proof. -/
+theorem dependencyMilestoneRequirement_smoothabilityBridge_eq :
+    dependencyMilestoneRequirement_smoothabilityBridge.{u} =
+      (rfl :
+        dependencyMilestoneRequirement.{u}
+            DependencyMilestone.smoothabilityBridge =
+          SmoothabilityPackage.{u}) := by
+  apply Subsingleton.elim
+
+/-- The analytic-foundation milestone requirement theorem is the direct `rfl` proof. -/
+theorem dependencyMilestoneRequirement_ricciFlowAnalyticFoundation_eq :
+    dependencyMilestoneRequirement_ricciFlowAnalyticFoundation.{u} =
+      (rfl :
+        dependencyMilestoneRequirement.{u}
+            DependencyMilestone.ricciFlowAnalyticFoundation =
+          (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+            [ChartedSpace ThreeManifoldModel M]
+            [SimplyConnectedSpace M] [CompactSpace M]
+            [IsManifold ThreeManifoldModelWithCorners 1 M],
+              Nonempty (Σ n : ℕ∞ω,
+                RicciFlowAnalyticFoundationPackage
+                  ThreeManifoldModelWithCorners n M))) := by
+  apply Subsingleton.elim
+
+/-- The Ricci-flow-with-surgery milestone requirement theorem is the direct `rfl` proof. -/
+theorem dependencyMilestoneRequirement_ricciFlowWithSurgery_eq :
+    dependencyMilestoneRequirement_ricciFlowWithSurgery.{u} =
+      (rfl :
+        dependencyMilestoneRequirement.{u}
+            DependencyMilestone.ricciFlowWithSurgery =
+          (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+            [ChartedSpace ThreeManifoldModel M]
+            [SimplyConnectedSpace M] [CompactSpace M]
+            [IsManifold ThreeManifoldModelWithCorners 1 M],
+              ∃ n : ℕ∞ω,
+              ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+                  RicciFlowWithSurgeryConstructionPackage
+                    (n := n) (M := M) flow ∧
+                  PerelmanSingularityControlPackage
+                    (n := n) (M := M) flow)) := by
+  apply Subsingleton.elim
+
+/-- The Perelman-control milestone requirement theorem is the direct `rfl` proof. -/
+theorem dependencyMilestoneRequirement_perelmanSingularityControl_eq :
+    dependencyMilestoneRequirement_perelmanSingularityControl.{u} =
+      (rfl :
+        dependencyMilestoneRequirement.{u}
+            DependencyMilestone.perelmanSingularityControl =
+          (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+            [ChartedSpace ThreeManifoldModel M]
+            [SimplyConnectedSpace M] [CompactSpace M]
+            [IsManifold ThreeManifoldModelWithCorners 1 M],
+              ∃ n : ℕ∞ω,
+              ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+                  RicciFlowWithSurgeryConstructionPackage
+                    (n := n) (M := M) flow ∧
+                  PerelmanSingularityControlPackage
+                    (n := n) (M := M) flow)) := by
+  apply Subsingleton.elim
+
+/-- The finite-extinction milestone requirement theorem is the direct `rfl` proof. -/
+theorem dependencyMilestoneRequirement_finiteExtinction_eq :
+    dependencyMilestoneRequirement_finiteExtinction.{u} =
+      (rfl :
+        dependencyMilestoneRequirement.{u}
+            DependencyMilestone.finiteExtinction =
+          (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+            [ChartedSpace ThreeManifoldModel M]
+            [SimplyConnectedSpace M] [CompactSpace M]
+            [IsManifold ThreeManifoldModelWithCorners 1 M],
+              Nonempty (Σ n : ℕ∞ω,
+                FiniteExtinctionSurgeryPackage n M))) := by
+  apply Subsingleton.elim
+
+/-- The topology-extraction milestone requirement theorem is the direct `rfl` proof. -/
+theorem dependencyMilestoneRequirement_extinctionToSphereHomeomorphism_eq :
+    dependencyMilestoneRequirement_extinctionToSphereHomeomorphism.{u} =
+      (rfl :
+        dependencyMilestoneRequirement.{u}
+            DependencyMilestone.extinctionToSphereHomeomorphism =
+          ExtinctionTopologyExtractionPackage.{u}) := by
+  apply Subsingleton.elim
 
 /-- A completed dependency package supplies the requirement for every milestone. -/
 theorem dependencyMilestoneRequirement_of_dependencies

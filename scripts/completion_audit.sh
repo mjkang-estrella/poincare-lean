@@ -4352,6 +4352,14 @@ check_decl "surgery component requirement theorem is declared" \
   '^theorem dependencyComponentRequirement_surgeryComponent\b' Poincare/DependencyCrosswalk.lean
 check_decl "topology component requirement theorem is declared" \
   '^theorem dependencyComponentRequirement_topologyComponent\b' Poincare/DependencyCrosswalk.lean
+check_decl "smoothability component requirement theorem equality contract is declared" \
+  '^theorem dependencyComponentRequirement_smoothabilityComponent_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "surgery component requirement theorem equality contract is declared" \
+  '^theorem dependencyComponentRequirement_surgeryComponent_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "topology component requirement theorem equality contract is declared" \
+  '^theorem dependencyComponentRequirement_topologyComponent_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency component requirements generic projection equality contract is declared" \
+  '^theorem dependencyComponentRequirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency package-layer requirement map is declared" \
   '^def dependencyPackageLayerRequirement\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency package-layer requirement map equality contract is declared" \
@@ -4366,8 +4374,20 @@ check_decl "finite-extinction package-layer requirement theorem is declared" \
   '^theorem dependencyPackageLayerRequirement_finiteExtinctionPackage\b' Poincare/DependencyCrosswalk.lean
 check_decl "topology package-layer requirement theorem is declared" \
   '^theorem dependencyPackageLayerRequirement_topologyPackage\b' Poincare/DependencyCrosswalk.lean
+check_decl "smoothability package-layer requirement theorem equality contract is declared" \
+  '^theorem dependencyPackageLayerRequirement_smoothabilityPackage_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "analytic package-layer requirement theorem equality contract is declared" \
+  '^theorem dependencyPackageLayerRequirement_analyticFoundationPackage_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "surgery package-layer requirement theorem equality contract is declared" \
+  '^theorem dependencyPackageLayerRequirement_surgeryPackage_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "finite-extinction package-layer requirement theorem equality contract is declared" \
+  '^theorem dependencyPackageLayerRequirement_finiteExtinctionPackage_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "topology package-layer requirement theorem equality contract is declared" \
+  '^theorem dependencyPackageLayerRequirement_topologyPackage_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency package-layer requirements projection theorem is declared" \
   '^theorem dependencyPackageLayerRequirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency package-layer requirements generic projection equality contract is declared" \
+  '^theorem dependencyPackageLayerRequirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "smoothability package-layer dependency projection theorem is declared" \
   '^theorem smoothabilityPackage_requirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
 check_decl "analytic package-layer dependency projection theorem is declared" \
@@ -4416,6 +4436,18 @@ check_decl "finite-extinction milestone requirement theorem is declared" \
   '^theorem dependencyMilestoneRequirement_finiteExtinction\b' Poincare/DependencyCrosswalk.lean
 check_decl "topology-extraction milestone requirement theorem is declared" \
   '^theorem dependencyMilestoneRequirement_extinctionToSphereHomeomorphism\b' Poincare/DependencyCrosswalk.lean
+check_decl "smoothability milestone requirement theorem equality contract is declared" \
+  '^theorem dependencyMilestoneRequirement_smoothabilityBridge_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "analytic-foundation milestone requirement theorem equality contract is declared" \
+  '^theorem dependencyMilestoneRequirement_ricciFlowAnalyticFoundation_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "Ricci-flow-with-surgery milestone requirement theorem equality contract is declared" \
+  '^theorem dependencyMilestoneRequirement_ricciFlowWithSurgery_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "Perelman-control milestone requirement theorem equality contract is declared" \
+  '^theorem dependencyMilestoneRequirement_perelmanSingularityControl_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "finite-extinction milestone requirement theorem equality contract is declared" \
+  '^theorem dependencyMilestoneRequirement_finiteExtinction_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "topology-extraction milestone requirement theorem equality contract is declared" \
+  '^theorem dependencyMilestoneRequirement_extinctionToSphereHomeomorphism_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency milestone requirements projection theorem is declared" \
   '^theorem dependencyMilestoneRequirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
 check_decl "smoothability milestone dependency projection theorem is declared" \

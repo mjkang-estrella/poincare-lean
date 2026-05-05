@@ -6243,11 +6243,16 @@ set_option linter.unusedVariables false
       Poincare.DependencyComponentSlot.topologyComponent =
     Poincare.ExtinctionTopologyExtractionPackage)
 
+#check Poincare.dependencyComponentRequirement_smoothabilityComponent_eq
+#check Poincare.dependencyComponentRequirement_surgeryComponent_eq
+#check Poincare.dependencyComponentRequirement_topologyComponent_eq
+
 #check (Poincare.dependencyComponentRequirement_of_dependencies :
   ∀ (dependencies : Poincare.PoincareProofDependencies)
     (slot : Poincare.DependencyComponentSlot),
       Poincare.dependencyComponentRequirement slot)
 
+#check Poincare.dependencyComponentRequirement_of_dependencies_eq
 #check Poincare.dependencyComponentRequirement_of_dependencies_smoothabilityComponent_eq
 #check Poincare.dependencyComponentRequirement_of_dependencies_surgeryComponent_eq
 #check Poincare.dependencyComponentRequirement_of_dependencies_topologyComponent_eq
@@ -6339,6 +6344,12 @@ set_option linter.unusedVariables false
       [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
         Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)))
 
+#check Poincare.dependencyPackageLayerRequirement_smoothabilityPackage_eq
+#check Poincare.dependencyPackageLayerRequirement_analyticFoundationPackage_eq
+#check Poincare.dependencyPackageLayerRequirement_surgeryPackage_eq
+#check Poincare.dependencyPackageLayerRequirement_finiteExtinctionPackage_eq
+#check Poincare.dependencyPackageLayerRequirement_topologyPackage_eq
+#check Poincare.dependencyPackageLayerRequirement_of_dependencies_eq
 #check Poincare.smoothabilityPackage_requirement_of_dependencies_eq
 #check Poincare.analyticFoundationPackage_requirement_of_dependencies_eq
 #check Poincare.surgeryPackage_requirement_of_dependencies_eq
@@ -6451,6 +6462,13 @@ set_option linter.unusedVariables false
   Poincare.dependencyMilestoneRequirement
       Poincare.DependencyMilestone.extinctionToSphereHomeomorphism =
     Poincare.ExtinctionTopologyExtractionPackage)
+
+#check Poincare.dependencyMilestoneRequirement_smoothabilityBridge_eq
+#check Poincare.dependencyMilestoneRequirement_ricciFlowAnalyticFoundation_eq
+#check Poincare.dependencyMilestoneRequirement_ricciFlowWithSurgery_eq
+#check Poincare.dependencyMilestoneRequirement_perelmanSingularityControl_eq
+#check Poincare.dependencyMilestoneRequirement_finiteExtinction_eq
+#check Poincare.dependencyMilestoneRequirement_extinctionToSphereHomeomorphism_eq
 
 #check (Poincare.dependencyMilestoneRequirement_of_dependencies :
   ∀ (dependencies : Poincare.PoincareProofDependencies)
