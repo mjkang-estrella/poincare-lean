@@ -3912,6 +3912,8 @@ check_decl "dependency analytic foundation sub-obligations projection theorem is
   '^theorem analytic_foundation_subobligations_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency analytic foundation sub-obligations equality contract is declared" \
   '^theorem analytic_foundation_subobligations_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency analytic foundation sub-obligations package route equality contract is declared" \
+  '^theorem analytic_foundation_subobligations_of_dependencies_to_package_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency surgery construction package projection theorem is declared" \
   '^theorem surgery_construction_packages_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency surgery construction package equality contract is declared" \
@@ -3932,6 +3934,8 @@ check_decl "dependency surgery construction sub-obligations projection theorem i
   '^theorem surgery_construction_subobligations_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency surgery construction sub-obligations equality contract is declared" \
   '^theorem surgery_construction_subobligations_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency surgery construction sub-obligations package route equality contract is declared" \
+  '^theorem surgery_construction_subobligations_of_dependencies_to_package_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency Perelman control statement payload theorem is declared" \
   '^theorem perelman_control_statement_payload_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency Perelman control statement payload equality contract is declared" \
@@ -3956,10 +3960,14 @@ check_decl "dependency Perelman sub-obligations projection theorem is declared" 
   '^theorem perelman_subobligations_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency Perelman sub-obligations equality contract is declared" \
   '^theorem perelman_subobligations_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency Perelman sub-obligations package route equality contract is declared" \
+  '^theorem perelman_subobligations_of_dependencies_to_package_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency Perelman monotonicity/blow-up sub-obligations projection theorem is declared" \
   '^theorem perelman_monotonicity_blowup_subobligations_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency Perelman monotonicity/blow-up equality contract is declared" \
   '^theorem perelman_monotonicity_blowup_subobligations_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency Perelman monotonicity/blow-up package route equality contract is declared" \
+  '^theorem perelman_monotonicity_blowup_subobligations_of_dependencies_to_package_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency finite-extinction sub-obligations statement payload theorem is declared" \
   '^theorem finite_extinction_subobligations_statement_payload_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency finite-extinction sub-obligations statement payload equality contract is declared" \
@@ -4164,6 +4172,8 @@ check_decl "dependency topology classification sub-obligations projection theore
   '^theorem topology_classification_subobligations_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency topology classification sub-obligations equality contract is declared" \
   '^theorem topology_classification_subobligations_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology classification sub-obligations package route equality contract is declared" \
+  '^theorem topology_classification_subobligations_of_dependencies_to_package_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency topology extraction statement payload theorem is declared" \
   '^theorem topology_extraction_statement_payload_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency topology extraction statement payload equality contract is declared" \
@@ -4289,10 +4299,14 @@ check_decl "dependency smoothability bridge payload equality contract is declare
   '^theorem smoothability_bridge_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency smoothability sub-obligations payload equality contract is declared" \
   '^theorem smoothability_subobligations_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability sub-obligations payload package route equality contract is declared" \
+  '^theorem smoothability_subobligations_payload_of_dependencies_to_package_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency smoothability sub-obligations projection theorem is declared" \
   '^theorem smoothability_subobligations_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency smoothability sub-obligations equality contract is declared" \
   '^theorem smoothability_subobligations_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency smoothability sub-obligations package route equality contract is declared" \
+  '^theorem smoothability_subobligations_of_dependencies_to_package_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency finite-extinction statement projection theorem is declared" \
   '^theorem finite_extinction_statements_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency finite-extinction statement via sub-obligations theorem is declared" \

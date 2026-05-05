@@ -1540,6 +1540,26 @@ theorem analytic_foundation_subobligations_of_dependencies_eq
   dsimp
 
 /--
+The dependency-level analytic sub-obligation projection agrees with the direct
+package-level analytic sub-obligation bridge for the projected analytic package.
+-/
+theorem analytic_foundation_subobligations_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      analytic_foundation_statement_payload_of_dependencies dependencies M
+    analytic_foundation_subobligations_of_dependencies dependencies M =
+      ⟨payload.choose,
+        ricci_flow_data_of_analytic_foundation_package
+          payload.choose_spec.choose,
+        analytic_foundation_subobligations_of_analytic_foundation_package
+          payload.choose_spec.choose⟩ := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies Ricci-flow-with-surgery construction
 packages for every target manifold.
 -/
@@ -1760,6 +1780,25 @@ theorem surgery_construction_subobligations_of_dependencies_eq
       ⟨payload.choose, payload.choose_spec.choose,
         payload.choose_spec.choose_spec.choose_spec.choose_spec.choose⟩ := by
   dsimp
+
+/--
+The dependency-level surgery-construction sub-obligation projection agrees
+with the direct construction-package sub-obligation bridge for the projected
+construction package.
+-/
+theorem surgery_construction_subobligations_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      surgery_construction_statement_payload_of_dependencies dependencies M
+    surgery_construction_subobligations_of_dependencies dependencies M =
+      ⟨payload.choose, payload.choose_spec.choose,
+        surgery_construction_subobligations_of_construction_package
+          payload.choose_spec.choose_spec.choose⟩ := by
+  apply Subsingleton.elim
 
 /--
 A completed dependency package exposes the Perelman-control payload through the
@@ -2026,6 +2065,24 @@ theorem perelman_subobligations_of_dependencies_eq
   dsimp
 
 /--
+The dependency-level full Perelman sub-obligation projection agrees with the
+direct Perelman-package sub-obligation bridge for the projected control package.
+-/
+theorem perelman_subobligations_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      perelman_control_statement_payload_of_dependencies dependencies M
+    perelman_subobligations_of_dependencies dependencies M =
+      ⟨payload.choose, payload.choose_spec.choose,
+        perelman_subobligations_of_package
+          payload.choose_spec.choose_spec.choose⟩ := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies the Perelman monotonicity and blow-up
 analysis inputs that feed no-local-collapsing and canonical neighborhoods.
 -/
@@ -2061,6 +2118,26 @@ theorem perelman_monotonicity_blowup_subobligations_of_dependencies_eq
       ⟨payload.choose, payload.choose_spec.choose,
         payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose⟩ := by
   dsimp
+
+/--
+The dependency-level Perelman monotonicity/blow-up projection agrees with the
+direct Perelman-package monotonicity/blow-up bridge for the projected control
+package.
+-/
+theorem perelman_monotonicity_blowup_subobligations_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      perelman_control_statement_payload_of_dependencies dependencies M
+    perelman_monotonicity_blowup_subobligations_of_dependencies
+        dependencies M =
+      ⟨payload.choose, payload.choose_spec.choose,
+        perelman_monotonicity_blowup_subobligations_of_package
+          payload.choose_spec.choose_spec.choose⟩ := by
+  apply Subsingleton.elim
 
 /--
 A completed dependency package exposes the finite-extinction width/full
@@ -5400,6 +5477,22 @@ theorem topology_classification_subobligations_of_dependencies_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level topology classification sub-obligation projection agrees
+with the direct topology-package classification bridge.
+-/
+theorem topology_classification_subobligations_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_classification_subobligations_of_dependencies
+        dependencies M extinction =
+      topology_classification_subobligations_of_topology_package
+        dependencies.topology M extinction := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package extracts the final homeomorphism from any
 finite-extinction input.
 -/
@@ -6235,6 +6328,20 @@ theorem smoothability_subobligations_payload_of_dependencies_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level smoothability sub-obligation payload agrees with the direct
+smoothability-package sub-obligation bridge.
+-/
+theorem smoothability_subobligations_payload_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    smoothability_subobligations_payload_of_dependencies dependencies M =
+      smoothability_subobligations_of_smoothability_package
+        dependencies.smoothability M := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies the full smoothability bridge
 sub-obligation stack for any target topological 3-manifold.
 -/
@@ -6369,6 +6476,20 @@ theorem smoothability_subobligations_of_dependencies_eq
     [SimplyConnectedSpace M] [CompactSpace M] :
     smoothability_subobligations_of_dependencies dependencies M =
       smoothability_subobligations_payload_of_dependencies dependencies M := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level smoothability sub-obligation stack agrees with the direct
+smoothability-package sub-obligation bridge.
+-/
+theorem smoothability_subobligations_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    smoothability_subobligations_of_dependencies dependencies M =
+      smoothability_subobligations_of_smoothability_package
+        dependencies.smoothability M := by
   apply Subsingleton.elim
 
 /--
