@@ -337,7 +337,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   routes; direct equality contracts pin the surgery construction package's
   theorem-shaped statement route to the component assembly route and its bundled
   payload to the named statement, sub-obligation payload, and aggregate witness
-  extraction. The dependency-level `surgery_package_payload_of_dependencies` now
+  extraction; the Perelman package statement and bundled statement/
+  sub-obligation/monotonicity payload are now pinned the same way. The
+  dependency-level `surgery_package_payload_of_dependencies` now
   centralizes the raw aggregate surgery package with its analytic foundation,
   projected flow, construction package, and Perelman control package. Its
   payload carries equality contracts for the analytic package and flow plus
@@ -755,6 +757,8 @@ It is not a proof. It is a work breakdown for future Lean development.
   statement-mediated surgery construction outputs, surgery construction
   sub-obligations, Perelman control packages, package-level Perelman payloads
   through `perelman_control_payload_of_package`,
+  whose statement route and bundled payload are pinned by direct equality
+  contracts,
   `perelman_control_statement_payload_of_dependencies` carrying
   `PerelmanSingularityControlSubobligationsPayload` and
   `PerelmanMonotonicityBlowupSubobligationsPayload`, statement-mediated

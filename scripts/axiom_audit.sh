@@ -908,6 +908,7 @@ import Poincare
 #print axioms Poincare.PerelmanSingularityControlStatement
 #print axioms Poincare.perelman_singularity_control_statement_of_components
 #print axioms Poincare.perelman_singularity_control_statement_of_package
+#print axioms Poincare.perelman_singularity_control_statement_of_package_eq
 #print axioms Poincare.perelman_singularity_control_of_statement
 #print axioms Poincare.perelman_subobligations_of_statement
 #print axioms Poincare.perelman_monotonicity_blowup_subobligations_of_statement
@@ -1523,6 +1524,7 @@ import Poincare
 #print axioms Poincare.PerelmanSingularityControlSubobligationsPayload
 #print axioms Poincare.PerelmanMonotonicityBlowupSubobligationsPayload
 #print axioms Poincare.perelman_control_payload_of_package
+#print axioms Poincare.perelman_control_payload_of_package_eq
 #print axioms Poincare.perelman_control_statement_payload_with_surgery_package_of_dependencies
 #print axioms Poincare.perelman_control_statement_payload_with_surgery_package_of_dependencies_eq
 #print axioms Poincare.perelman_control_statement_payload_of_dependencies

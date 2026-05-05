@@ -653,6 +653,7 @@ open scoped Manifold ContDiff
 #check Poincare.PerelmanSingularityControlStatement
 #check Poincare.perelman_singularity_control_statement_of_components
 #check Poincare.perelman_singularity_control_statement_of_package
+#check Poincare.perelman_singularity_control_statement_of_package_eq
 #check Poincare.perelman_singularity_control_of_statement
 #check Poincare.perelman_subobligations_of_statement
 #check Poincare.perelman_monotonicity_blowup_subobligations_of_statement
@@ -874,6 +875,7 @@ open scoped Manifold ContDiff
 #check Poincare.surgery_construction_payload_of_construction_package
 #check Poincare.surgery_construction_payload_of_construction_package_eq
 #check Poincare.perelman_control_payload_of_package
+#check Poincare.perelman_control_payload_of_package_eq
 #check Poincare.FiniteExtinctionWidthSubobligationsPayload
 #check Poincare.FiniteExtinctionSubobligationsPayload
 #check Poincare.finite_extinction_width_subobligations_statement_of_surgery_package

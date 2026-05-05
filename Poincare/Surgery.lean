@@ -1752,10 +1752,56 @@ theorem perelman_singularity_control_statement_of_package
     package.canonicalNeighborhoodStability
     package.canonicalNeighborhoodPersistenceAcrossScales
     package.canonicalNeighborhoodNeckCapDichotomy
-    package.canonicalNeighborhoodClassification package.noLocalCollapsing
-    package.reducedVolume package.canonicalNeighborhood
-    package.singularityModelClassification
-    package.singularityModelBlowupClassification package.control
+  package.canonicalNeighborhoodClassification package.noLocalCollapsing
+  package.reducedVolume package.canonicalNeighborhood
+  package.singularityModelClassification
+  package.singularityModelBlowupClassification package.control
+
+/--
+The completed Perelman package route to the theorem-shaped singularity-control
+statement is exactly the component assembly route applied to the package fields.
+-/
+theorem perelman_singularity_control_statement_of_package_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (package : PerelmanSingularityControlPackage flow) :
+    perelman_singularity_control_statement_of_package package =
+      perelman_singularity_control_statement_of_components flow
+        package.fFunctionalSetup package.entropyNormalization
+        package.entropyMinimizerExistence package.entropyLogSobolevControl
+        package.conjugateHeatEquation package.adjointHeatKernel
+        package.conjugateHeatKernelEstimates package.wFunctionalSetup
+        package.entropyGradientFormula package.entropyFirstVariation
+        package.entropyMonotonicity package.entropyLowerBoundPropagation
+        package.entropyFunctional package.reducedLengthFirstVariation
+        package.reducedDistanceExistence
+        package.reducedDistanceDifferentialInequality
+        package.reducedDistanceEstimates package.reducedDistanceCutLocusControl
+        package.reducedJacobianComparison package.reducedDistance
+        package.reducedVolumeDefinition package.reducedVolumeDerivativeFormula
+        package.reducedVolumeRigidity package.reducedVolumePositiveLowerBound
+        package.reducedVolumeLimitRigidity package.reducedVolumeNonincreasing
+        package.kappaNoncollapsingFromReducedVolume
+        package.noLocalCollapsingContradictionSetup package.collapsedBallBlowup
+        package.volumeRatioContradiction package.noLocalCollapsingVolumeLowerBound
+        package.kappaNoncollapsing package.hamiltonCompactness
+        package.ancientKappaSolutionLimitExtraction
+        package.kappaSolutionPointedRescaling
+        package.kappaSolutionCurvatureNormalization package.kappaSolutionStructure
+        package.kappaSolutionNonnegativeCurvatureOperator
+        package.kappaSolutionAsymptoticSoliton
+        package.ancientKappaSolutionCompactness
+        package.canonicalNeighborhoodScaleControl
+        package.canonicalNeighborhoodStability
+        package.canonicalNeighborhoodPersistenceAcrossScales
+        package.canonicalNeighborhoodNeckCapDichotomy
+        package.canonicalNeighborhoodClassification package.noLocalCollapsing
+        package.reducedVolume package.canonicalNeighborhood
+        package.singularityModelClassification
+        package.singularityModelBlowupClassification package.control := by
+  rfl
 
 /--
 The theorem-shaped Perelman statement supplies the aggregate singularity-control
@@ -2057,6 +2103,27 @@ theorem perelman_control_payload_of_package
     perelman_monotonicity_blowup_subobligations_of_statement statement
   exact ⟨statement, subobligations, monotonicityBlowupSubobligations,
     perelman_singularity_control_of_statement statement⟩
+
+/--
+The completed Perelman package payload is exactly the named package statement,
+its statement-mediated sub-obligation payloads, and the aggregate
+singularity-control witness extracted from that statement.
+-/
+theorem perelman_control_payload_of_package_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (package : PerelmanSingularityControlPackage flow) :
+    perelman_control_payload_of_package package =
+      (by
+        let statement := perelman_singularity_control_statement_of_package package
+        let subobligations := perelman_subobligations_of_statement statement
+        let monotonicityBlowupSubobligations :=
+          perelman_monotonicity_blowup_subobligations_of_statement statement
+        exact ⟨statement, subobligations, monotonicityBlowupSubobligations,
+          perelman_singularity_control_of_statement statement⟩) := by
+  apply Subsingleton.elim
 
 /-- Project F-functional setup evidence from a Perelman control package. -/
 theorem f_functional_setup_of_perelman_package

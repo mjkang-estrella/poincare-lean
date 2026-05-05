@@ -1950,6 +1950,8 @@ check_decl "Perelman statement component assembly theorem is declared" \
   '^theorem perelman_singularity_control_statement_of_components\b' Poincare/Surgery.lean
 check_decl "Perelman package statement projection is declared" \
   '^theorem perelman_singularity_control_statement_of_package\b' Poincare/Surgery.lean
+check_decl "Perelman package statement projection equality contract is declared" \
+  '^theorem perelman_singularity_control_statement_of_package_eq\b' Poincare/Surgery.lean
 check_decl "Perelman statement aggregate bridge is declared" \
   '^theorem perelman_singularity_control_of_statement\b' Poincare/Surgery.lean
 check_decl "Perelman statement sub-obligation payload alias is declared" \
@@ -1962,6 +1964,8 @@ check_decl "Perelman statement monotonicity/blow-up bridge is declared" \
   '^theorem perelman_monotonicity_blowup_subobligations_of_statement\b' Poincare/Surgery.lean
 check_decl "Perelman package payload theorem is declared" \
   '^theorem perelman_control_payload_of_package\b' Poincare/Surgery.lean
+check_decl "Perelman package payload equality contract is declared" \
+  '^theorem perelman_control_payload_of_package_eq\b' Poincare/Surgery.lean
 check_decl "Perelman package F-functional setup projection is declared" \
   '^theorem f_functional_setup_of_perelman_package\b' Poincare/Surgery.lean
 check_decl "Perelman package entropy normalization projection is declared" \
@@ -6987,6 +6991,7 @@ open scoped Manifold ContDiff
 #check Poincare.surgery_construction_payload_of_construction_package
 #check Poincare.surgery_construction_payload_of_construction_package_eq
 #check Poincare.perelman_control_payload_of_package
+#check Poincare.perelman_control_payload_of_package_eq
 #check Poincare.FiniteExtinctionWidthSubobligationsPayload
 #check Poincare.FiniteExtinctionSubobligationsPayload
 #check Poincare.finite_extinction_width_subobligations_statement_of_surgery_package
@@ -9280,6 +9285,7 @@ open scoped Manifold ContDiff
 #check Poincare.PerelmanSingularityControlStatement
 #check Poincare.perelman_singularity_control_statement_of_components
 #check Poincare.perelman_singularity_control_statement_of_package
+#check Poincare.perelman_singularity_control_statement_of_package_eq
 #check Poincare.perelman_singularity_control_of_statement
 #check Poincare.perelman_subobligations_of_statement
 #check Poincare.perelman_monotonicity_blowup_subobligations_of_statement
@@ -9452,6 +9458,7 @@ open scoped Manifold ContDiff
 #check Poincare.surgery_construction_payload_of_construction_package
 #check Poincare.surgery_construction_payload_of_construction_package_eq
 #check Poincare.perelman_control_payload_of_package
+#check Poincare.perelman_control_payload_of_package_eq
 #check Poincare.FiniteExtinctionWidthSubobligationsPayload
 #check Poincare.FiniteExtinctionSubobligationsPayload
 #check Poincare.finite_extinction_width_subobligations_statement_of_surgery_package
