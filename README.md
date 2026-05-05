@@ -1236,6 +1236,13 @@ The current artifact is intentionally conservative:
   projection/reconstruction, and aggregate canonical-statement artifact payload
   projection/reconstruction contracts back to the named raw, certified,
   aggregate, and projection routes that built the certificates.
+  The ordinary dependency-projection certificate route is now also pinned at the
+  aggregate `PoincareProofDependencies` surface for its converted
+  remaining-dependency package, canonical/project completion payloads,
+  target/criterion projections, aggregate-dependency payload,
+  project-statement payload, theorem-name payload, literal payload, and the
+  reverse literal, aggregate-dependency, and project-statement payload
+  constructors.
   The certificate-layer equality contracts now pin the reserved-name, literal
   payload, canonical payload, target/criterion projection, remaining/aggregate
   dependency, and project-statement routes to their named projections and

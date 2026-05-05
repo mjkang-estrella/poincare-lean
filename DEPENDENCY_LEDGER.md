@@ -773,7 +773,13 @@ It is not a proof. It is a work breakdown for future Lean development.
   projection route now also reconstructs a checked completion certificate, with
   round-trip contracts for the remaining-dependency package, canonical payload,
   project payload, target, criterion, canonical topological statement, and
-  literal/aggregate canonical-statement payload projections.
+  literal/aggregate canonical-statement payload projections. The aggregate
+  `PoincareProofDependencies` view of that ordinary projection certificate is
+  now pinned through the converted remaining-dependency package, canonical and
+  project completion payloads, target and criterion projections,
+  aggregate-dependency/project-statement/theorem-name/literal payload
+  projections, and the reverse literal, aggregate-dependency, and
+  project-statement payload constructors.
   It also projects the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/
@@ -1323,6 +1329,12 @@ It is not a proof. It is a work breakdown for future Lean development.
   projection/reconstruction, and aggregate canonical-statement artifact payload
   projection/reconstruction contracts back to the named raw, certified,
   aggregate, and projection routes that built the certificates.
+  The ordinary dependency-projection certificate route is also pinned across
+  the aggregate proof-dependency surface for its converted remaining package,
+  canonical/project payloads, target/criterion projections,
+  aggregate-dependency payload, project-statement payload, theorem-name payload,
+  literal payload, and reverse literal, aggregate-dependency, and
+  project-statement payload constructors.
   The certificate-layer equality contracts now pin the reserved-name, literal
   payload, canonical payload, target/criterion projection, remaining/aggregate
   dependency, and project-statement routes to their named projections and

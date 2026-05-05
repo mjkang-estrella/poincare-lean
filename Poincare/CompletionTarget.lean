@@ -10593,6 +10593,20 @@ theorem remaining_dependency_package_of_completion_certificate_of_poincareProofD
 
 /--
 Projecting the stored remaining-dependency package from the aggregate
+projection route returns the aggregate package converted back to the remaining
+dependency package.
+-/
+theorem remaining_dependency_package_of_completion_certificate_of_poincareProofDependencies_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    remaining_dependency_package_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_projections
+        dependencies) =
+      remainingDependencyPackage_iff_poincareProofDependencies.mpr
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the stored remaining-dependency package from the aggregate
 extraction-derivation projection route returns the aggregate package converted
 back to the remaining dependency package.
 -/
@@ -10808,6 +10822,20 @@ theorem canonical_completion_payload_of_completion_certificate_of_poincareProofD
       (completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
         dependencies) =
       canonical_completion_payload_of_aggregate_extraction_derivation_dependencies
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical completion payload from the aggregate projection route
+returns the converted remaining-dependency projection route payload.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_projections
+        dependencies) =
+      canonical_completion_payload_of_dependency_projections
         (remainingDependencyPackage_iff_poincareProofDependencies.mpr
           dependencies) := by
   apply Subsingleton.elim
@@ -11036,6 +11064,20 @@ theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDe
   apply Subsingleton.elim
 
 /--
+Projecting the project completion payload from the aggregate projection route
+returns the converted remaining-dependency projection route payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_projections
+        dependencies) =
+      poincare_completion_payload_of_dependency_projections
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 Projecting the project completion payload from the aggregate
 extraction-derivation projection route returns the converted projection route
 payload.
@@ -11159,6 +11201,19 @@ theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion
             witness dependencies ⟩ := by
   apply Subsingleton.elim
 
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_dependency_projections dependencies) =
+      ⟨ "poincare_conjecture", rfl,
+        remainingDependencyPackage_iff_poincareProofDependencies.mp
+          dependencies,
+        canonical_completion_target_of_dependency_projections dependencies,
+        fun witness =>
+          canonical_completion_criterion_of_dependency_projections
+            witness dependencies ⟩ := by
+  apply Subsingleton.elim
+
 theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_extraction_derivation_dependency_projections_eq
     (dependencies : RemainingDependencyPackage.{u}) :
     poincareCompletionCertificate_aggregate_dependency_payload
@@ -11263,6 +11318,22 @@ theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion
             dependencies),
         fun witness =>
           canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies
+            witness
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies) ⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_poincareProofDependencies_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_poincareProofDependencies_projections
+        dependencies) =
+      ⟨ "poincare_conjecture", rfl, dependencies,
+        canonical_completion_target_of_dependency_projections
+          (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies),
+        fun witness =>
+          canonical_completion_criterion_of_dependency_projections
             witness
             (remainingDependencyPackage_iff_poincareProofDependencies.mpr
               dependencies) ⟩ := by
@@ -11393,6 +11464,19 @@ theorem poincareCompletionCertificate_project_statement_payload_of_completion_ce
             witness dependencies ⟩ := by
   apply Subsingleton.elim
 
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_dependency_projections dependencies) =
+      ⟨ "poincare_conjecture", rfl,
+        remainingDependencyPackage_iff_poincareProofDependencies.mp
+          dependencies,
+        canonical_completion_target_of_dependency_projections dependencies,
+        fun witness =>
+          canonical_completion_criterion_of_dependency_projections
+            witness dependencies ⟩ := by
+  apply Subsingleton.elim
+
 theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_extraction_derivation_dependency_projections_eq
     (dependencies : RemainingDependencyPackage.{u}) :
     poincareCompletionCertificate_project_statement_payload
@@ -11502,6 +11586,22 @@ theorem poincareCompletionCertificate_project_statement_payload_of_completion_ce
               dependencies) ⟩ := by
   apply Subsingleton.elim
 
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_poincareProofDependencies_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_poincareProofDependencies_projections
+        dependencies) =
+      ⟨ "poincare_conjecture", rfl, dependencies,
+        canonical_completion_target_of_dependency_projections
+          (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies),
+        fun witness =>
+          canonical_completion_criterion_of_dependency_projections
+            witness
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies) ⟩ := by
+  apply Subsingleton.elim
+
 theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_eq
     (dependencies : PoincareProofDependencies.{u}) :
     poincareCompletionCertificate_project_statement_payload
@@ -11578,6 +11678,13 @@ theorem poincareCompletionCertificate_theoremName_payload_of_completion_certific
       ⟨"poincare_conjecture", rfl⟩ := by
   apply Subsingleton.elim
 
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_dependency_projections dependencies) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
 theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_extraction_derivation_dependency_projections_eq
     (dependencies : RemainingDependencyPackage.{u}) :
     poincareCompletionCertificate_theoremName_payload
@@ -11638,6 +11745,14 @@ theorem poincareCompletionCertificate_theoremName_payload_of_completion_certific
     (dependencies : PoincareProofDependencies.{u}) :
     poincareCompletionCertificate_theoremName_payload
       (completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
+        dependencies) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_poincareProofDependencies_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_poincareProofDependencies_projections
         dependencies) =
       ⟨"poincare_conjecture", rfl⟩ := by
   apply Subsingleton.elim
@@ -11743,6 +11858,17 @@ theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_
           dependencies,
         fun witness =>
           canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies
+            witness dependencies ⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_dependency_projections dependencies) =
+      ⟨ "poincare_conjecture", rfl, dependencies,
+        canonical_completion_target_of_dependency_projections dependencies,
+        fun witness =>
+          canonical_completion_criterion_of_dependency_projections
             witness dependencies ⟩ := by
   apply Subsingleton.elim
 
@@ -11867,6 +11993,24 @@ theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_
               dependencies) ⟩ := by
   apply Subsingleton.elim
 
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_poincareProofDependencies_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_poincareProofDependencies_projections
+        dependencies) =
+      ⟨ "poincare_conjecture", rfl,
+        remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies,
+        canonical_completion_target_of_dependency_projections
+          (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies),
+        fun witness =>
+          canonical_completion_criterion_of_dependency_projections
+            witness
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies) ⟩ := by
+  apply Subsingleton.elim
+
 theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_eq
     (dependencies : PoincareProofDependencies.{u}) :
     poincareCompletionCertificate_literal_payload
@@ -11978,6 +12122,17 @@ theorem completion_certificate_of_literal_payload_of_aggregate_extraction_deriva
             witness dependencies ⟩ =
       completion_certificate_of_aggregate_extraction_derivation_dependencies
         dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_literal_payload_of_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_literal_payload
+      ⟨ "poincare_conjecture", rfl, dependencies,
+        canonical_completion_target_of_dependency_projections dependencies,
+        fun witness =>
+          canonical_completion_criterion_of_dependency_projections
+            witness dependencies ⟩ =
+      completion_certificate_of_dependency_projections dependencies := by
   apply Subsingleton.elim
 
 theorem completion_certificate_of_literal_payload_of_extraction_derivation_dependency_projections_eq
@@ -12098,6 +12253,24 @@ theorem completion_certificate_of_literal_payload_of_poincareProofDependencies_a
             (remainingDependencyPackage_iff_poincareProofDependencies.mpr
               dependencies) ⟩ =
       completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_literal_payload_of_poincareProofDependencies_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_literal_payload
+      ⟨ "poincare_conjecture", rfl,
+        remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies,
+        canonical_completion_target_of_dependency_projections
+          (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies),
+        fun witness =>
+          canonical_completion_criterion_of_dependency_projections
+            witness
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies) ⟩ =
+      completion_certificate_of_poincareProofDependencies_projections
         dependencies := by
   apply Subsingleton.elim
 
@@ -12228,6 +12401,19 @@ theorem completion_certificate_of_aggregate_dependency_payload_of_aggregate_extr
         dependencies := by
   apply Subsingleton.elim
 
+theorem completion_certificate_of_aggregate_dependency_payload_of_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      ⟨ "poincare_conjecture", rfl,
+        remainingDependencyPackage_iff_poincareProofDependencies.mp
+          dependencies,
+        canonical_completion_target_of_dependency_projections dependencies,
+        fun witness =>
+          canonical_completion_criterion_of_dependency_projections
+            witness dependencies ⟩ =
+      completion_certificate_of_dependency_projections dependencies := by
+  apply Subsingleton.elim
+
 theorem completion_certificate_of_aggregate_dependency_payload_of_extraction_derivation_dependency_projections_eq
     (dependencies : RemainingDependencyPackage.{u}) :
     completion_certificate_of_aggregate_dependency_payload
@@ -12334,6 +12520,22 @@ theorem completion_certificate_of_aggregate_dependency_payload_of_poincareProofD
             (remainingDependencyPackage_iff_poincareProofDependencies.mpr
               dependencies) ⟩ =
       completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_poincareProofDependencies_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      ⟨ "poincare_conjecture", rfl, dependencies,
+        canonical_completion_target_of_dependency_projections
+          (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies),
+        fun witness =>
+          canonical_completion_criterion_of_dependency_projections
+            witness
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies) ⟩ =
+      completion_certificate_of_poincareProofDependencies_projections
         dependencies := by
   apply Subsingleton.elim
 
@@ -12462,6 +12664,19 @@ theorem completion_certificate_of_project_statement_payload_of_aggregate_extract
         dependencies := by
   apply Subsingleton.elim
 
+theorem completion_certificate_of_project_statement_payload_of_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_project_statement_payload
+      ⟨ "poincare_conjecture", rfl,
+        remainingDependencyPackage_iff_poincareProofDependencies.mp
+          dependencies,
+        canonical_completion_target_of_dependency_projections dependencies,
+        fun witness =>
+          canonical_completion_criterion_of_dependency_projections
+            witness dependencies ⟩ =
+      completion_certificate_of_dependency_projections dependencies := by
+  apply Subsingleton.elim
+
 theorem completion_certificate_of_project_statement_payload_of_extraction_derivation_dependency_projections_eq
     (dependencies : RemainingDependencyPackage.{u}) :
     completion_certificate_of_project_statement_payload
@@ -12568,6 +12783,22 @@ theorem completion_certificate_of_project_statement_payload_of_poincareProofDepe
             (remainingDependencyPackage_iff_poincareProofDependencies.mpr
               dependencies) ⟩ =
       completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_poincareProofDependencies_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_project_statement_payload
+      ⟨ "poincare_conjecture", rfl, dependencies,
+        canonical_completion_target_of_dependency_projections
+          (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies),
+        fun witness =>
+          canonical_completion_criterion_of_dependency_projections
+            witness
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies) ⟩ =
+      completion_certificate_of_poincareProofDependencies_projections
         dependencies := by
   apply Subsingleton.elim
 
@@ -13016,6 +13247,36 @@ theorem completion_criterion_of_completion_certificate_of_poincareProofDependenc
       (completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
         dependencies) =
       canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies
+        witness (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    target_statement_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_projections
+        dependencies) =
+      canonical_completion_target_of_dependency_projections
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_projections
+        dependencies) =
+      canonical_completion_target_of_dependency_projections
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_projections_eq
+    (witness : Type u) (dependencies : PoincareProofDependencies.{u}) :
+    completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_poincareProofDependencies_projections
+        dependencies) =
+      canonical_completion_criterion_of_dependency_projections
         witness (remainingDependencyPackage_iff_poincareProofDependencies.mpr
           dependencies) := by
   apply Subsingleton.elim
