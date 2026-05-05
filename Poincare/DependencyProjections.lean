@@ -6840,6 +6840,28 @@ theorem finite_extinction_of_dependencies_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level finite-extinction theorem agrees directly with the
+extinction witness extracted from the selected surgery package's full
+sub-obligation statement.
+-/
+theorem finite_extinction_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    finite_extinction_of_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _
+        letI : IsManifold ThreeManifoldModelWithCorners 1 M :=
+          smoothability_bridge_of_dependencies dependencies M
+        rcases surgery_package_payload_of_dependencies dependencies M with
+          ⟨_n, surgeryPackage, _analyticPackage, _analyticPackage_eq,
+            _flow, _flow_eq, _constructionPackage, _constructionPackage_heq,
+            _controlPackage, _controlPackage_heq⟩
+        exact
+          finite_extinction_of_subobligations_statement
+            (finite_extinction_subobligations_statement_of_surgery_package
+              surgeryPackage)) := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies the post-extinction topological
 extraction theorem used by the final assembly layer.
 -/

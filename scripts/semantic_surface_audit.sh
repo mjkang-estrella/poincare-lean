@@ -2895,6 +2895,7 @@ set_option linter.unusedVariables false
 #check Poincare.finite_extinction_via_subobligations_of_dependencies
 #check Poincare.finite_extinction_via_subobligations_of_dependencies_eq
 #check Poincare.finite_extinction_of_dependencies_eq
+#check Poincare.finite_extinction_of_dependencies_to_package_eq
 
 #check (Poincare.finite_extinction_of_dependencies :
   Poincare.PoincareProofDependencies →
@@ -7258,7 +7259,7 @@ surgery_package_payload_count=$(
   rg -c 'surgery_package_payload_of_dependencies' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$surgery_package_payload_count" != "17" ]; then
+if [ "$surgery_package_payload_count" != "18" ]; then
   echo "FAIL: dependency surgery projections should consume the shared surgery package payload"
   rg -n 'surgery_package_payload_of_dependencies' \
     Poincare/DependencyProjections.lean || true
@@ -7365,7 +7366,7 @@ projection_direct_finite_extinction_count=$(
   rg -c '\bfinite_extinction_of_dependencies dependencies\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_direct_finite_extinction_count" != "20" ]; then
+if [ "$projection_direct_finite_extinction_count" != "21" ]; then
   echo "FAIL: finite-extinction projection input should be centralized in projection payloads or explicit statement-route contracts"
   rg -n '\bfinite_extinction_of_dependencies dependencies\b' \
     Poincare/DependencyProjections.lean || true

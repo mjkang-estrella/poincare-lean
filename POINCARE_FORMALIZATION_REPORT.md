@@ -345,7 +345,7 @@ finite-extinction sub-obligation routes selected by
 The same selected-package route now pins the dependency-level width/full
 statement projections, the statement payload, the derivation stack, the
 package-statement projection, the via-subobligations statement projection, and
-the via-subobligations finite-extinction theorem.
+both the via-subobligations and final finite-extinction dependency theorems.
 
 `Poincare/TopologyExtraction.lean` now names the full classification stack as
 `ExtinctionTopologyClassificationSubobligationsPayload`. The dependency-level

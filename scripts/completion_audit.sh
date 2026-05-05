@@ -4345,6 +4345,8 @@ check_decl "finite-extinction dependency projection theorem is declared" \
   '^theorem finite_extinction_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "finite-extinction dependency projection equality contract is declared" \
   '^theorem finite_extinction_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "finite-extinction dependency projection package route equality contract is declared" \
+  '^theorem finite_extinction_of_dependencies_to_package_eq\b' Poincare/DependencyProjections.lean
 check_decl "extinction extraction dependency projection theorem is declared" \
   '^theorem extinction_extraction_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency topology extraction derivation payload theorem is declared" \
@@ -8750,6 +8752,7 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_via_subobligations_of_dependencies_eq
 #check Poincare.finite_extinction_via_subobligations_of_dependencies_to_package_eq
 #check Poincare.finite_extinction_of_dependencies_eq
+#check Poincare.finite_extinction_of_dependencies_to_package_eq
 #check Poincare.topology_classification_payload_of_dependencies
 #check Poincare.topology_classification_payload_of_dependencies_eq
 #check Poincare.topology_decomposition_of_dependencies
@@ -11000,6 +11003,7 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_via_subobligations_of_dependencies_eq
 #check Poincare.finite_extinction_via_subobligations_of_dependencies_to_package_eq
 #check Poincare.finite_extinction_of_dependencies_eq
+#check Poincare.finite_extinction_of_dependencies_to_package_eq
 #check Poincare.smoothability_moise_local_charts_of_dependencies
 #check Poincare.smoothability_moise_locally_finite_cover_refinement_of_dependencies
 #check Poincare.smoothability_moise_simplicial_complex_of_dependencies
