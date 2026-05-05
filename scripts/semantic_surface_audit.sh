@@ -2797,7 +2797,9 @@ set_option linter.unusedVariables false
 #check Poincare.extinction_extraction_of_dependencies_to_statement_eq
 #check Poincare.topology_extraction_derivation_payload_of_dependencies_to_statement_eq
 #check Poincare.poincare_projection_assembly_inputs_payload_of_dependencies_to_statement_eq
+#check Poincare.poincare_projection_assembly_inputs_payload_of_dependencies_to_package_eq
 #check Poincare.poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies_to_statement_eq
+#check Poincare.poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies_to_package_eq
 #check Poincare.poincare_target_payload_of_dependency_projections_to_topology_statement_eq
 #check Poincare.poincare_target_payload_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
 #check Poincare.poincare_full_assembly_payload_of_dependency_projections_to_topology_statement_eq
@@ -7074,7 +7076,7 @@ topology_package_derivation_payload_count=$(
   rg -c 'topology_extraction_derivation_payload_of_topology_package' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$topology_package_derivation_payload_count" != "3" ]; then
+if [ "$topology_package_derivation_payload_count" != "4" ]; then
   echo "FAIL: dependency topology extraction-derivation projection should consume the package derivation payload"
   rg -n 'topology_extraction_derivation_payload_of_topology_package' \
     Poincare/DependencyProjections.lean || true
@@ -7363,7 +7365,7 @@ projection_assembly_inputs_count=$(
   rg -c '\bpoincare_projection_assembly_inputs_payload_of_dependencies\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_assembly_inputs_count" != "7" ]; then
+if [ "$projection_assembly_inputs_count" != "8" ]; then
   echo "FAIL: projection target/alias routes should consume the named projection assembly-input payload"
   rg -n '\bpoincare_projection_assembly_inputs_payload_of_dependencies\b' \
     Poincare/DependencyProjections.lean || true
@@ -7374,8 +7376,8 @@ projection_direct_finite_extinction_count=$(
   rg -c '\bfinite_extinction_of_dependencies dependencies\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_direct_finite_extinction_count" != "21" ]; then
-  echo "FAIL: finite-extinction projection input should be centralized in projection payloads or explicit statement-route contracts"
+if [ "$projection_direct_finite_extinction_count" != "23" ]; then
+  echo "FAIL: finite-extinction projection input should be centralized in projection payloads or explicit route contracts"
   rg -n '\bfinite_extinction_of_dependencies dependencies\b' \
     Poincare/DependencyProjections.lean || true
   exit 1
@@ -7385,7 +7387,7 @@ projection_extraction_derivation_inputs_count=$(
   rg -c '\bpoincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_extraction_derivation_inputs_count" != "5" ]; then
+if [ "$projection_extraction_derivation_inputs_count" != "6" ]; then
   echo "FAIL: extraction-derivation target route should consume the extraction-derivation assembly-input payload"
   rg -n '\bpoincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies\b' \
     Poincare/DependencyProjections.lean || true

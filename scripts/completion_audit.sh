@@ -4293,6 +4293,13 @@ do
   check_decl "dependency topology statement route contract ${dependency_topology_statement_route_contract} is declared" \
     "^theorem ${dependency_topology_statement_route_contract}\\b" Poincare/DependencyProjections.lean
 done
+for dependency_topology_package_route_contract in \
+  poincare_projection_assembly_inputs_payload_of_dependencies_to_package_eq \
+  poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies_to_package_eq
+do
+  check_decl "dependency topology package route contract ${dependency_topology_package_route_contract} is declared" \
+    "^theorem ${dependency_topology_package_route_contract}\\b" Poincare/DependencyProjections.lean
+done
 check_decl "dependency smoothability bridge statement theorem is declared" \
   '^theorem smoothability_bridge_statement_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency smoothability bridge statement equality contract is declared" \
@@ -8893,7 +8900,9 @@ open scoped Manifold ContDiff
 #check Poincare.extinction_extraction_of_dependencies_to_statement_eq
 #check Poincare.topology_extraction_derivation_payload_of_dependencies_to_statement_eq
 #check Poincare.poincare_projection_assembly_inputs_payload_of_dependencies_to_statement_eq
+#check Poincare.poincare_projection_assembly_inputs_payload_of_dependencies_to_package_eq
 #check Poincare.poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies_to_statement_eq
+#check Poincare.poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies_to_package_eq
 #check Poincare.poincare_target_payload_of_dependency_projections_to_topology_statement_eq
 #check Poincare.poincare_target_payload_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
 #check Poincare.poincare_full_assembly_payload_of_dependency_projections_to_topology_statement_eq
