@@ -434,16 +434,23 @@ The current artifact is intentionally conservative:
   derivation evidence for the homeomorphism it returns. The
   homeomorphism-recognition and extraction-with-derivation equivalences now
   have equality contracts pinning them to their named directional maps. The
+  theorem-shaped package statement, fixed-extinction payload, homeomorphism
+  projection, statement-mediated extractor, extractor-plus-derivation
+  constructor, projection-after-reconstruction contracts, and package
+  fixed-extinction payload are also pinned to their named routes. The
   direct assembly bridges
   `poincare_statement_of_finite_extinction_and_topology_extraction_statement`
   and
   `poincare_payload_of_finite_extinction_and_topology_extraction_statement`
   connect universal finite extinction and the strong topology statement to the
-  target/completion payload. The matching extractor-plus-derivation bridges
+  target/completion payload, with equality contracts back to the existing
+  finite-extinction/extraction assembly route. The matching
+  extractor-plus-derivation bridges
   `poincare_statement_of_finite_extinction_and_extraction_derivation` and
   `poincare_payload_of_finite_extinction_and_extraction_derivation` expose the
   same target/completion payload without hiding the derivation certificate
-  inside the canonical layer. It also proves
+  inside the canonical layer, and are pinned to the named
+  extractor-plus-derivation topology statement route. It also proves
   the standard self-homeomorphism of
   `ThreeSphere` and composition of a homeomorphism through an intermediate
   recognized space into `ThreeSphere`, the opposite-direction source

@@ -3831,6 +3831,20 @@ theorem extinction_topology_extraction_statement_of_topology_package
       package M extinction⟩
 
 /--
+The package-to-topology-extraction statement constructor is the explicit
+fixed-extinction homeomorphism plus derivation statement projection.
+-/
+theorem extinction_topology_extraction_statement_of_topology_package_eq
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    extinction_topology_extraction_statement_of_topology_package package =
+      (by
+        intro M _ _ _ _ _ extinction
+        exact ⟨homeomorphism_of_topology_package package M extinction,
+          extinction_topology_derivation_statement_of_topology_package
+            package M extinction⟩) := by
+  apply Subsingleton.elim
+
+/--
 The theorem-shaped topology extraction statement exposes the fixed-extinction
 homeomorphism together with its derivation statement payload.
 -/
@@ -3845,6 +3859,24 @@ theorem topology_derivation_statement_payload_of_extraction_statement
   rcases topologyStatement M extinction with
     ⟨homeomorphism, derivationStatement⟩
   exact ⟨homeomorphism, derivationStatement⟩
+
+/--
+The fixed-extinction topology payload destructures the theorem-shaped
+extraction statement at that finite-extinction witness.
+-/
+theorem topology_derivation_statement_payload_of_extraction_statement_eq
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_derivation_statement_payload_of_extraction_statement
+      topologyStatement M extinction =
+      (by
+        rcases topologyStatement M extinction with
+          ⟨homeomorphism, derivationStatement⟩
+        exact ⟨homeomorphism, derivationStatement⟩) := by
+  apply Subsingleton.elim
 
 /--
 The theorem-shaped topology extraction statement supplies the fixed-extinction
@@ -3863,6 +3895,25 @@ theorem homeomorphism_of_topology_extraction_statement
   exact homeomorphism
 
 /--
+The fixed-extinction homeomorphism projection is the first field of the
+theorem-shaped topology payload.
+-/
+theorem homeomorphism_of_topology_extraction_statement_eq
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    homeomorphism_of_topology_extraction_statement
+      topologyStatement M extinction =
+      (by
+        rcases topology_derivation_statement_payload_of_extraction_statement
+            topologyStatement M extinction with
+          ⟨homeomorphism, _derivationStatement⟩
+        exact homeomorphism) := by
+  apply Subsingleton.elim
+
+/--
 The theorem-shaped topology extraction statement supplies the existing
 finite-extinction-to-sphere interface.
 -/
@@ -3872,6 +3923,20 @@ theorem extinction_implies_sphere_of_topology_extraction_statement
   intro M _ _ _ _ _ extinction
   exact homeomorphism_of_topology_extraction_statement
     topologyStatement M extinction
+
+/--
+The final extraction interface from a theorem-shaped topology statement is the
+fixed-extinction homeomorphism projection at every finite-extinction witness.
+-/
+theorem extinction_implies_sphere_of_topology_extraction_statement_eq
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    extinction_implies_sphere_of_topology_extraction_statement
+      topologyStatement =
+      (by
+        intro M _ _ _ _ _ extinction
+        exact homeomorphism_of_topology_extraction_statement
+          topologyStatement M extinction) := by
+  apply Subsingleton.elim
 
 /--
 If a finite-extinction-to-sphere extractor is accompanied by derivation evidence
@@ -3886,6 +3951,77 @@ theorem extinction_topology_extraction_statement_of_extraction_and_derivation
     ExtinctionTopologyExtractionStatement.{u} := by
   intro M _ _ _ _ _ extinction
   exact ⟨extractSphere M extinction, derive M extinction⟩
+
+/--
+The extraction-plus-derivation constructor packages the supplied extractor
+with the derivation evidence at each finite-extinction witness.
+-/
+theorem extinction_topology_extraction_statement_of_extraction_and_derivation_eq
+    (extractSphere : ExtinctionImpliesSphereStatement.{u})
+    (derive :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere) :
+    extinction_topology_extraction_statement_of_extraction_and_derivation
+      extractSphere derive =
+      (by
+        intro M _ _ _ _ _ extinction
+        exact ⟨extractSphere M extinction, derive M extinction⟩) := by
+  apply Subsingleton.elim
+
+/--
+Projecting the fixed-extinction topology payload from a statement reconstructed
+from an extractor and derivation evidence returns those supplied fields.
+-/
+theorem topology_derivation_statement_payload_of_extinction_topology_extraction_statement_of_extraction_and_derivation_eq
+    (extractSphere : ExtinctionImpliesSphereStatement.{u})
+    (derive :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_derivation_statement_payload_of_extraction_statement
+      (extinction_topology_extraction_statement_of_extraction_and_derivation
+        extractSphere derive)
+      M extinction =
+      ⟨extractSphere M extinction, derive M extinction⟩ := by
+  apply Subsingleton.elim
+
+/--
+The fixed-extinction homeomorphism projected from an extractor-plus-derivation
+statement is the supplied extractor at that finite-extinction witness.
+-/
+theorem homeomorphism_of_extinction_topology_extraction_statement_of_extraction_and_derivation_eq
+    (extractSphere : ExtinctionImpliesSphereStatement.{u})
+    (derive :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    homeomorphism_of_topology_extraction_statement
+      (extinction_topology_extraction_statement_of_extraction_and_derivation
+        extractSphere derive)
+      M extinction =
+      extractSphere M extinction := by
+  apply Subsingleton.elim
+
+/--
+The final extraction interface recovered from an extractor-plus-derivation
+statement is the supplied extractor.
+-/
+theorem extinction_implies_sphere_of_extinction_topology_extraction_statement_of_extraction_and_derivation_eq
+    (extractSphere : ExtinctionImpliesSphereStatement.{u})
+    (derive :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere) :
+    extinction_implies_sphere_of_topology_extraction_statement
+      (extinction_topology_extraction_statement_of_extraction_and_derivation
+        extractSphere derive) =
+      extractSphere := by
+  apply Subsingleton.elim
 
 /--
 The strong topology extraction statement is exactly a
@@ -3947,6 +4083,25 @@ theorem poincare_statement_of_finite_extinction_and_topology_extraction_statemen
       topologyStatement)
 
 /--
+The topology-extraction route to the project target is the existing
+finite-extinction/extraction assembly applied to the statement-mediated final
+extractor.
+-/
+theorem poincare_statement_of_finite_extinction_and_topology_extraction_statement_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    poincare_statement_of_finite_extinction_and_topology_extraction_statement
+      finiteExtinction topologyStatement =
+      poincare_statement_of_extinction_and_extraction finiteExtinction
+        (extinction_implies_sphere_of_topology_extraction_statement
+          topologyStatement) := by
+  apply Subsingleton.elim
+
+/--
 Universal finite extinction plus the stronger topology extraction statement
 exposes the target and universe-indexed completion criterion as one payload.
 -/
@@ -3962,6 +4117,24 @@ theorem poincare_payload_of_finite_extinction_and_topology_extraction_statement
   exact poincare_completion_payload_of_poincareConjectureStatement
     (poincare_statement_of_finite_extinction_and_topology_extraction_statement
       finiteExtinction topologyStatement)
+
+/--
+The topology-extraction project payload is the statement-layer completion
+payload of the named topology-extraction target route.
+-/
+theorem poincare_payload_of_finite_extinction_and_topology_extraction_statement_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    poincare_payload_of_finite_extinction_and_topology_extraction_statement
+      finiteExtinction topologyStatement =
+      poincare_completion_payload_of_poincareConjectureStatement
+        (poincare_statement_of_finite_extinction_and_topology_extraction_statement
+          finiteExtinction topologyStatement) := by
+  apply Subsingleton.elim
 
 /--
 Universal finite extinction plus a final extractor and its topology derivation
@@ -3985,6 +4158,28 @@ theorem poincare_statement_of_finite_extinction_and_extraction_derivation
         extractSphere derivation)
 
 /--
+The extractor-plus-derivation route to the project target factors through the
+named topology-extraction statement constructor.
+-/
+theorem poincare_statement_of_finite_extinction_and_extraction_derivation_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u})
+    (derivation :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere) :
+    poincare_statement_of_finite_extinction_and_extraction_derivation
+      finiteExtinction extractSphere derivation =
+      poincare_statement_of_finite_extinction_and_topology_extraction_statement
+        finiteExtinction
+        (extinction_topology_extraction_statement_of_extraction_and_derivation
+          extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
 Universal finite extinction plus a final extractor and its topology derivation
 certificate exposes the target and universe-indexed completion criterion as one
 payload.
@@ -4004,6 +4199,27 @@ theorem poincare_payload_of_finite_extinction_and_extraction_derivation
   exact poincare_completion_payload_of_poincareConjectureStatement
     (poincare_statement_of_finite_extinction_and_extraction_derivation
       finiteExtinction extractSphere derivation)
+
+/--
+The extractor-plus-derivation project payload is the statement-layer completion
+payload of the named extractor-plus-derivation target route.
+-/
+theorem poincare_payload_of_finite_extinction_and_extraction_derivation_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u})
+    (derivation :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere) :
+    poincare_payload_of_finite_extinction_and_extraction_derivation
+      finiteExtinction extractSphere derivation =
+      poincare_completion_payload_of_poincareConjectureStatement
+        (poincare_statement_of_finite_extinction_and_extraction_derivation
+          finiteExtinction extractSphere derivation) := by
+  apply Subsingleton.elim
 
 /--
 A completed topology package supplies the theorem-shaped extraction statement
@@ -4095,6 +4311,36 @@ theorem topology_extraction_statement_payload_of_topology_package
       extinction homeomorphism derivationStatement⟩
 
 /--
+The fixed-extinction package payload is selected by first exposing the package
+topology statement, then destructuring its homeomorphism/derivation payload and
+the named derivation subpayload projections.
+-/
+theorem topology_extraction_statement_payload_of_topology_package_eq
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_topology_package
+      package M extinction =
+      (by
+        rcases topology_extraction_payload_of_topology_package package with
+          ⟨topologyStatement, _extraction⟩
+        rcases topology_derivation_statement_payload_of_extraction_statement
+            topologyStatement M extinction with
+          ⟨homeomorphism, derivationStatement⟩
+        let classificationSubobligations :=
+          topology_classification_subobligations_of_derivation_statement M
+            extinction homeomorphism derivationStatement
+        exact ⟨topologyStatement, homeomorphism, derivationStatement,
+          classificationSubobligations,
+          topology_homeomorphism_assembly_statement_of_derivation_statement M
+            extinction homeomorphism derivationStatement,
+          topology_homeomorphism_derivation_statement_of_derivation_statement M
+            extinction homeomorphism derivationStatement⟩) := by
+  apply Subsingleton.elim
+
+/--
 Any completed topology extraction package supplies the existing extraction
 interface consumed by the final Poincare assembly theorem.
 -/
@@ -4104,6 +4350,18 @@ theorem extinction_implies_sphere_of_topology_package
   rcases topology_extraction_payload_of_topology_package package with
     ⟨_topologyStatement, extraction⟩
   exact extraction
+
+/--
+The package final extractor agrees with the extractor mediated by the package's
+theorem-shaped topology extraction statement.
+-/
+theorem extinction_implies_sphere_of_topology_package_to_statement_eq
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    extinction_implies_sphere_of_topology_package package =
+      extinction_implies_sphere_of_topology_extraction_statement
+        (extinction_topology_extraction_statement_of_topology_package
+          package) := by
+  apply Subsingleton.elim
 
 /--
 The final extraction projection agrees with the extractor supplied by the

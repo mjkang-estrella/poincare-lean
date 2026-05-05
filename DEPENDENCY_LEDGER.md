@@ -529,16 +529,22 @@ It is not a proof. It is a work breakdown for future Lean development.
   extractor plus derivation evidence for the homeomorphism returned by that
   extractor. The homeomorphism-recognition and extraction-with-derivation
   equivalences now have equality contracts pinning them to their named
-  directional maps. The direct assembly bridges
+  directional maps. The theorem-shaped package statement, fixed-extinction
+  payload, homeomorphism projection, statement-mediated extractor,
+  extractor-plus-derivation constructor, projection-after-reconstruction
+  contracts, and package fixed-extinction payload are now pinned to their named
+  routes. The direct assembly bridges
   `poincare_statement_of_finite_extinction_and_topology_extraction_statement`
   and
   `poincare_payload_of_finite_extinction_and_topology_extraction_statement`
   connect universal finite extinction and the strong topology extraction
-  statement to the target/completion payload. The matching
+  statement to the target/completion payload with equality contracts back to the
+  finite-extinction/extraction assembly route. The matching
   `poincare_statement_of_finite_extinction_and_extraction_derivation` and
   `poincare_payload_of_finite_extinction_and_extraction_derivation` bridges
   expose that same payload from a final extractor plus its topology derivation
-  certificate.
+  certificate and are pinned to the named extractor-plus-derivation topology
+  statement route.
 - `Poincare/TopologyExtraction.lean` proves that `ThreeSphere` is homeomorphic
   to itself and that a homeomorphism to an intermediate space already
   homeomorphic to `ThreeSphere` composes to a homeomorphism to `ThreeSphere`;
