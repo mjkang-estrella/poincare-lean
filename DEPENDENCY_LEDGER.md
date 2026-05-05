@@ -128,6 +128,21 @@ It is not a proof. It is a work breakdown for future Lean development.
   carrying the projected smoothability evidence, the reverse canonical input,
   the induced project smooth statement, the target, and the completion criterion
   at both dependency-package surfaces.
+- `Poincare/CanonicalBridges.lean` now lifts those packaged reverse canonical
+  smooth payloads through the full projection surface:
+  `poincare_statement_of_*packaged_reverse_canonical_smooth_three_sphere_statement`,
+  `completion_criterion_of_*packaged_reverse_canonical_smooth_three_sphere_statement`,
+  `poincare_completion_payload_of_*packaged_reverse_canonical_smooth_three_sphere_statement`,
+  `canonical_completion_payload_of_*packaged_reverse_canonical_smooth_three_sphere_statement`,
+  `canonical_completion_target_of_*packaged_reverse_canonical_smooth_three_sphere_statement`,
+  `canonical_completion_criterion_of_*packaged_reverse_canonical_smooth_three_sphere_statement`,
+  `canonical_three_sphere_statement_of_*packaged_reverse_canonical_smooth_three_sphere_statement`,
+  and
+  `completion_certificate_of_*packaged_reverse_canonical_smooth_three_sphere_statement`,
+  with direct aggregate-to-remaining equality contracts and certificate
+  projection round-trips for the dependency package, project target, project
+  payload, canonical payload, canonical target, completion criterion, and
+  canonical topological statement.
 - `Poincare/CanonicalBridges.lean` now pins the aggregate packaged smooth and
   packaged canonical-smooth project routes, canonical completion payloads,
   canonical targets, canonical criteria, and canonical topological statement
@@ -1294,16 +1309,20 @@ It is not a proof. It is a work breakdown for future Lean development.
   `packaged_smooth_statement_completion_payload_of_remaining_dependency`,
   `packaged_smooth_statement_completion_payload_of_poincareProofDependencies`,
   `packaged_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency`,
-  and
   `packaged_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies`,
-  which record the package's `C∞` smoothability statement, the smooth or
-  canonical-smooth input, the induced topological target, and the completion
+  `packaged_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency`,
+  and
+  `packaged_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies`,
+  which record the package's `C∞` smoothability statement, the smooth,
+  canonical-smooth, or reverse canonical-smooth input, the induced topological target, and the completion
   criterion. The matching canonical payload routes
   `canonical_completion_payload_of_remaining_dependency_and_packaged_smooth_statement`,
   `canonical_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement`,
   `canonical_completion_payload_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement`,
+  `canonical_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement`,
+  `canonical_completion_payload_of_remaining_dependency_and_packaged_reverse_canonical_smooth_three_sphere_statement`,
   and
-  `canonical_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement`
+  `canonical_completion_payload_of_poincareProofDependencies_and_packaged_reverse_canonical_smooth_three_sphere_statement`
   convert those one-way smooth payloads into canonical completion payloads
   after the `poincare_statement_of_*packaged*` and
   `completion_criterion_of_*packaged*` projections name the intermediate
@@ -1322,7 +1341,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   certificates directly from those packaged payloads, and the
   `poincareCompletionCertificate_iff_*packaged*payload` contracts make the
   supplied smooth/canonical-smooth packaged payload routes reversible at the
-  checked certificate surface. Those packaged payload constructors now also
+  checked certificate surface, while the packaged reverse canonical-smooth route
+  reconstructs checked certificates directly from the supplied reverse canonical
+  smooth statement and the package's `C∞` smoothability output. Those packaged payload constructors now also
   have projection-after-constructor round-trip contracts back to their
   remaining-dependency and aggregate payloads. The smooth and packaged-smooth
   routes now also
@@ -1330,13 +1351,16 @@ It is not a proof. It is a work breakdown for future Lean development.
   constructor, packaged payload, project target/criterion, project completion
   payload, canonical-payload conversion, canonical target, canonical criterion,
   and canonical-statement projection endpoints,
-  with direct aggregate-to-remaining contracts for the packaged smooth and
-  packaged canonical-smooth project target, criterion, and project completion
-  payload routes after `remainingDependencyPackage_iff_poincareProofDependencies`,
+  with direct aggregate-to-remaining contracts for the packaged smooth, packaged
+  canonical-smooth, and packaged reverse canonical-smooth project target,
+  criterion, project completion payload, canonical payload, canonical target,
+  canonical criterion, and canonical-statement routes after
+  `remainingDependencyPackage_iff_poincareProofDependencies`,
   and certificate projections now round-trip the project payload, canonical
   payload, project target statement, canonical target, completion criterion,
   and canonical topological statement after the canonical-statement, smooth,
-  canonical-smooth, packaged smooth, and packaged canonical-smooth constructors,
+  canonical-smooth, packaged smooth, packaged canonical-smooth, and packaged
+  reverse canonical-smooth constructors,
   and the base remaining-dependency plus aggregate-dependency constructors now
   also round-trip their dependency projection after the canonical-payload,
   target-statement, canonical-target, completion-criterion, and aggregate
@@ -1352,8 +1376,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   `completion_certificate_of_remaining_dependency_and_packaged_smooth_statement`,
   `completion_certificate_of_poincareProofDependencies_and_packaged_smooth_statement`,
   `completion_certificate_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement`,
-  and
   `completion_certificate_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement`,
+  `completion_certificate_of_remaining_dependency_and_packaged_reverse_canonical_smooth_three_sphere_statement`,
+  and
+  `completion_certificate_of_poincareProofDependencies_and_packaged_reverse_canonical_smooth_three_sphere_statement`,
   so a proof-bearing smooth statement can use the dependency package's own `C∞`
   smoothability output to reconstruct the checked completion certificate at both
   dependency package surfaces. Those smooth and packaged smooth certificate
