@@ -309,6 +309,10 @@ open scoped Manifold ContDiff
 #check Poincare.smooth_structure_derivation_statement_of_smoothability_package_eq
 #check Poincare.smoothability_smooth_structure_statement_payload_of_smoothability_package
 #check Poincare.smoothability_smooth_structure_statement_payload_of_smoothability_package_eq
+#check Poincare.ThreeManifoldModel
+#check Poincare.threeManifoldModel_eq
+#check Poincare.ThreeManifoldModelWithCorners
+#check Poincare.threeManifoldModelWithCorners_eq
 #check Poincare.smoothabilityBridgeStatement_eq
 #check (show
   Poincare.SmoothabilityBridgeStatement =
@@ -348,6 +352,8 @@ open scoped Manifold ContDiff
 #check Poincare.smoothability_subobligations_of_derivation_statement_eq
 #check Poincare.smoothability_bridge_payload_of_smoothability_package
 #check Poincare.smoothability_bridge_payload_of_smoothability_package_eq
+#check Poincare.TangentCovariantTwoTensor
+#check Poincare.tangentCovariantTwoTensor_eq
 #check Poincare.metric_of_ricci_flow_data
 #check Poincare.metric_of_ricci_flow_data_eq
 #check Poincare.curvature_data_of_ricci_flow_data

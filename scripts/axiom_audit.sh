@@ -604,6 +604,12 @@ import Poincare
 #print axioms Poincare.smoothability_subobligations_of_derivation_statement_eq
 #print axioms Poincare.smoothability_bridge_payload_of_smoothability_package
 #print axioms Poincare.smoothability_bridge_payload_of_smoothability_package_eq
+#print axioms Poincare.ThreeManifoldModel
+#print axioms Poincare.threeManifoldModel_eq
+#print axioms Poincare.ThreeManifoldModelWithCorners
+#print axioms Poincare.threeManifoldModelWithCorners_eq
+#print axioms Poincare.TangentCovariantTwoTensor
+#print axioms Poincare.tangentCovariantTwoTensor_eq
 #print axioms Poincare.metric_of_ricci_flow_data
 #print axioms Poincare.metric_of_ricci_flow_data_eq
 #print axioms Poincare.curvature_data_of_ricci_flow_data

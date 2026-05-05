@@ -41,6 +41,19 @@ abbrev TangentCovariantTwoTensor
   (x : M) → TangentSpace I x →L[ℝ] TangentSpace I x →L[ℝ] ℝ
 
 /--
+The tangent covariant two-tensor alias is definitionally the dependent family
+of continuous bilinear forms on tangent spaces.
+-/
+theorem tangentCovariantTwoTensor_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    (I : ModelWithCorners ℝ E H)
+    (M : Type*) [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M] :
+    TangentCovariantTwoTensor I M =
+      ((x : M) → TangentSpace I x →L[ℝ] TangentSpace I x →L[ℝ] ℝ) :=
+  rfl
+
+/--
 Candidate Ricci tensor field for a time-dependent metric.
 
 The field is separate from the identification theorem below because mathlib does

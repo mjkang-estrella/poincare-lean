@@ -443,6 +443,13 @@ set_option linter.unusedVariables false
 #check Poincare.diffeomorph_to_threeSphere_of_threeSphere_diffeomorph_eq
 #check Poincare.diffeomorph_to_threeSphere_iff_threeSphere_diffeomorph_eq
 
+#check Poincare.ThreeManifoldModel
+#check Poincare.threeManifoldModel_eq
+#check Poincare.ThreeManifoldModelWithCorners
+#check Poincare.threeManifoldModelWithCorners_eq
+#check Poincare.TangentCovariantTwoTensor
+#check Poincare.tangentCovariantTwoTensor_eq
+
 #check (Poincare.RicciFlowData.satisfies_equation :
   ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type} [TopologicalSpace H]

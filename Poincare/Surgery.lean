@@ -18,10 +18,26 @@ namespace Poincare
 abbrev ThreeManifoldModel : Type :=
   EuclideanSpace ℝ (Fin 3)
 
+/--
+The project 3-manifold model is definitionally the standard 3-dimensional
+Euclidean model.
+-/
+theorem threeManifoldModel_eq :
+    ThreeManifoldModel = EuclideanSpace ℝ (Fin 3) :=
+  rfl
+
 /-- The standard smooth model-with-corners for 3-manifolds. -/
 noncomputable abbrev ThreeManifoldModelWithCorners :
     ModelWithCorners ℝ ThreeManifoldModel ThreeManifoldModel :=
   𝓘(ℝ, ThreeManifoldModel)
+
+/--
+The project smooth model-with-corners is definitionally the standard smooth
+model on the fixed 3-manifold Euclidean model.
+-/
+theorem threeManifoldModelWithCorners_eq :
+    ThreeManifoldModelWithCorners = 𝓘(ℝ, ThreeManifoldModel) :=
+  rfl
 
 /-- Interface for a Ricci flow with surgery on a manifold. -/
 inductive HasRicciFlowWithSurgery

@@ -209,6 +209,18 @@ check_decl "smooth statement iff contract is declared" \
   '^theorem smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_statement\b' Poincare/Statement.lean
 check_decl "smooth statement iff equality contract is declared" \
   '^theorem smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_statement_eq\b' Poincare/Statement.lean
+check_decl "3-manifold model alias is declared" \
+  '^abbrev ThreeManifoldModel\b' Poincare/Surgery.lean
+check_decl "3-manifold model alias equality contract is declared" \
+  '^theorem threeManifoldModel_eq\b' Poincare/Surgery.lean
+check_decl "3-manifold model-with-corners alias is declared" \
+  '^noncomputable abbrev ThreeManifoldModelWithCorners\b' Poincare/Surgery.lean
+check_decl "3-manifold model-with-corners equality contract is declared" \
+  '^theorem threeManifoldModelWithCorners_eq\b' Poincare/Surgery.lean
+check_decl "tangent covariant two-tensor alias is declared" \
+  '^abbrev TangentCovariantTwoTensor\b' Poincare/RicciFlow.lean
+check_decl "tangent covariant two-tensor equality contract is declared" \
+  '^theorem tangentCovariantTwoTensor_eq\b' Poincare/RicciFlow.lean
 check_decl "Ricci-flow equation interface is declared" \
   '^inductive SatisfiesRicciFlowEquation\b' Poincare/RicciFlow.lean
 check_decl "Ricci-flow metric projection is declared" \
@@ -7125,6 +7137,10 @@ open scoped Manifold ContDiff
 #check Poincare.smooth_structure_derivation_statement_of_smoothability_package_eq
 #check Poincare.smoothability_smooth_structure_statement_payload_of_smoothability_package
 #check Poincare.smoothability_smooth_structure_statement_payload_of_smoothability_package_eq
+#check Poincare.ThreeManifoldModel
+#check Poincare.threeManifoldModel_eq
+#check Poincare.ThreeManifoldModelWithCorners
+#check Poincare.threeManifoldModelWithCorners_eq
 #check (show
   Poincare.SmoothabilityBridgeStatement =
     (∀ (M : Type) [TopologicalSpace M] [T2Space M]
@@ -7161,6 +7177,8 @@ open scoped Manifold ContDiff
 #check Poincare.smoothability_subobligations_of_derivation_statement_eq
 #check Poincare.smoothability_bridge_payload_of_smoothability_package
 #check Poincare.smoothability_bridge_payload_of_smoothability_package_eq
+#check Poincare.TangentCovariantTwoTensor
+#check Poincare.tangentCovariantTwoTensor_eq
 #check Poincare.metric_of_ricci_flow_data
 #check Poincare.metric_of_ricci_flow_data_eq
 #check Poincare.curvature_data_of_ricci_flow_data
@@ -9398,6 +9416,13 @@ open scoped Manifold ContDiff
 #check (Poincare.PoincareProofDependencies.smoothability :
   Poincare.PoincareProofDependencies →
     Poincare.SmoothabilityPackage)
+
+#check Poincare.ThreeManifoldModel
+#check Poincare.threeManifoldModel_eq
+#check Poincare.ThreeManifoldModelWithCorners
+#check Poincare.threeManifoldModelWithCorners_eq
+#check Poincare.TangentCovariantTwoTensor
+#check Poincare.tangentCovariantTwoTensor_eq
 
 #check (Poincare.RicciFlowData.satisfies_equation :
   ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
