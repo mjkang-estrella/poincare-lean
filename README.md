@@ -1194,8 +1194,8 @@ The current artifact is intentionally conservative:
   project-statement full payload projection/reconstruction, canonical
   topological statement, full literal canonical-statement artifact payload
   projection/reconstruction, and aggregate canonical-statement artifact payload
-  projection contracts back to the named raw, certified, aggregate, and
-  projection routes that built the certificates.
+  projection/reconstruction contracts back to the named raw, certified,
+  aggregate, and projection routes that built the certificates.
   The certificate-layer equality contracts now pin the reserved-name, literal
   payload, canonical payload, target/criterion projection, remaining/aggregate
   dependency, and project-statement routes to their named projections and
@@ -1240,11 +1240,11 @@ The current artifact is intentionally conservative:
   and
   `poincareCompletionCertificate_iff_poincareProofDependencies_and_canonical_three_sphere_statement`,
   making the canonical statement/certificate route reversible at both dependency
-  package surfaces. The literal canonical-statement payload constructor now has
-  projection/reconstruction contracts, while the aggregate canonical-statement
-  payload and dependency-package constructors have projection-after-constructor
-  contracts back to their payloads, dependency packages, and canonical
-  topological statement proofs. It also adds the smooth-route certificate constructors
+  package surfaces. The literal and aggregate canonical-statement payload
+  constructors now have route-specific projection/reconstruction contracts,
+  while the dependency-package constructors have projection-after-constructor
+  contracts back to their dependency packages and canonical topological
+  statement proofs. It also adds the smooth-route certificate constructors
   `completion_certificate_of_remaining_dependency_and_smooth_statement`,
   `completion_certificate_of_poincareProofDependencies_and_smooth_statement`,
   `completion_certificate_of_remaining_dependency_and_canonical_smooth_three_sphere_statement`,
