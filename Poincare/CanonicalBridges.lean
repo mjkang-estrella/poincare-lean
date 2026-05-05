@@ -9890,6 +9890,22 @@ theorem canonical_three_sphere_statement_of_completion_certificate_of_extraction
         dependencies := by
   apply Subsingleton.elim
 
+theorem canonical_three_sphere_statement_of_completion_certificate_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_extraction_derivation_dependency_projections
+        dependencies) =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_three_sphere_statement_of_canonical_completion_target
+            (canonical_completion_target_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_of_dependencies dependencies)
+              extractSphere derivation)) := by
+  apply Subsingleton.elim
+
 theorem canonical_three_sphere_statement_of_completion_certificate_of_poincareProofDependencies_component_requirements_eq
     (dependencies : PoincareProofDependencies.{u}) :
     canonical_three_sphere_statement_of_completion_certificate
@@ -9987,6 +10003,26 @@ theorem canonical_three_sphere_statement_of_completion_certificate_of_poincarePr
       canonical_three_sphere_statement_of_remaining_dependency_extraction_derivation_projections
         (remainingDependencyPackage_iff_poincareProofDependencies.mpr
           dependencies) := by
+  apply Subsingleton.elim
+
+theorem canonical_three_sphere_statement_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+        dependencies) =
+      (by
+        rcases
+          topology_extraction_derivation_payload_of_dependencies
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies) with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_three_sphere_statement_of_canonical_completion_target
+            (canonical_completion_target_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_of_dependencies
+                (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+                  dependencies))
+              extractSphere derivation)) := by
   apply Subsingleton.elim
 
 /--

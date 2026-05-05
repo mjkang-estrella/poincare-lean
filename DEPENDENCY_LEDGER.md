@@ -782,7 +782,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   project-statement payload constructors. That aggregate projection certificate
   view is also pinned directly to the finite-extinction plus theorem-shaped
   topology-extraction route for the certificate, canonical/project payloads,
-  target, criterion, and canonical topological statement.
+  target, criterion, and canonical topological statement. The certified
+  extraction-derivation projection certificate is likewise pinned directly to
+  the finite-extinction plus extractor/derivation route at both
+  remaining-dependency and aggregate proof-dependency surfaces.
   It also projects the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/
@@ -1340,7 +1343,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   project-statement payload constructors, plus direct finite-extinction and
   theorem-shaped topology-extraction contracts for its certificate,
   canonical/project payloads, target, criterion, and canonical topological
-  statement.
+  statement. The certified extraction-derivation projection certificate is also
+  pinned directly to the finite-extinction plus extractor/derivation route for
+  its certificate, canonical/project payloads, target, criterion, and canonical
+  topological statement at both remaining-dependency and aggregate surfaces.
   The certificate-layer equality contracts now pin the reserved-name, literal
   payload, canonical payload, target/criterion projection, remaining/aggregate
   dependency, and project-statement routes to their named projections and
