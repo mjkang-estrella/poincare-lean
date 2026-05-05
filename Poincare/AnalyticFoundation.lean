@@ -958,6 +958,61 @@ theorem analytic_foundation_subobligations_of_derivation_statement
     metricEvolution, ricciTensorEvolution, scalarCurvatureEvolution,
     curvatureNormEvolution, curvatureEvolution⟩
 
+/--
+The analytic derivation statement bridge exposes exactly the connection,
+curvature, DeTurck, continuation, regularity, and evolution sub-obligations
+stored before the Ricci-identification and equation evidence.
+-/
+theorem analytic_foundation_subobligations_of_derivation_statement_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M)
+    (statement : AnalyticFoundationDerivationStatement flow) :
+    analytic_foundation_subobligations_of_derivation_statement flow statement =
+      (by
+        rcases statement with
+          ⟨leviCivitaExistence, leviCivitaUniqueness,
+            leviCivitaTorsionFree, leviCivitaMetricCompatibility,
+            leviCivita, riemannCurvatureConstruction,
+            riemannCurvatureSymmetries, firstBianchi, secondBianchi,
+            riemannCurvature, ricciContractionFormula,
+            scalarCurvatureContraction, ricciContraction, metricRegularity,
+            metricTimeDerivative, scalarCurvature, equationDerivation,
+            initialMetricCompatibility, deturckGauge, deturckBackgroundMetric,
+            deturckVectorField, deturckEquation, deturckLinearization,
+            strictParabolicDeturck, parabolicLinearTheory,
+            parabolicFixedPoint, deturckShortTime,
+            shortTimeRegularityBootstrap, deturckDiffeomorphismODE,
+            deturckPullbackEquationIdentity, deturckPullback,
+            shortTimeExistence, maximalTimeInterval, continuationCriterion,
+            curvatureBlowUpCriterion, maximalSolutionExtension,
+            parabolicSchauder, parabolicRegularity, shiDerivativeEstimates,
+            curvatureDerivativeBootstrap, maximumPrinciple, uniquenessTheory,
+            metricEvolution, ricciTensorEvolution, scalarCurvatureEvolution,
+            curvatureNormEvolution, curvatureEvolution, _ricciIdentification,
+            _equationEvidence⟩
+        exact ⟨leviCivitaExistence, leviCivitaUniqueness,
+          leviCivitaTorsionFree, leviCivitaMetricCompatibility, leviCivita,
+          riemannCurvatureConstruction, riemannCurvatureSymmetries,
+          firstBianchi, secondBianchi, riemannCurvature,
+          ricciContractionFormula, scalarCurvatureContraction,
+          ricciContraction, metricRegularity, metricTimeDerivative,
+          scalarCurvature, equationDerivation, initialMetricCompatibility,
+          deturckGauge, deturckBackgroundMetric, deturckVectorField,
+          deturckEquation, deturckLinearization, strictParabolicDeturck,
+          parabolicLinearTheory, parabolicFixedPoint, deturckShortTime,
+          shortTimeRegularityBootstrap, deturckDiffeomorphismODE,
+          deturckPullbackEquationIdentity, deturckPullback, shortTimeExistence,
+          maximalTimeInterval, continuationCriterion, curvatureBlowUpCriterion,
+          maximalSolutionExtension, parabolicSchauder, parabolicRegularity,
+          shiDerivativeEstimates, curvatureDerivativeBootstrap,
+          maximumPrinciple, uniquenessTheory, metricEvolution,
+          ricciTensorEvolution, scalarCurvatureEvolution,
+          curvatureNormEvolution, curvatureEvolution⟩) := by
+  apply Subsingleton.elim
+
 /-- Project Ricci-flow data from an analytic-foundation package. -/
 def ricci_flow_data_of_analytic_foundation_package
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]

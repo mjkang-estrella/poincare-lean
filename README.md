@@ -164,8 +164,10 @@ The current artifact is intentionally conservative:
   sub-obligation payload, and equation evidence at the package layer. Its main
   component assembler is pinned to the exact tuple of connection, curvature,
   DeTurck, continuation, regularity, evolution, Ricci-identification, and
-  equation witnesses; Ricci-flow/evidence projections now also have equality
-  contracts back to the stored package flow and the flow-level evidence
+  equation witnesses; the derivation-statement sub-obligation bridge is pinned
+  to the exact connection, curvature, DeTurck, continuation, regularity, and
+  evolution witness stack; Ricci-flow/evidence projections now also have
+  equality contracts back to the stored package flow and the flow-level evidence
   theorems.
 - `Poincare/Surgery.lean` defines typed no-constructor interfaces for Ricci flow
   with surgery, Perelman singularity control, finite-extinction derivation, and
@@ -542,8 +544,10 @@ The current artifact is intentionally conservative:
   smooth-structure derivation statement route and the bridge/model/chart
   compatibility plus full sub-obligation route. The smooth-structure
   derivation component assembler is pinned to the exact tuple of Moise, PL,
-  smoothing, smooth-atlas, transition, and derivation witnesses. Equality
-  contracts now tie the package bridge, canonical smooth-manifold statement,
+  smoothing, smooth-atlas, transition, and derivation witnesses, and the
+  derivation-statement sub-obligation bridge is pinned to the exact
+  Moise/PL/smoothing/smooth-atlas/bridge witness stack. Equality contracts now
+  tie the package bridge, canonical smooth-manifold statement,
   bridge application, surgery-model and canonical smooth-manifold projections,
   compatibility evidence, and smoothability payloads back to the stored package
   fields or named component route. The lower Moise/PL/smooth spine also records direct

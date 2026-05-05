@@ -266,7 +266,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   sub-obligation payload, and equation evidence at the package layer. The
   component assembler is pinned to the exact tuple of connection, curvature,
   DeTurck, continuation, regularity, evolution, Ricci-identification, and
-  equation witnesses; analytic-package flow/evidence projection equalities
+  equation witnesses; the derivation-statement sub-obligation bridge is pinned
+  to the exact connection, curvature, DeTurck, continuation, regularity, and
+  evolution witness stack; analytic-package flow/evidence projection equalities
   record that those package-level surfaces delegate exactly to the stored flow
   data.
 - `Poincare/Surgery.lean` defines no-constructor interfaces for Ricci flow with
@@ -634,10 +636,12 @@ It is not a proof. It is a work breakdown for future Lean development.
   compatibility plus full sub-obligation route. Equality contracts now tie the
   smooth-structure derivation component assembler to the exact tuple of Moise,
   PL, smoothing, smooth-atlas, transition, and derivation witnesses; the
-  package bridge, canonical smooth-manifold statement, bridge application,
-  surgery-model and canonical smooth-manifold projections, compatibility
-  evidence, and smoothability payloads are tied back to the stored package
-  fields or named component route. The lower Moise/PL/smooth spine also records direct
+  derivation-statement sub-obligation bridge is pinned to the exact
+  Moise/PL/smoothing/smooth-atlas/bridge witness stack; the package bridge,
+  canonical smooth-manifold statement, bridge application, surgery-model and
+  canonical smooth-manifold projections, compatibility evidence, and
+  smoothability payloads are tied back to the stored package fields or named
+  component route. The lower Moise/PL/smooth spine also records direct
   equality contracts for the full Moise projection spine, including local
   charts, cover refinement, simplicial-complex/chart compatibility,
   triangulation, simplicial approximation, neighborhood, local-finiteness,

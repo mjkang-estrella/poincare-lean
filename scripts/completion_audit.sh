@@ -373,6 +373,8 @@ check_decl "analytic foundation component assembly equality contract is declared
   '^theorem analytic_foundation_derivation_statement_of_components_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation derivation statement sub-obligation projection is declared" \
   '^theorem analytic_foundation_subobligations_of_derivation_statement\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation derivation statement sub-obligation equality contract is declared" \
+  '^theorem analytic_foundation_subobligations_of_derivation_statement_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation Ricci-flow data projection is declared" \
   '^def ricci_flow_data_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation Ricci-flow data projection equality theorem is declared" \
@@ -3116,6 +3118,8 @@ check_decl "smoothability sub-obligations payload alias is declared" \
   '^abbrev SmoothabilitySubobligationsPayload\b' Poincare/Smoothability.lean
 check_decl "smoothability derivation statement sub-obligation projection is declared" \
   '^theorem smoothability_subobligations_of_derivation_statement\b' Poincare/Smoothability.lean
+check_decl "smoothability derivation statement sub-obligation equality contract is declared" \
+  '^theorem smoothability_subobligations_of_derivation_statement_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package Moise local chart projection is declared" \
   '^theorem moise_local_charts_of_smoothability_package\b' Poincare/Smoothability.lean
 check_decl "smoothability package Moise local chart equality contract is declared" \
@@ -6854,6 +6858,7 @@ open scoped Manifold ContDiff
 #check Poincare.smooth_chart_compatibility_of_smoothability_package_eq
 #check Poincare.SmoothabilitySubobligationsPayload
 #check Poincare.smoothability_subobligations_of_derivation_statement
+#check Poincare.smoothability_subobligations_of_derivation_statement_eq
 #check Poincare.smoothability_bridge_payload_of_smoothability_package
 #check Poincare.smoothability_bridge_payload_of_smoothability_package_eq
 #check Poincare.metric_of_ricci_flow_data
@@ -6942,6 +6947,7 @@ open scoped Manifold ContDiff
 #check Poincare.analytic_foundation_derivation_statement_of_components
 #check Poincare.analytic_foundation_derivation_statement_of_components_eq
 #check Poincare.analytic_foundation_subobligations_of_derivation_statement
+#check Poincare.analytic_foundation_subobligations_of_derivation_statement_eq
 #check Poincare.analytic_foundation_derivation_statement_of_analytic_foundation_package
 #check Poincare.analytic_foundation_statement_of_analytic_foundation_package
 #check Poincare.analytic_foundation_payload_of_analytic_foundation_package
@@ -9120,6 +9126,7 @@ open scoped Manifold ContDiff
 #check Poincare.analytic_foundation_derivation_statement_of_components
 #check Poincare.analytic_foundation_derivation_statement_of_components_eq
 #check Poincare.analytic_foundation_subobligations_of_derivation_statement
+#check Poincare.analytic_foundation_subobligations_of_derivation_statement_eq
 #check Poincare.analytic_foundation_derivation_statement_of_analytic_foundation_package
 #check Poincare.analytic_foundation_statement_of_analytic_foundation_package
 #check Poincare.analytic_foundation_payload_of_analytic_foundation_package
@@ -9817,6 +9824,7 @@ open scoped Manifold ContDiff
 #check Poincare.smooth_chart_compatibility_of_smoothability_package_eq
 #check Poincare.SmoothabilitySubobligationsPayload
 #check Poincare.smoothability_subobligations_of_derivation_statement
+#check Poincare.smoothability_subobligations_of_derivation_statement_eq
 #check Poincare.smoothability_bridge_payload_of_smoothability_package
 #check Poincare.smoothability_bridge_payload_of_smoothability_package_eq
 #check Poincare.smoothability_smooth_manifold_payload_of_smoothability_package

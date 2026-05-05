@@ -1195,6 +1195,94 @@ theorem smoothability_subobligations_of_derivation_statement
     bridgeDerivation, modelCompatibility, chartCompatibility⟩
 
 /--
+The smoothability derivation statement bridge exposes exactly the Moise, PL,
+smoothing, smooth-atlas, smooth-structure derivation, manifold, bridge, model,
+and chart-compatibility witnesses stored in the theorem-shaped inputs.
+-/
+theorem smoothability_subobligations_of_derivation_statement_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (smoothStructure : HasThreeManifoldSmoothStructure M)
+    (smoothDerivationStatement :
+      SmoothStructureDerivationStatement M smoothStructure)
+    (manifoldEvidence : IsManifold ThreeManifoldModelWithCorners 1 M)
+    (bridgeDerivation :
+      HasSmoothabilityBridgeDerivation
+        M smoothStructure smoothDerivationStatement manifoldEvidence)
+    (modelCompatibility :
+      HasSmoothManifoldModelCompatibility
+        M smoothStructure smoothDerivationStatement manifoldEvidence
+        bridgeDerivation)
+    (chartCompatibility :
+      HasSmoothChartCompatibility
+        M smoothStructure smoothDerivationStatement manifoldEvidence
+        bridgeDerivation modelCompatibility) :
+    smoothability_subobligations_of_derivation_statement
+        M smoothStructure smoothDerivationStatement manifoldEvidence
+        bridgeDerivation modelCompatibility chartCompatibility =
+      (by
+        rcases smoothDerivationStatement with
+          ⟨localCharts, locallyFiniteCoverRefinement, simplicialComplex,
+            compatibleChartTriangulations, triangulation,
+            simplicialApproximation, starNeighborhoodBasis,
+            barycentricSubdivision, regularNeighborhoodCompatibility,
+            triangulationLocalFiniteness, linkCompatibility,
+            plManifoldRecognition, triangulationHomeomorphism,
+            moiseCompatibility, triangulationUniqueness,
+            hauptvermutungDimensionThree, plStructure,
+            plTransitionCompatibility, plAtlas, plManifoldAtlas,
+            plCollarNeighborhoodCompatibility, plHomeomorphismCompatibility,
+            plAtlasMaximality, plSmoothingExistence,
+            plSmoothingObstructionVanishing, plMicrobundleSmoothing,
+            plSmoothing, plSmoothingCompatibility, plSmoothingUniqueness,
+            plSmoothingLocalModelCompatibility, smoothAtlasConstruction,
+            smoothAtlasPLCompatibility, smoothAtlasMaximality,
+            smoothAtlasUniqueness, smoothStructureUniqueness,
+            smoothTransitionCompatibility, smoothAtlasTransitionSmoothness,
+            smoothDerivation⟩
+        let smoothDerivationStatement :
+            SmoothStructureDerivationStatement M smoothStructure :=
+          ⟨localCharts, locallyFiniteCoverRefinement, simplicialComplex,
+            compatibleChartTriangulations, triangulation,
+            simplicialApproximation, starNeighborhoodBasis,
+            barycentricSubdivision, regularNeighborhoodCompatibility,
+            triangulationLocalFiniteness, linkCompatibility,
+            plManifoldRecognition, triangulationHomeomorphism,
+            moiseCompatibility, triangulationUniqueness,
+            hauptvermutungDimensionThree, plStructure,
+            plTransitionCompatibility, plAtlas, plManifoldAtlas,
+            plCollarNeighborhoodCompatibility, plHomeomorphismCompatibility,
+            plAtlasMaximality, plSmoothingExistence,
+            plSmoothingObstructionVanishing, plMicrobundleSmoothing,
+            plSmoothing, plSmoothingCompatibility, plSmoothingUniqueness,
+            plSmoothingLocalModelCompatibility, smoothAtlasConstruction,
+            smoothAtlasPLCompatibility, smoothAtlasMaximality,
+            smoothAtlasUniqueness, smoothStructureUniqueness,
+            smoothTransitionCompatibility, smoothAtlasTransitionSmoothness,
+            smoothDerivation⟩
+        exact ⟨localCharts, locallyFiniteCoverRefinement, simplicialComplex,
+          compatibleChartTriangulations, triangulation,
+          simplicialApproximation, starNeighborhoodBasis,
+          barycentricSubdivision, regularNeighborhoodCompatibility,
+          triangulationLocalFiniteness, linkCompatibility,
+          plManifoldRecognition, triangulationHomeomorphism,
+          moiseCompatibility, triangulationUniqueness,
+          hauptvermutungDimensionThree, plStructure, plTransitionCompatibility,
+          plAtlas, plManifoldAtlas, plCollarNeighborhoodCompatibility,
+          plHomeomorphismCompatibility, plAtlasMaximality,
+          plSmoothingExistence, plSmoothingObstructionVanishing,
+          plMicrobundleSmoothing, plSmoothing, plSmoothingCompatibility,
+          plSmoothingUniqueness, plSmoothingLocalModelCompatibility,
+          smoothStructure, smoothAtlasConstruction, smoothAtlasPLCompatibility,
+          smoothAtlasMaximality, smoothAtlasUniqueness,
+          smoothStructureUniqueness, smoothTransitionCompatibility,
+          smoothAtlasTransitionSmoothness, smoothDerivation,
+          smoothDerivationStatement, manifoldEvidence, bridgeDerivation,
+          modelCompatibility, chartCompatibility⟩) := by
+  apply Subsingleton.elim
+
+/--
 A package for the smoothability input needed by the end-to-end conditional
 assembly theorem.
 -/
