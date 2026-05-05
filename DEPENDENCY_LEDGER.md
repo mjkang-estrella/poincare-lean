@@ -991,8 +991,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   aggregate component-slot, package-layer, and milestone payload routes to the
   exact requirement tuples they project from `PoincareProofDependencies`; the
   reverse constructors from those requirement payloads back to
-  `PoincareProofDependencies` are named and the three iff routes are pinned to
-  the named forward/reverse maps. The individual component-slot, package-layer,
+  `PoincareProofDependencies` are named and now have equality contracts pinning
+  them to the exact component-slot, package-layer, and milestone payload
+  destructors. The three iff routes are pinned to the named forward/reverse
+  maps. The individual component-slot, package-layer,
   and milestone projection wrappers are now pinned to their generic component,
   package-layer, or milestone projection routes. The component-slot payload is
   pinned both to the stored dependency fields and to the named component-slot

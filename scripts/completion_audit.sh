@@ -4364,6 +4364,8 @@ check_decl "dependency package-layer requirements iff theorem is declared" \
   '^theorem poincareProofDependencies_iff_package_layer_requirements\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency package-layer requirements reverse constructor is declared" \
   '^theorem poincareProofDependencies_of_package_layer_requirements_payload\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency package-layer requirements reverse constructor equality contract is declared" \
+  '^theorem poincareProofDependencies_of_package_layer_requirements_payload_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency package-layer requirements iff equality contract is declared" \
   '^theorem poincareProofDependencies_iff_package_layer_requirements_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency milestone requirement map is declared" \
@@ -4416,6 +4418,8 @@ check_decl "dependency milestone requirements iff theorem is declared" \
   '^theorem poincareProofDependencies_iff_milestone_requirements\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency milestone requirements reverse constructor is declared" \
   '^theorem poincareProofDependencies_of_milestone_requirements_payload\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency milestone requirements reverse constructor equality contract is declared" \
+  '^theorem poincareProofDependencies_of_milestone_requirements_payload_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency milestone requirements iff equality contract is declared" \
   '^theorem poincareProofDependencies_iff_milestone_requirements_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency component requirements payload theorem is declared" \
@@ -4426,6 +4430,8 @@ check_decl "dependency component requirements iff theorem is declared" \
   '^theorem poincareProofDependencies_iff_component_requirements\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency component requirements reverse constructor is declared" \
   '^theorem poincareProofDependencies_of_component_requirements_payload\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency component requirements reverse constructor equality contract is declared" \
+  '^theorem poincareProofDependencies_of_component_requirements_payload_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency component requirements iff equality contract is declared" \
   '^theorem poincareProofDependencies_iff_component_requirements_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency ledger component slots theorem is declared" \

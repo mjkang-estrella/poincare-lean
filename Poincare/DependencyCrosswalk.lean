@@ -362,6 +362,17 @@ theorem poincareProofDependencies_of_component_requirements_payload :
   exact ⟨smoothability, surgery, topology⟩
 
 /--
+The component-slot payload constructor is exactly the payload destructor that
+keeps the smoothability, surgery, and topology component fields.
+-/
+theorem poincareProofDependencies_of_component_requirements_payload_eq :
+    poincareProofDependencies_of_component_requirements_payload.{u} =
+      (by
+        rintro ⟨smoothability, surgery, topology⟩
+        exact ⟨smoothability, surgery, topology⟩) := by
+  apply Subsingleton.elim
+
+/--
 The component-slot equivalence is exactly the named forward payload projection
 paired with the named reverse constructor.
 -/
@@ -734,6 +745,18 @@ theorem poincareProofDependencies_of_package_layer_requirements_payload :
       PoincareProofDependencies.{u} := by
   rintro ⟨smoothability, _analytic, _surgery, finiteExtinction, topology⟩
   exact ⟨smoothability, finiteExtinction, topology⟩
+
+/--
+The package-layer payload constructor is exactly the payload destructor that
+keeps the smoothability, finite-extinction, and topology package-layer fields.
+-/
+theorem poincareProofDependencies_of_package_layer_requirements_payload_eq :
+    poincareProofDependencies_of_package_layer_requirements_payload.{u} =
+      (by
+        rintro ⟨smoothability, _analytic, _surgery, finiteExtinction,
+          topology⟩
+        exact ⟨smoothability, finiteExtinction, topology⟩) := by
+  apply Subsingleton.elim
 
 /--
 The package-layer equivalence is exactly the named forward payload projection
@@ -1115,6 +1138,18 @@ theorem poincareProofDependencies_of_milestone_requirements_payload :
   rintro ⟨smoothability, _analytic, _ricciFlowWithSurgery,
     _perelmanSingularityControl, finiteExtinction, topology⟩
   exact ⟨smoothability, finiteExtinction, topology⟩
+
+/--
+The milestone payload constructor is exactly the payload destructor that keeps
+the smoothability, finite-extinction, and topology-extraction milestone fields.
+-/
+theorem poincareProofDependencies_of_milestone_requirements_payload_eq :
+    poincareProofDependencies_of_milestone_requirements_payload.{u} =
+      (by
+        rintro ⟨smoothability, _analytic, _ricciFlowWithSurgery,
+          _perelmanSingularityControl, finiteExtinction, topology⟩
+        exact ⟨smoothability, finiteExtinction, topology⟩) := by
+  apply Subsingleton.elim
 
 /--
 The milestone equivalence is exactly the named forward payload projection
