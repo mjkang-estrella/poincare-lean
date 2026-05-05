@@ -328,6 +328,49 @@ def RicciFlowWithSurgeryConstructionStatement
     HasRicciFlowWithSurgery n M
 
 /--
+The fixed-flow surgery-construction statement is exactly the listed scale,
+cutoff, neck, cap, post-surgery, surgery-time, long-time, and aggregate
+Ricci-flow-with-surgery witness stack.
+-/
+theorem ricciFlowWithSurgeryConstructionStatement_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    RicciFlowWithSurgeryConstructionStatement flow =
+      (∃ _scaleFunction : HasSurgeryScaleFunction flow,
+      ∃ _scaleContinuity : HasSurgeryScaleContinuity flow,
+      ∃ _scaleSeparation : HasSurgeryScaleSeparation flow,
+      ∃ _cutoffParameterControl : HasSurgeryCutoffParameterControl flow,
+      ∃ _cutoffSmoothBump : HasSurgeryCutoffSmoothBumpFunction flow,
+      ∃ _parameterSelection : HasSurgeryParameterSelection flow,
+      ∃ _strongDeltaNeckDetection : HasStrongDeltaNeckDetection flow,
+      ∃ _neckSeparation : HasSurgeryNeckSeparation flow,
+      ∃ _neckParametrization : HasSurgeryNeckParametrization flow,
+      ∃ _neckCanonicalCoordinates : HasSurgeryNeckCanonicalCoordinates flow,
+      ∃ _neckDecomposition : HasSurgeryNeckDecomposition flow,
+      ∃ _standardCapModel : HasStandardCapModel flow,
+      ∃ _capGluingSmoothness : HasCapGluingSmoothness flow,
+      ∃ _capMetricInterpolation : HasSurgeryCapMetricInterpolation flow,
+      ∃ _capCurvatureEstimates : HasSurgeryCapCurvatureEstimates flow,
+      ∃ _capConstruction : HasSurgeryCapConstruction flow,
+      ∃ _postSurgeryCurvaturePinching : HasPostSurgeryCurvaturePinching flow,
+      ∃ _postSurgeryNoncollapsing : HasPostSurgeryNoncollapsingControl flow,
+      ∃ _postSurgeryDerivativeBounds : HasPostSurgeryDerivativeBounds flow,
+      ∃ _postSurgeryCanonicalNeighborhoodPersistence :
+        HasPostSurgeryCanonicalNeighborhoodPersistence flow,
+      ∃ _metricControl : HasPostSurgeryMetricControl flow,
+      ∃ _surgeryTimeDiscreteness : HasSurgeryTimeDiscreteness flow,
+      ∃ _surgeryTimeLocalFiniteness : HasSurgeryTimeLocalFiniteness flow,
+      ∃ _longTimeExistenceIteration : HasLongTimeExistenceIteration flow,
+      ∃ _longTimeParameterCoherence :
+        HasLongTimeSurgeryParameterCoherence flow,
+      ∃ _longTimeNonaccumulation : HasLongTimeNonaccumulation flow,
+      ∃ _longTimeContinuation : HasLongTimeSurgeryContinuation flow,
+        HasRicciFlowWithSurgery n M) :=
+  rfl
+
+/--
 Assemble the fixed-flow surgery-construction statement from the named
 construction components.
 -/
