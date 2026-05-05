@@ -64,7 +64,11 @@ The current artifact is intentionally conservative:
   `remainingDependencyPackage_iff_poincareProofDependencies`; the same
   aggregate-to-remaining pinning now covers the packaged smooth and packaged
   canonical-smooth completion certificate constructors, payload proposition
-  equivalences, and certificate iff factorizations. The dependency-packaged
+  equivalences, and certificate iff factorizations. The packaged smooth and
+  packaged canonical-smooth certificate equivalences are also pinned directly to
+  their named projection/constructor pairs, and their aggregate/remaining
+  payload equivalences are pinned to the componentwise dependency conversion.
+  The dependency-packaged
   smooth payload routes are also pinned back to the standalone
   `SmoothabilityPackage` payload routes obtained by projecting the package's
   smoothability component, including their project target, criterion, and

@@ -101,6 +101,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   smooth and packaged canonical-smooth aggregate completion certificate
   constructors, payload proposition equivalences, and certificate iff
   factorizations are pinned to the remaining-dependency surface as well. The
+  packaged smooth and packaged canonical-smooth certificate equivalences are
+  also pinned directly to their named projection/constructor pairs, and their
+  aggregate/remaining payload equivalences are pinned to the componentwise
+  dependency conversion. The
   dependency-packaged smooth payloads are also pinned to the standalone
   `SmoothabilityPackage` payloads obtained by projecting the smoothability
   component, including their project target, criterion, and project

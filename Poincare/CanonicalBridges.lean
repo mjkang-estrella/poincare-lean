@@ -1919,6 +1919,26 @@ theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_package
         payload
 
 /--
+The remaining-dependency packaged smooth certificate equivalence is the pair of
+the named packaged smooth payload projection and constructor.
+-/
+theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_packaged_smooth_statement_payload_eq
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    poincareCompletionCertificate_iff_remainingDependencyPackage_and_packaged_smooth_statement_payload
+        smoothStatement =
+      (by
+        constructor
+        · intro certificate
+          exact
+            poincareCompletionCertificate_remainingDependencyPackage_packaged_smooth_statement_payload
+              certificate smoothStatement
+        · intro payload
+          exact
+            completion_certificate_of_remaining_dependency_package_packaged_smooth_statement_payload
+              payload) := by
+  apply Subsingleton.elim
+
+/--
 With a project smooth statement supplied as an explicit input, the checked
 completion certificate is equivalent to an aggregate dependency package together
 with its packaged smooth-route payload.
@@ -1940,6 +1960,26 @@ theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_packaged
     exact
       completion_certificate_of_poincareProofDependencies_packaged_smooth_statement_payload
         payload
+
+/--
+The aggregate packaged smooth certificate equivalence is the pair of the named
+packaged smooth payload projection and constructor.
+-/
+theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_packaged_smooth_statement_payload_eq
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    poincareCompletionCertificate_iff_poincareProofDependencies_and_packaged_smooth_statement_payload
+        smoothStatement =
+      (by
+        constructor
+        · intro certificate
+          exact
+            poincareCompletionCertificate_poincareProofDependencies_packaged_smooth_statement_payload
+              certificate smoothStatement
+        · intro payload
+          exact
+            completion_certificate_of_poincareProofDependencies_packaged_smooth_statement_payload
+              payload) := by
+  apply Subsingleton.elim
 
 /--
 With the canonical smooth 3-sphere statement supplied as an explicit input, the
@@ -1975,6 +2015,31 @@ theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_package
         payload
 
 /--
+The remaining-dependency packaged canonical-smooth certificate equivalence is
+the pair of the named packaged canonical-smooth payload projection and
+constructor.
+-/
+theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_packaged_canonical_smooth_three_sphere_statement_payload_eq
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    poincareCompletionCertificate_iff_remainingDependencyPackage_and_packaged_canonical_smooth_three_sphere_statement_payload
+        h =
+      (by
+        constructor
+        · intro certificate
+          exact
+            poincareCompletionCertificate_remainingDependencyPackage_packaged_canonical_smooth_three_sphere_statement_payload
+              certificate h
+        · intro payload
+          exact
+            completion_certificate_of_remaining_dependency_package_packaged_canonical_smooth_three_sphere_statement_payload
+              payload) := by
+  apply Subsingleton.elim
+
+/--
 With the canonical smooth 3-sphere statement supplied as an explicit input, the
 checked completion certificate is equivalent to an aggregate dependency package
 together with its packaged canonical-smooth route payload.
@@ -2006,6 +2071,30 @@ theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_packaged
     exact
       completion_certificate_of_poincareProofDependencies_packaged_canonical_smooth_three_sphere_statement_payload
         payload
+
+/--
+The aggregate packaged canonical-smooth certificate equivalence is the pair of
+the named packaged canonical-smooth payload projection and constructor.
+-/
+theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_payload_eq
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    poincareCompletionCertificate_iff_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_payload
+        h =
+      (by
+        constructor
+        · intro certificate
+          exact
+            poincareCompletionCertificate_poincareProofDependencies_packaged_canonical_smooth_three_sphere_statement_payload
+              certificate h
+        · intro payload
+          exact
+            completion_certificate_of_poincareProofDependencies_packaged_canonical_smooth_three_sphere_statement_payload
+              payload) := by
+  apply Subsingleton.elim
 
 /--
 Projecting the remaining-dependency packaged smooth payload from the
@@ -2965,6 +3054,32 @@ theorem packaged_smooth_statement_payload_iff_poincareProofDependencies_remainin
         smoothManifold, smoothStatement, target, criterion⟩
 
 /--
+The packaged smooth aggregate/remaining payload equivalence is the componentwise
+dependency conversion.
+-/
+theorem packaged_smooth_statement_payload_iff_poincareProofDependencies_remainingDependencyPackage_eq :
+    packaged_smooth_statement_payload_iff_poincareProofDependencies_remainingDependencyPackage =
+      (by
+        constructor
+        · intro payload
+          rcases payload with
+            ⟨dependencies, smoothManifold, smoothStatement, target,
+              criterion⟩
+          exact
+            ⟨remainingDependencyPackage_iff_poincareProofDependencies.mpr
+                dependencies,
+              smoothManifold, smoothStatement, target, criterion⟩
+        · intro payload
+          rcases payload with
+            ⟨dependencies, smoothManifold, smoothStatement, target,
+              criterion⟩
+          exact
+            ⟨remainingDependencyPackage_iff_poincareProofDependencies.mp
+                dependencies,
+              smoothManifold, smoothStatement, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate and remaining packaged canonical-smooth payload propositions
 differ only by the first dependency package component.
 -/
@@ -3010,6 +3125,34 @@ theorem packaged_canonical_smooth_three_sphere_statement_payload_iff_poincarePro
           dependencies,
         smoothManifold, canonicalSmoothStatement, smoothStatement, target,
         criterion⟩
+
+/--
+The packaged canonical-smooth aggregate/remaining payload equivalence is the
+componentwise dependency conversion.
+-/
+theorem packaged_canonical_smooth_three_sphere_statement_payload_iff_poincareProofDependencies_remainingDependencyPackage_eq :
+    packaged_canonical_smooth_three_sphere_statement_payload_iff_poincareProofDependencies_remainingDependencyPackage =
+      (by
+        constructor
+        · intro payload
+          rcases payload with
+            ⟨dependencies, smoothManifold, canonicalSmoothStatement,
+              smoothStatement, target, criterion⟩
+          exact
+            ⟨remainingDependencyPackage_iff_poincareProofDependencies.mpr
+                dependencies,
+              smoothManifold, canonicalSmoothStatement, smoothStatement,
+              target, criterion⟩
+        · intro payload
+          rcases payload with
+            ⟨dependencies, smoothManifold, canonicalSmoothStatement,
+              smoothStatement, target, criterion⟩
+          exact
+            ⟨remainingDependencyPackage_iff_poincareProofDependencies.mp
+                dependencies,
+              smoothManifold, canonicalSmoothStatement, smoothStatement,
+              target, criterion⟩) := by
+  apply Subsingleton.elim
 
 /--
 The aggregate packaged smooth certificate iff route factors through the
