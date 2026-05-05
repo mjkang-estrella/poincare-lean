@@ -393,7 +393,9 @@ The current artifact is intentionally conservative:
   extraction payloads, and final extractor; theorem-shaped package-statement
   routes remain explicit where the projection is not just a stored field. The
   fixed-manifold topology derivation statement route is now pinned directly to
-  the component assembly route applied to the package projections. The
+  the component assembly route applied to the package projections, and the
+  narrower homeomorphism assembly/derivation statement bridges are pinned to
+  their destructuring routes from the full derivation statement. The
   concrete homeomorphism glue for the standard sphere's self-homeomorphism,
   intermediate-space composition, opposite-direction source transport, and both
   inverse-direction recognition maps now also has direct equality contracts.

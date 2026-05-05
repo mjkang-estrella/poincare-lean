@@ -3925,6 +3925,47 @@ theorem topology_homeomorphism_assembly_statement_of_derivation_statement
     simplyConnectedRecognition, trivialQuotient, homeomorphismAssembly⟩
 
 /--
+The assembly-statement bridge from a full topology derivation statement exposes
+exactly the narrower homeomorphism assembly components stored in it.
+-/
+theorem topology_homeomorphism_assembly_statement_of_derivation_statement_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (derivationStatement :
+      ExtinctionTopologyDerivationStatement M extinction homeomorphism) :
+    topology_homeomorphism_assembly_statement_of_derivation_statement
+        M extinction homeomorphism derivationStatement =
+      (by
+        rcases derivationStatement with
+          ⟨decomposition, _surgeryTraceReconstruction,
+            _surgeryTraceHandleCancellation, _componentClassification,
+            _discardedComponentHomeomorphismClassification, _componentInventory,
+            _componentBoundarySphereControl, primeDecomposition,
+            _primeDecompositionExistence, _sphereTheoremApplication,
+            _embeddedSphereProduction, _loopTheoremApplication,
+            _primeDecompositionCompatibility, _primeFactorUniqueness,
+            irreducibility, _irreducibleFactorRecognition,
+            connectedSumCollapse, _connectedSumFundamentalGroupControl,
+            _connectedSumVanKampen, _simplyConnectedPrimeFactorControl,
+            sphericalReduction, _sphericalClassification, quotientModel,
+            _sphericalFreeAction, _universalCover, _sphericalCoveringModel,
+            _sphericalCoveringProjection, fundamentalGroupComputation,
+            deckGroupIdentification, _deckActionProperness, deckGroupTriviality,
+            _deckActionTrivialization, _trivialDeckQuotientIdentification,
+            trivialQuotient, _trivialQuotientHomeomorphism,
+            _sphericalHomeomorphismLift, simplyConnectedRecognition,
+            homeomorphismAssembly, _homeomorphismDerivation⟩
+        exact ⟨decomposition, primeDecomposition, irreducibility,
+          connectedSumCollapse, sphericalReduction, quotientModel,
+          fundamentalGroupComputation, deckGroupIdentification,
+          deckGroupTriviality, simplyConnectedRecognition, trivialQuotient,
+          homeomorphismAssembly⟩) := by
+  apply Subsingleton.elim
+
+/--
 The full topology derivation statement contains the narrower homeomorphism
 derivation statement.
 -/
@@ -3962,6 +4003,47 @@ theorem topology_homeomorphism_derivation_statement_of_derivation_statement
     deckGroupTriviality, simplyConnectedRecognition, quotientModel,
     deckGroupIdentification, trivialQuotient, homeomorphismAssembly,
     homeomorphismDerivation⟩
+
+/--
+The derivation-statement bridge from a full topology derivation statement
+exposes exactly the narrower homeomorphism derivation components stored in it.
+-/
+theorem topology_homeomorphism_derivation_statement_of_derivation_statement_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (derivationStatement :
+      ExtinctionTopologyDerivationStatement M extinction homeomorphism) :
+    topology_homeomorphism_derivation_statement_of_derivation_statement
+        M extinction homeomorphism derivationStatement =
+      (by
+        rcases derivationStatement with
+          ⟨decomposition, _surgeryTraceReconstruction,
+            _surgeryTraceHandleCancellation, _componentClassification,
+            _discardedComponentHomeomorphismClassification, _componentInventory,
+            _componentBoundarySphereControl, primeDecomposition,
+            _primeDecompositionExistence, _sphereTheoremApplication,
+            _embeddedSphereProduction, _loopTheoremApplication,
+            _primeDecompositionCompatibility, _primeFactorUniqueness,
+            irreducibility, _irreducibleFactorRecognition,
+            connectedSumCollapse, _connectedSumFundamentalGroupControl,
+            _connectedSumVanKampen, _simplyConnectedPrimeFactorControl,
+            sphericalReduction, _sphericalClassification, quotientModel,
+            _sphericalFreeAction, _universalCover, _sphericalCoveringModel,
+            _sphericalCoveringProjection, fundamentalGroupComputation,
+            deckGroupIdentification, _deckActionProperness, deckGroupTriviality,
+            _deckActionTrivialization, _trivialDeckQuotientIdentification,
+            trivialQuotient, _trivialQuotientHomeomorphism,
+            _sphericalHomeomorphismLift, simplyConnectedRecognition,
+            homeomorphismAssembly, homeomorphismDerivation⟩
+        exact ⟨decomposition, primeDecomposition, irreducibility,
+          connectedSumCollapse, sphericalReduction, fundamentalGroupComputation,
+          deckGroupTriviality, simplyConnectedRecognition, quotientModel,
+          deckGroupIdentification, trivialQuotient, homeomorphismAssembly,
+          homeomorphismDerivation⟩) := by
+  apply Subsingleton.elim
 
 /--
 A completed topology package supplies the theorem-shaped extraction statement

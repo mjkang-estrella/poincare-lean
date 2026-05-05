@@ -2878,8 +2878,12 @@ check_decl "topology derivation statement classification bridge is declared" \
   '^theorem topology_classification_subobligations_of_derivation_statement\b' Poincare/TopologyExtraction.lean
 check_decl "topology derivation statement assembly bridge is declared" \
   '^theorem topology_homeomorphism_assembly_statement_of_derivation_statement\b' Poincare/TopologyExtraction.lean
+check_decl "topology derivation statement assembly bridge equality contract is declared" \
+  '^theorem topology_homeomorphism_assembly_statement_of_derivation_statement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "topology derivation statement homeomorphism-derivation bridge is declared" \
   '^theorem topology_homeomorphism_derivation_statement_of_derivation_statement\b' Poincare/TopologyExtraction.lean
+check_decl "topology derivation statement homeomorphism-derivation bridge equality contract is declared" \
+  '^theorem topology_homeomorphism_derivation_statement_of_derivation_statement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "topology package extraction statement projection is declared" \
   '^theorem extinction_topology_extraction_statement_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology extraction statement payload bridge is declared" \
@@ -6649,7 +6653,9 @@ open scoped Manifold ContDiff
 #check Poincare.ExtinctionTopologyClassificationSubobligationsPayload
 #check Poincare.topology_classification_subobligations_of_derivation_statement
 #check Poincare.topology_homeomorphism_assembly_statement_of_derivation_statement
+#check Poincare.topology_homeomorphism_assembly_statement_of_derivation_statement_eq
 #check Poincare.topology_homeomorphism_derivation_statement_of_derivation_statement
+#check Poincare.topology_homeomorphism_derivation_statement_of_derivation_statement_eq
 #check Poincare.extinction_topology_extraction_statement_of_topology_package
 #check Poincare.topology_derivation_statement_payload_of_extraction_statement
 #check Poincare.homeomorphism_of_topology_extraction_statement
@@ -9603,7 +9609,9 @@ open scoped Manifold ContDiff
 #check Poincare.ExtinctionTopologyClassificationSubobligationsPayload
 #check Poincare.topology_classification_subobligations_of_derivation_statement
 #check Poincare.topology_homeomorphism_assembly_statement_of_derivation_statement
+#check Poincare.topology_homeomorphism_assembly_statement_of_derivation_statement_eq
 #check Poincare.topology_homeomorphism_derivation_statement_of_derivation_statement
+#check Poincare.topology_homeomorphism_derivation_statement_of_derivation_statement_eq
 #check Poincare.extinction_topology_extraction_statement_of_topology_package
 #check Poincare.topology_derivation_statement_payload_of_extraction_statement
 #check Poincare.homeomorphism_of_topology_extraction_statement
