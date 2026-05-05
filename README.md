@@ -167,9 +167,10 @@ The current artifact is intentionally conservative:
   DeTurck, continuation, regularity, evolution, Ricci-identification, and
   equation witnesses; the derivation-statement sub-obligation bridge is pinned
   to the exact connection, curvature, DeTurck, continuation, regularity, and
-  evolution witness stack; Ricci-flow/evidence projections now also have
-  equality contracts back to the stored package flow and the flow-level evidence
-  theorems.
+  evolution witness stack; the package-level equation, DeTurck-equation,
+  derivation-statement, statement, and payload routes, plus the statement-level
+  flow/Ricci/equation bridges, now also have equality contracts pinning them to
+  their stored package fields, component assemblers, and destructuring routes.
 - `Poincare/Surgery.lean` defines typed no-constructor interfaces for Ricci flow
   with surgery, Perelman singularity control, finite-extinction derivation, and
   the package that connects them to the finite-extinction assembly layer through

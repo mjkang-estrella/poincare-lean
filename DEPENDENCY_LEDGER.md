@@ -269,9 +269,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   DeTurck, continuation, regularity, evolution, Ricci-identification, and
   equation witnesses; the derivation-statement sub-obligation bridge is pinned
   to the exact connection, curvature, DeTurck, continuation, regularity, and
-  evolution witness stack; analytic-package flow/evidence projection equalities
-  record that those package-level surfaces delegate exactly to the stored flow
-  data.
+  evolution witness stack; analytic-package equation, DeTurck-equation,
+  derivation-statement, statement, payload, and statement-level flow/Ricci/equation
+  equalities record that those package-level and theorem-shaped surfaces delegate
+  exactly to the stored fields, component assemblers, and destructuring routes.
 - `Poincare/Surgery.lean` defines no-constructor interfaces for Ricci flow with
   surgery, Perelman singularity control, and finite-extinction derivation, plus
   checked package projections to the analytic foundation. Its direct package

@@ -413,6 +413,8 @@ check_decl "analytic foundation scalar-curvature projection theorem is declared"
   '^theorem scalar_curvature_theory_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation equation-derivation projection theorem is declared" \
   '^theorem equation_derivation_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation equation-derivation equality theorem is declared" \
+  '^@\[simp\] theorem equation_derivation_of_analytic_foundation_package_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation initial metric compatibility projection theorem is declared" \
   '^theorem initial_metric_compatibility_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation DeTurck gauge projection theorem is declared" \
@@ -423,6 +425,8 @@ check_decl "analytic foundation DeTurck vector-field projection theorem is decla
   '^theorem deturck_vector_field_construction_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation DeTurck equation projection theorem is declared" \
   '^theorem deturck_equation_derivation_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation DeTurck equation equality theorem is declared" \
+  '^@\[simp\] theorem deturck_equation_derivation_of_analytic_foundation_package_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation Ricci-DeTurck linearization projection theorem is declared" \
   '^theorem ricci_deturck_linearization_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation strictly parabolic DeTurck projection theorem is declared" \
@@ -483,16 +487,28 @@ check_decl "analytic foundation equation evidence equality theorem is declared" 
   '^theorem equation_evidence_of_analytic_foundation_package_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation package derivation statement projection is declared" \
   '^theorem analytic_foundation_derivation_statement_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation package derivation statement equality theorem is declared" \
+  '^theorem analytic_foundation_derivation_statement_of_analytic_foundation_package_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation package statement projection is declared" \
   '^theorem analytic_foundation_statement_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation package statement equality theorem is declared" \
+  '^theorem analytic_foundation_statement_of_analytic_foundation_package_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation package payload theorem is declared" \
   '^theorem analytic_foundation_payload_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation package payload equality theorem is declared" \
+  '^theorem analytic_foundation_payload_of_analytic_foundation_package_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation statement Ricci-flow data bridge is declared" \
   '^theorem ricci_flow_data_of_analytic_foundation_statement\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation statement Ricci-flow data equality theorem is declared" \
+  '^theorem ricci_flow_data_of_analytic_foundation_statement_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation statement Ricci-identification bridge is declared" \
   '^theorem ricci_identification_of_analytic_foundation_statement\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation statement Ricci-identification equality theorem is declared" \
+  '^theorem ricci_identification_of_analytic_foundation_statement_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation statement equation evidence bridge is declared" \
   '^theorem equation_evidence_of_analytic_foundation_statement\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation statement equation evidence equality theorem is declared" \
+  '^theorem equation_evidence_of_analytic_foundation_statement_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "finite-extinction/extraction assembly theorem is declared" \
   '^theorem poincare_statement_of_extinction_and_extraction\b' Poincare/RicciFlowInterface.lean
 check_decl "finite-extinction/extraction assembly equality contract is declared" \
@@ -6917,11 +6933,13 @@ open scoped Manifold ContDiff
 #check Poincare.metric_time_derivative_of_analytic_foundation_package
 #check Poincare.scalar_curvature_theory_of_analytic_foundation_package
 #check Poincare.equation_derivation_of_analytic_foundation_package
+#check Poincare.equation_derivation_of_analytic_foundation_package_eq
 #check Poincare.initial_metric_compatibility_of_analytic_foundation_package
 #check Poincare.deturck_gauge_fixing_of_analytic_foundation_package
 #check Poincare.deturck_background_metric_compatibility_of_analytic_foundation_package
 #check Poincare.deturck_vector_field_construction_of_analytic_foundation_package
 #check Poincare.deturck_equation_derivation_of_analytic_foundation_package
+#check Poincare.deturck_equation_derivation_of_analytic_foundation_package_eq
 #check Poincare.ricci_deturck_linearization_of_analytic_foundation_package
 #check Poincare.strictly_parabolic_deturck_of_analytic_foundation_package
 #check Poincare.parabolic_linear_theory_of_analytic_foundation_package
@@ -6959,11 +6977,17 @@ open scoped Manifold ContDiff
 #check Poincare.analytic_foundation_subobligations_of_derivation_statement
 #check Poincare.analytic_foundation_subobligations_of_derivation_statement_eq
 #check Poincare.analytic_foundation_derivation_statement_of_analytic_foundation_package
+#check Poincare.analytic_foundation_derivation_statement_of_analytic_foundation_package_eq
 #check Poincare.analytic_foundation_statement_of_analytic_foundation_package
+#check Poincare.analytic_foundation_statement_of_analytic_foundation_package_eq
 #check Poincare.analytic_foundation_payload_of_analytic_foundation_package
+#check Poincare.analytic_foundation_payload_of_analytic_foundation_package_eq
 #check Poincare.ricci_flow_data_of_analytic_foundation_statement
+#check Poincare.ricci_flow_data_of_analytic_foundation_statement_eq
 #check Poincare.ricci_identification_of_analytic_foundation_statement
+#check Poincare.ricci_identification_of_analytic_foundation_statement_eq
 #check Poincare.equation_evidence_of_analytic_foundation_statement
+#check Poincare.equation_evidence_of_analytic_foundation_statement_eq
 #check Poincare.finite_extinction_fundamental_group_input_of_surgery_package
 #check Poincare.finite_extinction_sweepout_existence_of_surgery_package
 #check Poincare.finite_extinction_sweepout_parameter_space_of_surgery_package
@@ -9101,11 +9125,13 @@ open scoped Manifold ContDiff
 #check Poincare.metric_time_derivative_of_analytic_foundation_package
 #check Poincare.scalar_curvature_theory_of_analytic_foundation_package
 #check Poincare.equation_derivation_of_analytic_foundation_package
+#check Poincare.equation_derivation_of_analytic_foundation_package_eq
 #check Poincare.initial_metric_compatibility_of_analytic_foundation_package
 #check Poincare.deturck_gauge_fixing_of_analytic_foundation_package
 #check Poincare.deturck_background_metric_compatibility_of_analytic_foundation_package
 #check Poincare.deturck_vector_field_construction_of_analytic_foundation_package
 #check Poincare.deturck_equation_derivation_of_analytic_foundation_package
+#check Poincare.deturck_equation_derivation_of_analytic_foundation_package_eq
 #check Poincare.ricci_deturck_linearization_of_analytic_foundation_package
 #check Poincare.strictly_parabolic_deturck_of_analytic_foundation_package
 #check Poincare.parabolic_linear_theory_of_analytic_foundation_package
@@ -9143,11 +9169,17 @@ open scoped Manifold ContDiff
 #check Poincare.analytic_foundation_subobligations_of_derivation_statement
 #check Poincare.analytic_foundation_subobligations_of_derivation_statement_eq
 #check Poincare.analytic_foundation_derivation_statement_of_analytic_foundation_package
+#check Poincare.analytic_foundation_derivation_statement_of_analytic_foundation_package_eq
 #check Poincare.analytic_foundation_statement_of_analytic_foundation_package
+#check Poincare.analytic_foundation_statement_of_analytic_foundation_package_eq
 #check Poincare.analytic_foundation_payload_of_analytic_foundation_package
+#check Poincare.analytic_foundation_payload_of_analytic_foundation_package_eq
 #check Poincare.ricci_flow_data_of_analytic_foundation_statement
+#check Poincare.ricci_flow_data_of_analytic_foundation_statement_eq
 #check Poincare.ricci_identification_of_analytic_foundation_statement
+#check Poincare.ricci_identification_of_analytic_foundation_statement_eq
 #check Poincare.equation_evidence_of_analytic_foundation_statement
+#check Poincare.equation_evidence_of_analytic_foundation_statement_eq
 
 #check (Poincare.finite_extinction_of_surgery_package :
   ∀ {n : ℕ∞ω}

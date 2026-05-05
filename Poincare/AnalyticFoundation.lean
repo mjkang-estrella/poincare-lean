@@ -1236,6 +1236,20 @@ theorem equation_derivation_of_analytic_foundation_package
       (ricci_flow_data_of_analytic_foundation_package package) :=
   package.equationDerivation
 
+/--
+The analytic-foundation Ricci-flow equation derivation projection is exactly
+the stored package field.
+-/
+@[simp] theorem equation_derivation_of_analytic_foundation_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    equation_derivation_of_analytic_foundation_package package =
+      package.equationDerivation :=
+  rfl
+
 /-- Project initial-metric compatibility from an analytic-foundation package. -/
 theorem initial_metric_compatibility_of_analytic_foundation_package
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -1290,6 +1304,20 @@ theorem deturck_equation_derivation_of_analytic_foundation_package
     HasDeTurckEquationDerivation
       (ricci_flow_data_of_analytic_foundation_package package) :=
   package.deturckEquation
+
+/--
+The analytic-foundation Ricci-DeTurck equation derivation projection is exactly
+the stored package field.
+-/
+@[simp] theorem deturck_equation_derivation_of_analytic_foundation_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    deturck_equation_derivation_of_analytic_foundation_package package =
+      package.deturckEquation :=
+  rfl
 
 /-- Project Ricci-DeTurck operator linearization from an analytic-foundation package. -/
 theorem ricci_deturck_linearization_of_analytic_foundation_package
@@ -1688,6 +1716,80 @@ theorem analytic_foundation_derivation_statement_of_analytic_foundation_package
     (equation_evidence_of_analytic_foundation_package package)
 
 /--
+The analytic-foundation package derivation statement is exactly the fixed-flow
+component assembler applied to the package projections.
+-/
+theorem analytic_foundation_derivation_statement_of_analytic_foundation_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    analytic_foundation_derivation_statement_of_analytic_foundation_package
+      package =
+      analytic_foundation_derivation_statement_of_components
+        (ricci_flow_data_of_analytic_foundation_package package)
+        (levi_civita_existence_of_analytic_foundation_package package)
+        (levi_civita_uniqueness_of_analytic_foundation_package package)
+        (levi_civita_torsion_free_of_analytic_foundation_package package)
+        (levi_civita_metric_compatibility_of_analytic_foundation_package
+          package)
+        (levi_civita_theory_of_analytic_foundation_package package)
+        (riemann_curvature_construction_of_analytic_foundation_package package)
+        (riemann_curvature_symmetries_of_analytic_foundation_package package)
+        (first_bianchi_identity_of_analytic_foundation_package package)
+        (second_bianchi_identity_of_analytic_foundation_package package)
+        (riemann_curvature_theory_of_analytic_foundation_package package)
+        (ricci_contraction_formula_of_analytic_foundation_package package)
+        (scalar_curvature_contraction_formula_of_analytic_foundation_package
+          package)
+        (ricci_contraction_theory_of_analytic_foundation_package package)
+        (metric_regularity_of_analytic_foundation_package package)
+        (metric_time_derivative_of_analytic_foundation_package package)
+        (scalar_curvature_theory_of_analytic_foundation_package package)
+        (equation_derivation_of_analytic_foundation_package package)
+        (initial_metric_compatibility_of_analytic_foundation_package package)
+        (deturck_gauge_fixing_of_analytic_foundation_package package)
+        (deturck_background_metric_compatibility_of_analytic_foundation_package
+          package)
+        (deturck_vector_field_construction_of_analytic_foundation_package
+          package)
+        (deturck_equation_derivation_of_analytic_foundation_package package)
+        (ricci_deturck_linearization_of_analytic_foundation_package package)
+        (strictly_parabolic_deturck_of_analytic_foundation_package package)
+        (parabolic_linear_theory_of_analytic_foundation_package package)
+        (parabolic_fixed_point_argument_of_analytic_foundation_package package)
+        (deturck_short_time_existence_of_analytic_foundation_package package)
+        (short_time_regularity_bootstrap_of_analytic_foundation_package
+          package)
+        (deturck_diffeomorphism_ode_of_analytic_foundation_package package)
+        (deturck_pullback_equation_identity_of_analytic_foundation_package
+          package)
+        (deturck_pullback_to_ricci_flow_of_analytic_foundation_package package)
+        (short_time_existence_of_analytic_foundation_package package)
+        (maximal_time_interval_of_analytic_foundation_package package)
+        (continuation_criterion_of_analytic_foundation_package package)
+        (curvature_blowup_criterion_of_analytic_foundation_package package)
+        (maximal_solution_extension_of_analytic_foundation_package package)
+        (parabolic_schauder_estimates_of_analytic_foundation_package package)
+        (parabolic_regularity_of_analytic_foundation_package package)
+        (shi_derivative_estimates_of_analytic_foundation_package package)
+        (curvature_derivative_bootstrap_of_analytic_foundation_package package)
+        (hamilton_maximum_principle_of_analytic_foundation_package package)
+        (uniqueness_theory_of_analytic_foundation_package package)
+        (metric_evolution_equation_of_analytic_foundation_package package)
+        (ricci_tensor_evolution_equation_of_analytic_foundation_package
+          package)
+        (scalar_curvature_evolution_equation_of_analytic_foundation_package
+          package)
+        (curvature_norm_evolution_inequality_of_analytic_foundation_package
+          package)
+        (curvature_evolution_of_analytic_foundation_package package)
+        (ricci_identification_of_analytic_foundation_package package)
+        (equation_evidence_of_analytic_foundation_package package) :=
+  rfl
+
+/--
 A completed analytic-foundation package supplies the theorem-shaped analytic
 foundation statement.
 -/
@@ -1701,6 +1803,22 @@ theorem analytic_foundation_statement_of_analytic_foundation_package
   ⟨ricci_flow_data_of_analytic_foundation_package package,
     analytic_foundation_derivation_statement_of_analytic_foundation_package
       package⟩
+
+/--
+The analytic-foundation package statement is exactly the existential pair of
+the projected flow data and assembled derivation statement.
+-/
+theorem analytic_foundation_statement_of_analytic_foundation_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    analytic_foundation_statement_of_analytic_foundation_package package =
+      ⟨ricci_flow_data_of_analytic_foundation_package package,
+        analytic_foundation_derivation_statement_of_analytic_foundation_package
+          package⟩ :=
+  rfl
 
 /--
 A completed analytic-foundation package exposes the theorem-shaped analytic
@@ -1737,6 +1855,28 @@ theorem analytic_foundation_payload_of_analytic_foundation_package
     equation_evidence_of_analytic_foundation_package package⟩
 
 /--
+The analytic-foundation package payload is exactly the theorem-shaped statement,
+fixed-flow derivation statement, named sub-obligation payload, and equation
+evidence assembled from the package projections.
+-/
+theorem analytic_foundation_payload_of_analytic_foundation_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    analytic_foundation_payload_of_analytic_foundation_package package =
+      ⟨analytic_foundation_statement_of_analytic_foundation_package package,
+        analytic_foundation_derivation_statement_of_analytic_foundation_package
+          package,
+        analytic_foundation_subobligations_of_derivation_statement
+          (ricci_flow_data_of_analytic_foundation_package package)
+          (analytic_foundation_derivation_statement_of_analytic_foundation_package
+            package),
+        equation_evidence_of_analytic_foundation_package package⟩ := by
+  apply Subsingleton.elim
+
+/--
 The theorem-shaped analytic foundation statement supplies Ricci-flow data
 together with its fixed-flow derivation statement.
 -/
@@ -1750,6 +1890,22 @@ theorem ricci_flow_data_of_analytic_foundation_statement
       AnalyticFoundationDerivationStatement flow := by
   rcases statement with ⟨flow, derivationStatement⟩
   exact ⟨flow, derivationStatement⟩
+
+/--
+The analytic-foundation statement flow-data bridge is exactly the destructuring
+of the theorem-shaped statement into its stored flow and derivation statement.
+-/
+theorem ricci_flow_data_of_analytic_foundation_statement_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (statement : RicciFlowAnalyticFoundationStatement I n M) :
+    ricci_flow_data_of_analytic_foundation_statement statement =
+      (by
+        rcases statement with ⟨flow, derivationStatement⟩
+        exact ⟨flow, derivationStatement⟩) := by
+  apply Subsingleton.elim
 
 /--
 The theorem-shaped analytic foundation statement supplies Ricci-identification
@@ -1770,6 +1926,23 @@ theorem ricci_identification_of_analytic_foundation_statement
   exact ⟨flow, ricci_identification_of_ricci_flow_data flow⟩
 
 /--
+The analytic-foundation statement Ricci-identification bridge is exactly the
+destructuring of the theorem-shaped statement followed by the flow-level
+Ricci-identification projection.
+-/
+theorem ricci_identification_of_analytic_foundation_statement_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (statement : RicciFlowAnalyticFoundationStatement I n M) :
+    ricci_identification_of_analytic_foundation_statement statement =
+      (by
+        rcases statement with ⟨flow, _derivation⟩
+        exact ⟨flow, ricci_identification_of_ricci_flow_data flow⟩) := by
+  apply Subsingleton.elim
+
+/--
 The theorem-shaped analytic foundation statement supplies Ricci-flow equation
 evidence for its projected Ricci-flow data.
 -/
@@ -1785,5 +1958,22 @@ theorem equation_evidence_of_analytic_foundation_statement
         (curvature_data_of_ricci_flow_data flow) := by
   rcases statement with ⟨flow, _derivation⟩
   exact ⟨flow, equation_evidence_of_ricci_flow_data flow⟩
+
+/--
+The analytic-foundation statement equation bridge is exactly the destructuring
+of the theorem-shaped statement followed by the flow-level equation-evidence
+projection.
+-/
+theorem equation_evidence_of_analytic_foundation_statement_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (statement : RicciFlowAnalyticFoundationStatement I n M) :
+    equation_evidence_of_analytic_foundation_statement statement =
+      (by
+        rcases statement with ⟨flow, _derivation⟩
+        exact ⟨flow, equation_evidence_of_ricci_flow_data flow⟩) := by
+  apply Subsingleton.elim
 
 end Poincare
