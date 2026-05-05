@@ -7573,6 +7573,19 @@ theorem poincare_completion_payload_of_dependency_projections_to_topology_statem
   apply Subsingleton.elim
 
 /--
+The dependency projection completion payload is the payload of the final
+extractor selected by the stored topology package.
+-/
+theorem poincare_completion_payload_of_dependency_projections_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_dependency_projections dependencies =
+      poincare_payload_of_extinction_and_extraction
+        (finite_extinction_of_dependencies dependencies)
+        (extinction_implies_sphere_of_topology_package
+          dependencies.topology) := by
+  apply Subsingleton.elim
+
+/--
 The extraction-derivation projection route exposes the local target and
 universe-indexed completion criterion as one payload.
 -/
@@ -7620,6 +7633,24 @@ theorem poincare_completion_payload_of_extraction_derivation_dependency_projecti
   apply Subsingleton.elim
 
 /--
+The certified dependency projection completion payload is the payload carried
+by the extraction/derivation route selected from the stored topology package.
+-/
+theorem poincare_completion_payload_of_extraction_derivation_dependency_projections_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_extraction_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation⟩
+        exact
+          poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency package also proves the Poincare target through the
 full finite-extinction and post-extinction extraction projection payload.
 -/
@@ -7654,6 +7685,19 @@ theorem poincare_statement_of_dependency_projections_to_topology_statement_eq
       poincare_statement_of_finite_extinction_and_topology_extraction_statement
         (finite_extinction_of_dependencies dependencies)
         (topology_extraction_statement_of_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The dependency projection Poincare statement is the target of the final
+extractor selected by the stored topology package.
+-/
+theorem poincare_statement_of_dependency_projections_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_statement_of_dependency_projections dependencies =
+      poincare_statement_of_extinction_and_extraction
+        (finite_extinction_of_dependencies dependencies)
+        (extinction_implies_sphere_of_topology_package
+          dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -7696,6 +7740,24 @@ theorem poincare_statement_of_extraction_derivation_dependency_projections_to_fi
       (by
         rcases topology_extraction_derivation_payload_of_dependencies
             dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          poincare_statement_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+The certified dependency projection Poincare statement is the target carried by
+the extraction/derivation route selected from the stored topology package.
+-/
+theorem poincare_statement_of_extraction_derivation_dependency_projections_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_statement_of_extraction_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
           ⟨extractSphere, derivation⟩
         exact
           poincare_statement_of_finite_extinction_and_extraction_derivation
@@ -7829,6 +7891,23 @@ theorem completion_criterion_of_dependency_projections_to_topology_statement_eq
   apply Subsingleton.elim
 
 /--
+The dependency projection completion criterion is carried by the final
+extractor selected from the stored topology package.
+-/
+theorem completion_criterion_of_dependency_projections_to_package_eq
+    (witness : Type u) (dependencies : PoincareProofDependencies.{u}) :
+    completion_criterion_of_dependency_projections witness dependencies =
+      (by
+        rcases
+            poincare_payload_of_extinction_and_extraction
+              (finite_extinction_of_dependencies dependencies)
+              (extinction_implies_sphere_of_topology_package
+                dependencies.topology) with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
 The certified extraction-derivation projection route also discharges the
 explicit universe-indexed completion criterion.
 -/
@@ -7868,6 +7947,25 @@ theorem completion_criterion_of_extraction_derivation_dependency_projections_to_
       (by
         rcases topology_extraction_derivation_payload_of_dependencies
             dependencies with
+          ⟨extractSphere, derivation⟩
+        rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The certified dependency projection completion criterion is carried by the
+extraction/derivation payload selected from the stored topology package.
+-/
+theorem completion_criterion_of_extraction_derivation_dependency_projections_to_package_eq
+    (witness : Type u) (dependencies : PoincareProofDependencies.{u}) :
+    completion_criterion_of_extraction_derivation_dependency_projections
+      witness dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
           ⟨extractSphere, derivation⟩
         rcases poincare_payload_of_finite_extinction_and_extraction_derivation
             (finite_extinction_of_dependencies dependencies)
