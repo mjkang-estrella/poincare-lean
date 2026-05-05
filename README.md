@@ -1274,7 +1274,9 @@ The current artifact is intentionally conservative:
   payload, literal and aggregate canonical-statement payload projections and
   constructors, plus the literal, aggregate-dependency, and project-statement
   full payload projections and constructors, now also point directly at those
-  topology and extractor/derivation endpoints.
+  topology and extractor/derivation endpoints. The dependency-projection layer
+  also names those endpoint contracts for the full assembly payload and explicit
+  completion criterion.
   The certificate-layer equality contracts now pin the reserved-name, literal
   payload, canonical payload, target/criterion projection, remaining/aggregate
   dependency, and project-statement routes to their named projections and

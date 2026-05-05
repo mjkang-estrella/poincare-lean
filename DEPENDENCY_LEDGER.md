@@ -792,7 +792,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   theorem-name payload, literal and aggregate canonical-statement payload
   projections and constructors, plus the literal, aggregate-dependency, and
   project-statement full payload projections and constructors, for both
-  projection certificates.
+  projection certificates. The dependency-projection layer also exposes the
+  full assembly payload and explicit completion criterion through endpoint-named
+  equality contracts.
   It also projects the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/
