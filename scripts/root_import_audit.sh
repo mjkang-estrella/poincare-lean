@@ -478,6 +478,7 @@ open scoped Manifold ContDiff
 #check Poincare.AnalyticFoundationDerivationStatement
 #check Poincare.analyticFoundationDerivationStatement_eq
 #check Poincare.AnalyticFoundationSubobligationsPayload
+#check Poincare.analyticFoundationSubobligationsPayload_eq
 #check Poincare.RicciFlowAnalyticFoundationStatement
 #check Poincare.ricciFlowAnalyticFoundationStatement_eq
 #check Poincare.analytic_foundation_derivation_statement_of_components

@@ -1014,6 +1014,71 @@ abbrev AnalyticFoundationSubobligationsPayload
     HasCurvatureEvolutionEquations flow
 
 /--
+The analytic sub-obligation payload alias is definitionally the full
+Levi-Civita, curvature, DeTurck, continuation, regularity, uniqueness, and
+evolution-equation witness stack for the fixed Ricci-flow data.
+-/
+theorem analyticFoundationSubobligationsPayload_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    AnalyticFoundationSubobligationsPayload flow =
+      (HasLeviCivitaConnectionExistence (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow ∧
+      HasDeTurckGaugeFixing flow ∧
+      HasDeTurckBackgroundMetricCompatibility flow ∧
+      HasDeTurckVectorFieldConstruction flow ∧
+      HasDeTurckEquationDerivation flow ∧
+      HasRicciDeTurckLinearization flow ∧
+      HasStrictlyParabolicDeTurckSystem flow ∧
+      HasParabolicLinearTheory flow ∧
+      HasParabolicFixedPointArgument flow ∧
+      HasDeTurckShortTimeExistence flow ∧
+      HasShortTimeRegularityBootstrap flow ∧
+      HasDeTurckDiffeomorphismODE flow ∧
+      HasDeTurckPullbackEquationIdentity flow ∧
+      HasDeTurckPullbackToRicciFlow flow ∧
+      HasShortTimeRicciFlowSolution flow ∧
+      HasRicciFlowMaximalTimeInterval flow ∧
+      HasRicciFlowContinuationCriterion flow ∧
+      HasCurvatureBlowUpContinuationCriterion flow ∧
+      HasMaximalSolutionExtension flow ∧
+      HasParabolicSchauderEstimates flow ∧
+      HasRicciFlowParabolicRegularity flow ∧
+      HasShiDerivativeEstimates flow ∧
+      HasCurvatureDerivativeBootstrap flow ∧
+      HasHamiltonMaximumPrinciple flow ∧
+      HasRicciFlowUniquenessTheory flow ∧
+      HasMetricEvolutionEquation flow ∧
+      HasRicciTensorEvolutionEquation flow ∧
+      HasScalarCurvatureEvolutionEquation flow ∧
+      HasCurvatureNormEvolutionInequality flow ∧
+      HasCurvatureEvolutionEquations flow) :=
+  rfl
+
+/--
 The fixed-flow analytic derivation statement exposes the named analytic
 connection, curvature, DeTurck, continuation, regularity, and evolution
 sub-obligations.
