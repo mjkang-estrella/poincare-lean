@@ -4909,6 +4909,42 @@ set_option linter.unusedVariables false
     ∃ _target : Poincare.PoincareConjectureStatement,
       ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
 
+#check (Poincare.packaged_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency :
+  Poincare.RemainingDependencyPackage →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) →
+    ∃ _smoothManifold : Poincare.SmoothabilitySmoothManifoldStatement,
+    ∃ _reverseCanonicalSmoothStatement :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [IsManifold (𝓡 3) ∞ M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)),
+    ∃ _smoothStatement : Poincare.SmoothPoincareConjectureStatement,
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.packaged_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies :
+  Poincare.PoincareProofDependencies →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) →
+    ∃ _smoothManifold : Poincare.SmoothabilitySmoothManifoldStatement,
+    ∃ _reverseCanonicalSmoothStatement :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [IsManifold (𝓡 3) ∞ M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)),
+    ∃ _smoothStatement : Poincare.SmoothPoincareConjectureStatement,
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
 #check (Poincare.poincare_statement_of_remaining_dependency_and_packaged_smooth_statement :
   Poincare.RemainingDependencyPackage →
   Poincare.SmoothPoincareConjectureStatement →
@@ -5869,6 +5905,8 @@ set_option linter.unusedVariables false
 #check Poincare.packaged_smooth_statement_completion_payload_of_poincareProofDependencies_eq
 #check Poincare.packaged_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency_eq
 #check Poincare.packaged_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies_eq
+#check Poincare.packaged_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency_eq
+#check Poincare.packaged_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies_eq
 #check Poincare.canonical_completion_payload_of_remaining_dependency_and_packaged_smooth_statement_eq
 #check Poincare.canonical_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement_eq
 #check Poincare.canonical_completion_payload_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq

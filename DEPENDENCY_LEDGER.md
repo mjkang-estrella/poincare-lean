@@ -120,6 +120,14 @@ It is not a proof. It is a work breakdown for future Lean development.
   `canonical_three_sphere_statement_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement`,
   and
   `canonical_three_sphere_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement`.
+- `Poincare/CanonicalBridges.lean` exposes packaged reverse canonical smooth
+  payloads through
+  `packaged_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency`
+  and
+  `packaged_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies`,
+  carrying the projected smoothability evidence, the reverse canonical input,
+  the induced project smooth statement, the target, and the completion criterion
+  at both dependency-package surfaces.
 - `Poincare/CanonicalBridges.lean` now pins the aggregate packaged smooth and
   packaged canonical-smooth project routes, canonical completion payloads,
   canonical targets, canonical criteria, and canonical topological statement

@@ -775,6 +775,10 @@ check_decl "remaining dependency packaged canonical smooth route completion payl
   '^theorem packaged_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency\b' Poincare/CanonicalBridges.lean
 check_decl "aggregate dependency packaged canonical smooth route completion payload is declared" \
   '^theorem packaged_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged reverse canonical smooth route completion payload is declared" \
+  '^theorem packaged_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged reverse canonical smooth route completion payload is declared" \
+  '^theorem packaged_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency packaged smooth route Poincare target projection is declared" \
   '^theorem poincare_statement_of_remaining_dependency_and_packaged_smooth_statement\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency packaged smooth route project criterion projection is declared" \
@@ -919,6 +923,10 @@ check_decl "remaining dependency packaged canonical smooth payload equality cont
   '^theorem packaged_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency_eq\b' Poincare/CanonicalBridges.lean
 check_decl "aggregate dependency packaged canonical smooth payload equality contract is declared" \
   '^theorem packaged_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency packaged reverse canonical smooth payload equality contract is declared" \
+  '^theorem packaged_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependency packaged reverse canonical smooth payload equality contract is declared" \
+  '^theorem packaged_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies_eq\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency packaged smooth canonical payload equality contract is declared" \
   '^theorem canonical_completion_payload_of_remaining_dependency_and_packaged_smooth_statement_eq\b' Poincare/CanonicalBridges.lean
 check_decl "aggregate dependency packaged smooth canonical payload equality contract is declared" \
@@ -5621,6 +5629,8 @@ open scoped Manifold ContDiff
 #check Poincare.packaged_smooth_statement_completion_payload_of_poincareProofDependencies
 #check Poincare.packaged_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency
 #check Poincare.packaged_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies
+#check Poincare.packaged_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency
+#check Poincare.packaged_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies
 #check Poincare.poincare_statement_of_remaining_dependency_and_packaged_smooth_statement
 #check Poincare.completion_criterion_of_remaining_dependency_and_packaged_smooth_statement
 #check Poincare.poincare_statement_of_poincareProofDependencies_and_packaged_smooth_statement
@@ -6914,6 +6924,8 @@ open scoped Manifold ContDiff
 #check Poincare.packaged_smooth_statement_completion_payload_of_poincareProofDependencies_eq
 #check Poincare.packaged_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency_eq
 #check Poincare.packaged_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies_eq
+#check Poincare.packaged_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency_eq
+#check Poincare.packaged_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies_eq
 #check Poincare.canonical_completion_payload_of_remaining_dependency_and_packaged_smooth_statement_eq
 #check Poincare.canonical_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement_eq
 #check Poincare.canonical_completion_payload_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq
@@ -10799,6 +10811,42 @@ open scoped Manifold ContDiff
     ∃ _target : Poincare.PoincareConjectureStatement,
       ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
 
+#check (Poincare.packaged_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency :
+  Poincare.RemainingDependencyPackage →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) →
+    ∃ _smoothManifold : Poincare.SmoothabilitySmoothManifoldStatement,
+    ∃ _reverseCanonicalSmoothStatement :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [IsManifold (𝓡 3) ∞ M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)),
+    ∃ _smoothStatement : Poincare.SmoothPoincareConjectureStatement,
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.packaged_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies :
+  Poincare.PoincareProofDependencies →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) →
+    ∃ _smoothManifold : Poincare.SmoothabilitySmoothManifoldStatement,
+    ∃ _reverseCanonicalSmoothStatement :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [IsManifold (𝓡 3) ∞ M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)),
+    ∃ _smoothStatement : Poincare.SmoothPoincareConjectureStatement,
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
 #check (Poincare.poincare_statement_of_remaining_dependency_and_packaged_smooth_statement :
   Poincare.RemainingDependencyPackage →
   Poincare.SmoothPoincareConjectureStatement →
@@ -11839,6 +11887,8 @@ open scoped Manifold ContDiff
 #check Poincare.packaged_smooth_statement_completion_payload_of_poincareProofDependencies_eq
 #check Poincare.packaged_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency_eq
 #check Poincare.packaged_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies_eq
+#check Poincare.packaged_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency_eq
+#check Poincare.packaged_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies_eq
 #check Poincare.canonical_completion_payload_of_remaining_dependency_and_packaged_smooth_statement_eq
 #check Poincare.canonical_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement_eq
 #check Poincare.canonical_completion_payload_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq

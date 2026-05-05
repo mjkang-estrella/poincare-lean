@@ -63,7 +63,8 @@ The current artifact is intentionally conservative:
   bridges expose the canonical topological statement from the canonical target,
   canonical payload, checked completion certificate, and all remaining-dependency
   aggregate/projection completion routes, plus the packaged smooth and
-  packaged canonical-smooth routes. It also exposes a standalone
+  packaged canonical-smooth routes, with reverse canonical-smooth payloads now
+  available at the dependency-package surface. It also exposes a standalone
   `SmoothabilityPackage` route from a proof-bearing smooth or canonical-smooth
   Poincare statement to the project target, canonical completion payload, and
   canonical topological statement. Direct equality contracts now pin the
