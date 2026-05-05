@@ -4548,24 +4548,44 @@ check_decl "analytic foundation milestone maps to analytic foundation package" \
   'DependencyMilestone\.ricciFlowAnalyticFoundation' Poincare/DependencyCrosswalk.lean
 check_decl "analytic foundation package layer is in the crosswalk theorem" \
   'DependencyPackageLayer\.analyticFoundationPackage' Poincare/DependencyCrosswalk.lean
+check_decl "dependency milestone ledger equality contract is declared" \
+  '^theorem dependencyMilestoneLedger_eq\b' Poincare/Milestones.lean
 check_decl "dependency ledger length theorem is declared" \
   '^theorem dependencyMilestoneLedger_length\b' Poincare/Milestones.lean
+check_decl "dependency ledger length equality contract is declared" \
+  '^theorem dependencyMilestoneLedger_length_eq\b' Poincare/Milestones.lean
 check_decl "smoothability milestone membership theorem is declared" \
   '^theorem smoothabilityBridge_mem_dependencyMilestoneLedger\b' Poincare/Milestones.lean
+check_decl "smoothability milestone membership equality contract is declared" \
+  '^theorem smoothabilityBridge_mem_dependencyMilestoneLedger_eq\b' Poincare/Milestones.lean
 check_decl "analytic-foundation milestone membership theorem is declared" \
   '^theorem ricciFlowAnalyticFoundation_mem_dependencyMilestoneLedger\b' Poincare/Milestones.lean
+check_decl "analytic-foundation milestone membership equality contract is declared" \
+  '^theorem ricciFlowAnalyticFoundation_mem_dependencyMilestoneLedger_eq\b' Poincare/Milestones.lean
 check_decl "Ricci-flow-with-surgery milestone membership theorem is declared" \
   '^theorem ricciFlowWithSurgery_mem_dependencyMilestoneLedger\b' Poincare/Milestones.lean
+check_decl "Ricci-flow-with-surgery milestone membership equality contract is declared" \
+  '^theorem ricciFlowWithSurgery_mem_dependencyMilestoneLedger_eq\b' Poincare/Milestones.lean
 check_decl "Perelman-control milestone membership theorem is declared" \
   '^theorem perelmanSingularityControl_mem_dependencyMilestoneLedger\b' Poincare/Milestones.lean
+check_decl "Perelman-control milestone membership equality contract is declared" \
+  '^theorem perelmanSingularityControl_mem_dependencyMilestoneLedger_eq\b' Poincare/Milestones.lean
 check_decl "finite-extinction milestone membership theorem is declared" \
   '^theorem finiteExtinction_mem_dependencyMilestoneLedger\b' Poincare/Milestones.lean
+check_decl "finite-extinction milestone membership equality contract is declared" \
+  '^theorem finiteExtinction_mem_dependencyMilestoneLedger_eq\b' Poincare/Milestones.lean
 check_decl "topology-extraction milestone membership theorem is declared" \
   '^theorem extinctionToSphereHomeomorphism_mem_dependencyMilestoneLedger\b' Poincare/Milestones.lean
+check_decl "topology-extraction milestone membership equality contract is declared" \
+  '^theorem extinctionToSphereHomeomorphism_mem_dependencyMilestoneLedger_eq\b' Poincare/Milestones.lean
 check_decl "dependency ledger membership theorem is declared" \
   '^theorem dependencyMilestoneLedger_mem\b' Poincare/Milestones.lean
+check_decl "dependency ledger membership equality contract is declared" \
+  '^theorem dependencyMilestoneLedger_mem_eq\b' Poincare/Milestones.lean
 check_decl "dependency ledger nodup theorem is declared" \
   '^theorem dependencyMilestoneLedger_nodup\b' Poincare/Milestones.lean
+check_decl "dependency ledger nodup equality contract is declared" \
+  '^theorem dependencyMilestoneLedger_nodup_eq\b' Poincare/Milestones.lean
 check_decl "canonical completion theorem name is declared" \
   '^def canonicalCompletionTheoremName\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion theorem name contract is declared" \

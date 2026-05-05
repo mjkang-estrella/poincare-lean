@@ -6052,32 +6052,56 @@ set_option linter.unusedVariables false
       ∃ _target : Poincare.PoincareConjectureStatement,
         ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness))
 
+#check (Poincare.dependencyMilestoneLedger_eq :
+  Poincare.dependencyMilestoneLedger =
+    [ Poincare.DependencyMilestone.smoothabilityBridge
+    , Poincare.DependencyMilestone.ricciFlowAnalyticFoundation
+    , Poincare.DependencyMilestone.ricciFlowWithSurgery
+    , Poincare.DependencyMilestone.perelmanSingularityControl
+    , Poincare.DependencyMilestone.finiteExtinction
+    , Poincare.DependencyMilestone.extinctionToSphereHomeomorphism
+    ])
+
 #check (Poincare.dependencyMilestoneLedger_length :
   Poincare.dependencyMilestoneLedger.length = 6)
+
+#check Poincare.dependencyMilestoneLedger_length_eq
 
 #check (Poincare.smoothabilityBridge_mem_dependencyMilestoneLedger :
   Poincare.DependencyMilestone.smoothabilityBridge ∈
     Poincare.dependencyMilestoneLedger)
 
+#check Poincare.smoothabilityBridge_mem_dependencyMilestoneLedger_eq
+
 #check (Poincare.ricciFlowAnalyticFoundation_mem_dependencyMilestoneLedger :
   Poincare.DependencyMilestone.ricciFlowAnalyticFoundation ∈
     Poincare.dependencyMilestoneLedger)
+
+#check Poincare.ricciFlowAnalyticFoundation_mem_dependencyMilestoneLedger_eq
 
 #check (Poincare.ricciFlowWithSurgery_mem_dependencyMilestoneLedger :
   Poincare.DependencyMilestone.ricciFlowWithSurgery ∈
     Poincare.dependencyMilestoneLedger)
 
+#check Poincare.ricciFlowWithSurgery_mem_dependencyMilestoneLedger_eq
+
 #check (Poincare.perelmanSingularityControl_mem_dependencyMilestoneLedger :
   Poincare.DependencyMilestone.perelmanSingularityControl ∈
     Poincare.dependencyMilestoneLedger)
+
+#check Poincare.perelmanSingularityControl_mem_dependencyMilestoneLedger_eq
 
 #check (Poincare.finiteExtinction_mem_dependencyMilestoneLedger :
   Poincare.DependencyMilestone.finiteExtinction ∈
     Poincare.dependencyMilestoneLedger)
 
+#check Poincare.finiteExtinction_mem_dependencyMilestoneLedger_eq
+
 #check (Poincare.extinctionToSphereHomeomorphism_mem_dependencyMilestoneLedger :
   Poincare.DependencyMilestone.extinctionToSphereHomeomorphism ∈
     Poincare.dependencyMilestoneLedger)
+
+#check Poincare.extinctionToSphereHomeomorphism_mem_dependencyMilestoneLedger_eq
 
 #check (Poincare.dependencyMilestoneLedger_mem :
   ∀ milestone : Poincare.DependencyMilestone,
@@ -6089,8 +6113,12 @@ set_option linter.unusedVariables false
       milestone = Poincare.DependencyMilestone.finiteExtinction ∨
       milestone = Poincare.DependencyMilestone.extinctionToSphereHomeomorphism)
 
+#check Poincare.dependencyMilestoneLedger_mem_eq
+
 #check (Poincare.dependencyMilestoneLedger_nodup :
   Poincare.dependencyMilestoneLedger.Nodup)
+
+#check Poincare.dependencyMilestoneLedger_nodup_eq
 
 #check Poincare.dependencyLayerForMilestone_eq
 

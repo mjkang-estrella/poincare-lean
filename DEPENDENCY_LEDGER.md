@@ -214,7 +214,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   and milestone requirement payload/iff routes are pinned to the matching
   aggregate dependency crosswalk payloads and equivalences.
 - `Poincare/Milestones.lean` proves the six-item ledger length and exact membership via
-  `dependencyMilestoneLedger_length` and `dependencyMilestoneLedger_mem`.
+  `dependencyMilestoneLedger_length` and `dependencyMilestoneLedger_mem`; equality
+  contracts pin the ledger literal, length proof, six named membership witnesses,
+  membership characterization, and no-duplicate proof to the exact list literal
+  and direct case-split or decidable proofs.
 - `Poincare/RicciFlowInterface.lean` defines the finite-extinction and
   topological-extraction interfaces and proves their conditional assembly into
   `PoincareConjectureStatement`. The finite-extinction predicate has no local
@@ -957,7 +960,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   route without dropping the topology derivation certificate.
 - `Poincare/Milestones.lean` records the six missing dependency milestones as
   data and proves the ledger length, exact membership characterization, named
-  membership for each milestone, and no-duplicate invariant.
+  membership for each milestone, and no-duplicate invariant. Equality contracts
+  now tie the ledger literal, length proof, six named membership witnesses,
+  membership characterization, and no-duplicate proof to the exact list literal
+  and direct case-split or decidable proofs.
 - `Poincare/DependencyCrosswalk.lean` maps the milestone ledger to the concrete
   dependency-package layers that are intended to discharge it, with named Lean
   theorems for all six milestone-to-package links and a package-layer membership

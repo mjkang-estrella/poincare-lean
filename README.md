@@ -857,7 +857,10 @@ The current artifact is intentionally conservative:
   route without dropping the topology derivation certificate.
 - `Poincare/Milestones.lean` records the six missing dependency milestones as
   data and proves the ledger length, exact membership characterization, named
-  membership for each milestone, and no-duplicate invariant.
+  membership for each milestone, and no-duplicate invariant. Equality contracts
+  now tie the ledger literal, length proof, six named membership witnesses,
+  membership characterization, and no-duplicate proof to the exact list literal
+  and direct case-split or decidable proofs.
 - `Poincare/DependencyCrosswalk.lean` maps every ledger milestone to the
   concrete dependency-package layer intended to discharge it, with named Lean
   theorems for all six milestone-to-package links and a package-layer membership
