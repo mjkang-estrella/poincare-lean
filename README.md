@@ -1121,7 +1121,9 @@ The current artifact is intentionally conservative:
   `poincareCompletionCertificate_iff_milestone_extraction_derivation_requirements`,
   the certified constructors and their payload variants are pinned back to the
   corresponding remaining-dependency certified routes after reconstructing the
-  remaining-dependency package,
+  remaining-dependency package, and now have projection-after-constructor
+  round-trip contracts back to their certified component-slot, package-layer,
+  and milestone payload presentations,
   the remaining-dependency raw component/package-layer/milestone certificate
   routes
   `completion_certificate_of_remaining_dependency_component_requirements`,
