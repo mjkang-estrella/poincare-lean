@@ -1256,9 +1256,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   surfaces. Those dependency-package routes now also have
   projection-after-constructor round-trip contracts back to the
   remaining-dependency or aggregate dependency package they were built from.
-  Their certificate constructors now also have canonical and project completion
-  payload projection-after-constructor contracts back to the named raw,
-  certified, aggregate, and projection route payloads that built the
+  Their certificate constructors now also have canonical/project payload,
+  target, and criterion projection-after-constructor contracts back to the
+  named raw, certified, aggregate, and projection routes that built the
   certificates.
   The certificate-layer equality contracts now pin the reserved-name, literal
   payload, canonical payload, target/criterion projection, remaining/aggregate
