@@ -1255,7 +1255,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   make those certified certificate routes reversible at both dependency-package
   surfaces. Those dependency-package routes now also have
   projection-after-constructor round-trip contracts back to the
-  remaining-dependency or aggregate dependency package they were built from.
+  remaining-dependency or aggregate dependency package they were built from,
+  including the converted remaining-dependency package stored by each aggregate
+  dependency route.
   Their certificate constructors now also have canonical/project payload,
   target, criterion, and canonical topological statement
   projection-after-constructor contracts back to the named raw, certified,
