@@ -1547,7 +1547,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   checked certificate surface for the smooth, canonical-smooth, and reverse
   canonical-smooth routes. Those packaged payload constructors now also
   have projection-after-constructor round-trip contracts back to their
-  remaining-dependency and aggregate payloads. The smooth and packaged-smooth
+  remaining-dependency and aggregate payloads, and the matching packaged
+  certificate payload projections are pinned to the exact component payload
+  assemblers for smooth, canonical-smooth, and reverse canonical-smooth routes.
+  The smooth and packaged-smooth
   routes now also
   have equality contracts pinning their canonical payload, certificate
   constructor, packaged payload, project target/criterion, project completion

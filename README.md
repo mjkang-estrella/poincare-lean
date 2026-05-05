@@ -1454,7 +1454,10 @@ The current artifact is intentionally conservative:
   supplied smooth/canonical-smooth/reverse-canonical-smooth packaged payload
   routes reversible at the checked certificate surface. Those packaged payload constructors now also
   have projection-after-constructor round-trip contracts back to their
-  remaining-dependency and aggregate payloads. The smooth and packaged-smooth
+  remaining-dependency and aggregate payloads, and the packaged certificate
+  payload projections themselves are pinned to the exact component payload
+  assemblers for smooth, canonical-smooth, and reverse canonical-smooth routes.
+  The smooth and packaged-smooth
   routes now also
   have equality contracts pinning their canonical payload, certificate
   constructor, packaged payload, project target/criterion, project completion

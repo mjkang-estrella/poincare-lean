@@ -4444,6 +4444,288 @@ theorem completion_certificate_of_poincareProofDependencies_reverse_canonical_sm
   apply Subsingleton.elim
 
 /--
+The remaining-dependency packaged smooth certificate payload projection is
+exactly the component payload obtained from the certificate's remaining
+dependency package and the supplied project smooth statement.
+-/
+theorem poincareCompletionCertificate_remainingDependencyPackage_packaged_smooth_statement_payload_eq
+    (certificate : PoincareCompletionCertificate.{u})
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    poincareCompletionCertificate_remainingDependencyPackage_packaged_smooth_statement_payload
+        certificate smoothStatement =
+      (by
+        let dependencies : RemainingDependencyPackage.{u} :=
+          remaining_dependency_package_of_completion_certificate certificate
+        rcases
+            packaged_smooth_statement_completion_payload_of_remaining_dependency
+              dependencies smoothStatement with
+          ⟨smoothManifold, packagedSmoothStatement, target, criterion⟩
+        exact ⟨dependencies, smoothManifold, packagedSmoothStatement, target,
+          criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate packaged smooth certificate payload projection is exactly the
+component payload obtained from the certificate's aggregate dependency package
+and the supplied project smooth statement.
+-/
+theorem poincareCompletionCertificate_poincareProofDependencies_packaged_smooth_statement_payload_eq
+    (certificate : PoincareCompletionCertificate.{u})
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    poincareCompletionCertificate_poincareProofDependencies_packaged_smooth_statement_payload
+        certificate smoothStatement =
+      (by
+        let dependencies : PoincareProofDependencies.{u} :=
+          poincareProofDependencies_of_completion_certificate certificate
+        rcases
+            packaged_smooth_statement_completion_payload_of_poincareProofDependencies
+              dependencies smoothStatement with
+          ⟨smoothManifold, packagedSmoothStatement, target, criterion⟩
+        exact ⟨dependencies, smoothManifold, packagedSmoothStatement, target,
+          criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency packaged canonical-smooth certificate payload
+projection is exactly the component payload obtained from the certificate's
+remaining dependency package and the supplied canonical smooth statement.
+-/
+theorem poincareCompletionCertificate_remainingDependencyPackage_packaged_canonical_smooth_three_sphere_statement_payload_eq
+    (certificate : PoincareCompletionCertificate.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    poincareCompletionCertificate_remainingDependencyPackage_packaged_canonical_smooth_three_sphere_statement_payload
+        certificate h =
+      (by
+        let dependencies : RemainingDependencyPackage.{u} :=
+          remaining_dependency_package_of_completion_certificate certificate
+        rcases
+            packaged_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency
+              dependencies h with
+          ⟨smoothManifold, canonicalSmoothStatement, smoothStatement, target,
+            criterion⟩
+        exact ⟨dependencies, smoothManifold, canonicalSmoothStatement,
+          smoothStatement, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate packaged canonical-smooth certificate payload projection is
+exactly the component payload obtained from the certificate's aggregate
+dependency package and the supplied canonical smooth statement.
+-/
+theorem poincareCompletionCertificate_poincareProofDependencies_packaged_canonical_smooth_three_sphere_statement_payload_eq
+    (certificate : PoincareCompletionCertificate.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    poincareCompletionCertificate_poincareProofDependencies_packaged_canonical_smooth_three_sphere_statement_payload
+        certificate h =
+      (by
+        let dependencies : PoincareProofDependencies.{u} :=
+          poincareProofDependencies_of_completion_certificate certificate
+        rcases
+            packaged_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies
+              dependencies h with
+          ⟨smoothManifold, canonicalSmoothStatement, smoothStatement, target,
+            criterion⟩
+        exact ⟨dependencies, smoothManifold, canonicalSmoothStatement,
+          smoothStatement, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency packaged reverse canonical-smooth certificate payload
+projection is exactly the component payload obtained from the certificate's
+remaining dependency package and the supplied reverse canonical smooth
+statement.
+-/
+theorem poincareCompletionCertificate_remainingDependencyPackage_packaged_reverse_canonical_smooth_three_sphere_statement_payload_eq
+    (certificate : PoincareCompletionCertificate.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    poincareCompletionCertificate_remainingDependencyPackage_packaged_reverse_canonical_smooth_three_sphere_statement_payload
+        certificate h =
+      (by
+        let dependencies : RemainingDependencyPackage.{u} :=
+          remaining_dependency_package_of_completion_certificate certificate
+        rcases
+            packaged_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_remaining_dependency
+              dependencies h with
+          ⟨smoothManifold, reverseCanonicalSmoothStatement, smoothStatement,
+            target, criterion⟩
+        exact ⟨dependencies, smoothManifold, reverseCanonicalSmoothStatement,
+          smoothStatement, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate packaged reverse canonical-smooth certificate payload projection
+is exactly the component payload obtained from the certificate's aggregate
+dependency package and the supplied reverse canonical smooth statement.
+-/
+theorem poincareCompletionCertificate_poincareProofDependencies_packaged_reverse_canonical_smooth_three_sphere_statement_payload_eq
+    (certificate : PoincareCompletionCertificate.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    poincareCompletionCertificate_poincareProofDependencies_packaged_reverse_canonical_smooth_three_sphere_statement_payload
+        certificate h =
+      (by
+        let dependencies : PoincareProofDependencies.{u} :=
+          poincareProofDependencies_of_completion_certificate certificate
+        rcases
+            packaged_reverse_canonical_smooth_three_sphere_statement_completion_payload_of_poincareProofDependencies
+              dependencies h with
+          ⟨smoothManifold, reverseCanonicalSmoothStatement, smoothStatement,
+            target, criterion⟩
+        exact ⟨dependencies, smoothManifold, reverseCanonicalSmoothStatement,
+          smoothStatement, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency non-packaged smooth certificate payload projection is
+exactly the component payload obtained from the certificate's remaining
+dependency package and the supplied smoothability and smooth statement inputs.
+-/
+theorem poincareCompletionCertificate_remainingDependencyPackage_smooth_statement_payload_eq
+    (certificate : PoincareCompletionCertificate.{u})
+    (smoothable : SmoothabilitySmoothManifoldStatement.{u})
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    poincareCompletionCertificate_remainingDependencyPackage_smooth_statement_payload
+        certificate smoothable smoothStatement =
+      (by
+        let dependencies : RemainingDependencyPackage.{u} :=
+          remaining_dependency_package_of_completion_certificate certificate
+        rcases poincare_payload_of_smooth_statement smoothable smoothStatement with
+          ⟨target, criterion⟩
+        exact ⟨dependencies, smoothable, smoothStatement, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate non-packaged smooth certificate payload projection is exactly the
+component payload obtained from the certificate's aggregate dependency package
+and the supplied smoothability and smooth statement inputs.
+-/
+theorem poincareCompletionCertificate_poincareProofDependencies_smooth_statement_payload_eq
+    (certificate : PoincareCompletionCertificate.{u})
+    (smoothable : SmoothabilitySmoothManifoldStatement.{u})
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    poincareCompletionCertificate_poincareProofDependencies_smooth_statement_payload
+        certificate smoothable smoothStatement =
+      (by
+        let dependencies : PoincareProofDependencies.{u} :=
+          poincareProofDependencies_of_completion_certificate certificate
+        rcases poincare_payload_of_smooth_statement smoothable smoothStatement with
+          ⟨target, criterion⟩
+        exact ⟨dependencies, smoothable, smoothStatement, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency non-packaged canonical-smooth certificate payload
+projection is exactly the component payload obtained from the certificate's
+remaining dependency package and the supplied canonical smooth data.
+-/
+theorem poincareCompletionCertificate_remainingDependencyPackage_canonical_smooth_three_sphere_statement_payload_eq
+    (certificate : PoincareCompletionCertificate.{u})
+    (smoothable : SmoothabilitySmoothManifoldStatement.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    poincareCompletionCertificate_remainingDependencyPackage_canonical_smooth_three_sphere_statement_payload
+        certificate smoothable h =
+      (by
+        let dependencies : RemainingDependencyPackage.{u} :=
+          remaining_dependency_package_of_completion_certificate certificate
+        rcases
+            poincare_payload_of_canonical_smooth_three_sphere_statement
+              smoothable h with
+          ⟨target, criterion⟩
+        exact ⟨dependencies, smoothable, h, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate non-packaged canonical-smooth certificate payload projection is
+exactly the component payload obtained from the certificate's aggregate
+dependency package and the supplied canonical smooth data.
+-/
+theorem poincareCompletionCertificate_poincareProofDependencies_canonical_smooth_three_sphere_statement_payload_eq
+    (certificate : PoincareCompletionCertificate.{u})
+    (smoothable : SmoothabilitySmoothManifoldStatement.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    poincareCompletionCertificate_poincareProofDependencies_canonical_smooth_three_sphere_statement_payload
+        certificate smoothable h =
+      (by
+        let dependencies : PoincareProofDependencies.{u} :=
+          poincareProofDependencies_of_completion_certificate certificate
+        rcases
+            poincare_payload_of_canonical_smooth_three_sphere_statement
+              smoothable h with
+          ⟨target, criterion⟩
+        exact ⟨dependencies, smoothable, h, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency non-packaged reverse canonical-smooth certificate
+payload projection is exactly the component payload obtained from the
+certificate's remaining dependency package and the supplied reverse canonical
+smooth data.
+-/
+theorem poincareCompletionCertificate_remainingDependencyPackage_reverse_canonical_smooth_three_sphere_statement_payload_eq
+    (certificate : PoincareCompletionCertificate.{u})
+    (smoothable : SmoothabilitySmoothManifoldStatement.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    poincareCompletionCertificate_remainingDependencyPackage_reverse_canonical_smooth_three_sphere_statement_payload
+        certificate smoothable h =
+      (by
+        let dependencies : RemainingDependencyPackage.{u} :=
+          remaining_dependency_package_of_completion_certificate certificate
+        rcases poincare_payload_of_reverse_smooth_statement smoothable h with
+          ⟨target, criterion⟩
+        exact ⟨dependencies, smoothable, h, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate non-packaged reverse canonical-smooth certificate payload
+projection is exactly the component payload obtained from the certificate's
+aggregate dependency package and the supplied reverse canonical smooth data.
+-/
+theorem poincareCompletionCertificate_poincareProofDependencies_reverse_canonical_smooth_three_sphere_statement_payload_eq
+    (certificate : PoincareCompletionCertificate.{u})
+    (smoothable : SmoothabilitySmoothManifoldStatement.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    poincareCompletionCertificate_poincareProofDependencies_reverse_canonical_smooth_three_sphere_statement_payload
+        certificate smoothable h =
+      (by
+        let dependencies : PoincareProofDependencies.{u} :=
+          poincareProofDependencies_of_completion_certificate certificate
+        rcases poincare_payload_of_reverse_smooth_statement smoothable h with
+          ⟨target, criterion⟩
+        exact ⟨dependencies, smoothable, h, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate and remaining-dependency non-packaged reverse route payload shapes
 are equivalent by the dependency-package equivalence.
 -/
