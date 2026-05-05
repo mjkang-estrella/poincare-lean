@@ -1290,9 +1290,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   payload routes after `remainingDependencyPackage_iff_poincareProofDependencies`,
   and certificate projections now round-trip the project payload, canonical
   payload, project target statement, canonical target, completion criterion,
-  and canonical topological statement after the smooth, canonical-smooth,
-  packaged smooth, and packaged canonical-smooth constructors, while the
-  completion-target constructors
+  and canonical topological statement after the canonical-statement, smooth,
+  canonical-smooth, packaged smooth, and packaged canonical-smooth constructors,
+  while the completion-target constructors
   `completion_certificate_of_*requirements_payload` and
   `completion_certificate_of_components_payload` rebuild checked certificates
   directly from the raw component, component-slot, package-layer, and milestone

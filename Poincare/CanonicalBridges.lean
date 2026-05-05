@@ -723,6 +723,176 @@ theorem canonical_three_sphere_statement_of_completion_certificate_of_poincarePr
   apply Subsingleton.elim
 
 /--
+Projecting the project target statement from a remaining-dependency canonical
+statement certificate returns the project target induced by the supplied
+canonical statement.
+-/
+theorem target_statement_of_completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    target_statement_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement
+        dependencies h) =
+      poincare_statement_of_canonical_three_sphere_statement h := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from a remaining-dependency canonical
+statement certificate returns the payload induced by the supplied canonical
+statement.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement
+        dependencies h) =
+      poincare_payload_of_canonical_three_sphere_statement h := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical completion payload from a remaining-dependency
+canonical statement certificate returns the canonical payload induced by the
+supplied canonical statement.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement
+        dependencies h) =
+      canonical_completion_payload_of_canonical_three_sphere_statement h := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical target from a remaining-dependency canonical statement
+certificate returns the canonical target induced by the supplied canonical
+statement.
+-/
+theorem canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement
+        dependencies h) =
+      canonical_completion_target_of_canonical_three_sphere_statement h := by
+  apply Subsingleton.elim
+
+/--
+Projecting the completion criterion from a remaining-dependency canonical
+statement certificate returns the criterion induced by the supplied canonical
+statement.
+-/
+theorem completion_criterion_of_completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) (witness : Type u)
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement
+        dependencies h) =
+      canonical_completion_criterion_of_canonical_three_sphere_statement
+        witness h := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project target statement from an aggregate canonical statement
+certificate returns the project target induced by the supplied canonical
+statement.
+-/
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    target_statement_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement
+        dependencies h) =
+      poincare_statement_of_canonical_three_sphere_statement h := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from an aggregate canonical statement
+certificate returns the payload induced by the supplied canonical statement.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement
+        dependencies h) =
+      poincare_payload_of_canonical_three_sphere_statement h := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical completion payload from an aggregate canonical statement
+certificate returns the canonical payload induced by the supplied canonical
+statement.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement
+        dependencies h) =
+      canonical_completion_payload_of_canonical_three_sphere_statement h := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical target from an aggregate canonical statement
+certificate returns the canonical target induced by the supplied canonical
+statement.
+-/
+theorem canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement
+        dependencies h) =
+      canonical_completion_target_of_canonical_three_sphere_statement h := by
+  apply Subsingleton.elim
+
+/--
+Projecting the completion criterion from an aggregate canonical statement
+certificate returns the criterion induced by the supplied canonical statement.
+-/
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) (witness : Type u)
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement
+        dependencies h) =
+      canonical_completion_criterion_of_canonical_three_sphere_statement
+        witness h := by
+  apply Subsingleton.elim
+
+/--
 The remaining-dependency package exposes the canonical topological 3-sphere
 statement through the aggregate dependency route.
 -/
