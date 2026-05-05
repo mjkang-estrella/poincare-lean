@@ -342,6 +342,10 @@ equality contracts back to fields selected from
 sub-obligation projections are also pinned to the direct package-level
 finite-extinction sub-obligation routes selected by
 `finite_extinction_subobligations_statement_payload_with_surgery_package_of_dependencies`.
+The same selected-package route now pins the dependency-level width/full
+statement projections, the statement payload, the derivation stack, the
+package-statement projection, the via-subobligations statement projection, and
+the via-subobligations finite-extinction theorem.
 
 `Poincare/TopologyExtraction.lean` now names the full classification stack as
 `ExtinctionTopologyClassificationSubobligationsPayload`. The dependency-level

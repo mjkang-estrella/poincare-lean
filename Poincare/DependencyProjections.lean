@@ -2349,6 +2349,29 @@ theorem finite_extinction_width_statements_of_dependencies_eq
   dsimp
 
 /--
+The dependency-level finite-extinction width-statement projection follows the
+direct width statement of the selected surgery package.
+-/
+theorem finite_extinction_width_statements_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      finite_extinction_subobligations_statement_payload_with_surgery_package_of_dependencies
+        dependencies M
+    finite_extinction_width_statements_of_dependencies dependencies M =
+      ⟨payload.choose,
+        ricci_flow_data_of_surgery_package payload.choose_spec.choose,
+        ricci_flow_with_surgery_of_surgery_package payload.choose_spec.choose,
+        perelman_singularity_control_of_surgery_package
+          payload.choose_spec.choose,
+        finite_extinction_width_subobligations_statement_of_surgery_package
+          payload.choose_spec.choose⟩ := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies theorem-shaped full finite-extinction
 sub-obligation statements for every target manifold.
 -/
@@ -2390,6 +2413,29 @@ theorem finite_extinction_subobligations_statements_of_dependencies_eq
         payload.choose_spec.choose_spec.choose_spec.choose,
         payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose⟩ := by
   dsimp
+
+/--
+The dependency-level finite-extinction full-statement projection follows the
+direct full sub-obligation statement of the selected surgery package.
+-/
+theorem finite_extinction_subobligations_statements_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      finite_extinction_subobligations_statement_payload_with_surgery_package_of_dependencies
+        dependencies M
+    finite_extinction_subobligations_statements_of_dependencies dependencies M =
+      ⟨payload.choose,
+        ricci_flow_data_of_surgery_package payload.choose_spec.choose,
+        ricci_flow_with_surgery_of_surgery_package payload.choose_spec.choose,
+        perelman_singularity_control_of_surgery_package
+          payload.choose_spec.choose,
+        finite_extinction_subobligations_statement_of_surgery_package
+          payload.choose_spec.choose⟩ := by
+  apply Subsingleton.elim
 
 /--
 A completed dependency package exposes the final finite-extinction statement
@@ -2562,6 +2608,41 @@ theorem finite_extinction_statement_payload_of_dependencies_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level finite-extinction statement payload is the package-level
+statement payload of the selected surgery package, with the package index kept
+visible.
+-/
+theorem finite_extinction_statement_payload_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      finite_extinction_statement_payload_with_surgery_package_of_dependencies
+        dependencies M
+    finite_extinction_statement_payload_of_dependencies dependencies M =
+      ⟨payload.choose,
+        ricci_flow_data_of_surgery_package payload.choose_spec.choose,
+        ricci_flow_with_surgery_of_surgery_package payload.choose_spec.choose,
+        perelman_singularity_control_of_surgery_package
+          payload.choose_spec.choose,
+        finite_extinction_statement_of_surgery_package
+          payload.choose_spec.choose,
+        finite_extinction_subobligations_statement_of_surgery_package
+          payload.choose_spec.choose,
+        finite_extinction_statement_of_subobligations_statement
+          (finite_extinction_subobligations_statement_of_surgery_package
+            payload.choose_spec.choose),
+        finite_extinction_derivation_of_subobligations_statement
+          (finite_extinction_subobligations_statement_of_surgery_package
+            payload.choose_spec.choose),
+        finite_extinction_of_subobligations_statement
+          (finite_extinction_subobligations_statement_of_surgery_package
+            payload.choose_spec.choose)⟩ := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies the full local surgery derivation stack
 for finite extinction.
 -/
@@ -2601,6 +2682,30 @@ theorem finite_extinction_derivation_stack_of_dependencies_eq
         payload.choose_spec.choose_spec.choose_spec.choose,
         payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose⟩ := by
   dsimp
+
+/--
+The dependency-level finite-extinction derivation stack follows the
+sub-obligation statement of the selected surgery package.
+-/
+theorem finite_extinction_derivation_stack_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      finite_extinction_statement_payload_with_surgery_package_of_dependencies
+        dependencies M
+    finite_extinction_derivation_stack_of_dependencies dependencies M =
+      ⟨payload.choose,
+        ricci_flow_data_of_surgery_package payload.choose_spec.choose,
+        ricci_flow_with_surgery_of_surgery_package payload.choose_spec.choose,
+        perelman_singularity_control_of_surgery_package
+          payload.choose_spec.choose,
+        finite_extinction_derivation_of_subobligations_statement
+          (finite_extinction_subobligations_statement_of_surgery_package
+            payload.choose_spec.choose)⟩ := by
+  apply Subsingleton.elim
 
 /--
 A completed dependency package supplies the finite-extinction topological and
@@ -6576,6 +6681,25 @@ theorem finite_extinction_statements_of_dependencies_eq
   dsimp
 
 /--
+The dependency-level finite-extinction package-statement projection follows the
+direct finite-extinction statement of the selected surgery package.
+-/
+theorem finite_extinction_statements_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      finite_extinction_statement_payload_with_surgery_package_of_dependencies
+        dependencies M
+    finite_extinction_statements_of_dependencies dependencies M =
+      ⟨payload.choose,
+        finite_extinction_statement_of_surgery_package
+          payload.choose_spec.choose⟩ := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies theorem-shaped finite-extinction
 statements through the full sub-obligation statement route.
 -/
@@ -6610,6 +6734,27 @@ theorem finite_extinction_statements_via_subobligations_of_dependencies_eq
       ⟨payload.choose,
         payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose⟩ := by
   dsimp
+
+/--
+The dependency-level finite-extinction via-subobligations statement projection
+follows the sub-obligation statement of the selected surgery package.
+-/
+theorem finite_extinction_statements_via_subobligations_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      finite_extinction_statement_payload_with_surgery_package_of_dependencies
+        dependencies M
+    finite_extinction_statements_via_subobligations_of_dependencies
+        dependencies M =
+      ⟨payload.choose,
+        finite_extinction_statement_of_subobligations_statement
+          (finite_extinction_subobligations_statement_of_surgery_package
+            payload.choose_spec.choose)⟩ := by
+  apply Subsingleton.elim
 
 /--
 A completed dependency package supplies finite extinction directly through the
@@ -6648,6 +6793,27 @@ theorem finite_extinction_via_subobligations_of_dependencies_eq
             _subobligationsStatement, _viaSubobligationsStatement,
             _derivation, finiteExtinction⟩
         exact finiteExtinction) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level finite-extinction theorem follows the extinction witness
+extracted from the selected surgery package's full sub-obligation statement.
+-/
+theorem finite_extinction_via_subobligations_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    finite_extinction_via_subobligations_of_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _
+        letI : IsManifold ThreeManifoldModelWithCorners 1 M :=
+          smoothability_bridge_of_dependencies dependencies M
+        rcases surgery_package_payload_of_dependencies dependencies M with
+          ⟨_n, surgeryPackage, _analyticPackage, _analyticPackage_eq,
+            _flow, _flow_eq, _constructionPackage, _constructionPackage_heq,
+            _controlPackage, _controlPackage_heq⟩
+        exact
+          finite_extinction_of_subobligations_statement
+            (finite_extinction_subobligations_statement_of_surgery_package
+              surgeryPackage)) := by
   apply Subsingleton.elim
 
 /--

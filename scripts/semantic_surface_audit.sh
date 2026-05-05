@@ -2640,16 +2640,20 @@ set_option linter.unusedVariables false
 #check Poincare.finite_extinction_subobligations_of_surgery_package_eq
 #check Poincare.finite_extinction_width_statements_of_dependencies
 #check Poincare.finite_extinction_width_statements_of_dependencies_eq
+#check Poincare.finite_extinction_width_statements_of_dependencies_to_package_eq
 #check Poincare.finite_extinction_subobligations_statements_of_dependencies
 #check Poincare.finite_extinction_subobligations_statements_of_dependencies_eq
+#check Poincare.finite_extinction_subobligations_statements_of_dependencies_to_package_eq
 #check Poincare.finite_extinction_statement_payload_with_surgery_package_of_dependencies
 #check Poincare.finite_extinction_statement_payload_with_surgery_package_of_dependencies_eq
 #check Poincare.finite_extinction_statement_payload_of_dependencies
 #check Poincare.finite_extinction_statement_payload_of_dependencies_eq
+#check Poincare.finite_extinction_statement_payload_of_dependencies_to_package_eq
 #check Poincare.finite_extinction_statement_payload_of_surgery_package
 #check Poincare.finite_extinction_statement_payload_of_surgery_package_eq
 #check Poincare.finite_extinction_derivation_stack_of_dependencies
 #check Poincare.finite_extinction_derivation_stack_of_dependencies_eq
+#check Poincare.finite_extinction_derivation_stack_of_dependencies_to_package_eq
 #check Poincare.finite_extinction_width_subobligations_of_dependencies
 #check Poincare.finite_extinction_width_subobligations_of_dependencies_eq
 #check Poincare.finite_extinction_subobligations_of_dependencies
@@ -2657,9 +2661,12 @@ set_option linter.unusedVariables false
 #check Poincare.finite_extinction_width_subobligations_of_dependencies_to_package_eq
 #check Poincare.finite_extinction_subobligations_of_dependencies_to_package_eq
 #check Poincare.finite_extinction_statements_of_dependencies_eq
+#check Poincare.finite_extinction_statements_of_dependencies_to_package_eq
 #check Poincare.finite_extinction_statements_via_subobligations_of_dependencies
 #check Poincare.finite_extinction_statements_via_subobligations_of_dependencies_eq
+#check Poincare.finite_extinction_statements_via_subobligations_of_dependencies_to_package_eq
 #check Poincare.finite_extinction_via_subobligations_of_dependencies
+#check Poincare.finite_extinction_via_subobligations_of_dependencies_to_package_eq
 
 #check (Poincare.topology_package_of_dependencies :
   Poincare.PoincareProofDependencies →
@@ -7251,7 +7258,7 @@ surgery_package_payload_count=$(
   rg -c 'surgery_package_payload_of_dependencies' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$surgery_package_payload_count" != "16" ]; then
+if [ "$surgery_package_payload_count" != "17" ]; then
   echo "FAIL: dependency surgery projections should consume the shared surgery package payload"
   rg -n 'surgery_package_payload_of_dependencies' \
     Poincare/DependencyProjections.lean || true
@@ -7262,7 +7269,7 @@ package_routed_dependency_payload_count=$(
   rg -c 'with_surgery_package_of_dependencies' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$package_routed_dependency_payload_count" != "27" ]; then
+if [ "$package_routed_dependency_payload_count" != "33" ]; then
   echo "FAIL: dependency surgery payloads should expose package-routed contracts and consume them"
   rg -n 'with_surgery_package_of_dependencies' \
     Poincare/DependencyProjections.lean || true
@@ -7661,7 +7668,7 @@ finite_extinction_derivation_statement_route_count=$(
   rg -c '\bfinite_extinction_derivation_of_subobligations_statement\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$finite_extinction_derivation_statement_route_count" != "3" ]; then
+if [ "$finite_extinction_derivation_statement_route_count" != "5" ]; then
   echo "FAIL: dependency finite-extinction package-routed payload should type and build the derivation route"
   rg -n '\bfinite_extinction_derivation_of_subobligations_statement\b' \
     Poincare/DependencyProjections.lean || true
