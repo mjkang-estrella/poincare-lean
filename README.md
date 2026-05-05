@@ -531,11 +531,13 @@ The current artifact is intentionally conservative:
   `smoothability_smooth_structure_statement_payload_of_smoothability_package`
   and `smoothability_bridge_payload_of_smoothability_package` centralize the
   smooth-structure derivation statement route and the bridge/model/chart
-  compatibility plus full sub-obligation route. Equality contracts now tie the
-  package bridge, canonical smooth-manifold statement, bridge application,
-  surgery-model and canonical smooth-manifold projections, compatibility
-  evidence, and smoothability payloads back to the stored package fields or
-  named component route. The lower Moise/PL/smooth spine also records direct
+  compatibility plus full sub-obligation route. The smooth-structure
+  derivation component assembler is pinned to the exact tuple of Moise, PL,
+  smoothing, smooth-atlas, transition, and derivation witnesses. Equality
+  contracts now tie the package bridge, canonical smooth-manifold statement,
+  bridge application, surgery-model and canonical smooth-manifold projections,
+  compatibility evidence, and smoothability payloads back to the stored package
+  fields or named component route. The lower Moise/PL/smooth spine also records direct
   equality contracts for the full Moise projection spine, including local
   charts, cover refinement, simplicial-complex/chart compatibility,
   triangulation, simplicial approximation, neighborhood, local-finiteness,

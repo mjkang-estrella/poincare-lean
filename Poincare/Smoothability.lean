@@ -672,6 +672,147 @@ theorem smooth_structure_derivation_statement_of_components
     smoothStructureDerivation⟩
 
 /--
+The smooth-structure derivation component assembler is exactly the tuple of
+Moise, PL, smoothing, smooth-atlas, transition, and derivation witnesses.
+-/
+theorem smooth_structure_derivation_statement_of_components_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (localCharts : HasMoiseLocalTriangulationCharts M)
+    (locallyFiniteCoverRefinement :
+      HasMoiseLocallyFiniteCoverRefinement M localCharts)
+    (simplicialComplex : HasMoiseSimplicialComplex M localCharts)
+    (compatibleChartTriangulations :
+      HasMoiseCompatibleChartTriangulations M localCharts simplicialComplex)
+    (triangulation : HasMoiseTriangulation M)
+    (simplicialApproximation :
+      HasMoiseSimplicialApproximation
+        M localCharts simplicialComplex triangulation)
+    (starNeighborhoodBasis :
+      HasMoiseStarNeighborhoodBasis M localCharts triangulation)
+    (barycentricSubdivision :
+      HasMoiseBarycentricSubdivisionControl M triangulation)
+    (regularNeighborhoodCompatibility :
+      HasMoiseRegularNeighborhoodCompatibility M triangulation)
+    (triangulationLocalFiniteness :
+      HasMoiseTriangulationLocalFiniteness M triangulation)
+    (linkCompatibility : HasMoiseLinkCompatibility M triangulation)
+    (plManifoldRecognition :
+      HasMoisePLManifoldRecognition M triangulation linkCompatibility)
+    (triangulationHomeomorphism :
+      HasMoiseTriangulationHomeomorphism M localCharts triangulation)
+    (moiseCompatibility :
+      HasMoiseTriangulationCompatibility M localCharts triangulation)
+    (triangulationUniqueness :
+      HasMoiseTriangulationUniqueness M triangulation)
+    (hauptvermutungDimensionThree :
+      HasMoiseHauptvermutungDimensionThree
+        M triangulation triangulationUniqueness)
+    (plStructure : HasCompatiblePLStructure M triangulation)
+    (plTransitionCompatibility :
+      HasPLTransitionCompatibility M triangulation plStructure)
+    (plAtlas : HasCompatiblePLAtlas M triangulation plStructure)
+    (plManifoldAtlas :
+      HasPLManifoldAtlas M triangulation plStructure plAtlas)
+    (plCollarNeighborhoodCompatibility :
+      HasPLCollarNeighborhoodCompatibility
+        M triangulation plStructure plAtlas)
+    (plHomeomorphismCompatibility :
+      HasPLHomeomorphismCompatibility
+        M localCharts triangulation plStructure plAtlas)
+    (plAtlasMaximality :
+      HasPLAtlasMaximality M triangulation plStructure plAtlas)
+    (plSmoothingExistence :
+      HasPLSmoothingExistence M triangulation plStructure plAtlas)
+    (plSmoothingObstructionVanishing :
+      HasPLSmoothingObstructionVanishing M triangulation plStructure plAtlas)
+    (plMicrobundleSmoothing :
+      HasPLMicrobundleSmoothing M triangulation plStructure plAtlas
+        plSmoothingExistence plSmoothingObstructionVanishing)
+    (plSmoothing : HasPLSmoothingTheorem M triangulation plStructure plAtlas)
+    (plSmoothingCompatibility :
+      HasPLSmoothingCompatibility
+        M triangulation plStructure plAtlas plSmoothing)
+    (plSmoothingUniqueness :
+      HasPLSmoothingUniqueness
+        M triangulation plStructure plAtlas plSmoothing)
+    (plSmoothingLocalModelCompatibility :
+      HasPLSmoothingLocalModelCompatibility
+        M triangulation plStructure plAtlas plSmoothing)
+    (smoothStructure : HasThreeManifoldSmoothStructure M)
+    (smoothAtlasConstruction :
+      HasSmoothAtlasConstruction
+        M triangulation plStructure plAtlas plSmoothing smoothStructure)
+    (smoothAtlasPLCompatibility :
+      HasSmoothAtlasPLCompatibility
+        M triangulation plStructure plAtlas plSmoothing smoothStructure)
+    (smoothAtlasMaximality :
+      HasSmoothAtlasMaximality
+        M triangulation plStructure plAtlas plSmoothing smoothStructure)
+    (smoothAtlasUniqueness :
+      HasSmoothAtlasUniqueness M smoothStructure)
+    (smoothStructureUniqueness :
+      HasSmoothStructureUniquenessUpToDiffeomorphism M smoothStructure)
+    (smoothTransitionCompatibility :
+      HasSmoothTransitionCompatibility M smoothStructure)
+    (smoothAtlasTransitionSmoothness :
+      HasSmoothAtlasTransitionSmoothness
+        M smoothStructure smoothTransitionCompatibility)
+    (smoothStructureDerivation :
+      HasSmoothStructureDerivation
+        M localCharts locallyFiniteCoverRefinement simplicialComplex
+        compatibleChartTriangulations triangulation simplicialApproximation
+        starNeighborhoodBasis barycentricSubdivision
+        regularNeighborhoodCompatibility triangulationLocalFiniteness
+        linkCompatibility plManifoldRecognition triangulationHomeomorphism
+        moiseCompatibility triangulationUniqueness hauptvermutungDimensionThree
+        plStructure plTransitionCompatibility plAtlas plManifoldAtlas
+        plCollarNeighborhoodCompatibility plHomeomorphismCompatibility
+        plAtlasMaximality plSmoothingExistence
+        plSmoothingObstructionVanishing plMicrobundleSmoothing plSmoothing
+        plSmoothingCompatibility plSmoothingUniqueness
+        plSmoothingLocalModelCompatibility smoothStructure
+        smoothAtlasConstruction smoothAtlasPLCompatibility
+        smoothAtlasMaximality smoothAtlasUniqueness smoothStructureUniqueness
+        smoothTransitionCompatibility smoothAtlasTransitionSmoothness) :
+    smooth_structure_derivation_statement_of_components M
+        localCharts locallyFiniteCoverRefinement simplicialComplex
+        compatibleChartTriangulations triangulation simplicialApproximation
+        starNeighborhoodBasis barycentricSubdivision
+        regularNeighborhoodCompatibility triangulationLocalFiniteness
+        linkCompatibility plManifoldRecognition triangulationHomeomorphism
+        moiseCompatibility triangulationUniqueness hauptvermutungDimensionThree
+        plStructure plTransitionCompatibility plAtlas plManifoldAtlas
+        plCollarNeighborhoodCompatibility plHomeomorphismCompatibility
+        plAtlasMaximality plSmoothingExistence
+        plSmoothingObstructionVanishing plMicrobundleSmoothing plSmoothing
+        plSmoothingCompatibility plSmoothingUniqueness
+        plSmoothingLocalModelCompatibility smoothStructure
+        smoothAtlasConstruction smoothAtlasPLCompatibility
+        smoothAtlasMaximality smoothAtlasUniqueness smoothStructureUniqueness
+        smoothTransitionCompatibility smoothAtlasTransitionSmoothness
+        smoothStructureDerivation =
+      (by
+        exact ⟨localCharts, locallyFiniteCoverRefinement, simplicialComplex,
+          compatibleChartTriangulations, triangulation, simplicialApproximation,
+          starNeighborhoodBasis, barycentricSubdivision,
+          regularNeighborhoodCompatibility, triangulationLocalFiniteness,
+          linkCompatibility, plManifoldRecognition, triangulationHomeomorphism,
+          moiseCompatibility, triangulationUniqueness,
+          hauptvermutungDimensionThree, plStructure, plTransitionCompatibility,
+          plAtlas, plManifoldAtlas, plCollarNeighborhoodCompatibility,
+          plHomeomorphismCompatibility, plAtlasMaximality,
+          plSmoothingExistence, plSmoothingObstructionVanishing,
+          plMicrobundleSmoothing, plSmoothing, plSmoothingCompatibility,
+          plSmoothingUniqueness, plSmoothingLocalModelCompatibility,
+          smoothAtlasConstruction, smoothAtlasPLCompatibility,
+          smoothAtlasMaximality, smoothAtlasUniqueness,
+          smoothStructureUniqueness, smoothTransitionCompatibility,
+          smoothAtlasTransitionSmoothness, smoothStructureDerivation⟩) := by
+  apply Subsingleton.elim
+
+/--
 The theorem-shaped interface that turns the topological smoothability predicate
 into the `IsManifold` instance used by `Poincare.Surgery`.
 -/

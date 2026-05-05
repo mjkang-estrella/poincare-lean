@@ -623,10 +623,12 @@ It is not a proof. It is a work breakdown for future Lean development.
   and `smoothability_bridge_payload_of_smoothability_package` centralize the
   smooth-structure derivation statement route and the bridge/model/chart
   compatibility plus full sub-obligation route. Equality contracts now tie the
+  smooth-structure derivation component assembler to the exact tuple of Moise,
+  PL, smoothing, smooth-atlas, transition, and derivation witnesses; the
   package bridge, canonical smooth-manifold statement, bridge application,
   surgery-model and canonical smooth-manifold projections, compatibility
-  evidence, and smoothability payloads back to the stored package fields or
-  named component route. The lower Moise/PL/smooth spine also records direct
+  evidence, and smoothability payloads are tied back to the stored package
+  fields or named component route. The lower Moise/PL/smooth spine also records direct
   equality contracts for the full Moise projection spine, including local
   charts, cover refinement, simplicial-complex/chart compatibility,
   triangulation, simplicial approximation, neighborhood, local-finiteness,
