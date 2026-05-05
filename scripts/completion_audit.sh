@@ -3184,16 +3184,24 @@ check_decl "explicit package-route extraction-derivation assembly inputs payload
   '^theorem poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation\b' Poincare/FullAssembly.lean
 check_decl "theorem-shaped topology route assembly inputs payload theorem is declared" \
   '^theorem poincare_assembly_inputs_payload_of_surgery_and_topology_extraction_statement\b' Poincare/FullAssembly.lean
+check_decl "theorem-shaped topology route assembly inputs payload equality contract is declared" \
+  '^theorem poincare_assembly_inputs_payload_of_surgery_and_topology_extraction_statement_eq\b' Poincare/FullAssembly.lean
 check_decl "extraction-derivation route assembly inputs payload theorem is declared" \
   '^theorem poincare_assembly_inputs_payload_of_surgery_and_extraction_derivation\b' Poincare/FullAssembly.lean
+check_decl "extraction-derivation route assembly inputs payload equality contract is declared" \
+  '^theorem poincare_assembly_inputs_payload_of_surgery_and_extraction_derivation_eq\b' Poincare/FullAssembly.lean
 check_decl "explicit package-route target payload theorem is declared" \
   '^theorem poincare_target_payload_of_surgery_and_topology_packages\b' Poincare/FullAssembly.lean
 check_decl "explicit package-route extraction-derivation target payload theorem is declared" \
   '^theorem poincare_target_payload_of_surgery_and_topology_package_extraction_derivation\b' Poincare/FullAssembly.lean
 check_decl "theorem-shaped topology route target payload theorem is declared" \
   '^theorem poincare_target_payload_of_surgery_and_topology_extraction_statement\b' Poincare/FullAssembly.lean
+check_decl "theorem-shaped topology route target payload equality contract is declared" \
+  '^theorem poincare_target_payload_of_surgery_and_topology_extraction_statement_eq\b' Poincare/FullAssembly.lean
 check_decl "extraction-derivation route target payload theorem is declared" \
   '^theorem poincare_target_payload_of_surgery_and_extraction_derivation\b' Poincare/FullAssembly.lean
+check_decl "extraction-derivation route target payload equality contract is declared" \
+  '^theorem poincare_target_payload_of_surgery_and_extraction_derivation_eq\b' Poincare/FullAssembly.lean
 check_decl "end-to-end conditional full assembly payload theorem is declared" \
   '^theorem poincare_full_assembly_payload_of_surgery_and_topology_packages\b' Poincare/FullAssembly.lean
 check_decl "end-to-end conditional assembly payload theorem is declared" \
@@ -3204,22 +3212,34 @@ check_decl "explicit package-route extraction-derivation completion payload theo
   '^theorem poincare_completion_payload_of_surgery_and_topology_package_extraction_derivation\b' Poincare/FullAssembly.lean
 check_decl "theorem-shaped topology route completion payload theorem is declared" \
   '^theorem poincare_completion_payload_of_surgery_and_topology_extraction_statement\b' Poincare/FullAssembly.lean
+check_decl "theorem-shaped topology route completion payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_surgery_and_topology_extraction_statement_eq\b' Poincare/FullAssembly.lean
 check_decl "extraction-derivation route completion payload theorem is declared" \
   '^theorem poincare_completion_payload_of_surgery_and_extraction_derivation\b' Poincare/FullAssembly.lean
+check_decl "extraction-derivation route completion payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_surgery_and_extraction_derivation_eq\b' Poincare/FullAssembly.lean
 check_decl "end-to-end conditional assembly theorem is declared" \
   '^theorem poincare_statement_of_surgery_and_topology_packages\b' Poincare/FullAssembly.lean
 check_decl "theorem-shaped topology route assembly theorem is declared" \
   '^theorem poincare_statement_of_surgery_and_topology_extraction_statement\b' Poincare/FullAssembly.lean
+check_decl "theorem-shaped topology route assembly theorem equality contract is declared" \
+  '^theorem poincare_statement_of_surgery_and_topology_extraction_statement_eq\b' Poincare/FullAssembly.lean
 check_decl "extraction-derivation route assembly theorem is declared" \
   '^theorem poincare_statement_of_surgery_and_extraction_derivation\b' Poincare/FullAssembly.lean
+check_decl "extraction-derivation route assembly theorem equality contract is declared" \
+  '^theorem poincare_statement_of_surgery_and_extraction_derivation_eq\b' Poincare/FullAssembly.lean
 check_decl "explicit package-route extraction-derivation assembly theorem is declared" \
   '^theorem poincare_statement_of_surgery_and_topology_package_extraction_derivation\b' Poincare/FullAssembly.lean
 check_decl "end-to-end canonical statement theorem is declared" \
   '^theorem canonical_three_sphere_statement_of_surgery_and_topology_packages\b' Poincare/FullAssembly.lean
 check_decl "theorem-shaped topology route canonical statement theorem is declared" \
   '^theorem canonical_three_sphere_statement_of_surgery_and_topology_extraction_statement\b' Poincare/FullAssembly.lean
+check_decl "theorem-shaped topology route canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_surgery_and_topology_extraction_statement_eq\b' Poincare/FullAssembly.lean
 check_decl "extraction-derivation route canonical statement theorem is declared" \
   '^theorem canonical_three_sphere_statement_of_surgery_and_extraction_derivation\b' Poincare/FullAssembly.lean
+check_decl "extraction-derivation route canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_surgery_and_extraction_derivation_eq\b' Poincare/FullAssembly.lean
 check_decl "explicit package-route extraction-derivation canonical statement theorem is declared" \
   '^theorem canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation\b' Poincare/FullAssembly.lean
 check_decl "aggregate dependency package is declared" \
@@ -7091,22 +7111,32 @@ open scoped Manifold ContDiff
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_extraction_statement
+#check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_extraction_statement_eq
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_extraction_derivation
+#check Poincare.poincare_assembly_inputs_payload_of_surgery_and_extraction_derivation_eq
 #check Poincare.poincare_target_payload_of_surgery_and_topology_packages
 #check Poincare.poincare_target_payload_of_surgery_and_topology_package_extraction_derivation
 #check Poincare.poincare_target_payload_of_surgery_and_topology_extraction_statement
+#check Poincare.poincare_target_payload_of_surgery_and_topology_extraction_statement_eq
 #check Poincare.poincare_target_payload_of_surgery_and_extraction_derivation
+#check Poincare.poincare_target_payload_of_surgery_and_extraction_derivation_eq
 #check Poincare.poincare_full_assembly_payload_of_surgery_and_topology_packages
 #check Poincare.poincare_statement_of_surgery_and_topology_extraction_statement
+#check Poincare.poincare_statement_of_surgery_and_topology_extraction_statement_eq
 #check Poincare.poincare_completion_payload_of_surgery_and_topology_packages
 #check Poincare.poincare_completion_payload_of_surgery_and_topology_package_extraction_derivation
 #check Poincare.poincare_completion_payload_of_surgery_and_topology_extraction_statement
+#check Poincare.poincare_completion_payload_of_surgery_and_topology_extraction_statement_eq
 #check Poincare.poincare_completion_payload_of_surgery_and_extraction_derivation
+#check Poincare.poincare_completion_payload_of_surgery_and_extraction_derivation_eq
 #check Poincare.poincare_statement_of_surgery_and_extraction_derivation
+#check Poincare.poincare_statement_of_surgery_and_extraction_derivation_eq
 #check Poincare.poincare_statement_of_surgery_and_topology_package_extraction_derivation
 #check Poincare.canonical_three_sphere_statement_of_surgery_and_topology_packages
 #check Poincare.canonical_three_sphere_statement_of_surgery_and_topology_extraction_statement
+#check Poincare.canonical_three_sphere_statement_of_surgery_and_topology_extraction_statement_eq
 #check Poincare.canonical_three_sphere_statement_of_surgery_and_extraction_derivation
+#check Poincare.canonical_three_sphere_statement_of_surgery_and_extraction_derivation_eq
 #check Poincare.canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation
 #check Poincare.canonical_completion_payload_of_surgery_and_topology_packages
 #check Poincare.canonical_completion_payload_of_surgery_and_topology_packages_eq
@@ -10242,11 +10272,14 @@ open scoped Manifold ContDiff
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_extraction_statement
+#check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_extraction_statement_eq
 #check Poincare.poincare_target_payload_of_surgery_and_topology_packages
 #check Poincare.poincare_target_payload_of_surgery_and_topology_package_extraction_derivation
 #check Poincare.poincare_target_payload_of_surgery_and_topology_extraction_statement
+#check Poincare.poincare_target_payload_of_surgery_and_topology_extraction_statement_eq
 #check Poincare.poincare_full_assembly_payload_of_surgery_and_topology_packages
 #check Poincare.poincare_statement_of_surgery_and_topology_extraction_statement
+#check Poincare.poincare_statement_of_surgery_and_topology_extraction_statement_eq
 #check Poincare.poincare_assembly_inputs_payload_of_aggregate_dependencies
 #check Poincare.poincare_assembly_inputs_payload_of_aggregate_dependencies_eq
 #check Poincare.poincare_assembly_inputs_payload_of_aggregate_extraction_derivation_dependencies

@@ -1484,7 +1484,9 @@ set_option linter.unusedVariables false
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_extraction_statement
+#check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_extraction_statement_eq
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_extraction_derivation
+#check Poincare.poincare_assembly_inputs_payload_of_surgery_and_extraction_derivation_eq
 
 #check (Poincare.poincare_target_payload_of_surgery_and_topology_packages :
   Poincare.SmoothabilityPackage →
@@ -1519,6 +1521,7 @@ set_option linter.unusedVariables false
       ∃ _topologyStatement : Poincare.ExtinctionTopologyExtractionStatement,
       ∃ _target : Poincare.PoincareConjectureStatement,
         ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+#check Poincare.poincare_target_payload_of_surgery_and_topology_extraction_statement_eq
 
 #check (Poincare.poincare_assembly_inputs_payload_of_surgery_and_extraction_derivation :
   Poincare.SmoothabilityPackage →
@@ -1538,6 +1541,7 @@ set_option linter.unusedVariables false
         ∃ extractSphere : Poincare.ExtinctionImpliesSphereStatement,
           Poincare.ExtinctionTopologyDerivationForExtractionStatement
             extractSphere)
+#check Poincare.poincare_assembly_inputs_payload_of_surgery_and_extraction_derivation_eq
 
 #check (Poincare.poincare_target_payload_of_surgery_and_extraction_derivation :
   Poincare.SmoothabilityPackage →
@@ -1560,6 +1564,7 @@ set_option linter.unusedVariables false
             extractSphere,
         ∃ _target : Poincare.PoincareConjectureStatement,
           ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+#check Poincare.poincare_target_payload_of_surgery_and_extraction_derivation_eq
 
 #check (Poincare.poincare_target_payload_of_surgery_and_topology_package_extraction_derivation :
   Poincare.SmoothabilityPackage →
@@ -1654,6 +1659,7 @@ set_option linter.unusedVariables false
     Poincare.ExtinctionTopologyExtractionStatement →
       ∃ _target : Poincare.PoincareConjectureStatement,
         ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+#check Poincare.poincare_completion_payload_of_surgery_and_topology_extraction_statement_eq
 
 #check (Poincare.poincare_completion_payload_of_surgery_and_extraction_derivation :
   Poincare.SmoothabilityPackage →
@@ -1667,6 +1673,7 @@ set_option linter.unusedVariables false
         extractSphere →
         ∃ _target : Poincare.PoincareConjectureStatement,
           ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+#check Poincare.poincare_completion_payload_of_surgery_and_extraction_derivation_eq
 
 #check (Poincare.poincare_statement_of_surgery_and_topology_packages :
   Poincare.SmoothabilityPackage →
@@ -1697,6 +1704,7 @@ set_option linter.unusedVariables false
         Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M)) →
     Poincare.ExtinctionTopologyExtractionStatement →
       Poincare.PoincareConjectureStatement)
+#check Poincare.poincare_statement_of_surgery_and_topology_extraction_statement_eq
 
 #check (Poincare.poincare_statement_of_surgery_and_extraction_derivation :
   Poincare.SmoothabilityPackage →
@@ -1709,6 +1717,7 @@ set_option linter.unusedVariables false
       Poincare.ExtinctionTopologyDerivationForExtractionStatement
         extractSphere →
         Poincare.PoincareConjectureStatement)
+#check Poincare.poincare_statement_of_surgery_and_extraction_derivation_eq
 
 #check (Poincare.canonical_three_sphere_statement_of_surgery_and_topology_packages :
   Poincare.SmoothabilityPackage →
@@ -1735,6 +1744,7 @@ set_option linter.unusedVariables false
         [ChartedSpace Poincare.ThreeManifoldModel M]
         [SimplyConnectedSpace M] [CompactSpace M],
           Nonempty (M ≃ₜ Poincare.ThreeSphere))
+#check Poincare.canonical_three_sphere_statement_of_surgery_and_topology_extraction_statement_eq
 
 #check (Poincare.canonical_three_sphere_statement_of_surgery_and_extraction_derivation :
   Poincare.SmoothabilityPackage →
@@ -1750,6 +1760,7 @@ set_option linter.unusedVariables false
           [ChartedSpace Poincare.ThreeManifoldModel M]
           [SimplyConnectedSpace M] [CompactSpace M],
             Nonempty (M ≃ₜ Poincare.ThreeSphere))
+#check Poincare.canonical_three_sphere_statement_of_surgery_and_extraction_derivation_eq
 
 #check (Poincare.canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation :
   Poincare.SmoothabilityPackage →
