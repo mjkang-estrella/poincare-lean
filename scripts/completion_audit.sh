@@ -3023,10 +3023,16 @@ check_decl "topology package homeomorphism derivation equality contract is decla
   '^theorem extinction_homeomorphism_derivation_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
 check_decl "topology fixed derivation statement is declared" \
   '^def ExtinctionTopologyDerivationStatement\b' Poincare/TopologyExtraction.lean
+check_decl "topology fixed derivation statement equality contract is declared" \
+  '^theorem extinctionTopologyDerivationStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "topology homeomorphism assembly statement is declared" \
   '^def ExtinctionTopologyHomeomorphismAssemblyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "topology homeomorphism assembly statement equality contract is declared" \
+  '^theorem extinctionTopologyHomeomorphismAssemblyStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "topology homeomorphism derivation statement is declared" \
   '^def ExtinctionTopologyHomeomorphismDerivationStatement\b' Poincare/TopologyExtraction.lean
+check_decl "topology homeomorphism derivation statement equality contract is declared" \
+  '^theorem extinctionTopologyHomeomorphismDerivationStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "topology extraction statement is declared" \
   '^def ExtinctionTopologyExtractionStatement\b' Poincare/TopologyExtraction.lean
 check_decl "topology extraction statement equality contract is declared" \
@@ -6942,8 +6948,11 @@ open scoped Manifold ContDiff
 #check Poincare.extinction_homeomorphism_derivation_of_topology_package
 #check Poincare.extinction_homeomorphism_derivation_of_topology_package_eq
 #check Poincare.ExtinctionTopologyDerivationStatement
+#check Poincare.extinctionTopologyDerivationStatement_eq
 #check Poincare.ExtinctionTopologyHomeomorphismAssemblyStatement
+#check Poincare.extinctionTopologyHomeomorphismAssemblyStatement_eq
 #check Poincare.ExtinctionTopologyHomeomorphismDerivationStatement
+#check Poincare.extinctionTopologyHomeomorphismDerivationStatement_eq
 #check Poincare.ExtinctionTopologyExtractionStatement
 #check Poincare.ExtinctionTopologyDerivationForExtractionStatement
 #check Poincare.extinction_topology_derivation_statement_of_components
@@ -10039,8 +10048,11 @@ open scoped Manifold ContDiff
 #check Poincare.extinction_homeomorphism_derivation_of_topology_package
 #check Poincare.extinction_homeomorphism_derivation_of_topology_package_eq
 #check Poincare.ExtinctionTopologyDerivationStatement
+#check Poincare.extinctionTopologyDerivationStatement_eq
 #check Poincare.ExtinctionTopologyHomeomorphismAssemblyStatement
+#check Poincare.extinctionTopologyHomeomorphismAssemblyStatement_eq
 #check Poincare.ExtinctionTopologyHomeomorphismDerivationStatement
+#check Poincare.extinctionTopologyHomeomorphismDerivationStatement_eq
 #check Poincare.ExtinctionTopologyExtractionStatement
 #check Poincare.ExtinctionTopologyDerivationForExtractionStatement
 #check Poincare.extinction_topology_derivation_statement_of_components
