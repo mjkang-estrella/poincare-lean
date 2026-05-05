@@ -1142,7 +1142,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   directly from those presentations. Those constructors and their payload
   variants are pinned back to
   `completion_certificate_of_remaining_dependency_package` after reconstructing
-  the corresponding remaining-dependency package.
+  the corresponding remaining-dependency package. The presentation constructors
+  and payload constructors also now have projection-after-constructor
+  round-trip contracts for raw components, component slots, package layers, and
+  milestones.
   `completion_certificate_of_remaining_dependency_package`,
   `completion_certificate_of_component_extraction_derivation_requirements`,
   `completion_certificate_of_component_extraction_derivation_requirements_payload`,
