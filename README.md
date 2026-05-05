@@ -1199,7 +1199,10 @@ The current artifact is intentionally conservative:
   and
   `poincareCompletionCertificate_iff_poincareProofDependencies_and_canonical_three_sphere_statement`,
   making the canonical statement/certificate route reversible at both dependency
-  package surfaces. It also adds the smooth-route certificate constructors
+  package surfaces. The canonical-statement payload and dependency-package
+  constructors now have projection-after-constructor round-trip contracts back
+  to their payloads, dependency packages, and canonical topological statement
+  proofs. It also adds the smooth-route certificate constructors
   `completion_certificate_of_remaining_dependency_and_smooth_statement`,
   `completion_certificate_of_poincareProofDependencies_and_smooth_statement`,
   `completion_certificate_of_remaining_dependency_and_canonical_smooth_three_sphere_statement`,

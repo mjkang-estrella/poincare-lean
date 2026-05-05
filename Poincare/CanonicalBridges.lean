@@ -623,6 +623,106 @@ theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_canonica
   apply Subsingleton.elim
 
 /--
+Projecting the canonical-statement payload from a certificate reconstructed
+from that payload returns the original payload.
+-/
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_canonical_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        RemainingDependencyPackage.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_canonical_statement_payload payload) =
+      payload := by
+  apply Subsingleton.elim
+
+/--
+Projecting the aggregate canonical-statement payload from a certificate
+reconstructed from that payload returns the original payload.
+-/
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_aggregate_canonical_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_aggregate_canonical_statement_payload
+        payload) = payload := by
+  apply Subsingleton.elim
+
+/--
+Projecting the dependency package from a remaining-dependency canonical
+statement certificate returns the input package.
+-/
+theorem remaining_dependency_package_of_completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    remaining_dependency_package_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement
+        dependencies h) = dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical topological statement from a remaining-dependency
+canonical statement certificate returns the input statement.
+-/
+theorem canonical_three_sphere_statement_of_completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement
+        dependencies h) = h := by
+  apply Subsingleton.elim
+
+/--
+Projecting the aggregate dependency package from an aggregate canonical
+statement certificate returns the input package.
+-/
+theorem poincareProofDependencies_of_completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    poincareProofDependencies_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement
+        dependencies h) = dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical topological statement from an aggregate canonical
+statement certificate returns the input statement.
+-/
+theorem canonical_three_sphere_statement_of_completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement
+        dependencies h) = h := by
+  apply Subsingleton.elim
+
+/--
 The remaining-dependency package exposes the canonical topological 3-sphere
 statement through the aggregate dependency route.
 -/
