@@ -515,8 +515,11 @@ The current artifact is intentionally conservative:
   charts, cover refinement, simplicial-complex/chart compatibility,
   triangulation, simplicial approximation, neighborhood, local-finiteness,
   link/PL-recognition, homeomorphism, uniqueness, Hauptvermutung inputs,
-  PL-structure, PL-atlas, PL-smoothing, smooth-structure, smooth-atlas,
-  transition, and smooth-structure derivation projections.
+  PL-structure, PL transition compatibility, PL-atlas/manifold/collar/
+  homeomorphism compatibility, PL-atlas maximality, PL smoothing existence,
+  obstruction, microbundle, theorem, compatibility, uniqueness, local-model
+  compatibility, smooth-structure, smooth-atlas, transition, and
+  smooth-structure derivation projections.
   Dependency-level equality contracts
   now pin the full direct Moise/PL/smoothing/smooth-atlas/transition/derivation
   projection spine to the stored aggregate smoothability field. The dependency-level

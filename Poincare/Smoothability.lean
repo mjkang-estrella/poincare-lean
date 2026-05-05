@@ -1873,6 +1873,16 @@ theorem pl_transition_compatibility_of_smoothability_package
       (pl_structure_of_smoothability_package package M) :=
   package.plTransitionCompatibility M
 
+/-- The named PL transition-compatibility projection is the stored package field. -/
+theorem pl_transition_compatibility_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    pl_transition_compatibility_of_smoothability_package package M =
+      package.plTransitionCompatibility M :=
+  rfl
+
 /-- A completed smoothability package supplies compatible PL-atlas evidence. -/
 theorem pl_atlas_of_smoothability_package
     (package : SmoothabilityPackage.{u})
@@ -1906,6 +1916,16 @@ theorem pl_manifold_atlas_of_smoothability_package
       (pl_atlas_of_smoothability_package package M) :=
   package.plManifoldAtlas M
 
+/-- The named PL-manifold atlas projection is the stored package field. -/
+theorem pl_manifold_atlas_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    pl_manifold_atlas_of_smoothability_package package M =
+      package.plManifoldAtlas M :=
+  rfl
+
 /-- A completed smoothability package supplies PL collar-neighborhood compatibility. -/
 theorem pl_collar_neighborhood_compatibility_of_smoothability_package
     (package : SmoothabilityPackage.{u})
@@ -1917,6 +1937,16 @@ theorem pl_collar_neighborhood_compatibility_of_smoothability_package
       (pl_structure_of_smoothability_package package M)
       (pl_atlas_of_smoothability_package package M) :=
   package.plCollarNeighborhoodCompatibility M
+
+/-- The named PL collar-neighborhood compatibility projection is the stored package field. -/
+theorem pl_collar_neighborhood_compatibility_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    pl_collar_neighborhood_compatibility_of_smoothability_package package M =
+      package.plCollarNeighborhoodCompatibility M :=
+  rfl
 
 /-- A completed smoothability package supplies Moise-to-PL compatibility. -/
 theorem pl_homeomorphism_compatibility_of_smoothability_package
@@ -1931,6 +1961,16 @@ theorem pl_homeomorphism_compatibility_of_smoothability_package
       (pl_atlas_of_smoothability_package package M) :=
   package.plHomeomorphismCompatibility M
 
+/-- The named PL homeomorphism-compatibility projection is the stored package field. -/
+theorem pl_homeomorphism_compatibility_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    pl_homeomorphism_compatibility_of_smoothability_package package M =
+      package.plHomeomorphismCompatibility M :=
+  rfl
+
 /-- A completed smoothability package supplies PL atlas maximality. -/
 theorem pl_atlas_maximality_of_smoothability_package
     (package : SmoothabilityPackage.{u})
@@ -1942,6 +1982,16 @@ theorem pl_atlas_maximality_of_smoothability_package
       (pl_structure_of_smoothability_package package M)
       (pl_atlas_of_smoothability_package package M) :=
   package.plAtlasMaximality M
+
+/-- The named PL-atlas maximality projection is the stored package field. -/
+theorem pl_atlas_maximality_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    pl_atlas_maximality_of_smoothability_package package M =
+      package.plAtlasMaximality M :=
+  rfl
 
 /-- A completed smoothability package supplies PL smoothing existence. -/
 theorem pl_smoothing_existence_of_smoothability_package
@@ -1955,6 +2005,16 @@ theorem pl_smoothing_existence_of_smoothability_package
       (pl_atlas_of_smoothability_package package M) :=
   package.plSmoothingExistence M
 
+/-- The named PL-smoothing existence projection is the stored package field. -/
+theorem pl_smoothing_existence_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    pl_smoothing_existence_of_smoothability_package package M =
+      package.plSmoothingExistence M :=
+  rfl
+
 /-- A completed smoothability package supplies PL-smoothing obstruction vanishing. -/
 theorem pl_smoothing_obstruction_vanishing_of_smoothability_package
     (package : SmoothabilityPackage.{u})
@@ -1966,6 +2026,16 @@ theorem pl_smoothing_obstruction_vanishing_of_smoothability_package
       (pl_structure_of_smoothability_package package M)
       (pl_atlas_of_smoothability_package package M) :=
   package.plSmoothingObstructionVanishing M
+
+/-- The named PL-smoothing obstruction-vanishing projection is the stored package field. -/
+theorem pl_smoothing_obstruction_vanishing_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    pl_smoothing_obstruction_vanishing_of_smoothability_package package M =
+      package.plSmoothingObstructionVanishing M :=
+  rfl
 
 /-- A completed smoothability package supplies PL microbundle smoothing evidence. -/
 theorem pl_microbundle_smoothing_of_smoothability_package
@@ -1980,6 +2050,16 @@ theorem pl_microbundle_smoothing_of_smoothability_package
       (pl_smoothing_existence_of_smoothability_package package M)
       (pl_smoothing_obstruction_vanishing_of_smoothability_package package M) :=
   package.plMicrobundleSmoothing M
+
+/-- The named PL microbundle-smoothing projection is the stored package field. -/
+theorem pl_microbundle_smoothing_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    pl_microbundle_smoothing_of_smoothability_package package M =
+      package.plMicrobundleSmoothing M :=
+  rfl
 
 /-- A completed smoothability package supplies PL-smoothing theorem evidence. -/
 theorem pl_smoothing_of_smoothability_package
@@ -2016,6 +2096,16 @@ theorem pl_smoothing_compatibility_of_smoothability_package
       (pl_smoothing_of_smoothability_package package M) :=
   package.plSmoothingCompatibility M
 
+/-- The named PL-smoothing compatibility projection is the stored package field. -/
+theorem pl_smoothing_compatibility_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    pl_smoothing_compatibility_of_smoothability_package package M =
+      package.plSmoothingCompatibility M :=
+  rfl
+
 /-- A completed smoothability package supplies PL smoothing uniqueness. -/
 theorem pl_smoothing_uniqueness_of_smoothability_package
     (package : SmoothabilityPackage.{u})
@@ -2029,6 +2119,16 @@ theorem pl_smoothing_uniqueness_of_smoothability_package
       (pl_smoothing_of_smoothability_package package M) :=
   package.plSmoothingUniqueness M
 
+/-- The named PL-smoothing uniqueness projection is the stored package field. -/
+theorem pl_smoothing_uniqueness_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    pl_smoothing_uniqueness_of_smoothability_package package M =
+      package.plSmoothingUniqueness M :=
+  rfl
+
 /-- A completed smoothability package supplies PL-smoothing local-model compatibility. -/
 theorem pl_smoothing_local_model_compatibility_of_smoothability_package
     (package : SmoothabilityPackage.{u})
@@ -2041,6 +2141,16 @@ theorem pl_smoothing_local_model_compatibility_of_smoothability_package
       (pl_atlas_of_smoothability_package package M)
       (pl_smoothing_of_smoothability_package package M) :=
   package.plSmoothingLocalModelCompatibility M
+
+/-- The named PL-smoothing local-model compatibility projection is the stored package field. -/
+theorem pl_smoothing_local_model_compatibility_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    pl_smoothing_local_model_compatibility_of_smoothability_package package M =
+      package.plSmoothingLocalModelCompatibility M :=
+  rfl
 
 /-- A completed smoothability package supplies the raw smooth-structure input. -/
 theorem smooth_structure_of_smoothability_package

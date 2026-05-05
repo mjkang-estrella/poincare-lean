@@ -3122,34 +3122,56 @@ check_decl "smoothability package PL-structure equality contract is declared" \
   '^theorem pl_structure_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package PL-transition compatibility projection is declared" \
   '^theorem pl_transition_compatibility_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL-transition compatibility equality contract is declared" \
+  '^theorem pl_transition_compatibility_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package PL-atlas projection is declared" \
   '^theorem pl_atlas_of_smoothability_package\b' Poincare/Smoothability.lean
 check_decl "smoothability package PL-atlas equality contract is declared" \
   '^theorem pl_atlas_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package PL-manifold atlas projection is declared" \
   '^theorem pl_manifold_atlas_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL-manifold atlas equality contract is declared" \
+  '^theorem pl_manifold_atlas_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package PL collar-neighborhood compatibility projection is declared" \
   '^theorem pl_collar_neighborhood_compatibility_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL collar-neighborhood compatibility equality contract is declared" \
+  '^theorem pl_collar_neighborhood_compatibility_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package PL-homeomorphism compatibility projection is declared" \
   '^theorem pl_homeomorphism_compatibility_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL-homeomorphism compatibility equality contract is declared" \
+  '^theorem pl_homeomorphism_compatibility_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package PL-atlas maximality projection is declared" \
   '^theorem pl_atlas_maximality_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL-atlas maximality equality contract is declared" \
+  '^theorem pl_atlas_maximality_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package PL-smoothing existence projection is declared" \
   '^theorem pl_smoothing_existence_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL-smoothing existence equality contract is declared" \
+  '^theorem pl_smoothing_existence_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package PL-smoothing obstruction-vanishing projection is declared" \
   '^theorem pl_smoothing_obstruction_vanishing_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL-smoothing obstruction-vanishing equality contract is declared" \
+  '^theorem pl_smoothing_obstruction_vanishing_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package PL microbundle smoothing projection is declared" \
   '^theorem pl_microbundle_smoothing_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL microbundle smoothing equality contract is declared" \
+  '^theorem pl_microbundle_smoothing_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package PL-smoothing projection is declared" \
   '^theorem pl_smoothing_of_smoothability_package\b' Poincare/Smoothability.lean
 check_decl "smoothability package PL-smoothing equality contract is declared" \
   '^theorem pl_smoothing_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package PL-smoothing compatibility projection is declared" \
   '^theorem pl_smoothing_compatibility_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL-smoothing compatibility equality contract is declared" \
+  '^theorem pl_smoothing_compatibility_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package PL-smoothing uniqueness projection is declared" \
   '^theorem pl_smoothing_uniqueness_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL-smoothing uniqueness equality contract is declared" \
+  '^theorem pl_smoothing_uniqueness_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package PL-smoothing local-model projection is declared" \
   '^theorem pl_smoothing_local_model_compatibility_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package PL-smoothing local-model equality contract is declared" \
+  '^theorem pl_smoothing_local_model_compatibility_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package smooth-structure projection is declared" \
   '^theorem smooth_structure_of_smoothability_package\b' Poincare/Smoothability.lean
 check_decl "smoothability package smooth-structure equality contract is declared" \
@@ -6675,20 +6697,31 @@ open scoped Manifold ContDiff
 #check Poincare.pl_structure_of_smoothability_package
 #check Poincare.pl_structure_of_smoothability_package_eq
 #check Poincare.pl_transition_compatibility_of_smoothability_package
+#check Poincare.pl_transition_compatibility_of_smoothability_package_eq
 #check Poincare.pl_atlas_of_smoothability_package
 #check Poincare.pl_atlas_of_smoothability_package_eq
 #check Poincare.pl_manifold_atlas_of_smoothability_package
+#check Poincare.pl_manifold_atlas_of_smoothability_package_eq
 #check Poincare.pl_collar_neighborhood_compatibility_of_smoothability_package
+#check Poincare.pl_collar_neighborhood_compatibility_of_smoothability_package_eq
 #check Poincare.pl_homeomorphism_compatibility_of_smoothability_package
+#check Poincare.pl_homeomorphism_compatibility_of_smoothability_package_eq
 #check Poincare.pl_atlas_maximality_of_smoothability_package
+#check Poincare.pl_atlas_maximality_of_smoothability_package_eq
 #check Poincare.pl_smoothing_existence_of_smoothability_package
+#check Poincare.pl_smoothing_existence_of_smoothability_package_eq
 #check Poincare.pl_smoothing_obstruction_vanishing_of_smoothability_package
+#check Poincare.pl_smoothing_obstruction_vanishing_of_smoothability_package_eq
 #check Poincare.pl_microbundle_smoothing_of_smoothability_package
+#check Poincare.pl_microbundle_smoothing_of_smoothability_package_eq
 #check Poincare.pl_smoothing_of_smoothability_package
 #check Poincare.pl_smoothing_of_smoothability_package_eq
 #check Poincare.pl_smoothing_compatibility_of_smoothability_package
+#check Poincare.pl_smoothing_compatibility_of_smoothability_package_eq
 #check Poincare.pl_smoothing_uniqueness_of_smoothability_package
+#check Poincare.pl_smoothing_uniqueness_of_smoothability_package_eq
 #check Poincare.pl_smoothing_local_model_compatibility_of_smoothability_package
+#check Poincare.pl_smoothing_local_model_compatibility_of_smoothability_package_eq
 #check Poincare.smooth_structure_of_smoothability_package
 #check Poincare.smooth_structure_of_smoothability_package_eq
 #check Poincare.smooth_atlas_construction_of_smoothability_package
@@ -9575,20 +9608,31 @@ open scoped Manifold ContDiff
 #check Poincare.pl_structure_of_smoothability_package
 #check Poincare.pl_structure_of_smoothability_package_eq
 #check Poincare.pl_transition_compatibility_of_smoothability_package
+#check Poincare.pl_transition_compatibility_of_smoothability_package_eq
 #check Poincare.pl_atlas_of_smoothability_package
 #check Poincare.pl_atlas_of_smoothability_package_eq
 #check Poincare.pl_manifold_atlas_of_smoothability_package
+#check Poincare.pl_manifold_atlas_of_smoothability_package_eq
 #check Poincare.pl_collar_neighborhood_compatibility_of_smoothability_package
+#check Poincare.pl_collar_neighborhood_compatibility_of_smoothability_package_eq
 #check Poincare.pl_homeomorphism_compatibility_of_smoothability_package
+#check Poincare.pl_homeomorphism_compatibility_of_smoothability_package_eq
 #check Poincare.pl_atlas_maximality_of_smoothability_package
+#check Poincare.pl_atlas_maximality_of_smoothability_package_eq
 #check Poincare.pl_smoothing_existence_of_smoothability_package
+#check Poincare.pl_smoothing_existence_of_smoothability_package_eq
 #check Poincare.pl_smoothing_obstruction_vanishing_of_smoothability_package
+#check Poincare.pl_smoothing_obstruction_vanishing_of_smoothability_package_eq
 #check Poincare.pl_microbundle_smoothing_of_smoothability_package
+#check Poincare.pl_microbundle_smoothing_of_smoothability_package_eq
 #check Poincare.pl_smoothing_of_smoothability_package
 #check Poincare.pl_smoothing_of_smoothability_package_eq
 #check Poincare.pl_smoothing_compatibility_of_smoothability_package
+#check Poincare.pl_smoothing_compatibility_of_smoothability_package_eq
 #check Poincare.pl_smoothing_uniqueness_of_smoothability_package
+#check Poincare.pl_smoothing_uniqueness_of_smoothability_package_eq
 #check Poincare.pl_smoothing_local_model_compatibility_of_smoothability_package
+#check Poincare.pl_smoothing_local_model_compatibility_of_smoothability_package_eq
 #check Poincare.smooth_structure_of_smoothability_package
 #check Poincare.smooth_structure_of_smoothability_package_eq
 #check Poincare.smooth_atlas_construction_of_smoothability_package
