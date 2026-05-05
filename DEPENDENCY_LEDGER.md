@@ -1337,7 +1337,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   projection-after-constructor round-trip contracts back to the
   remaining-dependency or aggregate dependency package they were built from,
   including the converted remaining-dependency package stored by each aggregate
-  dependency route.
+  dependency route. The projection and certified projection endpoint variants
+  name those dependency-package round-trips directly for the finite-extinction
+  plus topology-extraction and extractor/derivation routes.
   Their certificate constructors now also have theorem-name, literal full
   payload projection/reconstruction, canonical/project payload, target,
   criterion, aggregate-dependency full payload projection/reconstruction,
