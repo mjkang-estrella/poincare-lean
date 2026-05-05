@@ -50,6 +50,16 @@ theorem canonicalCompletionTarget_eq_completionCriterionAtUniverse
   rfl
 
 /--
+The canonical completion target/completion criterion equality is the
+definitional target equality.
+-/
+theorem canonicalCompletionTarget_eq_completionCriterionAtUniverse_eq
+    (witness : Type u) :
+    canonicalCompletionTarget_eq_completionCriterionAtUniverse witness =
+      rfl := by
+  apply Subsingleton.elim
+
+/--
 The canonical completion target is logically equivalent to the explicit
 universe-indexed completion criterion.
 -/

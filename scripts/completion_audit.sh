@@ -3280,6 +3280,8 @@ check_decl "aggregate dependency component iff theorem is declared" \
   '^theorem poincareProofDependencies_iff_components\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency component reverse constructor is declared" \
   '^theorem poincareProofDependencies_of_components_payload\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency component reverse constructor equality contract is declared" \
+  '^theorem poincareProofDependencies_of_components_payload_eq\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency component iff equality contract is declared" \
   '^theorem poincareProofDependencies_iff_components_eq\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency assembly inputs payload theorem is declared" \
@@ -4207,6 +4209,8 @@ check_decl "canonical completion target iff target equality contract is declared
   '^theorem canonicalCompletionTarget_iff_poincareConjectureStatement_eq\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion target criterion equality is declared" \
   '^theorem canonicalCompletionTarget_eq_completionCriterionAtUniverse\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion target criterion equality contract is declared" \
+  '^theorem canonicalCompletionTarget_eq_completionCriterionAtUniverse_eq\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion target iff criterion theorem is declared" \
   '^theorem canonicalCompletionTarget_iff_completionCriterionAtUniverse\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion target iff criterion equality contract is declared" \
@@ -7108,6 +7112,7 @@ open scoped Manifold ContDiff
 #check Poincare.canonicalCompletionTarget_iff_poincareConjectureStatement
 #check Poincare.canonicalCompletionTarget_iff_poincareConjectureStatement_eq
 #check Poincare.canonicalCompletionTarget_eq_completionCriterionAtUniverse
+#check Poincare.canonicalCompletionTarget_eq_completionCriterionAtUniverse_eq
 #check Poincare.canonicalCompletionTarget_iff_completionCriterionAtUniverse
 #check Poincare.canonicalCompletionTarget_iff_completionCriterionAtUniverse_eq
 #check Poincare.extinction_extraction_of_canonical_completion_target
@@ -7294,6 +7299,7 @@ open scoped Manifold ContDiff
 #check Poincare.poincareProofDependencies_components_payload_eq
 #check Poincare.poincareProofDependencies_iff_components
 #check Poincare.poincareProofDependencies_of_components_payload
+#check Poincare.poincareProofDependencies_of_components_payload_eq
 #check Poincare.poincareProofDependencies_iff_components_eq
 #check Poincare.remainingDependencyPackage_eq
 #check Poincare.remainingDependencyPackage_iff_poincareProofDependencies
@@ -10483,6 +10489,7 @@ open scoped Manifold ContDiff
       Poincare.ExtinctionTopologyExtractionPackage)
 
 #check Poincare.poincareProofDependencies_of_components_payload
+#check Poincare.poincareProofDependencies_of_components_payload_eq
 #check Poincare.poincareProofDependencies_iff_components_eq
 
 #check (Poincare.poincare_statement_of_dependencies :
@@ -12145,6 +12152,16 @@ open scoped Manifold ContDiff
 #check (Poincare.canonicalCompletionTarget_iff_poincareConjectureStatement_eq :
   Poincare.canonicalCompletionTarget_iff_poincareConjectureStatement =
     Iff.rfl)
+
+#check (Poincare.canonicalCompletionTarget_eq_completionCriterionAtUniverse :
+  ∀ witness : Type,
+    Poincare.canonicalCompletionTarget =
+      Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonicalCompletionTarget_eq_completionCriterionAtUniverse_eq :
+  ∀ witness : Type,
+    Poincare.canonicalCompletionTarget_eq_completionCriterionAtUniverse witness =
+      rfl)
 
 #check (Poincare.canonicalCompletionTarget_iff_completionCriterionAtUniverse :
   ∀ witness : Type,

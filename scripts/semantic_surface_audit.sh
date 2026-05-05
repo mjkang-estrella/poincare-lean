@@ -2287,6 +2287,7 @@ set_option linter.unusedVariables false
       Poincare.ExtinctionTopologyExtractionPackage)
 
 #check Poincare.poincareProofDependencies_of_components_payload
+#check Poincare.poincareProofDependencies_of_components_payload_eq
 #check Poincare.poincareProofDependencies_iff_components_eq
 
 #check (Poincare.completion_criterion_of_dependencies :
@@ -3035,6 +3036,11 @@ set_option linter.unusedVariables false
   ∀ witness : Type,
     Poincare.canonicalCompletionTarget =
       Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.canonicalCompletionTarget_eq_completionCriterionAtUniverse_eq :
+  ∀ witness : Type,
+    Poincare.canonicalCompletionTarget_eq_completionCriterionAtUniverse witness =
+      rfl)
 
 #check (Poincare.canonicalCompletionTarget_iff_completionCriterionAtUniverse :
   ∀ witness : Type,

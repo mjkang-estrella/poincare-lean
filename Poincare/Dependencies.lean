@@ -93,6 +93,21 @@ theorem poincareProofDependencies_of_components_payload :
   exact ⟨smoothability, surgery, topology⟩
 
 /--
+The reverse component constructor is exactly the unpacking route from the raw
+component payload.
+-/
+theorem poincareProofDependencies_of_components_payload_eq :
+    poincareProofDependencies_of_components_payload.{u} =
+      (fun payload =>
+        by
+          rcases payload with ⟨smoothability, surgery, topology⟩
+          exact
+            ({ smoothability := smoothability
+               surgery := surgery
+               topology := topology } : PoincareProofDependencies.{u})) := by
+  apply Subsingleton.elim
+
+/--
 The raw component equivalence is exactly the named forward payload projection
 paired with the named reverse constructor.
 -/

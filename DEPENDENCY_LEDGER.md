@@ -691,8 +691,8 @@ It is not a proof. It is a work breakdown for future Lean development.
   `poincareProofDependencies_iff_components`, which identify that package with
   exactly the smoothability package, target-family surgery package, and
   topology extraction package; the reverse constructor from that raw component
-  payload is now named, and the iff route is pinned to the named
-  forward/reverse maps. It also exposes
+  payload is now named, the reverse constructor has a direct equality contract,
+  and the iff route is pinned to the named forward/reverse maps. It also exposes
   `poincare_assembly_inputs_payload_of_aggregate_dependencies`, which carries
   the final finite-extinction and extinction-to-sphere inputs by destructuring
   the explicit package-route assembly-input payload,
@@ -934,6 +934,7 @@ It is not a proof. It is a work breakdown for future Lean development.
 - `Poincare/CompletionTarget.lean` records the canonical completion theorem name,
   target, and remaining dependency package, with `rfl` lemmas tying the target
   back to `PoincareConjectureStatement` and the explicit completion criterion,
+  plus a direct equality contract for the target/criterion equality route,
   proves both directions between the target and criterion, exposes
   `extinction_extraction_of_canonical_completion_target`,
   `canonical_completion_target_of_extinction_and_extraction`, and

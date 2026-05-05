@@ -602,8 +602,9 @@ The current artifact is intentionally conservative:
   `poincareProofDependencies_iff_components`, which identify the package with
   exactly its three components: smoothability, the target-family surgery
   package, and topology extraction; the reverse constructor from that raw
-  component payload is now named, and the iff route is pinned to the named
-  forward/reverse maps. It also exposes
+  component payload is now named, the reverse constructor has a direct equality
+  contract, and the iff route is pinned to the named forward/reverse maps. It
+  also exposes
   `poincare_assembly_inputs_payload_of_aggregate_dependencies`, which carries
   the final finite-extinction and extinction-to-sphere inputs by destructuring
   the explicit package-route assembly-input payload,
@@ -834,7 +835,8 @@ The current artifact is intentionally conservative:
 - `Poincare/CompletionTarget.lean` records the canonical completion theorem name,
   proves by definitional equality that the canonical target is exactly the
   project statement and the explicit completion criterion, proves iff contracts
-  tying the canonical target to both, proves both directions between the
+  tying the canonical target to both, pins the direct target/criterion equality
+  route with its own equality contract, proves both directions between the
   canonical target and criterion, exposes the canonical target-to-extraction
   bridge `extinction_extraction_of_canonical_completion_target`, the reverse
   finite-extinction/extraction bridge
