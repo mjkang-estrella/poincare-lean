@@ -3051,6 +3051,8 @@ check_decl "topology package derivation statement equality contract is declared"
   '^theorem extinction_topology_derivation_statement_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
 check_decl "topology classification sub-obligations payload alias is declared" \
   '^abbrev ExtinctionTopologyClassificationSubobligationsPayload\b' Poincare/TopologyExtraction.lean
+check_decl "topology classification sub-obligations payload equality contract is declared" \
+  '^theorem extinctionTopologyClassificationSubobligationsPayload_eq\b' Poincare/TopologyExtraction.lean
 check_decl "topology derivation statement classification bridge is declared" \
   '^theorem topology_classification_subobligations_of_derivation_statement\b' Poincare/TopologyExtraction.lean
 check_decl "topology derivation statement classification bridge equality contract is declared" \
@@ -6960,6 +6962,7 @@ open scoped Manifold ContDiff
 #check Poincare.extinction_topology_derivation_statement_of_topology_package
 #check Poincare.extinction_topology_derivation_statement_of_topology_package_eq
 #check Poincare.ExtinctionTopologyClassificationSubobligationsPayload
+#check Poincare.extinctionTopologyClassificationSubobligationsPayload_eq
 #check Poincare.topology_classification_subobligations_of_derivation_statement
 #check Poincare.topology_classification_subobligations_of_derivation_statement_eq
 #check Poincare.topology_homeomorphism_assembly_statement_of_derivation_statement
@@ -10060,6 +10063,7 @@ open scoped Manifold ContDiff
 #check Poincare.extinction_topology_derivation_statement_of_topology_package
 #check Poincare.extinction_topology_derivation_statement_of_topology_package_eq
 #check Poincare.ExtinctionTopologyClassificationSubobligationsPayload
+#check Poincare.extinctionTopologyClassificationSubobligationsPayload_eq
 #check Poincare.topology_classification_subobligations_of_derivation_statement
 #check Poincare.topology_classification_subobligations_of_derivation_statement_eq
 #check Poincare.topology_homeomorphism_assembly_statement_of_derivation_statement

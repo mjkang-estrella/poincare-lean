@@ -3972,6 +3972,161 @@ abbrev ExtinctionTopologyClassificationSubobligationsPayload
         deckGroupTriviality
 
 /--
+The topology classification sub-obligation payload alias is definitionally the
+full decomposition, trace, component, prime-decomposition, connected-sum,
+space-form, deck-group, quotient, lift, and recognition witness stack.
+-/
+theorem extinctionTopologyClassificationSubobligationsPayload_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ExtinctionTopologyClassificationSubobligationsPayload M extinction =
+      (∃ decomposition : HasExtinctionTopologyDecomposition M extinction,
+      ∃ _surgeryTraceReconstruction :
+        HasExtinctionSurgeryTraceReconstruction M extinction decomposition,
+      ∃ _surgeryTraceHandleCancellation :
+        HasExtinctionSurgeryTraceHandleCancellation
+          M extinction decomposition _surgeryTraceReconstruction,
+      ∃ componentClassification :
+        HasExtinctionComponentClassification M extinction decomposition,
+      ∃ _discardedComponentHomeomorphismClassification :
+        HasExtinctionDiscardedComponentHomeomorphismClassification
+          M extinction decomposition componentClassification,
+      ∃ _componentInventory :
+        HasExtinctionComponentInventory
+          M extinction decomposition componentClassification,
+      ∃ _componentBoundarySphereControl :
+        HasExtinctionComponentBoundarySphereControl
+          M extinction decomposition componentClassification _componentInventory,
+      ∃ primeDecomposition :
+        HasExtinctionPrimeDecomposition M extinction decomposition,
+      ∃ _primeDecompositionExistence :
+        HasExtinctionPrimeDecompositionExistence
+          M extinction decomposition primeDecomposition,
+      ∃ _sphereTheoremApplication :
+        HasExtinctionSphereTheoremApplication
+          M extinction decomposition primeDecomposition,
+      ∃ _embeddedSphereProduction :
+        HasExtinctionEmbeddedSphereProduction
+          M extinction decomposition primeDecomposition
+          _sphereTheoremApplication,
+      ∃ _loopTheoremApplication :
+        HasExtinctionLoopTheoremApplication
+          M extinction decomposition primeDecomposition
+          _sphereTheoremApplication,
+      ∃ _primeDecompositionCompatibility :
+        HasExtinctionPrimeDecompositionCompatibility
+          M extinction decomposition componentClassification primeDecomposition,
+      ∃ _primeFactorUniqueness :
+        HasExtinctionPrimeFactorUniqueness
+          M extinction decomposition componentClassification primeDecomposition
+          _primeDecompositionCompatibility,
+      ∃ irreducibility :
+        HasExtinctionIrreducibility
+          M extinction decomposition primeDecomposition,
+      ∃ _irreducibleFactorRecognition :
+        HasExtinctionIrreducibleFactorRecognition
+          M extinction decomposition primeDecomposition irreducibility,
+      ∃ connectedSumCollapse :
+        HasExtinctionConnectedSumCollapse
+          M extinction decomposition primeDecomposition irreducibility,
+      ∃ _connectedSumFundamentalGroupControl :
+        HasExtinctionConnectedSumFundamentalGroupControl
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse,
+      ∃ _connectedSumVanKampen :
+        HasExtinctionConnectedSumVanKampenCalculation
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse _connectedSumFundamentalGroupControl,
+      ∃ _simplyConnectedPrimeFactorControl :
+        HasExtinctionSimplyConnectedPrimeFactorControl
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse _connectedSumFundamentalGroupControl,
+      ∃ sphericalReduction :
+        HasExtinctionSphericalSpaceFormReduction
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse,
+      ∃ _sphericalClassification :
+        HasSphericalSpaceFormClassification
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction,
+      ∃ quotientModel :
+        HasSphericalSpaceFormQuotientModel
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction,
+      ∃ _sphericalFreeAction :
+        HasSphericalSpaceFormFreeAction
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction quotientModel,
+      ∃ _universalCover :
+        HasSphericalSpaceFormUniversalCover
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction quotientModel,
+      ∃ _sphericalCoveringModel :
+        HasSphericalSpaceFormCoveringModel
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction quotientModel _universalCover,
+      ∃ _sphericalCoveringProjection :
+        HasSphericalSpaceFormCoveringProjection
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction quotientModel _universalCover
+          _sphericalCoveringModel,
+      ∃ fundamentalGroupComputation :
+        HasSphericalSpaceFormFundamentalGroupComputation
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction,
+      ∃ deckGroupIdentification :
+        HasSphericalSpaceFormDeckGroupIdentification
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction quotientModel
+          fundamentalGroupComputation,
+      ∃ _deckActionProperness :
+        HasSphericalSpaceFormDeckActionProperness
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction quotientModel
+          fundamentalGroupComputation deckGroupIdentification,
+      ∃ deckGroupTriviality :
+        HasSphericalSpaceFormDeckGroupTriviality
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction fundamentalGroupComputation,
+      ∃ _deckActionTrivialization :
+        HasSphericalSpaceFormDeckActionTrivialization
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction quotientModel
+          fundamentalGroupComputation deckGroupIdentification
+          deckGroupTriviality,
+      ∃ _trivialDeckQuotientIdentification :
+        HasSphericalSpaceFormTrivialDeckQuotientIdentification
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction quotientModel
+          fundamentalGroupComputation deckGroupIdentification
+          deckGroupTriviality _deckActionTrivialization,
+      ∃ _trivialQuotient :
+        HasTrivialSphericalSpaceFormQuotient
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction quotientModel
+          fundamentalGroupComputation deckGroupIdentification
+          deckGroupTriviality,
+      ∃ _trivialQuotientHomeomorphism :
+        HasSphericalSpaceFormTrivialQuotientHomeomorphism
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction quotientModel _universalCover
+          fundamentalGroupComputation deckGroupIdentification deckGroupTriviality
+          _trivialQuotient,
+      ∃ _sphericalHomeomorphismLift :
+        HasSphericalSpaceFormHomeomorphismLift
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction quotientModel _universalCover
+          fundamentalGroupComputation deckGroupIdentification deckGroupTriviality
+          _trivialQuotient _trivialQuotientHomeomorphism,
+        HasSimplyConnectedExtinctionRecognition
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction fundamentalGroupComputation
+          deckGroupTriviality) :=
+  rfl
+
+/--
 The fixed-manifold topology derivation statement exposes the full
 post-extinction classification sub-obligation stack.
 -/
