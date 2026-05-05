@@ -973,7 +973,11 @@ It is not a proof. It is a work breakdown for future Lean development.
   propositions with `dependencyPackageLayerRequirement`, proves package-layer
   requirement projections from `PoincareProofDependencies`, and records
   `dependency_package_layer_requirements_payload_of_dependencies` plus
-  `poincareProofDependencies_iff_package_layer_requirements`. Generic
+  `poincareProofDependencies_iff_package_layer_requirements`. Function-level
+  equality contracts now pin the six-case milestone-to-layer map, the five-case
+  layer-to-component fold, the milestone-to-component composition, and the
+  component-slot, package-layer, and milestone requirement maps to their
+  explicit definitions. Generic
   package-layer projections now have equality contracts for all five concrete
   layers, including the analytic and surgery routes obtained by unpacking the
   stored surgery-family field, and the package-layer payload is pinned to the

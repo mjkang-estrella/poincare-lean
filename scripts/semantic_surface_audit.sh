@@ -6092,6 +6092,8 @@ set_option linter.unusedVariables false
 #check (Poincare.dependencyMilestoneLedger_nodup :
   Poincare.dependencyMilestoneLedger.Nodup)
 
+#check Poincare.dependencyLayerForMilestone_eq
+
 #check (Poincare.dependencyLayerForMilestone_smoothabilityBridge :
   Poincare.dependencyLayerForMilestone
       Poincare.DependencyMilestone.smoothabilityBridge =
@@ -6141,6 +6143,8 @@ set_option linter.unusedVariables false
       layer = Poincare.DependencyPackageLayer.surgeryPackage ∨
       layer = Poincare.DependencyPackageLayer.finiteExtinctionPackage ∨
       layer = Poincare.DependencyPackageLayer.topologyPackage)
+
+#check Poincare.dependencyComponentForPackageLayer_eq
 
 #check (Poincare.dependencyComponentForPackageLayer_smoothabilityPackage :
   Poincare.dependencyComponentForPackageLayer
@@ -6196,6 +6200,9 @@ set_option linter.unusedVariables false
   Poincare.dependencyComponentForMilestone
       Poincare.DependencyMilestone.extinctionToSphereHomeomorphism =
     Poincare.DependencyComponentSlot.topologyComponent)
+
+#check Poincare.dependencyComponentForMilestone_eq
+#check Poincare.dependencyComponentRequirement_eq
 
 #check (Poincare.dependencyComponentRequirement_smoothabilityComponent :
   Poincare.dependencyComponentRequirement
@@ -6274,6 +6281,8 @@ set_option linter.unusedVariables false
 #check Poincare.poincareProofDependencies_of_component_requirements_payload
 #check Poincare.poincareProofDependencies_of_component_requirements_payload_eq
 #check Poincare.poincareProofDependencies_iff_component_requirements_eq
+
+#check Poincare.dependencyPackageLayerRequirement_eq
 
 #check (Poincare.dependencyPackageLayerRequirement_analyticFoundationPackage :
   Poincare.dependencyPackageLayerRequirement
@@ -6360,6 +6369,8 @@ set_option linter.unusedVariables false
 #check Poincare.poincareProofDependencies_of_package_layer_requirements_payload
 #check Poincare.poincareProofDependencies_of_package_layer_requirements_payload_eq
 #check Poincare.poincareProofDependencies_iff_package_layer_requirements_eq
+
+#check Poincare.dependencyMilestoneRequirement_eq
 
 #check (Poincare.dependencyMilestoneRequirement_smoothabilityBridge :
   Poincare.dependencyMilestoneRequirement

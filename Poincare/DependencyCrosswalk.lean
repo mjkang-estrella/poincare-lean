@@ -56,6 +56,24 @@ def dependencyLayerForMilestone : DependencyMilestone → DependencyPackageLayer
   | DependencyMilestone.extinctionToSphereHomeomorphism =>
       DependencyPackageLayer.topologyPackage
 
+/-- The milestone-to-package-layer map is exactly the explicit six-case ledger map. -/
+theorem dependencyLayerForMilestone_eq :
+    dependencyLayerForMilestone =
+      (fun
+        | DependencyMilestone.smoothabilityBridge =>
+            DependencyPackageLayer.smoothabilityPackage
+        | DependencyMilestone.ricciFlowAnalyticFoundation =>
+            DependencyPackageLayer.analyticFoundationPackage
+        | DependencyMilestone.ricciFlowWithSurgery =>
+            DependencyPackageLayer.surgeryPackage
+        | DependencyMilestone.perelmanSingularityControl =>
+            DependencyPackageLayer.surgeryPackage
+        | DependencyMilestone.finiteExtinction =>
+            DependencyPackageLayer.finiteExtinctionPackage
+        | DependencyMilestone.extinctionToSphereHomeomorphism =>
+            DependencyPackageLayer.topologyPackage) :=
+  rfl
+
 /-- Map each package layer to the aggregate dependency component that carries it. -/
 def dependencyComponentForPackageLayer :
     DependencyPackageLayer → DependencyComponentSlot
@@ -70,11 +88,37 @@ def dependencyComponentForPackageLayer :
   | DependencyPackageLayer.topologyPackage =>
       DependencyComponentSlot.topologyComponent
 
+/-- The package-layer-to-component map is exactly the explicit five-case fold. -/
+theorem dependencyComponentForPackageLayer_eq :
+    dependencyComponentForPackageLayer =
+      (fun
+        | DependencyPackageLayer.smoothabilityPackage =>
+            DependencyComponentSlot.smoothabilityComponent
+        | DependencyPackageLayer.analyticFoundationPackage =>
+            DependencyComponentSlot.surgeryComponent
+        | DependencyPackageLayer.surgeryPackage =>
+            DependencyComponentSlot.surgeryComponent
+        | DependencyPackageLayer.finiteExtinctionPackage =>
+            DependencyComponentSlot.surgeryComponent
+        | DependencyPackageLayer.topologyPackage =>
+            DependencyComponentSlot.topologyComponent) :=
+  rfl
+
 /-- Map each milestone directly to the aggregate component slot that carries it. -/
 def dependencyComponentForMilestone :
     DependencyMilestone → DependencyComponentSlot :=
   fun milestone =>
     dependencyComponentForPackageLayer (dependencyLayerForMilestone milestone)
+
+/--
+The direct milestone-to-component map is exactly the composition of the
+milestone-to-layer and layer-to-component maps.
+-/
+theorem dependencyComponentForMilestone_eq :
+    dependencyComponentForMilestone =
+      fun milestone =>
+        dependencyComponentForPackageLayer (dependencyLayerForMilestone milestone) :=
+  rfl
 
 /-- The smoothability package layer is carried by the smoothability component. -/
 theorem dependencyComponentForPackageLayer_smoothabilityPackage :
@@ -154,6 +198,22 @@ def dependencyComponentRequirement : DependencyComponentSlot → Prop
           Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)
   | DependencyComponentSlot.topologyComponent =>
       ExtinctionTopologyExtractionPackage.{u}
+
+/-- The component-slot requirement map is exactly the explicit three-case map. -/
+theorem dependencyComponentRequirement_eq :
+    dependencyComponentRequirement.{u} =
+      (fun
+        | DependencyComponentSlot.smoothabilityComponent =>
+            SmoothabilityPackage.{u}
+        | DependencyComponentSlot.surgeryComponent =>
+            ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+              [ChartedSpace ThreeManifoldModel M]
+              [SimplyConnectedSpace M] [CompactSpace M]
+              [IsManifold ThreeManifoldModelWithCorners 1 M],
+                Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)
+        | DependencyComponentSlot.topologyComponent =>
+            ExtinctionTopologyExtractionPackage.{u}) :=
+  rfl
 
 /-- The smoothability component requirement is the smoothability package. -/
 theorem dependencyComponentRequirement_smoothabilityComponent :
@@ -410,6 +470,40 @@ def dependencyPackageLayerRequirement : DependencyPackageLayer → Prop
           Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)
   | DependencyPackageLayer.topologyPackage =>
       ExtinctionTopologyExtractionPackage.{u}
+
+/-- The package-layer requirement map is exactly the explicit five-case map. -/
+theorem dependencyPackageLayerRequirement_eq :
+    dependencyPackageLayerRequirement.{u} =
+      (fun
+        | DependencyPackageLayer.smoothabilityPackage =>
+            SmoothabilityPackage.{u}
+        | DependencyPackageLayer.analyticFoundationPackage =>
+            ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+              [ChartedSpace ThreeManifoldModel M]
+              [SimplyConnectedSpace M] [CompactSpace M]
+              [IsManifold ThreeManifoldModelWithCorners 1 M],
+                Nonempty (Σ n : ℕ∞ω,
+                  RicciFlowAnalyticFoundationPackage
+                    ThreeManifoldModelWithCorners n M)
+        | DependencyPackageLayer.surgeryPackage =>
+            ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+              [ChartedSpace ThreeManifoldModel M]
+              [SimplyConnectedSpace M] [CompactSpace M]
+              [IsManifold ThreeManifoldModelWithCorners 1 M],
+                ∃ n : ℕ∞ω,
+                ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+                    RicciFlowWithSurgeryConstructionPackage
+                      (n := n) (M := M) flow ∧
+                    PerelmanSingularityControlPackage (n := n) (M := M) flow
+        | DependencyPackageLayer.finiteExtinctionPackage =>
+            ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+              [ChartedSpace ThreeManifoldModel M]
+              [SimplyConnectedSpace M] [CompactSpace M]
+              [IsManifold ThreeManifoldModelWithCorners 1 M],
+                Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)
+        | DependencyPackageLayer.topologyPackage =>
+            ExtinctionTopologyExtractionPackage.{u}) :=
+  rfl
 
 /-- The smoothability package-layer requirement is the smoothability package. -/
 theorem dependencyPackageLayerRequirement_smoothabilityPackage :
@@ -775,6 +869,17 @@ milestone.
 def dependencyMilestoneRequirement : DependencyMilestone → Prop :=
   fun milestone =>
     dependencyPackageLayerRequirement.{u} (dependencyLayerForMilestone milestone)
+
+/--
+The milestone requirement map is exactly the package-layer requirement map at
+the package layer assigned to each milestone.
+-/
+theorem dependencyMilestoneRequirement_eq :
+    dependencyMilestoneRequirement.{u} =
+      fun milestone =>
+        dependencyPackageLayerRequirement.{u}
+          (dependencyLayerForMilestone milestone) :=
+  rfl
 
 /-- The smoothability milestone requires the smoothability package. -/
 theorem dependencyMilestoneRequirement_smoothabilityBridge :

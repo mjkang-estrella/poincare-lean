@@ -4284,14 +4284,20 @@ check_decl "projected extraction-derivation completion criterion equality contra
   '^theorem completion_criterion_of_extraction_derivation_dependency_projections_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency crosswalk theorem is declared" \
   '^theorem dependency_ledger_has_package_layers\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency milestone package-layer map equality contract is declared" \
+  '^theorem dependencyLayerForMilestone_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency package-layer membership theorem is declared" \
   '^theorem dependency_ledger_package_layer_mem\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency component slot type is declared" \
   '^inductive DependencyComponentSlot\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency package-layer component map is declared" \
   '^def dependencyComponentForPackageLayer\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency package-layer component map equality contract is declared" \
+  '^theorem dependencyComponentForPackageLayer_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency milestone component map is declared" \
   '^def dependencyComponentForMilestone\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency milestone component map equality contract is declared" \
+  '^theorem dependencyComponentForMilestone_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "smoothability package-layer component theorem is declared" \
   '^theorem dependencyComponentForPackageLayer_smoothabilityPackage\b' Poincare/DependencyCrosswalk.lean
 check_decl "analytic package-layer component theorem is declared" \
@@ -4316,6 +4322,8 @@ check_decl "topology-extraction milestone component theorem is declared" \
   '^theorem dependencyComponentForMilestone_extinctionToSphereHomeomorphism\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency component requirement map is declared" \
   '^def dependencyComponentRequirement\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency component requirement map equality contract is declared" \
+  '^theorem dependencyComponentRequirement_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "smoothability component requirement theorem is declared" \
   '^theorem dependencyComponentRequirement_smoothabilityComponent\b' Poincare/DependencyCrosswalk.lean
 check_decl "surgery component requirement theorem is declared" \
@@ -4324,6 +4332,8 @@ check_decl "topology component requirement theorem is declared" \
   '^theorem dependencyComponentRequirement_topologyComponent\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency package-layer requirement map is declared" \
   '^def dependencyPackageLayerRequirement\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency package-layer requirement map equality contract is declared" \
+  '^theorem dependencyPackageLayerRequirement_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "smoothability package-layer requirement theorem is declared" \
   '^theorem dependencyPackageLayerRequirement_smoothabilityPackage\b' Poincare/DependencyCrosswalk.lean
 check_decl "analytic package-layer requirement theorem is declared" \
@@ -4370,6 +4380,8 @@ check_decl "dependency package-layer requirements iff equality contract is decla
   '^theorem poincareProofDependencies_iff_package_layer_requirements_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency milestone requirement map is declared" \
   '^def dependencyMilestoneRequirement\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency milestone requirement map equality contract is declared" \
+  '^theorem dependencyMilestoneRequirement_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "smoothability milestone requirement theorem is declared" \
   '^theorem dependencyMilestoneRequirement_smoothabilityBridge\b' Poincare/DependencyCrosswalk.lean
 check_decl "analytic-foundation milestone requirement theorem is declared" \
