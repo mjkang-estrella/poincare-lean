@@ -6141,6 +6141,8 @@ set_option linter.unusedVariables false
     , Poincare.DependencyPackageLayer.topologyPackage
     ])
 
+#check Poincare.dependency_ledger_has_package_layers_eq
+
 #check (Poincare.dependency_ledger_package_layer_mem :
   ∀ layer : Poincare.DependencyPackageLayer,
     layer ∈
@@ -6150,6 +6152,8 @@ set_option linter.unusedVariables false
       layer = Poincare.DependencyPackageLayer.surgeryPackage ∨
       layer = Poincare.DependencyPackageLayer.finiteExtinctionPackage ∨
       layer = Poincare.DependencyPackageLayer.topologyPackage)
+
+#check Poincare.dependency_ledger_package_layer_mem_eq
 
 #check Poincare.dependencyComponentForPackageLayer_eq
 
@@ -6576,6 +6580,8 @@ set_option linter.unusedVariables false
     , Poincare.DependencyComponentSlot.topologyComponent
     ])
 
+#check Poincare.dependency_ledger_has_component_slots_eq
+
 #check (Poincare.dependency_ledger_component_slot_mem :
   ∀ slot : Poincare.DependencyComponentSlot,
     slot ∈
@@ -6584,6 +6590,9 @@ set_option linter.unusedVariables false
       slot = Poincare.DependencyComponentSlot.smoothabilityComponent ∨
       slot = Poincare.DependencyComponentSlot.surgeryComponent ∨
       slot = Poincare.DependencyComponentSlot.topologyComponent)
+
+#check Poincare.dependency_ledger_component_slot_mem_eq
+
 #check Poincare.canonical_completion_payload_of_canonical_smooth_three_sphere_statement_eq
 #check Poincare.canonical_completion_target_of_canonical_smooth_three_sphere_statement_eq
 #check Poincare.canonical_completion_criterion_of_canonical_smooth_three_sphere_statement_eq

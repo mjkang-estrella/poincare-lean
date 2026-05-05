@@ -4284,10 +4284,14 @@ check_decl "projected extraction-derivation completion criterion equality contra
   '^theorem completion_criterion_of_extraction_derivation_dependency_projections_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency crosswalk theorem is declared" \
   '^theorem dependency_ledger_has_package_layers\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency crosswalk theorem equality contract is declared" \
+  '^theorem dependency_ledger_has_package_layers_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency milestone package-layer map equality contract is declared" \
   '^theorem dependencyLayerForMilestone_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency package-layer membership theorem is declared" \
   '^theorem dependency_ledger_package_layer_mem\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency package-layer membership theorem equality contract is declared" \
+  '^theorem dependency_ledger_package_layer_mem_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency component slot type is declared" \
   '^inductive DependencyComponentSlot\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency package-layer component map is declared" \
@@ -4502,8 +4506,12 @@ check_decl "dependency component requirements iff equality contract is declared"
   '^theorem poincareProofDependencies_iff_component_requirements_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency ledger component slots theorem is declared" \
   '^theorem dependency_ledger_has_component_slots\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency ledger component slots theorem equality contract is declared" \
+  '^theorem dependency_ledger_has_component_slots_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency ledger component-slot membership theorem is declared" \
   '^theorem dependency_ledger_component_slot_mem\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency ledger component-slot membership theorem equality contract is declared" \
+  '^theorem dependency_ledger_component_slot_mem_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "smoothability crosswalk theorem is declared" \
   '^theorem dependencyLayerForMilestone_smoothabilityBridge\b' Poincare/DependencyCrosswalk.lean
 check_decl "analytic-foundation crosswalk theorem is declared" \

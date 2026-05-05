@@ -1694,6 +1694,20 @@ theorem dependency_ledger_has_package_layers :
       ] := by
   rfl
 
+/-- The package-layer ledger image theorem is the direct `rfl` proof. -/
+theorem dependency_ledger_has_package_layers_eq :
+    dependency_ledger_has_package_layers =
+      (rfl :
+        dependencyMilestoneLedger.map dependencyLayerForMilestone =
+          [ DependencyPackageLayer.smoothabilityPackage
+          , DependencyPackageLayer.analyticFoundationPackage
+          , DependencyPackageLayer.surgeryPackage
+          , DependencyPackageLayer.surgeryPackage
+          , DependencyPackageLayer.finiteExtinctionPackage
+          , DependencyPackageLayer.topologyPackage
+          ]) := by
+  apply Subsingleton.elim
+
 /-- The mapped dependency ledger contains exactly the concrete package layers. -/
 theorem dependency_ledger_package_layer_mem (layer : DependencyPackageLayer) :
     layer ∈ dependencyMilestoneLedger.map dependencyLayerForMilestone ↔
@@ -1703,6 +1717,19 @@ theorem dependency_ledger_package_layer_mem (layer : DependencyPackageLayer) :
       layer = DependencyPackageLayer.finiteExtinctionPackage ∨
       layer = DependencyPackageLayer.topologyPackage := by
   cases layer <;> simp [dependencyMilestoneLedger, dependencyLayerForMilestone]
+
+/--
+The package-layer ledger membership theorem is exactly the case split over the
+five concrete package layers in the mapped ledger.
+-/
+theorem dependency_ledger_package_layer_mem_eq :
+    dependency_ledger_package_layer_mem =
+      (by
+        intro layer
+        cases layer <;> simp [dependencyMilestoneLedger,
+          dependencyLayerForMilestone]) := by
+  funext layer
+  apply Subsingleton.elim
 
 /--
 The recorded dependency ledger folds to the three aggregate component slots.
@@ -1720,6 +1747,20 @@ theorem dependency_ledger_has_component_slots :
       ] := by
   rfl
 
+/-- The component-slot ledger image theorem is the direct `rfl` proof. -/
+theorem dependency_ledger_has_component_slots_eq :
+    dependency_ledger_has_component_slots =
+      (rfl :
+        dependencyMilestoneLedger.map dependencyComponentForMilestone =
+          [ DependencyComponentSlot.smoothabilityComponent
+          , DependencyComponentSlot.surgeryComponent
+          , DependencyComponentSlot.surgeryComponent
+          , DependencyComponentSlot.surgeryComponent
+          , DependencyComponentSlot.surgeryComponent
+          , DependencyComponentSlot.topologyComponent
+          ]) := by
+  apply Subsingleton.elim
+
 /-- The mapped dependency ledger contains exactly the aggregate component slots. -/
 theorem dependency_ledger_component_slot_mem (slot : DependencyComponentSlot) :
     slot ∈ dependencyMilestoneLedger.map dependencyComponentForMilestone ↔
@@ -1728,5 +1769,19 @@ theorem dependency_ledger_component_slot_mem (slot : DependencyComponentSlot) :
       slot = DependencyComponentSlot.topologyComponent := by
   cases slot <;> simp [dependencyMilestoneLedger, dependencyLayerForMilestone,
     dependencyComponentForPackageLayer, dependencyComponentForMilestone]
+
+/--
+The component-slot ledger membership theorem is exactly the case split over the
+three aggregate component slots in the folded ledger.
+-/
+theorem dependency_ledger_component_slot_mem_eq :
+    dependency_ledger_component_slot_mem =
+      (by
+        intro slot
+        cases slot <;> simp [dependencyMilestoneLedger,
+          dependencyLayerForMilestone, dependencyComponentForPackageLayer,
+          dependencyComponentForMilestone]) := by
+  funext slot
+  apply Subsingleton.elim
 
 end Poincare

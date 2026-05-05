@@ -874,7 +874,9 @@ The current artifact is intentionally conservative:
   `rfl` proofs. The component-slot, package-layer, and milestone requirement
   case theorems are pinned to direct `rfl` proofs, and the generic component
   and package-layer projections from `PoincareProofDependencies` are pinned to
-  their explicit destructor functions. Generic
+  their explicit destructor functions. The mapped package-layer and
+  component-slot ledger image/membership theorems are pinned to their exact
+  list images and case-split membership characterizations. Generic
   package-layer projections now have equality contracts for all five concrete
   layers, including the analytic and surgery routes obtained by unpacking the
   stored surgery-family field, and the package-layer payload is pinned to the
