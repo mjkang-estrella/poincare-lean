@@ -1259,7 +1259,8 @@ It is not a proof. It is a work breakdown for future Lean development.
   including the converted remaining-dependency package stored by each aggregate
   dependency route.
   Their certificate constructors now also have canonical/project payload,
-  target, criterion, canonical topological statement, and full
+  target, criterion, aggregate-dependency full payload, canonical topological
+  statement, and full
   canonical-statement artifact payload at both the remaining-dependency and
   aggregate proof-dependency payload surfaces
   projection-after-constructor contracts back to the named raw, certified,
