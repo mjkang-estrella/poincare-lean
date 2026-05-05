@@ -1550,6 +1550,59 @@ set_option linter.unusedVariables false
         Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
       Poincare.CompletionCriterionAtUniverse witness)
 
+#check (Poincare.poincare_statement_of_reverse_smooth_statement :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      IsManifold (𝓡 3) ∞ M) →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) →
+    Poincare.PoincareConjectureStatement)
+
+#check (Poincare.canonical_three_sphere_statement_of_reverse_smooth_statement :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      IsManifold (𝓡 3) ∞ M) →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.poincare_payload_of_reverse_smooth_statement :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      IsManifold (𝓡 3) ∞ M) →
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) →
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.completion_criterion_of_reverse_smooth_statement :
+  ∀ witness : Type,
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        IsManifold (𝓡 3) ∞ M) →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) →
+      Poincare.CompletionCriterionAtUniverse witness)
+
 #check (Poincare.canonical_smooth_three_sphere_statement_of_smooth_statement :
   Poincare.SmoothPoincareConjectureStatement →
     ∀ (M : Type) [TopologicalSpace M] [T2Space M]
@@ -1584,6 +1637,10 @@ set_option linter.unusedVariables false
 #check Poincare.canonical_three_sphere_statement_of_canonical_smooth_three_sphere_statement_eq
 #check Poincare.poincare_payload_of_canonical_smooth_three_sphere_statement_eq
 #check Poincare.completion_criterion_of_canonical_smooth_three_sphere_statement_eq
+#check Poincare.poincare_statement_of_reverse_smooth_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_reverse_smooth_statement_eq
+#check Poincare.poincare_payload_of_reverse_smooth_statement_eq
+#check Poincare.completion_criterion_of_reverse_smooth_statement_eq
 
 #check Poincare.poincare_assembly_inputs_payload_of_aggregate_dependencies
 #check Poincare.poincare_assembly_inputs_payload_of_aggregate_dependencies_eq

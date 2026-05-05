@@ -64,6 +64,13 @@ It is not a proof. It is a work breakdown for future Lean development.
   `canonical_three_sphere_statement_of_canonical_smooth_three_sphere_statement`,
   the direct canonical topological statement projections from the smooth and
   canonical-smooth routes with smoothability.
+- `Poincare/Assembly.lean` exposes the reverse-direction smooth route through
+  `poincare_statement_of_reverse_smooth_statement`,
+  `canonical_three_sphere_statement_of_reverse_smooth_statement`,
+  `poincare_payload_of_reverse_smooth_statement`, and
+  `completion_criterion_of_reverse_smooth_statement`, converting a supplied
+  theorem with diffeomorphisms `S^3 -> M` into the local topological target,
+  canonical topological statement, payload, and explicit completion criterion.
 - `Poincare/Assembly.lean` proves that the canonical mathlib-shaped smooth 3D
   Poincare statement plus smoothability implies the local topological target
   statement.

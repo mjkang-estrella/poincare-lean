@@ -399,6 +399,102 @@ theorem completion_criterion_of_canonical_smooth_three_sphere_statement
   exact criterion witness
 
 /--
+If a proof-bearing smooth statement produces diffeomorphisms from the standard
+3-sphere to each target manifold, then the smoothability input still assembles
+the project's topological target statement.
+
+This is conditional assembly only: it does not prove the reverse smooth
+Poincare statement or the smoothability input.
+-/
+theorem poincare_statement_of_reverse_smooth_statement
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (reverseSmoothStatement :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [IsManifold (𝓡 3) ∞ M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    PoincareConjectureStatement.{u} := by
+  intro M _ _ _ _ _
+  letI : IsManifold (𝓡 3) ∞ M := smoothable M
+  exact homeomorph_of_threeSphere_diffeomorph
+    (reverseSmoothStatement M)
+
+/--
+The reverse-direction smooth statement plus smoothability exposes the canonical
+topological 3-sphere statement shape.
+-/
+theorem canonical_three_sphere_statement_of_reverse_smooth_statement
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (reverseSmoothStatement :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [IsManifold (𝓡 3) ∞ M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) :=
+  canonical_three_sphere_statement_of_poincare_statement
+    (poincare_statement_of_reverse_smooth_statement
+      smoothable reverseSmoothStatement)
+
+/--
+The reverse-direction smooth statement plus smoothability exposes the
+topological target and completion criterion as one payload.
+-/
+theorem poincare_payload_of_reverse_smooth_statement
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (reverseSmoothStatement :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [IsManifold (𝓡 3) ∞ M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let target : PoincareConjectureStatement.{u} :=
+    poincare_statement_of_reverse_smooth_statement
+      smoothable reverseSmoothStatement
+  exact poincare_completion_payload_of_poincareConjectureStatement target
+
+/--
+The reverse-direction smooth statement plus smoothability discharges the
+explicit universe-indexed completion criterion.
+-/
+theorem completion_criterion_of_reverse_smooth_statement
+    (witness : Type u)
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (reverseSmoothStatement :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [IsManifold (𝓡 3) ∞ M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    CompletionCriterionAtUniverse witness := by
+  rcases poincare_payload_of_reverse_smooth_statement
+      smoothable reverseSmoothStatement with
+    ⟨_target, criterion⟩
+  exact criterion witness
+
+/--
 The diffeomorphism-to-homeomorphism bridge is exactly the projection through
 `Diffeomorph.toHomeomorph`.
 -/
@@ -768,6 +864,107 @@ theorem completion_criterion_of_canonical_smooth_three_sphere_statement_eq
       (by
         rcases poincare_payload_of_canonical_smooth_three_sphere_statement
             smoothable h with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The reverse smooth statement and smoothability input prove the project target
+by specializing the supplied smooth structure, inverting the diffeomorphism,
+and forgetting it to a homeomorphism.
+-/
+theorem poincare_statement_of_reverse_smooth_statement_eq
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (reverseSmoothStatement :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [IsManifold (𝓡 3) ∞ M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    poincare_statement_of_reverse_smooth_statement
+      smoothable reverseSmoothStatement =
+      (by
+        intro M _ _ _ _ _
+        letI : IsManifold (𝓡 3) ∞ M := smoothable M
+        exact homeomorph_of_threeSphere_diffeomorph
+          (reverseSmoothStatement M)) := by
+  apply Subsingleton.elim
+
+/--
+The reverse smooth statement canonical topological projection factors through
+the named project target projection.
+-/
+theorem canonical_three_sphere_statement_of_reverse_smooth_statement_eq
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (reverseSmoothStatement :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [IsManifold (𝓡 3) ∞ M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    canonical_three_sphere_statement_of_reverse_smooth_statement
+      smoothable reverseSmoothStatement =
+      canonical_three_sphere_statement_of_poincare_statement
+        (poincare_statement_of_reverse_smooth_statement
+          smoothable reverseSmoothStatement) := by
+  apply Subsingleton.elim
+
+/--
+The reverse smooth statement project payload is built from the named reverse
+smooth project target projection.
+-/
+theorem poincare_payload_of_reverse_smooth_statement_eq
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (reverseSmoothStatement :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [IsManifold (𝓡 3) ∞ M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    poincare_payload_of_reverse_smooth_statement
+      smoothable reverseSmoothStatement =
+      (by
+        let target : PoincareConjectureStatement.{u} :=
+          poincare_statement_of_reverse_smooth_statement
+            smoothable reverseSmoothStatement
+        exact poincare_completion_payload_of_poincareConjectureStatement
+          target) := by
+  apply Subsingleton.elim
+
+/--
+The reverse smooth statement completion criterion is selected from the named
+reverse smooth project payload.
+-/
+theorem completion_criterion_of_reverse_smooth_statement_eq
+    (witness : Type u)
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (reverseSmoothStatement :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [IsManifold (𝓡 3) ∞ M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    completion_criterion_of_reverse_smooth_statement
+      witness smoothable reverseSmoothStatement =
+      (by
+        rcases poincare_payload_of_reverse_smooth_statement
+            smoothable reverseSmoothStatement with
           ⟨_target, criterion⟩
         exact criterion witness) := by
   apply Subsingleton.elim

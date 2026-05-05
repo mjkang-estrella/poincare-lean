@@ -40,9 +40,11 @@ The current artifact is intentionally conservative:
   statement shapes from the local statement/payload/criterion surfaces, including
   `canonical_three_sphere_statement_of_completionCriterionAtUniverse`,
   `canonical_three_sphere_statement_iff_completionCriterionAtUniverse`, and
-  `completion_criterion_of_smooth_statement`; the smooth and canonical-smooth
-  routes also expose the canonical topological statement directly through
+  `completion_criterion_of_smooth_statement`; the smooth, reverse-smooth, and
+  canonical-smooth routes also expose the canonical topological statement
+  directly through
   `canonical_three_sphere_statement_of_smooth_statement` and
+  `canonical_three_sphere_statement_of_reverse_smooth_statement` and
   `canonical_three_sphere_statement_of_canonical_smooth_three_sphere_statement`.
   Equality contracts now pin these statement-layer bridges, payload
   constructors, criterion projections, and canonical-statement iff routes to

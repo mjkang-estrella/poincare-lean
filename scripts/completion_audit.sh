@@ -535,6 +535,14 @@ check_decl "canonical smooth statement assembly payload is declared" \
   '^theorem poincare_payload_of_canonical_smooth_three_sphere_statement\b' Poincare/Assembly.lean
 check_decl "canonical smooth statement completion criterion bridge is declared" \
   '^theorem completion_criterion_of_canonical_smooth_three_sphere_statement\b' Poincare/Assembly.lean
+check_decl "reverse smooth-to-topological assembly theorem is declared" \
+  '^theorem poincare_statement_of_reverse_smooth_statement\b' Poincare/Assembly.lean
+check_decl "reverse smooth statement to canonical topological statement bridge is declared" \
+  '^theorem canonical_three_sphere_statement_of_reverse_smooth_statement\b' Poincare/Assembly.lean
+check_decl "reverse smooth statement assembly payload is declared" \
+  '^theorem poincare_payload_of_reverse_smooth_statement\b' Poincare/Assembly.lean
+check_decl "reverse smooth statement completion criterion bridge is declared" \
+  '^theorem completion_criterion_of_reverse_smooth_statement\b' Poincare/Assembly.lean
 check_decl "project smooth statement exposes canonical smooth statement bridge is declared" \
   '^theorem canonical_smooth_three_sphere_statement_of_smooth_statement\b' Poincare/Assembly.lean
 check_decl "canonical smooth statement to project smooth statement equivalence is declared" \
@@ -595,6 +603,14 @@ check_decl "canonical smooth-to-topological payload equality contract is declare
   '^theorem poincare_payload_of_canonical_smooth_three_sphere_statement_eq\b' Poincare/Assembly.lean
 check_decl "canonical smooth-to-topological criterion equality contract is declared" \
   '^theorem completion_criterion_of_canonical_smooth_three_sphere_statement_eq\b' Poincare/Assembly.lean
+check_decl "reverse smooth-to-topological target equality contract is declared" \
+  '^theorem poincare_statement_of_reverse_smooth_statement_eq\b' Poincare/Assembly.lean
+check_decl "reverse smooth-to-topological canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_reverse_smooth_statement_eq\b' Poincare/Assembly.lean
+check_decl "reverse smooth-to-topological payload equality contract is declared" \
+  '^theorem poincare_payload_of_reverse_smooth_statement_eq\b' Poincare/Assembly.lean
+check_decl "reverse smooth-to-topological criterion equality contract is declared" \
+  '^theorem completion_criterion_of_reverse_smooth_statement_eq\b' Poincare/Assembly.lean
 check_decl "canonical payload bridge from topological statement is declared" \
   '^theorem canonical_completion_payload_of_canonical_three_sphere_statement\b' Poincare/CanonicalBridges.lean
 check_decl "canonical target bridge from topological statement is declared" \
@@ -5445,6 +5461,10 @@ open scoped Manifold ContDiff
 #check Poincare.canonical_three_sphere_statement_of_canonical_smooth_three_sphere_statement
 #check Poincare.poincare_payload_of_canonical_smooth_three_sphere_statement
 #check Poincare.completion_criterion_of_canonical_smooth_three_sphere_statement
+#check Poincare.poincare_statement_of_reverse_smooth_statement
+#check Poincare.canonical_three_sphere_statement_of_reverse_smooth_statement
+#check Poincare.poincare_payload_of_reverse_smooth_statement
+#check Poincare.completion_criterion_of_reverse_smooth_statement
 #check Poincare.canonical_smooth_three_sphere_statement_of_smooth_statement
 #check Poincare.canonical_smooth_three_sphere_statement_iff_smooth_statement
 #check Poincare.homeomorph_of_diffeomorph_three_sphere_eq
@@ -5475,6 +5495,10 @@ open scoped Manifold ContDiff
 #check Poincare.canonical_three_sphere_statement_of_canonical_smooth_three_sphere_statement_eq
 #check Poincare.poincare_payload_of_canonical_smooth_three_sphere_statement_eq
 #check Poincare.completion_criterion_of_canonical_smooth_three_sphere_statement_eq
+#check Poincare.poincare_statement_of_reverse_smooth_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_reverse_smooth_statement_eq
+#check Poincare.poincare_payload_of_reverse_smooth_statement_eq
+#check Poincare.completion_criterion_of_reverse_smooth_statement_eq
 #check Poincare.canonical_completion_payload_of_canonical_three_sphere_statement
 #check Poincare.canonical_completion_target_of_canonical_three_sphere_statement
 #check Poincare.canonical_completion_criterion_of_canonical_three_sphere_statement
@@ -8234,6 +8258,10 @@ open scoped Manifold ContDiff
 #check Poincare.canonical_three_sphere_statement_of_canonical_smooth_three_sphere_statement_eq
 #check Poincare.poincare_payload_of_canonical_smooth_three_sphere_statement_eq
 #check Poincare.completion_criterion_of_canonical_smooth_three_sphere_statement_eq
+#check Poincare.poincare_statement_of_reverse_smooth_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_reverse_smooth_statement_eq
+#check Poincare.poincare_payload_of_reverse_smooth_statement_eq
+#check Poincare.completion_criterion_of_reverse_smooth_statement_eq
 
 #check (Poincare.PoincareProofDependencies.surgery :
   ∀ dependencies : Poincare.PoincareProofDependencies,
