@@ -601,9 +601,13 @@ It is not a proof. It is a work breakdown for future Lean development.
   surgery-model and canonical smooth-manifold projections, compatibility
   evidence, and smoothability payloads back to the stored package fields or
   named component route. The lower Moise/PL/smooth spine also records direct
-  equality contracts for the local-chart, triangulation, PL-structure,
-  PL-atlas, PL-smoothing, smooth-structure, smooth-atlas, transition, and
-  smooth-structure derivation projections. Dependency-level equality contracts
+  equality contracts for the full Moise projection spine, including local
+  charts, cover refinement, simplicial-complex/chart compatibility,
+  triangulation, simplicial approximation, neighborhood, local-finiteness,
+  link/PL-recognition, homeomorphism, uniqueness, Hauptvermutung inputs,
+  PL-structure, PL-atlas, PL-smoothing, smooth-structure, smooth-atlas,
+  transition, and smooth-structure derivation projections.
+  Dependency-level equality contracts
   now pin the full direct Moise/PL/smoothing/smooth-atlas/transition/derivation
   projection spine to the stored aggregate smoothability field. The dependency-level
   theorem-shaped bridge, `C∞` smooth-manifold statement, canonical smooth

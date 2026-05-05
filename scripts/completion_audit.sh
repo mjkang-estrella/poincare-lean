@@ -3058,36 +3058,64 @@ check_decl "smoothability package Moise local chart equality contract is declare
   '^theorem moise_local_charts_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package Moise locally finite cover refinement projection is declared" \
   '^theorem moise_locally_finite_cover_refinement_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise locally finite cover refinement equality contract is declared" \
+  '^theorem moise_locally_finite_cover_refinement_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package Moise simplicial-complex projection is declared" \
   '^theorem moise_simplicial_complex_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise simplicial-complex equality contract is declared" \
+  '^theorem moise_simplicial_complex_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package Moise compatible chart triangulations projection is declared" \
   '^theorem moise_compatible_chart_triangulations_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise compatible chart triangulations equality contract is declared" \
+  '^theorem moise_compatible_chart_triangulations_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package Moise triangulation projection is declared" \
   '^theorem moise_triangulation_of_smoothability_package\b' Poincare/Smoothability.lean
 check_decl "smoothability package Moise triangulation equality contract is declared" \
   '^theorem moise_triangulation_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package Moise simplicial approximation projection is declared" \
   '^theorem moise_simplicial_approximation_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise simplicial approximation equality contract is declared" \
+  '^theorem moise_simplicial_approximation_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package Moise star-neighborhood projection is declared" \
   '^theorem moise_star_neighborhood_basis_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise star-neighborhood equality contract is declared" \
+  '^theorem moise_star_neighborhood_basis_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package Moise barycentric subdivision projection is declared" \
   '^theorem moise_barycentric_subdivision_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise barycentric subdivision equality contract is declared" \
+  '^theorem moise_barycentric_subdivision_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package Moise regular-neighborhood compatibility projection is declared" \
   '^theorem moise_regular_neighborhood_compatibility_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise regular-neighborhood compatibility equality contract is declared" \
+  '^theorem moise_regular_neighborhood_compatibility_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package Moise local-finiteness projection is declared" \
   '^theorem moise_triangulation_local_finiteness_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise local-finiteness equality contract is declared" \
+  '^theorem moise_triangulation_local_finiteness_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package Moise link-compatibility projection is declared" \
   '^theorem moise_link_compatibility_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise link-compatibility equality contract is declared" \
+  '^theorem moise_link_compatibility_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package Moise PL-manifold recognition projection is declared" \
   '^theorem moise_pl_manifold_recognition_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise PL-manifold recognition equality contract is declared" \
+  '^theorem moise_pl_manifold_recognition_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package Moise triangulation-homeomorphism projection is declared" \
   '^theorem moise_triangulation_homeomorphism_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise triangulation-homeomorphism equality contract is declared" \
+  '^theorem moise_triangulation_homeomorphism_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package Moise compatibility projection is declared" \
   '^theorem moise_compatibility_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise compatibility equality contract is declared" \
+  '^theorem moise_compatibility_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package Moise triangulation uniqueness projection is declared" \
   '^theorem moise_triangulation_uniqueness_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise triangulation uniqueness equality contract is declared" \
+  '^theorem moise_triangulation_uniqueness_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package Moise dimension-three Hauptvermutung projection is declared" \
   '^theorem moise_hauptvermutung_dimension_three_of_smoothability_package\b' Poincare/Smoothability.lean
+check_decl "smoothability package Moise dimension-three Hauptvermutung equality contract is declared" \
+  '^theorem moise_hauptvermutung_dimension_three_of_smoothability_package_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability package PL-structure projection is declared" \
   '^theorem pl_structure_of_smoothability_package\b' Poincare/Smoothability.lean
 check_decl "smoothability package PL-structure equality contract is declared" \
@@ -6615,21 +6643,35 @@ open scoped Manifold ContDiff
 #check Poincare.moise_local_charts_of_smoothability_package
 #check Poincare.moise_local_charts_of_smoothability_package_eq
 #check Poincare.moise_locally_finite_cover_refinement_of_smoothability_package
+#check Poincare.moise_locally_finite_cover_refinement_of_smoothability_package_eq
 #check Poincare.moise_simplicial_complex_of_smoothability_package
+#check Poincare.moise_simplicial_complex_of_smoothability_package_eq
 #check Poincare.moise_compatible_chart_triangulations_of_smoothability_package
+#check Poincare.moise_compatible_chart_triangulations_of_smoothability_package_eq
 #check Poincare.moise_triangulation_of_smoothability_package
 #check Poincare.moise_triangulation_of_smoothability_package_eq
 #check Poincare.moise_simplicial_approximation_of_smoothability_package
+#check Poincare.moise_simplicial_approximation_of_smoothability_package_eq
 #check Poincare.moise_star_neighborhood_basis_of_smoothability_package
+#check Poincare.moise_star_neighborhood_basis_of_smoothability_package_eq
 #check Poincare.moise_barycentric_subdivision_of_smoothability_package
+#check Poincare.moise_barycentric_subdivision_of_smoothability_package_eq
 #check Poincare.moise_regular_neighborhood_compatibility_of_smoothability_package
+#check Poincare.moise_regular_neighborhood_compatibility_of_smoothability_package_eq
 #check Poincare.moise_triangulation_local_finiteness_of_smoothability_package
+#check Poincare.moise_triangulation_local_finiteness_of_smoothability_package_eq
 #check Poincare.moise_link_compatibility_of_smoothability_package
+#check Poincare.moise_link_compatibility_of_smoothability_package_eq
 #check Poincare.moise_pl_manifold_recognition_of_smoothability_package
+#check Poincare.moise_pl_manifold_recognition_of_smoothability_package_eq
 #check Poincare.moise_triangulation_homeomorphism_of_smoothability_package
+#check Poincare.moise_triangulation_homeomorphism_of_smoothability_package_eq
 #check Poincare.moise_compatibility_of_smoothability_package
+#check Poincare.moise_compatibility_of_smoothability_package_eq
 #check Poincare.moise_triangulation_uniqueness_of_smoothability_package
+#check Poincare.moise_triangulation_uniqueness_of_smoothability_package_eq
 #check Poincare.moise_hauptvermutung_dimension_three_of_smoothability_package
+#check Poincare.moise_hauptvermutung_dimension_three_of_smoothability_package_eq
 #check Poincare.pl_structure_of_smoothability_package
 #check Poincare.pl_structure_of_smoothability_package_eq
 #check Poincare.pl_transition_compatibility_of_smoothability_package
@@ -9501,21 +9543,35 @@ open scoped Manifold ContDiff
 #check Poincare.moise_local_charts_of_smoothability_package
 #check Poincare.moise_local_charts_of_smoothability_package_eq
 #check Poincare.moise_locally_finite_cover_refinement_of_smoothability_package
+#check Poincare.moise_locally_finite_cover_refinement_of_smoothability_package_eq
 #check Poincare.moise_simplicial_complex_of_smoothability_package
+#check Poincare.moise_simplicial_complex_of_smoothability_package_eq
 #check Poincare.moise_compatible_chart_triangulations_of_smoothability_package
+#check Poincare.moise_compatible_chart_triangulations_of_smoothability_package_eq
 #check Poincare.moise_triangulation_of_smoothability_package
 #check Poincare.moise_triangulation_of_smoothability_package_eq
 #check Poincare.moise_simplicial_approximation_of_smoothability_package
+#check Poincare.moise_simplicial_approximation_of_smoothability_package_eq
 #check Poincare.moise_star_neighborhood_basis_of_smoothability_package
+#check Poincare.moise_star_neighborhood_basis_of_smoothability_package_eq
 #check Poincare.moise_barycentric_subdivision_of_smoothability_package
+#check Poincare.moise_barycentric_subdivision_of_smoothability_package_eq
 #check Poincare.moise_regular_neighborhood_compatibility_of_smoothability_package
+#check Poincare.moise_regular_neighborhood_compatibility_of_smoothability_package_eq
 #check Poincare.moise_triangulation_local_finiteness_of_smoothability_package
+#check Poincare.moise_triangulation_local_finiteness_of_smoothability_package_eq
 #check Poincare.moise_link_compatibility_of_smoothability_package
+#check Poincare.moise_link_compatibility_of_smoothability_package_eq
 #check Poincare.moise_pl_manifold_recognition_of_smoothability_package
+#check Poincare.moise_pl_manifold_recognition_of_smoothability_package_eq
 #check Poincare.moise_triangulation_homeomorphism_of_smoothability_package
+#check Poincare.moise_triangulation_homeomorphism_of_smoothability_package_eq
 #check Poincare.moise_compatibility_of_smoothability_package
+#check Poincare.moise_compatibility_of_smoothability_package_eq
 #check Poincare.moise_triangulation_uniqueness_of_smoothability_package
+#check Poincare.moise_triangulation_uniqueness_of_smoothability_package_eq
 #check Poincare.moise_hauptvermutung_dimension_three_of_smoothability_package
+#check Poincare.moise_hauptvermutung_dimension_three_of_smoothability_package_eq
 #check Poincare.pl_structure_of_smoothability_package
 #check Poincare.pl_structure_of_smoothability_package_eq
 #check Poincare.pl_transition_compatibility_of_smoothability_package

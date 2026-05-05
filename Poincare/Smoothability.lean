@@ -1545,6 +1545,16 @@ theorem moise_locally_finite_cover_refinement_of_smoothability_package
       (moise_local_charts_of_smoothability_package package M) :=
   package.moiseLocallyFiniteCoverRefinement M
 
+/-- The named locally finite cover-refinement projection is the stored package field. -/
+theorem moise_locally_finite_cover_refinement_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    moise_locally_finite_cover_refinement_of_smoothability_package package M =
+      package.moiseLocallyFiniteCoverRefinement M :=
+  rfl
+
 /-- A completed smoothability package supplies Moise simplicial-complex evidence. -/
 theorem moise_simplicial_complex_of_smoothability_package
     (package : SmoothabilityPackage.{u})
@@ -1554,6 +1564,16 @@ theorem moise_simplicial_complex_of_smoothability_package
     HasMoiseSimplicialComplex M
       (moise_local_charts_of_smoothability_package package M) :=
   package.moiseSimplicialComplex M
+
+/-- The named Moise simplicial-complex projection is the stored package field. -/
+theorem moise_simplicial_complex_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    moise_simplicial_complex_of_smoothability_package package M =
+      package.moiseSimplicialComplex M :=
+  rfl
 
 /-- A completed smoothability package supplies compatible chart triangulations. -/
 theorem moise_compatible_chart_triangulations_of_smoothability_package
@@ -1565,6 +1585,16 @@ theorem moise_compatible_chart_triangulations_of_smoothability_package
       (moise_local_charts_of_smoothability_package package M)
       (moise_simplicial_complex_of_smoothability_package package M) :=
   package.moiseCompatibleChartTriangulations M
+
+/-- The named compatible chart-triangulations projection is the stored package field. -/
+theorem moise_compatible_chart_triangulations_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    moise_compatible_chart_triangulations_of_smoothability_package package M =
+      package.moiseCompatibleChartTriangulations M :=
+  rfl
 
 /-- A completed smoothability package supplies Moise triangulation evidence. -/
 theorem moise_triangulation_of_smoothability_package
@@ -1597,6 +1627,16 @@ theorem moise_simplicial_approximation_of_smoothability_package
       (moise_triangulation_of_smoothability_package package M) :=
   package.moiseSimplicialApproximation M
 
+/-- The named simplicial-approximation projection is the stored package field. -/
+theorem moise_simplicial_approximation_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    moise_simplicial_approximation_of_smoothability_package package M =
+      package.moiseSimplicialApproximation M :=
+  rfl
+
 /-- A completed smoothability package supplies a Moise star-neighborhood basis. -/
 theorem moise_star_neighborhood_basis_of_smoothability_package
     (package : SmoothabilityPackage.{u})
@@ -1608,6 +1648,16 @@ theorem moise_star_neighborhood_basis_of_smoothability_package
       (moise_triangulation_of_smoothability_package package M) :=
   package.moiseStarNeighborhoodBasis M
 
+/-- The named star-neighborhood basis projection is the stored package field. -/
+theorem moise_star_neighborhood_basis_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    moise_star_neighborhood_basis_of_smoothability_package package M =
+      package.moiseStarNeighborhoodBasis M :=
+  rfl
+
 /-- A completed smoothability package supplies barycentric subdivision control. -/
 theorem moise_barycentric_subdivision_of_smoothability_package
     (package : SmoothabilityPackage.{u})
@@ -1617,6 +1667,16 @@ theorem moise_barycentric_subdivision_of_smoothability_package
     HasMoiseBarycentricSubdivisionControl M
       (moise_triangulation_of_smoothability_package package M) :=
   package.moiseBarycentricSubdivision M
+
+/-- The named barycentric subdivision projection is the stored package field. -/
+theorem moise_barycentric_subdivision_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    moise_barycentric_subdivision_of_smoothability_package package M =
+      package.moiseBarycentricSubdivision M :=
+  rfl
 
 /-- A completed smoothability package supplies regular-neighborhood compatibility. -/
 theorem moise_regular_neighborhood_compatibility_of_smoothability_package
@@ -1628,6 +1688,16 @@ theorem moise_regular_neighborhood_compatibility_of_smoothability_package
       (moise_triangulation_of_smoothability_package package M) :=
   package.moiseRegularNeighborhoodCompatibility M
 
+/-- The named regular-neighborhood compatibility projection is the stored package field. -/
+theorem moise_regular_neighborhood_compatibility_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    moise_regular_neighborhood_compatibility_of_smoothability_package package M =
+      package.moiseRegularNeighborhoodCompatibility M :=
+  rfl
+
 /-- A completed smoothability package supplies local-finiteness evidence. -/
 theorem moise_triangulation_local_finiteness_of_smoothability_package
     (package : SmoothabilityPackage.{u})
@@ -1638,6 +1708,16 @@ theorem moise_triangulation_local_finiteness_of_smoothability_package
       (moise_triangulation_of_smoothability_package package M) :=
   package.moiseTriangulationLocalFiniteness M
 
+/-- The named triangulation local-finiteness projection is the stored package field. -/
+theorem moise_triangulation_local_finiteness_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    moise_triangulation_local_finiteness_of_smoothability_package package M =
+      package.moiseTriangulationLocalFiniteness M :=
+  rfl
+
 /-- A completed smoothability package supplies the triangulation link condition. -/
 theorem moise_link_compatibility_of_smoothability_package
     (package : SmoothabilityPackage.{u})
@@ -1647,6 +1727,16 @@ theorem moise_link_compatibility_of_smoothability_package
     HasMoiseLinkCompatibility M
       (moise_triangulation_of_smoothability_package package M) :=
   package.moiseLinkCompatibility M
+
+/-- The named link-compatibility projection is the stored package field. -/
+theorem moise_link_compatibility_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    moise_link_compatibility_of_smoothability_package package M =
+      package.moiseLinkCompatibility M :=
+  rfl
 
 /-- A completed smoothability package recognizes the triangulation as a PL manifold. -/
 theorem moise_pl_manifold_recognition_of_smoothability_package
@@ -1659,6 +1749,16 @@ theorem moise_pl_manifold_recognition_of_smoothability_package
       (moise_link_compatibility_of_smoothability_package package M) :=
   package.moisePLManifoldRecognition M
 
+/-- The named PL-manifold recognition projection is the stored package field. -/
+theorem moise_pl_manifold_recognition_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    moise_pl_manifold_recognition_of_smoothability_package package M =
+      package.moisePLManifoldRecognition M :=
+  rfl
+
 /-- A completed smoothability package supplies the triangulation homeomorphism. -/
 theorem moise_triangulation_homeomorphism_of_smoothability_package
     (package : SmoothabilityPackage.{u})
@@ -1669,6 +1769,16 @@ theorem moise_triangulation_homeomorphism_of_smoothability_package
       (moise_local_charts_of_smoothability_package package M)
       (moise_triangulation_of_smoothability_package package M) :=
   package.moiseTriangulationHomeomorphism M
+
+/-- The named triangulation-homeomorphism projection is the stored package field. -/
+theorem moise_triangulation_homeomorphism_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    moise_triangulation_homeomorphism_of_smoothability_package package M =
+      package.moiseTriangulationHomeomorphism M :=
+  rfl
 
 /-- A completed smoothability package supplies Moise compatibility evidence. -/
 theorem moise_compatibility_of_smoothability_package
@@ -1681,6 +1791,16 @@ theorem moise_compatibility_of_smoothability_package
       (moise_triangulation_of_smoothability_package package M) :=
   package.moiseCompatibility M
 
+/-- The named Moise compatibility projection is the stored package field. -/
+theorem moise_compatibility_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    moise_compatibility_of_smoothability_package package M =
+      package.moiseCompatibility M :=
+  rfl
+
 /-- A completed smoothability package supplies Moise triangulation uniqueness. -/
 theorem moise_triangulation_uniqueness_of_smoothability_package
     (package : SmoothabilityPackage.{u})
@@ -1690,6 +1810,16 @@ theorem moise_triangulation_uniqueness_of_smoothability_package
     HasMoiseTriangulationUniqueness M
       (moise_triangulation_of_smoothability_package package M) :=
   package.moiseTriangulationUniqueness M
+
+/-- The named Moise triangulation-uniqueness projection is the stored package field. -/
+theorem moise_triangulation_uniqueness_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    moise_triangulation_uniqueness_of_smoothability_package package M =
+      package.moiseTriangulationUniqueness M :=
+  rfl
 
 /-- A completed smoothability package supplies the dimension-three Hauptvermutung input. -/
 theorem moise_hauptvermutung_dimension_three_of_smoothability_package
@@ -1701,6 +1831,16 @@ theorem moise_hauptvermutung_dimension_three_of_smoothability_package
       (moise_triangulation_of_smoothability_package package M)
       (moise_triangulation_uniqueness_of_smoothability_package package M) :=
   package.moiseHauptvermutungDimensionThree M
+
+/-- The named dimension-three Hauptvermutung projection is the stored package field. -/
+theorem moise_hauptvermutung_dimension_three_of_smoothability_package_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    moise_hauptvermutung_dimension_three_of_smoothability_package package M =
+      package.moiseHauptvermutungDimensionThree M :=
+  rfl
 
 /-- A completed smoothability package supplies compatible PL-structure evidence. -/
 theorem pl_structure_of_smoothability_package
