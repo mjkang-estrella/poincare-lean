@@ -159,6 +159,13 @@ It is not a proof. It is a work breakdown for future Lean development.
   criterion; those payloads reconstruct checked certificates, form certificate
   iff contracts, round-trip after reconstruction, and convert between aggregate
   and remaining dependency packages componentwise.
+- `Poincare/CanonicalBridges.lean` now exposes the matching non-packaged
+  canonical-smooth certificate payload layer as well: checked certificates
+  project to remaining-dependency or aggregate payloads containing the supplied
+  smoothability theorem, canonical-smooth statement, target, and criterion; those
+  payloads reconstruct checked certificates, form certificate iff contracts,
+  round-trip after reconstruction, and convert between aggregate and remaining
+  dependency packages componentwise.
 - `Poincare/CanonicalBridges.lean` now pins the aggregate packaged smooth and
   packaged canonical-smooth project routes, canonical completion payloads,
   canonical targets, canonical criteria, and canonical topological statement
