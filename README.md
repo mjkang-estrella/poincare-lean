@@ -1252,9 +1252,10 @@ The current artifact is intentionally conservative:
   packaged canonical-smooth project target, criterion, and project completion
   payload routes after `remainingDependencyPackage_iff_poincareProofDependencies`,
   and certificate projections now round-trip the project payload, canonical
-  payload, canonical target, completion criterion, and canonical topological
-  statement after the smooth, canonical-smooth, packaged smooth, and packaged
-  canonical-smooth constructors, while the completion-target constructors
+  payload, project target statement, canonical target, completion criterion,
+  and canonical topological statement after the smooth, canonical-smooth,
+  packaged smooth, and packaged canonical-smooth constructors, while the
+  completion-target constructors
   `completion_certificate_of_*requirements_payload` and
   `completion_certificate_of_components_payload` rebuild checked certificates
   directly from the raw component, component-slot, package-layer, and milestone
