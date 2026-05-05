@@ -39,7 +39,8 @@ The actual target statement of the Poincare Conjecture for this project.
 
 This is a proposition only. It is intentionally not declared as a theorem or
 proved fact. It mirrors mathlib's existing
-`SimplyConnectedSpace.nonempty_homeomorph_sphere_three` proof-wanted statement.
+proof-wanted topological 3-dimensional Poincare statement without depending on
+that declaration.
 -/
 def PoincareConjectureStatement : Prop :=
   ∀ (M : Type u) [TopologicalSpace M] [T2Space M]

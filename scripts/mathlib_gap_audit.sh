@@ -56,6 +56,12 @@ rm -rf "$name_check_dir"
 name_check_dir=
 name_check=
 
+if sh scripts/mathlib_proof_wanted_dependency_guard.sh; then
+  :
+else
+  status=1
+fi
+
 if rg -q '\bContMDiffRiemannianMetric\b' "$manifold_dir"; then
   echo "READY: mathlib has smooth Riemannian metric infrastructure"
 else

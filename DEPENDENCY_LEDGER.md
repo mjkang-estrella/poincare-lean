@@ -1336,7 +1336,10 @@ It is not a proof. It is a work breakdown for future Lean development.
 - `scripts/interface_audit.sh` checks that the gap-bearing predicates have no
   local constructors.
 - `scripts/mathlib_gap_audit.sh` checks the local mathlib Poincare statement,
-  Riemannian metric, Ricci-specific, and Ricci-flow-with-surgery surfaces.
+  Riemannian metric, Ricci-specific, and Ricci-flow-with-surgery surfaces, and
+  runs `scripts/mathlib_proof_wanted_dependency_guard.sh` so local Lean source
+  cannot reference mathlib's Poincare shortcut names while they remain
+  proof-wanted upstream.
 - `scripts/semantic_surface_audit.sh` asks Lean to typecheck the main
   conditional theorem surfaces, the topology extraction statement bridge, and
   lower-level package projection lemmas.
@@ -1346,7 +1349,8 @@ It is not a proof. It is a work breakdown for future Lean development.
   theorem through the root import.
 - `scripts/axiom_audit.sh` prints the axiom footprint for local proof-bearing
   assembly theorems and verifies that it contains no placeholders, no dependency
-  on the absent final theorem, and no nonstandard axioms beyond mathlib's usual
+  on the absent final theorem, no local Lean-source references to mathlib's
+  Poincare shortcut names, and no nonstandard axioms beyond mathlib's usual
   `propext`, `Classical.choice`, and `Quot.sound`.
 - `scripts/completion_audit.sh` checks the dependency-spine declarations,
   confirms no local declaration claims `PoincareProofDependencies`, and fails,
@@ -1452,8 +1456,8 @@ The project is complete only when:
 - The proof does not use `axiom`, `opaque`, `constant`, `postulate`, `sorry`, or
   `admit`.
 - The proof does not use local `proof_wanted` declarations.
-- Mathlib's corresponding 3D Poincare declarations are no longer merely
-  `proof_wanted`, or the local project provides an independent proof that does
-  not depend on those `proof_wanted` declarations.
+- Mathlib's corresponding 3D Poincare declarations are not used as shortcut
+  proof sources; while they remain merely `proof_wanted`, local Lean source must
+  not reference their canonical names.
 - `lake build`, `sh scripts/audit_formalization.sh`, and
   `sh scripts/completion_audit.sh` all pass.

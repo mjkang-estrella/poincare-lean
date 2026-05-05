@@ -2157,6 +2157,8 @@ if rg -q "sorryAx|_sorry|proof_wanted|Poincare\\.poincare_conjecture" "$normaliz
   exit 1
 fi
 
+sh scripts/mathlib_proof_wanted_dependency_guard.sh
+
 allowed='^(.*depends on axioms: \[(propext|Classical\.choice|Quot\.sound)(, (propext|Classical\.choice|Quot\.sound))*\]|.*does not depend on any axioms)$'
 if rg -v "$allowed" "$normalized_file"; then
   echo "FAIL: nonstandard axiom footprint detected"

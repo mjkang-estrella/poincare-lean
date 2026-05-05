@@ -1333,7 +1333,10 @@ the canonical target type. It also runs
 `scripts/interface_audit.sh`,
 which checks that the gap-bearing interface predicates still have no local
 constructors, `scripts/mathlib_gap_audit.sh`, which records the local mathlib
-Ricci-flow and Poincare-statement gaps, `scripts/semantic_surface_audit.sh`,
+Ricci-flow and Poincare-statement gaps and runs
+`scripts/mathlib_proof_wanted_dependency_guard.sh` to reject local Lean-source
+references to mathlib's Poincare shortcut names while they remain
+`proof_wanted`, `scripts/semantic_surface_audit.sh`,
 which asks Lean to typecheck the main conditional theorem surfaces and
 lower-level package projection lemmas, and
 `scripts/root_import_audit.sh`, which verifies that `Poincare.lean` imports every
@@ -1342,7 +1345,8 @@ plus the canonical assembly bridges and projection-based dependency assembly
 theorem through the root import.
 Finally, `scripts/axiom_audit.sh` prints the axiom footprint for the local
 proof-bearing assembly surface and rejects placeholder/final-theorem dependencies
-or nonstandard axioms beyond mathlib's usual `propext`, `Classical.choice`, and
+or local Lean-source references to mathlib's Poincare shortcut names, as well as
+nonstandard axioms beyond mathlib's usual `propext`, `Classical.choice`, and
 `Quot.sound`.
 
 The stricter completion audit is:
@@ -1353,6 +1357,7 @@ sh scripts/completion_audit.sh
 
 Current result: expected failure. It confirms that the scaffold builds, but the
 upstream mathlib Poincare statements are still `proof_wanted`, the local
+source does not reference those proof-wanted shortcut names, the local
 dependency-spine declarations are present, their gap-bearing predicates have no
 local constructors, the local mathlib Ricci-flow-with-surgery/Ricci tensor
 surface is absent, the main conditional theorem surfaces, theorem-shaped
