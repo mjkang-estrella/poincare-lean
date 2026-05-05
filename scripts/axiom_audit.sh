@@ -1196,6 +1196,7 @@ import Poincare
 #print axioms Poincare.finite_extinction_derivation_of_surgery_package_eq
 #print axioms Poincare.finite_extinction_conclusion_derivation_of_surgery_package_eq
 #print axioms Poincare.FiniteExtinctionConclusionStatement
+#print axioms Poincare.finiteExtinctionConclusionStatement_eq
 #print axioms Poincare.FiniteExtinctionStatement
 #print axioms Poincare.finiteExtinctionStatement_eq
 #print axioms Poincare.finite_extinction_conclusion_statement_of_components

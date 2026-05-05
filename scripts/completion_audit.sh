@@ -2738,6 +2738,8 @@ do
 done
 check_decl "finite-extinction conclusion statement is declared" \
   '^def FiniteExtinctionConclusionStatement\b' Poincare/Surgery.lean
+check_decl "finite-extinction conclusion statement shape contract is declared" \
+  '^theorem finiteExtinctionConclusionStatement_eq\b' Poincare/Surgery.lean
 check_decl "finite-extinction statement is declared" \
   '^def FiniteExtinctionStatement\b' Poincare/Surgery.lean
 check_decl "finite-extinction statement equality contract is declared" \
@@ -7369,6 +7371,7 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_derivation_of_surgery_package_eq
 #check Poincare.finite_extinction_conclusion_derivation_of_surgery_package_eq
 #check Poincare.FiniteExtinctionConclusionStatement
+#check Poincare.finiteExtinctionConclusionStatement_eq
 #check Poincare.FiniteExtinctionStatement
 #check Poincare.finite_extinction_conclusion_statement_of_components
 #check Poincare.finite_extinction_conclusion_statement_of_components_eq
@@ -9926,6 +9929,7 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_derivation_of_surgery_package
 #check Poincare.finite_extinction_conclusion_derivation_of_surgery_package
 #check Poincare.FiniteExtinctionConclusionStatement
+#check Poincare.finiteExtinctionConclusionStatement_eq
 #check Poincare.FiniteExtinctionStatement
 #check Poincare.finite_extinction_conclusion_statement_of_components
 #check Poincare.finite_extinction_conclusion_statement_of_components_eq

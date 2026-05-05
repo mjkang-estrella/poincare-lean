@@ -941,6 +941,7 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_derivation_of_surgery_package_eq
 #check Poincare.finite_extinction_conclusion_derivation_of_surgery_package_eq
 #check Poincare.FiniteExtinctionConclusionStatement
+#check Poincare.finiteExtinctionConclusionStatement_eq
 #check Poincare.FiniteExtinctionStatement
 #check Poincare.finiteExtinctionStatement_eq
 #check Poincare.finite_extinction_conclusion_statement_of_components

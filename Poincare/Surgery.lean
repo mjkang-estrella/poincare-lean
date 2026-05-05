@@ -4171,6 +4171,43 @@ def FiniteExtinctionConclusionStatement
       finiteExtinction
 
 /--
+The fixed-flow finite-extinction conclusion statement is exactly the listed
+fundamental-group, sweepout, width, surgery-discard, curvature, time-bound,
+derivation, and conclusion-derivation witness stack.
+-/
+theorem finiteExtinctionConclusionStatement_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    FiniteExtinctionConclusionStatement
+        flow surgery control finiteExtinction =
+      (∃ finiteFundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M,
+      ∃ _sweepout :
+        HasFiniteExtinctionSweepoutExistence M finiteFundamentalGroup,
+      ∃ widthTheory : HasFiniteExtinctionWidthTheory flow surgery control,
+      ∃ widthEvolution :
+        HasFiniteExtinctionWidthEvolution flow surgery control widthTheory,
+      ∃ _surgeryDiscardControl :
+        HasFiniteExtinctionSurgeryDiscardControl
+          flow surgery control widthTheory widthEvolution,
+      ∃ pinching : HasFiniteExtinctionCurvaturePinching flow surgery control,
+      ∃ componentControl :
+        HasFiniteExtinctionComponentControl flow surgery control pinching,
+      ∃ timeBound :
+        HasFiniteExtinctionTimeBound
+          flow surgery control pinching componentControl,
+      ∃ derivation : HasFiniteExtinctionDerivation flow surgery control,
+        HasFiniteExtinctionConclusionDerivation
+          flow surgery control pinching componentControl timeBound derivation
+          finiteExtinction) :=
+  rfl
+
+/--
 The theorem-shaped finite-extinction input supplied by a completed surgery
 package: it returns finite extinction together with the conclusion statement
 that accounts for its proof components.
