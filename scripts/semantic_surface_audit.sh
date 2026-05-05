@@ -715,6 +715,8 @@ set_option linter.unusedVariables false
     ∃ extractSphere : Poincare.ExtinctionImpliesSphereStatement,
       Poincare.ExtinctionTopologyDerivationForExtractionStatement extractSphere)
 
+#check Poincare.extinction_topology_extraction_statement_iff_extraction_with_derivation_eq
+
 #check (Poincare.poincare_statement_of_finite_extinction_and_topology_extraction_statement :
   (∀ (M : Type) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
@@ -895,6 +897,8 @@ set_option linter.unusedVariables false
       (Nonempty (M ≃ₜ Poincare.ThreeSphere) ↔
         Nonempty (N ≃ₜ Poincare.ThreeSphere)))
 
+#check Poincare.homeomorph_to_threeSphere_iff_of_homeomorph_eq
+
 #check (Poincare.homeomorph_to_threeSphere_of_threeSphere_homeomorph :
   ∀ {M : Type} [TopologicalSpace M],
     Nonempty (Poincare.ThreeSphere ≃ₜ M) →
@@ -909,6 +913,8 @@ set_option linter.unusedVariables false
   ∀ {M : Type} [TopologicalSpace M],
     Nonempty (M ≃ₜ Poincare.ThreeSphere) ↔
       Nonempty (Poincare.ThreeSphere ≃ₜ M))
+
+#check Poincare.homeomorph_to_threeSphere_iff_threeSphere_homeomorph_eq
 
 #check (Poincare.smoothable_of_smoothability_package :
   Poincare.SmoothabilityPackage →
@@ -1033,6 +1039,8 @@ set_option linter.unusedVariables false
     (Poincare.PoincareConjectureStatement ↔
       Poincare.ExtinctionImpliesSphereStatement))
 
+#check Poincare.poincare_statement_iff_extinction_extraction_eq
+
 #check (Poincare.poincare_payload_of_extinction_and_extraction :
   (∀ (M : Type) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
@@ -1063,6 +1071,8 @@ set_option linter.unusedVariables false
       [SimplyConnectedSpace M] [CompactSpace M],
         Nonempty (M ≃ₜ Poincare.ThreeSphere)) ↔
       Poincare.ExtinctionImpliesSphereStatement))
+
+#check Poincare.canonical_three_sphere_statement_iff_extinction_extraction_eq
 
 #check Poincare.finite_extinction_statement_payload_of_smoothability_and_surgery_packages
 

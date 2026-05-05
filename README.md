@@ -91,7 +91,9 @@ The current artifact is intentionally conservative:
   canonical endpoint route
   `canonical_three_sphere_statement_of_extinction_and_extraction` and the
   equivalence `canonical_three_sphere_statement_iff_extinction_extraction`
-  expose the same boundary at the mathlib-shaped topological statement.
+  expose the same boundary at the mathlib-shaped topological statement. Those
+  target and canonical endpoint equivalences now have equality contracts
+  pinning them to their named projection/constructor pairs.
 - `Poincare/RicciFlow.lean` defines a minimal typed API for time-dependent
   Riemannian metrics, candidate Ricci tensor fields, Ricci-identification
   evidence, and the Ricci-flow equation interface. It also exposes checked
@@ -394,8 +396,10 @@ The current artifact is intentionally conservative:
   `extinction_topology_extraction_statement_of_extraction_and_derivation`, and
   `extinction_topology_extraction_statement_iff_extraction_with_derivation`
   identify the strong topology extraction theorem with a final extractor plus
-  derivation evidence for the homeomorphism it returns. The direct assembly
-  bridges
+  derivation evidence for the homeomorphism it returns. The
+  homeomorphism-recognition and extraction-with-derivation equivalences now
+  have equality contracts pinning them to their named directional maps. The
+  direct assembly bridges
   `poincare_statement_of_finite_extinction_and_topology_extraction_statement`
   and
   `poincare_payload_of_finite_extinction_and_topology_extraction_statement`

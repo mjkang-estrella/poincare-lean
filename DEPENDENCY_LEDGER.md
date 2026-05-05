@@ -142,7 +142,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   inputs. The canonical endpoint route
   `canonical_three_sphere_statement_of_extinction_and_extraction` and the
   equivalence `canonical_three_sphere_statement_iff_extinction_extraction`
-  expose the same boundary at the mathlib-shaped topological statement.
+  expose the same boundary at the mathlib-shaped topological statement. Those
+  target and canonical endpoint equivalences now have equality contracts
+  pinning them to their named projection/constructor pairs.
 - `Poincare/RicciFlow.lean` defines the time-dependent metric, Ricci tensor,
   Ricci-identification, curvature-data, and Ricci-flow equation interfaces, plus
   checked projections down to metric data, curvature data, time-slice metrics,
@@ -439,7 +441,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   `extinction_topology_extraction_statement_iff_extraction_with_derivation`
   identify the theorem-shaped topology extraction statement with a final
   extractor plus derivation evidence for the homeomorphism returned by that
-  extractor. The direct assembly bridges
+  extractor. The homeomorphism-recognition and extraction-with-derivation
+  equivalences now have equality contracts pinning them to their named
+  directional maps. The direct assembly bridges
   `poincare_statement_of_finite_extinction_and_topology_extraction_statement`
   and
   `poincare_payload_of_finite_extinction_and_topology_extraction_statement`

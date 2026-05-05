@@ -89,6 +89,24 @@ theorem poincare_statement_iff_extinction_extraction
   · exact poincare_statement_of_extinction_and_extraction finiteExtinction
 
 /--
+The extinction/extraction equivalence for the project target is the pair of the
+named reverse extraction projection and the named assembly theorem.
+-/
+theorem poincare_statement_iff_extinction_extraction_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M) :
+    poincare_statement_iff_extinction_extraction finiteExtinction =
+      (by
+        constructor
+        · exact extinction_extraction_of_poincare_statement
+        · exact poincare_statement_of_extinction_and_extraction
+            finiteExtinction) := by
+  apply Subsingleton.elim
+
+/--
 Finite extinction plus the topological extraction theorem exposes the local
 target and the explicit completion criterion as one payload.
 -/
@@ -148,5 +166,27 @@ theorem canonical_three_sphere_statement_iff_extinction_extraction
   · intro extractSphere
     exact canonical_three_sphere_statement_of_extinction_and_extraction
       finiteExtinction extractSphere
+
+/--
+The extinction/extraction equivalence for the canonical topological statement
+is the pair of the named canonical-statement conversion and assembly theorem.
+-/
+theorem canonical_three_sphere_statement_iff_extinction_extraction_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M) :
+    canonical_three_sphere_statement_iff_extinction_extraction
+        finiteExtinction =
+      (by
+        constructor
+        · intro h
+          exact extinction_extraction_of_poincare_statement
+            (poincare_statement_of_canonical_three_sphere_statement h)
+        · intro extractSphere
+          exact canonical_three_sphere_statement_of_extinction_and_extraction
+            finiteExtinction extractSphere) := by
+  apply Subsingleton.elim
 
 end Poincare

@@ -495,10 +495,14 @@ check_decl "Poincare target to extinction-extraction theorem is declared" \
   '^theorem extinction_extraction_of_poincare_statement\b' Poincare/RicciFlowInterface.lean
 check_decl "finite-extinction equivalence to extraction theorem is declared" \
   '^theorem poincare_statement_iff_extinction_extraction\b' Poincare/RicciFlowInterface.lean
+check_decl "finite-extinction equivalence to extraction equality contract is declared" \
+  '^theorem poincare_statement_iff_extinction_extraction_eq\b' Poincare/RicciFlowInterface.lean
 check_decl "finite-extinction/extraction canonical statement theorem is declared" \
   '^theorem canonical_three_sphere_statement_of_extinction_and_extraction\b' Poincare/RicciFlowInterface.lean
 check_decl "finite-extinction canonical statement equivalence to extraction theorem is declared" \
   '^theorem canonical_three_sphere_statement_iff_extinction_extraction\b' Poincare/RicciFlowInterface.lean
+check_decl "finite-extinction canonical statement equivalence equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_iff_extinction_extraction_eq\b' Poincare/RicciFlowInterface.lean
 check_decl "smooth-to-topological assembly theorem is declared" \
   '^theorem poincare_statement_of_smooth_statement\b' Poincare/Assembly.lean
 check_decl "smooth statement to canonical topological statement bridge is declared" \
@@ -2404,6 +2408,8 @@ check_decl "topology extraction statement from extraction plus derivation is dec
   '^theorem extinction_topology_extraction_statement_of_extraction_and_derivation\b' Poincare/TopologyExtraction.lean
 check_decl "topology extraction iff extraction plus derivation is declared" \
   '^theorem extinction_topology_extraction_statement_iff_extraction_with_derivation\b' Poincare/TopologyExtraction.lean
+check_decl "topology extraction iff extraction plus derivation equality contract is declared" \
+  '^theorem extinction_topology_extraction_statement_iff_extraction_with_derivation_eq\b' Poincare/TopologyExtraction.lean
 check_decl "finite-extinction plus topology extraction assembly theorem is declared" \
   '^theorem poincare_statement_of_finite_extinction_and_topology_extraction_statement\b' Poincare/TopologyExtraction.lean
 check_decl "finite-extinction plus topology extraction payload theorem is declared" \
@@ -2463,12 +2469,16 @@ check_decl "opposite-direction homeomorphism to standard sphere theorem is decla
   '^theorem homeomorph_to_threeSphere_of_homeomorph_source\b' Poincare/TopologyExtraction.lean
 check_decl "homeomorphism invariance of standard sphere recognition theorem is declared" \
   '^theorem homeomorph_to_threeSphere_iff_of_homeomorph\b' Poincare/TopologyExtraction.lean
+check_decl "homeomorphism invariance of standard sphere recognition equality contract is declared" \
+  '^theorem homeomorph_to_threeSphere_iff_of_homeomorph_eq\b' Poincare/TopologyExtraction.lean
 check_decl "inverse homeomorphism to standard sphere theorem is declared" \
   '^theorem homeomorph_to_threeSphere_of_threeSphere_homeomorph\b' Poincare/TopologyExtraction.lean
 check_decl "standard sphere reverse homeomorphism theorem is declared" \
   '^theorem threeSphere_homeomorph_of_homeomorph_to_threeSphere\b' Poincare/TopologyExtraction.lean
 check_decl "standard sphere homeomorphism direction iff theorem is declared" \
   '^theorem homeomorph_to_threeSphere_iff_threeSphere_homeomorph\b' Poincare/TopologyExtraction.lean
+check_decl "standard sphere homeomorphism direction iff equality contract is declared" \
+  '^theorem homeomorph_to_threeSphere_iff_threeSphere_homeomorph_eq\b' Poincare/TopologyExtraction.lean
 check_decl "smoothability package is declared" \
   '^structure SmoothabilityPackage\b' Poincare/Smoothability.lean
 check_decl "smoothability Moise triangulation interface is declared" \
@@ -4982,9 +4992,11 @@ open scoped Manifold ContDiff
 #check Poincare.homeomorph_to_threeSphere_of_homeomorph
 #check Poincare.homeomorph_to_threeSphere_of_homeomorph_source
 #check Poincare.homeomorph_to_threeSphere_iff_of_homeomorph
+#check Poincare.homeomorph_to_threeSphere_iff_of_homeomorph_eq
 #check Poincare.homeomorph_to_threeSphere_of_threeSphere_homeomorph
 #check Poincare.threeSphere_homeomorph_of_homeomorph_to_threeSphere
 #check Poincare.homeomorph_to_threeSphere_iff_threeSphere_homeomorph
+#check Poincare.homeomorph_to_threeSphere_iff_threeSphere_homeomorph_eq
 #check Poincare.extinction_decomposition_of_topology_package
 #check Poincare.extinction_decomposition_of_topology_package_eq
 #check Poincare.extinction_surgery_trace_reconstruction_of_topology_package
@@ -5058,6 +5070,7 @@ open scoped Manifold ContDiff
 #check Poincare.extinction_implies_sphere_of_topology_extraction_statement
 #check Poincare.extinction_topology_extraction_statement_of_extraction_and_derivation
 #check Poincare.extinction_topology_extraction_statement_iff_extraction_with_derivation
+#check Poincare.extinction_topology_extraction_statement_iff_extraction_with_derivation_eq
 #check Poincare.poincare_statement_of_finite_extinction_and_topology_extraction_statement
 #check Poincare.poincare_payload_of_finite_extinction_and_topology_extraction_statement
 #check Poincare.poincare_statement_of_finite_extinction_and_extraction_derivation
@@ -5395,9 +5408,11 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_statement_payload_of_surgery_package
 #check Poincare.extinction_extraction_of_poincare_statement
 #check Poincare.poincare_statement_iff_extinction_extraction
+#check Poincare.poincare_statement_iff_extinction_extraction_eq
 #check Poincare.poincare_payload_of_extinction_and_extraction
 #check Poincare.canonical_three_sphere_statement_of_extinction_and_extraction
 #check Poincare.canonical_three_sphere_statement_iff_extinction_extraction
+#check Poincare.canonical_three_sphere_statement_iff_extinction_extraction_eq
 #check Poincare.poincare_statement_of_canonical_three_sphere_statement
 #check Poincare.poincare_payload_of_canonical_three_sphere_statement
 #check Poincare.completion_criterion_of_canonical_three_sphere_statement

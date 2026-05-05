@@ -61,6 +61,22 @@ theorem homeomorph_to_threeSphere_iff_of_homeomorph
     exact homeomorph_to_threeSphere_of_homeomorph hMN hN
 
 /--
+The homeomorphism-invariance equivalence is the pair of the named transport
+maps in the two directions.
+-/
+theorem homeomorph_to_threeSphere_iff_of_homeomorph_eq
+    {M N : Type u} [TopologicalSpace M] [TopologicalSpace N]
+    (hMN : Nonempty (M ≃ₜ N)) :
+    homeomorph_to_threeSphere_iff_of_homeomorph hMN =
+      (by
+        constructor
+        · intro hM
+          exact homeomorph_to_threeSphere_of_homeomorph_source hMN hM
+        · intro hN
+          exact homeomorph_to_threeSphere_of_homeomorph hMN hN) := by
+  apply Subsingleton.elim
+
+/--
 Recognition can be used in the target direction after inverting a homeomorphism
 from the standard sphere.
 -/
@@ -92,6 +108,20 @@ theorem homeomorph_to_threeSphere_iff_threeSphere_homeomorph
   constructor
   · exact threeSphere_homeomorph_of_homeomorph_to_threeSphere
   · exact homeomorph_to_threeSphere_of_threeSphere_homeomorph
+
+/--
+The target-side homeomorphism equivalence is the pair of the named inverse
+homeomorphism conversions.
+-/
+theorem homeomorph_to_threeSphere_iff_threeSphere_homeomorph_eq
+    {M : Type u} [TopologicalSpace M] :
+    (homeomorph_to_threeSphere_iff_threeSphere_homeomorph :
+      Nonempty (M ≃ₜ ThreeSphere) ↔ Nonempty (ThreeSphere ≃ₜ M)) =
+      (by
+        constructor
+        · exact threeSphere_homeomorph_of_homeomorph_to_threeSphere
+        · exact homeomorph_to_threeSphere_of_threeSphere_homeomorph) := by
+  apply Subsingleton.elim
 
 /--
 Interface for the decomposition information obtained from finite extinction.
@@ -3878,6 +3908,27 @@ theorem extinction_topology_extraction_statement_iff_extraction_with_derivation 
   · rintro ⟨extractSphere, derive⟩
     exact extinction_topology_extraction_statement_of_extraction_and_derivation
       extractSphere derive
+
+/--
+The strong topology extraction equivalence is the pair of the named extractor
+projection and the named constructor from extraction plus derivation evidence.
+-/
+theorem extinction_topology_extraction_statement_iff_extraction_with_derivation_eq :
+    extinction_topology_extraction_statement_iff_extraction_with_derivation =
+      (by
+        constructor
+        · intro topologyStatement
+          let extractSphere : ExtinctionImpliesSphereStatement.{u} := by
+            intro M _ _ _ _ _ extinction
+            exact (topologyStatement M extinction).choose
+          refine ⟨extractSphere, ?_⟩
+          intro M _ _ _ _ _ extinction
+          exact (topologyStatement M extinction).choose_spec
+        · rintro ⟨extractSphere, derive⟩
+          exact
+            extinction_topology_extraction_statement_of_extraction_and_derivation
+              extractSphere derive) := by
+  apply Subsingleton.elim
 
 /--
 Universal finite extinction plus the stronger topology extraction statement is
