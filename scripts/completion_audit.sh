@@ -3279,6 +3279,8 @@ check_decl "smoothability chart-compatibility interface is declared" \
   '^inductive HasSmoothChartCompatibility\b' Poincare/Smoothability.lean
 check_decl "smoothability sub-obligations payload alias is declared" \
   '^abbrev SmoothabilitySubobligationsPayload\b' Poincare/Smoothability.lean
+check_decl "smoothability sub-obligations payload equality contract is declared" \
+  '^theorem smoothabilitySubobligationsPayload_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability derivation statement sub-obligation projection is declared" \
   '^theorem smoothability_subobligations_of_derivation_statement\b' Poincare/Smoothability.lean
 check_decl "smoothability derivation statement sub-obligation equality contract is declared" \
@@ -7142,6 +7144,7 @@ open scoped Manifold ContDiff
 #check Poincare.smooth_chart_compatibility_of_smoothability_package
 #check Poincare.smooth_chart_compatibility_of_smoothability_package_eq
 #check Poincare.SmoothabilitySubobligationsPayload
+#check Poincare.smoothabilitySubobligationsPayload_eq
 #check Poincare.smoothability_subobligations_of_derivation_statement
 #check Poincare.smoothability_subobligations_of_derivation_statement_eq
 #check Poincare.smoothability_bridge_payload_of_smoothability_package
@@ -10236,6 +10239,7 @@ open scoped Manifold ContDiff
 #check Poincare.smooth_chart_compatibility_of_smoothability_package
 #check Poincare.smooth_chart_compatibility_of_smoothability_package_eq
 #check Poincare.SmoothabilitySubobligationsPayload
+#check Poincare.smoothabilitySubobligationsPayload_eq
 #check Poincare.smoothability_subobligations_of_derivation_statement
 #check Poincare.smoothability_subobligations_of_derivation_statement_eq
 #check Poincare.smoothability_bridge_payload_of_smoothability_package

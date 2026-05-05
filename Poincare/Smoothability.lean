@@ -1145,6 +1145,134 @@ abbrev SmoothabilitySubobligationsPayload
         bridgeDerivation modelCompatibility
 
 /--
+The smoothability sub-obligation payload alias is definitionally the full
+Moise, PL, smoothing, smooth-atlas, smooth-structure derivation, manifold,
+bridge, model-compatibility, and chart-compatibility witness stack.
+-/
+theorem smoothabilitySubobligationsPayload_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    SmoothabilitySubobligationsPayload M =
+      (∃ localCharts : HasMoiseLocalTriangulationCharts M,
+      ∃ _locallyFiniteCoverRefinement :
+        HasMoiseLocallyFiniteCoverRefinement M localCharts,
+      ∃ _simplicialComplex : HasMoiseSimplicialComplex M localCharts,
+      ∃ _compatibleChartTriangulations :
+        HasMoiseCompatibleChartTriangulations
+          M localCharts _simplicialComplex,
+      ∃ triangulation : HasMoiseTriangulation M,
+      ∃ _simplicialApproximation :
+        HasMoiseSimplicialApproximation
+          M localCharts _simplicialComplex triangulation,
+      ∃ _starNeighborhoodBasis :
+        HasMoiseStarNeighborhoodBasis M localCharts triangulation,
+      ∃ _barycentricSubdivision :
+        HasMoiseBarycentricSubdivisionControl M triangulation,
+      ∃ _regularNeighborhoodCompatibility :
+        HasMoiseRegularNeighborhoodCompatibility M triangulation,
+      ∃ _triangulationLocalFiniteness :
+        HasMoiseTriangulationLocalFiniteness M triangulation,
+      ∃ _linkCompatibility :
+        HasMoiseLinkCompatibility M triangulation,
+      ∃ _plManifoldRecognition :
+        HasMoisePLManifoldRecognition M triangulation _linkCompatibility,
+      ∃ _triangulationHomeomorphism :
+        HasMoiseTriangulationHomeomorphism M localCharts triangulation,
+      ∃ _moiseCompatibility :
+        HasMoiseTriangulationCompatibility M localCharts triangulation,
+      ∃ _triangulationUniqueness :
+        HasMoiseTriangulationUniqueness M triangulation,
+      ∃ _hauptvermutungDimensionThree :
+        HasMoiseHauptvermutungDimensionThree
+          M triangulation _triangulationUniqueness,
+      ∃ plStructure : HasCompatiblePLStructure M triangulation,
+      ∃ _plTransitionCompatibility :
+        HasPLTransitionCompatibility M triangulation plStructure,
+      ∃ plAtlas : HasCompatiblePLAtlas M triangulation plStructure,
+      ∃ _plManifoldAtlas :
+        HasPLManifoldAtlas M triangulation plStructure plAtlas,
+      ∃ _plCollarNeighborhoodCompatibility :
+        HasPLCollarNeighborhoodCompatibility
+          M triangulation plStructure plAtlas,
+      ∃ _plHomeomorphismCompatibility :
+        HasPLHomeomorphismCompatibility
+          M localCharts triangulation plStructure plAtlas,
+      ∃ _plAtlasMaximality :
+        HasPLAtlasMaximality M triangulation plStructure plAtlas,
+      ∃ _plSmoothingExistence :
+        HasPLSmoothingExistence M triangulation plStructure plAtlas,
+      ∃ _plSmoothingObstructionVanishing :
+        HasPLSmoothingObstructionVanishing
+          M triangulation plStructure plAtlas,
+      ∃ _plMicrobundleSmoothing :
+        HasPLMicrobundleSmoothing
+          M triangulation plStructure plAtlas _plSmoothingExistence
+          _plSmoothingObstructionVanishing,
+      ∃ plSmoothing :
+        HasPLSmoothingTheorem M triangulation plStructure plAtlas,
+      ∃ _plSmoothingCompatibility :
+        HasPLSmoothingCompatibility
+          M triangulation plStructure plAtlas plSmoothing,
+      ∃ _plSmoothingUniqueness :
+        HasPLSmoothingUniqueness
+          M triangulation plStructure plAtlas plSmoothing,
+      ∃ _plSmoothingLocalModelCompatibility :
+        HasPLSmoothingLocalModelCompatibility
+          M triangulation plStructure plAtlas plSmoothing,
+      ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+      ∃ smoothAtlasConstruction :
+        HasSmoothAtlasConstruction
+          M triangulation plStructure plAtlas plSmoothing smoothStructure,
+      ∃ smoothAtlasPLCompatibility :
+        HasSmoothAtlasPLCompatibility
+          M triangulation plStructure plAtlas plSmoothing smoothStructure,
+      ∃ _smoothAtlasMaximality :
+        HasSmoothAtlasMaximality
+          M triangulation plStructure plAtlas plSmoothing smoothStructure,
+      ∃ smoothAtlasUniqueness : HasSmoothAtlasUniqueness M smoothStructure,
+      ∃ _smoothStructureUniqueness :
+        HasSmoothStructureUniquenessUpToDiffeomorphism M smoothStructure,
+      ∃ _smoothTransitionCompatibility :
+        HasSmoothTransitionCompatibility M smoothStructure,
+      ∃ _smoothAtlasTransitionSmoothness :
+        HasSmoothAtlasTransitionSmoothness
+          M smoothStructure _smoothTransitionCompatibility,
+      ∃ _smoothDerivation :
+        HasSmoothStructureDerivation
+          M localCharts _locallyFiniteCoverRefinement _simplicialComplex
+          _compatibleChartTriangulations triangulation _simplicialApproximation
+          _starNeighborhoodBasis _barycentricSubdivision
+          _regularNeighborhoodCompatibility _triangulationLocalFiniteness
+          _linkCompatibility _plManifoldRecognition
+          _triangulationHomeomorphism _moiseCompatibility
+          _triangulationUniqueness _hauptvermutungDimensionThree
+          plStructure _plTransitionCompatibility plAtlas _plManifoldAtlas
+          _plCollarNeighborhoodCompatibility _plHomeomorphismCompatibility
+          _plAtlasMaximality _plSmoothingExistence
+          _plSmoothingObstructionVanishing _plMicrobundleSmoothing
+          plSmoothing _plSmoothingCompatibility _plSmoothingUniqueness
+          _plSmoothingLocalModelCompatibility smoothStructure
+          smoothAtlasConstruction smoothAtlasPLCompatibility
+          _smoothAtlasMaximality smoothAtlasUniqueness
+          _smoothStructureUniqueness _smoothTransitionCompatibility
+          _smoothAtlasTransitionSmoothness,
+      ∃ smoothDerivationStatement :
+        SmoothStructureDerivationStatement M smoothStructure,
+      ∃ manifoldEvidence : IsManifold ThreeManifoldModelWithCorners 1 M,
+      ∃ bridgeDerivation :
+        HasSmoothabilityBridgeDerivation
+          M smoothStructure smoothDerivationStatement manifoldEvidence,
+      ∃ modelCompatibility :
+        HasSmoothManifoldModelCompatibility
+          M smoothStructure smoothDerivationStatement manifoldEvidence
+          bridgeDerivation,
+        HasSmoothChartCompatibility
+          M smoothStructure smoothDerivationStatement manifoldEvidence
+          bridgeDerivation modelCompatibility) :=
+  rfl
+
+/--
 The smooth-structure derivation statement exposes the full Moise, PL,
 smoothing, smooth-atlas, and bridge compatibility sub-obligation stack.
 -/
