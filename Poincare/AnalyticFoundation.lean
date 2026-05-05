@@ -1594,6 +1594,289 @@ theorem curvature_evolution_of_analytic_foundation_package
       (ricci_flow_data_of_analytic_foundation_package package) :=
   package.curvatureEvolution
 
+/- Direct analytic-foundation package projections are stored package fields. -/
+section AnalyticFoundationPackageProjectionContracts
+
+variable {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+variable {H : Type v} [TopologicalSpace H]
+variable {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+variable {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+
+@[simp] theorem levi_civita_existence_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    levi_civita_existence_of_analytic_foundation_package package =
+      package.leviCivitaExistence :=
+  rfl
+
+@[simp] theorem levi_civita_uniqueness_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    levi_civita_uniqueness_of_analytic_foundation_package package =
+      package.leviCivitaUniqueness :=
+  rfl
+
+@[simp] theorem levi_civita_torsion_free_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    levi_civita_torsion_free_of_analytic_foundation_package package =
+      package.leviCivitaTorsionFree :=
+  rfl
+
+@[simp] theorem levi_civita_metric_compatibility_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    levi_civita_metric_compatibility_of_analytic_foundation_package package =
+      package.leviCivitaMetricCompatibility :=
+  rfl
+
+@[simp] theorem levi_civita_theory_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    levi_civita_theory_of_analytic_foundation_package package =
+      package.leviCivita :=
+  rfl
+
+@[simp] theorem riemann_curvature_construction_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    riemann_curvature_construction_of_analytic_foundation_package package =
+      package.riemannCurvatureConstruction :=
+  rfl
+
+@[simp] theorem riemann_curvature_symmetries_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    riemann_curvature_symmetries_of_analytic_foundation_package package =
+      package.riemannCurvatureSymmetries :=
+  rfl
+
+@[simp] theorem first_bianchi_identity_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    first_bianchi_identity_of_analytic_foundation_package package =
+      package.firstBianchi :=
+  rfl
+
+@[simp] theorem second_bianchi_identity_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    second_bianchi_identity_of_analytic_foundation_package package =
+      package.secondBianchi :=
+  rfl
+
+@[simp] theorem riemann_curvature_theory_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    riemann_curvature_theory_of_analytic_foundation_package package =
+      package.riemannCurvature :=
+  rfl
+
+@[simp] theorem ricci_contraction_formula_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    ricci_contraction_formula_of_analytic_foundation_package package =
+      package.ricciContractionFormula :=
+  rfl
+
+@[simp] theorem scalar_curvature_contraction_formula_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    scalar_curvature_contraction_formula_of_analytic_foundation_package
+      package =
+      package.scalarCurvatureContraction :=
+  rfl
+
+@[simp] theorem ricci_contraction_theory_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    ricci_contraction_theory_of_analytic_foundation_package package =
+      package.ricciContraction :=
+  rfl
+
+@[simp] theorem metric_regularity_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    metric_regularity_of_analytic_foundation_package package =
+      package.metricRegularity :=
+  rfl
+
+@[simp] theorem metric_time_derivative_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    metric_time_derivative_of_analytic_foundation_package package =
+      package.metricTimeDerivative :=
+  rfl
+
+@[simp] theorem scalar_curvature_theory_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    scalar_curvature_theory_of_analytic_foundation_package package =
+      package.scalarCurvature :=
+  rfl
+
+@[simp] theorem initial_metric_compatibility_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    initial_metric_compatibility_of_analytic_foundation_package package =
+      package.initialMetricCompatibility :=
+  rfl
+
+@[simp] theorem deturck_gauge_fixing_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    deturck_gauge_fixing_of_analytic_foundation_package package =
+      package.deturckGauge :=
+  rfl
+
+@[simp] theorem deturck_background_metric_compatibility_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    deturck_background_metric_compatibility_of_analytic_foundation_package
+      package =
+      package.deturckBackgroundMetric :=
+  rfl
+
+@[simp] theorem deturck_vector_field_construction_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    deturck_vector_field_construction_of_analytic_foundation_package package =
+      package.deturckVectorField :=
+  rfl
+
+@[simp] theorem ricci_deturck_linearization_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    ricci_deturck_linearization_of_analytic_foundation_package package =
+      package.deturckLinearization :=
+  rfl
+
+@[simp] theorem strictly_parabolic_deturck_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    strictly_parabolic_deturck_of_analytic_foundation_package package =
+      package.strictParabolicDeturck :=
+  rfl
+
+@[simp] theorem parabolic_linear_theory_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    parabolic_linear_theory_of_analytic_foundation_package package =
+      package.parabolicLinearTheory :=
+  rfl
+
+@[simp] theorem parabolic_fixed_point_argument_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    parabolic_fixed_point_argument_of_analytic_foundation_package package =
+      package.parabolicFixedPoint :=
+  rfl
+
+@[simp] theorem deturck_short_time_existence_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    deturck_short_time_existence_of_analytic_foundation_package package =
+      package.deturckShortTime :=
+  rfl
+
+@[simp] theorem short_time_regularity_bootstrap_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    short_time_regularity_bootstrap_of_analytic_foundation_package package =
+      package.shortTimeRegularityBootstrap :=
+  rfl
+
+@[simp] theorem deturck_diffeomorphism_ode_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    deturck_diffeomorphism_ode_of_analytic_foundation_package package =
+      package.deturckDiffeomorphismODE :=
+  rfl
+
+@[simp] theorem deturck_pullback_equation_identity_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    deturck_pullback_equation_identity_of_analytic_foundation_package package =
+      package.deturckPullbackEquationIdentity :=
+  rfl
+
+@[simp] theorem deturck_pullback_to_ricci_flow_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    deturck_pullback_to_ricci_flow_of_analytic_foundation_package package =
+      package.deturckPullback :=
+  rfl
+
+@[simp] theorem short_time_existence_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    short_time_existence_of_analytic_foundation_package package =
+      package.shortTimeExistence :=
+  rfl
+
+@[simp] theorem maximal_time_interval_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    maximal_time_interval_of_analytic_foundation_package package =
+      package.maximalTimeInterval :=
+  rfl
+
+@[simp] theorem continuation_criterion_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    continuation_criterion_of_analytic_foundation_package package =
+      package.continuationCriterion :=
+  rfl
+
+@[simp] theorem curvature_blowup_criterion_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    curvature_blowup_criterion_of_analytic_foundation_package package =
+      package.curvatureBlowUpCriterion :=
+  rfl
+
+@[simp] theorem maximal_solution_extension_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    maximal_solution_extension_of_analytic_foundation_package package =
+      package.maximalSolutionExtension :=
+  rfl
+
+@[simp] theorem parabolic_schauder_estimates_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    parabolic_schauder_estimates_of_analytic_foundation_package package =
+      package.parabolicSchauder :=
+  rfl
+
+@[simp] theorem parabolic_regularity_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    parabolic_regularity_of_analytic_foundation_package package =
+      package.parabolicRegularity :=
+  rfl
+
+@[simp] theorem shi_derivative_estimates_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    shi_derivative_estimates_of_analytic_foundation_package package =
+      package.shiDerivativeEstimates :=
+  rfl
+
+@[simp] theorem curvature_derivative_bootstrap_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    curvature_derivative_bootstrap_of_analytic_foundation_package package =
+      package.curvatureDerivativeBootstrap :=
+  rfl
+
+@[simp] theorem hamilton_maximum_principle_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    hamilton_maximum_principle_of_analytic_foundation_package package =
+      package.maximumPrinciple :=
+  rfl
+
+@[simp] theorem uniqueness_theory_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    uniqueness_theory_of_analytic_foundation_package package =
+      package.uniquenessTheory :=
+  rfl
+
+@[simp] theorem metric_evolution_equation_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    metric_evolution_equation_of_analytic_foundation_package package =
+      package.metricEvolution :=
+  rfl
+
+@[simp] theorem ricci_tensor_evolution_equation_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    ricci_tensor_evolution_equation_of_analytic_foundation_package package =
+      package.ricciTensorEvolution :=
+  rfl
+
+@[simp] theorem scalar_curvature_evolution_equation_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    scalar_curvature_evolution_equation_of_analytic_foundation_package package =
+      package.scalarCurvatureEvolution :=
+  rfl
+
+@[simp] theorem curvature_norm_evolution_inequality_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    curvature_norm_evolution_inequality_of_analytic_foundation_package
+      package =
+      package.curvatureNormEvolution :=
+  rfl
+
+@[simp] theorem curvature_evolution_of_analytic_foundation_package_eq
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    curvature_evolution_of_analytic_foundation_package package =
+      package.curvatureEvolution :=
+  rfl
+
+end AnalyticFoundationPackageProjectionContracts
+
 /-- Project Ricci-identification evidence from an analytic-foundation package. -/
 theorem ricci_identification_of_analytic_foundation_package
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
