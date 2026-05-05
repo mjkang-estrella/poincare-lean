@@ -4040,6 +4040,8 @@ check_decl "dependency topology classification payload theorem is declared" \
   '^theorem topology_classification_payload_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency topology classification payload equality contract is declared" \
   '^theorem topology_classification_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology classification payload package route equality contract is declared" \
+  '^theorem topology_classification_payload_of_dependencies_to_package_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency topology decomposition projection theorem is declared" \
   '^theorem topology_decomposition_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency topology decomposition equality contract is declared" \
@@ -4202,14 +4204,20 @@ check_decl "dependency topology extraction statement payload theorem is declared
   '^theorem topology_extraction_statement_payload_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency topology extraction statement payload equality contract is declared" \
   '^theorem topology_extraction_statement_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology extraction statement payload package route equality contract is declared" \
+  '^theorem topology_extraction_statement_payload_of_dependencies_to_package_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency topology extraction payload theorem is declared" \
   '^theorem topology_derivation_statement_payload_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency topology derivation statement payload equality contract is declared" \
   '^theorem topology_derivation_statement_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology derivation statement payload package route equality contract is declared" \
+  '^theorem topology_derivation_statement_payload_of_dependencies_to_package_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency extinction-to-homeomorphism projection theorem is declared" \
   '^theorem homeomorphism_of_extinction_and_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency extinction-to-homeomorphism equality contract is declared" \
   '^theorem homeomorphism_of_extinction_and_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency extinction-to-homeomorphism package route equality contract is declared" \
+  '^theorem homeomorphism_of_extinction_and_dependencies_to_package_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency topology extraction derivation statement theorem is declared" \
   '^theorem topology_derivation_statement_via_extraction_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency topology extraction derivation statement equality contract is declared" \
@@ -4246,14 +4254,22 @@ check_decl "dependency topology global extraction payload theorem is declared" \
   '^theorem topology_extraction_payload_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency topology global extraction payload equality contract is declared" \
   '^theorem topology_extraction_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology global extraction payload package route equality contract is declared" \
+  '^theorem topology_extraction_payload_of_dependencies_to_package_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency topology extraction statement theorem is declared" \
   '^theorem topology_extraction_statement_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency topology extraction statement equality contract is declared" \
   '^theorem topology_extraction_statement_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology extraction statement package route equality contract is declared" \
+  '^theorem topology_extraction_statement_of_dependencies_to_package_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency topology extraction/derivation payload equality contract is declared" \
   '^theorem topology_extraction_derivation_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology extraction/derivation payload package route equality contract is declared" \
+  '^theorem topology_extraction_derivation_payload_of_dependencies_to_package_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency topology final extractor equality contract is declared" \
   '^theorem extinction_extraction_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology final extractor package route equality contract is declared" \
+  '^theorem extinction_extraction_of_dependencies_to_package_eq\b' Poincare/DependencyProjections.lean
 for dependency_topology_statement_route_contract in \
   topology_extraction_payload_of_dependencies_to_statement_eq \
   topology_extraction_statement_payload_of_dependencies_to_statement_eq \
@@ -8755,6 +8771,7 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_of_dependencies_to_package_eq
 #check Poincare.topology_classification_payload_of_dependencies
 #check Poincare.topology_classification_payload_of_dependencies_eq
+#check Poincare.topology_classification_payload_of_dependencies_to_package_eq
 #check Poincare.topology_decomposition_of_dependencies
 #check Poincare.topology_decomposition_of_dependencies_eq
 #check Poincare.topology_surgery_trace_reconstruction_of_dependencies
@@ -8835,10 +8852,13 @@ open scoped Manifold ContDiff
 #check Poincare.topology_classification_subobligations_of_dependencies_eq
 #check Poincare.topology_extraction_statement_payload_of_dependencies
 #check Poincare.topology_extraction_statement_payload_of_dependencies_eq
+#check Poincare.topology_extraction_statement_payload_of_dependencies_to_package_eq
 #check Poincare.topology_derivation_statement_payload_of_dependencies
 #check Poincare.topology_derivation_statement_payload_of_dependencies_eq
+#check Poincare.topology_derivation_statement_payload_of_dependencies_to_package_eq
 #check Poincare.homeomorphism_of_extinction_and_dependencies
 #check Poincare.homeomorphism_of_extinction_and_dependencies_eq
+#check Poincare.homeomorphism_of_extinction_and_dependencies_to_package_eq
 #check Poincare.topology_derivation_statement_via_extraction_of_dependencies
 #check Poincare.topology_derivation_statement_via_extraction_of_dependencies_eq
 #check Poincare.topology_homeomorphism_assembly_statement_via_extraction_of_dependencies
@@ -8857,11 +8877,15 @@ open scoped Manifold ContDiff
 #check Poincare.topology_homeomorphism_derivation_statement_of_dependencies_eq
 #check Poincare.topology_extraction_payload_of_dependencies
 #check Poincare.topology_extraction_payload_of_dependencies_eq
+#check Poincare.topology_extraction_payload_of_dependencies_to_package_eq
 #check Poincare.topology_extraction_statement_of_dependencies
 #check Poincare.topology_extraction_statement_of_dependencies_eq
+#check Poincare.topology_extraction_statement_of_dependencies_to_package_eq
 #check Poincare.topology_extraction_derivation_payload_of_dependencies
 #check Poincare.topology_extraction_derivation_payload_of_dependencies_eq
+#check Poincare.topology_extraction_derivation_payload_of_dependencies_to_package_eq
 #check Poincare.extinction_extraction_of_dependencies_eq
+#check Poincare.extinction_extraction_of_dependencies_to_package_eq
 #check Poincare.topology_extraction_payload_of_dependencies_to_statement_eq
 #check Poincare.topology_extraction_statement_payload_of_dependencies_to_statement_eq
 #check Poincare.topology_derivation_statement_payload_of_dependencies_to_statement_eq
@@ -11057,6 +11081,7 @@ open scoped Manifold ContDiff
 #check Poincare.smoothability_smooth_structure_derivation_statement_of_dependencies_eq
 #check Poincare.topology_classification_payload_of_dependencies
 #check Poincare.topology_classification_payload_of_dependencies_eq
+#check Poincare.topology_classification_payload_of_dependencies_to_package_eq
 #check Poincare.topology_decomposition_of_dependencies
 #check Poincare.topology_decomposition_of_dependencies_eq
 #check Poincare.topology_surgery_trace_reconstruction_of_dependencies
@@ -11137,10 +11162,13 @@ open scoped Manifold ContDiff
 #check Poincare.topology_classification_subobligations_of_dependencies_eq
 #check Poincare.topology_extraction_statement_payload_of_dependencies
 #check Poincare.topology_extraction_statement_payload_of_dependencies_eq
+#check Poincare.topology_extraction_statement_payload_of_dependencies_to_package_eq
 #check Poincare.topology_derivation_statement_payload_of_dependencies
 #check Poincare.topology_derivation_statement_payload_of_dependencies_eq
+#check Poincare.topology_derivation_statement_payload_of_dependencies_to_package_eq
 #check Poincare.homeomorphism_of_extinction_and_dependencies
 #check Poincare.homeomorphism_of_extinction_and_dependencies_eq
+#check Poincare.homeomorphism_of_extinction_and_dependencies_to_package_eq
 #check Poincare.topology_derivation_statement_via_extraction_of_dependencies
 #check Poincare.topology_derivation_statement_via_extraction_of_dependencies_eq
 #check Poincare.topology_homeomorphism_assembly_statement_via_extraction_of_dependencies
@@ -11159,11 +11187,15 @@ open scoped Manifold ContDiff
 #check Poincare.topology_homeomorphism_derivation_statement_of_dependencies_eq
 #check Poincare.topology_extraction_payload_of_dependencies
 #check Poincare.topology_extraction_payload_of_dependencies_eq
+#check Poincare.topology_extraction_payload_of_dependencies_to_package_eq
 #check Poincare.topology_extraction_statement_of_dependencies
 #check Poincare.topology_extraction_statement_of_dependencies_eq
+#check Poincare.topology_extraction_statement_of_dependencies_to_package_eq
 #check Poincare.topology_extraction_derivation_payload_of_dependencies
 #check Poincare.topology_extraction_derivation_payload_of_dependencies_eq
+#check Poincare.topology_extraction_derivation_payload_of_dependencies_to_package_eq
 #check Poincare.extinction_extraction_of_dependencies_eq
+#check Poincare.extinction_extraction_of_dependencies_to_package_eq
 #check Poincare.smoothability_bridge_statement_of_dependencies
 #check Poincare.smoothability_bridge_payload_of_dependencies
 #check Poincare.smoothability_bridge_of_dependencies_eq

@@ -3130,6 +3130,21 @@ theorem topology_classification_payload_of_dependencies_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level topology classification payload agrees with the direct
+classification bridge of the stored topology package.
+-/
+theorem topology_classification_payload_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_classification_payload_of_dependencies dependencies M extinction =
+      topology_classification_subobligations_of_topology_package
+        dependencies.topology M extinction := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies post-extinction topology decomposition
 for any finite-extinction input.
 -/
@@ -5411,6 +5426,17 @@ theorem topology_extraction_payload_of_dependencies_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level topology extraction payload follows the stored topology
+package route.
+-/
+theorem topology_extraction_payload_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topology_extraction_payload_of_dependencies dependencies =
+      topology_extraction_payload_of_topology_package
+        dependencies.topology := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package extracts the theorem-shaped topology statement,
 its final homeomorphism, the full classification sub-obligation stack, and the
 fixed-homeomorphism derivation statements from any finite-extinction input.
@@ -5446,6 +5472,22 @@ The dependency-level topology statement payload is the corresponding payload of
 the stored topology package.
 -/
 theorem topology_extraction_statement_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_dependencies
+      dependencies M extinction =
+      topology_extraction_statement_payload_of_topology_package
+        dependencies.topology M extinction := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level fixed-extinction topology payload follows the stored
+topology package route.
+-/
+theorem topology_extraction_statement_payload_of_dependencies_to_package_eq
     (dependencies : PoincareProofDependencies.{u})
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
@@ -5682,6 +5724,24 @@ theorem topology_derivation_statement_payload_of_dependencies_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level topology derivation payload follows the theorem-shaped
+statement selected by the stored topology package.
+-/
+theorem topology_derivation_statement_payload_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_derivation_statement_payload_of_dependencies
+      dependencies M extinction =
+      topology_derivation_statement_payload_of_extraction_statement
+        (extinction_topology_extraction_statement_of_topology_package
+          dependencies.topology)
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package extracts the final homeomorphism from the
 theorem-shaped topology extraction statement payload.
 -/
@@ -5710,6 +5770,21 @@ theorem homeomorphism_of_extinction_and_dependencies_eq
     homeomorphism_of_extinction_and_dependencies dependencies M extinction =
       (topology_derivation_statement_payload_of_dependencies
         dependencies M extinction).choose := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level extinction-to-sphere homeomorphism agrees with the
+homeomorphism selected by the stored topology package.
+-/
+theorem homeomorphism_of_extinction_and_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    homeomorphism_of_extinction_and_dependencies dependencies M extinction =
+      homeomorphism_of_topology_package
+        dependencies.topology M extinction := by
   apply Subsingleton.elim
 
 /--
@@ -6077,6 +6152,17 @@ The dependency-level topology extraction statement is the statement projection
 of the stored topology package.
 -/
 theorem topology_extraction_statement_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topology_extraction_statement_of_dependencies dependencies =
+      extinction_topology_extraction_statement_of_topology_package
+        dependencies.topology := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level theorem-shaped topology statement follows the stored
+topology package route.
+-/
+theorem topology_extraction_statement_of_dependencies_to_package_eq
     (dependencies : PoincareProofDependencies.{u}) :
     topology_extraction_statement_of_dependencies dependencies =
       extinction_topology_extraction_statement_of_topology_package
@@ -6884,6 +6970,16 @@ theorem extinction_extraction_of_dependencies_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level final extractor follows the stored topology package route.
+-/
+theorem extinction_extraction_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    extinction_extraction_of_dependencies dependencies =
+      extinction_implies_sphere_of_topology_package
+        dependencies.topology := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies a final extractor paired with the
 post-extinction topology derivation certificate for that extractor.
 -/
@@ -6900,6 +6996,17 @@ The dependency-level extraction/derivation payload is the corresponding payload
 of the stored topology package.
 -/
 theorem topology_extraction_derivation_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topology_extraction_derivation_payload_of_dependencies dependencies =
+      topology_extraction_derivation_payload_of_topology_package
+        dependencies.topology := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level extraction/derivation payload follows the stored topology
+package route.
+-/
+theorem topology_extraction_derivation_payload_of_dependencies_to_package_eq
     (dependencies : PoincareProofDependencies.{u}) :
     topology_extraction_derivation_payload_of_dependencies dependencies =
       topology_extraction_derivation_payload_of_topology_package

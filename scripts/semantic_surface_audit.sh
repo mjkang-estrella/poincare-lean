@@ -2675,6 +2675,7 @@ set_option linter.unusedVariables false
 #check Poincare.topology_package_of_dependencies_eq
 #check Poincare.topology_classification_payload_of_dependencies
 #check Poincare.topology_classification_payload_of_dependencies_eq
+#check Poincare.topology_classification_payload_of_dependencies_to_package_eq
 #check Poincare.topology_decomposition_of_dependencies
 #check Poincare.topology_decomposition_of_dependencies_eq
 #check Poincare.topology_surgery_trace_reconstruction_of_dependencies
@@ -2755,10 +2756,13 @@ set_option linter.unusedVariables false
 #check Poincare.topology_classification_subobligations_of_dependencies_eq
 #check Poincare.topology_extraction_statement_payload_of_dependencies
 #check Poincare.topology_extraction_statement_payload_of_dependencies_eq
+#check Poincare.topology_extraction_statement_payload_of_dependencies_to_package_eq
 #check Poincare.topology_derivation_statement_payload_of_dependencies
 #check Poincare.topology_derivation_statement_payload_of_dependencies_eq
+#check Poincare.topology_derivation_statement_payload_of_dependencies_to_package_eq
 #check Poincare.homeomorphism_of_extinction_and_dependencies
 #check Poincare.homeomorphism_of_extinction_and_dependencies_eq
+#check Poincare.homeomorphism_of_extinction_and_dependencies_to_package_eq
 #check Poincare.topology_derivation_statement_via_extraction_of_dependencies
 #check Poincare.topology_derivation_statement_via_extraction_of_dependencies_eq
 #check Poincare.topology_homeomorphism_assembly_statement_via_extraction_of_dependencies
@@ -2777,11 +2781,15 @@ set_option linter.unusedVariables false
 #check Poincare.topology_homeomorphism_derivation_statement_of_dependencies_eq
 #check Poincare.topology_extraction_payload_of_dependencies
 #check Poincare.topology_extraction_payload_of_dependencies_eq
+#check Poincare.topology_extraction_payload_of_dependencies_to_package_eq
 #check Poincare.topology_extraction_statement_of_dependencies
 #check Poincare.topology_extraction_statement_of_dependencies_eq
+#check Poincare.topology_extraction_statement_of_dependencies_to_package_eq
 #check Poincare.topology_extraction_derivation_payload_of_dependencies
 #check Poincare.topology_extraction_derivation_payload_of_dependencies_eq
+#check Poincare.topology_extraction_derivation_payload_of_dependencies_to_package_eq
 #check Poincare.extinction_extraction_of_dependencies_eq
+#check Poincare.extinction_extraction_of_dependencies_to_package_eq
 #check Poincare.topology_extraction_payload_of_dependencies_to_statement_eq
 #check Poincare.topology_extraction_statement_payload_of_dependencies_to_statement_eq
 #check Poincare.topology_derivation_statement_payload_of_dependencies_to_statement_eq
@@ -7055,7 +7063,7 @@ topology_package_payload_count=$(
   rg -c 'topology_extraction_payload_of_topology_package' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$topology_package_payload_count" != "2" ]; then
+if [ "$topology_package_payload_count" != "3" ]; then
   echo "FAIL: dependency topology projections should consume the package extraction payload"
   rg -n 'topology_extraction_payload_of_topology_package' \
     Poincare/DependencyProjections.lean || true
@@ -7066,7 +7074,7 @@ topology_package_derivation_payload_count=$(
   rg -c 'topology_extraction_derivation_payload_of_topology_package' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$topology_package_derivation_payload_count" != "2" ]; then
+if [ "$topology_package_derivation_payload_count" != "3" ]; then
   echo "FAIL: dependency topology extraction-derivation projection should consume the package derivation payload"
   rg -n 'topology_extraction_derivation_payload_of_topology_package' \
     Poincare/DependencyProjections.lean || true
@@ -7077,7 +7085,7 @@ topology_package_statement_payload_count=$(
   rg -c 'topology_extraction_statement_payload_of_topology_package' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$topology_package_statement_payload_count" != "4" ]; then
+if [ "$topology_package_statement_payload_count" != "5" ]; then
   echo "FAIL: dependency topology projections should consume the package extraction statement payload only through dependency payload routes"
   rg -n 'topology_extraction_statement_payload_of_topology_package' \
     Poincare/DependencyProjections.lean || true
@@ -7136,7 +7144,7 @@ topology_package_statement_contract_count=$(
   rg -c '\bextinction_topology_extraction_statement_of_topology_package\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$topology_package_statement_contract_count" != "2" ]; then
+if [ "$topology_package_statement_contract_count" != "4" ]; then
   echo "FAIL: dependency topology equality contracts should pin the package extraction statement route"
   rg -n '\bextinction_topology_extraction_statement_of_topology_package\b' \
     Poincare/DependencyProjections.lean || true
@@ -7147,7 +7155,7 @@ topology_derivation_payload_contract_count=$(
   rg -c '\btopology_derivation_statement_payload_of_extraction_statement\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$topology_derivation_payload_contract_count" != "3" ]; then
+if [ "$topology_derivation_payload_contract_count" != "4" ]; then
   echo "FAIL: dependency topology equality contracts should pin the derivation statement route"
   rg -n '\btopology_derivation_statement_payload_of_extraction_statement\b' \
     Poincare/DependencyProjections.lean || true
@@ -7388,7 +7396,7 @@ topology_extraction_derivation_payload_count=$(
   rg -c '\btopology_extraction_derivation_payload_of_dependencies\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$topology_extraction_derivation_payload_count" != "11" ]; then
+if [ "$topology_extraction_derivation_payload_count" != "12" ]; then
   echo "FAIL: extraction-derivation assembly-input payload and statement-route contracts should consume the topology extraction-derivation payload"
   rg -n '\btopology_extraction_derivation_payload_of_dependencies\b' \
     Poincare/DependencyProjections.lean || true
@@ -7399,7 +7407,7 @@ projection_direct_extraction_count=$(
   rg -c '\bextinction_extraction_of_dependencies dependencies\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_direct_extraction_count" != "4" ]; then
+if [ "$projection_direct_extraction_count" != "5" ]; then
   echo "FAIL: topology extraction projection input should be centralized in the projection assembly-input payload or explicit statement-route contract"
   rg -n '\bextinction_extraction_of_dependencies dependencies\b' \
     Poincare/DependencyProjections.lean || true
