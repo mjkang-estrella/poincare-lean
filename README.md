@@ -1189,8 +1189,8 @@ The current artifact is intentionally conservative:
   including the converted remaining-dependency package stored by each aggregate
   dependency route.
   Their certificate constructors now also have canonical/project payload,
-  target, criterion, aggregate-dependency full payload, canonical topological
-  statement, and full
+  target, criterion, aggregate-dependency full payload, project-statement full
+  payload, canonical topological statement, and full
   canonical-statement artifact payload at both the remaining-dependency and
   aggregate proof-dependency payload surfaces
   projection-after-constructor contracts back to the named raw, certified,
