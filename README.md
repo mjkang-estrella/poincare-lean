@@ -104,6 +104,10 @@ The current artifact is intentionally conservative:
   completion certificate constructors now expose the same dependency, canonical
   statement, canonical target, criterion, project-payload, canonical-payload, and
   target-statement projection round-trips at both dependency-package surfaces.
+  The same non-packaged reverse route now has explicit certificate payload
+  projections, payload constructors, iff contracts, projection-after-constructor
+  round-trips, constructor reconstruction contracts, and an aggregate/remaining
+  payload equivalence.
   The certificate layer also exposes a literal reserved-name payload that
   records the canonical statement alongside the remaining dependency package,
   canonical target, and completion criterion, plus the same payload shape with
