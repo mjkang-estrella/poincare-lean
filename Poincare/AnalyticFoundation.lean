@@ -609,6 +609,95 @@ def AnalyticFoundationDerivationStatement
       (curvature_data_of_ricci_flow_data flow)
 
 /--
+The fixed-flow analytic derivation statement is exactly the listed connection,
+curvature, DeTurck, short-time, continuation, regularity, evolution,
+Ricci-identification, and Ricci-flow equation witness stack.
+-/
+theorem analyticFoundationDerivationStatement_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    AnalyticFoundationDerivationStatement flow =
+      (∃ _leviCivitaExistence :
+        HasLeviCivitaConnectionExistence (metric_of_ricci_flow_data flow),
+      ∃ _leviCivitaUniqueness :
+        HasLeviCivitaConnectionUniqueness (metric_of_ricci_flow_data flow),
+      ∃ _leviCivitaTorsionFree :
+        HasLeviCivitaTorsionFreeProperty (metric_of_ricci_flow_data flow),
+      ∃ _leviCivitaMetricCompatibility :
+        HasLeviCivitaMetricCompatibility (metric_of_ricci_flow_data flow),
+      ∃ _leviCivita :
+        HasLeviCivitaConnectionTheory (metric_of_ricci_flow_data flow),
+      ∃ _riemannCurvatureConstruction :
+        HasRiemannCurvatureTensorConstruction (metric_of_ricci_flow_data flow),
+      ∃ _riemannCurvatureSymmetries :
+        HasRiemannCurvatureTensorSymmetries (metric_of_ricci_flow_data flow),
+      ∃ _firstBianchi : HasFirstBianchiIdentity (metric_of_ricci_flow_data flow),
+      ∃ _secondBianchi :
+        HasSecondBianchiIdentity (metric_of_ricci_flow_data flow),
+      ∃ _riemannCurvature :
+        HasRiemannCurvatureTensorTheory (metric_of_ricci_flow_data flow),
+      ∃ _ricciContractionFormula :
+        HasRicciTensorContractionFormula
+          (curvature_data_of_ricci_flow_data flow),
+      ∃ _scalarCurvatureContraction :
+        HasScalarCurvatureContractionFormula
+          (curvature_data_of_ricci_flow_data flow),
+      ∃ _ricciContraction :
+        HasRicciContractionTheory (curvature_data_of_ricci_flow_data flow),
+      ∃ _metricRegularity :
+        HasTimeDependentMetricRegularity (metric_of_ricci_flow_data flow),
+      ∃ _metricTimeDerivative :
+        HasMetricTimeDerivativeTheory (metric_of_ricci_flow_data flow),
+      ∃ _scalarCurvature :
+        HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow),
+      ∃ _equationDerivation : HasRicciFlowEquationDerivation flow,
+      ∃ _initialMetricCompatibility : HasInitialMetricCompatibility flow,
+      ∃ _deturckGauge : HasDeTurckGaugeFixing flow,
+      ∃ _deturckBackgroundMetric :
+        HasDeTurckBackgroundMetricCompatibility flow,
+      ∃ _deturckVectorField : HasDeTurckVectorFieldConstruction flow,
+      ∃ _deturckEquation : HasDeTurckEquationDerivation flow,
+      ∃ _deturckLinearization : HasRicciDeTurckLinearization flow,
+      ∃ _strictParabolicDeturck : HasStrictlyParabolicDeTurckSystem flow,
+      ∃ _parabolicLinearTheory : HasParabolicLinearTheory flow,
+      ∃ _parabolicFixedPoint : HasParabolicFixedPointArgument flow,
+      ∃ _deturckShortTime : HasDeTurckShortTimeExistence flow,
+      ∃ _shortTimeRegularityBootstrap : HasShortTimeRegularityBootstrap flow,
+      ∃ _deturckDiffeomorphismODE : HasDeTurckDiffeomorphismODE flow,
+      ∃ _deturckPullbackEquationIdentity :
+        HasDeTurckPullbackEquationIdentity flow,
+      ∃ _deturckPullback : HasDeTurckPullbackToRicciFlow flow,
+      ∃ _shortTimeExistence : HasShortTimeRicciFlowSolution flow,
+      ∃ _maximalTimeInterval : HasRicciFlowMaximalTimeInterval flow,
+      ∃ _continuationCriterion : HasRicciFlowContinuationCriterion flow,
+      ∃ _curvatureBlowUpCriterion :
+        HasCurvatureBlowUpContinuationCriterion flow,
+      ∃ _maximalSolutionExtension : HasMaximalSolutionExtension flow,
+      ∃ _parabolicSchauder : HasParabolicSchauderEstimates flow,
+      ∃ _parabolicRegularity : HasRicciFlowParabolicRegularity flow,
+      ∃ _shiDerivativeEstimates : HasShiDerivativeEstimates flow,
+      ∃ _curvatureDerivativeBootstrap : HasCurvatureDerivativeBootstrap flow,
+      ∃ _maximumPrinciple : HasHamiltonMaximumPrinciple flow,
+      ∃ _uniquenessTheory : HasRicciFlowUniquenessTheory flow,
+      ∃ _metricEvolution : HasMetricEvolutionEquation flow,
+      ∃ _ricciTensorEvolution : HasRicciTensorEvolutionEquation flow,
+      ∃ _scalarCurvatureEvolution : HasScalarCurvatureEvolutionEquation flow,
+      ∃ _curvatureNormEvolution : HasCurvatureNormEvolutionInequality flow,
+      ∃ _curvatureEvolution : HasCurvatureEvolutionEquations flow,
+      ∃ _ricciIdentification :
+        IsRicciTensorOf
+          (metric_of_ricci_flow_data flow)
+          (ricci_tensor_field_of_curvature_data
+            (curvature_data_of_ricci_flow_data flow)),
+        SatisfiesRicciFlowEquation
+          (metric_of_ricci_flow_data flow)
+          (curvature_data_of_ricci_flow_data flow)) :=
+  rfl
+
+/--
 The theorem-shaped analytic foundation statement supplied by a completed
 analytic package.
 -/

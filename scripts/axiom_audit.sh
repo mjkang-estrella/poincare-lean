@@ -726,6 +726,7 @@ import Poincare
 #print axioms Poincare.equation_evidence_of_analytic_foundation_package
 #print axioms Poincare.equation_evidence_of_analytic_foundation_package_eq
 #print axioms Poincare.AnalyticFoundationDerivationStatement
+#print axioms Poincare.analyticFoundationDerivationStatement_eq
 #print axioms Poincare.RicciFlowAnalyticFoundationStatement
 #print axioms Poincare.ricciFlowAnalyticFoundationStatement_eq
 #print axioms Poincare.analytic_foundation_derivation_statement_of_components

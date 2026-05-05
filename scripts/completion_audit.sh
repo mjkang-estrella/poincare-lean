@@ -363,6 +363,8 @@ check_decl "analytic foundation package is declared" \
   '^structure RicciFlowAnalyticFoundationPackage\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation fixed derivation statement is declared" \
   '^def AnalyticFoundationDerivationStatement\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation fixed derivation statement equality contract is declared" \
+  '^theorem analyticFoundationDerivationStatement_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation sub-obligations payload alias is declared" \
   '^abbrev AnalyticFoundationSubobligationsPayload\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation theorem-shaped statement is declared" \
