@@ -7221,6 +7221,23 @@ theorem poincare_target_payload_of_dependency_projections_to_topology_statement_
   apply Subsingleton.elim
 
 /--
+The dependency projection target payload also factors through the final
+extractor selected by the stored topology package.
+-/
+theorem poincare_target_payload_of_dependency_projections_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_target_payload_of_dependency_projections dependencies =
+      (by
+        let finiteExtinction := finite_extinction_of_dependencies dependencies
+        let extraction :=
+          extinction_implies_sphere_of_topology_package dependencies.topology
+        rcases poincare_payload_of_extinction_and_extraction
+            finiteExtinction extraction with
+          ⟨target, criterion⟩
+        exact ⟨finiteExtinction, extraction, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
 The projection route exposes the smoothability/surgery package inputs, a
 certified final extractor, the target statement, and the completion criterion
 through the extraction-derivation assembly route.
@@ -7277,6 +7294,26 @@ theorem poincare_target_payload_of_extraction_derivation_dependency_projections_
       (by
         rcases topology_extraction_derivation_payload_of_dependencies
             dependencies with
+          ⟨extractSphere, derivation⟩
+        rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation with
+          ⟨target, criterion⟩
+        exact ⟨finite_extinction_of_dependencies dependencies,
+          extractSphere, derivation, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The certified dependency projection target payload also factors through the
+extraction/derivation payload of the stored topology package.
+-/
+theorem poincare_target_payload_of_extraction_derivation_dependency_projections_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_target_payload_of_extraction_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
           ⟨extractSphere, derivation⟩
         rcases poincare_payload_of_finite_extinction_and_extraction_derivation
             (finite_extinction_of_dependencies dependencies)
@@ -7361,6 +7398,28 @@ theorem poincare_full_assembly_payload_of_dependency_projections_to_topology_sta
   apply Subsingleton.elim
 
 /--
+The dependency projection full-assembly payload factors through the final
+extractor selected by the stored topology package.
+-/
+theorem poincare_full_assembly_payload_of_dependency_projections_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_full_assembly_payload_of_dependency_projections dependencies =
+      (by
+        let finiteExtinction := finite_extinction_of_dependencies dependencies
+        let extraction :=
+          extinction_implies_sphere_of_topology_package dependencies.topology
+        let target :=
+          poincare_statement_of_extinction_and_extraction
+            finiteExtinction extraction
+        exact ⟨smoothability_package_of_dependencies dependencies,
+          surgery_packages_of_dependencies dependencies,
+          dependencies.topology,
+          finiteExtinction,
+          extraction,
+          target⟩) := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies the explicit smoothability/surgery
 packages, a certified final extractor, and the target statement through the
 extraction-derivation projection route.
@@ -7417,6 +7476,27 @@ theorem poincare_full_assembly_payload_of_extraction_derivation_dependency_proje
       (by
         rcases topology_extraction_derivation_payload_of_dependencies
             dependencies with
+          ⟨extractSphere, derivation⟩
+        let target :=
+          poincare_statement_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation
+        exact ⟨smoothability_package_of_dependencies dependencies,
+          surgery_packages_of_dependencies dependencies,
+          extractSphere, derivation, target⟩) := by
+  apply Subsingleton.elim
+
+/--
+The certified dependency projection full-assembly payload factors through the
+extraction/derivation payload of the stored topology package.
+-/
+theorem poincare_full_assembly_payload_of_extraction_derivation_dependency_projections_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_full_assembly_payload_of_extraction_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
           ⟨extractSphere, derivation⟩
         let target :=
           poincare_statement_of_finite_extinction_and_extraction_derivation
