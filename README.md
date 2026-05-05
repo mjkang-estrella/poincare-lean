@@ -314,7 +314,9 @@ The current artifact is intentionally conservative:
   `finite_extinction_statement_payload_of_dependencies`, which packages the
   direct statement, the full sub-obligation statement, the rebuilt statement,
   the derivation certificate, and the extinction witness by destructuring the
-  package-level statement payload; the width/full
+  package-level statement payload; equality contracts pin both the
+  surgery-package-enriched payload and the simplified dependency payload to
+  those named destructuring routes; the width/full
   statement projections,
   derivation stack, full sub-obligation projection, statement projections,
   and final finite-extinction theorem destructure those payloads. The

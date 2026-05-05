@@ -2155,6 +2155,45 @@ theorem finite_extinction_statement_payload_with_surgery_package_of_dependencies
     rfl⟩
 
 /--
+The dependency-level surgery-package finite-extinction payload is selected from
+the named surgery package payload and the package-level finite-extinction
+projections.
+-/
+theorem finite_extinction_statement_payload_with_surgery_package_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    finite_extinction_statement_payload_with_surgery_package_of_dependencies
+      dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases surgery_package_payload_of_dependencies dependencies M with
+          ⟨n, surgeryPackage, _analyticPackage, _analyticPackage_eq, _flow,
+            _flow_eq, _constructionPackage, _constructionPackage_heq,
+            _controlPackage, _controlPackage_heq⟩
+        let flow := ricci_flow_data_of_surgery_package surgeryPackage
+        let surgery := ricci_flow_with_surgery_of_surgery_package surgeryPackage
+        let control := perelman_singularity_control_of_surgery_package
+          surgeryPackage
+        let packageStatement :=
+          finite_extinction_statement_of_surgery_package surgeryPackage
+        let subobligationsStatement :=
+          finite_extinction_subobligations_statement_of_surgery_package
+            surgeryPackage
+        let viaSubobligationsStatement :=
+          finite_extinction_statement_of_subobligations_statement
+            subobligationsStatement
+        let derivation :=
+          finite_extinction_derivation_of_subobligations_statement
+            subobligationsStatement
+        let finiteExtinction :=
+          finite_extinction_of_subobligations_statement
+            subobligationsStatement
+        exact ⟨n, surgeryPackage, flow, rfl, surgery, rfl, control, HEq.rfl,
+          packageStatement, rfl, subobligationsStatement, HEq.rfl,
+          viaSubobligationsStatement, rfl, derivation, rfl, finiteExtinction,
+          rfl⟩) := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package exposes the fixed finite-extinction payload:
 the package-level theorem-shaped statement, the full sub-obligation statement,
 the statement rebuilt through that sub-obligation route, the derivation
@@ -2188,6 +2227,29 @@ theorem finite_extinction_statement_payload_of_dependencies
   exact ⟨n, flow, surgery, control, packageStatement,
     subobligationsStatement, viaSubobligationsStatement, derivation,
     finiteExtinction⟩
+
+/--
+The dependency-level finite-extinction payload is selected from the named
+surgery-package payload by dropping the package and equality witnesses.
+-/
+theorem finite_extinction_statement_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    finite_extinction_statement_payload_of_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            finite_extinction_statement_payload_with_surgery_package_of_dependencies
+              dependencies M with
+          ⟨n, _surgeryPackage, flow, _flow_eq, surgery, _surgery_eq,
+            control, _control_heq, packageStatement, _packageStatement_eq,
+            subobligationsStatement, _subobligationsStatement_heq,
+            viaSubobligationsStatement, _viaSubobligationsStatement_eq,
+            derivation, _derivation_eq, finiteExtinction,
+            _finiteExtinction_eq⟩
+        exact ⟨n, flow, surgery, control, packageStatement,
+          subobligationsStatement, viaSubobligationsStatement, derivation,
+          finiteExtinction⟩) := by
+  apply Subsingleton.elim
 
 /--
 A completed dependency package supplies the full local surgery derivation stack

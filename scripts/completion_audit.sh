@@ -3588,8 +3588,12 @@ check_decl "dependency finite-extinction sub-obligations statement equality cont
   '^theorem finite_extinction_subobligations_statements_of_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency finite-extinction statement payload theorem is declared" \
   '^theorem finite_extinction_statement_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency finite-extinction statement payload equality contract is declared" \
+  '^theorem finite_extinction_statement_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency finite-extinction package-routed statement payload theorem is declared" \
   '^theorem finite_extinction_statement_payload_with_surgery_package_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency finite-extinction package-routed statement payload equality contract is declared" \
+  '^theorem finite_extinction_statement_payload_with_surgery_package_of_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency finite-extinction derivation stack projection theorem is declared" \
   '^theorem finite_extinction_derivation_stack_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency finite-extinction derivation stack equality contract is declared" \
@@ -8012,7 +8016,9 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_subobligations_statements_of_dependencies
 #check Poincare.finite_extinction_subobligations_statements_of_dependencies_eq
 #check Poincare.finite_extinction_statement_payload_with_surgery_package_of_dependencies
+#check Poincare.finite_extinction_statement_payload_with_surgery_package_of_dependencies_eq
 #check Poincare.finite_extinction_statement_payload_of_dependencies
+#check Poincare.finite_extinction_statement_payload_of_dependencies_eq
 #check Poincare.finite_extinction_statement_payload_of_surgery_package
 #check Poincare.finite_extinction_derivation_stack_of_dependencies
 #check Poincare.finite_extinction_derivation_stack_of_dependencies_eq
@@ -8238,6 +8244,7 @@ open scoped Manifold ContDiff
 #check Poincare.smoothability_subobligations_of_dependencies
 #check Poincare.smoothability_subobligations_of_dependencies_eq
 #check Poincare.finite_extinction_statement_payload_of_dependencies
+#check Poincare.finite_extinction_statement_payload_of_dependencies_eq
 #check Poincare.finite_extinction_statements_of_dependencies
 #check Poincare.finite_extinction_statements_via_subobligations_of_dependencies
 #check Poincare.poincare_assembly_inputs_payload_of_aggregate_dependencies
@@ -10085,7 +10092,9 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_subobligations_statements_of_dependencies
 #check Poincare.finite_extinction_subobligations_statements_of_dependencies_eq
 #check Poincare.finite_extinction_statement_payload_with_surgery_package_of_dependencies
+#check Poincare.finite_extinction_statement_payload_with_surgery_package_of_dependencies_eq
 #check Poincare.finite_extinction_statement_payload_of_dependencies
+#check Poincare.finite_extinction_statement_payload_of_dependencies_eq
 #check Poincare.finite_extinction_statement_payload_of_surgery_package
 #check Poincare.finite_extinction_derivation_stack_of_dependencies
 #check Poincare.finite_extinction_derivation_stack_of_dependencies_eq
@@ -10310,6 +10319,7 @@ open scoped Manifold ContDiff
 #check Poincare.smoothability_subobligations_of_dependencies
 #check Poincare.smoothability_subobligations_of_dependencies_eq
 #check Poincare.finite_extinction_statement_payload_of_dependencies
+#check Poincare.finite_extinction_statement_payload_of_dependencies_eq
 #check Poincare.finite_extinction_statements_of_dependencies
 #check Poincare.finite_extinction_statements_via_subobligations_of_dependencies
 
