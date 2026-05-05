@@ -1298,7 +1298,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   `completion_certificate_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement`,
   so a proof-bearing smooth statement can use the dependency package's own `C∞`
   smoothability output to reconstruct the checked completion certificate at both
-  dependency package surfaces. The standalone smoothability route now also
+  dependency package surfaces. Those smooth and packaged smooth certificate
+  constructors now also have dependency projection round-trip contracts at both
+  the remaining-dependency and aggregate-dependency surfaces. The standalone
+  smoothability route now also
   records `smoothability_package_smooth_statement_completion_payload`,
   `poincare_completion_payload_of_smoothability_package_and_smooth_statement`,
   `canonical_completion_payload_of_smoothability_package_and_smooth_statement`,
