@@ -7251,6 +7251,109 @@ def FiniteExtinctionWidthSubobligationsStatement
       flow surgery control widthTheory widthEvolution surgeryDiscardControl
 
 /--
+The fixed-flow finite-extinction width sub-obligation statement is exactly the
+listed sweepout, min-max width, width evolution, surgery comparison,
+discard-control, and component-topology witness stack.
+-/
+theorem finiteExtinctionWidthSubobligationsStatement_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow) :
+    FiniteExtinctionWidthSubobligationsStatement flow surgery control =
+      (∃ _finiteFundamentalGroup :
+        HasFiniteExtinctionFundamentalGroupInput M,
+      ∃ sweepout :
+        HasFiniteExtinctionSweepoutExistence M _finiteFundamentalGroup,
+      ∃ _sweepoutParameterSpace :
+        HasFiniteExtinctionSweepoutParameterSpace M _finiteFundamentalGroup,
+      ∃ _sweepoutContinuity :
+        HasFiniteExtinctionSweepoutContinuity
+          M _finiteFundamentalGroup sweepout,
+      ∃ _sweepoutAreaBound :
+        HasFiniteExtinctionSweepoutAreaBound
+          M _finiteFundamentalGroup sweepout,
+      ∃ _sweepoutNontriviality :
+        HasFiniteExtinctionSweepoutNontriviality
+          M _finiteFundamentalGroup sweepout,
+      ∃ _areaFunctional :
+        HasFiniteExtinctionAreaFunctionalSetup
+          flow surgery control _finiteFundamentalGroup sweepout,
+      ∃ widthDefinition :
+        HasFiniteExtinctionMinMaxWidthDefinition
+          flow surgery control _finiteFundamentalGroup sweepout,
+      ∃ _widthCompactness :
+        HasFiniteExtinctionWidthCompactness
+          flow surgery control _finiteFundamentalGroup sweepout widthDefinition,
+      ∃ _widthLowerSemicontinuity :
+        HasFiniteExtinctionWidthLowerSemicontinuity
+          flow surgery control _finiteFundamentalGroup sweepout widthDefinition,
+      ∃ _minimizingSequence :
+        HasFiniteExtinctionMinimizingSequence
+          flow surgery control _finiteFundamentalGroup sweepout widthDefinition,
+      ∃ _pullTightArgument :
+        HasFiniteExtinctionPullTightArgument
+          flow surgery control _finiteFundamentalGroup sweepout widthDefinition,
+      ∃ _minMaxStationarity :
+        HasFiniteExtinctionMinMaxStationarity
+          flow surgery control _finiteFundamentalGroup sweepout widthDefinition,
+      ∃ _minSurfaceRegularity :
+        HasFiniteExtinctionMinSurfaceRegularity
+          flow surgery control _finiteFundamentalGroup sweepout widthDefinition,
+      ∃ _positiveWidth :
+        HasFiniteExtinctionPositiveWidth
+          flow surgery control _finiteFundamentalGroup sweepout widthDefinition,
+      ∃ widthTheory : HasFiniteExtinctionWidthTheory flow surgery control,
+      ∃ _firstVariationFormula :
+        HasFiniteExtinctionFirstVariationFormula
+          flow surgery control widthTheory,
+      ∃ _secondVariationInequality :
+        HasFiniteExtinctionSecondVariationInequality
+          flow surgery control widthTheory,
+      ∃ _gaussBonnetEstimate :
+        HasFiniteExtinctionGaussBonnetEstimate
+          flow surgery control widthTheory,
+      ∃ _scalarCurvatureWidthBound :
+        HasFiniteExtinctionScalarCurvatureWidthBound
+          flow surgery control widthTheory,
+      ∃ widthEvolution :
+        HasFiniteExtinctionWidthEvolution flow surgery control widthTheory,
+      ∃ _widthDifferentialInequality :
+        HasFiniteExtinctionWidthDifferentialInequality
+          flow surgery control widthTheory,
+      ∃ _surgeryMetricComparison :
+        HasFiniteExtinctionSurgeryMetricComparison
+          flow surgery control widthTheory widthEvolution,
+      ∃ _surgeryWidthComparisonMap :
+        HasFiniteExtinctionSurgeryWidthComparisonMap
+          flow surgery control widthTheory widthEvolution,
+      ∃ _surgeryWidthDrop :
+        HasFiniteExtinctionSurgeryWidthDrop
+          flow surgery control widthTheory widthEvolution,
+      ∃ surgeryDiscardControl :
+        HasFiniteExtinctionSurgeryDiscardControl
+          flow surgery control widthTheory widthEvolution,
+      ∃ _discardedComponentWidthNeutrality :
+        HasFiniteExtinctionDiscardedComponentWidthNeutrality
+          flow surgery control widthTheory widthEvolution surgeryDiscardControl,
+      ∃ _discardedComponentSweepoutTriviality :
+        HasFiniteExtinctionDiscardedComponentSweepoutTriviality
+          flow surgery control widthTheory widthEvolution surgeryDiscardControl,
+      ∃ _discardedComponentClassification :
+        HasFiniteExtinctionDiscardedComponentClassification
+          flow surgery control widthTheory widthEvolution surgeryDiscardControl,
+      ∃ _survivingComponentTracking :
+        HasFiniteExtinctionSurvivingComponentTracking
+          flow surgery control widthTheory widthEvolution surgeryDiscardControl,
+        HasFiniteExtinctionComponentTopology
+          flow surgery control widthTheory widthEvolution
+          surgeryDiscardControl) :=
+  rfl
+
+/--
 The fixed-flow finite-extinction full sub-obligation statement: the complete
 width, curvature, volume-decay, derivation, extinction, and conclusion
 certificate stack.
