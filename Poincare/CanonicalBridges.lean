@@ -8044,4 +8044,154 @@ theorem target_statement_of_completion_certificate_of_poincareProofDependencies_
         dependencies h := by
   apply Subsingleton.elim
 
+/--
+Projecting the canonical topological statement from the route completion
+certificates returns the named route statement endpoint.
+-/
+theorem canonical_three_sphere_statement_of_completion_certificate_of_remaining_dependency_component_requirements_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_component_requirements
+        dependencies) =
+      canonical_three_sphere_statement_of_remaining_dependency_component_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_three_sphere_statement_of_completion_certificate_of_remaining_dependency_package_layer_requirements_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_package_layer_requirements
+        dependencies) =
+      canonical_three_sphere_statement_of_remaining_dependency_package_layer_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_three_sphere_statement_of_completion_certificate_of_remaining_dependency_milestone_requirements_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_milestone_requirements
+        dependencies) =
+      canonical_three_sphere_statement_of_remaining_dependency_milestone_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_three_sphere_statement_of_completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements
+        dependencies) =
+      canonical_three_sphere_statement_of_remaining_dependency_component_extraction_derivation_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_three_sphere_statement_of_completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements
+        dependencies) =
+      canonical_three_sphere_statement_of_remaining_dependency_package_layer_extraction_derivation_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_three_sphere_statement_of_completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements
+        dependencies) =
+      canonical_three_sphere_statement_of_remaining_dependency_milestone_extraction_derivation_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_three_sphere_statement_of_completion_certificate_of_aggregate_extraction_derivation_dependencies_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_aggregate_extraction_derivation_dependencies
+        dependencies) =
+      canonical_three_sphere_statement_of_remaining_dependency_aggregate_extraction_derivation
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_three_sphere_statement_of_completion_certificate_of_extraction_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_extraction_derivation_dependency_projections
+        dependencies) =
+      canonical_three_sphere_statement_of_remaining_dependency_extraction_derivation_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_three_sphere_statement_of_completion_certificate_of_poincareProofDependencies_component_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_component_requirements
+        dependencies) =
+      canonical_three_sphere_statement_of_poincareProofDependencies_component_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_three_sphere_statement_of_completion_certificate_of_poincareProofDependencies_package_layer_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_package_layer_requirements
+        dependencies) =
+      canonical_three_sphere_statement_of_poincareProofDependencies_package_layer_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_three_sphere_statement_of_completion_certificate_of_poincareProofDependencies_milestone_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_milestone_requirements
+        dependencies) =
+      canonical_three_sphere_statement_of_poincareProofDependencies_milestone_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_three_sphere_statement_of_completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements
+        dependencies) =
+      canonical_three_sphere_statement_of_poincareProofDependencies_component_extraction_derivation_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_three_sphere_statement_of_completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+        dependencies) =
+      canonical_three_sphere_statement_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_three_sphere_statement_of_completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+        dependencies) =
+      canonical_three_sphere_statement_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_three_sphere_statement_of_completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
+        dependencies) =
+      canonical_three_sphere_statement_of_remaining_dependency_aggregate_extraction_derivation
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem canonical_three_sphere_statement_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+        dependencies) =
+      canonical_three_sphere_statement_of_remaining_dependency_extraction_derivation_projections
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
 end Poincare
