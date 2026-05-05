@@ -1952,6 +1952,8 @@ check_decl "Perelman fixed singularity-control statement is declared" \
   '^def PerelmanSingularityControlStatement\b' Poincare/Surgery.lean
 check_decl "Perelman statement component assembly theorem is declared" \
   '^theorem perelman_singularity_control_statement_of_components\b' Poincare/Surgery.lean
+check_decl "Perelman statement component assembly equality contract is declared" \
+  '^theorem perelman_singularity_control_statement_of_components_eq\b' Poincare/Surgery.lean
 check_decl "Perelman package statement projection is declared" \
   '^theorem perelman_singularity_control_statement_of_package\b' Poincare/Surgery.lean
 check_decl "Perelman package statement projection equality contract is declared" \
@@ -9359,6 +9361,7 @@ open scoped Manifold ContDiff
 #check Poincare.singularity_control_of_perelman_package_eq
 #check Poincare.PerelmanSingularityControlStatement
 #check Poincare.perelman_singularity_control_statement_of_components
+#check Poincare.perelman_singularity_control_statement_of_components_eq
 #check Poincare.perelman_singularity_control_statement_of_package
 #check Poincare.perelman_singularity_control_statement_of_package_eq
 #check Poincare.perelman_singularity_control_of_statement

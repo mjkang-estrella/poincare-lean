@@ -1778,6 +1778,144 @@ theorem perelman_singularity_control_statement_of_components
     control⟩
 
 /--
+The fixed-flow Perelman singularity-control component assembler is exactly the
+tuple of entropy, conjugate-heat, reduced-distance, reduced-volume,
+noncollapsing, kappa-solution, canonical-neighborhood, singularity-model, and
+aggregate control witnesses.
+-/
+theorem perelman_singularity_control_statement_of_components_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (fFunctionalSetup : HasPerelmanFFunctionalSetup flow)
+    (entropyNormalization : HasPerelmanEntropyNormalization flow)
+    (entropyMinimizerExistence : HasPerelmanEntropyMinimizerExistence flow)
+    (entropyLogSobolevControl : HasPerelmanEntropyLogSobolevControl flow)
+    (conjugateHeatEquation : HasConjugateHeatEquationTheory flow)
+    (adjointHeatKernel : HasAdjointHeatKernelConstruction flow)
+    (conjugateHeatKernelEstimates :
+      HasPerelmanConjugateHeatKernelEstimates flow)
+    (wFunctionalSetup : HasPerelmanWFunctionalSetup flow)
+    (entropyGradientFormula : HasPerelmanEntropyGradientFormula flow)
+    (entropyFirstVariation : HasPerelmanEntropyFirstVariation flow)
+    (entropyMonotonicity : HasPerelmanEntropyMonotonicity flow)
+    (entropyLowerBoundPropagation :
+      HasPerelmanEntropyLowerBoundPropagation flow)
+    (entropyFunctional : HasPerelmanEntropyFunctional flow)
+    (reducedLengthFirstVariation :
+      HasPerelmanReducedLengthFirstVariation flow)
+    (reducedDistanceExistence : HasPerelmanReducedDistanceExistence flow)
+    (reducedDistanceDifferentialInequality :
+      HasPerelmanReducedDistanceDifferentialInequality flow)
+    (reducedDistanceEstimates : HasPerelmanReducedDistanceEstimates flow)
+    (reducedDistanceCutLocusControl :
+      HasPerelmanReducedDistanceCutLocusControl flow)
+    (reducedJacobianComparison : HasPerelmanReducedJacobianComparison flow)
+    (reducedDistance : HasPerelmanReducedDistanceTheory flow)
+    (reducedVolumeDefinition : HasPerelmanReducedVolumeDefinition flow)
+    (reducedVolumeDerivativeFormula :
+      HasPerelmanReducedVolumeDerivativeFormula flow)
+    (reducedVolumeRigidity : HasPerelmanReducedVolumeRigidity flow)
+    (reducedVolumePositiveLowerBound :
+      HasPerelmanReducedVolumePositiveLowerBound flow)
+    (reducedVolumeLimitRigidity :
+      HasPerelmanReducedVolumeLimitRigidity flow)
+    (reducedVolumeNonincreasing :
+      HasPerelmanReducedVolumeNonincreasing flow)
+    (kappaNoncollapsingFromReducedVolume :
+      HasPerelmanKappaNoncollapsingFromReducedVolume flow)
+    (noLocalCollapsingContradictionSetup :
+      HasPerelmanNoLocalCollapsingContradictionSetup flow)
+    (collapsedBallBlowup : HasPerelmanCollapsedBallBlowup flow)
+    (volumeRatioContradiction : HasPerelmanVolumeRatioContradiction flow)
+    (noLocalCollapsingVolumeLowerBound :
+      HasNoLocalCollapsingVolumeLowerBound flow)
+    (kappaNoncollapsing : HasPerelmanKappaNoncollapsingQuantification flow)
+    (hamiltonCompactness : HasHamiltonCompactnessTheorem flow)
+    (ancientKappaSolutionLimitExtraction :
+      HasAncientKappaSolutionLimitExtraction flow)
+    (kappaSolutionPointedRescaling : HasKappaSolutionPointedRescaling flow)
+    (kappaSolutionCurvatureNormalization :
+      HasKappaSolutionCurvatureNormalization flow)
+    (kappaSolutionStructure : HasKappaSolutionStructureTheory flow)
+    (kappaSolutionNonnegativeCurvatureOperator :
+      HasKappaSolutionNonnegativeCurvatureOperator flow)
+    (kappaSolutionAsymptoticSoliton :
+      HasKappaSolutionAsymptoticSoliton flow)
+    (ancientKappaSolutionCompactness :
+      HasAncientKappaSolutionCompactness flow)
+    (canonicalNeighborhoodScaleControl :
+      HasCanonicalNeighborhoodScaleControl flow)
+    (canonicalNeighborhoodStability : HasCanonicalNeighborhoodStability flow)
+    (canonicalNeighborhoodPersistenceAcrossScales :
+      HasCanonicalNeighborhoodPersistenceAcrossScales flow)
+    (canonicalNeighborhoodNeckCapDichotomy :
+      HasCanonicalNeighborhoodNeckCapDichotomy flow)
+    (canonicalNeighborhoodClassification :
+      HasCanonicalNeighborhoodClassification flow)
+    (noLocalCollapsing : HasPerelmanNoLocalCollapsing flow)
+    (reducedVolume : HasPerelmanReducedVolumeMonotonicity flow)
+    (canonicalNeighborhood : HasCanonicalNeighborhoodTheorem flow)
+    (singularityModelClassification : HasSingularityModelClassification flow)
+    (singularityModelBlowupClassification :
+      HasSingularityModelBlowupClassification flow)
+    (control : HasPerelmanSingularityControl flow) :
+    perelman_singularity_control_statement_of_components flow
+        fFunctionalSetup entropyNormalization entropyMinimizerExistence
+        entropyLogSobolevControl conjugateHeatEquation adjointHeatKernel
+        conjugateHeatKernelEstimates wFunctionalSetup entropyGradientFormula
+        entropyFirstVariation entropyMonotonicity entropyLowerBoundPropagation
+        entropyFunctional reducedLengthFirstVariation reducedDistanceExistence
+        reducedDistanceDifferentialInequality reducedDistanceEstimates
+        reducedDistanceCutLocusControl reducedJacobianComparison
+        reducedDistance reducedVolumeDefinition reducedVolumeDerivativeFormula
+        reducedVolumeRigidity reducedVolumePositiveLowerBound
+        reducedVolumeLimitRigidity reducedVolumeNonincreasing
+        kappaNoncollapsingFromReducedVolume
+        noLocalCollapsingContradictionSetup collapsedBallBlowup
+        volumeRatioContradiction noLocalCollapsingVolumeLowerBound
+        kappaNoncollapsing hamiltonCompactness
+        ancientKappaSolutionLimitExtraction kappaSolutionPointedRescaling
+        kappaSolutionCurvatureNormalization kappaSolutionStructure
+        kappaSolutionNonnegativeCurvatureOperator kappaSolutionAsymptoticSoliton
+        ancientKappaSolutionCompactness canonicalNeighborhoodScaleControl
+        canonicalNeighborhoodStability
+        canonicalNeighborhoodPersistenceAcrossScales
+        canonicalNeighborhoodNeckCapDichotomy canonicalNeighborhoodClassification
+        noLocalCollapsing reducedVolume canonicalNeighborhood
+        singularityModelClassification singularityModelBlowupClassification
+        control =
+      (by
+        exact ⟨fFunctionalSetup, entropyNormalization,
+          entropyMinimizerExistence, entropyLogSobolevControl,
+          conjugateHeatEquation, adjointHeatKernel,
+          conjugateHeatKernelEstimates, wFunctionalSetup,
+          entropyGradientFormula, entropyFirstVariation, entropyMonotonicity,
+          entropyLowerBoundPropagation, entropyFunctional,
+          reducedLengthFirstVariation, reducedDistanceExistence,
+          reducedDistanceDifferentialInequality, reducedDistanceEstimates,
+          reducedDistanceCutLocusControl, reducedJacobianComparison,
+          reducedDistance, reducedVolumeDefinition,
+          reducedVolumeDerivativeFormula, reducedVolumeRigidity,
+          reducedVolumePositiveLowerBound, reducedVolumeLimitRigidity,
+          reducedVolumeNonincreasing, kappaNoncollapsingFromReducedVolume,
+          noLocalCollapsingContradictionSetup, collapsedBallBlowup,
+          volumeRatioContradiction, noLocalCollapsingVolumeLowerBound,
+          kappaNoncollapsing, hamiltonCompactness,
+          ancientKappaSolutionLimitExtraction, kappaSolutionPointedRescaling,
+          kappaSolutionCurvatureNormalization, kappaSolutionStructure,
+          kappaSolutionNonnegativeCurvatureOperator,
+          kappaSolutionAsymptoticSoliton, ancientKappaSolutionCompactness,
+          canonicalNeighborhoodScaleControl, canonicalNeighborhoodStability,
+          canonicalNeighborhoodPersistenceAcrossScales,
+          canonicalNeighborhoodNeckCapDichotomy,
+          canonicalNeighborhoodClassification, noLocalCollapsing,
+          reducedVolume, canonicalNeighborhood, singularityModelClassification,
+          singularityModelBlowupClassification, control⟩) := by
+  apply Subsingleton.elim
+
+/--
 A completed Perelman package assembles the fixed-flow singularity-control
 statement.
 -/
