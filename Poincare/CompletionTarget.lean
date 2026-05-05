@@ -11709,6 +11709,21 @@ theorem poincare_completion_payload_of_completion_certificate_of_dependency_proj
   apply Subsingleton.elim
 
 /--
+The remaining-dependency projection certificate's project payload is the
+package-selected finite-extinction plus final topology-extraction project
+payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_dependency_projections_to_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_dependency_projections dependencies) =
+      poincare_payload_of_extinction_and_extraction
+        (finite_extinction_of_dependencies dependencies)
+        (extinction_implies_sphere_of_topology_package
+          dependencies.topology) := by
+  apply Subsingleton.elim
+
+/--
 Projecting the project completion payload from the remaining-dependency
 extraction-derivation projection route returns the route payload.
 -/
@@ -11734,6 +11749,26 @@ theorem poincare_completion_payload_of_completion_certificate_of_extraction_deri
       (by
         rcases topology_extraction_derivation_payload_of_dependencies
             dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency extraction-derivation projection certificate's project
+payload is the finite-extinction plus certified extractor/derivation project
+payload selected from the stored topology package.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_extraction_derivation_dependency_projections_to_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_extraction_derivation_dependency_projections
+        dependencies) =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
           ⟨extractSphere, derivation⟩
         exact
           poincare_payload_of_finite_extinction_and_extraction_derivation
@@ -11868,6 +11903,25 @@ theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDe
   apply Subsingleton.elim
 
 /--
+The aggregate projection certificate's project payload is the package-selected
+finite-extinction plus final topology-extraction project payload after
+converting aggregate dependencies.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_projections_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_projections
+        dependencies) =
+      poincare_payload_of_extinction_and_extraction
+        (finite_extinction_of_dependencies
+          (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies))
+        (extinction_implies_sphere_of_topology_package
+          (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies).topology) := by
+  apply Subsingleton.elim
+
+/--
 Projecting the project completion payload from the aggregate
 extraction-derivation projection route returns the converted projection route
 payload.
@@ -11903,6 +11957,29 @@ theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDe
             (finite_extinction_of_dependencies
               (remainingDependencyPackage_iff_poincareProofDependencies.mpr
                 dependencies))
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate extraction-derivation projection certificate's project payload is
+the finite-extinction plus certified extractor/derivation project payload
+selected from the converted topology package.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+        dependencies) =
+      (by
+        let remaining : RemainingDependencyPackage.{u} :=
+          remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies
+        rcases topology_extraction_derivation_payload_of_topology_package
+            remaining.topology with
+          ⟨extractSphere, derivation⟩
+        exact
+          poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies remaining)
             extractSphere derivation) := by
   apply Subsingleton.elim
 
