@@ -279,8 +279,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   checked package projections to the analytic foundation. Its direct package
   projection equalities record the stored analytic foundation, stored flow,
   construction package, Perelman package, finite-extinction witness, and
-  analytic equation-evidence route before the larger finite-extinction spine is
-  consumed. It also projects
+  analytic equation-evidence route, and the surgery-level analytic payload
+  equality records delegation to the stored analytic-foundation package payload
+  before the larger finite-extinction spine is consumed. It also projects
   `analytic_foundation_payload_of_surgery_package`, underlying Ricci-flow data,
   Ricci-flow equation evidence, surgery scale functions, scale
   continuity/separation, cutoff-parameter control, smooth cutoff bump
@@ -782,8 +783,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   topology package, finite-extinction conclusion, and post-extinction
   extraction theorem. It also projects lower-level analytic foundation packages,
   `analytic_foundation_statement_payload_of_dependencies`, which destructures
-  the surgery-level `analytic_foundation_payload_of_surgery_package` and now
-  carries the projected flow directly for downstream projections,
+  the surgery-level `analytic_foundation_payload_of_surgery_package`, whose
+  equality contract pins it to the stored analytic-foundation package payload,
+  and now carries the projected flow directly for downstream projections,
   statement-mediated analytic foundation outputs, Ricci-flow data, Ricci-flow
   equation evidence, the statement-mediated analytic sub-obligation payload,
   the expanded analytic connection/curvature sub-obligation stack, with

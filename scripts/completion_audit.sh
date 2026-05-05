@@ -2231,6 +2231,8 @@ check_decl "surgery package Ricci-flow data equality theorem is declared" \
   '^@\[simp\] theorem ricci_flow_data_of_surgery_package_eq\b' Poincare/Surgery.lean
 check_decl "surgery package analytic-foundation payload theorem is declared" \
   '^theorem analytic_foundation_payload_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "surgery package analytic-foundation payload equality theorem is declared" \
+  '^theorem analytic_foundation_payload_of_surgery_package_eq\b' Poincare/Surgery.lean
 check_decl "surgery package Ricci-flow equation evidence projection is declared" \
   '^theorem equation_evidence_of_surgery_package\b' Poincare/Surgery.lean
 check_decl "surgery package Ricci-flow equation equality theorem is declared" \
@@ -9335,6 +9337,8 @@ open scoped Manifold ContDiff
 #check Poincare.analytic_foundation_of_surgery_package_eq
 #check Poincare.ricci_flow_data_of_surgery_package
 #check Poincare.ricci_flow_data_of_surgery_package_eq
+#check Poincare.analytic_foundation_payload_of_surgery_package
+#check Poincare.analytic_foundation_payload_of_surgery_package_eq
 #check Poincare.equation_evidence_of_surgery_package
 #check Poincare.equation_evidence_of_surgery_package_eq
 #check Poincare.finite_extinction_of_surgery_package_eq
@@ -9405,6 +9409,7 @@ open scoped Manifold ContDiff
 #check Poincare.long_time_surgery_continuation_of_construction_package_eq
 #check Poincare.ricci_flow_with_surgery_of_construction_package_eq
 #check Poincare.analytic_foundation_payload_of_surgery_package
+#check Poincare.analytic_foundation_payload_of_surgery_package_eq
 #check Poincare.surgery_construction_package_of_surgery_package
 #check Poincare.surgery_construction_package_of_surgery_package_eq
 #check Poincare.ricci_flow_with_surgery_construction_statement_of_surgery_package

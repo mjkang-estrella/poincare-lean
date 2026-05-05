@@ -4497,6 +4497,21 @@ theorem analytic_foundation_payload_of_surgery_package
     ⟨statement, derivationStatement, subobligations, equationEvidence⟩
   exact ⟨statement, derivationStatement, subobligations, equationEvidence⟩
 
+/--
+The surgery-level analytic payload bridge delegates exactly to the stored
+analytic-foundation package payload.
+-/
+theorem analytic_foundation_payload_of_surgery_package_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M) :
+    analytic_foundation_payload_of_surgery_package package =
+      analytic_foundation_payload_of_analytic_foundation_package
+        (analytic_foundation_of_surgery_package package) := by
+  apply Subsingleton.elim
+
 /-- A completed surgery package supplies Ricci-flow equation evidence. -/
 theorem equation_evidence_of_surgery_package
     {n : ℕ∞ω}

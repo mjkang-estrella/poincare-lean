@@ -741,6 +741,7 @@ import Poincare
 #print axioms Poincare.analytic_foundation_of_surgery_package_eq
 #print axioms Poincare.ricci_flow_data_of_surgery_package_eq
 #print axioms Poincare.analytic_foundation_payload_of_surgery_package
+#print axioms Poincare.analytic_foundation_payload_of_surgery_package_eq
 #print axioms Poincare.equation_evidence_of_surgery_package
 #print axioms Poincare.equation_evidence_of_surgery_package_eq
 #print axioms Poincare.finite_extinction_of_surgery_package_eq

@@ -486,6 +486,7 @@ open scoped Manifold ContDiff
 #check Poincare.analytic_foundation_of_surgery_package_eq
 #check Poincare.ricci_flow_data_of_surgery_package_eq
 #check Poincare.analytic_foundation_payload_of_surgery_package
+#check Poincare.analytic_foundation_payload_of_surgery_package_eq
 #check Poincare.equation_evidence_of_surgery_package
 #check Poincare.equation_evidence_of_surgery_package_eq
 #check Poincare.finite_extinction_of_surgery_package_eq

@@ -178,9 +178,11 @@ The current artifact is intentionally conservative:
   the analytic foundation package. The direct package projections now include
   equality contracts back to the stored analytic foundation, stored flow,
   construction package, Perelman package, finite-extinction witness, and
-  analytic equation evidence. It also exposes checked package projections for
-  the analytic foundation, `analytic_foundation_payload_of_surgery_package`,
-  underlying Ricci-flow data, Ricci-flow equation evidence, surgery scale
+  analytic equation evidence, and the surgery-level analytic payload bridge is
+  pinned back to the stored analytic-foundation package payload. It also exposes
+  checked package projections for the analytic foundation,
+  `analytic_foundation_payload_of_surgery_package`, underlying Ricci-flow data,
+  Ricci-flow equation evidence, surgery scale
   functions, scale continuity/separation,
   cutoff-parameter control, smooth cutoff bump functions, parameter selection,
   strong delta-neck detection, neck separation, neck parametrization, canonical

@@ -599,6 +599,7 @@ set_option linter.unusedVariables false
 #check Poincare.equation_evidence_of_analytic_foundation_statement
 #check Poincare.equation_evidence_of_analytic_foundation_statement_eq
 #check Poincare.analytic_foundation_payload_of_surgery_package
+#check Poincare.analytic_foundation_payload_of_surgery_package_eq
 
 #check (Poincare.finite_extinction_of_surgery_package :
   ∀ {n : ℕ∞ω}
