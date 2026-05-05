@@ -10800,6 +10800,19 @@ theorem canonical_completion_payload_of_completion_certificate_of_dependency_pro
   apply Subsingleton.elim
 
 /--
+The remaining-dependency projection certificate's canonical payload is the
+finite-extinction plus theorem-shaped topology-extraction canonical payload.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_dependency_projections_to_topology_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_dependency_projections dependencies) =
+      canonical_completion_payload_of_finite_extinction_and_topology_extraction_statement
+        (finite_extinction_of_dependencies dependencies)
+        (topology_extraction_statement_of_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
 Projecting the canonical completion payload from the remaining-dependency
 extraction-derivation projection route returns the route payload.
 -/
@@ -11096,6 +11109,19 @@ theorem poincare_completion_payload_of_completion_certificate_of_dependency_proj
     poincare_completion_payload_of_completion_certificate
       (completion_certificate_of_dependency_projections dependencies) =
       poincare_completion_payload_of_dependency_projections dependencies := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency projection certificate's project payload is the
+finite-extinction plus theorem-shaped topology-extraction project payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_dependency_projections_to_topology_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_dependency_projections dependencies) =
+      poincare_payload_of_finite_extinction_and_topology_extraction_statement
+        (finite_extinction_of_dependencies dependencies)
+        (topology_extraction_statement_of_dependencies dependencies) := by
   apply Subsingleton.elim
 
 /--
@@ -13221,11 +13247,29 @@ theorem target_statement_of_completion_certificate_of_dependency_projections_eq
       canonical_completion_target_of_dependency_projections dependencies := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_dependency_projections_to_topology_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    target_statement_of_completion_certificate
+      (completion_certificate_of_dependency_projections dependencies) =
+      poincare_statement_of_finite_extinction_and_topology_extraction_statement
+        (finite_extinction_of_dependencies dependencies)
+        (topology_extraction_statement_of_dependencies dependencies) := by
+  apply Subsingleton.elim
+
 theorem canonical_completion_target_of_completion_certificate_of_dependency_projections_eq
     (dependencies : RemainingDependencyPackage.{u}) :
     canonical_completion_target_of_completion_certificate
       (completion_certificate_of_dependency_projections dependencies) =
       canonical_completion_target_of_dependency_projections dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_target_of_completion_certificate_of_dependency_projections_to_topology_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_dependency_projections dependencies) =
+      canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+        (finite_extinction_of_dependencies dependencies)
+        (topology_extraction_statement_of_dependencies dependencies) := by
   apply Subsingleton.elim
 
 theorem completion_criterion_of_completion_certificate_of_dependency_projections_eq
@@ -13234,6 +13278,16 @@ theorem completion_criterion_of_completion_certificate_of_dependency_projections
       (completion_certificate_of_dependency_projections dependencies) =
       canonical_completion_criterion_of_dependency_projections
         witness dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_criterion_of_completion_certificate_of_dependency_projections_to_topology_statement_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_dependency_projections dependencies) =
+      canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+        witness
+        (finite_extinction_of_dependencies dependencies)
+        (topology_extraction_statement_of_dependencies dependencies) := by
   apply Subsingleton.elim
 
 theorem target_statement_of_completion_certificate_of_extraction_derivation_dependency_projections_eq

@@ -685,6 +685,8 @@ The current artifact is intentionally conservative:
   `PoincareProofDependencies` certificate view is also pinned directly to the
   finite-extinction plus theorem-shaped topology-extraction route for the
   certificate, canonical/project payloads, target, criterion, and canonical
+  topological statement; the same topology route is pinned for the
+  remaining-dependency certificate payload, target, criterion, and canonical
   topological statement. The certified extraction-derivation projection
   certificate is likewise pinned directly to the finite-extinction plus
   extractor/derivation route at both the remaining-dependency and aggregate
@@ -1252,10 +1254,13 @@ The current artifact is intentionally conservative:
   constructors, with direct finite-extinction plus theorem-shaped
   topology-extraction contracts for the aggregate projection certificate,
   canonical/project payloads, target, criterion, and canonical topological
-  statement. The certified extraction-derivation projection certificate is also
-  pinned directly to the finite-extinction plus extractor/derivation route for
-  its certificate, canonical/project payloads, target, criterion, and canonical
-  topological statement at both remaining-dependency and aggregate surfaces.
+  statement, together with the same direct topology-route contracts for the
+  remaining-dependency projection certificate's payloads, target, criterion,
+  and canonical topological statement. The certified extraction-derivation
+  projection certificate is also pinned directly to the finite-extinction plus
+  extractor/derivation route for its certificate, canonical/project payloads,
+  target, criterion, and canonical topological statement at both
+  remaining-dependency and aggregate surfaces.
   The certificate-layer equality contracts now pin the reserved-name, literal
   payload, canonical payload, target/criterion projection, remaining/aggregate
   dependency, and project-statement routes to their named projections and

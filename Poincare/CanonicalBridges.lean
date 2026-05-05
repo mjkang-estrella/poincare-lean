@@ -9881,6 +9881,16 @@ theorem canonical_three_sphere_statement_of_completion_certificate_of_dependency
         dependencies := by
   apply Subsingleton.elim
 
+theorem canonical_three_sphere_statement_of_completion_certificate_of_dependency_projections_to_topology_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_dependency_projections dependencies) =
+      canonical_three_sphere_statement_of_canonical_completion_target
+        (canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+          (finite_extinction_of_dependencies dependencies)
+          (topology_extraction_statement_of_dependencies dependencies)) := by
+  apply Subsingleton.elim
+
 theorem canonical_three_sphere_statement_of_completion_certificate_of_extraction_derivation_dependency_projections_eq
     (dependencies : RemainingDependencyPackage.{u}) :
     canonical_three_sphere_statement_of_completion_certificate
