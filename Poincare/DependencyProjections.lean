@@ -6816,6 +6816,19 @@ theorem canonical_three_sphere_statement_of_dependency_projections_eq
   apply Subsingleton.elim
 
 /--
+The dependency projection canonical topological statement factors through the
+finite-extinction plus theorem-shaped topology-extraction Poincare statement.
+-/
+theorem canonical_three_sphere_statement_of_dependency_projections_to_topology_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_three_sphere_statement_of_dependency_projections dependencies =
+      canonical_three_sphere_statement_of_poincare_statement
+        (poincare_statement_of_finite_extinction_and_topology_extraction_statement
+          (finite_extinction_of_dependencies dependencies)
+          (topology_extraction_statement_of_dependencies dependencies)) := by
+  apply Subsingleton.elim
+
+/--
 The certified extraction-derivation projection route exposes the canonical
 mathlib-shaped topological 3-sphere statement.
 -/
@@ -6840,6 +6853,26 @@ theorem canonical_three_sphere_statement_of_extraction_derivation_dependency_pro
       canonical_three_sphere_statement_of_poincare_statement
         (poincare_statement_of_extraction_derivation_dependency_projections
           dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The certified extraction-derivation dependency projection canonical topological
+statement factors through the finite-extinction plus extractor/derivation
+Poincare statement.
+-/
+theorem canonical_three_sphere_statement_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_three_sphere_statement_of_extraction_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_three_sphere_statement_of_poincare_statement
+            (poincare_statement_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_of_dependencies dependencies)
+              extractSphere derivation)) := by
   apply Subsingleton.elim
 
 /--

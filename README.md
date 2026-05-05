@@ -673,7 +673,11 @@ The current artifact is intentionally conservative:
   canonical endpoints `canonical_three_sphere_statement_of_dependency_projections`
   and
   `canonical_three_sphere_statement_of_extraction_derivation_dependency_projections`
-  expose those same routes as the mathlib-shaped topological statement.
+  expose those same routes as the mathlib-shaped topological statement, with
+  equality contracts pinning them to the finite-extinction/topology-statement
+  and certified extractor/derivation routes. The remaining-dependency canonical
+  statement endpoints are also pinned to their named canonical targets, including
+  the projection and certified projection target routes.
   It also exposes the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/

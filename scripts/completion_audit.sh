@@ -737,12 +737,24 @@ check_decl "aggregate dependency canonical statement certificate criterion proje
   '^theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency canonical aggregate statement endpoint is declared" \
   '^theorem canonical_three_sphere_statement_of_remaining_dependency_package\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency canonical aggregate statement endpoint equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_package_eq\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency canonical aggregate extraction-derivation statement endpoint is declared" \
   '^theorem canonical_three_sphere_statement_of_remaining_dependency_aggregate_extraction_derivation\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency canonical aggregate extraction-derivation statement endpoint equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_aggregate_extraction_derivation_eq\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency canonical projection statement endpoint is declared" \
   '^theorem canonical_three_sphere_statement_of_remaining_dependency_projections\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency canonical projection statement endpoint equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_projections_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency canonical projection statement topology route contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_projections_to_topology_statement_eq\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency canonical projection extraction-derivation statement endpoint is declared" \
   '^theorem canonical_three_sphere_statement_of_remaining_dependency_extraction_derivation_projections\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency canonical projection extraction-derivation statement endpoint equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_extraction_derivation_projections_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency canonical projection extraction-derivation statement finite-extinction route contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_extraction_derivation_projections_to_finite_extinction_eq\b' Poincare/CanonicalBridges.lean
 check_decl "canonical payload bridge from smooth statement is declared" \
   '^theorem canonical_completion_payload_of_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
 check_decl "canonical target bridge from smooth statement is declared" \
@@ -3899,10 +3911,14 @@ check_decl "projected dependency canonical statement theorem is declared" \
   '^theorem canonical_three_sphere_statement_of_dependency_projections\b' Poincare/DependencyProjections.lean
 check_decl "projected dependency canonical statement equality contract is declared" \
   '^theorem canonical_three_sphere_statement_of_dependency_projections_eq\b' Poincare/DependencyProjections.lean
+check_decl "projected dependency canonical statement topology route contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_dependency_projections_to_topology_statement_eq\b' Poincare/DependencyProjections.lean
 check_decl "projected extraction-derivation canonical statement theorem is declared" \
   '^theorem canonical_three_sphere_statement_of_extraction_derivation_dependency_projections\b' Poincare/DependencyProjections.lean
 check_decl "projected extraction-derivation canonical statement equality contract is declared" \
   '^theorem canonical_three_sphere_statement_of_extraction_derivation_dependency_projections_eq\b' Poincare/DependencyProjections.lean
+check_decl "projected extraction-derivation canonical statement finite-extinction route contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_extraction_derivation_dependency_projections_to_finite_extinction_eq\b' Poincare/DependencyProjections.lean
 check_decl "projected dependency completion criterion theorem is declared" \
   '^theorem completion_criterion_of_dependency_projections\b' Poincare/DependencyProjections.lean
 check_decl "projected dependency completion criterion equality contract is declared" \
@@ -6655,9 +6671,15 @@ open scoped Manifold ContDiff
 #check Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement_eq
 #check Poincare.completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement_eq
 #check Poincare.canonical_three_sphere_statement_of_remaining_dependency_package
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_package_eq
 #check Poincare.canonical_three_sphere_statement_of_remaining_dependency_aggregate_extraction_derivation
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_aggregate_extraction_derivation_eq
 #check Poincare.canonical_three_sphere_statement_of_remaining_dependency_projections
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_projections_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_projections_to_topology_statement_eq
 #check Poincare.canonical_three_sphere_statement_of_remaining_dependency_extraction_derivation_projections
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_extraction_derivation_projections_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_extraction_derivation_projections_to_finite_extinction_eq
 #check Poincare.canonical_completion_payload_of_canonical_smooth_three_sphere_statement
 #check Poincare.canonical_completion_target_of_canonical_smooth_three_sphere_statement
 #check Poincare.canonical_completion_criterion_of_canonical_smooth_three_sphere_statement
@@ -7899,8 +7921,10 @@ open scoped Manifold ContDiff
 #check Poincare.poincare_statement_of_extraction_derivation_dependency_projections_eq
 #check Poincare.canonical_three_sphere_statement_of_dependency_projections
 #check Poincare.canonical_three_sphere_statement_of_dependency_projections_eq
+#check Poincare.canonical_three_sphere_statement_of_dependency_projections_to_topology_statement_eq
 #check Poincare.canonical_three_sphere_statement_of_extraction_derivation_dependency_projections
 #check Poincare.canonical_three_sphere_statement_of_extraction_derivation_dependency_projections_eq
+#check Poincare.canonical_three_sphere_statement_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
 #check Poincare.completion_criterion_of_dependency_projections
 #check Poincare.completion_criterion_of_dependency_projections_eq
 #check Poincare.completion_criterion_of_extraction_derivation_dependency_projections
@@ -9963,7 +9987,9 @@ open scoped Manifold ContDiff
 #check Poincare.poincare_statement_of_dependency_projections_eq
 #check Poincare.poincare_statement_of_extraction_derivation_dependency_projections_eq
 #check Poincare.canonical_three_sphere_statement_of_dependency_projections_eq
+#check Poincare.canonical_three_sphere_statement_of_dependency_projections_to_topology_statement_eq
 #check Poincare.canonical_three_sphere_statement_of_extraction_derivation_dependency_projections_eq
+#check Poincare.canonical_three_sphere_statement_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
 #check Poincare.completion_criterion_of_dependency_projections_eq
 #check Poincare.completion_criterion_of_extraction_derivation_dependency_projections_eq
 #check Poincare.poincare_statement_of_extraction_derivation_dependency_projections
@@ -11965,6 +11991,13 @@ open scoped Manifold ContDiff
       [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
       [SimplyConnectedSpace M] [CompactSpace M],
         Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_package_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_aggregate_extraction_derivation_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_projections_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_projections_to_topology_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_extraction_derivation_projections_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_extraction_derivation_projections_to_finite_extinction_eq
 
 #check (Poincare.completion_certificate_of_remaining_dependency_and_smooth_statement :
   Poincare.RemainingDependencyPackage →

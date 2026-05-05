@@ -2729,7 +2729,9 @@ set_option linter.unusedVariables false
 #check Poincare.poincare_statement_of_dependency_projections_eq
 #check Poincare.poincare_statement_of_extraction_derivation_dependency_projections_eq
 #check Poincare.canonical_three_sphere_statement_of_dependency_projections_eq
+#check Poincare.canonical_three_sphere_statement_of_dependency_projections_to_topology_statement_eq
 #check Poincare.canonical_three_sphere_statement_of_extraction_derivation_dependency_projections_eq
+#check Poincare.canonical_three_sphere_statement_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
 #check Poincare.completion_criterion_of_dependency_projections_eq
 #check Poincare.completion_criterion_of_extraction_derivation_dependency_projections_eq
 
@@ -5044,6 +5046,13 @@ set_option linter.unusedVariables false
       [SimplyConnectedSpace M] [CompactSpace M],
         Nonempty (M ≃ₜ Poincare.ThreeSphere))
 
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_package_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_aggregate_extraction_derivation_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_projections_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_projections_to_topology_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_extraction_derivation_projections_eq
+#check Poincare.canonical_three_sphere_statement_of_remaining_dependency_extraction_derivation_projections_to_finite_extinction_eq
+
 #check (Poincare.canonical_completion_payload_of_canonical_smooth_three_sphere_statement :
   (∀ (M : Type) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
@@ -6862,7 +6871,7 @@ projection_direct_finite_extinction_count=$(
   rg -c '\bfinite_extinction_of_dependencies dependencies\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_direct_finite_extinction_count" != "14" ]; then
+if [ "$projection_direct_finite_extinction_count" != "16" ]; then
   echo "FAIL: finite-extinction projection input should be centralized in projection payloads or explicit statement-route contracts"
   rg -n '\bfinite_extinction_of_dependencies dependencies\b' \
     Poincare/DependencyProjections.lean || true
@@ -6884,7 +6893,7 @@ topology_extraction_derivation_payload_count=$(
   rg -c '\btopology_extraction_derivation_payload_of_dependencies\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$topology_extraction_derivation_payload_count" != "8" ]; then
+if [ "$topology_extraction_derivation_payload_count" != "9" ]; then
   echo "FAIL: extraction-derivation assembly-input payload and statement-route contracts should consume the topology extraction-derivation payload"
   rg -n '\btopology_extraction_derivation_payload_of_dependencies\b' \
     Poincare/DependencyProjections.lean || true

@@ -906,6 +906,18 @@ theorem canonical_three_sphere_statement_of_remaining_dependency_package
     (canonical_completion_target_of_dependencies dependencies)
 
 /--
+The remaining-dependency canonical topological statement is selected from the
+named canonical target of the full dependency package.
+-/
+theorem canonical_three_sphere_statement_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_remaining_dependency_package
+      dependencies =
+      canonical_three_sphere_statement_of_canonical_completion_target
+        (canonical_completion_target_of_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The remaining-dependency package exposes the canonical topological 3-sphere
 statement through the aggregate certified extraction-derivation route.
 -/
@@ -918,6 +930,19 @@ theorem canonical_three_sphere_statement_of_remaining_dependency_aggregate_extra
   canonical_three_sphere_statement_of_canonical_completion_target
     (canonical_completion_target_of_aggregate_extraction_derivation_dependencies
       dependencies)
+
+/--
+The aggregate certified extraction-derivation canonical topological statement
+is selected from the named aggregate certified canonical target.
+-/
+theorem canonical_three_sphere_statement_of_remaining_dependency_aggregate_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_remaining_dependency_aggregate_extraction_derivation
+      dependencies =
+      canonical_three_sphere_statement_of_canonical_completion_target
+        (canonical_completion_target_of_aggregate_extraction_derivation_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
 
 /--
 The remaining-dependency package exposes the canonical topological 3-sphere
@@ -933,6 +958,33 @@ theorem canonical_three_sphere_statement_of_remaining_dependency_projections
     (canonical_completion_target_of_dependency_projections dependencies)
 
 /--
+The projection-route canonical topological statement is selected from the
+named projection-route canonical target.
+-/
+theorem canonical_three_sphere_statement_of_remaining_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_remaining_dependency_projections
+      dependencies =
+      canonical_three_sphere_statement_of_canonical_completion_target
+        (canonical_completion_target_of_dependency_projections
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The projection-route canonical topological statement factors through the
+finite-extinction plus theorem-shaped topology-extraction canonical target.
+-/
+theorem canonical_three_sphere_statement_of_remaining_dependency_projections_to_topology_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_remaining_dependency_projections
+      dependencies =
+      canonical_three_sphere_statement_of_canonical_completion_target
+        (canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+          (finite_extinction_of_dependencies dependencies)
+          (topology_extraction_statement_of_dependencies dependencies)) := by
+  apply Subsingleton.elim
+
+/--
 The remaining-dependency package exposes the canonical topological 3-sphere
 statement through the projection-based certified extraction-derivation route.
 -/
@@ -945,6 +997,38 @@ theorem canonical_three_sphere_statement_of_remaining_dependency_extraction_deri
   canonical_three_sphere_statement_of_canonical_completion_target
     (canonical_completion_target_of_extraction_derivation_dependency_projections
       dependencies)
+
+/--
+The certified projection-route canonical topological statement is selected
+from the named certified projection-route canonical target.
+-/
+theorem canonical_three_sphere_statement_of_remaining_dependency_extraction_derivation_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_remaining_dependency_extraction_derivation_projections
+      dependencies =
+      canonical_three_sphere_statement_of_canonical_completion_target
+        (canonical_completion_target_of_extraction_derivation_dependency_projections
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The certified projection-route canonical topological statement factors through
+the finite-extinction plus extractor/derivation canonical target.
+-/
+theorem canonical_three_sphere_statement_of_remaining_dependency_extraction_derivation_projections_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_remaining_dependency_extraction_derivation_projections
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_three_sphere_statement_of_canonical_completion_target
+            (canonical_completion_target_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_of_dependencies dependencies)
+              extractSphere derivation)) := by
+  apply Subsingleton.elim
 
 /--
 The canonical smooth 3D Poincare statement, together with smoothability, proves
