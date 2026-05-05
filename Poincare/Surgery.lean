@@ -378,6 +378,70 @@ theorem ricci_flow_with_surgery_construction_statement_of_components
     longTimeNonaccumulation, longTimeContinuation, withSurgery⟩
 
 /--
+The fixed-flow surgery-construction component assembler is exactly the tuple of
+scale, cutoff, neck, cap, post-surgery, surgery-time, long-time, and aggregate
+surgery witnesses.
+-/
+theorem ricci_flow_with_surgery_construction_statement_of_components_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (scaleFunction : HasSurgeryScaleFunction flow)
+    (scaleContinuity : HasSurgeryScaleContinuity flow)
+    (scaleSeparation : HasSurgeryScaleSeparation flow)
+    (cutoffParameterControl : HasSurgeryCutoffParameterControl flow)
+    (cutoffSmoothBump : HasSurgeryCutoffSmoothBumpFunction flow)
+    (parameterSelection : HasSurgeryParameterSelection flow)
+    (strongDeltaNeckDetection : HasStrongDeltaNeckDetection flow)
+    (neckSeparation : HasSurgeryNeckSeparation flow)
+    (neckParametrization : HasSurgeryNeckParametrization flow)
+    (neckCanonicalCoordinates : HasSurgeryNeckCanonicalCoordinates flow)
+    (neckDecomposition : HasSurgeryNeckDecomposition flow)
+    (standardCapModel : HasStandardCapModel flow)
+    (capGluingSmoothness : HasCapGluingSmoothness flow)
+    (capMetricInterpolation : HasSurgeryCapMetricInterpolation flow)
+    (capCurvatureEstimates : HasSurgeryCapCurvatureEstimates flow)
+    (capConstruction : HasSurgeryCapConstruction flow)
+    (postSurgeryCurvaturePinching : HasPostSurgeryCurvaturePinching flow)
+    (postSurgeryNoncollapsing : HasPostSurgeryNoncollapsingControl flow)
+    (postSurgeryDerivativeBounds : HasPostSurgeryDerivativeBounds flow)
+    (postSurgeryCanonicalNeighborhoodPersistence :
+      HasPostSurgeryCanonicalNeighborhoodPersistence flow)
+    (metricControl : HasPostSurgeryMetricControl flow)
+    (surgeryTimeDiscreteness : HasSurgeryTimeDiscreteness flow)
+    (surgeryTimeLocalFiniteness : HasSurgeryTimeLocalFiniteness flow)
+    (longTimeExistenceIteration : HasLongTimeExistenceIteration flow)
+    (longTimeParameterCoherence : HasLongTimeSurgeryParameterCoherence flow)
+    (longTimeNonaccumulation : HasLongTimeNonaccumulation flow)
+    (longTimeContinuation : HasLongTimeSurgeryContinuation flow)
+    (withSurgery : HasRicciFlowWithSurgery n M) :
+    ricci_flow_with_surgery_construction_statement_of_components flow
+        scaleFunction scaleContinuity scaleSeparation cutoffParameterControl
+        cutoffSmoothBump parameterSelection strongDeltaNeckDetection
+        neckSeparation neckParametrization neckCanonicalCoordinates
+        neckDecomposition standardCapModel capGluingSmoothness
+        capMetricInterpolation capCurvatureEstimates capConstruction
+        postSurgeryCurvaturePinching postSurgeryNoncollapsing
+        postSurgeryDerivativeBounds postSurgeryCanonicalNeighborhoodPersistence
+        metricControl surgeryTimeDiscreteness surgeryTimeLocalFiniteness
+        longTimeExistenceIteration longTimeParameterCoherence
+        longTimeNonaccumulation longTimeContinuation withSurgery =
+      (by
+        exact ⟨scaleFunction, scaleContinuity, scaleSeparation,
+          cutoffParameterControl, cutoffSmoothBump, parameterSelection,
+          strongDeltaNeckDetection, neckSeparation, neckParametrization,
+          neckCanonicalCoordinates, neckDecomposition, standardCapModel,
+          capGluingSmoothness, capMetricInterpolation, capCurvatureEstimates,
+          capConstruction, postSurgeryCurvaturePinching,
+          postSurgeryNoncollapsing, postSurgeryDerivativeBounds,
+          postSurgeryCanonicalNeighborhoodPersistence, metricControl,
+          surgeryTimeDiscreteness, surgeryTimeLocalFiniteness,
+          longTimeExistenceIteration, longTimeParameterCoherence,
+          longTimeNonaccumulation, longTimeContinuation, withSurgery⟩) := by
+  apply Subsingleton.elim
+
+/--
 A completed construction package assembles the fixed-flow construction
 statement.
 -/

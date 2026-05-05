@@ -334,11 +334,13 @@ It is not a proof. It is a work breakdown for future Lean development.
   bridges `surgery_construction_payload_of_construction_package` and
   `perelman_control_payload_of_package` centralize the package,
   theorem-shaped statement, named sub-obligation payload, and aggregate witness
-  routes; direct equality contracts pin the surgery construction package's
-  theorem-shaped statement route to the component assembly route and its bundled
-  payload to the named statement, sub-obligation payload, and aggregate witness
-  extraction; the Perelman package statement and bundled statement/
-  sub-obligation/monotonicity payload are now pinned the same way. The
+  routes; direct equality contracts pin the surgery-construction component
+  assembler to the exact tuple of construction witnesses, the surgery
+  construction package's theorem-shaped statement route to that component
+  assembly route, and its bundled payload to the named statement,
+  sub-obligation payload, and aggregate witness extraction; the Perelman package
+  statement and bundled statement/sub-obligation/monotonicity payload are now
+  pinned the same way. The
   dependency-level `surgery_package_payload_of_dependencies` now
   centralizes the raw aggregate surgery package with its analytic foundation,
   projected flow, construction package, and Perelman control package. Its

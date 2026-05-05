@@ -1747,6 +1747,8 @@ check_decl "surgery construction fixed statement is declared" \
   '^def RicciFlowWithSurgeryConstructionStatement\b' Poincare/Surgery.lean
 check_decl "surgery construction component assembly theorem is declared" \
   '^theorem ricci_flow_with_surgery_construction_statement_of_components\b' Poincare/Surgery.lean
+check_decl "surgery construction component assembly equality contract is declared" \
+  '^theorem ricci_flow_with_surgery_construction_statement_of_components_eq\b' Poincare/Surgery.lean
 check_decl "surgery construction package statement projection is declared" \
   '^theorem ricci_flow_with_surgery_construction_statement_of_construction_package\b' Poincare/Surgery.lean
 check_decl "surgery construction package statement projection equality contract is declared" \
@@ -9149,6 +9151,7 @@ open scoped Manifold ContDiff
 #check Poincare.long_time_surgery_continuation_of_construction_package
 #check Poincare.RicciFlowWithSurgeryConstructionStatement
 #check Poincare.ricci_flow_with_surgery_construction_statement_of_components
+#check Poincare.ricci_flow_with_surgery_construction_statement_of_components_eq
 #check Poincare.ricci_flow_with_surgery_construction_statement_of_construction_package
 #check Poincare.ricci_flow_with_surgery_construction_statement_of_construction_package_eq
 #check Poincare.ricci_flow_with_surgery_of_construction_statement
