@@ -725,6 +725,132 @@ theorem analytic_foundation_derivation_statement_of_components
     ricciIdentification, equationEvidence⟩
 
 /--
+The fixed-flow analytic-foundation component assembler is exactly the tuple of
+connection, curvature, DeTurck, continuation, regularity, evolution,
+Ricci-identification, and equation witnesses.
+-/
+theorem analytic_foundation_derivation_statement_of_components_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M)
+    (leviCivitaExistence :
+      HasLeviCivitaConnectionExistence (metric_of_ricci_flow_data flow))
+    (leviCivitaUniqueness :
+      HasLeviCivitaConnectionUniqueness (metric_of_ricci_flow_data flow))
+    (leviCivitaTorsionFree :
+      HasLeviCivitaTorsionFreeProperty (metric_of_ricci_flow_data flow))
+    (leviCivitaMetricCompatibility :
+      HasLeviCivitaMetricCompatibility (metric_of_ricci_flow_data flow))
+    (leviCivita :
+      HasLeviCivitaConnectionTheory (metric_of_ricci_flow_data flow))
+    (riemannCurvatureConstruction :
+      HasRiemannCurvatureTensorConstruction (metric_of_ricci_flow_data flow))
+    (riemannCurvatureSymmetries :
+      HasRiemannCurvatureTensorSymmetries (metric_of_ricci_flow_data flow))
+    (firstBianchi : HasFirstBianchiIdentity (metric_of_ricci_flow_data flow))
+    (secondBianchi : HasSecondBianchiIdentity (metric_of_ricci_flow_data flow))
+    (riemannCurvature :
+      HasRiemannCurvatureTensorTheory (metric_of_ricci_flow_data flow))
+    (ricciContractionFormula :
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow))
+    (scalarCurvatureContraction :
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow))
+    (ricciContraction :
+      HasRicciContractionTheory (curvature_data_of_ricci_flow_data flow))
+    (metricRegularity :
+      HasTimeDependentMetricRegularity (metric_of_ricci_flow_data flow))
+    (metricTimeDerivative :
+      HasMetricTimeDerivativeTheory (metric_of_ricci_flow_data flow))
+    (scalarCurvature :
+      HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow))
+    (equationDerivation : HasRicciFlowEquationDerivation flow)
+    (initialMetricCompatibility : HasInitialMetricCompatibility flow)
+    (deturckGauge : HasDeTurckGaugeFixing flow)
+    (deturckBackgroundMetric :
+      HasDeTurckBackgroundMetricCompatibility flow)
+    (deturckVectorField : HasDeTurckVectorFieldConstruction flow)
+    (deturckEquation : HasDeTurckEquationDerivation flow)
+    (deturckLinearization : HasRicciDeTurckLinearization flow)
+    (strictParabolicDeturck : HasStrictlyParabolicDeTurckSystem flow)
+    (parabolicLinearTheory : HasParabolicLinearTheory flow)
+    (parabolicFixedPoint : HasParabolicFixedPointArgument flow)
+    (deturckShortTime : HasDeTurckShortTimeExistence flow)
+    (shortTimeRegularityBootstrap : HasShortTimeRegularityBootstrap flow)
+    (deturckDiffeomorphismODE : HasDeTurckDiffeomorphismODE flow)
+    (deturckPullbackEquationIdentity :
+      HasDeTurckPullbackEquationIdentity flow)
+    (deturckPullback : HasDeTurckPullbackToRicciFlow flow)
+    (shortTimeExistence : HasShortTimeRicciFlowSolution flow)
+    (maximalTimeInterval : HasRicciFlowMaximalTimeInterval flow)
+    (continuationCriterion : HasRicciFlowContinuationCriterion flow)
+    (curvatureBlowUpCriterion :
+      HasCurvatureBlowUpContinuationCriterion flow)
+    (maximalSolutionExtension : HasMaximalSolutionExtension flow)
+    (parabolicSchauder : HasParabolicSchauderEstimates flow)
+    (parabolicRegularity : HasRicciFlowParabolicRegularity flow)
+    (shiDerivativeEstimates : HasShiDerivativeEstimates flow)
+    (curvatureDerivativeBootstrap : HasCurvatureDerivativeBootstrap flow)
+    (maximumPrinciple : HasHamiltonMaximumPrinciple flow)
+    (uniquenessTheory : HasRicciFlowUniquenessTheory flow)
+    (metricEvolution : HasMetricEvolutionEquation flow)
+    (ricciTensorEvolution : HasRicciTensorEvolutionEquation flow)
+    (scalarCurvatureEvolution : HasScalarCurvatureEvolutionEquation flow)
+    (curvatureNormEvolution : HasCurvatureNormEvolutionInequality flow)
+    (curvatureEvolution : HasCurvatureEvolutionEquations flow)
+    (ricciIdentification :
+      IsRicciTensorOf
+        (metric_of_ricci_flow_data flow)
+        (ricci_tensor_field_of_curvature_data
+          (curvature_data_of_ricci_flow_data flow)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (metric_of_ricci_flow_data flow)
+        (curvature_data_of_ricci_flow_data flow)) :
+    analytic_foundation_derivation_statement_of_components flow
+        leviCivitaExistence leviCivitaUniqueness leviCivitaTorsionFree
+        leviCivitaMetricCompatibility leviCivita
+        riemannCurvatureConstruction riemannCurvatureSymmetries firstBianchi
+        secondBianchi riemannCurvature ricciContractionFormula
+        scalarCurvatureContraction ricciContraction metricRegularity
+        metricTimeDerivative scalarCurvature equationDerivation
+        initialMetricCompatibility deturckGauge deturckBackgroundMetric
+        deturckVectorField deturckEquation deturckLinearization
+        strictParabolicDeturck parabolicLinearTheory parabolicFixedPoint
+        deturckShortTime shortTimeRegularityBootstrap deturckDiffeomorphismODE
+        deturckPullbackEquationIdentity deturckPullback shortTimeExistence
+        maximalTimeInterval continuationCriterion curvatureBlowUpCriterion
+        maximalSolutionExtension parabolicSchauder parabolicRegularity
+        shiDerivativeEstimates curvatureDerivativeBootstrap maximumPrinciple
+        uniquenessTheory metricEvolution ricciTensorEvolution
+        scalarCurvatureEvolution curvatureNormEvolution curvatureEvolution
+        ricciIdentification equationEvidence =
+      (by
+        exact ⟨leviCivitaExistence, leviCivitaUniqueness,
+          leviCivitaTorsionFree, leviCivitaMetricCompatibility, leviCivita,
+          riemannCurvatureConstruction, riemannCurvatureSymmetries,
+          firstBianchi, secondBianchi, riemannCurvature,
+          ricciContractionFormula, scalarCurvatureContraction,
+          ricciContraction, metricRegularity, metricTimeDerivative,
+          scalarCurvature, equationDerivation, initialMetricCompatibility,
+          deturckGauge, deturckBackgroundMetric, deturckVectorField,
+          deturckEquation, deturckLinearization, strictParabolicDeturck,
+          parabolicLinearTheory, parabolicFixedPoint, deturckShortTime,
+          shortTimeRegularityBootstrap, deturckDiffeomorphismODE,
+          deturckPullbackEquationIdentity, deturckPullback, shortTimeExistence,
+          maximalTimeInterval, continuationCriterion, curvatureBlowUpCriterion,
+          maximalSolutionExtension, parabolicSchauder, parabolicRegularity,
+          shiDerivativeEstimates, curvatureDerivativeBootstrap,
+          maximumPrinciple, uniquenessTheory, metricEvolution,
+          ricciTensorEvolution, scalarCurvatureEvolution,
+          curvatureNormEvolution, curvatureEvolution, ricciIdentification,
+          equationEvidence⟩) := by
+  apply Subsingleton.elim
+
+/--
 Semantic alias for the named analytic sub-obligation payload exposed by a
 theorem-shaped fixed-flow analytic derivation statement.
 -/

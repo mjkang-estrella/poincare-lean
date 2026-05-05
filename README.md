@@ -162,8 +162,11 @@ The current artifact is intentionally conservative:
   `analytic_foundation_payload_of_analytic_foundation_package`, which
   centralizes the theorem-shaped statement, fixed derivation statement, named
   sub-obligation payload, and equation evidence at the package layer. Its main
-  Ricci-flow/evidence projections now also have equality contracts back to the
-  stored package flow and the flow-level evidence theorems.
+  component assembler is pinned to the exact tuple of connection, curvature,
+  DeTurck, continuation, regularity, evolution, Ricci-identification, and
+  equation witnesses; Ricci-flow/evidence projections now also have equality
+  contracts back to the stored package flow and the flow-level evidence
+  theorems.
 - `Poincare/Surgery.lean` defines typed no-constructor interfaces for Ricci flow
   with surgery, Perelman singularity control, finite-extinction derivation, and
   the package that connects them to the finite-extinction assembly layer through

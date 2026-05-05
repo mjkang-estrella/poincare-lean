@@ -264,8 +264,11 @@ It is not a proof. It is a work breakdown for future Lean development.
   `analytic_foundation_payload_of_analytic_foundation_package`, which
   centralizes the theorem-shaped statement, fixed derivation statement, named
   sub-obligation payload, and equation evidence at the package layer. The
-  analytic-package flow/evidence projection equalities record that those
-  package-level surfaces delegate exactly to the stored flow data.
+  component assembler is pinned to the exact tuple of connection, curvature,
+  DeTurck, continuation, regularity, evolution, Ricci-identification, and
+  equation witnesses; analytic-package flow/evidence projection equalities
+  record that those package-level surfaces delegate exactly to the stored flow
+  data.
 - `Poincare/Surgery.lean` defines no-constructor interfaces for Ricci flow with
   surgery, Perelman singularity control, and finite-extinction derivation, plus
   checked package projections to the analytic foundation. Its direct package

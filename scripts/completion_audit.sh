@@ -369,6 +369,8 @@ check_decl "analytic foundation theorem-shaped statement is declared" \
   '^def RicciFlowAnalyticFoundationStatement\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation component assembly theorem is declared" \
   '^theorem analytic_foundation_derivation_statement_of_components\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation component assembly equality contract is declared" \
+  '^theorem analytic_foundation_derivation_statement_of_components_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation derivation statement sub-obligation projection is declared" \
   '^theorem analytic_foundation_subobligations_of_derivation_statement\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation Ricci-flow data projection is declared" \
@@ -6926,6 +6928,7 @@ open scoped Manifold ContDiff
 #check Poincare.AnalyticFoundationSubobligationsPayload
 #check Poincare.RicciFlowAnalyticFoundationStatement
 #check Poincare.analytic_foundation_derivation_statement_of_components
+#check Poincare.analytic_foundation_derivation_statement_of_components_eq
 #check Poincare.analytic_foundation_subobligations_of_derivation_statement
 #check Poincare.analytic_foundation_derivation_statement_of_analytic_foundation_package
 #check Poincare.analytic_foundation_statement_of_analytic_foundation_package
@@ -9103,6 +9106,7 @@ open scoped Manifold ContDiff
 #check Poincare.AnalyticFoundationSubobligationsPayload
 #check Poincare.RicciFlowAnalyticFoundationStatement
 #check Poincare.analytic_foundation_derivation_statement_of_components
+#check Poincare.analytic_foundation_derivation_statement_of_components_eq
 #check Poincare.analytic_foundation_subobligations_of_derivation_statement
 #check Poincare.analytic_foundation_derivation_statement_of_analytic_foundation_package
 #check Poincare.analytic_foundation_statement_of_analytic_foundation_package
