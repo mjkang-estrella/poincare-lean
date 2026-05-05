@@ -1182,7 +1182,7 @@ It is not a proof. It is a work breakdown for future Lean development.
   `poincareCompletionCertificate_iff_project_statement_payload` identify the
   analogous full payload with the project Poincare statement named directly.
   The literal, aggregate-dependency, and project-statement full payload
-  constructors now have projection-after-constructor round-trip contracts.
+  constructors now have projection and reconstruction round-trip contracts.
   `poincareCompletionCertificate_iff_components`,
   `poincareCompletionCertificate_iff_component_requirements`,
   `poincareCompletionCertificate_iff_package_layer_requirements`, and
@@ -1261,9 +1261,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   Their certificate constructors now also have theorem-name, literal full
   payload projection/reconstruction, canonical/project payload, target,
   criterion, aggregate-dependency full payload projection/reconstruction,
-  project-statement full payload, canonical topological statement, and full
-  canonical-statement artifact payload at both the remaining-dependency and
-  aggregate proof-dependency payload surfaces
+  project-statement full payload projection/reconstruction, canonical
+  topological statement, and full canonical-statement artifact payload at both
+  the remaining-dependency and aggregate proof-dependency payload surfaces
   projection-after-constructor contracts back to the named raw, certified,
   aggregate, and projection routes that built the certificates.
   The certificate-layer equality contracts now pin the reserved-name, literal
