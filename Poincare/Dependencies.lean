@@ -890,6 +890,51 @@ theorem poincare_completion_payload_of_aggregate_extraction_derivation_dependenc
   apply Subsingleton.elim
 
 /--
+The strengthened aggregate dependency package exposes the local target and
+completion criterion through the certified extraction-derivation route while
+retaining explicit equation-boundary data.
+-/
+theorem poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases
+      poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies with
+    ⟨_surgeryPackages, _finiteExtinction, _extractSphere, _derivation, target,
+      criterion⟩
+  exact ⟨target, criterion⟩
+
+/--
+The strengthened certified completion payload is selected from the named
+strengthened certified target payload.
+-/
+theorem poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      (by
+        rcases
+            poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+              dependencies with
+          ⟨_surgeryPackages, _finiteExtinction, _extractSphere, _derivation,
+            target, criterion⟩
+        exact ⟨target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified completion payload agrees with the certified
+aggregate completion payload after forgetting equation-boundary data.
+-/
+theorem poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      poincare_completion_payload_of_aggregate_extraction_derivation_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency package is sufficient for the target Poincare
 statement, extracted from the aggregate assembly payload.
 -/
@@ -977,6 +1022,48 @@ theorem poincare_statement_of_aggregate_extraction_derivation_dependencies_eq
             dependencies with
           ⟨target, _criterion⟩
         exact target) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package is sufficient for the target
+Poincare statement through the certified extraction-derivation route while
+retaining explicit equation-boundary data.
+-/
+theorem poincare_statement_of_equation_boundary_extraction_derivation_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} := by
+  rcases
+      poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies with
+    ⟨target, _criterion⟩
+  exact target
+
+/--
+The strengthened certified aggregate Poincare statement is selected from the
+named strengthened certified aggregate completion payload.
+-/
+theorem poincare_statement_of_equation_boundary_extraction_derivation_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_extraction_derivation_dependencies
+      dependencies =
+      (by
+        rcases
+            poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies
+              dependencies with
+          ⟨target, _criterion⟩
+        exact target) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified aggregate Poincare statement agrees with the
+certified aggregate Poincare statement after forgetting equation-boundary data.
+-/
+theorem poincare_statement_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      poincare_statement_of_aggregate_extraction_derivation_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
   apply Subsingleton.elim
 
 /--
@@ -1068,6 +1155,48 @@ theorem canonical_three_sphere_statement_of_aggregate_extraction_derivation_depe
       canonical_three_sphere_statement_of_poincare_statement
         (poincare_statement_of_aggregate_extraction_derivation_dependencies
           dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package exposes the canonical
+mathlib-shaped topological 3-sphere statement through the certified
+extraction-derivation route while retaining explicit equation-boundary data.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) :=
+  canonical_three_sphere_statement_of_poincare_statement
+    (poincare_statement_of_equation_boundary_extraction_derivation_dependencies
+      dependencies)
+
+/--
+The strengthened certified aggregate canonical topological sphere statement is
+the canonical bridge applied to the named strengthened certified aggregate
+Poincare statement.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependencies
+      dependencies =
+      canonical_three_sphere_statement_of_poincare_statement
+        (poincare_statement_of_equation_boundary_extraction_derivation_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified aggregate canonical topological statement agrees
+with the certified aggregate canonical topological statement after forgetting
+equation-boundary data.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
   apply Subsingleton.elim
 
 /--
@@ -1163,6 +1292,52 @@ theorem completion_criterion_of_aggregate_extraction_derivation_dependencies_eq
             dependencies with
           ⟨_target, criterion⟩
         exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package discharges the project's explicit
+completion criterion through the certified extraction-derivation route while
+retaining explicit equation-boundary data.
+-/
+theorem completion_criterion_of_equation_boundary_extraction_derivation_dependencies
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    CompletionCriterionAtUniverse witness := by
+  rcases
+      poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies with
+    ⟨_target, criterion⟩
+  exact criterion witness
+
+/--
+The strengthened certified aggregate completion criterion is selected from the
+named strengthened certified aggregate completion payload.
+-/
+theorem completion_criterion_of_equation_boundary_extraction_derivation_dependencies_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_equation_boundary_extraction_derivation_dependencies
+      witness dependencies =
+      (by
+        rcases
+            poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies
+              dependencies with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified aggregate completion criterion agrees with the
+certified aggregate completion criterion after forgetting equation-boundary
+data.
+-/
+theorem completion_criterion_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_equation_boundary_extraction_derivation_dependencies
+        witness dependencies =
+      completion_criterion_of_aggregate_extraction_derivation_dependencies
+        witness (dependencies_of_equation_boundary_dependencies dependencies) := by
   apply Subsingleton.elim
 
 end Poincare
