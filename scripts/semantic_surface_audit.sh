@@ -8278,7 +8278,7 @@ remaining_dependency_payload_count=$(
   rg -c 'poincare_completion_payload_of_remaining_dependency_package\b' \
     Poincare/CompletionTarget.lean || true
 )
-if [ "$remaining_dependency_payload_count" != "8" ]; then
+if [ "$remaining_dependency_payload_count" != "9" ]; then
   echo "FAIL: canonical dependency payload should consume the named remaining dependency payload"
   rg -n 'poincare_completion_payload_of_remaining_dependency_package\b' \
     Poincare/CompletionTarget.lean || true
