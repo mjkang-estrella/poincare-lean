@@ -8048,6 +8048,20 @@ theorem poincareProofDependencies_of_completion_certificate_of_poincareProofDepe
   apply Subsingleton.elim
 
 /--
+Projecting the ordinary remaining-dependency package from a strengthened
+aggregate equation-boundary certificate recovers the forgetful remaining
+package.
+-/
+theorem remaining_dependency_package_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    remaining_dependency_package_of_completion_certificate
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies) =
+      remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 Projecting the canonical payload from a strengthened aggregate certificate uses
 the strengthened aggregate canonical payload route.
 -/
@@ -10687,6 +10701,45 @@ theorem poincareCompletionCertificate_iff_poincareProofDependencies_milestone_re
     PoincareCompletionCertificate.{u} ↔ PoincareProofDependencies.{u} :=
   ⟨poincareProofDependencies_of_completion_certificate,
     completion_certificate_of_poincareProofDependencies_milestone_requirements⟩
+
+/--
+The strengthened aggregate equation-boundary certificate is propositionally the
+aggregate raw component-route certificate for the forgetful ordinary aggregate
+package.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_component_requirements_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      completion_certificate_of_poincareProofDependencies_component_requirements
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate equation-boundary certificate is propositionally the
+aggregate raw package-layer-route certificate for the forgetful ordinary
+aggregate package.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_package_layer_requirements_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      completion_certificate_of_poincareProofDependencies_package_layer_requirements
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate equation-boundary certificate is propositionally the
+aggregate raw milestone-route certificate for the forgetful ordinary aggregate
+package.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_milestone_requirements_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      completion_certificate_of_poincareProofDependencies_milestone_requirements
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
 
 /--
 The remaining dependency package produces a checked completion certificate
