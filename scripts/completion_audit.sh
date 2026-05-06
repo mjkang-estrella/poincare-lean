@@ -4720,6 +4720,10 @@ check_decl "dependency package-layer requirements projection theorem is declared
   '^theorem dependencyPackageLayerRequirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency package-layer requirements generic projection equality contract is declared" \
   '^theorem dependencyPackageLayerRequirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened dependency package-layer requirements projection theorem is declared" \
+  '^theorem dependencyPackageLayerRequirement_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened dependency package-layer requirements projection equality contract is declared" \
+  '^theorem dependencyPackageLayerRequirement_of_equation_boundary_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "smoothability package-layer dependency projection theorem is declared" \
   '^theorem smoothabilityPackage_requirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
 check_decl "analytic package-layer dependency projection theorem is declared" \
@@ -4730,6 +4734,16 @@ check_decl "finite-extinction package-layer dependency projection theorem is dec
   '^theorem finiteExtinctionPackage_requirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
 check_decl "topology package-layer dependency projection theorem is declared" \
   '^theorem topologyPackage_requirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened smoothability package-layer dependency projection theorem is declared" \
+  '^theorem smoothabilityPackage_requirement_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened analytic package-layer dependency projection theorem is declared" \
+  '^theorem analyticFoundationPackage_requirement_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened surgery package-layer dependency projection theorem is declared" \
+  '^theorem surgeryPackage_requirement_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened finite-extinction package-layer dependency projection theorem is declared" \
+  '^theorem finiteExtinctionPackage_requirement_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened topology package-layer dependency projection theorem is declared" \
+  '^theorem topologyPackage_requirement_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean
 check_decl "smoothability package-layer dependency projection equality contract is declared" \
   '^theorem smoothabilityPackage_requirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "analytic package-layer dependency projection equality contract is declared" \
@@ -4740,10 +4754,26 @@ check_decl "finite-extinction package-layer dependency projection equality contr
   '^theorem finiteExtinctionPackage_requirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "topology package-layer dependency projection equality contract is declared" \
   '^theorem topologyPackage_requirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened smoothability package-layer dependency projection equality contract is declared" \
+  '^theorem smoothabilityPackage_requirement_of_equation_boundary_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened analytic package-layer dependency projection equality contract is declared" \
+  '^theorem analyticFoundationPackage_requirement_of_equation_boundary_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened surgery package-layer dependency projection equality contract is declared" \
+  '^theorem surgeryPackage_requirement_of_equation_boundary_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened finite-extinction package-layer dependency projection equality contract is declared" \
+  '^theorem finiteExtinctionPackage_requirement_of_equation_boundary_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened topology package-layer dependency projection equality contract is declared" \
+  '^theorem topologyPackage_requirement_of_equation_boundary_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency package-layer requirements payload theorem is declared" \
   '^theorem dependency_package_layer_requirements_payload_of_dependencies\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency package-layer requirements payload equality contract is declared" \
   '^theorem dependency_package_layer_requirements_payload_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened dependency package-layer requirements payload theorem is declared" \
+  '^theorem dependency_package_layer_requirements_payload_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened dependency package-layer requirements payload equality contract is declared" \
+  '^theorem dependency_package_layer_requirements_payload_of_equation_boundary_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened dependency package-layer requirements named-projection equality contract is declared" \
+  '^theorem dependency_package_layer_requirements_payload_of_equation_boundary_dependencies_to_named_projections_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency package-layer requirements iff theorem is declared" \
   '^theorem poincareProofDependencies_iff_package_layer_requirements\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency package-layer requirements reverse constructor is declared" \
@@ -4782,6 +4812,8 @@ check_decl "topology-extraction milestone requirement theorem equality contract 
   '^theorem dependencyMilestoneRequirement_extinctionToSphereHomeomorphism_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency milestone requirements projection theorem is declared" \
   '^theorem dependencyMilestoneRequirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened dependency milestone requirements projection theorem is declared" \
+  '^theorem dependencyMilestoneRequirement_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean
 check_decl "smoothability milestone dependency projection theorem is declared" \
   '^theorem smoothabilityBridge_requirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
 check_decl "analytic-foundation milestone dependency projection theorem is declared" \
@@ -4794,8 +4826,24 @@ check_decl "finite-extinction milestone dependency projection theorem is declare
   '^theorem finiteExtinction_requirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
 check_decl "topology-extraction milestone dependency projection theorem is declared" \
   '^theorem extinctionToSphereHomeomorphism_requirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened smoothability milestone dependency projection theorem is declared" \
+  '^theorem smoothabilityBridge_requirement_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened analytic-foundation milestone dependency projection theorem is declared" \
+  '^theorem ricciFlowAnalyticFoundation_requirement_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened Ricci-flow-with-surgery milestone dependency projection theorem is declared" \
+  '^theorem ricciFlowWithSurgery_requirement_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened Perelman-control milestone dependency projection theorem is declared" \
+  '^theorem perelmanSingularityControl_requirement_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened finite-extinction milestone dependency projection theorem is declared" \
+  '^theorem finiteExtinction_requirement_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened topology-extraction milestone dependency projection theorem is declared" \
+  '^theorem extinctionToSphereHomeomorphism_requirement_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency milestone projection equality contract is declared" \
   '^theorem dependencyMilestoneRequirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened dependency milestone projection equality contract is declared" \
+  '^theorem dependencyMilestoneRequirement_of_equation_boundary_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened dependency milestone package-layer factorization contract is declared" \
+  '^theorem dependencyMilestoneRequirement_of_equation_boundary_dependencies_to_package_layer_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "smoothability milestone dependency projection equality contract is declared" \
   '^theorem smoothabilityBridge_requirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "analytic-foundation milestone dependency projection equality contract is declared" \
@@ -4808,10 +4856,30 @@ check_decl "finite-extinction milestone dependency projection equality contract 
   '^theorem finiteExtinction_requirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "topology-extraction milestone dependency projection equality contract is declared" \
   '^theorem extinctionToSphereHomeomorphism_requirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened smoothability milestone dependency projection equality contract is declared" \
+  '^theorem smoothabilityBridge_requirement_of_equation_boundary_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened analytic-foundation milestone dependency projection equality contract is declared" \
+  '^theorem ricciFlowAnalyticFoundation_requirement_of_equation_boundary_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened Ricci-flow-with-surgery milestone dependency projection equality contract is declared" \
+  '^theorem ricciFlowWithSurgery_requirement_of_equation_boundary_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened Perelman-control milestone dependency projection equality contract is declared" \
+  '^theorem perelmanSingularityControl_requirement_of_equation_boundary_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened finite-extinction milestone dependency projection equality contract is declared" \
+  '^theorem finiteExtinction_requirement_of_equation_boundary_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened topology-extraction milestone dependency projection equality contract is declared" \
+  '^theorem extinctionToSphereHomeomorphism_requirement_of_equation_boundary_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency milestone requirements payload theorem is declared" \
   '^theorem dependency_milestone_requirements_payload_of_dependencies\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency milestone requirements payload equality contract is declared" \
   '^theorem dependency_milestone_requirements_payload_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened dependency milestone requirements payload theorem is declared" \
+  '^theorem dependency_milestone_requirements_payload_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened dependency milestone requirements payload equality contract is declared" \
+  '^theorem dependency_milestone_requirements_payload_of_equation_boundary_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened dependency milestone requirements named-projection equality contract is declared" \
+  '^theorem dependency_milestone_requirements_payload_of_equation_boundary_dependencies_to_named_projections_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened dependency milestone requirements package-layer equality contract is declared" \
+  '^theorem dependency_milestone_requirements_payload_of_equation_boundary_dependencies_to_package_layer_projections_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency milestone requirements iff theorem is declared" \
   '^theorem poincareProofDependencies_iff_milestone_requirements\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency milestone requirements reverse constructor is declared" \
@@ -15100,6 +15168,18 @@ open scoped Manifold ContDiff
 #check Poincare.surgeryPackage_requirement_of_dependencies_eq
 #check Poincare.finiteExtinctionPackage_requirement_of_dependencies_eq
 #check Poincare.topologyPackage_requirement_of_dependencies_eq
+#check Poincare.dependencyPackageLayerRequirement_of_equation_boundary_dependencies
+#check Poincare.dependencyPackageLayerRequirement_of_equation_boundary_dependencies_eq
+#check Poincare.smoothabilityPackage_requirement_of_equation_boundary_dependencies
+#check Poincare.analyticFoundationPackage_requirement_of_equation_boundary_dependencies
+#check Poincare.surgeryPackage_requirement_of_equation_boundary_dependencies
+#check Poincare.finiteExtinctionPackage_requirement_of_equation_boundary_dependencies
+#check Poincare.topologyPackage_requirement_of_equation_boundary_dependencies
+#check Poincare.smoothabilityPackage_requirement_of_equation_boundary_dependencies_eq
+#check Poincare.analyticFoundationPackage_requirement_of_equation_boundary_dependencies_eq
+#check Poincare.surgeryPackage_requirement_of_equation_boundary_dependencies_eq
+#check Poincare.finiteExtinctionPackage_requirement_of_equation_boundary_dependencies_eq
+#check Poincare.topologyPackage_requirement_of_equation_boundary_dependencies_eq
 
 #check (Poincare.dependency_package_layer_requirements_payload_of_dependencies :
   Poincare.PoincareProofDependencies →
@@ -15136,6 +15216,9 @@ open scoped Manifold ContDiff
         Poincare.DependencyPackageLayer.topologyPackage)
 
 #check Poincare.dependency_package_layer_requirements_payload_of_dependencies_eq
+#check Poincare.dependency_package_layer_requirements_payload_of_equation_boundary_dependencies
+#check Poincare.dependency_package_layer_requirements_payload_of_equation_boundary_dependencies_eq
+#check Poincare.dependency_package_layer_requirements_payload_of_equation_boundary_dependencies_to_named_projections_eq
 #check Poincare.poincareProofDependencies_of_package_layer_requirements_payload
 #check Poincare.poincareProofDependencies_iff_package_layer_requirements_eq
 
@@ -15235,6 +15318,21 @@ open scoped Manifold ContDiff
       Poincare.DependencyMilestone.extinctionToSphereHomeomorphism)
 
 #check Poincare.dependencyMilestoneRequirement_of_dependencies_eq
+#check Poincare.dependencyMilestoneRequirement_of_equation_boundary_dependencies
+#check Poincare.dependencyMilestoneRequirement_of_equation_boundary_dependencies_eq
+#check Poincare.dependencyMilestoneRequirement_of_equation_boundary_dependencies_to_package_layer_eq
+#check Poincare.smoothabilityBridge_requirement_of_equation_boundary_dependencies
+#check Poincare.ricciFlowAnalyticFoundation_requirement_of_equation_boundary_dependencies
+#check Poincare.ricciFlowWithSurgery_requirement_of_equation_boundary_dependencies
+#check Poincare.perelmanSingularityControl_requirement_of_equation_boundary_dependencies
+#check Poincare.finiteExtinction_requirement_of_equation_boundary_dependencies
+#check Poincare.extinctionToSphereHomeomorphism_requirement_of_equation_boundary_dependencies
+#check Poincare.smoothabilityBridge_requirement_of_equation_boundary_dependencies_eq
+#check Poincare.ricciFlowAnalyticFoundation_requirement_of_equation_boundary_dependencies_eq
+#check Poincare.ricciFlowWithSurgery_requirement_of_equation_boundary_dependencies_eq
+#check Poincare.perelmanSingularityControl_requirement_of_equation_boundary_dependencies_eq
+#check Poincare.finiteExtinction_requirement_of_equation_boundary_dependencies_eq
+#check Poincare.extinctionToSphereHomeomorphism_requirement_of_equation_boundary_dependencies_eq
 #check Poincare.smoothabilityBridge_requirement_of_dependencies_eq
 #check Poincare.ricciFlowAnalyticFoundation_requirement_of_dependencies_eq
 #check Poincare.ricciFlowWithSurgery_requirement_of_dependencies_eq
@@ -15283,6 +15381,10 @@ open scoped Manifold ContDiff
         Poincare.DependencyMilestone.extinctionToSphereHomeomorphism)
 
 #check Poincare.dependency_milestone_requirements_payload_of_dependencies_eq
+#check Poincare.dependency_milestone_requirements_payload_of_equation_boundary_dependencies
+#check Poincare.dependency_milestone_requirements_payload_of_equation_boundary_dependencies_eq
+#check Poincare.dependency_milestone_requirements_payload_of_equation_boundary_dependencies_to_named_projections_eq
+#check Poincare.dependency_milestone_requirements_payload_of_equation_boundary_dependencies_to_package_layer_projections_eq
 #check Poincare.poincareProofDependencies_of_milestone_requirements_payload
 #check Poincare.poincareProofDependencies_iff_milestone_requirements_eq
 

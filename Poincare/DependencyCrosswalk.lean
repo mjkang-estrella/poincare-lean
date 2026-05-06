@@ -1038,6 +1038,197 @@ theorem dependency_package_layer_requirements_payload_of_dependencies_to_generic
   apply Subsingleton.elim
 
 /--
+Strengthened equation-boundary dependencies supply every existing package-layer
+requirement after forgetting the explicit equation-boundary data.
+-/
+theorem dependencyPackageLayerRequirement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (layer : DependencyPackageLayer) :
+    dependencyPackageLayerRequirement.{u} layer :=
+  dependencyPackageLayerRequirement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies) layer
+
+/--
+The strengthened dependency package-layer projection is the ordinary
+package-layer projection applied to the forgetful dependency package.
+-/
+theorem dependencyPackageLayerRequirement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependencyPackageLayerRequirement_of_equation_boundary_dependencies
+        dependencies =
+      dependencyPackageLayerRequirement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  funext layer
+  apply Subsingleton.elim
+
+/--
+Strengthened dependencies supply the smoothability package-layer requirement.
+-/
+theorem smoothabilityPackage_requirement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependencyPackageLayerRequirement.{u}
+      DependencyPackageLayer.smoothabilityPackage :=
+  smoothabilityPackage_requirement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+
+/--
+Strengthened dependencies supply the analytic package-layer requirement after
+forgetting equation-boundary data.
+-/
+theorem analyticFoundationPackage_requirement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependencyPackageLayerRequirement.{u}
+      DependencyPackageLayer.analyticFoundationPackage :=
+  analyticFoundationPackage_requirement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+
+/--
+Strengthened dependencies supply the surgery package-layer requirement after
+forgetting equation-boundary data.
+-/
+theorem surgeryPackage_requirement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage :=
+  surgeryPackage_requirement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+
+/--
+Strengthened dependencies supply the finite-extinction package-layer
+requirement after forgetting equation-boundary data.
+-/
+theorem finiteExtinctionPackage_requirement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependencyPackageLayerRequirement.{u}
+      DependencyPackageLayer.finiteExtinctionPackage :=
+  finiteExtinctionPackage_requirement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+
+/--
+Strengthened dependencies supply the topology package-layer requirement after
+forgetting equation-boundary data.
+-/
+theorem topologyPackage_requirement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage :=
+  topologyPackage_requirement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+
+/--
+The strengthened smoothability package-layer projection is the ordinary
+projection of the forgetful dependency package.
+-/
+theorem smoothabilityPackage_requirement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    smoothabilityPackage_requirement_of_equation_boundary_dependencies
+        dependencies =
+      smoothabilityPackage_requirement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened analytic package-layer projection is the ordinary projection
+of the forgetful dependency package.
+-/
+theorem analyticFoundationPackage_requirement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    analyticFoundationPackage_requirement_of_equation_boundary_dependencies
+        dependencies =
+      analyticFoundationPackage_requirement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened surgery package-layer projection is the ordinary projection
+of the forgetful dependency package.
+-/
+theorem surgeryPackage_requirement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgeryPackage_requirement_of_equation_boundary_dependencies
+        dependencies =
+      surgeryPackage_requirement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened finite-extinction package-layer projection is the ordinary
+projection of the forgetful dependency package.
+-/
+theorem finiteExtinctionPackage_requirement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    finiteExtinctionPackage_requirement_of_equation_boundary_dependencies
+        dependencies =
+      finiteExtinctionPackage_requirement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened topology package-layer projection is the ordinary projection
+of the forgetful dependency package.
+-/
+theorem topologyPackage_requirement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    topologyPackage_requirement_of_equation_boundary_dependencies
+        dependencies =
+      topologyPackage_requirement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Strengthened equation-boundary dependencies supply the five existing
+package-layer requirements after forgetting equation-boundary data.
+-/
+theorem dependency_package_layer_requirements_payload_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage,
+    ∃ _analytic :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage,
+    ∃ _surgery :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+    ∃ _finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage :=
+  dependency_package_layer_requirements_payload_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+
+/--
+The strengthened dependency package-layer payload is the ordinary package-layer
+payload of the forgetful dependency package.
+-/
+theorem dependency_package_layer_requirements_payload_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependency_package_layer_requirements_payload_of_equation_boundary_dependencies
+        dependencies =
+      dependency_package_layer_requirements_payload_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency package-layer payload is also the tuple of the
+named strengthened package-layer projections.
+-/
+theorem dependency_package_layer_requirements_payload_of_equation_boundary_dependencies_to_named_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependency_package_layer_requirements_payload_of_equation_boundary_dependencies
+        dependencies =
+      ⟨ smoothabilityPackage_requirement_of_equation_boundary_dependencies
+          dependencies
+      , analyticFoundationPackage_requirement_of_equation_boundary_dependencies
+          dependencies
+      , surgeryPackage_requirement_of_equation_boundary_dependencies
+          dependencies
+      , finiteExtinctionPackage_requirement_of_equation_boundary_dependencies
+          dependencies
+      , topologyPackage_requirement_of_equation_boundary_dependencies
+          dependencies
+      ⟩ := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency package is equivalent to its five concrete
 package-layer requirements.
 -/
@@ -1516,6 +1707,257 @@ theorem dependency_milestone_requirements_payload_of_dependencies_to_package_lay
       , surgeryPackage_requirement_of_dependencies dependencies
       , finiteExtinctionPackage_requirement_of_dependencies dependencies
       , topologyPackage_requirement_of_dependencies dependencies
+      ⟩ := by
+  apply Subsingleton.elim
+
+/--
+Strengthened equation-boundary dependencies supply every milestone requirement
+after forgetting the explicit equation-boundary data.
+-/
+theorem dependencyMilestoneRequirement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (milestone : DependencyMilestone) :
+    dependencyMilestoneRequirement.{u} milestone :=
+  dependencyMilestoneRequirement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies) milestone
+
+/--
+The strengthened dependency milestone projection is the ordinary milestone
+projection applied to the forgetful dependency package.
+-/
+theorem dependencyMilestoneRequirement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (milestone : DependencyMilestone) :
+    dependencyMilestoneRequirement_of_equation_boundary_dependencies
+        dependencies milestone =
+      dependencyMilestoneRequirement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies)
+        milestone := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency milestone projection factors through the
+strengthened package-layer projection assigned to that milestone.
+-/
+theorem dependencyMilestoneRequirement_of_equation_boundary_dependencies_to_package_layer_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (milestone : DependencyMilestone) :
+    dependencyMilestoneRequirement_of_equation_boundary_dependencies
+        dependencies milestone =
+      dependencyPackageLayerRequirement_of_equation_boundary_dependencies
+        dependencies (dependencyLayerForMilestone milestone) := by
+  cases milestone <;> apply Subsingleton.elim
+
+/-- Strengthened dependencies supply the smoothability milestone requirement. -/
+theorem smoothabilityBridge_requirement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge :=
+  smoothabilityBridge_requirement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+
+/--
+Strengthened dependencies supply the analytic-foundation milestone requirement
+after forgetting equation-boundary data.
+-/
+theorem ricciFlowAnalyticFoundation_requirement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependencyMilestoneRequirement.{u}
+      DependencyMilestone.ricciFlowAnalyticFoundation :=
+  ricciFlowAnalyticFoundation_requirement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+
+/--
+Strengthened dependencies supply the Ricci-flow-with-surgery milestone
+requirement after forgetting equation-boundary data.
+-/
+theorem ricciFlowWithSurgery_requirement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery :=
+  ricciFlowWithSurgery_requirement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+
+/--
+Strengthened dependencies supply the Perelman-control milestone requirement
+after forgetting equation-boundary data.
+-/
+theorem perelmanSingularityControl_requirement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependencyMilestoneRequirement.{u}
+      DependencyMilestone.perelmanSingularityControl :=
+  perelmanSingularityControl_requirement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+
+/--
+Strengthened dependencies supply the finite-extinction milestone requirement
+after forgetting equation-boundary data.
+-/
+theorem finiteExtinction_requirement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction :=
+  finiteExtinction_requirement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+
+/--
+Strengthened dependencies supply the topology-extraction milestone requirement
+after forgetting equation-boundary data.
+-/
+theorem extinctionToSphereHomeomorphism_requirement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependencyMilestoneRequirement.{u}
+      DependencyMilestone.extinctionToSphereHomeomorphism :=
+  extinctionToSphereHomeomorphism_requirement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+
+/--
+The strengthened smoothability milestone projection is the ordinary projection
+of the forgetful dependency package.
+-/
+theorem smoothabilityBridge_requirement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    smoothabilityBridge_requirement_of_equation_boundary_dependencies
+        dependencies =
+      smoothabilityBridge_requirement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened analytic-foundation milestone projection is the ordinary
+projection of the forgetful dependency package.
+-/
+theorem ricciFlowAnalyticFoundation_requirement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ricciFlowAnalyticFoundation_requirement_of_equation_boundary_dependencies
+        dependencies =
+      ricciFlowAnalyticFoundation_requirement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened Ricci-flow-with-surgery milestone projection is the ordinary
+projection of the forgetful dependency package.
+-/
+theorem ricciFlowWithSurgery_requirement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ricciFlowWithSurgery_requirement_of_equation_boundary_dependencies
+        dependencies =
+      ricciFlowWithSurgery_requirement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened Perelman-control milestone projection is the ordinary
+projection of the forgetful dependency package.
+-/
+theorem perelmanSingularityControl_requirement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    perelmanSingularityControl_requirement_of_equation_boundary_dependencies
+        dependencies =
+      perelmanSingularityControl_requirement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened finite-extinction milestone projection is the ordinary
+projection of the forgetful dependency package.
+-/
+theorem finiteExtinction_requirement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    finiteExtinction_requirement_of_equation_boundary_dependencies
+        dependencies =
+      finiteExtinction_requirement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened topology-extraction milestone projection is the ordinary
+projection of the forgetful dependency package.
+-/
+theorem extinctionToSphereHomeomorphism_requirement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    extinctionToSphereHomeomorphism_requirement_of_equation_boundary_dependencies
+        dependencies =
+      extinctionToSphereHomeomorphism_requirement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Strengthened equation-boundary dependencies supply all six milestone
+requirements after forgetting equation-boundary data.
+-/
+theorem dependency_milestone_requirements_payload_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _smoothabilityBridge :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+    ∃ _ricciFlowAnalyticFoundation :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation,
+    ∃ _ricciFlowWithSurgery :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery,
+    ∃ _perelmanSingularityControl :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl,
+    ∃ _finiteExtinction :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism :=
+  dependency_milestone_requirements_payload_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+
+/--
+The strengthened dependency milestone payload is the ordinary milestone payload
+of the forgetful dependency package.
+-/
+theorem dependency_milestone_requirements_payload_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependency_milestone_requirements_payload_of_equation_boundary_dependencies
+        dependencies =
+      dependency_milestone_requirements_payload_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency milestone payload is also the tuple of the named
+strengthened milestone projections in ledger order.
+-/
+theorem dependency_milestone_requirements_payload_of_equation_boundary_dependencies_to_named_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependency_milestone_requirements_payload_of_equation_boundary_dependencies
+        dependencies =
+      ⟨ smoothabilityBridge_requirement_of_equation_boundary_dependencies
+          dependencies
+      , ricciFlowAnalyticFoundation_requirement_of_equation_boundary_dependencies
+          dependencies
+      , ricciFlowWithSurgery_requirement_of_equation_boundary_dependencies
+          dependencies
+      , perelmanSingularityControl_requirement_of_equation_boundary_dependencies
+          dependencies
+      , finiteExtinction_requirement_of_equation_boundary_dependencies
+          dependencies
+      , extinctionToSphereHomeomorphism_requirement_of_equation_boundary_dependencies
+          dependencies
+      ⟩ := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency milestone payload is also the tuple of strengthened
+package-layer projections assigned to the six ledger milestones.
+-/
+theorem dependency_milestone_requirements_payload_of_equation_boundary_dependencies_to_package_layer_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependency_milestone_requirements_payload_of_equation_boundary_dependencies
+        dependencies =
+      ⟨ smoothabilityPackage_requirement_of_equation_boundary_dependencies
+          dependencies
+      , analyticFoundationPackage_requirement_of_equation_boundary_dependencies
+          dependencies
+      , surgeryPackage_requirement_of_equation_boundary_dependencies
+          dependencies
+      , surgeryPackage_requirement_of_equation_boundary_dependencies
+          dependencies
+      , finiteExtinctionPackage_requirement_of_equation_boundary_dependencies
+          dependencies
+      , topologyPackage_requirement_of_equation_boundary_dependencies
+          dependencies
       ⟩ := by
   apply Subsingleton.elim
 
