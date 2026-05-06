@@ -7660,6 +7660,46 @@ theorem remaining_dependency_package_of_completion_certificate_of_equation_bound
   apply Subsingleton.elim
 
 /--
+Projecting the target statement from a strengthened remaining-package
+certificate recovers the strengthened remaining-package target route.
+-/
+theorem target_statement_of_completion_certificate_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    target_statement_of_completion_certificate
+      (completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies) =
+      poincare_statement_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical target from a strengthened remaining-package
+certificate recovers the strengthened remaining-package canonical target route.
+-/
+theorem canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies) =
+      canonical_completion_target_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the completion criterion from a strengthened remaining-package
+certificate recovers the strengthened remaining-package criterion route.
+-/
+theorem completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_eq
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies) =
+      completion_criterion_of_equation_boundary_remaining_dependency_package
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate dependency package produces the checked completion
 certificate through the strengthened remaining-package route.
 -/
@@ -7703,6 +7743,19 @@ theorem target_statement_of_completion_certificate_of_poincareProofDependenciesW
       (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
         dependencies) =
       poincare_statement_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical target from a strengthened aggregate certificate uses
+the strengthened aggregate canonical target route.
+-/
+theorem canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies) =
+      canonical_completion_target_of_equation_boundary_remaining_dependency_package
         dependencies := by
   apply Subsingleton.elim
 
@@ -10060,6 +10113,45 @@ theorem poincareCompletionCertificate_iff_remaining_dependency_milestone_require
     PoincareCompletionCertificate.{u} ↔ RemainingDependencyPackage.{u} :=
   ⟨remaining_dependency_package_of_completion_certificate,
     completion_certificate_of_remaining_dependency_milestone_requirements⟩
+
+/--
+The strengthened remaining-package certificate is propositionally the
+component-route certificate for the forgetful ordinary package.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_to_component_requirements_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      completion_certificate_of_remaining_dependency_component_requirements
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package certificate is propositionally the
+package-layer-route certificate for the forgetful ordinary package.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_to_package_layer_requirements_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      completion_certificate_of_remaining_dependency_package_layer_requirements
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package certificate is propositionally the
+milestone-route certificate for the forgetful ordinary package.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_to_milestone_requirements_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      completion_certificate_of_remaining_dependency_milestone_requirements
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
 
 /--
 The aggregate proof dependency package produces a checked completion
