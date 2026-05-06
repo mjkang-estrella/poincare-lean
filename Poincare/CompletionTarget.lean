@@ -3392,6 +3392,20 @@ theorem canonical_three_sphere_statement_of_equation_boundary_remaining_dependen
   apply Subsingleton.elim
 
 /--
+The strengthened remaining-package canonical topological statement agrees with
+the ordinary dependency canonical topological statement after forgetting
+equation-boundary data.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      canonical_three_sphere_statement_of_dependencies
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate dependency package exposes the canonical
 mathlib-shaped topological 3-sphere statement through its named target route.
 -/
@@ -3440,6 +3454,19 @@ theorem canonical_three_sphere_statement_of_poincareProofDependenciesWithEquatio
         dependencies =
       canonical_three_sphere_statement_of_equation_boundary_dependencies
         dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate canonical topological statement agrees with the
+ordinary aggregate dependency canonical topological statement after forgetting
+equation-boundary data.
+-/
+theorem canonical_three_sphere_statement_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      canonical_three_sphere_statement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
   apply Subsingleton.elim
 
 /-- The remaining dependency package supplies the smoothability package. -/
