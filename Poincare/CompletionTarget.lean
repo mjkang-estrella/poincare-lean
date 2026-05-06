@@ -9326,6 +9326,122 @@ theorem equation_boundary_verification_payload_of_completion_certificate_with_eq
   apply Subsingleton.elim
 
 /--
+A strengthened remaining dependency package and any verification payload for it
+reconstruct the boundary-aware checked certificate payload.
+-/
+theorem completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u})
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u} :=
+  ⟨dependencies,
+    completion_certificate_of_equation_boundary_remaining_dependency_package
+      dependencies,
+    rfl,
+    payload⟩
+
+/--
+The arbitrary-verification constructor stores the supplied strengthened
+dependency package, checked certificate, and verification payload.
+-/
+theorem completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u})
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+        dependencies payload =
+      (by
+        exact
+          ⟨dependencies,
+            completion_certificate_of_equation_boundary_remaining_dependency_package
+              dependencies,
+            rfl,
+            payload⟩) := by
+  apply Subsingleton.elim
+
+/--
+A strengthened aggregate dependency package and any verification payload for it
+reconstruct the boundary-aware checked certificate payload.
+-/
+theorem completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u} :=
+  completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+    dependencies payload
+
+/--
+The aggregate arbitrary-verification constructor delegates through the
+strengthened remaining-package arbitrary-verification constructor.
+-/
+theorem completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload
+        dependencies payload =
+      completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+        dependencies payload := by
+  apply Subsingleton.elim
+
+/--
+Projecting the checked certificate from the arbitrary-verification
+remaining-package constructor recovers the checked certificate built from that
+strengthened remaining package.
+-/
+theorem completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u})
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    completion_certificate_of_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+        dependencies payload) =
+      completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the verification payload from the arbitrary-verification
+remaining-package constructor recovers the supplied verification payload.
+-/
+theorem equation_boundary_verification_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u})
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    equation_boundary_verification_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+        dependencies payload) =
+      ⟨dependencies, payload⟩ := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware certificate payload is exactly an existential strengthened
+dependency package equipped with its equation-boundary verification payload.
+-/
+theorem poincareCompletionCertificateWithEquationBoundaryVerificationPayload_iff_equation_boundary_verification_payload :
+    PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u} ↔
+      ∃ dependencies : RemainingDependencyPackageWithEquationBoundary.{u},
+        EquationBoundaryVerificationPayload dependencies := by
+  constructor
+  · exact
+      equation_boundary_verification_payload_of_completion_certificate_with_equation_boundary_verification_payload
+  · rintro ⟨dependencies, payload⟩
+    exact
+      completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+        dependencies payload
+
+/--
+The boundary-aware certificate equivalence is the pair of the named
+verification-payload projection and arbitrary-verification constructor.
+-/
+theorem poincareCompletionCertificateWithEquationBoundaryVerificationPayload_iff_equation_boundary_verification_payload_eq :
+    poincareCompletionCertificateWithEquationBoundaryVerificationPayload_iff_equation_boundary_verification_payload =
+      (by
+        constructor
+        · exact
+            equation_boundary_verification_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        · rintro ⟨dependencies, payload⟩
+          exact
+            completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+              dependencies payload) := by
+  apply Subsingleton.elim
+
+/--
 Projecting the checked certificate from the boundary-aware remaining-package
 constructor recovers the checked certificate built from that strengthened
 remaining package.
