@@ -9513,6 +9513,209 @@ theorem equation_boundary_verification_payload_of_completion_certificate_with_eq
   apply Subsingleton.elim
 
 /--
+Project the equation-boundary package family from a boundary-aware certificate
+payload through its stored verification payload.
+-/
+theorem ricci_flow_equation_boundary_packages_of_completion_certificate_with_equation_boundary_verification_payload
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+          Nonempty
+            (RicciFlowEquationBoundaryPackage
+              (ricci_flow_data_of_surgery_package
+                (surgery_package_of_equation_boundary_surgery_package
+                  package))) := by
+  rcases
+      equation_boundary_verification_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload with
+    ⟨_dependencies, verificationPayload⟩
+  exact
+    ricci_flow_equation_boundary_packages_of_equation_boundary_verification_payload
+      verificationPayload
+
+/--
+The certificate equation-boundary package projection delegates through the
+stored verification-payload projection.
+-/
+theorem ricci_flow_equation_boundary_packages_of_completion_certificate_with_equation_boundary_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    ricci_flow_equation_boundary_packages_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      (by
+        rcases
+            equation_boundary_verification_payload_of_completion_certificate_with_equation_boundary_verification_payload
+              payload with
+          ⟨_dependencies, verificationPayload⟩
+        exact
+          ricci_flow_equation_boundary_packages_of_equation_boundary_verification_payload
+            verificationPayload) := by
+  apply Subsingleton.elim
+
+/--
+Project the equation/metric derivative payload from a boundary-aware
+certificate through its stored verification payload.
+-/
+theorem equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+        ∃ verification :
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package
+                (surgery_package_of_equation_boundary_surgery_package
+                  package))),
+        ∃ _verification_eq :
+          verification =
+            ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
+              package,
+        ∃ metricDerivative :
+          MetricTimeDerivativeData
+            (metric_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package
+                (surgery_package_of_equation_boundary_surgery_package
+                  package))),
+        ∃ _metricDerivative_eq :
+          metricDerivative =
+            metric_derivative_data_of_surgery_package_with_equation_boundary
+              package,
+          IsMetricTimeDerivativeOf
+            (metric_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package
+                (surgery_package_of_equation_boundary_surgery_package
+                  package)))
+            (metric_time_derivative_field_of_metric_derivative_data
+              metricDerivative) ∧
+          ∀ t : ℝ,
+            metric_time_derivative_at_time_of_metric_derivative_field
+              (metric_time_derivative_field_of_metric_derivative_data
+                metricDerivative) t =
+              ricci_flow_rhs_tensor
+                (curvature_data_of_ricci_flow_data
+                  (ricci_flow_data_of_surgery_package
+                    (surgery_package_of_equation_boundary_surgery_package
+                      package))) t := by
+  rcases
+      equation_boundary_verification_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload with
+    ⟨_dependencies, verificationPayload⟩
+  exact
+    equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+      verificationPayload
+
+/--
+The certificate derivative projection delegates through the stored
+verification-payload projection.
+-/
+theorem equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      (by
+        rcases
+            equation_boundary_verification_payload_of_completion_certificate_with_equation_boundary_verification_payload
+              payload with
+          ⟨_dependencies, verificationPayload⟩
+        exact
+          equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+            verificationPayload) := by
+  apply Subsingleton.elim
+
+/--
+Project the full derivative-strengthened surgery payload from a boundary-aware
+certificate through its stored verification payload.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+          SurgeryPackageWithEquationBoundaryDerivativePayload package := by
+  rcases
+      equation_boundary_verification_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload with
+    ⟨_dependencies, verificationPayload⟩
+  exact
+    surgery_package_with_equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+      verificationPayload
+
+/--
+The certificate full surgery-derivative projection delegates through the stored
+verification-payload projection.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      (by
+        rcases
+            equation_boundary_verification_payload_of_completion_certificate_with_equation_boundary_verification_payload
+              payload with
+          ⟨_dependencies, verificationPayload⟩
+        exact
+          surgery_package_with_equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+            verificationPayload) := by
+  apply Subsingleton.elim
+
+/--
+Project the analytic equation-boundary statement family from a boundary-aware
+certificate through its stored verification payload.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          AnalyticFoundationWithEquationBoundaryStatement flow := by
+  rcases
+      equation_boundary_verification_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload with
+    ⟨_dependencies, verificationPayload⟩
+  exact
+    analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload
+      verificationPayload
+
+/--
+The certificate analytic equation-boundary projection delegates through the
+stored verification-payload projection.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      (by
+        rcases
+            equation_boundary_verification_payload_of_completion_certificate_with_equation_boundary_verification_payload
+              payload with
+          ⟨_dependencies, verificationPayload⟩
+        exact
+          analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload
+            verificationPayload) := by
+  apply Subsingleton.elim
+
+/--
 A strengthened remaining dependency package and any verification payload for it
 reconstruct the boundary-aware checked certificate payload.
 -/
@@ -9828,6 +10031,116 @@ theorem equation_boundary_verification_payload_of_completion_certificate_with_eq
       ⟨dependencies,
         equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
           dependencies⟩ := by
+  apply Subsingleton.elim
+
+/--
+Projecting the equation-boundary package family from the boundary-aware
+remaining-package constructor recovers the strengthened remaining-package
+boundary-package projection.
+-/
+theorem ricci_flow_equation_boundary_packages_of_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ricci_flow_equation_boundary_packages_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package
+        dependencies) =
+      ricci_flow_equation_boundary_packages_of_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the derivative payload from the boundary-aware remaining-package
+constructor recovers the strengthened remaining-package derivative payload.
+-/
+theorem equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package
+        dependencies) =
+      equation_boundary_derivative_payload_of_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the full surgery derivative payload from the boundary-aware
+remaining-package constructor recovers the strengthened remaining-package full
+surgery derivative payload.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package
+        dependencies) =
+      surgery_package_with_equation_boundary_derivative_payload_of_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the analytic equation-boundary statement family from the
+boundary-aware remaining-package constructor recovers the strengthened
+remaining-package analytic/equation-boundary projection.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package
+        dependencies) =
+      analytic_foundation_with_equation_boundary_statements_of_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the equation-boundary package family from the boundary-aware
+aggregate constructor recovers the strengthened aggregate boundary-package
+projection.
+-/
+theorem ricci_flow_equation_boundary_packages_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ricci_flow_equation_boundary_packages_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies) =
+      ricci_flow_equation_boundary_packages_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the derivative payload from the boundary-aware aggregate constructor
+recovers the strengthened aggregate derivative payload.
+-/
+theorem equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies) =
+      equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the full surgery derivative payload from the boundary-aware
+aggregate constructor recovers the strengthened aggregate full surgery
+derivative payload.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies) =
+      surgery_package_with_equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the analytic equation-boundary statement family from the
+boundary-aware aggregate constructor recovers the strengthened aggregate
+analytic/equation-boundary projection.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies) =
+      analytic_foundation_with_equation_boundary_statements_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
   apply Subsingleton.elim
 
 /--
