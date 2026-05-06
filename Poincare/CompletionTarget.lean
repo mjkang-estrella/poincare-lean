@@ -2801,6 +2801,359 @@ theorem remainingDependencyPackage_iff_poincareProofDependencies_eq :
       Iff.rfl := by
   apply Subsingleton.elim
 
+/--
+Optional strengthened remaining dependency package whose surgery input carries
+an explicit Ricci-flow equation boundary package at each target manifold.
+-/
+abbrev RemainingDependencyPackageWithEquationBoundary : Prop :=
+  PoincareProofDependenciesWithEquationBoundary.{u}
+
+/--
+The strengthened remaining dependency package is exactly the strengthened
+aggregate dependency package.
+-/
+theorem remainingDependencyPackageWithEquationBoundary_eq :
+    RemainingDependencyPackageWithEquationBoundary.{u} =
+      PoincareProofDependenciesWithEquationBoundary.{u} :=
+  rfl
+
+/--
+The strengthened remaining dependency package is definitionally equivalent to
+the strengthened aggregate dependency package.
+-/
+theorem remainingDependencyPackageWithEquationBoundary_iff_poincareProofDependenciesWithEquationBoundary :
+    RemainingDependencyPackageWithEquationBoundary.{u} ↔
+      PoincareProofDependenciesWithEquationBoundary.{u} :=
+  Iff.rfl
+
+/--
+The strengthened remaining-dependency equivalence is the definitional identity
+equivalence.
+-/
+theorem remainingDependencyPackageWithEquationBoundary_iff_poincareProofDependenciesWithEquationBoundary_eq :
+    remainingDependencyPackageWithEquationBoundary_iff_poincareProofDependenciesWithEquationBoundary =
+      Iff.rfl := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the strengthened equation-boundary package recovers the ordinary
+remaining dependency package used by the canonical completion target.
+-/
+theorem remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    RemainingDependencyPackage.{u} :=
+  dependencies_of_equation_boundary_dependencies dependencies
+
+/--
+The strengthened remaining-package forgetful map is the aggregate dependency
+forgetful map.
+-/
+theorem remaining_dependency_package_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      dependencies_of_equation_boundary_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining dependency package exposes its strengthened
+component payload.
+-/
+theorem remainingDependencyPackageWithEquationBoundary_components_payload
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ∃ _smoothability : SmoothabilityPackage.{u},
+    ∃ _surgery :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+      ExtinctionTopologyExtractionPackage.{u} := by
+  exact poincareProofDependenciesWithEquationBoundary_components_payload
+    dependencies
+
+/--
+The strengthened remaining-package component payload is the strengthened
+aggregate dependency component payload.
+-/
+theorem remainingDependencyPackageWithEquationBoundary_components_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    remainingDependencyPackageWithEquationBoundary_components_payload
+        dependencies =
+      poincareProofDependenciesWithEquationBoundary_components_payload
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining dependency package is equivalent to its three
+component inputs, with equation-boundary data in the surgery component.
+-/
+theorem remainingDependencyPackageWithEquationBoundary_iff_components :
+    RemainingDependencyPackageWithEquationBoundary.{u} ↔
+      ∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty
+              (Σ n : ℕ∞ω,
+                FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+        ExtinctionTopologyExtractionPackage.{u} := by
+  exact poincareProofDependenciesWithEquationBoundary_iff_components
+
+/--
+The strengthened remaining-package component equivalence is the strengthened
+aggregate component equivalence.
+-/
+theorem remainingDependencyPackageWithEquationBoundary_iff_components_eq :
+    remainingDependencyPackageWithEquationBoundary_iff_components.{u} =
+      poincareProofDependenciesWithEquationBoundary_iff_components.{u} := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining dependency package supplies target-family surgery
+packages with explicit equation-boundary data.
+-/
+theorem surgery_packages_with_equation_boundary_of_remaining_dependency_package
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        Nonempty
+          (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :=
+  dependencies.surgery
+
+/--
+The strengthened remaining-dependency surgery projection is the stored
+strengthened surgery field.
+-/
+theorem surgery_packages_with_equation_boundary_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    surgery_packages_with_equation_boundary_of_remaining_dependency_package
+        dependencies =
+      dependencies.surgery :=
+  rfl
+
+/--
+Forgetting equation-boundary data from the strengthened remaining package gives
+the ordinary target-family surgery packages.
+-/
+theorem surgery_packages_of_equation_boundary_remaining_dependency_package
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M) :=
+  surgery_packages_of_equation_boundary_dependencies dependencies
+
+/--
+The ordinary surgery projection from a strengthened remaining package is the
+dependency-projection forgetful map.
+-/
+theorem surgery_packages_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    surgery_packages_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      surgery_packages_of_equation_boundary_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining package exposes the Ricci-flow equation-boundary
+package selected inside each strengthened surgery package.
+-/
+theorem ricci_flow_equation_boundary_packages_of_remaining_dependency_package
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+          Nonempty
+            (RicciFlowEquationBoundaryPackage
+              (ricci_flow_data_of_surgery_package
+                (surgery_package_of_equation_boundary_surgery_package
+                  package))) :=
+  ricci_flow_equation_boundary_packages_of_dependencies dependencies
+
+/--
+The strengthened remaining-package equation-boundary projection is the
+dependency-projection equation-boundary projection.
+-/
+theorem ricci_flow_equation_boundary_packages_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ricci_flow_equation_boundary_packages_of_remaining_dependency_package
+        dependencies =
+      ricci_flow_equation_boundary_packages_of_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining package exposes the analytic foundation together
+with its explicit equation-boundary package for each selected surgery package.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_remaining_dependency_package
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          AnalyticFoundationWithEquationBoundaryStatement flow :=
+  analytic_foundation_with_equation_boundary_statements_of_dependencies
+    dependencies
+
+/--
+The strengthened remaining-package analytic/equation-boundary projection is
+the dependency-projection analytic/equation-boundary projection.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    analytic_foundation_with_equation_boundary_statements_of_remaining_dependency_package
+        dependencies =
+      analytic_foundation_with_equation_boundary_statements_of_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining dependency package produces the canonical completion
+payload through the strengthened aggregate dependency route.
+-/
+theorem canonical_completion_payload_of_equation_boundary_remaining_dependency_package
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ∃ _target : canonicalCompletionTarget.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  canonical_completion_payload_of_poincare_completion_payload
+    (poincare_completion_payload_of_equation_boundary_dependencies
+      dependencies)
+
+/--
+The strengthened remaining-package canonical completion payload is obtained
+from the strengthened aggregate project completion payload.
+-/
+theorem canonical_completion_payload_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      canonical_completion_payload_of_poincare_completion_payload
+        (poincare_completion_payload_of_equation_boundary_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining dependency package proves the canonical completion
+target through the strengthened aggregate dependency route.
+-/
+theorem canonical_completion_target_of_equation_boundary_remaining_dependency_package
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonicalCompletionTarget.{u} := by
+  rcases
+      canonical_completion_payload_of_equation_boundary_remaining_dependency_package
+        dependencies with
+    ⟨target, _criterion⟩
+  exact target
+
+/--
+The strengthened remaining-package canonical target is selected from its named
+canonical completion payload.
+-/
+theorem canonical_completion_target_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_completion_target_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      (by
+        rcases
+            canonical_completion_payload_of_equation_boundary_remaining_dependency_package
+              dependencies with
+          ⟨target, _criterion⟩
+        exact target) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining dependency package proves the project Poincare
+target statement through the canonical target route.
+-/
+theorem poincare_statement_of_equation_boundary_remaining_dependency_package
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} :=
+  canonical_completion_target_of_equation_boundary_remaining_dependency_package
+    dependencies
+
+/--
+The strengthened remaining-package project target is the canonical target
+projection viewed as the project statement.
+-/
+theorem poincare_statement_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      canonical_completion_target_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining dependency package discharges the explicit
+universe-indexed completion criterion.
+-/
+theorem completion_criterion_of_equation_boundary_remaining_dependency_package
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    CompletionCriterionAtUniverse witness := by
+  rcases
+      canonical_completion_payload_of_equation_boundary_remaining_dependency_package
+        dependencies with
+    ⟨_target, criterion⟩
+  exact criterion witness
+
+/--
+The strengthened remaining-package completion criterion is selected from its
+named canonical completion payload.
+-/
+theorem completion_criterion_of_equation_boundary_remaining_dependency_package_eq
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_criterion_of_equation_boundary_remaining_dependency_package
+        witness dependencies =
+      (by
+        rcases
+            canonical_completion_payload_of_equation_boundary_remaining_dependency_package
+              dependencies with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining dependency package exposes the canonical
+three-sphere statement by applying the existing topological statement extractor.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_remaining_dependency_package
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) :=
+  canonical_three_sphere_statement_of_poincare_statement
+    (poincare_statement_of_equation_boundary_remaining_dependency_package
+      dependencies)
+
+/--
+The strengthened remaining-package canonical three-sphere statement is the
+canonical target's topological statement projection.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      canonical_three_sphere_statement_of_poincare_statement
+        (poincare_statement_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
 /-- The remaining dependency package supplies the smoothability package. -/
 theorem smoothability_package_of_remaining_dependency_package
     (dependencies : RemainingDependencyPackage.{u}) :
@@ -7020,6 +7373,130 @@ theorem completion_certificate_of_poincareProofDependencies_eq
     completion_certificate_of_poincareProofDependencies dependencies =
       poincareCompletionCertificate_iff_poincareProofDependencies.mpr
         dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining dependency package produces the checked completion
+certificate after forgetting to the ordinary remaining dependency package.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    PoincareCompletionCertificate.{u} := by
+  rcases
+      canonical_completion_payload_of_equation_boundary_remaining_dependency_package
+        dependencies with
+    ⟨target, criterion⟩
+  exact
+    ⟨canonicalCompletionTheoremName, rfl,
+      remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+        dependencies,
+      target, criterion⟩
+
+/--
+The strengthened remaining-package certificate stores the forgetful ordinary
+remaining package and the strengthened canonical completion payload.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      (by
+        rcases
+            canonical_completion_payload_of_equation_boundary_remaining_dependency_package
+              dependencies with
+          ⟨target, criterion⟩
+        exact
+          ⟨canonicalCompletionTheoremName, rfl,
+            remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies,
+            target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package certificate is propositionally the ordinary
+remaining-package certificate for the forgetful package.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      completion_certificate_of_remaining_dependency_package
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Projecting the ordinary remaining-dependency package from a strengthened
+remaining-package certificate recovers the forgetful ordinary package.
+-/
+theorem remaining_dependency_package_of_completion_certificate_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    remaining_dependency_package_of_completion_certificate
+      (completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies) =
+      remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package produces the checked completion
+certificate through the strengthened remaining-package route.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_equation_boundary_remaining_dependency_package
+    dependencies
+
+/--
+The strengthened aggregate certificate constructor delegates to the strengthened
+remaining-package certificate constructor.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting aggregate dependencies from a strengthened aggregate certificate
+recovers the ordinary forgetful aggregate package.
+-/
+theorem poincareProofDependencies_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareProofDependencies_of_completion_certificate
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies) =
+      dependencies_of_equation_boundary_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project target from a strengthened aggregate certificate uses
+the strengthened aggregate project statement route.
+-/
+theorem target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    target_statement_of_completion_certificate
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies) =
+      poincare_statement_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the completion criterion from a strengthened aggregate certificate
+uses the strengthened remaining-package criterion route.
+-/
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies) =
+      completion_criterion_of_equation_boundary_remaining_dependency_package
+        witness dependencies := by
   apply Subsingleton.elim
 
 /--
