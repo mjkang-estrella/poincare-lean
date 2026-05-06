@@ -3313,6 +3313,81 @@ theorem poincare_completion_payload_of_equation_boundary_remaining_dependency_pa
   apply Subsingleton.elim
 
 /--
+The strengthened remaining dependency package exposes the project completion
+payload through the certified extraction-derivation route while retaining
+explicit equation-boundary data.
+-/
+theorem poincare_completion_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies
+    dependencies
+
+/--
+The strengthened remaining-package certified project payload is the
+dependency-level boundary-preserving certified project payload.
+-/
+theorem poincare_completion_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
+        dependencies =
+      poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package certified project payload agrees directly
+with the dependency-level boundary-preserving certified project payload.
+-/
+theorem poincare_completion_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation_to_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
+        dependencies =
+      poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining dependency package produces the canonical completion
+payload through the certified extraction-derivation project payload.
+-/
+theorem canonical_completion_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ∃ _target : canonicalCompletionTarget.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  canonical_completion_payload_of_poincare_completion_payload
+    (poincare_completion_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
+      dependencies)
+
+/--
+The strengthened remaining-package certified canonical payload is obtained
+from the strengthened remaining-package certified project payload.
+-/
+theorem canonical_completion_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
+        dependencies =
+      canonical_completion_payload_of_poincare_completion_payload
+        (poincare_completion_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package certified canonical payload agrees directly
+with the canonical bridge applied to the dependency-level certified project
+payload.
+-/
+theorem canonical_completion_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation_to_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
+        dependencies =
+      canonical_completion_payload_of_poincare_completion_payload
+        (poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate dependency package exposes the canonical completion
 payload through the strengthened remaining-package route.
 -/
@@ -3355,6 +3430,80 @@ theorem poincare_completion_payload_of_poincareProofDependenciesWithEquationBoun
     poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary
         dependencies =
       poincare_completion_payload_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package exposes the canonical completion
+payload through the strengthened remaining-package certified
+extraction-derivation route.
+-/
+theorem canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _target : canonicalCompletionTarget.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  canonical_completion_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
+    dependencies
+
+/--
+The strengthened aggregate certified canonical payload is the strengthened
+remaining-package certified canonical payload.
+-/
+theorem canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        dependencies =
+      canonical_completion_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate certified canonical payload agrees directly with
+the dependency-level boundary-preserving certified project payload after the
+canonical payload bridge.
+-/
+theorem canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        dependencies =
+      canonical_completion_payload_of_poincare_completion_payload
+        (poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package exposes the project completion
+payload through the strengthened remaining-package certified
+extraction-derivation route.
+-/
+theorem poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
+    dependencies
+
+/--
+The strengthened aggregate certified project payload is the strengthened
+remaining-package certified project payload.
+-/
+theorem poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        dependencies =
+      poincare_completion_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate certified project payload agrees directly with the
+dependency-level boundary-preserving certified project payload.
+-/
+theorem poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        dependencies =
+      poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies
         dependencies := by
   apply Subsingleton.elim
 
