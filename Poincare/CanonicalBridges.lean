@@ -10799,6 +10799,24 @@ theorem canonical_three_sphere_statement_of_completion_certificate_of_poincarePr
               extractSphere derivation)) := by
   apply Subsingleton.elim
 
+theorem canonical_three_sphere_statement_of_completion_certificate_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies) =
+      canonical_three_sphere_statement_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_three_sphere_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies) =
+      canonical_three_sphere_statement_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
 /--
 Projecting the full canonical-statement payload from the route completion
 certificates returns the payload assembled from the named route endpoints.
