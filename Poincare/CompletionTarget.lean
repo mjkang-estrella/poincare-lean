@@ -3083,6 +3083,28 @@ theorem surgery_package_with_equation_boundary_derivative_payload_of_remaining_d
   apply Subsingleton.elim
 
 /--
+The older strengthened remaining-package equation/metric derivative payload is
+the forgetful projection of the full derivative-strengthened surgery payload.
+-/
+theorem equation_boundary_derivative_payload_of_remaining_dependency_package_to_surgery_derivative_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    equation_boundary_derivative_payload_of_remaining_dependency_package
+        dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            surgery_package_with_equation_boundary_derivative_payload_of_remaining_dependency_package
+              dependencies M with
+          ⟨n, package, _basePackage, _basePackage_eq, _equationBoundary,
+            verification, verification_eq, metricDerivative,
+            metricDerivative_eq, derivativeId, equationAtTime,
+            _analyticBoundary, _finiteExtinction⟩
+        exact
+          ⟨n, package, verification, verification_eq, metricDerivative,
+            metricDerivative_eq, derivativeId, equationAtTime⟩) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining package exposes the analytic foundation together
 with its explicit equation-boundary package for each selected surgery package.
 -/
@@ -3318,6 +3340,28 @@ theorem surgery_package_with_equation_boundary_derivative_payload_of_poincarePro
         dependencies =
       surgery_package_with_equation_boundary_derivative_payload_of_dependencies
         dependencies := by
+  apply Subsingleton.elim
+
+/--
+The older strengthened aggregate equation/metric derivative payload is the
+forgetful projection of the full derivative-strengthened surgery payload.
+-/
+theorem equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary_to_surgery_derivative_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            surgery_package_with_equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary
+              dependencies M with
+          ⟨n, package, _basePackage, _basePackage_eq, _equationBoundary,
+            verification, verification_eq, metricDerivative,
+            metricDerivative_eq, derivativeId, equationAtTime,
+            _analyticBoundary, _finiteExtinction⟩
+        exact
+          ⟨n, package, verification, verification_eq, metricDerivative,
+            metricDerivative_eq, derivativeId, equationAtTime⟩) := by
   apply Subsingleton.elim
 
 /--
