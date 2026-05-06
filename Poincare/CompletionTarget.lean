@@ -11243,6 +11243,78 @@ theorem completion_criterion_of_completion_certificate_with_equation_boundary_ve
   apply Subsingleton.elim
 
 /--
+The boundary-aware certificate canonical-payload projection can be routed
+through the projected strengthened dependency package.
+-/
+theorem canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      canonical_completion_payload_of_equation_boundary_remaining_dependency_package
+        (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware certificate project-payload projection can be routed through
+the projected strengthened dependency package.
+-/
+theorem poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      poincare_completion_payload_of_equation_boundary_remaining_dependency_package
+        (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware certificate target-statement projection can be routed
+through the projected strengthened dependency package.
+-/
+theorem target_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    target_statement_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      poincare_statement_of_equation_boundary_remaining_dependency_package
+        (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware certificate canonical-target projection can be routed
+through the projected strengthened dependency package.
+-/
+theorem canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      canonical_completion_target_of_equation_boundary_remaining_dependency_package
+        (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware certificate completion-criterion projection can be routed
+through the projected strengthened dependency package.
+-/
+theorem completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
+    (witness : Type u)
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload
+        witness payload =
+      completion_criterion_of_equation_boundary_remaining_dependency_package
+        witness
+        (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
 The arbitrary-verification remaining-package constructor exposes the named
 strengthened remaining-package canonical payload route.
 -/
