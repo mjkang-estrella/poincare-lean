@@ -11351,6 +11351,118 @@ theorem poincareCompletionCertificate_project_statement_payload_of_completion_ce
   apply Subsingleton.elim
 
 /--
+The literal-payload constructor recovers the named boundary-target-payload
+remaining-package certificate from its projected literal payload.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+          dependencies
+          (poincare_target_payload_of_equation_boundary_dependencies
+            dependencies))) =
+      completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The literal-payload constructor recovers the named boundary-target-payload
+aggregate certificate from its projected literal payload.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+          dependencies
+          (poincare_target_payload_of_equation_boundary_dependencies
+            dependencies))) =
+      completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate-dependency payload constructor recovers the named
+boundary-target-payload remaining-package certificate from its projected
+aggregate-dependency payload.
+-/
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+          dependencies
+          (poincare_target_payload_of_equation_boundary_dependencies
+            dependencies))) =
+      completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate-dependency payload constructor recovers the named
+boundary-target-payload aggregate certificate from its projected
+aggregate-dependency payload.
+-/
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+          dependencies
+          (poincare_target_payload_of_equation_boundary_dependencies
+            dependencies))) =
+      completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The project-statement payload constructor recovers the named
+boundary-target-payload remaining-package certificate from its projected
+project-statement payload.
+-/
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+          dependencies
+          (poincare_target_payload_of_equation_boundary_dependencies
+            dependencies))) =
+      completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The project-statement payload constructor recovers the named
+boundary-target-payload aggregate certificate from its projected
+project-statement payload.
+-/
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+          dependencies
+          (poincare_target_payload_of_equation_boundary_dependencies
+            dependencies))) =
+      completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 Projecting the theorem-name payload from the named boundary-preserving
 extraction-derivation target-payload remaining-package certificate returns the
 reserved theorem name literal.
