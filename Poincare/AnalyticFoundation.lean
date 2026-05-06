@@ -864,6 +864,106 @@ theorem ricciFlowAnalyticFoundationStatement_eq
   rfl
 
 /--
+Analytic foundation strengthened with the explicit Ricci-flow equation boundary.
+
+This is a theorem-shaped target for future wiring: it requires both the existing
+analytic derivation stack and a boundary package witnessing the pointwise
+equation `∂ₜ g = -2 Ricci`.
+-/
+def AnalyticFoundationWithEquationBoundaryStatement
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) : Prop :=
+  AnalyticFoundationDerivationStatement flow ∧
+    RicciFlowEquationBoundaryStatement flow
+
+/-- The strengthened analytic-boundary statement is a conjunction of its parts. -/
+theorem analyticFoundationWithEquationBoundaryStatement_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    AnalyticFoundationWithEquationBoundaryStatement flow =
+      (AnalyticFoundationDerivationStatement flow ∧
+        RicciFlowEquationBoundaryStatement flow) :=
+  rfl
+
+/-- Assemble the strengthened analytic-boundary statement from its components. -/
+theorem analytic_foundation_with_equation_boundary_of_derivation_and_boundary
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (derivation : AnalyticFoundationDerivationStatement flow)
+    (boundary : RicciFlowEquationBoundaryStatement flow) :
+    AnalyticFoundationWithEquationBoundaryStatement flow :=
+  ⟨derivation, boundary⟩
+
+/-- The strengthened analytic-boundary assembler is the conjunction constructor. -/
+@[simp] theorem analytic_foundation_with_equation_boundary_of_derivation_and_boundary_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (derivation : AnalyticFoundationDerivationStatement flow)
+    (boundary : RicciFlowEquationBoundaryStatement flow) :
+    analytic_foundation_with_equation_boundary_of_derivation_and_boundary
+      derivation boundary =
+        ⟨derivation, boundary⟩ :=
+  rfl
+
+/-- Project the analytic derivation stack from the strengthened statement. -/
+theorem analytic_foundation_derivation_of_with_equation_boundary
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (statement : AnalyticFoundationWithEquationBoundaryStatement flow) :
+    AnalyticFoundationDerivationStatement flow :=
+  statement.1
+
+/-- The analytic-derivation projection is the first component. -/
+@[simp] theorem analytic_foundation_derivation_of_with_equation_boundary_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (statement : AnalyticFoundationWithEquationBoundaryStatement flow) :
+    analytic_foundation_derivation_of_with_equation_boundary statement =
+      statement.1 :=
+  rfl
+
+/-- Project the equation boundary from the strengthened statement. -/
+theorem equation_boundary_of_analytic_foundation_with_equation_boundary
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (statement : AnalyticFoundationWithEquationBoundaryStatement flow) :
+    RicciFlowEquationBoundaryStatement flow :=
+  statement.2
+
+/-- The equation-boundary projection is the second component. -/
+@[simp] theorem equation_boundary_of_analytic_foundation_with_equation_boundary_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (statement : AnalyticFoundationWithEquationBoundaryStatement flow) :
+    equation_boundary_of_analytic_foundation_with_equation_boundary statement =
+      statement.2 :=
+  rfl
+
+/--
 Assemble the fixed-flow analytic derivation statement from the named analytic
 foundation components.
 -/
@@ -2378,6 +2478,42 @@ theorem analytic_foundation_derivation_statement_of_analytic_foundation_package_
         (curvature_evolution_of_analytic_foundation_package package)
         (ricci_identification_of_analytic_foundation_package package)
         (equation_evidence_of_analytic_foundation_package package) :=
+  rfl
+
+/--
+An analytic-foundation package plus an explicit equation-boundary package
+supplies the strengthened analytic-boundary statement.
+-/
+theorem analytic_foundation_with_equation_boundary_of_package
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M)
+    (boundary : RicciFlowEquationBoundaryPackage
+      (ricci_flow_data_of_analytic_foundation_package package)) :
+    AnalyticFoundationWithEquationBoundaryStatement
+      (ricci_flow_data_of_analytic_foundation_package package) :=
+  ⟨analytic_foundation_derivation_statement_of_analytic_foundation_package
+      package,
+    ⟨boundary⟩⟩
+
+/--
+The package-plus-boundary strengthened statement is the pair of the assembled
+derivation statement and the provided boundary package.
+-/
+@[simp] theorem analytic_foundation_with_equation_boundary_of_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M)
+    (boundary : RicciFlowEquationBoundaryPackage
+      (ricci_flow_data_of_analytic_foundation_package package)) :
+    analytic_foundation_with_equation_boundary_of_package package boundary =
+      ⟨analytic_foundation_derivation_statement_of_analytic_foundation_package
+          package,
+        ⟨boundary⟩⟩ :=
   rfl
 
 /--

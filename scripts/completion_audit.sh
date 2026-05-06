@@ -438,6 +438,22 @@ check_decl "Ricci-flow equation boundary statement is declared" \
   '^def RicciFlowEquationBoundaryStatement\b' Poincare/AnalyticFoundation.lean
 check_decl "Ricci-flow equation boundary statement equality theorem is declared" \
   '^theorem ricciFlowEquationBoundaryStatement_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "strengthened analytic equation-boundary statement is declared" \
+  '^def AnalyticFoundationWithEquationBoundaryStatement\b' Poincare/AnalyticFoundation.lean
+check_decl "strengthened analytic equation-boundary statement equality theorem is declared" \
+  '^theorem analyticFoundationWithEquationBoundaryStatement_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "strengthened analytic equation-boundary assembler is declared" \
+  '^theorem analytic_foundation_with_equation_boundary_of_derivation_and_boundary\b' Poincare/AnalyticFoundation.lean
+check_decl "strengthened analytic equation-boundary assembler equality theorem is declared" \
+  '^@\[simp\] theorem analytic_foundation_with_equation_boundary_of_derivation_and_boundary_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "strengthened analytic equation-boundary derivation projection is declared" \
+  '^theorem analytic_foundation_derivation_of_with_equation_boundary\b' Poincare/AnalyticFoundation.lean
+check_decl "strengthened analytic equation-boundary derivation equality theorem is declared" \
+  '^@\[simp\] theorem analytic_foundation_derivation_of_with_equation_boundary_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "strengthened analytic equation-boundary projection is declared" \
+  '^theorem equation_boundary_of_analytic_foundation_with_equation_boundary\b' Poincare/AnalyticFoundation.lean
+check_decl "strengthened analytic equation-boundary projection equality theorem is declared" \
+  '^@\[simp\] theorem equation_boundary_of_analytic_foundation_with_equation_boundary_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation fixed derivation statement is declared" \
   '^def AnalyticFoundationDerivationStatement\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation fixed derivation statement equality contract is declared" \
@@ -627,6 +643,10 @@ check_decl "analytic foundation package derivation statement projection is decla
   '^theorem analytic_foundation_derivation_statement_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation package derivation statement equality theorem is declared" \
   '^theorem analytic_foundation_derivation_statement_of_analytic_foundation_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation package plus equation boundary theorem is declared" \
+  '^theorem analytic_foundation_with_equation_boundary_of_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic foundation package plus equation boundary equality theorem is declared" \
+  '^@\[simp\] theorem analytic_foundation_with_equation_boundary_of_package_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation package statement projection is declared" \
   '^theorem analytic_foundation_statement_of_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation package statement equality theorem is declared" \
@@ -7612,6 +7632,14 @@ open scoped Manifold ContDiff
 #check Poincare.equation_evidence_of_equation_boundary_package_eq
 #check Poincare.RicciFlowEquationBoundaryStatement
 #check Poincare.ricciFlowEquationBoundaryStatement_eq
+#check Poincare.AnalyticFoundationWithEquationBoundaryStatement
+#check Poincare.analyticFoundationWithEquationBoundaryStatement_eq
+#check Poincare.analytic_foundation_with_equation_boundary_of_derivation_and_boundary
+#check Poincare.analytic_foundation_with_equation_boundary_of_derivation_and_boundary_eq
+#check Poincare.analytic_foundation_derivation_of_with_equation_boundary
+#check Poincare.analytic_foundation_derivation_of_with_equation_boundary_eq
+#check Poincare.equation_boundary_of_analytic_foundation_with_equation_boundary
+#check Poincare.equation_boundary_of_analytic_foundation_with_equation_boundary_eq
 #check Poincare.initial_metric_compatibility_of_analytic_foundation_package
 #check Poincare.deturck_gauge_fixing_of_analytic_foundation_package
 #check Poincare.deturck_background_metric_compatibility_of_analytic_foundation_package
@@ -7704,6 +7732,8 @@ open scoped Manifold ContDiff
 #check Poincare.analytic_foundation_derivation_statement_of_analytic_foundation_package_eq
 #check Poincare.analytic_foundation_statement_of_analytic_foundation_package
 #check Poincare.analytic_foundation_statement_of_analytic_foundation_package_eq
+#check Poincare.analytic_foundation_with_equation_boundary_of_package
+#check Poincare.analytic_foundation_with_equation_boundary_of_package_eq
 #check Poincare.analytic_foundation_payload_of_analytic_foundation_package
 #check Poincare.analytic_foundation_payload_of_analytic_foundation_package_eq
 #check Poincare.ricci_flow_data_of_analytic_foundation_statement
@@ -9995,6 +10025,14 @@ open scoped Manifold ContDiff
 #check Poincare.equation_evidence_of_equation_boundary_package_eq
 #check Poincare.RicciFlowEquationBoundaryStatement
 #check Poincare.ricciFlowEquationBoundaryStatement_eq
+#check Poincare.AnalyticFoundationWithEquationBoundaryStatement
+#check Poincare.analyticFoundationWithEquationBoundaryStatement_eq
+#check Poincare.analytic_foundation_with_equation_boundary_of_derivation_and_boundary
+#check Poincare.analytic_foundation_with_equation_boundary_of_derivation_and_boundary_eq
+#check Poincare.analytic_foundation_derivation_of_with_equation_boundary
+#check Poincare.analytic_foundation_derivation_of_with_equation_boundary_eq
+#check Poincare.equation_boundary_of_analytic_foundation_with_equation_boundary
+#check Poincare.equation_boundary_of_analytic_foundation_with_equation_boundary_eq
 #check Poincare.initial_metric_compatibility_of_analytic_foundation_package
 #check Poincare.deturck_gauge_fixing_of_analytic_foundation_package
 #check Poincare.deturck_background_metric_compatibility_of_analytic_foundation_package
@@ -10087,6 +10125,8 @@ open scoped Manifold ContDiff
 #check Poincare.analytic_foundation_derivation_statement_of_analytic_foundation_package_eq
 #check Poincare.analytic_foundation_statement_of_analytic_foundation_package
 #check Poincare.analytic_foundation_statement_of_analytic_foundation_package_eq
+#check Poincare.analytic_foundation_with_equation_boundary_of_package
+#check Poincare.analytic_foundation_with_equation_boundary_of_package_eq
 #check Poincare.analytic_foundation_payload_of_analytic_foundation_package
 #check Poincare.analytic_foundation_payload_of_analytic_foundation_package_eq
 #check Poincare.ricci_flow_data_of_analytic_foundation_statement
