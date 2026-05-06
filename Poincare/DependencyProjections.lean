@@ -1358,6 +1358,27 @@ theorem surgery_package_with_equation_boundary_derivative_payload_of_dependencie
   apply Subsingleton.elim
 
 /--
+The older dependency-level equation/metric derivative payload is the forgetful
+projection of the full derivative-strengthened surgery payload.
+-/
+theorem equation_boundary_derivative_payload_of_dependencies_to_surgery_derivative_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_derivative_payload_of_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            surgery_package_with_equation_boundary_derivative_payload_of_dependencies
+              dependencies M with
+          ⟨n, package, _basePackage, _basePackage_eq, _equationBoundary,
+            verification, verification_eq, metricDerivative,
+            metricDerivative_eq, derivativeId, equationAtTime,
+            _analyticBoundary, _finiteExtinction⟩
+        exact
+          ⟨n, package, verification, verification_eq, metricDerivative,
+            metricDerivative_eq, derivativeId, equationAtTime⟩) := by
+  apply Subsingleton.elim
+
+/--
 Strengthened dependencies expose theorem-shaped analytic foundation statements
 that include the explicit Ricci-flow equation boundary.
 -/

@@ -9353,18 +9353,30 @@ abbrev SurgeryPackageWithEquationBoundaryDerivativePayload
         surgery_package_of_equation_boundary_surgery_package package,
     ∃ _equationBoundary :
       RicciFlowEquationBoundaryPackage
-        (ricci_flow_data_of_surgery_package basePackage),
-    ∃ _verification :
+        (ricci_flow_data_of_surgery_package
+          (surgery_package_of_equation_boundary_surgery_package package)),
+    ∃ verification :
       RicciFlowEquationVerification
         (curvature_data_of_ricci_flow_data
-          (ricci_flow_data_of_surgery_package basePackage)),
+          (ricci_flow_data_of_surgery_package
+            (surgery_package_of_equation_boundary_surgery_package package))),
+    ∃ _verification_eq :
+      verification =
+        ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
+          package,
     ∃ metricDerivative :
       MetricTimeDerivativeData
         (metric_of_ricci_flow_data
-          (ricci_flow_data_of_surgery_package basePackage)),
+          (ricci_flow_data_of_surgery_package
+            (surgery_package_of_equation_boundary_surgery_package package))),
+    ∃ _metricDerivative_eq :
+      metricDerivative =
+        metric_derivative_data_of_surgery_package_with_equation_boundary
+          package,
       IsMetricTimeDerivativeOf
         (metric_of_ricci_flow_data
-          (ricci_flow_data_of_surgery_package basePackage))
+          (ricci_flow_data_of_surgery_package
+            (surgery_package_of_equation_boundary_surgery_package package)))
         (metric_time_derivative_field_of_metric_derivative_data
           metricDerivative) ∧
       (∀ t : ℝ,
@@ -9373,10 +9385,13 @@ abbrev SurgeryPackageWithEquationBoundaryDerivativePayload
             metricDerivative) t =
           ricci_flow_rhs_tensor
             (curvature_data_of_ricci_flow_data
-              (ricci_flow_data_of_surgery_package basePackage)) t) ∧
+              (ricci_flow_data_of_surgery_package
+                (surgery_package_of_equation_boundary_surgery_package
+                  package))) t) ∧
       ∃ _analyticBoundary :
         AnalyticFoundationWithEquationBoundaryStatement
-          (ricci_flow_data_of_surgery_package basePackage),
+          (ricci_flow_data_of_surgery_package
+            (surgery_package_of_equation_boundary_surgery_package package)),
         FiniteExtinctionByRicciFlowWithSurgery M
 
 /--
@@ -9397,18 +9412,30 @@ theorem surgeryPackageWithEquationBoundaryDerivativePayload_eq
           surgery_package_of_equation_boundary_surgery_package package,
       ∃ _equationBoundary :
         RicciFlowEquationBoundaryPackage
-          (ricci_flow_data_of_surgery_package basePackage),
-      ∃ _verification :
+          (ricci_flow_data_of_surgery_package
+            (surgery_package_of_equation_boundary_surgery_package package)),
+      ∃ verification :
         RicciFlowEquationVerification
           (curvature_data_of_ricci_flow_data
-            (ricci_flow_data_of_surgery_package basePackage)),
+            (ricci_flow_data_of_surgery_package
+              (surgery_package_of_equation_boundary_surgery_package package))),
+      ∃ _verification_eq :
+        verification =
+          ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
+            package,
       ∃ metricDerivative :
         MetricTimeDerivativeData
           (metric_of_ricci_flow_data
-            (ricci_flow_data_of_surgery_package basePackage)),
+            (ricci_flow_data_of_surgery_package
+              (surgery_package_of_equation_boundary_surgery_package package))),
+      ∃ _metricDerivative_eq :
+        metricDerivative =
+          metric_derivative_data_of_surgery_package_with_equation_boundary
+            package,
         IsMetricTimeDerivativeOf
           (metric_of_ricci_flow_data
-            (ricci_flow_data_of_surgery_package basePackage))
+            (ricci_flow_data_of_surgery_package
+              (surgery_package_of_equation_boundary_surgery_package package)))
           (metric_time_derivative_field_of_metric_derivative_data
             metricDerivative) ∧
         (∀ t : ℝ,
@@ -9417,10 +9444,13 @@ theorem surgeryPackageWithEquationBoundaryDerivativePayload_eq
               metricDerivative) t =
             ricci_flow_rhs_tensor
               (curvature_data_of_ricci_flow_data
-                (ricci_flow_data_of_surgery_package basePackage)) t) ∧
+                (ricci_flow_data_of_surgery_package
+                  (surgery_package_of_equation_boundary_surgery_package
+                    package))) t) ∧
         ∃ _analyticBoundary :
           AnalyticFoundationWithEquationBoundaryStatement
-            (ricci_flow_data_of_surgery_package basePackage),
+            (ricci_flow_data_of_surgery_package
+              (surgery_package_of_equation_boundary_surgery_package package)),
           FiniteExtinctionByRicciFlowWithSurgery M) :=
   rfl
 
@@ -9443,7 +9473,9 @@ theorem surgery_package_with_equation_boundary_derivative_payload
       equation_boundary_of_surgery_package_with_equation_boundary package,
       ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
         package,
+      rfl,
       metric_derivative_data_of_surgery_package_with_equation_boundary package,
+      rfl,
       metric_time_derivative_identification_of_surgery_package_with_equation_boundary
         package,
       equation_at_time_of_surgery_package_with_equation_boundary_projection
@@ -9471,8 +9503,10 @@ theorem surgery_package_with_equation_boundary_derivative_payload_eq
             equation_boundary_of_surgery_package_with_equation_boundary package,
             ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
               package,
+            rfl,
             metric_derivative_data_of_surgery_package_with_equation_boundary
               package,
+            rfl,
             metric_time_derivative_identification_of_surgery_package_with_equation_boundary
               package,
             equation_at_time_of_surgery_package_with_equation_boundary_projection
