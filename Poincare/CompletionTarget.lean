@@ -12884,6 +12884,63 @@ theorem completion_criterion_of_completion_certificate_with_equation_boundary_ve
         witness dependencies := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_to_boundary_certificate_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    target_statement_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package
+        dependencies) =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_boundary_certificate_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    target_statement_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies) =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_boundary_certificate_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u})
+    (verificationPayload : EquationBoundaryVerificationPayload dependencies) :
+    target_statement_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+        dependencies verificationPayload) =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_boundary_certificate_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (verificationPayload : EquationBoundaryVerificationPayload dependencies) :
+    target_statement_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload
+        dependencies verificationPayload) =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_boundary_certificate_eq
+    (payload :
+      ∃ dependencies : RemainingDependencyPackageWithEquationBoundary.{u},
+        EquationBoundaryVerificationPayload dependencies) :
+    target_statement_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload
+        payload) =
+      (by
+        rcases payload with ⟨dependencies, _verificationPayload⟩
+        exact
+          target_statement_of_completion_certificate
+            (completion_certificate_of_equation_boundary_remaining_dependency_package
+              dependencies)) := by
+  apply Subsingleton.elim
+
 /--
 The boundary-aware certificate canonical-payload projection also recovers the
 ordinary remaining-package canonical payload after forgetting equation-boundary
