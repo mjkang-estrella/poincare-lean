@@ -8548,6 +8548,17 @@ theorem remaining_dependency_package_of_completion_certificate_of_remaining_depe
   apply Subsingleton.elim
 
 /--
+The remaining-dependency package constructor recovers any checked completion
+certificate from its projected remaining dependency package.
+-/
+theorem completion_certificate_of_remaining_dependency_package_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_remaining_dependency_package
+      (remaining_dependency_package_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
 The completion certificate is equivalent to the remaining dependency package.
 It adds checked artifact accounting, not an additional mathematical assumption.
 -/
@@ -10551,6 +10562,17 @@ theorem poincareProofDependencies_of_completion_certificate_of_poincareProofDepe
     poincareProofDependencies_of_completion_certificate
       (completion_certificate_of_poincareProofDependencies dependencies) =
       dependencies := by
+  apply Subsingleton.elim
+
+/--
+The aggregate-dependency constructor recovers any checked completion
+certificate from its projected aggregate dependency package.
+-/
+theorem completion_certificate_of_poincareProofDependencies_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_poincareProofDependencies
+      (poincareProofDependencies_of_completion_certificate certificate) =
+      certificate := by
   apply Subsingleton.elim
 
 /--
