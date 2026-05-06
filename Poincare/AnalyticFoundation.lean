@@ -353,6 +353,99 @@ theorem ricciFlowEquationBoundaryStatement_eq
       Nonempty (RicciFlowEquationBoundaryPackage flow) :=
   rfl
 
+/--
+Assemble the equation-boundary package from explicit pointwise
+`∂ₜ g = -2 Ricci` verification for the same flow.
+
+The abstract equation-interface evidence still comes from the checked
+`RicciFlowData`; the explicit verification is not used to manufacture it.
+-/
+def equation_boundary_package_of_ricci_flow_equation_verification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M)
+    (verification :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow)) :
+    RicciFlowEquationBoundaryPackage flow where
+  verification := verification
+  equationEvidence := equation_evidence_of_ricci_flow_data flow
+
+/-- The verification-to-boundary-package constructor stores the supplied fields. -/
+@[simp] theorem equation_boundary_package_of_ricci_flow_equation_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M)
+    (verification :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow)) :
+    equation_boundary_package_of_ricci_flow_equation_verification
+      flow verification =
+        ({ verification := verification
+           equationEvidence := equation_evidence_of_ricci_flow_data flow } :
+          RicciFlowEquationBoundaryPackage flow) :=
+  rfl
+
+/-- The constructed boundary package projects back to the supplied verification. -/
+@[simp] theorem ricci_flow_equation_verification_of_equation_boundary_package_of_ricci_flow_equation_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M)
+    (verification :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow)) :
+    ricci_flow_equation_verification_of_boundary_package
+      (equation_boundary_package_of_ricci_flow_equation_verification
+        flow verification) =
+        verification :=
+  rfl
+
+/-- The constructed boundary package carries the flow's stored equation evidence. -/
+@[simp] theorem equation_evidence_of_equation_boundary_package_of_ricci_flow_equation_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M)
+    (verification :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow)) :
+    equation_evidence_of_equation_boundary_package
+      (equation_boundary_package_of_ricci_flow_equation_verification
+        flow verification) =
+        equation_evidence_of_ricci_flow_data flow :=
+  rfl
+
+/-- A supplied explicit Ricci-flow equation verification exposes the boundary statement. -/
+theorem ricciFlowEquationBoundaryStatement_of_ricci_flow_equation_verification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M)
+    (verification :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow)) :
+    RicciFlowEquationBoundaryStatement flow :=
+  ⟨equation_boundary_package_of_ricci_flow_equation_verification
+    flow verification⟩
+
+/-- The verification-to-boundary statement route is nonemptiness of the package route. -/
+@[simp] theorem ricciFlowEquationBoundaryStatement_of_ricci_flow_equation_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M)
+    (verification :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow)) :
+    ricciFlowEquationBoundaryStatement_of_ricci_flow_equation_verification
+      flow verification =
+        ⟨equation_boundary_package_of_ricci_flow_equation_verification
+          flow verification⟩ := by
+  apply Subsingleton.elim
+
 /-- Interface for compatibility of the flow with the prescribed initial metric. -/
 inductive HasInitialMetricCompatibility
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]

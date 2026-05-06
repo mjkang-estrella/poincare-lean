@@ -320,6 +320,18 @@ check_decl "Ricci-flow equation verification time theorem is declared" \
   '^theorem equation_at_time_of_ricci_flow_equation_verification\b' Poincare/RicciFlow.lean
 check_decl "Ricci-flow equation verification time equality theorem is declared" \
   '^@\[simp\] theorem equation_at_time_of_ricci_flow_equation_verification_eq\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow equation verification derivative-identification theorem is declared" \
+  '^theorem metric_time_derivative_identification_of_ricci_flow_equation_verification\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow equation verification derivative-identification equality theorem is declared" \
+  '^@\[simp\] theorem metric_time_derivative_identification_of_ricci_flow_equation_verification_eq\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow equation verification projection-routed time theorem is declared" \
+  '^theorem equation_at_time_of_ricci_flow_equation_verification_projection\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow equation verification projection-routed time equality theorem is declared" \
+  '^@\[simp\] theorem equation_at_time_of_ricci_flow_equation_verification_projection_eq\b' Poincare/RicciFlow.lean
+check_decl "zero-Ricci right-hand side theorem is declared" \
+  '^@\[simp\] theorem ricci_flow_rhs_tensor_of_zero_ricci_tensor_field_eq\b' Poincare/RicciFlow.lean
+check_decl "zero-derivative zero-Ricci verification existence theorem is declared" \
+  '^theorem zero_derivative_zero_ricci_equation_verification_exists\b' Poincare/RicciFlow.lean
 check_decl "Levi-Civita theory interface is declared" \
   '^inductive HasLeviCivitaConnectionTheory\b' Poincare/AnalyticFoundation.lean
 check_decl "Levi-Civita existence interface is declared" \
@@ -430,6 +442,14 @@ check_decl "Ricci-flow equation boundary time theorem is declared" \
   '^theorem equation_at_time_of_equation_boundary_package\b' Poincare/AnalyticFoundation.lean
 check_decl "Ricci-flow equation boundary time equality theorem is declared" \
   '^@\[simp\] theorem equation_at_time_of_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow equation boundary derivative-identification theorem is declared" \
+  '^theorem metric_time_derivative_identification_of_equation_boundary_package\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow equation boundary derivative-identification equality theorem is declared" \
+  '^@\[simp\] theorem metric_time_derivative_identification_of_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow equation boundary projection-routed time theorem is declared" \
+  '^theorem equation_at_time_of_equation_boundary_package_projection\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow equation boundary projection-routed time equality theorem is declared" \
+  '^@\[simp\] theorem equation_at_time_of_equation_boundary_package_projection_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "Ricci-flow equation boundary interface evidence theorem is declared" \
   '^theorem equation_evidence_of_equation_boundary_package\b' Poincare/AnalyticFoundation.lean
 check_decl "Ricci-flow equation boundary interface evidence equality theorem is declared" \
@@ -438,6 +458,18 @@ check_decl "Ricci-flow equation boundary statement is declared" \
   '^def RicciFlowEquationBoundaryStatement\b' Poincare/AnalyticFoundation.lean
 check_decl "Ricci-flow equation boundary statement equality theorem is declared" \
   '^theorem ricciFlowEquationBoundaryStatement_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow verification-to-boundary package constructor is declared" \
+  '^def equation_boundary_package_of_ricci_flow_equation_verification\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow verification-to-boundary package equality theorem is declared" \
+  '^@\[simp\] theorem equation_boundary_package_of_ricci_flow_equation_verification_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow verification-to-boundary package verification projection theorem is declared" \
+  '^@\[simp\] theorem ricci_flow_equation_verification_of_equation_boundary_package_of_ricci_flow_equation_verification_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow verification-to-boundary package equation-evidence projection theorem is declared" \
+  '^@\[simp\] theorem equation_evidence_of_equation_boundary_package_of_ricci_flow_equation_verification_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow verification-to-boundary statement theorem is declared" \
+  '^theorem ricciFlowEquationBoundaryStatement_of_ricci_flow_equation_verification\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow verification-to-boundary statement equality theorem is declared" \
+  '^@\[simp\] theorem ricciFlowEquationBoundaryStatement_of_ricci_flow_equation_verification_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "strengthened analytic equation-boundary statement is declared" \
   '^def AnalyticFoundationWithEquationBoundaryStatement\b' Poincare/AnalyticFoundation.lean
 check_decl "strengthened analytic equation-boundary statement equality theorem is declared" \
@@ -8730,6 +8762,12 @@ open scoped Manifold ContDiff
 #check Poincare.metric_derivative_data_of_ricci_flow_equation_verification_eq
 #check Poincare.equation_at_time_of_ricci_flow_equation_verification
 #check Poincare.equation_at_time_of_ricci_flow_equation_verification_eq
+#check Poincare.metric_time_derivative_identification_of_ricci_flow_equation_verification
+#check Poincare.metric_time_derivative_identification_of_ricci_flow_equation_verification_eq
+#check Poincare.equation_at_time_of_ricci_flow_equation_verification_projection
+#check Poincare.equation_at_time_of_ricci_flow_equation_verification_projection_eq
+#check Poincare.ricci_flow_rhs_tensor_of_zero_ricci_tensor_field_eq
+#check Poincare.zero_derivative_zero_ricci_equation_verification_exists
 #check Poincare.ricci_flow_data_of_analytic_foundation_package
 #check Poincare.ricci_flow_data_of_analytic_foundation_package_eq
 #check Poincare.levi_civita_existence_of_analytic_foundation_package
@@ -8757,10 +8795,20 @@ open scoped Manifold ContDiff
 #check Poincare.metric_derivative_data_of_equation_boundary_package_eq
 #check Poincare.equation_at_time_of_equation_boundary_package
 #check Poincare.equation_at_time_of_equation_boundary_package_eq
+#check Poincare.metric_time_derivative_identification_of_equation_boundary_package
+#check Poincare.metric_time_derivative_identification_of_equation_boundary_package_eq
+#check Poincare.equation_at_time_of_equation_boundary_package_projection
+#check Poincare.equation_at_time_of_equation_boundary_package_projection_eq
 #check Poincare.equation_evidence_of_equation_boundary_package
 #check Poincare.equation_evidence_of_equation_boundary_package_eq
 #check Poincare.RicciFlowEquationBoundaryStatement
 #check Poincare.ricciFlowEquationBoundaryStatement_eq
+#check Poincare.equation_boundary_package_of_ricci_flow_equation_verification
+#check Poincare.equation_boundary_package_of_ricci_flow_equation_verification_eq
+#check Poincare.ricci_flow_equation_verification_of_equation_boundary_package_of_ricci_flow_equation_verification_eq
+#check Poincare.equation_evidence_of_equation_boundary_package_of_ricci_flow_equation_verification_eq
+#check Poincare.ricciFlowEquationBoundaryStatement_of_ricci_flow_equation_verification
+#check Poincare.ricciFlowEquationBoundaryStatement_of_ricci_flow_equation_verification_eq
 #check Poincare.AnalyticFoundationWithEquationBoundaryStatement
 #check Poincare.analyticFoundationWithEquationBoundaryStatement_eq
 #check Poincare.analytic_foundation_with_equation_boundary_of_derivation_and_boundary
@@ -11561,6 +11609,12 @@ open scoped Manifold ContDiff
 #check Poincare.metric_derivative_data_of_ricci_flow_equation_verification_eq
 #check Poincare.equation_at_time_of_ricci_flow_equation_verification
 #check Poincare.equation_at_time_of_ricci_flow_equation_verification_eq
+#check Poincare.metric_time_derivative_identification_of_ricci_flow_equation_verification
+#check Poincare.metric_time_derivative_identification_of_ricci_flow_equation_verification_eq
+#check Poincare.equation_at_time_of_ricci_flow_equation_verification_projection
+#check Poincare.equation_at_time_of_ricci_flow_equation_verification_projection_eq
+#check Poincare.ricci_flow_rhs_tensor_of_zero_ricci_tensor_field_eq
+#check Poincare.zero_derivative_zero_ricci_equation_verification_exists
 #check Poincare.ricci_flow_data_of_analytic_foundation_package
 #check Poincare.ricci_flow_data_of_analytic_foundation_package_eq
 #check Poincare.levi_civita_existence_of_analytic_foundation_package
@@ -11588,10 +11642,20 @@ open scoped Manifold ContDiff
 #check Poincare.metric_derivative_data_of_equation_boundary_package_eq
 #check Poincare.equation_at_time_of_equation_boundary_package
 #check Poincare.equation_at_time_of_equation_boundary_package_eq
+#check Poincare.metric_time_derivative_identification_of_equation_boundary_package
+#check Poincare.metric_time_derivative_identification_of_equation_boundary_package_eq
+#check Poincare.equation_at_time_of_equation_boundary_package_projection
+#check Poincare.equation_at_time_of_equation_boundary_package_projection_eq
 #check Poincare.equation_evidence_of_equation_boundary_package
 #check Poincare.equation_evidence_of_equation_boundary_package_eq
 #check Poincare.RicciFlowEquationBoundaryStatement
 #check Poincare.ricciFlowEquationBoundaryStatement_eq
+#check Poincare.equation_boundary_package_of_ricci_flow_equation_verification
+#check Poincare.equation_boundary_package_of_ricci_flow_equation_verification_eq
+#check Poincare.ricci_flow_equation_verification_of_equation_boundary_package_of_ricci_flow_equation_verification_eq
+#check Poincare.equation_evidence_of_equation_boundary_package_of_ricci_flow_equation_verification_eq
+#check Poincare.ricciFlowEquationBoundaryStatement_of_ricci_flow_equation_verification
+#check Poincare.ricciFlowEquationBoundaryStatement_of_ricci_flow_equation_verification_eq
 #check Poincare.AnalyticFoundationWithEquationBoundaryStatement
 #check Poincare.analyticFoundationWithEquationBoundaryStatement_eq
 #check Poincare.analytic_foundation_with_equation_boundary_of_derivation_and_boundary
