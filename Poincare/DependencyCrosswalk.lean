@@ -534,6 +534,136 @@ theorem dependency_component_requirements_payload_of_dependencies_to_named_proje
   apply Subsingleton.elim
 
 /--
+Strengthened equation-boundary dependencies supply every existing component-slot
+requirement after forgetting the explicit equation-boundary data.
+-/
+theorem dependencyComponentRequirement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (slot : DependencyComponentSlot) :
+    dependencyComponentRequirement.{u} slot :=
+  dependencyComponentRequirement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies) slot
+
+/--
+The strengthened dependency component-slot projection is the ordinary
+component-slot projection applied to the forgetful dependency package.
+-/
+theorem dependencyComponentRequirement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependencyComponentRequirement_of_equation_boundary_dependencies
+        dependencies =
+      dependencyComponentRequirement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  funext slot
+  apply Subsingleton.elim
+
+/-- Strengthened dependencies supply the smoothability component requirement. -/
+theorem smoothabilityComponent_requirement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependencyComponentRequirement.{u}
+      DependencyComponentSlot.smoothabilityComponent :=
+  smoothabilityComponent_requirement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+
+/--
+Strengthened dependencies supply the ordinary surgery component requirement
+after forgetting equation-boundary data.
+-/
+theorem surgeryComponent_requirement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent :=
+  surgeryComponent_requirement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+
+/-- Strengthened dependencies supply the topology component requirement. -/
+theorem topologyComponent_requirement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent :=
+  topologyComponent_requirement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+
+/--
+The strengthened smoothability component projection is the ordinary projection
+of the forgetful dependency package.
+-/
+theorem smoothabilityComponent_requirement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    smoothabilityComponent_requirement_of_equation_boundary_dependencies
+        dependencies =
+      smoothabilityComponent_requirement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened surgery component projection is the ordinary projection of
+the forgetful dependency package.
+-/
+theorem surgeryComponent_requirement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgeryComponent_requirement_of_equation_boundary_dependencies
+        dependencies =
+      surgeryComponent_requirement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened topology component projection is the ordinary projection of
+the forgetful dependency package.
+-/
+theorem topologyComponent_requirement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    topologyComponent_requirement_of_equation_boundary_dependencies
+        dependencies =
+      topologyComponent_requirement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Strengthened equation-boundary dependencies supply the three existing component
+requirements after forgetting equation-boundary data.
+-/
+theorem dependency_component_requirements_payload_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _smoothability :
+      dependencyComponentRequirement.{u}
+        DependencyComponentSlot.smoothabilityComponent,
+    ∃ _surgery :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+      dependencyComponentRequirement.{u}
+        DependencyComponentSlot.topologyComponent :=
+  dependency_component_requirements_payload_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+
+/--
+The strengthened dependency component payload is the ordinary component payload
+of the forgetful dependency package.
+-/
+theorem dependency_component_requirements_payload_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependency_component_requirements_payload_of_equation_boundary_dependencies
+        dependencies =
+      dependency_component_requirements_payload_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency component payload is also the tuple of the named
+strengthened component projections.
+-/
+theorem dependency_component_requirements_payload_of_equation_boundary_dependencies_to_named_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependency_component_requirements_payload_of_equation_boundary_dependencies
+        dependencies =
+      ⟨ smoothabilityComponent_requirement_of_equation_boundary_dependencies
+          dependencies
+      , surgeryComponent_requirement_of_equation_boundary_dependencies
+          dependencies
+      , topologyComponent_requirement_of_equation_boundary_dependencies
+          dependencies
+      ⟩ := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency package is equivalent to exactly the three component
 requirements named by the dependency crosswalk.
 -/

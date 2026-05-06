@@ -4692,6 +4692,22 @@ check_decl "topology component requirement theorem equality contract is declared
   '^theorem dependencyComponentRequirement_topologyComponent_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency component requirements generic projection equality contract is declared" \
   '^theorem dependencyComponentRequirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened dependency component requirements projection theorem is declared" \
+  '^theorem dependencyComponentRequirement_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened dependency component requirements projection equality contract is declared" \
+  '^theorem dependencyComponentRequirement_of_equation_boundary_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened smoothability component dependency projection theorem is declared" \
+  '^theorem smoothabilityComponent_requirement_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened surgery component dependency projection theorem is declared" \
+  '^theorem surgeryComponent_requirement_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened topology component dependency projection theorem is declared" \
+  '^theorem topologyComponent_requirement_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened smoothability component dependency projection equality contract is declared" \
+  '^theorem smoothabilityComponent_requirement_of_equation_boundary_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened surgery component dependency projection equality contract is declared" \
+  '^theorem surgeryComponent_requirement_of_equation_boundary_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened topology component dependency projection equality contract is declared" \
+  '^theorem topologyComponent_requirement_of_equation_boundary_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency package-layer requirement map is declared" \
   '^def dependencyPackageLayerRequirement\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency package-layer requirement map equality contract is declared" \
@@ -4892,6 +4908,12 @@ check_decl "dependency component requirements payload theorem is declared" \
   '^theorem dependency_component_requirements_payload_of_dependencies\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency component requirements payload equality contract is declared" \
   '^theorem dependency_component_requirements_payload_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened dependency component requirements payload theorem is declared" \
+  '^theorem dependency_component_requirements_payload_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened dependency component requirements payload equality contract is declared" \
+  '^theorem dependency_component_requirements_payload_of_equation_boundary_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "strengthened dependency component requirements named-projection equality contract is declared" \
+  '^theorem dependency_component_requirements_payload_of_equation_boundary_dependencies_to_named_projections_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency component requirements iff theorem is declared" \
   '^theorem poincareProofDependencies_iff_component_requirements\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency component requirements reverse constructor is declared" \
@@ -15102,6 +15124,15 @@ open scoped Manifold ContDiff
       Poincare.DependencyComponentSlot.topologyComponent =
     Poincare.ExtinctionTopologyExtractionPackage)
 
+#check Poincare.dependencyComponentRequirement_of_equation_boundary_dependencies
+#check Poincare.dependencyComponentRequirement_of_equation_boundary_dependencies_eq
+#check Poincare.smoothabilityComponent_requirement_of_equation_boundary_dependencies
+#check Poincare.surgeryComponent_requirement_of_equation_boundary_dependencies
+#check Poincare.topologyComponent_requirement_of_equation_boundary_dependencies
+#check Poincare.smoothabilityComponent_requirement_of_equation_boundary_dependencies_eq
+#check Poincare.surgeryComponent_requirement_of_equation_boundary_dependencies_eq
+#check Poincare.topologyComponent_requirement_of_equation_boundary_dependencies_eq
+
 #check (Poincare.dependency_component_requirements_payload_of_dependencies :
   Poincare.PoincareProofDependencies →
     ∃ _smoothability :
@@ -15125,6 +15156,9 @@ open scoped Manifold ContDiff
         Poincare.DependencyComponentSlot.topologyComponent)
 
 #check Poincare.dependency_component_requirements_payload_of_dependencies_eq
+#check Poincare.dependency_component_requirements_payload_of_equation_boundary_dependencies
+#check Poincare.dependency_component_requirements_payload_of_equation_boundary_dependencies_eq
+#check Poincare.dependency_component_requirements_payload_of_equation_boundary_dependencies_to_named_projections_eq
 #check Poincare.poincareProofDependencies_of_component_requirements_payload
 #check Poincare.poincareProofDependencies_iff_component_requirements_eq
 
