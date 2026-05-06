@@ -13559,6 +13559,84 @@ theorem poincareCompletionCertificate_milestone_requirements_payload_to_named_pr
   apply Subsingleton.elim
 
 /--
+Projecting the component-slot requirements from a strengthened
+remaining-package certificate recovers the strengthened component-slot payload.
+-/
+theorem poincareCompletionCertificate_component_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_component_requirements_payload
+      (completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies) =
+      remainingDependencyPackageWithEquationBoundary_component_requirements_payload
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the package-layer requirements from a strengthened
+remaining-package certificate recovers the strengthened package-layer payload.
+-/
+theorem poincareCompletionCertificate_package_layer_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_package_layer_requirements_payload
+      (completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies) =
+      remainingDependencyPackageWithEquationBoundary_package_layer_requirements_payload
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the milestone requirements from a strengthened remaining-package
+certificate recovers the strengthened milestone payload.
+-/
+theorem poincareCompletionCertificate_milestone_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_milestone_requirements_payload
+      (completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies) =
+      remainingDependencyPackageWithEquationBoundary_milestone_requirements_payload
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the component-slot requirements from a strengthened aggregate
+certificate recovers the strengthened aggregate component-slot payload.
+-/
+theorem poincareCompletionCertificate_component_requirements_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_component_requirements_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies) =
+      dependency_component_requirements_payload_of_equation_boundary_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the package-layer requirements from a strengthened aggregate
+certificate recovers the strengthened aggregate package-layer payload.
+-/
+theorem poincareCompletionCertificate_package_layer_requirements_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_package_layer_requirements_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies) =
+      dependency_package_layer_requirements_payload_of_equation_boundary_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the milestone requirements from a strengthened aggregate certificate
+recovers the strengthened aggregate milestone payload.
+-/
+theorem poincareCompletionCertificate_milestone_requirements_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_milestone_requirements_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies) =
+      dependency_milestone_requirements_payload_of_equation_boundary_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The three raw aggregate components produce the checked completion certificate.
 -/
 theorem completion_certificate_of_components
