@@ -1067,6 +1067,46 @@ theorem analytic_foundation_with_equation_boundary_of_derivation_and_boundary
         ⟨derivation, boundary⟩ :=
   rfl
 
+/--
+Assemble the strengthened analytic-boundary statement from the analytic
+derivation stack and explicit pointwise Ricci-flow equation verification.
+-/
+theorem analytic_foundation_with_equation_boundary_of_derivation_and_ricci_flow_equation_verification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (derivation : AnalyticFoundationDerivationStatement flow)
+    (verification :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow)) :
+    AnalyticFoundationWithEquationBoundaryStatement flow :=
+  analytic_foundation_with_equation_boundary_of_derivation_and_boundary
+    derivation
+    (ricciFlowEquationBoundaryStatement_of_ricci_flow_equation_verification
+      flow verification)
+
+/--
+The derivation-plus-verification route delegates to the boundary-statement
+constructor built from the supplied explicit equation verification.
+-/
+@[simp] theorem analytic_foundation_with_equation_boundary_of_derivation_and_ricci_flow_equation_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (derivation : AnalyticFoundationDerivationStatement flow)
+    (verification :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow)) :
+    analytic_foundation_with_equation_boundary_of_derivation_and_ricci_flow_equation_verification
+      derivation verification =
+      analytic_foundation_with_equation_boundary_of_derivation_and_boundary
+        derivation
+        (ricciFlowEquationBoundaryStatement_of_ricci_flow_equation_verification
+          flow verification) := by
+  apply Subsingleton.elim
+
 /-- Project the analytic derivation stack from the strengthened statement. -/
 theorem analytic_foundation_derivation_of_with_equation_boundary
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -2665,6 +2705,51 @@ derivation statement and the provided boundary package.
           package,
         ⟨boundary⟩⟩ :=
   rfl
+
+/--
+An analytic-foundation package plus explicit pointwise equation verification
+supplies the strengthened analytic-boundary statement.
+-/
+theorem analytic_foundation_with_equation_boundary_of_package_and_ricci_flow_equation_verification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M)
+    (verification :
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package))) :
+    AnalyticFoundationWithEquationBoundaryStatement
+      (ricci_flow_data_of_analytic_foundation_package package) :=
+  analytic_foundation_with_equation_boundary_of_package
+    package
+    (equation_boundary_package_of_ricci_flow_equation_verification
+      (ricci_flow_data_of_analytic_foundation_package package)
+      verification)
+
+/--
+The package-plus-verification route delegates to the package-plus-boundary route
+using the boundary package constructed from the supplied verification.
+-/
+@[simp] theorem analytic_foundation_with_equation_boundary_of_package_and_ricci_flow_equation_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M)
+    (verification :
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package))) :
+    analytic_foundation_with_equation_boundary_of_package_and_ricci_flow_equation_verification
+      package verification =
+      analytic_foundation_with_equation_boundary_of_package
+        package
+        (equation_boundary_package_of_ricci_flow_equation_verification
+          (ricci_flow_data_of_analytic_foundation_package package)
+          verification) := by
+  apply Subsingleton.elim
 
 /--
 A completed analytic-foundation package supplies the theorem-shaped analytic
