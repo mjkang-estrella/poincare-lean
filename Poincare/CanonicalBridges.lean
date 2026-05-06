@@ -643,6 +643,18 @@ theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_
   apply Subsingleton.elim
 
 /--
+The canonical-statement payload constructor recovers any checked completion
+certificate from its projected canonical-statement payload.
+-/
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
 Projecting the aggregate canonical-statement payload from a certificate
 reconstructed from that payload returns the original payload.
 -/
@@ -660,6 +672,19 @@ theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_c
     poincareCompletionCertificate_aggregate_canonical_statement_payload
       (completion_certificate_of_aggregate_canonical_statement_payload
         payload) = payload := by
+  apply Subsingleton.elim
+
+/--
+The aggregate canonical-statement payload constructor recovers any checked
+completion certificate from its projected aggregate canonical-statement
+payload.
+-/
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        certificate) =
+      certificate := by
   apply Subsingleton.elim
 
 /--

@@ -7803,6 +7803,17 @@ theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_
   apply Subsingleton.elim
 
 /--
+The literal-payload constructor recovers any checked completion certificate
+from its projected literal payload.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
 The checked completion certificate is equivalent to its literal reserved-name
 artifact payload.
 -/
@@ -10730,6 +10741,18 @@ theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion
   apply Subsingleton.elim
 
 /--
+The aggregate-dependency payload constructor recovers any checked completion
+certificate from its projected aggregate-dependency payload.
+-/
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
 The checked completion certificate is equivalent to the full artifact payload
 whose dependency field is the aggregate proof dependency package.
 -/
@@ -10843,6 +10866,17 @@ theorem poincareCompletionCertificate_project_statement_payload_of_completion_ce
     poincareCompletionCertificate_project_statement_payload
       (completion_certificate_of_project_statement_payload payload) =
       payload := by
+  apply Subsingleton.elim
+
+/--
+The project-statement payload constructor recovers any checked completion
+certificate from its projected project-statement payload.
+-/
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload certificate) =
+      certificate := by
   apply Subsingleton.elim
 
 /--
