@@ -4382,6 +4382,21 @@ theorem remainingDependencyPackage_package_layer_requirements_payload_to_generic
   apply Subsingleton.elim
 
 /--
+The remaining-dependency package-layer payload is also the tuple of named
+package-layer projections.
+-/
+theorem remainingDependencyPackage_package_layer_requirements_payload_to_named_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    remainingDependencyPackage_package_layer_requirements_payload dependencies =
+      ⟨ smoothabilityPackage_requirement_of_dependencies dependencies
+      , analyticFoundationPackage_requirement_of_dependencies dependencies
+      , surgeryPackage_requirement_of_dependencies dependencies
+      , finiteExtinctionPackage_requirement_of_dependencies dependencies
+      , topologyPackage_requirement_of_dependencies dependencies
+      ⟩ := by
+  apply Subsingleton.elim
+
+/--
 The remaining-dependency package-layer requirements payload reconstructs the
 remaining dependency package.
 -/
@@ -4524,6 +4539,22 @@ theorem remainingDependencyPackage_milestone_requirements_payload_to_package_lay
       , surgeryPackage_requirement_of_dependencies dependencies
       , finiteExtinctionPackage_requirement_of_dependencies dependencies
       , topologyPackage_requirement_of_dependencies dependencies
+      ⟩ := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency milestone payload is also the tuple of named milestone
+projections.
+-/
+theorem remainingDependencyPackage_milestone_requirements_payload_to_named_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    remainingDependencyPackage_milestone_requirements_payload dependencies =
+      ⟨ smoothabilityBridge_requirement_of_dependencies dependencies
+      , ricciFlowAnalyticFoundation_requirement_of_dependencies dependencies
+      , ricciFlowWithSurgery_requirement_of_dependencies dependencies
+      , perelmanSingularityControl_requirement_of_dependencies dependencies
+      , finiteExtinction_requirement_of_dependencies dependencies
+      , extinctionToSphereHomeomorphism_requirement_of_dependencies dependencies
       ⟩ := by
   apply Subsingleton.elim
 
@@ -13378,6 +13409,27 @@ theorem poincareCompletionCertificate_package_layer_requirements_payload_to_gene
   apply Subsingleton.elim
 
 /--
+The package-layer certificate payload is also the tuple of named package-layer
+projections from the certificate's remaining-dependency package.
+-/
+theorem poincareCompletionCertificate_package_layer_requirements_payload_to_named_projections_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    poincareCompletionCertificate_package_layer_requirements_payload
+      certificate =
+      ⟨ smoothabilityPackage_requirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+      , analyticFoundationPackage_requirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+      , surgeryPackage_requirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+      , finiteExtinctionPackage_requirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+      , topologyPackage_requirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+      ⟩ := by
+  apply Subsingleton.elim
+
+/--
 A completion certificate exposes all six milestone requirements named by the
 dependency crosswalk.
 -/
@@ -13441,6 +13493,28 @@ theorem poincareCompletionCertificate_milestone_requirements_payload_to_package_
       , finiteExtinctionPackage_requirement_of_dependencies
           (remaining_dependency_package_of_completion_certificate certificate)
       , topologyPackage_requirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+      ⟩ := by
+  apply Subsingleton.elim
+
+/--
+The milestone certificate payload is also the tuple of named milestone
+projections from the certificate's remaining-dependency package.
+-/
+theorem poincareCompletionCertificate_milestone_requirements_payload_to_named_projections_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    poincareCompletionCertificate_milestone_requirements_payload certificate =
+      ⟨ smoothabilityBridge_requirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+      , ricciFlowAnalyticFoundation_requirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+      , ricciFlowWithSurgery_requirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+      , perelmanSingularityControl_requirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+      , finiteExtinction_requirement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate certificate)
+      , extinctionToSphereHomeomorphism_requirement_of_dependencies
           (remaining_dependency_package_of_completion_certificate certificate)
       ⟩ := by
   apply Subsingleton.elim

@@ -1195,6 +1195,21 @@ theorem dependency_package_layer_requirements_payload_of_dependencies_to_generic
   apply Subsingleton.elim
 
 /--
+The package-layer payload is also the tuple of named package-layer projections
+in package-layer order.
+-/
+theorem dependency_package_layer_requirements_payload_of_dependencies_to_named_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependency_package_layer_requirements_payload_of_dependencies dependencies =
+      ⟨ smoothabilityPackage_requirement_of_dependencies dependencies
+      , analyticFoundationPackage_requirement_of_dependencies dependencies
+      , surgeryPackage_requirement_of_dependencies dependencies
+      , finiteExtinctionPackage_requirement_of_dependencies dependencies
+      , topologyPackage_requirement_of_dependencies dependencies
+      ⟩ := by
+  apply Subsingleton.elim
+
+/--
 Strengthened equation-boundary dependencies supply every existing package-layer
 requirement after forgetting the explicit equation-boundary data.
 -/
@@ -1902,6 +1917,22 @@ theorem dependency_milestone_requirements_payload_of_dependencies_to_package_lay
       , surgeryPackage_requirement_of_dependencies dependencies
       , finiteExtinctionPackage_requirement_of_dependencies dependencies
       , topologyPackage_requirement_of_dependencies dependencies
+      ⟩ := by
+  apply Subsingleton.elim
+
+/--
+The milestone payload is also the tuple of named milestone projections in
+milestone order.
+-/
+theorem dependency_milestone_requirements_payload_of_dependencies_to_named_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependency_milestone_requirements_payload_of_dependencies dependencies =
+      ⟨ smoothabilityBridge_requirement_of_dependencies dependencies
+      , ricciFlowAnalyticFoundation_requirement_of_dependencies dependencies
+      , ricciFlowWithSurgery_requirement_of_dependencies dependencies
+      , perelmanSingularityControl_requirement_of_dependencies dependencies
+      , finiteExtinction_requirement_of_dependencies dependencies
+      , extinctionToSphereHomeomorphism_requirement_of_dependencies dependencies
       ⟩ := by
   apply Subsingleton.elim
 
