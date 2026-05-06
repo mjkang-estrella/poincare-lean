@@ -6575,6 +6575,172 @@ theorem canonical_completion_criterion_of_dependencies_eq
   apply Subsingleton.elim
 
 /--
+The strengthened remaining-package canonical payload agrees with the ordinary
+remaining-package canonical payload after forgetting equation-boundary data.
+-/
+theorem canonical_completion_payload_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      canonical_completion_payload_of_dependencies
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package project payload agrees with the ordinary
+remaining-package project payload after forgetting equation-boundary data.
+-/
+theorem poincare_completion_payload_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      poincare_completion_payload_of_remaining_dependency_package
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package canonical target agrees with the ordinary
+remaining-package canonical target after forgetting equation-boundary data.
+-/
+theorem canonical_completion_target_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_completion_target_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      canonical_completion_target_of_dependencies
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package project statement agrees with the ordinary
+remaining-package project statement after forgetting equation-boundary data.
+-/
+theorem poincare_statement_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      poincare_statement_of_dependencies
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package completion criterion agrees with the
+ordinary remaining-package canonical criterion after forgetting
+equation-boundary data.
+-/
+theorem completion_criterion_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_criterion_of_equation_boundary_remaining_dependency_package
+        witness dependencies =
+      canonical_completion_criterion_of_dependencies
+        witness
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate canonical payload is the strengthened
+remaining-package canonical payload.
+-/
+theorem canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary_to_remaining_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      canonical_completion_payload_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate project payload is the strengthened
+remaining-package project payload.
+-/
+theorem poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary_to_remaining_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      poincare_completion_payload_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate project statement is the strengthened
+remaining-package project statement.
+-/
+theorem poincare_statement_of_poincareProofDependenciesWithEquationBoundary_to_remaining_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      poincare_statement_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate canonical payload agrees with the ordinary aggregate
+canonical payload after forgetting equation-boundary data.
+-/
+theorem canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      canonical_completion_payload_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate project payload agrees with the ordinary aggregate
+project payload after forgetting equation-boundary data.
+-/
+theorem poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      poincare_completion_payload_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate canonical target agrees with the ordinary aggregate
+canonical target after forgetting equation-boundary data.
+-/
+theorem canonical_completion_target_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_target_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      canonical_completion_target_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate project statement agrees with the ordinary aggregate
+project statement after forgetting equation-boundary data.
+-/
+theorem poincare_statement_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      poincare_statement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate completion criterion agrees with the ordinary
+aggregate canonical criterion after forgetting equation-boundary data.
+-/
+theorem completion_criterion_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_poincareProofDependenciesWithEquationBoundary
+        witness dependencies =
+      canonical_completion_criterion_of_dependencies
+        witness
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency package also produces the canonical completion target
 and explicit completion criterion through the certified extraction-derivation
 route.
