@@ -11005,6 +11005,46 @@ theorem poincareCompletionCertificate_iff_extraction_derivation_dependency_proje
     completion_certificate_of_extraction_derivation_dependency_projections⟩
 
 /--
+The strengthened remaining-package certificate is propositionally the
+aggregate extraction-derivation certificate for the forgetful ordinary package.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_to_aggregate_extraction_derivation_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      completion_certificate_of_aggregate_extraction_derivation_dependencies
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package certificate is propositionally the
+projection-route certificate for the forgetful ordinary package.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_to_dependency_projections_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      completion_certificate_of_dependency_projections
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package certificate is propositionally the certified
+extraction-derivation projection-route certificate for the forgetful ordinary
+package.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_to_extraction_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      completion_certificate_of_extraction_derivation_dependency_projections
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate proof dependency package produces the checked completion
 certificate through the certified extraction-derivation aggregate route.
 -/
@@ -11060,6 +11100,44 @@ theorem poincareCompletionCertificate_iff_poincareProofDependencies_extraction_d
     PoincareCompletionCertificate.{u} ↔ PoincareProofDependencies.{u} :=
   ⟨poincareProofDependencies_of_completion_certificate,
     completion_certificate_of_poincareProofDependencies_extraction_derivation_projections⟩
+
+/--
+The strengthened aggregate equation-boundary certificate is propositionally the
+aggregate extraction-derivation certificate for the forgetful ordinary
+aggregate package.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_aggregate_extraction_derivation_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate equation-boundary certificate is propositionally the
+projection-route certificate for the forgetful ordinary aggregate package.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      completion_certificate_of_poincareProofDependencies_projections
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate equation-boundary certificate is propositionally the
+certified extraction-derivation projection-route certificate for the forgetful
+ordinary aggregate package.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_extraction_derivation_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
 
 /--
 The remaining-dependency raw component certificate constructor is exactly the
