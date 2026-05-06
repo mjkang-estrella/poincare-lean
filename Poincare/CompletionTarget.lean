@@ -10466,6 +10466,147 @@ theorem completion_certificate_with_equation_boundary_verification_payload_miles
   apply Subsingleton.elim
 
 /--
+Projecting component-slot requirements from the arbitrary-verification
+remaining-package constructor recovers the strengthened remaining-package
+component payload.
+-/
+theorem completion_certificate_with_equation_boundary_verification_payload_component_requirements_payload_of_remaining_dependency_package_and_verification_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u})
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    completion_certificate_with_equation_boundary_verification_payload_component_requirements_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+        dependencies payload) =
+      remainingDependencyPackageWithEquationBoundary_component_requirements_payload
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting package-layer requirements from the arbitrary-verification
+remaining-package constructor recovers the strengthened remaining-package
+package-layer payload.
+-/
+theorem completion_certificate_with_equation_boundary_verification_payload_package_layer_requirements_payload_of_remaining_dependency_package_and_verification_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u})
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    completion_certificate_with_equation_boundary_verification_payload_package_layer_requirements_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+        dependencies payload) =
+      remainingDependencyPackageWithEquationBoundary_package_layer_requirements_payload
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting milestone requirements from the arbitrary-verification
+remaining-package constructor recovers the strengthened remaining-package
+milestone payload.
+-/
+theorem completion_certificate_with_equation_boundary_verification_payload_milestone_requirements_payload_of_remaining_dependency_package_and_verification_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u})
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    completion_certificate_with_equation_boundary_verification_payload_milestone_requirements_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+        dependencies payload) =
+      remainingDependencyPackageWithEquationBoundary_milestone_requirements_payload
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting component-slot requirements from the arbitrary-verification
+aggregate constructor recovers the strengthened aggregate component payload.
+-/
+theorem completion_certificate_with_equation_boundary_verification_payload_component_requirements_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    completion_certificate_with_equation_boundary_verification_payload_component_requirements_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload
+        dependencies payload) =
+      remainingDependencyPackageWithEquationBoundary_component_requirements_payload
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting package-layer requirements from the arbitrary-verification aggregate
+constructor recovers the strengthened aggregate package-layer payload.
+-/
+theorem completion_certificate_with_equation_boundary_verification_payload_package_layer_requirements_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    completion_certificate_with_equation_boundary_verification_payload_package_layer_requirements_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload
+        dependencies payload) =
+      remainingDependencyPackageWithEquationBoundary_package_layer_requirements_payload
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting milestone requirements from the arbitrary-verification aggregate
+constructor recovers the strengthened aggregate milestone payload.
+-/
+theorem completion_certificate_with_equation_boundary_verification_payload_milestone_requirements_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    completion_certificate_with_equation_boundary_verification_payload_milestone_requirements_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload
+        dependencies payload) =
+      remainingDependencyPackageWithEquationBoundary_milestone_requirements_payload
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting component-slot requirements from the existential verification
+payload constructor recovers the unpacked strengthened component payload.
+-/
+theorem completion_certificate_with_equation_boundary_verification_payload_component_requirements_payload_of_equation_boundary_verification_payload_eq
+    (payload :
+      ∃ dependencies : RemainingDependencyPackageWithEquationBoundary.{u},
+        EquationBoundaryVerificationPayload dependencies) :
+    completion_certificate_with_equation_boundary_verification_payload_component_requirements_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload
+        payload) =
+      (by
+        rcases payload with ⟨dependencies, _verificationPayload⟩
+        exact
+          remainingDependencyPackageWithEquationBoundary_component_requirements_payload
+            dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Projecting package-layer requirements from the existential verification payload
+constructor recovers the unpacked strengthened package-layer payload.
+-/
+theorem completion_certificate_with_equation_boundary_verification_payload_package_layer_requirements_payload_of_equation_boundary_verification_payload_eq
+    (payload :
+      ∃ dependencies : RemainingDependencyPackageWithEquationBoundary.{u},
+        EquationBoundaryVerificationPayload dependencies) :
+    completion_certificate_with_equation_boundary_verification_payload_package_layer_requirements_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload
+        payload) =
+      (by
+        rcases payload with ⟨dependencies, _verificationPayload⟩
+        exact
+          remainingDependencyPackageWithEquationBoundary_package_layer_requirements_payload
+            dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Projecting milestone requirements from the existential verification payload
+constructor recovers the unpacked strengthened milestone payload.
+-/
+theorem completion_certificate_with_equation_boundary_verification_payload_milestone_requirements_payload_of_equation_boundary_verification_payload_eq
+    (payload :
+      ∃ dependencies : RemainingDependencyPackageWithEquationBoundary.{u},
+        EquationBoundaryVerificationPayload dependencies) :
+    completion_certificate_with_equation_boundary_verification_payload_milestone_requirements_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload
+        payload) =
+      (by
+        rcases payload with ⟨dependencies, _verificationPayload⟩
+        exact
+          remainingDependencyPackageWithEquationBoundary_milestone_requirements_payload
+            dependencies) := by
+  apply Subsingleton.elim
+
+/--
 Projecting component-slot requirements from the boundary-aware remaining-package
 constructor recovers the strengthened remaining-package component payload.
 -/
