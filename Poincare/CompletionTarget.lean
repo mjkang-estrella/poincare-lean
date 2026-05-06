@@ -9800,6 +9800,34 @@ theorem equation_boundary_verification_payload_of_completion_certificate_with_eq
   apply Subsingleton.elim
 
 /--
+Projecting the checked certificate from the arbitrary-verification aggregate
+constructor recovers the checked certificate built from that strengthened
+aggregate package.
+-/
+theorem completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    completion_certificate_of_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload
+        dependencies payload) =
+      completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the verification payload from the arbitrary-verification aggregate
+constructor recovers the supplied aggregate verification payload.
+-/
+theorem equation_boundary_verification_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    equation_boundary_verification_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload
+        dependencies payload) =
+      ⟨dependencies, payload⟩ := by
+  apply Subsingleton.elim
+
+/--
 An existential equation-boundary verification payload reconstructs the
 boundary-aware checked certificate payload.
 -/
@@ -9968,6 +9996,33 @@ theorem remaining_dependency_package_of_completion_certificate_with_equation_bou
     (payload : EquationBoundaryVerificationPayload dependencies) :
     remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
       (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+        dependencies payload) =
+      remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the strengthened dependency package from the arbitrary-verification
+aggregate constructor recovers the supplied strengthened aggregate package.
+-/
+theorem remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload
+        dependencies payload) =
+      dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the ordinary dependency package from the arbitrary-verification
+aggregate constructor recovers the forgetful ordinary package.
+-/
+theorem remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload
         dependencies payload) =
       remaining_dependency_package_of_equation_boundary_remaining_dependency_package
         dependencies := by
