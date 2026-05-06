@@ -10138,6 +10138,69 @@ theorem remaining_dependency_package_with_equation_boundary_of_completion_certif
   apply Subsingleton.elim
 
 /--
+Project the verification payload directly at the strengthened dependency
+package stored by a boundary-aware certificate payload.
+-/
+theorem equation_boundary_verification_payload_for_completion_certificate_with_equation_boundary_verification_payload
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    EquationBoundaryVerificationPayload
+      (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+        payload) := by
+  rcases payload with
+    ⟨_dependencies, _certificate, _certificate_eq, verification⟩
+  exact verification
+
+/--
+The direct verification projection is the verification evidence stored in the
+boundary-aware certificate payload, indexed by the projected strengthened
+dependency package.
+-/
+theorem equation_boundary_verification_payload_for_completion_certificate_with_equation_boundary_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    equation_boundary_verification_payload_for_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      (by
+        rcases payload with
+          ⟨_dependencies, _certificate, _certificate_eq, verification⟩
+        exact verification :
+        EquationBoundaryVerificationPayload
+          (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+            payload)) := by
+  apply Subsingleton.elim
+
+/--
+The existential verification-payload projection is the pair of the direct
+strengthened dependency projection and the dependent verification projection.
+-/
+theorem equation_boundary_verification_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    equation_boundary_verification_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      ⟨remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+          payload,
+        equation_boundary_verification_payload_for_completion_certificate_with_equation_boundary_verification_payload
+          payload⟩ := by
+  apply Subsingleton.elim
+
+/--
+A boundary-aware certificate is reconstructed from its projected strengthened
+dependency package and direct dependent verification payload.
+-/
+theorem completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_projected_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+        (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+          payload)
+        (equation_boundary_verification_payload_for_completion_certificate_with_equation_boundary_verification_payload
+          payload) =
+      payload := by
+  apply Subsingleton.elim
+
+/--
 Project the ordinary forgetful remaining-dependency package from a
 boundary-aware certificate payload.
 -/
@@ -10314,6 +10377,100 @@ theorem remaining_dependency_package_of_completion_certificate_with_equation_bou
         dependencies) =
       remaining_dependency_package_of_equation_boundary_remaining_dependency_package
         dependencies := by
+  apply Subsingleton.elim
+
+/--
+The direct verification projection from the existential verification-payload
+constructor recovers the unpacked verification payload.
+-/
+theorem equation_boundary_verification_payload_for_completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload_eq
+    (payload :
+      ∃ dependencies : RemainingDependencyPackageWithEquationBoundary.{u},
+        EquationBoundaryVerificationPayload dependencies) :
+    equation_boundary_verification_payload_for_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload
+        payload) =
+      (by
+        rcases payload with ⟨_dependencies, verificationPayload⟩
+        exact verificationPayload :
+        EquationBoundaryVerificationPayload
+          (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+            (completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload
+              payload))) := by
+  apply Subsingleton.elim
+
+/--
+The direct verification projection from the arbitrary remaining-package
+constructor recovers the supplied verification payload.
+-/
+theorem equation_boundary_verification_payload_for_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u})
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    equation_boundary_verification_payload_for_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+        dependencies payload) =
+      (by
+        exact payload :
+        EquationBoundaryVerificationPayload
+          (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+            (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+              dependencies payload))) := by
+  apply Subsingleton.elim
+
+/--
+The direct verification projection from the arbitrary aggregate constructor
+recovers the supplied aggregate verification payload.
+-/
+theorem equation_boundary_verification_payload_for_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    equation_boundary_verification_payload_for_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload
+        dependencies payload) =
+      (by
+        exact payload :
+        EquationBoundaryVerificationPayload
+          (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+            (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload
+              dependencies payload))) := by
+  apply Subsingleton.elim
+
+/--
+The direct verification projection from the named remaining-package constructor
+recovers the named remaining-package verification payload.
+-/
+theorem equation_boundary_verification_payload_for_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    equation_boundary_verification_payload_for_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package
+        dependencies) =
+      (by
+        exact
+          equation_boundary_verification_payload_of_remaining_dependency_package
+            dependencies :
+        EquationBoundaryVerificationPayload
+          (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+            (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package
+              dependencies))) := by
+  apply Subsingleton.elim
+
+/--
+The direct verification projection from the named aggregate constructor
+recovers the named aggregate verification payload.
+-/
+theorem equation_boundary_verification_payload_for_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_verification_payload_for_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies) =
+      (by
+        exact
+          equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+            dependencies :
+        EquationBoundaryVerificationPayload
+          (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+            (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+              dependencies))) := by
   apply Subsingleton.elim
 
 /--
