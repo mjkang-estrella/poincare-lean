@@ -9184,6 +9184,22 @@ noncomputable def metric_derivative_data_of_surgery_package_with_equation_bounda
         (equation_boundary_of_surgery_package_with_equation_boundary package) :=
   rfl
 
+/--
+The strengthened surgery package's metric-derivative data is the metric
+derivative carried by its projected explicit equation verification.
+-/
+@[simp] theorem metric_derivative_data_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    metric_derivative_data_of_surgery_package_with_equation_boundary package =
+      metric_derivative_data_of_ricci_flow_equation_verification
+        (ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
+          package) :=
+  rfl
+
 /-- A strengthened surgery package carries metric-derivative identification evidence. -/
 theorem metric_time_derivative_identification_of_surgery_package_with_equation_boundary
     {n : ℕ∞ω}
@@ -9211,6 +9227,23 @@ theorem metric_time_derivative_identification_of_surgery_package_with_equation_b
       package =
       metric_time_derivative_identification_of_equation_boundary_package
         (equation_boundary_of_surgery_package_with_equation_boundary package) :=
+  rfl
+
+/--
+The strengthened surgery package's derivative-identification evidence is the
+evidence carried by its projected explicit equation verification.
+-/
+theorem metric_time_derivative_identification_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    metric_time_derivative_identification_of_surgery_package_with_equation_boundary
+      package =
+      metric_time_derivative_identification_of_ricci_flow_equation_verification
+        (ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
+          package) :=
   rfl
 
 /--
@@ -9248,6 +9281,23 @@ theorem equation_at_time_of_surgery_package_with_equation_boundary_projection
   rfl
 
 /--
+The strengthened surgery package's projection-routed equation is the projected
+equation carried by its explicit equation verification.
+-/
+theorem equation_at_time_of_surgery_package_with_equation_boundary_projection_to_ricci_flow_equation_verification_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) (t : ℝ) :
+    equation_at_time_of_surgery_package_with_equation_boundary_projection
+      package t =
+      equation_at_time_of_ricci_flow_equation_verification_projection
+        (ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
+          package) t :=
+  rfl
+
+/--
 A strengthened surgery package supplies the analytic foundation together with
 the explicit equation boundary for its projected flow.
 -/
@@ -9282,6 +9332,26 @@ the underlying analytic-foundation package and stored equation boundary.
           (surgery_package_of_equation_boundary_surgery_package package))
         (equation_boundary_of_surgery_package_with_equation_boundary package) :=
   rfl
+
+/--
+The strengthened surgery package's analytic-boundary statement can be assembled
+directly from the underlying analytic package and its projected explicit
+equation verification.
+-/
+theorem analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+      package =
+      analytic_foundation_with_equation_boundary_of_package_and_ricci_flow_equation_verification
+        (analytic_foundation_of_surgery_package
+          (surgery_package_of_equation_boundary_surgery_package package))
+        (ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
+          package) := by
+  apply Subsingleton.elim
 
 /-- A strengthened surgery package still supplies the finite-extinction result. -/
 theorem finite_extinction_of_surgery_package_with_equation_boundary

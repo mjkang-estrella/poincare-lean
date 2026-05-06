@@ -2484,10 +2484,34 @@ check_decl "finite-extinction surgery package equation-boundary projection equal
   '^@\[simp\] theorem equation_boundary_of_surgery_package_with_equation_boundary_eq\b' Poincare/Surgery.lean
 check_decl "finite-extinction surgery package equation-boundary verification reconstruction theorem is declared" \
   '^theorem equation_boundary_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package equation verification projection is declared" \
+  '^noncomputable def ricci_flow_equation_verification_of_surgery_package_with_equation_boundary\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package equation verification projection equality theorem is declared" \
+  '^@\[simp\] theorem ricci_flow_equation_verification_of_surgery_package_with_equation_boundary_eq\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package metric derivative projection is declared" \
+  '^noncomputable def metric_derivative_data_of_surgery_package_with_equation_boundary\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package metric derivative projection equality theorem is declared" \
+  '^@\[simp\] theorem metric_derivative_data_of_surgery_package_with_equation_boundary_eq\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package metric derivative verification route equality theorem is declared" \
+  '^@\[simp\] theorem metric_derivative_data_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package derivative identification theorem is declared" \
+  '^theorem metric_time_derivative_identification_of_surgery_package_with_equation_boundary\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package derivative identification equality theorem is declared" \
+  '^@\[simp\] theorem metric_time_derivative_identification_of_surgery_package_with_equation_boundary_eq\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package derivative identification verification route equality theorem is declared" \
+  '^theorem metric_time_derivative_identification_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package pointwise equation projection theorem is declared" \
+  '^theorem equation_at_time_of_surgery_package_with_equation_boundary_projection\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package pointwise equation projection equality theorem is declared" \
+  '^@\[simp\] theorem equation_at_time_of_surgery_package_with_equation_boundary_projection_eq\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package pointwise equation verification route equality theorem is declared" \
+  '^theorem equation_at_time_of_surgery_package_with_equation_boundary_projection_to_ricci_flow_equation_verification_eq\b' Poincare/Surgery.lean
 check_decl "finite-extinction surgery package analytic-boundary theorem is declared" \
   '^theorem analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary\b' Poincare/Surgery.lean
 check_decl "finite-extinction surgery package analytic-boundary equality theorem is declared" \
   '^@\[simp\] theorem analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary_eq\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package analytic-boundary verification route equality theorem is declared" \
+  '^theorem analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq\b' Poincare/Surgery.lean
 check_decl "finite-extinction surgery package equation-boundary extinction theorem is declared" \
   '^theorem finite_extinction_of_surgery_package_with_equation_boundary\b' Poincare/Surgery.lean
 check_decl "finite-extinction surgery package equation-boundary extinction equality theorem is declared" \
@@ -2496,6 +2520,14 @@ check_decl "finite-extinction surgery package equation-boundary payload theorem 
   '^theorem surgery_package_with_equation_boundary_payload\b' Poincare/Surgery.lean
 check_decl "finite-extinction surgery package equation-boundary payload equality theorem is declared" \
   '^theorem surgery_package_with_equation_boundary_payload_eq\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package derivative payload shape is declared" \
+  '^abbrev SurgeryPackageWithEquationBoundaryDerivativePayload\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package derivative payload shape equality theorem is declared" \
+  '^theorem surgeryPackageWithEquationBoundaryDerivativePayload_eq\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package derivative payload theorem is declared" \
+  '^theorem surgery_package_with_equation_boundary_derivative_payload\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package derivative payload equality theorem is declared" \
+  '^theorem surgery_package_with_equation_boundary_derivative_payload_eq\b' Poincare/Surgery.lean
 check_decl "surgery package analytic foundation projection is declared" \
   '^noncomputable def analytic_foundation_of_surgery_package\b' Poincare/Surgery.lean
 check_decl "surgery package analytic foundation equality theorem is declared" \
@@ -9090,12 +9122,28 @@ open scoped Manifold ContDiff
 #check Poincare.equation_boundary_of_surgery_package_with_equation_boundary
 #check Poincare.equation_boundary_of_surgery_package_with_equation_boundary_eq
 #check Poincare.equation_boundary_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq
+#check Poincare.ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
+#check Poincare.ricci_flow_equation_verification_of_surgery_package_with_equation_boundary_eq
+#check Poincare.metric_derivative_data_of_surgery_package_with_equation_boundary
+#check Poincare.metric_derivative_data_of_surgery_package_with_equation_boundary_eq
+#check Poincare.metric_derivative_data_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq
+#check Poincare.metric_time_derivative_identification_of_surgery_package_with_equation_boundary
+#check Poincare.metric_time_derivative_identification_of_surgery_package_with_equation_boundary_eq
+#check Poincare.metric_time_derivative_identification_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq
+#check Poincare.equation_at_time_of_surgery_package_with_equation_boundary_projection
+#check Poincare.equation_at_time_of_surgery_package_with_equation_boundary_projection_eq
+#check Poincare.equation_at_time_of_surgery_package_with_equation_boundary_projection_to_ricci_flow_equation_verification_eq
 #check Poincare.analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
 #check Poincare.analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary_eq
+#check Poincare.analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq
 #check Poincare.finite_extinction_of_surgery_package_with_equation_boundary
 #check Poincare.finite_extinction_of_surgery_package_with_equation_boundary_eq
 #check Poincare.surgery_package_with_equation_boundary_payload
 #check Poincare.surgery_package_with_equation_boundary_payload_eq
+#check Poincare.SurgeryPackageWithEquationBoundaryDerivativePayload
+#check Poincare.surgeryPackageWithEquationBoundaryDerivativePayload_eq
+#check Poincare.surgery_package_with_equation_boundary_derivative_payload
+#check Poincare.surgery_package_with_equation_boundary_derivative_payload_eq
 #check Poincare.poincare_statement_of_extinction_and_extraction
 #check Poincare.poincare_statement_of_extinction_and_extraction_eq
 #check Poincare.extinction_extraction_of_poincare_statement
@@ -12262,12 +12310,28 @@ open scoped Manifold ContDiff
 #check Poincare.equation_boundary_of_surgery_package_with_equation_boundary
 #check Poincare.equation_boundary_of_surgery_package_with_equation_boundary_eq
 #check Poincare.equation_boundary_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq
+#check Poincare.ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
+#check Poincare.ricci_flow_equation_verification_of_surgery_package_with_equation_boundary_eq
+#check Poincare.metric_derivative_data_of_surgery_package_with_equation_boundary
+#check Poincare.metric_derivative_data_of_surgery_package_with_equation_boundary_eq
+#check Poincare.metric_derivative_data_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq
+#check Poincare.metric_time_derivative_identification_of_surgery_package_with_equation_boundary
+#check Poincare.metric_time_derivative_identification_of_surgery_package_with_equation_boundary_eq
+#check Poincare.metric_time_derivative_identification_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq
+#check Poincare.equation_at_time_of_surgery_package_with_equation_boundary_projection
+#check Poincare.equation_at_time_of_surgery_package_with_equation_boundary_projection_eq
+#check Poincare.equation_at_time_of_surgery_package_with_equation_boundary_projection_to_ricci_flow_equation_verification_eq
 #check Poincare.analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
 #check Poincare.analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary_eq
+#check Poincare.analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq
 #check Poincare.finite_extinction_of_surgery_package_with_equation_boundary
 #check Poincare.finite_extinction_of_surgery_package_with_equation_boundary_eq
 #check Poincare.surgery_package_with_equation_boundary_payload
 #check Poincare.surgery_package_with_equation_boundary_payload_eq
+#check Poincare.SurgeryPackageWithEquationBoundaryDerivativePayload
+#check Poincare.surgeryPackageWithEquationBoundaryDerivativePayload_eq
+#check Poincare.surgery_package_with_equation_boundary_derivative_payload
+#check Poincare.surgery_package_with_equation_boundary_derivative_payload_eq
 #check Poincare.extinction_decomposition_of_topology_package
 #check Poincare.extinction_decomposition_of_topology_package_eq
 #check Poincare.extinction_surgery_trace_reconstruction_of_topology_package
