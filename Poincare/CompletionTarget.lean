@@ -9228,6 +9228,104 @@ theorem completion_criterion_of_completion_certificate_of_poincareProofDependenc
   apply Subsingleton.elim
 
 /--
+A strengthened remaining dependency package and its boundary-preserving
+extraction-derivation target payload reconstruct the checked completion
+certificate.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u})
+    (payload :
+      ∃ _surgeryPackages :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty
+              (Σ n : ℕ∞ω,
+                FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+      ∃ _finiteExtinction :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            FiniteExtinctionByRicciFlowWithSurgery M),
+      ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+      ∃ _derivation :
+        ExtinctionTopologyDerivationForExtractionStatement.{u}
+          extractSphere,
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    PoincareCompletionCertificate.{u} := by
+  rcases payload with
+    ⟨_surgeryPackages, _finiteExtinction, _extractSphere, _derivation,
+      target, criterion⟩
+  exact
+    ⟨canonicalCompletionTheoremName, rfl,
+      remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+        dependencies,
+      target, criterion⟩
+
+/--
+Using the named boundary-preserving extraction-derivation target payload in
+the strengthened remaining-package constructor recovers the named strengthened
+certificate.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies) =
+      completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+A strengthened aggregate dependency package and its boundary-preserving
+extraction-derivation target payload reconstruct the checked completion
+certificate through the strengthened remaining-package route.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (payload :
+      ∃ _surgeryPackages :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty
+              (Σ n : ℕ∞ω,
+                FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+      ∃ _finiteExtinction :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            FiniteExtinctionByRicciFlowWithSurgery M),
+      ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+      ∃ _derivation :
+        ExtinctionTopologyDerivationForExtractionStatement.{u}
+          extractSphere,
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+    dependencies payload
+
+/--
+Using the named boundary-preserving extraction-derivation target payload in
+the strengthened aggregate constructor recovers the named strengthened
+aggregate certificate.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies) =
+      completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The aggregate proof dependency package and an explicit project completion payload
 reconstruct the checked completion certificate.
 -/
