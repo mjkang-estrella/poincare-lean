@@ -9335,18 +9335,22 @@ theorem surgery_package_with_equation_boundary_payload_eq
   apply Subsingleton.elim
 
 /--
-A strengthened surgery package exposes the ordinary package, equation boundary,
-explicit equation verification, metric derivative data, derivative
-identification, pointwise equation, analytic-boundary statement, and
-finite-extinction result together.
+The full derivative-strengthened payload shape of a boundary-carrying surgery
+package.  It pins the ordinary surgery package to the forgetful projection and
+then carries the equation boundary, equation verification, metric derivative,
+pointwise Ricci-flow equation, analytic-boundary statement, and finite
+extinction result.
 -/
-theorem surgery_package_with_equation_boundary_derivative_payload
+abbrev SurgeryPackageWithEquationBoundaryDerivativePayload
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
-    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) : Prop :=
     ∃ basePackage : FiniteExtinctionSurgeryPackage n M,
+    ∃ _basePackage_eq :
+      basePackage =
+        surgery_package_of_equation_boundary_surgery_package package,
     ∃ _equationBoundary :
       RicciFlowEquationBoundaryPackage
         (ricci_flow_data_of_surgery_package basePackage),
@@ -9373,9 +9377,69 @@ theorem surgery_package_with_equation_boundary_derivative_payload
       ∃ _analyticBoundary :
         AnalyticFoundationWithEquationBoundaryStatement
           (ricci_flow_data_of_surgery_package basePackage),
-        FiniteExtinctionByRicciFlowWithSurgery M := by
+        FiniteExtinctionByRicciFlowWithSurgery M
+
+/--
+The full derivative-strengthened surgery payload is the explicit pinned
+existential tuple of the forgetful base package, equation-boundary evidence,
+derivative evidence, analytic-boundary statement, and finite-extinction result.
+-/
+theorem surgeryPackageWithEquationBoundaryDerivativePayload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    SurgeryPackageWithEquationBoundaryDerivativePayload package =
+      (∃ basePackage : FiniteExtinctionSurgeryPackage n M,
+      ∃ _basePackage_eq :
+        basePackage =
+          surgery_package_of_equation_boundary_surgery_package package,
+      ∃ _equationBoundary :
+        RicciFlowEquationBoundaryPackage
+          (ricci_flow_data_of_surgery_package basePackage),
+      ∃ _verification :
+        RicciFlowEquationVerification
+          (curvature_data_of_ricci_flow_data
+            (ricci_flow_data_of_surgery_package basePackage)),
+      ∃ metricDerivative :
+        MetricTimeDerivativeData
+          (metric_of_ricci_flow_data
+            (ricci_flow_data_of_surgery_package basePackage)),
+        IsMetricTimeDerivativeOf
+          (metric_of_ricci_flow_data
+            (ricci_flow_data_of_surgery_package basePackage))
+          (metric_time_derivative_field_of_metric_derivative_data
+            metricDerivative) ∧
+        (∀ t : ℝ,
+          metric_time_derivative_at_time_of_metric_derivative_field
+            (metric_time_derivative_field_of_metric_derivative_data
+              metricDerivative) t =
+            ricci_flow_rhs_tensor
+              (curvature_data_of_ricci_flow_data
+                (ricci_flow_data_of_surgery_package basePackage)) t) ∧
+        ∃ _analyticBoundary :
+          AnalyticFoundationWithEquationBoundaryStatement
+            (ricci_flow_data_of_surgery_package basePackage),
+          FiniteExtinctionByRicciFlowWithSurgery M) :=
+  rfl
+
+/--
+A strengthened surgery package exposes the ordinary package, equation boundary,
+explicit equation verification, metric derivative data, derivative
+identification, pointwise equation, analytic-boundary statement, and
+finite-extinction result together.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    SurgeryPackageWithEquationBoundaryDerivativePayload package := by
   exact
     ⟨surgery_package_of_equation_boundary_surgery_package package,
+      rfl,
       equation_boundary_of_surgery_package_with_equation_boundary package,
       ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
         package,
@@ -9403,6 +9467,7 @@ theorem surgery_package_with_equation_boundary_derivative_payload_eq
       (by
         exact
           ⟨surgery_package_of_equation_boundary_surgery_package package,
+            rfl,
             equation_boundary_of_surgery_package_with_equation_boundary package,
             ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
               package,

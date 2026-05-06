@@ -3055,6 +3055,34 @@ theorem equation_boundary_derivative_payload_of_remaining_dependency_package_eq
   apply Subsingleton.elim
 
 /--
+The strengthened remaining package exposes the full derivative-strengthened
+surgery payload for each selected boundary-carrying surgery package.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_remaining_dependency_package
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+          SurgeryPackageWithEquationBoundaryDerivativePayload package :=
+  surgery_package_with_equation_boundary_derivative_payload_of_dependencies
+    dependencies
+
+/--
+The strengthened remaining-package full surgery derivative payload is the
+dependency-projection full surgery derivative payload.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_derivative_payload_of_remaining_dependency_package
+        dependencies =
+      surgery_package_with_equation_boundary_derivative_payload_of_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining package exposes the analytic foundation together
 with its explicit equation-boundary package for each selected surgery package.
 -/
@@ -3248,6 +3276,47 @@ theorem equation_boundary_derivative_payload_of_poincareProofDependenciesWithEqu
     equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary
         dependencies =
       equation_boundary_derivative_payload_of_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package exposes the full
+derivative-strengthened surgery payload through the strengthened
+remaining-package route.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+          SurgeryPackageWithEquationBoundaryDerivativePayload package :=
+  surgery_package_with_equation_boundary_derivative_payload_of_remaining_dependency_package
+    dependencies
+
+/--
+The strengthened aggregate full surgery derivative payload is the strengthened
+remaining-package full surgery derivative payload.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      surgery_package_with_equation_boundary_derivative_payload_of_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate full surgery derivative payload agrees with the
+named dependency projection.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary_to_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      surgery_package_with_equation_boundary_derivative_payload_of_dependencies
         dependencies := by
   apply Subsingleton.elim
 

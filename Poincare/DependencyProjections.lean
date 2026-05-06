@@ -1317,6 +1317,47 @@ theorem equation_boundary_derivative_payload_of_dependencies_eq
   apply Subsingleton.elim
 
 /--
+Strengthened dependencies expose the full derivative-strengthened surgery
+payload selected from their boundary-carrying surgery package family.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+          SurgeryPackageWithEquationBoundaryDerivativePayload package := by
+  intro M _ _ _ _ _ _
+  rcases surgery_packages_with_equation_boundary_of_dependencies
+      dependencies M with
+    ⟨⟨n, package⟩⟩
+  exact
+    ⟨n, package,
+      surgery_package_with_equation_boundary_derivative_payload package⟩
+
+/--
+The dependency-level full surgery derivative payload is selected from the
+stored boundary-carrying surgery package family and then routed through the
+package-level derivative payload theorem.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_derivative_payload_of_dependencies
+        dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases surgery_packages_with_equation_boundary_of_dependencies
+            dependencies M with
+          ⟨⟨n, package⟩⟩
+        exact
+          ⟨n, package,
+            surgery_package_with_equation_boundary_derivative_payload
+              package⟩) := by
+  apply Subsingleton.elim
+
+/--
 Strengthened dependencies expose theorem-shaped analytic foundation statements
 that include the explicit Ricci-flow equation boundary.
 -/
