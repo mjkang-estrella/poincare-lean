@@ -25,6 +25,9 @@ sh scripts/axiom_audit.sh
 echo "== Shape contract gate =="
 sh scripts/shape_contract_audit.sh
 
+echo "== Theorem contract gate =="
+sh scripts/theorem_contract_audit.sh
+
 echo "== Objective =="
 cat <<'TEXT'
 Implement a complete Lean proof of the Poincare Conjecture:
