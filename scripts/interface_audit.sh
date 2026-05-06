@@ -36,6 +36,7 @@ check_no_constructors() {
 }
 
 check_no_constructors "IsRicciTensorOf" "Poincare/RicciFlow.lean"
+check_no_constructors "IsMetricTimeDerivativeOf" "Poincare/RicciFlow.lean"
 check_no_constructors "SatisfiesRicciFlowEquation" "Poincare/RicciFlow.lean"
 check_no_constructors "HasLeviCivitaConnectionTheory" "Poincare/AnalyticFoundation.lean"
 check_no_constructors "HasLeviCivitaConnectionExistence" "Poincare/AnalyticFoundation.lean"

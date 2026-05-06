@@ -514,6 +514,11 @@ set_option linter.unusedVariables false
 #check Poincare.zero_tangent_covariant_two_tensor
 #check Poincare.zero_tangent_covariant_two_tensor_eq
 #check Poincare.zero_tangent_covariant_two_tensor_apply
+#check Poincare.MetricTimeDerivativeField
+#check Poincare.zero_metric_time_derivative_field
+#check Poincare.zero_metric_time_derivative_field_eq
+#check Poincare.IsMetricTimeDerivativeOf
+#check Poincare.MetricTimeDerivativeData
 
 #check (Poincare.RicciFlowData.satisfies_equation :
   ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -531,6 +536,13 @@ set_option linter.unusedVariables false
 #check Poincare.metric_at_time_of_time_dependent_metric_eq
 #check Poincare.metric_at_time_of_ricci_flow_data
 #check Poincare.metric_at_time_of_ricci_flow_data_eq
+#check Poincare.metric_time_derivative_field_of_metric_derivative_data
+#check Poincare.metric_time_derivative_field_of_metric_derivative_data_eq
+#check Poincare.metric_time_derivative_identification_of_metric_derivative_data
+#check Poincare.metric_time_derivative_identification_of_metric_derivative_data_eq
+#check Poincare.metric_time_derivative_at_time_of_metric_derivative_field
+#check Poincare.metric_time_derivative_at_time_of_metric_derivative_field_eq
+#check Poincare.metric_time_derivative_at_time_of_zero_metric_time_derivative_field_eq
 #check Poincare.ricci_tensor_field_of_curvature_data
 #check Poincare.ricci_tensor_field_of_curvature_data_eq
 #check Poincare.scalar_curvature_field_of_curvature_data
@@ -542,6 +554,9 @@ set_option linter.unusedVariables false
 #check Poincare.ricci_tensor_at_time_of_ricci_tensor_field
 #check Poincare.ricci_tensor_at_time_of_ricci_tensor_field_eq
 #check Poincare.ricci_tensor_at_time_of_zero_ricci_tensor_field_eq
+#check Poincare.ricci_flow_rhs_tensor
+#check Poincare.ricci_flow_rhs_tensor_eq
+#check Poincare.ricci_flow_rhs_tensor_apply
 #check Poincare.scalar_curvature_at_time_of_scalar_curvature_field
 #check Poincare.scalar_curvature_at_time_of_scalar_curvature_field_eq
 #check Poincare.scalar_curvature_at_time_of_zero_scalar_curvature_field_eq
@@ -556,6 +571,11 @@ set_option linter.unusedVariables false
 #check Poincare.RicciFlowData.satisfies_equation_eq
 #check Poincare.equation_evidence_of_ricci_flow_data
 #check Poincare.equation_evidence_of_ricci_flow_data_eq
+#check Poincare.RicciFlowEquationVerification
+#check Poincare.metric_derivative_data_of_ricci_flow_equation_verification
+#check Poincare.metric_derivative_data_of_ricci_flow_equation_verification_eq
+#check Poincare.equation_at_time_of_ricci_flow_equation_verification
+#check Poincare.equation_at_time_of_ricci_flow_equation_verification_eq
 
 #check Poincare.ricci_flow_data_of_analytic_foundation_package
 #check Poincare.ricci_flow_data_of_analytic_foundation_package_eq

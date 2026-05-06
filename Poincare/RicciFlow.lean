@@ -160,6 +160,44 @@ noncomputable def zero_scalar_curvature_field
   rfl
 
 /--
+Candidate time derivative of a time-dependent metric.
+
+The derivative is a covariant two-tensor at each time.  The separate
+identification predicate below records the still-missing theorem that a
+candidate really is the derivative of the metric family.
+-/
+structure MetricTimeDerivativeField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_g : TimeDependentRiemannianMetric I n M) where
+  /-- Candidate metric derivative at each time. -/
+  derivativeAtTime : ℝ → TangentCovariantTwoTensor I M
+
+/-- The zero candidate time derivative for a time-dependent metric. -/
+noncomputable def zero_metric_time_derivative_field
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M) :
+    MetricTimeDerivativeField g where
+  derivativeAtTime := fun _t => zero_tangent_covariant_two_tensor I M
+
+/-- The zero candidate metric derivative is timewise the zero tensor. -/
+@[simp] theorem zero_metric_time_derivative_field_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M) :
+    zero_metric_time_derivative_field g =
+      ({ derivativeAtTime := fun _t => zero_tangent_covariant_two_tensor I M } :
+        MetricTimeDerivativeField g) :=
+  rfl
+
+/--
 Interface asserting that a candidate tensor is the Ricci tensor of a metric.
 
 This predicate has no constructors in this file; it is the curvature-theory
@@ -171,6 +209,33 @@ inductive IsRicciTensorOf
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (g : TimeDependentRiemannianMetric I n M) (_ricci : RicciTensorField g) : Prop
+
+/--
+Interface asserting that a candidate tensor field is the time derivative of a
+metric family.
+
+This predicate has no constructors in this file; it is the metric
+differentiation boundary that future analytic formalization must supply.
+-/
+inductive IsMetricTimeDerivativeOf
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M)
+    (_derivative : MetricTimeDerivativeField g) : Prop
+
+/-- Metric time-derivative data attached to a time-dependent metric. -/
+structure MetricTimeDerivativeData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M) where
+  /-- Candidate metric time derivative. -/
+  derivative : MetricTimeDerivativeField g
+  /-- Evidence that the candidate derivative is the derivative of `g`. -/
+  identifiesDerivative : IsMetricTimeDerivativeOf g derivative
 
 /-- Ricci curvature data attached to a time-dependent metric. -/
 structure RicciCurvatureData
@@ -296,6 +361,87 @@ def metric_at_time_of_ricci_flow_data
     metric_at_time_of_ricci_flow_data flow t = flow.metric.metricAtTime t :=
   rfl
 
+/-- Project the candidate derivative from metric time-derivative data. -/
+def metric_time_derivative_field_of_metric_derivative_data
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (derivative : MetricTimeDerivativeData g) : MetricTimeDerivativeField g :=
+  derivative.derivative
+
+/-- The named metric-derivative projection is definitionally the structure field. -/
+@[simp] theorem metric_time_derivative_field_of_metric_derivative_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (derivative : MetricTimeDerivativeData g) :
+    metric_time_derivative_field_of_metric_derivative_data derivative =
+      derivative.derivative :=
+  rfl
+
+/-- Metric time-derivative data carries derivative-identification evidence. -/
+theorem metric_time_derivative_identification_of_metric_derivative_data
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (derivative : MetricTimeDerivativeData g) :
+    IsMetricTimeDerivativeOf g
+      (metric_time_derivative_field_of_metric_derivative_data derivative) :=
+  derivative.identifiesDerivative
+
+/-- The named metric-derivative identification theorem is stored evidence. -/
+@[simp] theorem metric_time_derivative_identification_of_metric_derivative_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (derivative : MetricTimeDerivativeData g) :
+    metric_time_derivative_identification_of_metric_derivative_data derivative =
+      derivative.identifiesDerivative :=
+  rfl
+
+/-- Evaluate a candidate metric time-derivative field at a time. -/
+def metric_time_derivative_at_time_of_metric_derivative_field
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (derivative : MetricTimeDerivativeField g) (t : ℝ) :
+    TangentCovariantTwoTensor I M :=
+  derivative.derivativeAtTime t
+
+/-- The named metric-derivative time slice is the derivative field at time. -/
+@[simp] theorem metric_time_derivative_at_time_of_metric_derivative_field_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (derivative : MetricTimeDerivativeField g) (t : ℝ) :
+    metric_time_derivative_at_time_of_metric_derivative_field derivative t =
+      derivative.derivativeAtTime t :=
+  rfl
+
+/-- Evaluating the zero metric derivative at any time returns the zero tensor. -/
+@[simp] theorem metric_time_derivative_at_time_of_zero_metric_time_derivative_field_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M) (t : ℝ) :
+    metric_time_derivative_at_time_of_metric_derivative_field
+      (zero_metric_time_derivative_field g) t =
+        zero_tangent_covariant_two_tensor I M :=
+  rfl
+
 /-- Project the candidate Ricci tensor from Ricci-curvature data. -/
 def ricci_tensor_field_of_curvature_data
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -371,6 +517,44 @@ def ricci_tensor_at_time_of_ricci_tensor_field
     (g : TimeDependentRiemannianMetric I n M) (t : ℝ) :
     ricci_tensor_at_time_of_ricci_tensor_field (zero_ricci_tensor_field g) t =
       zero_tangent_covariant_two_tensor I M :=
+  rfl
+
+/-- The right-hand side `-2 Ricci` of the Ricci-flow equation. -/
+noncomputable def ricci_flow_rhs_tensor
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (curvature : RicciCurvatureData g) (t : ℝ) :
+    TangentCovariantTwoTensor I M :=
+  fun x => (-2 : ℝ) •
+    ricci_tensor_at_time_of_ricci_tensor_field
+      (ricci_tensor_field_of_curvature_data curvature) t x
+
+/-- The named Ricci-flow right-hand side is pointwise `-2 • Ricci`. -/
+@[simp] theorem ricci_flow_rhs_tensor_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (curvature : RicciCurvatureData g) (t : ℝ) :
+    ricci_flow_rhs_tensor curvature t =
+      (fun x => (-2 : ℝ) • curvature.ricci.tensorAtTime t x :
+        TangentCovariantTwoTensor I M) :=
+  rfl
+
+/-- At a point, the Ricci-flow right-hand side is `-2 • Ricci`. -/
+@[simp] theorem ricci_flow_rhs_tensor_apply
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (curvature : RicciCurvatureData g) (t : ℝ) (x : M) :
+    ricci_flow_rhs_tensor curvature t x =
+      (-2 : ℝ) • curvature.ricci.tensorAtTime t x :=
   rfl
 
 /-- Evaluate a candidate scalar curvature field at a time and point. -/
@@ -537,6 +721,78 @@ theorem equation_evidence_of_ricci_flow_data_eq
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) :
     equation_evidence_of_ricci_flow_data flow = flow.equation :=
+  rfl
+
+/--
+Concrete verification data for the equation `∂ₜ g = -2 Ricci`.
+
+This structure does not construct `SatisfiesRicciFlowEquation`; it records the
+explicit analytic equality that a future bridge theorem must connect to that
+interface.
+-/
+structure RicciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (curvature : RicciCurvatureData g) where
+  /-- The candidate metric derivative, with identification evidence. -/
+  metricDerivative : MetricTimeDerivativeData g
+  /-- Pointwise-in-time equality with the `-2 Ricci` right-hand side. -/
+  equationAtTime : ∀ t,
+    metric_time_derivative_at_time_of_metric_derivative_field
+      metricDerivative.derivative t = ricci_flow_rhs_tensor curvature t
+
+/-- Project metric-derivative data from a Ricci-flow equation verification. -/
+def metric_derivative_data_of_ricci_flow_equation_verification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (verification : RicciFlowEquationVerification curvature) :
+    MetricTimeDerivativeData g :=
+  verification.metricDerivative
+
+/-- The equation-verification metric-derivative projection is stored data. -/
+@[simp] theorem metric_derivative_data_of_ricci_flow_equation_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (verification : RicciFlowEquationVerification curvature) :
+    metric_derivative_data_of_ricci_flow_equation_verification verification =
+      verification.metricDerivative :=
+  rfl
+
+/-- A Ricci-flow equation verification supplies the explicit equality at time `t`. -/
+theorem equation_at_time_of_ricci_flow_equation_verification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (verification : RicciFlowEquationVerification curvature) (t : ℝ) :
+    metric_time_derivative_at_time_of_metric_derivative_field
+      verification.metricDerivative.derivative t = ricci_flow_rhs_tensor curvature t :=
+  verification.equationAtTime t
+
+/-- The named equation-at-time theorem is stored equation evidence. -/
+@[simp] theorem equation_at_time_of_ricci_flow_equation_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (verification : RicciFlowEquationVerification curvature) (t : ℝ) :
+    equation_at_time_of_ricci_flow_equation_verification verification t =
+      verification.equationAtTime t :=
   rfl
 
 end Poincare

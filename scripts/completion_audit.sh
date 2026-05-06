@@ -226,6 +226,16 @@ check_decl "tangent covariant two-tensor alias is declared" \
   '^abbrev TangentCovariantTwoTensor\b' Poincare/RicciFlow.lean
 check_decl "tangent covariant two-tensor equality contract is declared" \
   '^theorem tangentCovariantTwoTensor_eq\b' Poincare/RicciFlow.lean
+check_decl "metric time-derivative candidate field is declared" \
+  '^structure MetricTimeDerivativeField\b' Poincare/RicciFlow.lean
+check_decl "zero metric time-derivative candidate is declared" \
+  '^noncomputable def zero_metric_time_derivative_field\b' Poincare/RicciFlow.lean
+check_decl "zero metric time-derivative equality contract is declared" \
+  '^@\[simp\] theorem zero_metric_time_derivative_field_eq\b' Poincare/RicciFlow.lean
+check_decl "metric time-derivative identification interface is declared" \
+  '^inductive IsMetricTimeDerivativeOf\b' Poincare/RicciFlow.lean
+check_decl "metric time-derivative data is declared" \
+  '^structure MetricTimeDerivativeData\b' Poincare/RicciFlow.lean
 check_decl "Ricci-flow equation interface is declared" \
   '^inductive SatisfiesRicciFlowEquation\b' Poincare/RicciFlow.lean
 check_decl "Ricci-flow metric projection is declared" \
@@ -244,6 +254,18 @@ check_decl "Ricci-flow metric time-slice projection is declared" \
   '^def metric_at_time_of_ricci_flow_data\b' Poincare/RicciFlow.lean
 check_decl "Ricci-flow metric time-slice equality theorem is declared" \
   '^@\[simp\] theorem metric_at_time_of_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
+check_decl "metric time-derivative field projection is declared" \
+  '^def metric_time_derivative_field_of_metric_derivative_data\b' Poincare/RicciFlow.lean
+check_decl "metric time-derivative field projection equality theorem is declared" \
+  '^@\[simp\] theorem metric_time_derivative_field_of_metric_derivative_data_eq\b' Poincare/RicciFlow.lean
+check_decl "metric time-derivative identification projection theorem is declared" \
+  '^theorem metric_time_derivative_identification_of_metric_derivative_data\b' Poincare/RicciFlow.lean
+check_decl "metric time-derivative identification equality theorem is declared" \
+  '^@\[simp\] theorem metric_time_derivative_identification_of_metric_derivative_data_eq\b' Poincare/RicciFlow.lean
+check_decl "metric time-derivative time-slice projection is declared" \
+  '^def metric_time_derivative_at_time_of_metric_derivative_field\b' Poincare/RicciFlow.lean
+check_decl "metric time-derivative time-slice equality theorem is declared" \
+  '^@\[simp\] theorem metric_time_derivative_at_time_of_metric_derivative_field_eq\b' Poincare/RicciFlow.lean
 check_decl "Ricci tensor field projection is declared" \
   '^def ricci_tensor_field_of_curvature_data\b' Poincare/RicciFlow.lean
 check_decl "Ricci tensor field projection equality theorem is declared" \
@@ -256,6 +278,12 @@ check_decl "Ricci tensor time-slice projection is declared" \
   '^def ricci_tensor_at_time_of_ricci_tensor_field\b' Poincare/RicciFlow.lean
 check_decl "Ricci tensor time-slice equality theorem is declared" \
   '^@\[simp\] theorem ricci_tensor_at_time_of_ricci_tensor_field_eq\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow right-hand side tensor is declared" \
+  '^noncomputable def ricci_flow_rhs_tensor\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow right-hand side tensor equality theorem is declared" \
+  '^@\[simp\] theorem ricci_flow_rhs_tensor_eq\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow right-hand side tensor point theorem is declared" \
+  '^@\[simp\] theorem ricci_flow_rhs_tensor_apply\b' Poincare/RicciFlow.lean
 check_decl "scalar curvature time-slice projection is declared" \
   '^def scalar_curvature_at_time_of_scalar_curvature_field\b' Poincare/RicciFlow.lean
 check_decl "scalar curvature time-slice equality theorem is declared" \
@@ -282,6 +310,16 @@ check_decl "Ricci-flow equation projection theorem is declared" \
   '^theorem equation_evidence_of_ricci_flow_data\b' Poincare/RicciFlow.lean
 check_decl "Ricci-flow equation projection equality theorem is declared" \
   '^theorem equation_evidence_of_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow explicit equation verification data is declared" \
+  '^structure RicciFlowEquationVerification\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow equation verification derivative projection is declared" \
+  '^def metric_derivative_data_of_ricci_flow_equation_verification\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow equation verification derivative projection equality theorem is declared" \
+  '^@\[simp\] theorem metric_derivative_data_of_ricci_flow_equation_verification_eq\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow equation verification time theorem is declared" \
+  '^theorem equation_at_time_of_ricci_flow_equation_verification\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow equation verification time equality theorem is declared" \
+  '^@\[simp\] theorem equation_at_time_of_ricci_flow_equation_verification_eq\b' Poincare/RicciFlow.lean
 check_decl "Levi-Civita theory interface is declared" \
   '^inductive HasLeviCivitaConnectionTheory\b' Poincare/AnalyticFoundation.lean
 check_decl "Levi-Civita existence interface is declared" \
@@ -7468,6 +7506,11 @@ open scoped Manifold ContDiff
 #check Poincare.zero_tangent_covariant_two_tensor
 #check Poincare.zero_tangent_covariant_two_tensor_eq
 #check Poincare.zero_tangent_covariant_two_tensor_apply
+#check Poincare.MetricTimeDerivativeField
+#check Poincare.zero_metric_time_derivative_field
+#check Poincare.zero_metric_time_derivative_field_eq
+#check Poincare.IsMetricTimeDerivativeOf
+#check Poincare.MetricTimeDerivativeData
 #check Poincare.metric_of_ricci_flow_data
 #check Poincare.metric_of_ricci_flow_data_eq
 #check Poincare.curvature_data_of_ricci_flow_data
@@ -7476,6 +7519,13 @@ open scoped Manifold ContDiff
 #check Poincare.metric_at_time_of_time_dependent_metric_eq
 #check Poincare.metric_at_time_of_ricci_flow_data
 #check Poincare.metric_at_time_of_ricci_flow_data_eq
+#check Poincare.metric_time_derivative_field_of_metric_derivative_data
+#check Poincare.metric_time_derivative_field_of_metric_derivative_data_eq
+#check Poincare.metric_time_derivative_identification_of_metric_derivative_data
+#check Poincare.metric_time_derivative_identification_of_metric_derivative_data_eq
+#check Poincare.metric_time_derivative_at_time_of_metric_derivative_field
+#check Poincare.metric_time_derivative_at_time_of_metric_derivative_field_eq
+#check Poincare.metric_time_derivative_at_time_of_zero_metric_time_derivative_field_eq
 #check Poincare.ricci_tensor_field_of_curvature_data
 #check Poincare.ricci_tensor_field_of_curvature_data_eq
 #check Poincare.scalar_curvature_field_of_curvature_data
@@ -7487,6 +7537,9 @@ open scoped Manifold ContDiff
 #check Poincare.ricci_tensor_at_time_of_ricci_tensor_field
 #check Poincare.ricci_tensor_at_time_of_ricci_tensor_field_eq
 #check Poincare.ricci_tensor_at_time_of_zero_ricci_tensor_field_eq
+#check Poincare.ricci_flow_rhs_tensor
+#check Poincare.ricci_flow_rhs_tensor_eq
+#check Poincare.ricci_flow_rhs_tensor_apply
 #check Poincare.scalar_curvature_at_time_of_scalar_curvature_field
 #check Poincare.scalar_curvature_at_time_of_scalar_curvature_field_eq
 #check Poincare.scalar_curvature_at_time_of_zero_scalar_curvature_field_eq
@@ -7501,6 +7554,11 @@ open scoped Manifold ContDiff
 #check Poincare.RicciFlowData.satisfies_equation_eq
 #check Poincare.equation_evidence_of_ricci_flow_data
 #check Poincare.equation_evidence_of_ricci_flow_data_eq
+#check Poincare.RicciFlowEquationVerification
+#check Poincare.metric_derivative_data_of_ricci_flow_equation_verification
+#check Poincare.metric_derivative_data_of_ricci_flow_equation_verification_eq
+#check Poincare.equation_at_time_of_ricci_flow_equation_verification
+#check Poincare.equation_at_time_of_ricci_flow_equation_verification_eq
 #check Poincare.ricci_flow_data_of_analytic_foundation_package
 #check Poincare.ricci_flow_data_of_analytic_foundation_package_eq
 #check Poincare.levi_civita_existence_of_analytic_foundation_package
@@ -9811,6 +9869,11 @@ open scoped Manifold ContDiff
 #check Poincare.zero_tangent_covariant_two_tensor
 #check Poincare.zero_tangent_covariant_two_tensor_eq
 #check Poincare.zero_tangent_covariant_two_tensor_apply
+#check Poincare.MetricTimeDerivativeField
+#check Poincare.zero_metric_time_derivative_field
+#check Poincare.zero_metric_time_derivative_field_eq
+#check Poincare.IsMetricTimeDerivativeOf
+#check Poincare.MetricTimeDerivativeData
 
 #check (Poincare.RicciFlowData.satisfies_equation :
   ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -9828,6 +9891,13 @@ open scoped Manifold ContDiff
 #check Poincare.metric_at_time_of_time_dependent_metric_eq
 #check Poincare.metric_at_time_of_ricci_flow_data
 #check Poincare.metric_at_time_of_ricci_flow_data_eq
+#check Poincare.metric_time_derivative_field_of_metric_derivative_data
+#check Poincare.metric_time_derivative_field_of_metric_derivative_data_eq
+#check Poincare.metric_time_derivative_identification_of_metric_derivative_data
+#check Poincare.metric_time_derivative_identification_of_metric_derivative_data_eq
+#check Poincare.metric_time_derivative_at_time_of_metric_derivative_field
+#check Poincare.metric_time_derivative_at_time_of_metric_derivative_field_eq
+#check Poincare.metric_time_derivative_at_time_of_zero_metric_time_derivative_field_eq
 #check Poincare.ricci_tensor_field_of_curvature_data
 #check Poincare.ricci_tensor_field_of_curvature_data_eq
 #check Poincare.scalar_curvature_field_of_curvature_data
@@ -9839,6 +9909,9 @@ open scoped Manifold ContDiff
 #check Poincare.ricci_tensor_at_time_of_ricci_tensor_field
 #check Poincare.ricci_tensor_at_time_of_ricci_tensor_field_eq
 #check Poincare.ricci_tensor_at_time_of_zero_ricci_tensor_field_eq
+#check Poincare.ricci_flow_rhs_tensor
+#check Poincare.ricci_flow_rhs_tensor_eq
+#check Poincare.ricci_flow_rhs_tensor_apply
 #check Poincare.scalar_curvature_at_time_of_scalar_curvature_field
 #check Poincare.scalar_curvature_at_time_of_scalar_curvature_field_eq
 #check Poincare.scalar_curvature_at_time_of_zero_scalar_curvature_field_eq
@@ -9853,6 +9926,11 @@ open scoped Manifold ContDiff
 #check Poincare.RicciFlowData.satisfies_equation_eq
 #check Poincare.equation_evidence_of_ricci_flow_data
 #check Poincare.equation_evidence_of_ricci_flow_data_eq
+#check Poincare.RicciFlowEquationVerification
+#check Poincare.metric_derivative_data_of_ricci_flow_equation_verification
+#check Poincare.metric_derivative_data_of_ricci_flow_equation_verification_eq
+#check Poincare.equation_at_time_of_ricci_flow_equation_verification
+#check Poincare.equation_at_time_of_ricci_flow_equation_verification_eq
 #check Poincare.ricci_flow_data_of_analytic_foundation_package
 #check Poincare.ricci_flow_data_of_analytic_foundation_package_eq
 #check Poincare.levi_civita_existence_of_analytic_foundation_package
