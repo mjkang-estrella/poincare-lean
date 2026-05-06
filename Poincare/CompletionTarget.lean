@@ -10805,6 +10805,45 @@ theorem poincareCompletionCertificate_iff_remaining_dependency_milestone_extract
     completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements⟩
 
 /--
+The strengthened remaining-package certificate is propositionally the certified
+component extraction-derivation route for the forgetful ordinary package.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_to_component_extraction_derivation_requirements_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package certificate is propositionally the certified
+package-layer extraction-derivation route for the forgetful ordinary package.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_to_package_layer_extraction_derivation_requirements_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package certificate is propositionally the certified
+milestone extraction-derivation route for the forgetful ordinary package.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_to_milestone_extraction_derivation_requirements_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate proof dependency package produces a checked completion
 certificate through the certified component-slot requirement route.
 -/
@@ -10860,6 +10899,45 @@ theorem poincareCompletionCertificate_iff_poincareProofDependencies_milestone_ex
     PoincareCompletionCertificate.{u} ↔ PoincareProofDependencies.{u} :=
   ⟨poincareProofDependencies_of_completion_certificate,
     completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements⟩
+
+/--
+The strengthened aggregate equation-boundary certificate is propositionally the
+aggregate certified component extraction-derivation route for the forgetful
+ordinary aggregate package.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_component_extraction_derivation_requirements_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate equation-boundary certificate is propositionally the
+aggregate certified package-layer extraction-derivation route for the forgetful
+ordinary aggregate package.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_package_layer_extraction_derivation_requirements_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate equation-boundary certificate is propositionally the
+aggregate certified milestone extraction-derivation route for the forgetful
+ordinary aggregate package.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_milestone_extraction_derivation_requirements_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
 
 /--
 A completed remaining-dependency package also produces a completion certificate
