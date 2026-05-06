@@ -16504,6 +16504,205 @@ theorem remaining_dependency_package_of_completion_certificate_of_poincareProofD
   apply Subsingleton.elim
 
 /--
+The raw component-route constructor recovers any checked completion certificate
+from its projected remaining-dependency package.
+-/
+theorem completion_certificate_of_remaining_dependency_component_requirements_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_remaining_dependency_component_requirements
+      (remaining_dependency_package_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The raw package-layer-route constructor recovers any checked completion
+certificate from its projected remaining-dependency package.
+-/
+theorem completion_certificate_of_remaining_dependency_package_layer_requirements_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_remaining_dependency_package_layer_requirements
+      (remaining_dependency_package_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The raw milestone-route constructor recovers any checked completion certificate
+from its projected remaining-dependency package.
+-/
+theorem completion_certificate_of_remaining_dependency_milestone_requirements_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_remaining_dependency_milestone_requirements
+      (remaining_dependency_package_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The certified component-route constructor recovers any checked completion
+certificate from its projected remaining-dependency package.
+-/
+theorem completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements
+      (remaining_dependency_package_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The certified package-layer-route constructor recovers any checked completion
+certificate from its projected remaining-dependency package.
+-/
+theorem completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements
+      (remaining_dependency_package_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The certified milestone-route constructor recovers any checked completion
+certificate from its projected remaining-dependency package.
+-/
+theorem completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements
+      (remaining_dependency_package_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The aggregate extraction-derivation constructor recovers any checked completion
+certificate from its projected remaining-dependency package.
+-/
+theorem completion_certificate_of_aggregate_extraction_derivation_dependencies_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_aggregate_extraction_derivation_dependencies
+      (remaining_dependency_package_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The projection-route constructor recovers any checked completion certificate
+from its projected remaining-dependency package.
+-/
+theorem completion_certificate_of_dependency_projections_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_dependency_projections
+      (remaining_dependency_package_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The certified extraction-derivation projection constructor recovers any checked
+completion certificate from its projected remaining-dependency package.
+-/
+theorem completion_certificate_of_extraction_derivation_dependency_projections_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_extraction_derivation_dependency_projections
+      (remaining_dependency_package_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The aggregate raw component-route constructor recovers any checked completion
+certificate from its projected aggregate dependency package.
+-/
+theorem completion_certificate_of_poincareProofDependencies_component_requirements_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_poincareProofDependencies_component_requirements
+      (poincareProofDependencies_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The aggregate raw package-layer-route constructor recovers any checked
+completion certificate from its projected aggregate dependency package.
+-/
+theorem completion_certificate_of_poincareProofDependencies_package_layer_requirements_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_poincareProofDependencies_package_layer_requirements
+      (poincareProofDependencies_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The aggregate raw milestone-route constructor recovers any checked completion
+certificate from its projected aggregate dependency package.
+-/
+theorem completion_certificate_of_poincareProofDependencies_milestone_requirements_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_poincareProofDependencies_milestone_requirements
+      (poincareProofDependencies_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The aggregate certified component-route constructor recovers any checked
+completion certificate from its projected aggregate dependency package.
+-/
+theorem completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements
+      (poincareProofDependencies_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The aggregate certified package-layer-route constructor recovers any checked
+completion certificate from its projected aggregate dependency package.
+-/
+theorem completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+      (poincareProofDependencies_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The aggregate certified milestone-route constructor recovers any checked
+completion certificate from its projected aggregate dependency package.
+-/
+theorem completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+      (poincareProofDependencies_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The aggregate extraction-derivation constructor recovers any checked completion
+certificate from its projected aggregate dependency package.
+-/
+theorem completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
+      (poincareProofDependencies_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The aggregate projection-route constructor recovers any checked completion
+certificate from its projected aggregate dependency package.
+-/
+theorem completion_certificate_of_poincareProofDependencies_projections_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_poincareProofDependencies_projections
+      (poincareProofDependencies_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The aggregate certified extraction-derivation projection constructor recovers
+any checked completion certificate from its projected aggregate dependency
+package.
+-/
+theorem completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+      (poincareProofDependencies_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
 Projecting the canonical completion payload from the remaining-dependency raw
 component route returns the route payload.
 -/
