@@ -87,6 +87,16 @@ noncomputable def zero_tangent_covariant_two_tensor
     zero_tangent_covariant_two_tensor I M x = 0 :=
   rfl
 
+/-- The pointwise zero-tensor simp proof is the definitional equality proof. -/
+@[simp] theorem zero_tangent_covariant_two_tensor_apply_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (x : M) :
+    zero_tangent_covariant_two_tensor_apply (I := I) (M := M) x = rfl := by
+  apply Subsingleton.elim
+
 /--
 Candidate Ricci tensor field for a time-dependent metric.
 
@@ -557,6 +567,17 @@ noncomputable def ricci_flow_rhs_tensor
       (-2 : ℝ) • curvature.ricci.tensorAtTime t x :=
   rfl
 
+/-- The pointwise Ricci-flow right-hand-side simp proof is definitional. -/
+@[simp] theorem ricci_flow_rhs_tensor_apply_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (curvature : RicciCurvatureData g) (t : ℝ) (x : M) :
+    ricci_flow_rhs_tensor_apply curvature t x = rfl := by
+  apply Subsingleton.elim
+
 /-- Evaluate a candidate scalar curvature field at a time and point. -/
 def scalar_curvature_at_time_of_scalar_curvature_field
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -929,5 +950,45 @@ theorem zero_derivative_zero_ricci_equation_verification_exists
         exact (ricci_flow_rhs_tensor_of_zero_ricci_tensor_field_eq
           (g := g) identifiesRicci t).symm }
   exact ⟨curvature, rfl, rfl, verification, rfl, verification.equationAtTime⟩
+
+/--
+The zero-derivative/zero-Ricci consistency theorem is exactly the explicit
+curvature, derivative-data, and equation-verification payload construction.
+-/
+theorem zero_derivative_zero_ricci_equation_verification_exists_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g)) :
+    zero_derivative_zero_ricci_equation_verification_exists
+      identifiesDerivative identifiesRicci =
+      (by
+        let curvature : RicciCurvatureData g :=
+          { ricci := zero_ricci_tensor_field g
+            scalar := zero_scalar_curvature_field g
+            identifiesRicci := identifiesRicci }
+        let derivativeData : MetricTimeDerivativeData g :=
+          { derivative := zero_metric_time_derivative_field g
+            identifiesDerivative := identifiesDerivative }
+        let verification : RicciFlowEquationVerification curvature :=
+          { metricDerivative := derivativeData
+            equationAtTime := by
+              intro t
+              change zero_tangent_covariant_two_tensor I M =
+                ricci_flow_rhs_tensor
+                  ({ ricci := zero_ricci_tensor_field g
+                     scalar := zero_scalar_curvature_field g
+                     identifiesRicci := identifiesRicci } :
+                    RicciCurvatureData g) t
+              exact (ricci_flow_rhs_tensor_of_zero_ricci_tensor_field_eq
+                (g := g) identifiesRicci t).symm }
+        exact
+          ⟨curvature, rfl, rfl, verification, rfl,
+            verification.equationAtTime⟩) := by
+  apply Subsingleton.elim
 
 end Poincare

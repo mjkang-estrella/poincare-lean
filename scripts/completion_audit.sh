@@ -226,6 +226,14 @@ check_decl "tangent covariant two-tensor alias is declared" \
   '^abbrev TangentCovariantTwoTensor\b' Poincare/RicciFlow.lean
 check_decl "tangent covariant two-tensor equality contract is declared" \
   '^theorem tangentCovariantTwoTensor_eq\b' Poincare/RicciFlow.lean
+check_decl "zero tangent covariant two-tensor is declared" \
+  '^noncomputable def zero_tangent_covariant_two_tensor\b' Poincare/RicciFlow.lean
+check_decl "zero tangent covariant two-tensor equality contract is declared" \
+  '^@\[simp\] theorem zero_tangent_covariant_two_tensor_eq\b' Poincare/RicciFlow.lean
+check_decl "zero tangent covariant two-tensor point theorem is declared" \
+  '^@\[simp\] theorem zero_tangent_covariant_two_tensor_apply\b' Poincare/RicciFlow.lean
+check_decl "zero tangent covariant two-tensor point equality contract is declared" \
+  '^@\[simp\] theorem zero_tangent_covariant_two_tensor_apply_eq\b' Poincare/RicciFlow.lean
 check_decl "metric time-derivative candidate field is declared" \
   '^structure MetricTimeDerivativeField\b' Poincare/RicciFlow.lean
 check_decl "zero metric time-derivative candidate is declared" \
@@ -284,6 +292,8 @@ check_decl "Ricci-flow right-hand side tensor equality theorem is declared" \
   '^@\[simp\] theorem ricci_flow_rhs_tensor_eq\b' Poincare/RicciFlow.lean
 check_decl "Ricci-flow right-hand side tensor point theorem is declared" \
   '^@\[simp\] theorem ricci_flow_rhs_tensor_apply\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow right-hand side tensor point equality contract is declared" \
+  '^@\[simp\] theorem ricci_flow_rhs_tensor_apply_eq\b' Poincare/RicciFlow.lean
 check_decl "scalar curvature time-slice projection is declared" \
   '^def scalar_curvature_at_time_of_scalar_curvature_field\b' Poincare/RicciFlow.lean
 check_decl "scalar curvature time-slice equality theorem is declared" \
@@ -332,6 +342,8 @@ check_decl "zero-Ricci right-hand side theorem is declared" \
   '^@\[simp\] theorem ricci_flow_rhs_tensor_of_zero_ricci_tensor_field_eq\b' Poincare/RicciFlow.lean
 check_decl "zero-derivative zero-Ricci verification existence theorem is declared" \
   '^theorem zero_derivative_zero_ricci_equation_verification_exists\b' Poincare/RicciFlow.lean
+check_decl "zero-derivative zero-Ricci verification existence equality contract is declared" \
+  '^theorem zero_derivative_zero_ricci_equation_verification_exists_eq\b' Poincare/RicciFlow.lean
 check_decl "Levi-Civita theory interface is declared" \
   '^inductive HasLeviCivitaConnectionTheory\b' Poincare/AnalyticFoundation.lean
 check_decl "Levi-Civita existence interface is declared" \
@@ -9605,6 +9617,8 @@ open scoped Manifold ContDiff
 #check Poincare.zero_tangent_covariant_two_tensor
 #check Poincare.zero_tangent_covariant_two_tensor_eq
 #check Poincare.zero_tangent_covariant_two_tensor_apply
+#check Poincare.zero_tangent_covariant_two_tensor_apply_eq
+#check Poincare.zero_tangent_covariant_two_tensor_apply_eq
 #check Poincare.MetricTimeDerivativeField
 #check Poincare.zero_metric_time_derivative_field
 #check Poincare.zero_metric_time_derivative_field_eq
@@ -9639,6 +9653,8 @@ open scoped Manifold ContDiff
 #check Poincare.ricci_flow_rhs_tensor
 #check Poincare.ricci_flow_rhs_tensor_eq
 #check Poincare.ricci_flow_rhs_tensor_apply
+#check Poincare.ricci_flow_rhs_tensor_apply_eq
+#check Poincare.ricci_flow_rhs_tensor_apply_eq
 #check Poincare.scalar_curvature_at_time_of_scalar_curvature_field
 #check Poincare.scalar_curvature_at_time_of_scalar_curvature_field_eq
 #check Poincare.scalar_curvature_at_time_of_zero_scalar_curvature_field_eq
@@ -9664,6 +9680,7 @@ open scoped Manifold ContDiff
 #check Poincare.equation_at_time_of_ricci_flow_equation_verification_projection_eq
 #check Poincare.ricci_flow_rhs_tensor_of_zero_ricci_tensor_field_eq
 #check Poincare.zero_derivative_zero_ricci_equation_verification_exists
+#check Poincare.zero_derivative_zero_ricci_equation_verification_exists_eq
 #check Poincare.ricci_flow_data_of_analytic_foundation_package
 #check Poincare.ricci_flow_data_of_analytic_foundation_package_eq
 #check Poincare.levi_civita_existence_of_analytic_foundation_package
@@ -13004,6 +13021,7 @@ open scoped Manifold ContDiff
 #check Poincare.equation_at_time_of_ricci_flow_equation_verification_projection_eq
 #check Poincare.ricci_flow_rhs_tensor_of_zero_ricci_tensor_field_eq
 #check Poincare.zero_derivative_zero_ricci_equation_verification_exists
+#check Poincare.zero_derivative_zero_ricci_equation_verification_exists_eq
 #check Poincare.ricci_flow_data_of_analytic_foundation_package
 #check Poincare.ricci_flow_data_of_analytic_foundation_package_eq
 #check Poincare.levi_civita_existence_of_analytic_foundation_package
