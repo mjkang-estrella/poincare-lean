@@ -3176,6 +3176,82 @@ theorem poincare_completion_payload_of_poincareProofDependenciesWithEquationBoun
   apply Subsingleton.elim
 
 /--
+The strengthened aggregate dependency package exposes the projection-routed
+equation-boundary derivative payload through the strengthened remaining-package
+route.
+-/
+theorem equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+        ∃ verification :
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package
+                (surgery_package_of_equation_boundary_surgery_package
+                  package))),
+        ∃ _verification_eq :
+          verification =
+            ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
+              package,
+        ∃ metricDerivative :
+          MetricTimeDerivativeData
+            (metric_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package
+                (surgery_package_of_equation_boundary_surgery_package
+                  package))),
+        ∃ _metricDerivative_eq :
+          metricDerivative =
+            metric_derivative_data_of_surgery_package_with_equation_boundary
+              package,
+          IsMetricTimeDerivativeOf
+            (metric_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package
+                (surgery_package_of_equation_boundary_surgery_package
+                  package)))
+            (metric_time_derivative_field_of_metric_derivative_data
+              metricDerivative) ∧
+          ∀ t : ℝ,
+            metric_time_derivative_at_time_of_metric_derivative_field
+              (metric_time_derivative_field_of_metric_derivative_data
+                metricDerivative) t =
+              ricci_flow_rhs_tensor
+                (curvature_data_of_ricci_flow_data
+                  (ricci_flow_data_of_surgery_package
+                    (surgery_package_of_equation_boundary_surgery_package
+                      package))) t :=
+  equation_boundary_derivative_payload_of_remaining_dependency_package
+    dependencies
+
+/--
+The strengthened aggregate derivative payload is the strengthened
+remaining-package derivative payload.
+-/
+theorem equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      equation_boundary_derivative_payload_of_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate derivative payload agrees with the named dependency
+projection.
+-/
+theorem equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary_to_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      equation_boundary_derivative_payload_of_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining dependency package proves the canonical completion
 target through the strengthened aggregate dependency route.
 -/
