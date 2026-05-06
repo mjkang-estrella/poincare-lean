@@ -1267,6 +1267,8 @@ set_option linter.unusedVariables false
 #check Poincare.finite_extinction_of_surgery_package_with_equation_boundary_eq
 #check Poincare.surgery_package_with_equation_boundary_payload
 #check Poincare.surgery_package_with_equation_boundary_payload_eq
+#check Poincare.surgery_package_with_equation_boundary_derivative_payload
+#check Poincare.surgery_package_with_equation_boundary_derivative_payload_eq
 
 #check (Poincare.ricci_flow_with_surgery_of_surgery_package :
   ∀ {n : ℕ∞ω}

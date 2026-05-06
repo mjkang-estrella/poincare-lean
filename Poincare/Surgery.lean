@@ -9334,6 +9334,90 @@ theorem surgery_package_with_equation_boundary_payload_eq
               package⟩) := by
   apply Subsingleton.elim
 
+/--
+A strengthened surgery package exposes the ordinary package, equation boundary,
+explicit equation verification, metric derivative data, derivative
+identification, pointwise equation, analytic-boundary statement, and
+finite-extinction result together.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    ∃ basePackage : FiniteExtinctionSurgeryPackage n M,
+    ∃ _equationBoundary :
+      RicciFlowEquationBoundaryPackage
+        (ricci_flow_data_of_surgery_package basePackage),
+    ∃ _verification :
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package basePackage)),
+    ∃ metricDerivative :
+      MetricTimeDerivativeData
+        (metric_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package basePackage)),
+      IsMetricTimeDerivativeOf
+        (metric_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package basePackage))
+        (metric_time_derivative_field_of_metric_derivative_data
+          metricDerivative) ∧
+      (∀ t : ℝ,
+        metric_time_derivative_at_time_of_metric_derivative_field
+          (metric_time_derivative_field_of_metric_derivative_data
+            metricDerivative) t =
+          ricci_flow_rhs_tensor
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package basePackage)) t) ∧
+      ∃ _analyticBoundary :
+        AnalyticFoundationWithEquationBoundaryStatement
+          (ricci_flow_data_of_surgery_package basePackage),
+        FiniteExtinctionByRicciFlowWithSurgery M := by
+  exact
+    ⟨surgery_package_of_equation_boundary_surgery_package package,
+      equation_boundary_of_surgery_package_with_equation_boundary package,
+      ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
+        package,
+      metric_derivative_data_of_surgery_package_with_equation_boundary package,
+      metric_time_derivative_identification_of_surgery_package_with_equation_boundary
+        package,
+      equation_at_time_of_surgery_package_with_equation_boundary_projection
+        package,
+      analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+        package,
+      finite_extinction_of_surgery_package_with_equation_boundary package⟩
+
+/--
+The strengthened surgery-package derivative payload is exactly the tuple of
+the underlying package, boundary evidence, derivative evidence,
+analytic-boundary statement, and finite-extinction result.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    surgery_package_with_equation_boundary_derivative_payload package =
+      (by
+        exact
+          ⟨surgery_package_of_equation_boundary_surgery_package package,
+            equation_boundary_of_surgery_package_with_equation_boundary package,
+            ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
+              package,
+            metric_derivative_data_of_surgery_package_with_equation_boundary
+              package,
+            metric_time_derivative_identification_of_surgery_package_with_equation_boundary
+              package,
+            equation_at_time_of_surgery_package_with_equation_boundary_projection
+              package,
+            analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+              package,
+            finite_extinction_of_surgery_package_with_equation_boundary
+              package⟩) := by
+  apply Subsingleton.elim
+
 section SurgeryPackageFiniteExtinctionProjectionEqualities
 
 variable {n : ℕ∞ω}
