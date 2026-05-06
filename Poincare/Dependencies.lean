@@ -409,6 +409,105 @@ theorem poincare_target_payload_of_aggregate_extraction_derivation_dependencies_
   apply Subsingleton.elim
 
 /--
+The strengthened aggregate dependency package exposes the boundary-carrying
+surgery family together with the ordinary final assembly inputs, target
+statement, and universe-indexed completion criterion.
+-/
+theorem poincare_target_payload_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _surgeryPackages :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ _extractSphere : ExtinctionImpliesSphereStatement.{u},
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases
+      poincare_target_payload_of_aggregate_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) with
+    ⟨finiteExtinction, extractSphere, target, criterion⟩
+  exact
+    ⟨dependencies.surgery, finiteExtinction, extractSphere, target, criterion⟩
+
+/--
+The strengthened aggregate target payload keeps the stored boundary-carrying
+surgery family and selects the remaining fields from the ordinary forgetful
+aggregate target payload.
+-/
+theorem poincare_target_payload_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_target_payload_of_equation_boundary_dependencies dependencies =
+      (by
+        rcases
+            poincare_target_payload_of_aggregate_dependencies
+              (dependencies_of_equation_boundary_dependencies dependencies) with
+          ⟨finiteExtinction, extractSphere, target, criterion⟩
+        exact
+          ⟨dependencies.surgery, finiteExtinction, extractSphere, target,
+            criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package exposes the boundary-carrying
+surgery family together with the certified extraction-derivation assembly
+inputs, target statement, and completion criterion.
+-/
+theorem poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _surgeryPackages :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+    ∃ _derivation :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere,
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases
+      poincare_target_payload_of_aggregate_extraction_derivation_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) with
+    ⟨finiteExtinction, extractSphere, derivation, target, criterion⟩
+  exact
+    ⟨dependencies.surgery, finiteExtinction, extractSphere, derivation, target,
+      criterion⟩
+
+/--
+The strengthened certified target payload keeps the stored boundary-carrying
+surgery family and selects the remaining fields from the ordinary forgetful
+certified aggregate target payload.
+-/
+theorem poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      (by
+        rcases
+            poincare_target_payload_of_aggregate_extraction_derivation_dependencies
+              (dependencies_of_equation_boundary_dependencies dependencies) with
+          ⟨finiteExtinction, extractSphere, derivation, target, criterion⟩
+        exact
+          ⟨dependencies.surgery, finiteExtinction, extractSphere, derivation,
+            target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency package exposes the explicit end-to-end assembly
 inputs and target statement.
 -/
@@ -496,6 +595,109 @@ theorem poincare_full_assembly_payload_of_aggregate_extraction_derivation_depend
         exact ⟨dependencies.smoothability, dependencies.surgery,
           dependencies.topology, finiteExtinction, extractSphere, derivation,
           target⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package exposes the explicit end-to-end
+assembly inputs and target statement while retaining the boundary-carrying
+surgery family.
+-/
+theorem poincare_full_assembly_payload_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _smoothabilityPackage : SmoothabilityPackage.{u},
+    ∃ _surgeryPackages :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+    ∃ _topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ _extractSphere : ExtinctionImpliesSphereStatement.{u},
+      PoincareConjectureStatement.{u} := by
+  rcases poincare_target_payload_of_equation_boundary_dependencies
+      dependencies with
+    ⟨surgeryPackages, finiteExtinction, extractSphere, target, _criterion⟩
+  exact
+    ⟨dependencies.smoothability, surgeryPackages, dependencies.topology,
+      finiteExtinction, extractSphere, target⟩
+
+/--
+The strengthened aggregate full-assembly payload is selected from the named
+strengthened aggregate target payload and the stored dependency fields.
+-/
+theorem poincare_full_assembly_payload_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_equation_boundary_dependencies
+        dependencies =
+      (by
+        rcases poincare_target_payload_of_equation_boundary_dependencies
+            dependencies with
+          ⟨surgeryPackages, finiteExtinction, extractSphere, target,
+            _criterion⟩
+        exact
+          ⟨dependencies.smoothability, surgeryPackages, dependencies.topology,
+            finiteExtinction, extractSphere, target⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package exposes the explicit end-to-end
+certified extraction-derivation assembly inputs and target statement while
+retaining the boundary-carrying surgery family.
+-/
+theorem poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _smoothabilityPackage : SmoothabilityPackage.{u},
+    ∃ _surgeryPackages :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+    ∃ _topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+    ∃ _derivation :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere,
+      PoincareConjectureStatement.{u} := by
+  rcases
+      poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies with
+    ⟨surgeryPackages, finiteExtinction, extractSphere, derivation, target,
+      _criterion⟩
+  exact
+    ⟨dependencies.smoothability, surgeryPackages, dependencies.topology,
+      finiteExtinction, extractSphere, derivation, target⟩
+
+/--
+The strengthened certified aggregate full-assembly payload is selected from the
+named strengthened certified aggregate target payload and the stored dependency
+fields.
+-/
+theorem poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      (by
+        rcases
+            poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+              dependencies with
+          ⟨surgeryPackages, finiteExtinction, extractSphere, derivation, target,
+            _criterion⟩
+        exact
+          ⟨dependencies.smoothability, surgeryPackages, dependencies.topology,
+            finiteExtinction, extractSphere, derivation, target⟩) := by
   apply Subsingleton.elim
 
 /--

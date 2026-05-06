@@ -2450,6 +2450,48 @@ set_option linter.unusedVariables false
 
 #check Poincare.poincare_target_payload_of_aggregate_extraction_derivation_dependencies_eq
 
+#check (Poincare.poincare_target_payload_of_equation_boundary_dependencies :
+  Poincare.PoincareProofDependenciesWithEquationBoundary →
+    ∃ _surgeryPackages :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω,
+            Poincare.FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+    ∃ _finiteExtinction :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Poincare.FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ _extractSphere : Poincare.ExtinctionImpliesSphereStatement,
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check Poincare.poincare_target_payload_of_equation_boundary_dependencies_eq
+
+#check (Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies :
+  Poincare.PoincareProofDependenciesWithEquationBoundary →
+    ∃ _surgeryPackages :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω,
+            Poincare.FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+    ∃ _finiteExtinction :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Poincare.FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ extractSphere : Poincare.ExtinctionImpliesSphereStatement,
+    ∃ _derivation :
+      Poincare.ExtinctionTopologyDerivationForExtractionStatement extractSphere,
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies_eq
+
 #check (Poincare.poincare_full_assembly_payload_of_dependencies :
   Poincare.PoincareProofDependencies →
     ∃ _smoothabilityPackage : Poincare.SmoothabilityPackage,
@@ -2493,6 +2535,50 @@ set_option linter.unusedVariables false
       Poincare.PoincareConjectureStatement)
 
 #check Poincare.poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies_eq
+
+#check (Poincare.poincare_full_assembly_payload_of_equation_boundary_dependencies :
+  Poincare.PoincareProofDependenciesWithEquationBoundary →
+    ∃ _smoothabilityPackage : Poincare.SmoothabilityPackage,
+    ∃ _surgeryPackages :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω,
+            Poincare.FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+    ∃ _topologyPackage : Poincare.ExtinctionTopologyExtractionPackage,
+    ∃ _finiteExtinction :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Poincare.FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ _extractSphere : Poincare.ExtinctionImpliesSphereStatement,
+      Poincare.PoincareConjectureStatement)
+
+#check Poincare.poincare_full_assembly_payload_of_equation_boundary_dependencies_eq
+
+#check (Poincare.poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies :
+  Poincare.PoincareProofDependenciesWithEquationBoundary →
+    ∃ _smoothabilityPackage : Poincare.SmoothabilityPackage,
+    ∃ _surgeryPackages :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω,
+            Poincare.FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+    ∃ _topologyPackage : Poincare.ExtinctionTopologyExtractionPackage,
+    ∃ _finiteExtinction :
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Poincare.FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ extractSphere : Poincare.ExtinctionImpliesSphereStatement,
+    ∃ _derivation :
+      Poincare.ExtinctionTopologyDerivationForExtractionStatement extractSphere,
+      Poincare.PoincareConjectureStatement)
+
+#check Poincare.poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_eq
 
 #check (Poincare.poincare_assembly_payload_of_dependencies :
   Poincare.PoincareProofDependencies →
@@ -7915,8 +8001,8 @@ aggregate_target_payload_count=$(
   rg -c '\bpoincare_target_payload_of_aggregate_dependencies\b' \
     Poincare/Dependencies.lean || true
 )
-if [ "$aggregate_target_payload_count" != "6" ]; then
-  echo "FAIL: aggregate dependency target and completion routes should consume the aggregate target payload"
+if [ "$aggregate_target_payload_count" != "8" ]; then
+  echo "FAIL: aggregate dependency target, completion, and equation-boundary routes should consume the aggregate target payload"
   rg -n '\bpoincare_target_payload_of_aggregate_dependencies\b' \
     Poincare/Dependencies.lean || true
   exit 1
@@ -7926,9 +8012,31 @@ aggregate_extraction_derivation_target_payload_count=$(
   rg -c '\bpoincare_target_payload_of_aggregate_extraction_derivation_dependencies\b' \
     Poincare/Dependencies.lean || true
 )
-if [ "$aggregate_extraction_derivation_target_payload_count" != "6" ]; then
-  echo "FAIL: aggregate extraction-derivation dependency routes should consume the certified aggregate target payload"
+if [ "$aggregate_extraction_derivation_target_payload_count" != "8" ]; then
+  echo "FAIL: aggregate extraction-derivation and equation-boundary dependency routes should consume the certified aggregate target payload"
   rg -n '\bpoincare_target_payload_of_aggregate_extraction_derivation_dependencies\b' \
+    Poincare/Dependencies.lean || true
+  exit 1
+fi
+
+equation_boundary_target_payload_count=$(
+  rg -c '\bpoincare_target_payload_of_equation_boundary_dependencies\b' \
+    Poincare/Dependencies.lean || true
+)
+if [ "$equation_boundary_target_payload_count" != "4" ]; then
+  echo "FAIL: equation-boundary full assembly routes should consume the boundary-preserving target payload"
+  rg -n '\bpoincare_target_payload_of_equation_boundary_dependencies\b' \
+    Poincare/Dependencies.lean || true
+  exit 1
+fi
+
+equation_boundary_extraction_derivation_target_payload_count=$(
+  rg -c '\bpoincare_target_payload_of_equation_boundary_extraction_derivation_dependencies\b' \
+    Poincare/Dependencies.lean || true
+)
+if [ "$equation_boundary_extraction_derivation_target_payload_count" != "4" ]; then
+  echo "FAIL: equation-boundary certified full assembly routes should consume the boundary-preserving certified target payload"
+  rg -n '\bpoincare_target_payload_of_equation_boundary_extraction_derivation_dependencies\b' \
     Poincare/Dependencies.lean || true
   exit 1
 fi
