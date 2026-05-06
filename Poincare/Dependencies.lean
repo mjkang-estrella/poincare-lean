@@ -162,6 +162,36 @@ theorem poincareProofDependencies_of_components_payload_eq :
   apply Subsingleton.elim
 
 /--
+Projecting the component payload from the aggregate package reconstructed from
+that payload returns the original component payload.
+-/
+theorem poincareProofDependencies_components_payload_of_components_payload_eq
+    (payload :
+      ∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+        ExtinctionTopologyExtractionPackage.{u}) :
+    poincareProofDependencies_components_payload
+      (poincareProofDependencies_of_components_payload payload) =
+      payload := by
+  apply Subsingleton.elim
+
+/--
+The aggregate component constructor recovers any dependency package from its
+projected component payload.
+-/
+theorem poincareProofDependencies_of_components_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareProofDependencies_of_components_payload
+      (poincareProofDependencies_components_payload dependencies) =
+      dependencies := by
+  apply Subsingleton.elim
+
+/--
 The raw component equivalence is exactly the named forward payload projection
 paired with the named reverse constructor.
 -/
@@ -255,6 +285,40 @@ theorem poincareProofDependenciesWithEquationBoundary_of_components_payload_eq :
                surgery := surgery
                topology := topology } :
               PoincareProofDependenciesWithEquationBoundary.{u})) := by
+  apply Subsingleton.elim
+
+/--
+Projecting the component payload from the strengthened package reconstructed
+from that payload returns the original strengthened component payload.
+-/
+theorem poincareProofDependenciesWithEquationBoundary_components_payload_of_components_payload_eq
+    (payload :
+      ∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty
+              (Σ n : ℕ∞ω,
+                FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+        ExtinctionTopologyExtractionPackage.{u}) :
+    poincareProofDependenciesWithEquationBoundary_components_payload
+      (poincareProofDependenciesWithEquationBoundary_of_components_payload
+        payload) =
+      payload := by
+  apply Subsingleton.elim
+
+/--
+The strengthened component constructor recovers any strengthened dependency
+package from its projected component payload.
+-/
+theorem poincareProofDependenciesWithEquationBoundary_of_components_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareProofDependenciesWithEquationBoundary_of_components_payload
+      (poincareProofDependenciesWithEquationBoundary_components_payload
+        dependencies) =
+      dependencies := by
   apply Subsingleton.elim
 
 /--

@@ -3798,6 +3798,10 @@ check_decl "aggregate dependency component reverse constructor is declared" \
   '^theorem poincareProofDependencies_of_components_payload\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency component reverse constructor equality contract is declared" \
   '^theorem poincareProofDependencies_of_components_payload_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency component projection-after-constructor roundtrip is declared" \
+  '^theorem poincareProofDependencies_components_payload_of_components_payload_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency component constructor-after-projection roundtrip is declared" \
+  '^theorem poincareProofDependencies_of_components_payload_of_dependencies_eq\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency component iff equality contract is declared" \
   '^theorem poincareProofDependencies_iff_components_eq\b' Poincare/Dependencies.lean
 check_decl "aggregate equation-boundary dependency component payload theorem is declared" \
@@ -3810,6 +3814,10 @@ check_decl "aggregate equation-boundary dependency component reverse theorem is 
   '^theorem poincareProofDependenciesWithEquationBoundary_of_components_payload\b' Poincare/Dependencies.lean
 check_decl "aggregate equation-boundary dependency component reverse equality theorem is declared" \
   '^theorem poincareProofDependenciesWithEquationBoundary_of_components_payload_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate equation-boundary dependency component projection-after-constructor roundtrip is declared" \
+  '^theorem poincareProofDependenciesWithEquationBoundary_components_payload_of_components_payload_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate equation-boundary dependency component constructor-after-projection roundtrip is declared" \
+  '^theorem poincareProofDependenciesWithEquationBoundary_of_components_payload_of_dependencies_eq\b' Poincare/Dependencies.lean
 check_decl "aggregate equation-boundary dependency component iff equality theorem is declared" \
   '^theorem poincareProofDependenciesWithEquationBoundary_iff_components_eq\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency assembly inputs payload theorem is declared" \
@@ -9113,6 +9121,8 @@ open scoped Manifold ContDiff
 #check Poincare.poincareProofDependencies_iff_components
 #check Poincare.poincareProofDependencies_of_components_payload
 #check Poincare.poincareProofDependencies_of_components_payload_eq
+#check Poincare.poincareProofDependencies_components_payload_of_components_payload_eq
+#check Poincare.poincareProofDependencies_of_components_payload_of_dependencies_eq
 #check Poincare.poincareProofDependencies_iff_components_eq
 #check Poincare.remainingDependencyPackage_eq
 #check Poincare.remainingDependencyPackage_iff_poincareProofDependencies
@@ -10376,6 +10386,8 @@ open scoped Manifold ContDiff
 #check Poincare.poincareProofDependenciesWithEquationBoundary_iff_components
 #check Poincare.poincareProofDependenciesWithEquationBoundary_of_components_payload
 #check Poincare.poincareProofDependenciesWithEquationBoundary_of_components_payload_eq
+#check Poincare.poincareProofDependenciesWithEquationBoundary_components_payload_of_components_payload_eq
+#check Poincare.poincareProofDependenciesWithEquationBoundary_of_components_payload_of_dependencies_eq
 #check Poincare.poincareProofDependenciesWithEquationBoundary_iff_components_eq
 #check Poincare.poincare_completion_payload_of_equation_boundary_dependencies
 #check Poincare.poincare_completion_payload_of_equation_boundary_dependencies_eq
@@ -12789,6 +12801,8 @@ open scoped Manifold ContDiff
 #check Poincare.poincareProofDependenciesWithEquationBoundary_iff_components
 #check Poincare.poincareProofDependenciesWithEquationBoundary_of_components_payload
 #check Poincare.poincareProofDependenciesWithEquationBoundary_of_components_payload_eq
+#check Poincare.poincareProofDependenciesWithEquationBoundary_components_payload_of_components_payload_eq
+#check Poincare.poincareProofDependenciesWithEquationBoundary_of_components_payload_of_dependencies_eq
 #check Poincare.poincareProofDependenciesWithEquationBoundary_iff_components_eq
 #check Poincare.poincare_completion_payload_of_equation_boundary_dependencies
 #check Poincare.poincare_completion_payload_of_equation_boundary_dependencies_eq
@@ -12881,6 +12895,8 @@ open scoped Manifold ContDiff
 
 #check Poincare.poincareProofDependencies_of_components_payload
 #check Poincare.poincareProofDependencies_of_components_payload_eq
+#check Poincare.poincareProofDependencies_components_payload_of_components_payload_eq
+#check Poincare.poincareProofDependencies_of_components_payload_of_dependencies_eq
 #check Poincare.poincareProofDependencies_iff_components_eq
 
 #check (Poincare.poincare_statement_of_dependencies :
