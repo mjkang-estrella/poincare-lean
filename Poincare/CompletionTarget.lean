@@ -3046,6 +3046,74 @@ theorem canonical_completion_payload_of_equation_boundary_remaining_dependency_p
   apply Subsingleton.elim
 
 /--
+The strengthened remaining dependency package exposes the project completion
+payload through the strengthened aggregate dependency route.
+-/
+theorem poincare_completion_payload_of_equation_boundary_remaining_dependency_package
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_equation_boundary_dependencies dependencies
+
+/--
+The strengthened remaining-package project payload is the strengthened
+aggregate dependency project payload under the remaining-package abbreviation.
+-/
+theorem poincare_completion_payload_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      poincare_completion_payload_of_equation_boundary_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package exposes the canonical completion
+payload through the strengthened remaining-package route.
+-/
+theorem canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _target : canonicalCompletionTarget.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  canonical_completion_payload_of_equation_boundary_remaining_dependency_package
+    dependencies
+
+/--
+The strengthened aggregate canonical payload is the strengthened
+remaining-package canonical payload.
+-/
+theorem canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      canonical_completion_payload_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package exposes the project completion
+payload through the strengthened remaining-package route.
+-/
+theorem poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_equation_boundary_remaining_dependency_package
+    dependencies
+
+/--
+The strengthened aggregate project payload is the strengthened
+remaining-package project payload.
+-/
+theorem poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      poincare_completion_payload_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining dependency package proves the canonical completion
 target through the strengthened aggregate dependency route.
 -/
@@ -3097,6 +3165,93 @@ theorem poincare_statement_of_equation_boundary_remaining_dependency_package_eq
   apply Subsingleton.elim
 
 /--
+The strengthened remaining-package project statement agrees with the
+strengthened aggregate dependency project statement.
+-/
+theorem poincare_statement_of_equation_boundary_remaining_dependency_package_to_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      poincare_statement_of_equation_boundary_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package proves the canonical completion
+target through its named canonical payload.
+-/
+theorem canonical_completion_target_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonicalCompletionTarget.{u} := by
+  rcases
+      canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies with
+    ⟨target, _criterion⟩
+  exact target
+
+/--
+The strengthened aggregate canonical target is selected from its named
+canonical completion payload.
+-/
+theorem canonical_completion_target_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_target_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      (by
+        rcases
+            canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+              dependencies with
+          ⟨target, _criterion⟩
+        exact target) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate canonical target is the strengthened
+remaining-package canonical target.
+-/
+theorem canonical_completion_target_of_poincareProofDependenciesWithEquationBoundary_to_remaining_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_target_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      canonical_completion_target_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package proves the project Poincare
+target through the strengthened remaining-package route.
+-/
+theorem poincare_statement_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} :=
+  canonical_completion_target_of_poincareProofDependenciesWithEquationBoundary
+    dependencies
+
+/--
+The strengthened aggregate project statement is its canonical target viewed as
+the project proposition.
+-/
+theorem poincare_statement_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      canonical_completion_target_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate project statement agrees with the dependency-level
+strengthened aggregate project statement.
+-/
+theorem poincare_statement_of_poincareProofDependenciesWithEquationBoundary_to_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      poincare_statement_of_equation_boundary_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining dependency package discharges the explicit
 universe-indexed completion criterion.
 -/
@@ -3128,6 +3283,76 @@ theorem completion_criterion_of_equation_boundary_remaining_dependency_package_e
   apply Subsingleton.elim
 
 /--
+The strengthened remaining-package criterion agrees with the strengthened
+aggregate dependency criterion.
+-/
+theorem completion_criterion_of_equation_boundary_remaining_dependency_package_to_dependencies_eq
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_criterion_of_equation_boundary_remaining_dependency_package
+        witness dependencies =
+      completion_criterion_of_equation_boundary_dependencies
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package discharges the explicit
+universe-indexed completion criterion through its named canonical payload.
+-/
+theorem completion_criterion_of_poincareProofDependenciesWithEquationBoundary
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    CompletionCriterionAtUniverse witness := by
+  rcases
+      canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies with
+    ⟨_target, criterion⟩
+  exact criterion witness
+
+/--
+The strengthened aggregate completion criterion is selected from its named
+canonical completion payload.
+-/
+theorem completion_criterion_of_poincareProofDependenciesWithEquationBoundary_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_poincareProofDependenciesWithEquationBoundary
+        witness dependencies =
+      (by
+        rcases
+            canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+              dependencies with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate completion criterion agrees with the strengthened
+remaining-package completion criterion.
+-/
+theorem completion_criterion_of_poincareProofDependenciesWithEquationBoundary_to_remaining_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_poincareProofDependenciesWithEquationBoundary
+        witness dependencies =
+      completion_criterion_of_equation_boundary_remaining_dependency_package
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate completion criterion agrees with the dependency-level
+strengthened aggregate completion criterion.
+-/
+theorem completion_criterion_of_poincareProofDependenciesWithEquationBoundary_to_dependencies_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_poincareProofDependenciesWithEquationBoundary
+        witness dependencies =
+      completion_criterion_of_equation_boundary_dependencies
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining dependency package exposes the canonical
 three-sphere statement by applying the existing topological statement extractor.
 -/
@@ -3152,6 +3377,69 @@ theorem canonical_three_sphere_statement_of_equation_boundary_remaining_dependen
       canonical_three_sphere_statement_of_poincare_statement
         (poincare_statement_of_equation_boundary_remaining_dependency_package
           dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package canonical topological statement agrees with
+the strengthened aggregate dependency canonical topological statement.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_remaining_dependency_package_to_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      canonical_three_sphere_statement_of_equation_boundary_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package exposes the canonical
+mathlib-shaped topological 3-sphere statement through its named target route.
+-/
+theorem canonical_three_sphere_statement_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) :=
+  canonical_three_sphere_statement_of_poincare_statement
+    (poincare_statement_of_poincareProofDependenciesWithEquationBoundary
+      dependencies)
+
+/--
+The strengthened aggregate canonical topological statement is the canonical
+bridge applied to the named strengthened aggregate project statement.
+-/
+theorem canonical_three_sphere_statement_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      canonical_three_sphere_statement_of_poincare_statement
+        (poincare_statement_of_poincareProofDependenciesWithEquationBoundary
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate canonical topological statement agrees with the
+strengthened remaining-package canonical topological statement.
+-/
+theorem canonical_three_sphere_statement_of_poincareProofDependenciesWithEquationBoundary_to_remaining_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      canonical_three_sphere_statement_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate canonical topological statement agrees with the
+dependency-level strengthened aggregate canonical topological statement.
+-/
+theorem canonical_three_sphere_statement_of_poincareProofDependenciesWithEquationBoundary_to_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      canonical_three_sphere_statement_of_equation_boundary_dependencies
+        dependencies := by
   apply Subsingleton.elim
 
 /-- The remaining dependency package supplies the smoothability package. -/
@@ -7660,6 +7948,32 @@ theorem remaining_dependency_package_of_completion_certificate_of_equation_bound
   apply Subsingleton.elim
 
 /--
+Projecting the canonical payload from a strengthened remaining-package
+certificate recovers the strengthened remaining-package canonical payload.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies) =
+      canonical_completion_payload_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project payload from a strengthened remaining-package
+certificate recovers the strengthened remaining-package project payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies) =
+      poincare_completion_payload_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 Projecting the target statement from a strengthened remaining-package
 certificate recovers the strengthened remaining-package target route.
 -/
@@ -7734,6 +8048,32 @@ theorem poincareProofDependencies_of_completion_certificate_of_poincareProofDepe
   apply Subsingleton.elim
 
 /--
+Projecting the canonical payload from a strengthened aggregate certificate uses
+the strengthened aggregate canonical payload route.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies) =
+      canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project payload from a strengthened aggregate certificate uses
+the strengthened aggregate project payload route.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies) =
+      poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 Projecting the project target from a strengthened aggregate certificate uses
 the strengthened aggregate project statement route.
 -/
@@ -7742,7 +8082,7 @@ theorem target_statement_of_completion_certificate_of_poincareProofDependenciesW
     target_statement_of_completion_certificate
       (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
         dependencies) =
-      poincare_statement_of_equation_boundary_remaining_dependency_package
+      poincare_statement_of_poincareProofDependenciesWithEquationBoundary
         dependencies := by
   apply Subsingleton.elim
 
@@ -7755,7 +8095,7 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     canonical_completion_target_of_completion_certificate
       (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
         dependencies) =
-      canonical_completion_target_of_equation_boundary_remaining_dependency_package
+      canonical_completion_target_of_poincareProofDependenciesWithEquationBoundary
         dependencies := by
   apply Subsingleton.elim
 
@@ -7769,7 +8109,7 @@ theorem completion_criterion_of_completion_certificate_of_poincareProofDependenc
     completion_criterion_of_completion_certificate witness
       (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
         dependencies) =
-      completion_criterion_of_equation_boundary_remaining_dependency_package
+      completion_criterion_of_poincareProofDependenciesWithEquationBoundary
         witness dependencies := by
   apply Subsingleton.elim
 
