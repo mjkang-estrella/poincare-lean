@@ -4260,6 +4260,55 @@ theorem remainingDependencyPackage_component_requirements_payload_to_named_proje
   apply Subsingleton.elim
 
 /--
+The remaining-dependency component-slot requirements payload reconstructs the
+remaining dependency package.
+-/
+theorem remainingDependencyPackage_of_component_requirements_payload :
+    (∃ _smoothability :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+    ∃ _surgery :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) →
+      RemainingDependencyPackage.{u} :=
+  poincareProofDependencies_of_component_requirements_payload
+
+/--
+The remaining-dependency component-slot requirements constructor is the
+aggregate constructor under the remaining-dependency abbreviation.
+-/
+theorem remainingDependencyPackage_of_component_requirements_payload_eq :
+    remainingDependencyPackage_of_component_requirements_payload.{u} =
+      poincareProofDependencies_of_component_requirements_payload.{u} := by
+  apply Subsingleton.elim
+
+/--
+Projecting component-slot requirements from the remaining package reconstructed
+from that payload returns the original payload.
+-/
+theorem remainingDependencyPackage_component_requirements_payload_of_component_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    remainingDependencyPackage_component_requirements_payload
+      (remainingDependencyPackage_of_component_requirements_payload payload) =
+      payload := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency component-slot requirements constructor recovers any
+remaining dependency package from its projected component-slot payload.
+-/
+theorem remainingDependencyPackage_of_component_requirements_payload_of_dependencies_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    remainingDependencyPackage_of_component_requirements_payload
+      (remainingDependencyPackage_component_requirements_payload dependencies) =
+      dependencies := by
+  apply Subsingleton.elim
+
+/--
 The remaining dependency package is equivalent to exactly the three
 component-slot requirements named by the dependency crosswalk.
 -/
@@ -4330,6 +4379,74 @@ theorem remainingDependencyPackage_package_layer_requirements_payload_to_generic
       , dependencyPackageLayerRequirement_of_dependencies dependencies
           DependencyPackageLayer.topologyPackage
       ⟩ := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency package-layer requirements payload reconstructs the
+remaining dependency package.
+-/
+theorem remainingDependencyPackage_of_package_layer_requirements_payload :
+    (∃ _smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage,
+    ∃ _analytic :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage,
+    ∃ _surgery :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+    ∃ _finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) →
+      RemainingDependencyPackage.{u} :=
+  poincareProofDependencies_of_package_layer_requirements_payload
+
+/--
+The remaining-dependency package-layer requirements constructor is the
+aggregate constructor under the remaining-dependency abbreviation.
+-/
+theorem remainingDependencyPackage_of_package_layer_requirements_payload_eq :
+    remainingDependencyPackage_of_package_layer_requirements_payload.{u} =
+      poincareProofDependencies_of_package_layer_requirements_payload.{u} := by
+  apply Subsingleton.elim
+
+/--
+Projecting package-layer requirements from the remaining package reconstructed
+from that payload returns the original payload.
+-/
+theorem remainingDependencyPackage_package_layer_requirements_payload_of_package_layer_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    remainingDependencyPackage_package_layer_requirements_payload
+      (remainingDependencyPackage_of_package_layer_requirements_payload
+        payload) =
+      payload := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency package-layer requirements constructor recovers any
+remaining dependency package from its projected package-layer payload.
+-/
+theorem remainingDependencyPackage_of_package_layer_requirements_payload_of_dependencies_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    remainingDependencyPackage_of_package_layer_requirements_payload
+      (remainingDependencyPackage_package_layer_requirements_payload
+        dependencies) =
+      dependencies := by
   apply Subsingleton.elim
 
 /--
@@ -4408,6 +4525,74 @@ theorem remainingDependencyPackage_milestone_requirements_payload_to_package_lay
       , finiteExtinctionPackage_requirement_of_dependencies dependencies
       , topologyPackage_requirement_of_dependencies dependencies
       ⟩ := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency milestone requirements payload reconstructs the
+remaining dependency package.
+-/
+theorem remainingDependencyPackage_of_milestone_requirements_payload :
+    (∃ _smoothabilityBridge :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+    ∃ _ricciFlowAnalyticFoundation :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation,
+    ∃ _ricciFlowWithSurgery :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery,
+    ∃ _perelmanSingularityControl :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl,
+    ∃ _finiteExtinction :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) →
+      RemainingDependencyPackage.{u} :=
+  poincareProofDependencies_of_milestone_requirements_payload
+
+/--
+The remaining-dependency milestone requirements constructor is the aggregate
+constructor under the remaining-dependency abbreviation.
+-/
+theorem remainingDependencyPackage_of_milestone_requirements_payload_eq :
+    remainingDependencyPackage_of_milestone_requirements_payload.{u} =
+      poincareProofDependencies_of_milestone_requirements_payload.{u} := by
+  apply Subsingleton.elim
+
+/--
+Projecting milestone requirements from the remaining package reconstructed from
+that payload returns the original payload.
+-/
+theorem remainingDependencyPackage_milestone_requirements_payload_of_milestone_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    remainingDependencyPackage_milestone_requirements_payload
+      (remainingDependencyPackage_of_milestone_requirements_payload payload) =
+      payload := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency milestone requirements constructor recovers any
+remaining dependency package from its projected milestone payload.
+-/
+theorem remainingDependencyPackage_of_milestone_requirements_payload_of_dependencies_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    remainingDependencyPackage_of_milestone_requirements_payload
+      (remainingDependencyPackage_milestone_requirements_payload dependencies) =
+      dependencies := by
   apply Subsingleton.elim
 
 /--

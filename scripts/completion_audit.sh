@@ -4840,6 +4840,10 @@ check_decl "dependency package-layer requirements reverse constructor is declare
   '^theorem poincareProofDependencies_of_package_layer_requirements_payload\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency package-layer requirements reverse constructor equality contract is declared" \
   '^theorem poincareProofDependencies_of_package_layer_requirements_payload_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency package-layer requirements projection-after-constructor roundtrip is declared" \
+  '^theorem dependency_package_layer_requirements_payload_of_package_layer_requirements_payload_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency package-layer requirements constructor-after-projection roundtrip is declared" \
+  '^theorem poincareProofDependencies_of_package_layer_requirements_payload_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency package-layer requirements iff equality contract is declared" \
   '^theorem poincareProofDependencies_iff_package_layer_requirements_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency milestone requirement map is declared" \
@@ -4946,6 +4950,10 @@ check_decl "dependency milestone requirements reverse constructor is declared" \
   '^theorem poincareProofDependencies_of_milestone_requirements_payload\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency milestone requirements reverse constructor equality contract is declared" \
   '^theorem poincareProofDependencies_of_milestone_requirements_payload_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency milestone requirements projection-after-constructor roundtrip is declared" \
+  '^theorem dependency_milestone_requirements_payload_of_milestone_requirements_payload_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency milestone requirements constructor-after-projection roundtrip is declared" \
+  '^theorem poincareProofDependencies_of_milestone_requirements_payload_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency milestone requirements iff equality contract is declared" \
   '^theorem poincareProofDependencies_iff_milestone_requirements_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency component requirements payload theorem is declared" \
@@ -4964,6 +4972,10 @@ check_decl "dependency component requirements reverse constructor is declared" \
   '^theorem poincareProofDependencies_of_component_requirements_payload\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency component requirements reverse constructor equality contract is declared" \
   '^theorem poincareProofDependencies_of_component_requirements_payload_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency component requirements projection-after-constructor roundtrip is declared" \
+  '^theorem dependency_component_requirements_payload_of_component_requirements_payload_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "dependency component requirements constructor-after-projection roundtrip is declared" \
+  '^theorem poincareProofDependencies_of_component_requirements_payload_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency component requirements iff equality contract is declared" \
   '^theorem poincareProofDependencies_iff_component_requirements_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency ledger component slots theorem is declared" \
@@ -5558,6 +5570,14 @@ check_decl "remaining dependency component-requirements iff theorem is declared"
   '^theorem remainingDependencyPackage_iff_component_requirements\b' Poincare/CompletionTarget.lean
 check_decl "remaining dependency component-requirements payload equality contract is declared" \
   '^theorem remainingDependencyPackage_component_requirements_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component-requirements reverse constructor is declared" \
+  '^theorem remainingDependencyPackage_of_component_requirements_payload\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component-requirements reverse constructor equality contract is declared" \
+  '^theorem remainingDependencyPackage_of_component_requirements_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component-requirements projection-after-constructor roundtrip is declared" \
+  '^theorem remainingDependencyPackage_component_requirements_payload_of_component_requirements_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component-requirements constructor-after-projection roundtrip is declared" \
+  '^theorem remainingDependencyPackage_of_component_requirements_payload_of_dependencies_eq\b' Poincare/CompletionTarget.lean
 check_decl "remaining dependency component-requirements iff equality contract is declared" \
   '^theorem remainingDependencyPackage_iff_component_requirements_eq\b' Poincare/CompletionTarget.lean
 check_decl "remaining dependency package-layer requirements payload theorem is declared" \
@@ -5566,6 +5586,14 @@ check_decl "remaining dependency package-layer requirements iff theorem is decla
   '^theorem remainingDependencyPackage_iff_package_layer_requirements\b' Poincare/CompletionTarget.lean
 check_decl "remaining dependency package-layer requirements payload equality contract is declared" \
   '^theorem remainingDependencyPackage_package_layer_requirements_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package-layer requirements reverse constructor is declared" \
+  '^theorem remainingDependencyPackage_of_package_layer_requirements_payload\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package-layer requirements reverse constructor equality contract is declared" \
+  '^theorem remainingDependencyPackage_of_package_layer_requirements_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package-layer requirements projection-after-constructor roundtrip is declared" \
+  '^theorem remainingDependencyPackage_package_layer_requirements_payload_of_package_layer_requirements_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency package-layer requirements constructor-after-projection roundtrip is declared" \
+  '^theorem remainingDependencyPackage_of_package_layer_requirements_payload_of_dependencies_eq\b' Poincare/CompletionTarget.lean
 check_decl "remaining dependency package-layer requirements iff equality contract is declared" \
   '^theorem remainingDependencyPackage_iff_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
 check_decl "remaining dependency milestone-requirements payload theorem is declared" \
@@ -5574,6 +5602,14 @@ check_decl "remaining dependency milestone-requirements iff theorem is declared"
   '^theorem remainingDependencyPackage_iff_milestone_requirements\b' Poincare/CompletionTarget.lean
 check_decl "remaining dependency milestone-requirements payload equality contract is declared" \
   '^theorem remainingDependencyPackage_milestone_requirements_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency milestone-requirements reverse constructor is declared" \
+  '^theorem remainingDependencyPackage_of_milestone_requirements_payload\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency milestone-requirements reverse constructor equality contract is declared" \
+  '^theorem remainingDependencyPackage_of_milestone_requirements_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency milestone-requirements projection-after-constructor roundtrip is declared" \
+  '^theorem remainingDependencyPackage_milestone_requirements_payload_of_milestone_requirements_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency milestone-requirements constructor-after-projection roundtrip is declared" \
+  '^theorem remainingDependencyPackage_of_milestone_requirements_payload_of_dependencies_eq\b' Poincare/CompletionTarget.lean
 check_decl "remaining dependency milestone-requirements iff equality contract is declared" \
   '^theorem remainingDependencyPackage_iff_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion remaining component-requirement payload theorem is declared" \
@@ -9249,12 +9285,24 @@ open scoped Manifold ContDiff
 #check Poincare.remainingDependencyPackage_component_requirements_payload
 #check Poincare.remainingDependencyPackage_iff_component_requirements
 #check Poincare.remainingDependencyPackage_component_requirements_payload_eq
+#check Poincare.remainingDependencyPackage_of_component_requirements_payload
+#check Poincare.remainingDependencyPackage_of_component_requirements_payload_eq
+#check Poincare.remainingDependencyPackage_component_requirements_payload_of_component_requirements_payload_eq
+#check Poincare.remainingDependencyPackage_of_component_requirements_payload_of_dependencies_eq
 #check Poincare.remainingDependencyPackage_iff_component_requirements_eq
 #check Poincare.remainingDependencyPackage_package_layer_requirements_payload
 #check Poincare.remainingDependencyPackage_iff_package_layer_requirements
 #check Poincare.remainingDependencyPackage_package_layer_requirements_payload_eq
+#check Poincare.remainingDependencyPackage_of_package_layer_requirements_payload
+#check Poincare.remainingDependencyPackage_of_package_layer_requirements_payload_eq
+#check Poincare.remainingDependencyPackage_package_layer_requirements_payload_of_package_layer_requirements_payload_eq
+#check Poincare.remainingDependencyPackage_of_package_layer_requirements_payload_of_dependencies_eq
 #check Poincare.remainingDependencyPackage_iff_package_layer_requirements_eq
 #check Poincare.remainingDependencyPackage_milestone_requirements_payload_eq
+#check Poincare.remainingDependencyPackage_of_milestone_requirements_payload
+#check Poincare.remainingDependencyPackage_of_milestone_requirements_payload_eq
+#check Poincare.remainingDependencyPackage_milestone_requirements_payload_of_milestone_requirements_payload_eq
+#check Poincare.remainingDependencyPackage_of_milestone_requirements_payload_of_dependencies_eq
 #check Poincare.remainingDependencyPackage_iff_milestone_requirements_eq
 #check Poincare.canonical_completion_payload_of_remaining_dependency_component_requirements
 #check Poincare.canonical_completion_payload_of_remaining_dependency_component_requirements_eq
@@ -10502,6 +10550,8 @@ open scoped Manifold ContDiff
 #check Poincare.dependency_package_layer_requirements_payload_of_dependencies_eq
 #check Poincare.poincareProofDependencies_iff_package_layer_requirements
 #check Poincare.poincareProofDependencies_of_package_layer_requirements_payload
+#check Poincare.dependency_package_layer_requirements_payload_of_package_layer_requirements_payload_eq
+#check Poincare.poincareProofDependencies_of_package_layer_requirements_payload_of_dependencies_eq
 #check Poincare.poincareProofDependencies_iff_package_layer_requirements_eq
 #check Poincare.poincare_completion_payload_of_package_layer_requirements
 #check Poincare.canonical_completion_payload_of_package_layer_requirements
@@ -10537,6 +10587,8 @@ open scoped Manifold ContDiff
 #check Poincare.dependency_milestone_requirements_payload_of_dependencies_eq
 #check Poincare.poincareProofDependencies_iff_milestone_requirements
 #check Poincare.poincareProofDependencies_of_milestone_requirements_payload
+#check Poincare.dependency_milestone_requirements_payload_of_milestone_requirements_payload_eq
+#check Poincare.poincareProofDependencies_of_milestone_requirements_payload_of_dependencies_eq
 #check Poincare.poincareProofDependencies_iff_milestone_requirements_eq
 #check Poincare.poincare_completion_payload_of_milestone_requirements
 #check Poincare.canonical_completion_payload_of_milestone_requirements
@@ -13197,10 +13249,22 @@ open scoped Manifold ContDiff
         Poincare.DependencyMilestone.extinctionToSphereHomeomorphism)
 
 #check Poincare.remainingDependencyPackage_component_requirements_payload_eq
+#check Poincare.remainingDependencyPackage_of_component_requirements_payload
+#check Poincare.remainingDependencyPackage_of_component_requirements_payload_eq
+#check Poincare.remainingDependencyPackage_component_requirements_payload_of_component_requirements_payload_eq
+#check Poincare.remainingDependencyPackage_of_component_requirements_payload_of_dependencies_eq
 #check Poincare.remainingDependencyPackage_iff_component_requirements_eq
 #check Poincare.remainingDependencyPackage_package_layer_requirements_payload_eq
+#check Poincare.remainingDependencyPackage_of_package_layer_requirements_payload
+#check Poincare.remainingDependencyPackage_of_package_layer_requirements_payload_eq
+#check Poincare.remainingDependencyPackage_package_layer_requirements_payload_of_package_layer_requirements_payload_eq
+#check Poincare.remainingDependencyPackage_of_package_layer_requirements_payload_of_dependencies_eq
 #check Poincare.remainingDependencyPackage_iff_package_layer_requirements_eq
 #check Poincare.remainingDependencyPackage_milestone_requirements_payload_eq
+#check Poincare.remainingDependencyPackage_of_milestone_requirements_payload
+#check Poincare.remainingDependencyPackage_of_milestone_requirements_payload_eq
+#check Poincare.remainingDependencyPackage_milestone_requirements_payload_of_milestone_requirements_payload_eq
+#check Poincare.remainingDependencyPackage_of_milestone_requirements_payload_of_dependencies_eq
 #check Poincare.remainingDependencyPackage_iff_milestone_requirements_eq
 
 #check (Poincare.canonical_completion_payload_of_remaining_dependency_component_requirements :
@@ -16080,6 +16144,8 @@ open scoped Manifold ContDiff
 #check Poincare.dependency_component_requirements_payload_of_equation_boundary_dependencies_eq
 #check Poincare.dependency_component_requirements_payload_of_equation_boundary_dependencies_to_named_projections_eq
 #check Poincare.poincareProofDependencies_of_component_requirements_payload
+#check Poincare.dependency_component_requirements_payload_of_component_requirements_payload_eq
+#check Poincare.poincareProofDependencies_of_component_requirements_payload_of_dependencies_eq
 #check Poincare.poincareProofDependencies_iff_component_requirements_eq
 
 #check (Poincare.dependencyPackageLayerRequirement_analyticFoundationPackage :
@@ -16174,6 +16240,8 @@ open scoped Manifold ContDiff
 #check Poincare.dependency_package_layer_requirements_payload_of_equation_boundary_dependencies_eq
 #check Poincare.dependency_package_layer_requirements_payload_of_equation_boundary_dependencies_to_named_projections_eq
 #check Poincare.poincareProofDependencies_of_package_layer_requirements_payload
+#check Poincare.dependency_package_layer_requirements_payload_of_package_layer_requirements_payload_eq
+#check Poincare.poincareProofDependencies_of_package_layer_requirements_payload_of_dependencies_eq
 #check Poincare.poincareProofDependencies_iff_package_layer_requirements_eq
 
 #check (Poincare.dependencyMilestoneRequirement_smoothabilityBridge :
@@ -16340,6 +16408,8 @@ open scoped Manifold ContDiff
 #check Poincare.dependency_milestone_requirements_payload_of_equation_boundary_dependencies_to_named_projections_eq
 #check Poincare.dependency_milestone_requirements_payload_of_equation_boundary_dependencies_to_package_layer_projections_eq
 #check Poincare.poincareProofDependencies_of_milestone_requirements_payload
+#check Poincare.dependency_milestone_requirements_payload_of_milestone_requirements_payload_eq
+#check Poincare.poincareProofDependencies_of_milestone_requirements_payload_of_dependencies_eq
 #check Poincare.poincareProofDependencies_iff_milestone_requirements_eq
 
 #check (Poincare.dependency_ledger_has_component_slots :

@@ -705,6 +705,33 @@ theorem poincareProofDependencies_of_component_requirements_payload_eq :
   apply Subsingleton.elim
 
 /--
+Projecting component-slot requirements from the aggregate dependencies
+reconstructed from that payload returns the original payload.
+-/
+theorem dependency_component_requirements_payload_of_component_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    dependency_component_requirements_payload_of_dependencies
+      (poincareProofDependencies_of_component_requirements_payload payload) =
+      payload := by
+  apply Subsingleton.elim
+
+/--
+The component-slot requirements constructor recovers any aggregate dependency
+package from its projected component-slot payload.
+-/
+theorem poincareProofDependencies_of_component_requirements_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareProofDependencies_of_component_requirements_payload
+      (dependency_component_requirements_payload_of_dependencies dependencies) =
+      dependencies := by
+  apply Subsingleton.elim
+
+/--
 The component-slot equivalence is exactly the named forward payload projection
 paired with the named reverse constructor.
 -/
@@ -1414,6 +1441,44 @@ theorem poincareProofDependencies_of_package_layer_requirements_payload_eq :
         rintro ⟨smoothability, _analytic, _surgery, finiteExtinction,
           topology⟩
         exact ⟨smoothability, finiteExtinction, topology⟩) := by
+  apply Subsingleton.elim
+
+/--
+Projecting package-layer requirements from the aggregate dependencies
+reconstructed from that payload returns the original payload.
+-/
+theorem dependency_package_layer_requirements_payload_of_package_layer_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    dependency_package_layer_requirements_payload_of_dependencies
+      (poincareProofDependencies_of_package_layer_requirements_payload
+        payload) =
+      payload := by
+  apply Subsingleton.elim
+
+/--
+The package-layer requirements constructor recovers any aggregate dependency
+package from its projected package-layer payload.
+-/
+theorem poincareProofDependencies_of_package_layer_requirements_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareProofDependencies_of_package_layer_requirements_payload
+      (dependency_package_layer_requirements_payload_of_dependencies
+        dependencies) =
+      dependencies := by
   apply Subsingleton.elim
 
 /--
@@ -2152,6 +2217,44 @@ theorem poincareProofDependencies_of_milestone_requirements_payload_eq :
         rintro ⟨smoothability, _analytic, _ricciFlowWithSurgery,
           _perelmanSingularityControl, finiteExtinction, topology⟩
         exact ⟨smoothability, finiteExtinction, topology⟩) := by
+  apply Subsingleton.elim
+
+/--
+Projecting milestone requirements from the aggregate dependencies
+reconstructed from that payload returns the original payload.
+-/
+theorem dependency_milestone_requirements_payload_of_milestone_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    dependency_milestone_requirements_payload_of_dependencies
+      (poincareProofDependencies_of_milestone_requirements_payload payload) =
+      payload := by
+  apply Subsingleton.elim
+
+/--
+The milestone requirements constructor recovers any aggregate dependency
+package from its projected milestone payload.
+-/
+theorem poincareProofDependencies_of_milestone_requirements_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareProofDependencies_of_milestone_requirements_payload
+      (dependency_milestone_requirements_payload_of_dependencies
+        dependencies) =
+      dependencies := by
   apply Subsingleton.elim
 
 /--
