@@ -2482,6 +2482,8 @@ check_decl "finite-extinction surgery package equation-boundary projection is de
   '^def equation_boundary_of_surgery_package_with_equation_boundary\b' Poincare/Surgery.lean
 check_decl "finite-extinction surgery package equation-boundary projection equality theorem is declared" \
   '^@\[simp\] theorem equation_boundary_of_surgery_package_with_equation_boundary_eq\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package equation-boundary verification reconstruction theorem is declared" \
+  '^theorem equation_boundary_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq\b' Poincare/Surgery.lean
 check_decl "finite-extinction surgery package analytic-boundary theorem is declared" \
   '^theorem analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary\b' Poincare/Surgery.lean
 check_decl "finite-extinction surgery package analytic-boundary equality theorem is declared" \
@@ -9087,6 +9089,7 @@ open scoped Manifold ContDiff
 #check Poincare.surgery_package_of_equation_boundary_surgery_package_eq
 #check Poincare.equation_boundary_of_surgery_package_with_equation_boundary
 #check Poincare.equation_boundary_of_surgery_package_with_equation_boundary_eq
+#check Poincare.equation_boundary_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq
 #check Poincare.analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
 #check Poincare.analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary_eq
 #check Poincare.finite_extinction_of_surgery_package_with_equation_boundary
@@ -12258,6 +12261,7 @@ open scoped Manifold ContDiff
 #check Poincare.surgery_package_of_equation_boundary_surgery_package_eq
 #check Poincare.equation_boundary_of_surgery_package_with_equation_boundary
 #check Poincare.equation_boundary_of_surgery_package_with_equation_boundary_eq
+#check Poincare.equation_boundary_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq
 #check Poincare.analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
 #check Poincare.analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary_eq
 #check Poincare.finite_extinction_of_surgery_package_with_equation_boundary

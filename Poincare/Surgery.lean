@@ -9136,6 +9136,28 @@ noncomputable def ricci_flow_equation_verification_of_surgery_package_with_equat
         (equation_boundary_of_surgery_package_with_equation_boundary package) :=
   rfl
 
+/--
+The stored equation-boundary package is recovered from its projected explicit
+equation verification and the underlying flow's equation evidence.
+-/
+theorem equation_boundary_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    equation_boundary_of_surgery_package_with_equation_boundary package =
+      equation_boundary_package_of_ricci_flow_equation_verification
+        (ricci_flow_data_of_surgery_package
+          (surgery_package_of_equation_boundary_surgery_package package))
+        (ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
+          package) := by
+  cases package with
+  | mk package boundary =>
+    cases boundary with
+    | mk verification equationEvidence =>
+      simp [equation_boundary_package_of_ricci_flow_equation_verification]
+
 /-- Project metric-derivative data from a strengthened surgery package. -/
 noncomputable def metric_derivative_data_of_surgery_package_with_equation_boundary
     {n : ℕ∞ω}
