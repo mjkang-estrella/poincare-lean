@@ -18816,6 +18816,48 @@ theorem completion_certificate_of_milestone_requirements_payload_of_completion_c
   apply Subsingleton.elim
 
 /--
+The certified component-slot requirement payload constructor recovers the
+checked certificate projected from a boundary-aware verification certificate.
+-/
+theorem completion_certificate_of_component_extraction_derivation_requirements_payload_of_completion_certificate_with_equation_boundary_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    completion_certificate_of_component_extraction_derivation_requirements_payload
+      (completion_certificate_with_equation_boundary_verification_payload_component_requirements_payload
+        payload) =
+      completion_certificate_of_equation_boundary_verification_payload
+        payload := by
+  apply Subsingleton.elim
+
+/--
+The certified package-layer requirement payload constructor recovers the
+checked certificate projected from a boundary-aware verification certificate.
+-/
+theorem completion_certificate_of_package_layer_extraction_derivation_requirements_payload_of_completion_certificate_with_equation_boundary_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+      (completion_certificate_with_equation_boundary_verification_payload_package_layer_requirements_payload
+        payload) =
+      completion_certificate_of_equation_boundary_verification_payload
+        payload := by
+  apply Subsingleton.elim
+
+/--
+The certified milestone requirement payload constructor recovers the checked
+certificate projected from a boundary-aware verification certificate.
+-/
+theorem completion_certificate_of_milestone_extraction_derivation_requirements_payload_of_completion_certificate_with_equation_boundary_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    completion_certificate_of_milestone_extraction_derivation_requirements_payload
+      (completion_certificate_with_equation_boundary_verification_payload_milestone_requirements_payload
+        payload) =
+      completion_certificate_of_equation_boundary_verification_payload
+        payload := by
+  apply Subsingleton.elim
+
+/--
 The component-slot payload constructor recovers the boundary-target-payload
 remaining-package certificate from its projected component-slot payload.
 -/
