@@ -3166,6 +3166,26 @@ theorem equation_boundary_derivative_payload_of_remaining_dependency_package_to_
   apply Subsingleton.elim
 
 /--
+The strengthened remaining package exposes the verification-routed analytic
+equation-boundary payload for each selected surgery package.
+-/
+theorem equation_boundary_verification_payload_of_remaining_dependency_package
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    EquationBoundaryVerificationPayload dependencies :=
+  equation_boundary_verification_payload_of_dependencies dependencies
+
+/--
+The strengthened remaining-package verification payload is the dependency-level
+verification payload.
+-/
+theorem equation_boundary_verification_payload_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    equation_boundary_verification_payload_of_remaining_dependency_package
+        dependencies =
+      equation_boundary_verification_payload_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining package exposes the analytic foundation together
 with its explicit equation-boundary package for each selected surgery package.
 -/
@@ -3628,6 +3648,40 @@ theorem equation_boundary_derivative_payload_of_poincareProofDependenciesWithEqu
         exact
           ⟨n, package, verification, verification_eq, metricDerivative,
             metricDerivative_eq, derivativeId, equationAtTime⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package exposes the verification-routed
+analytic equation-boundary payload through the strengthened remaining-package
+route.
+-/
+theorem equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    EquationBoundaryVerificationPayload dependencies :=
+  equation_boundary_verification_payload_of_remaining_dependency_package
+    dependencies
+
+/--
+The strengthened aggregate verification payload is the strengthened
+remaining-package verification payload.
+-/
+theorem equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      equation_boundary_verification_payload_of_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate verification payload agrees with the named
+dependency-level verification payload.
+-/
+theorem equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      equation_boundary_verification_payload_of_dependencies dependencies := by
   apply Subsingleton.elim
 
 /--
