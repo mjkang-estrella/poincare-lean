@@ -623,6 +623,32 @@ theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_canonica
   apply Subsingleton.elim
 
 /--
+The remaining-dependency plus canonical-statement constructor recovers any
+checked completion certificate from its projected fields.
+-/
+theorem completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement
+      (remaining_dependency_package_of_completion_certificate certificate)
+      (canonical_three_sphere_statement_of_completion_certificate
+        certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency plus canonical-statement constructor recovers any
+checked completion certificate from its projected fields.
+-/
+theorem completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement
+      (poincareProofDependencies_of_completion_certificate certificate)
+      (canonical_three_sphere_statement_of_completion_certificate
+        certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
 Projecting the canonical-statement payload from a certificate reconstructed
 from that payload returns the original payload.
 -/
