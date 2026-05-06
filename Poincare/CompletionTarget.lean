@@ -10758,6 +10758,164 @@ theorem poincareCompletionCertificate_project_statement_payload_of_completion_ce
   apply Subsingleton.elim
 
 /--
+Projecting the theorem-name payload from the named boundary-preserving
+extraction-derivation target-payload remaining-package certificate returns the
+reserved theorem name literal.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+/--
+Projecting the literal payload from the named boundary-preserving
+extraction-derivation target-payload remaining-package certificate returns the
+strengthened route endpoints.
+-/
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      ⟨ "poincare_conjecture", rfl,
+        remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies,
+        canonical_completion_target_of_equation_boundary_remaining_dependency_package
+          dependencies,
+        fun witness =>
+          completion_criterion_of_equation_boundary_remaining_dependency_package
+            witness dependencies ⟩ := by
+  apply Subsingleton.elim
+
+/--
+Projecting the aggregate-dependency payload from the named boundary-preserving
+extraction-derivation target-payload remaining-package certificate returns the
+forgetful aggregate package with the strengthened route endpoints.
+-/
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      ⟨ "poincare_conjecture", rfl,
+        dependencies_of_equation_boundary_dependencies dependencies,
+        canonical_completion_target_of_equation_boundary_remaining_dependency_package
+          dependencies,
+        fun witness =>
+          completion_criterion_of_equation_boundary_remaining_dependency_package
+            witness dependencies ⟩ := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project-statement payload from the named boundary-preserving
+extraction-derivation target-payload remaining-package certificate returns the
+forgetful aggregate package with the strengthened project target route.
+-/
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      ⟨ "poincare_conjecture", rfl,
+        dependencies_of_equation_boundary_dependencies dependencies,
+        poincare_statement_of_equation_boundary_remaining_dependency_package
+          dependencies,
+        fun witness =>
+          completion_criterion_of_equation_boundary_remaining_dependency_package
+            witness dependencies ⟩ := by
+  apply Subsingleton.elim
+
+/--
+Projecting the theorem-name payload from the named boundary-preserving
+extraction-derivation target-payload aggregate certificate returns the
+reserved theorem name literal.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+/--
+Projecting the literal payload from the named boundary-preserving
+extraction-derivation target-payload aggregate certificate returns the
+strengthened aggregate route endpoints.
+-/
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      ⟨ "poincare_conjecture", rfl,
+        remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies,
+        canonical_completion_target_of_poincareProofDependenciesWithEquationBoundary
+          dependencies,
+        fun witness =>
+          completion_criterion_of_poincareProofDependenciesWithEquationBoundary
+            witness dependencies ⟩ := by
+  apply Subsingleton.elim
+
+/--
+Projecting the aggregate-dependency payload from the named boundary-preserving
+extraction-derivation target-payload aggregate certificate returns the
+forgetful aggregate package with the strengthened aggregate route endpoints.
+-/
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      ⟨ "poincare_conjecture", rfl,
+        dependencies_of_equation_boundary_dependencies dependencies,
+        canonical_completion_target_of_poincareProofDependenciesWithEquationBoundary
+          dependencies,
+        fun witness =>
+          completion_criterion_of_poincareProofDependenciesWithEquationBoundary
+            witness dependencies ⟩ := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project-statement payload from the named boundary-preserving
+extraction-derivation target-payload aggregate certificate returns the
+forgetful aggregate package with the strengthened aggregate target route.
+-/
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      ⟨ "poincare_conjecture", rfl,
+        dependencies_of_equation_boundary_dependencies dependencies,
+        poincare_statement_of_poincareProofDependenciesWithEquationBoundary
+          dependencies,
+        fun witness =>
+          completion_criterion_of_poincareProofDependenciesWithEquationBoundary
+            witness dependencies ⟩ := by
+  apply Subsingleton.elim
+
+/--
 The checked completion certificate is equivalent to the full artifact payload
 whose target field is the project Poincare statement.
 -/
