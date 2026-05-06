@@ -583,6 +583,17 @@ theorem poincare_completion_payload_of_equation_boundary_dependencies_eq
   rfl
 
 /--
+The strengthened aggregate completion payload agrees with the ordinary
+aggregate completion payload after forgetting equation-boundary data.
+-/
+theorem poincare_completion_payload_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_dependencies dependencies =
+      poincare_completion_payload_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) :=
+  rfl
+
+/--
 The aggregate dependency package exposes the local target and completion
 criterion through the certified extraction-derivation route.
 -/
@@ -660,6 +671,17 @@ theorem poincare_statement_of_equation_boundary_dependencies_eq
             dependencies with
           ⟨target, _criterion⟩
         exact target) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate Poincare statement agrees with the ordinary
+aggregate Poincare statement after forgetting equation-boundary data.
+-/
+theorem poincare_statement_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_dependencies dependencies =
+      poincare_statement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
   apply Subsingleton.elim
 
 /--
@@ -742,6 +764,19 @@ theorem canonical_three_sphere_statement_of_equation_boundary_dependencies_eq
   apply Subsingleton.elim
 
 /--
+The strengthened aggregate canonical topological statement agrees with the
+ordinary aggregate canonical topological statement after forgetting
+equation-boundary data.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_equation_boundary_dependencies
+        dependencies =
+      canonical_three_sphere_statement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency package also exposes the canonical mathlib-shaped
 topological 3-sphere statement through the certified extraction-derivation
 route.
@@ -820,6 +855,19 @@ theorem completion_criterion_of_equation_boundary_dependencies_eq
             dependencies with
           ⟨_target, criterion⟩
         exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate completion criterion agrees with the ordinary
+aggregate completion criterion after forgetting equation-boundary data.
+-/
+theorem completion_criterion_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_equation_boundary_dependencies
+        witness dependencies =
+      completion_criterion_of_dependencies
+        witness (dependencies_of_equation_boundary_dependencies dependencies) := by
   apply Subsingleton.elim
 
 /--
