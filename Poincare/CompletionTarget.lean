@@ -3226,6 +3226,162 @@ theorem poincare_completion_payload_of_poincareProofDependenciesWithEquationBoun
   apply Subsingleton.elim
 
 /--
+The strengthened remaining dependency package exposes the full end-to-end
+assembly payload while retaining the boundary-carrying surgery family.
+-/
+theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ∃ _smoothabilityPackage : SmoothabilityPackage.{u},
+    ∃ _surgeryPackages :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+    ∃ _topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ _extractSphere : ExtinctionImpliesSphereStatement.{u},
+      PoincareConjectureStatement.{u} :=
+  poincare_full_assembly_payload_of_equation_boundary_dependencies
+    dependencies
+
+/--
+The strengthened remaining-package full assembly payload is the strengthened
+aggregate dependency full assembly payload.
+-/
+theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      poincare_full_assembly_payload_of_equation_boundary_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining dependency package exposes the certified
+extraction-derivation full assembly payload while retaining the
+boundary-carrying surgery family.
+-/
+theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ∃ _smoothabilityPackage : SmoothabilityPackage.{u},
+    ∃ _surgeryPackages :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+    ∃ _topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+    ∃ _derivation :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere,
+      PoincareConjectureStatement.{u} :=
+  poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies
+    dependencies
+
+/--
+The strengthened remaining-package certified full assembly payload is the
+strengthened aggregate dependency certified full assembly payload.
+-/
+theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
+        dependencies =
+      poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package exposes the full end-to-end
+assembly payload through the strengthened remaining-package route.
+-/
+theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _smoothabilityPackage : SmoothabilityPackage.{u},
+    ∃ _surgeryPackages :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+    ∃ _topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ _extractSphere : ExtinctionImpliesSphereStatement.{u},
+      PoincareConjectureStatement.{u} :=
+  poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package
+    dependencies
+
+/--
+The strengthened aggregate full assembly payload is the strengthened
+remaining-package full assembly payload.
+-/
+theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package exposes the certified
+extraction-derivation full assembly payload through the strengthened
+remaining-package route.
+-/
+theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _smoothabilityPackage : SmoothabilityPackage.{u},
+    ∃ _surgeryPackages :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+    ∃ _topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+    ∃ _derivation :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere,
+      PoincareConjectureStatement.{u} :=
+  poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
+    dependencies
+
+/--
+The strengthened aggregate certified full assembly payload is the strengthened
+remaining-package certified full assembly payload.
+-/
+theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        dependencies =
+      poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate dependency package exposes the projection-routed
 equation-boundary derivative payload through the strengthened remaining-package
 route.
