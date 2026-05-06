@@ -251,6 +251,63 @@ theorem equation_at_time_of_equation_boundary_package
       package.verification.equationAtTime t :=
   rfl
 
+/-- An equation-boundary package carries metric-derivative identification evidence. -/
+theorem metric_time_derivative_identification_of_equation_boundary_package
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (package : RicciFlowEquationBoundaryPackage flow) :
+    IsMetricTimeDerivativeOf
+      (metric_of_ricci_flow_data flow)
+      (metric_time_derivative_field_of_metric_derivative_data
+        (metric_derivative_data_of_equation_boundary_package package)) :=
+  metric_time_derivative_identification_of_ricci_flow_equation_verification
+    package.verification
+
+/-- The boundary-package derivative-identification theorem is stored verification evidence. -/
+@[simp] theorem metric_time_derivative_identification_of_equation_boundary_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (package : RicciFlowEquationBoundaryPackage flow) :
+    metric_time_derivative_identification_of_equation_boundary_package
+      package = package.verification.metricDerivative.identifiesDerivative :=
+  rfl
+
+/--
+The boundary-package equation equality also holds through the named
+metric-derivative projection.
+-/
+theorem equation_at_time_of_equation_boundary_package_projection
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (package : RicciFlowEquationBoundaryPackage flow) (t : ℝ) :
+    metric_time_derivative_at_time_of_metric_derivative_field
+      (metric_time_derivative_field_of_metric_derivative_data
+        (metric_derivative_data_of_equation_boundary_package package)) t =
+        ricci_flow_rhs_tensor (curvature_data_of_ricci_flow_data flow) t :=
+  equation_at_time_of_ricci_flow_equation_verification_projection
+    package.verification t
+
+/-- The boundary-package projection-routed equation theorem is stored evidence. -/
+@[simp] theorem equation_at_time_of_equation_boundary_package_projection_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (package : RicciFlowEquationBoundaryPackage flow) (t : ℝ) :
+    equation_at_time_of_equation_boundary_package_projection package t =
+      package.verification.equationAtTime t :=
+  rfl
+
 /-- Project equation-interface evidence from an equation-boundary package. -/
 theorem equation_evidence_of_equation_boundary_package
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
