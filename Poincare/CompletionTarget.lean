@@ -3263,6 +3263,18 @@ theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency
   apply Subsingleton.elim
 
 /--
+The strengthened remaining-package full assembly payload agrees directly with
+the dependency-level boundary-preserving full assembly payload.
+-/
+theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_to_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      poincare_full_assembly_payload_of_equation_boundary_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining dependency package exposes the certified
 extraction-derivation full assembly payload while retaining the
 boundary-carrying surgery family.
@@ -3296,6 +3308,19 @@ The strengthened remaining-package certified full assembly payload is the
 strengthened aggregate dependency certified full assembly payload.
 -/
 theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
+        dependencies =
+      poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package certified full assembly payload agrees
+directly with the dependency-level boundary-preserving certified full assembly
+payload.
+-/
+theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation_to_dependencies_eq
     (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
     poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
         dependencies =
@@ -3341,6 +3366,18 @@ theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationB
   apply Subsingleton.elim
 
 /--
+The strengthened aggregate full assembly payload agrees directly with the
+dependency-level boundary-preserving full assembly payload.
+-/
+theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_to_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      poincare_full_assembly_payload_of_equation_boundary_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate dependency package exposes the certified
 extraction-derivation full assembly payload through the strengthened
 remaining-package route.
@@ -3378,6 +3415,18 @@ theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationB
     poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
         dependencies =
       poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate certified full assembly payload agrees directly with
+the dependency-level boundary-preserving certified full assembly payload.
+-/
+theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        dependencies =
+      poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies
         dependencies := by
   apply Subsingleton.elim
 
