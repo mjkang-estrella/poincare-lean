@@ -9979,6 +9979,293 @@ theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_
   apply Subsingleton.elim
 
 /--
+The strengthened remaining dependency package produces the checked completion
+certificate from the certified extraction-derivation canonical target.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_remaining_dependency_and_canonical_target
+    (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+      dependencies)
+    (canonical_completion_target_of_equation_boundary_remaining_dependency_package_extraction_derivation
+      dependencies)
+
+/--
+The strengthened remaining-package certified canonical-target certificate
+constructor uses the generic remaining-dependency canonical-target constructor.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target
+        dependencies =
+      completion_certificate_of_remaining_dependency_and_canonical_target
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies)
+        (canonical_completion_target_of_equation_boundary_remaining_dependency_package_extraction_derivation
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package certified canonical-target certificate agrees
+with the standard strengthened boundary certificate.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_to_boundary_certificate_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target
+        dependencies =
+      completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining dependency package produces the checked completion
+certificate from the certified extraction-derivation project statement.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_remaining_dependency_and_target_statement
+    (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+      dependencies)
+    (poincare_statement_of_equation_boundary_remaining_dependency_package_extraction_derivation
+      dependencies)
+
+/--
+The strengthened remaining-package certified project-statement certificate
+constructor uses the generic remaining-dependency target-statement constructor.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement
+        dependencies =
+      completion_certificate_of_remaining_dependency_and_target_statement
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies)
+        (poincare_statement_of_equation_boundary_remaining_dependency_package_extraction_derivation
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package certified project-statement certificate agrees
+with the standard strengthened boundary certificate.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_to_boundary_certificate_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement
+        dependencies =
+      completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining dependency package produces the checked completion
+certificate from the certified extraction-derivation completion criterion.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_remaining_dependency_and_completion_criterion
+    (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+      dependencies)
+    witness
+    (completion_criterion_of_equation_boundary_remaining_dependency_package_extraction_derivation
+      witness dependencies)
+
+/--
+The strengthened remaining-package certified criterion certificate constructor
+uses the generic remaining-dependency completion-criterion constructor.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_eq
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion
+        witness dependencies =
+      completion_certificate_of_remaining_dependency_and_completion_criterion
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies)
+        witness
+        (completion_criterion_of_equation_boundary_remaining_dependency_package_extraction_derivation
+          witness dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package certified criterion certificate agrees with
+the standard strengthened boundary certificate.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_to_boundary_certificate_eq
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion
+        witness dependencies =
+      completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package produces the checked completion
+certificate from the certified extraction-derivation canonical target.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_remaining_dependency_and_canonical_target
+    (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+      dependencies)
+    (canonical_completion_target_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+      dependencies)
+
+/--
+The strengthened aggregate certified canonical-target certificate constructor
+uses the generic remaining-dependency canonical-target constructor.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target
+        dependencies =
+      completion_certificate_of_remaining_dependency_and_canonical_target
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies)
+        (canonical_completion_target_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate certified canonical-target certificate agrees with
+the strengthened remaining-package certified canonical-target certificate.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_remaining_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target
+        dependencies =
+      completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate certified canonical-target certificate agrees with the
+standard strengthened aggregate boundary certificate.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_boundary_certificate_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target
+        dependencies =
+      completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package produces the checked completion
+certificate from the certified extraction-derivation project statement.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_remaining_dependency_and_target_statement
+    (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+      dependencies)
+    (poincare_statement_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+      dependencies)
+
+/--
+The strengthened aggregate certified project-statement certificate constructor
+uses the generic remaining-dependency target-statement constructor.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement
+        dependencies =
+      completion_certificate_of_remaining_dependency_and_target_statement
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies)
+        (poincare_statement_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate certified project-statement certificate agrees with
+the strengthened remaining-package certified project-statement certificate.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_to_remaining_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement
+        dependencies =
+      completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate certified project-statement certificate agrees with
+the standard strengthened aggregate boundary certificate.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_to_boundary_certificate_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement
+        dependencies =
+      completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package produces the checked completion
+certificate from the certified extraction-derivation completion criterion.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_remaining_dependency_and_completion_criterion
+    (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+      dependencies)
+    witness
+    (completion_criterion_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+      witness dependencies)
+
+/--
+The strengthened aggregate certified criterion certificate constructor uses the
+generic remaining-dependency completion-criterion constructor.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion
+        witness dependencies =
+      completion_certificate_of_remaining_dependency_and_completion_criterion
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies)
+        witness
+        (completion_criterion_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+          witness dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate certified criterion certificate agrees with the
+strengthened remaining-package certified criterion certificate.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_remaining_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion
+        witness dependencies =
+      completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate certified criterion certificate agrees with the
+standard strengthened aggregate boundary certificate.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_boundary_certificate_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion
+        witness dependencies =
+      completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 A boundary-aware completion certificate payload preserves the strengthened
 dependency package, the checked completion certificate built from it, and the
 verification-routed equation-boundary payload.
