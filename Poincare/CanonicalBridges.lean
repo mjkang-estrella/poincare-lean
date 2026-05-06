@@ -15217,6 +15217,22 @@ theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_c
 
 /--
 The boundary-aware verification-payload aggregate canonical statement payload
+can be routed through the ordinary remaining-dependency package after
+forgetting equation-boundary data.
+-/
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_remaining_dependency_package
+          (remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
+            payload)) := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware verification-payload aggregate canonical statement payload
 can be routed through the ordinary aggregate dependency package after
 forgetting equation-boundary data.
 -/
@@ -15485,6 +15501,22 @@ theorem completion_certificate_of_aggregate_canonical_statement_payload_of_compl
         payload) =
       completion_certificate_of_equation_boundary_remaining_dependency_package
         (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate canonical-statement payload constructor for a boundary-aware
+verification payload recovers the ordinary remaining-dependency certificate
+after forgetting equation-boundary data.
+-/
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload) =
+      completion_certificate_of_remaining_dependency_package
+        (remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
           payload) := by
   apply Subsingleton.elim
 
