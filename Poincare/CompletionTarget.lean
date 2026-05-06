@@ -11315,6 +11315,79 @@ theorem completion_criterion_of_completion_certificate_with_equation_boundary_ve
   apply Subsingleton.elim
 
 /--
+The boundary-aware certificate canonical-payload projection agrees with the
+ordinary remaining-dependency canonical payload after forgetting boundary data.
+-/
+theorem canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      canonical_completion_payload_of_dependencies
+        (remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware certificate project-payload projection agrees with the
+ordinary remaining-dependency project payload after forgetting boundary data.
+-/
+theorem poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      poincare_completion_payload_of_remaining_dependency_package
+        (remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware certificate target-statement projection agrees with the
+ordinary remaining-dependency project statement after forgetting boundary data.
+-/
+theorem target_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    target_statement_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      poincare_statement_of_dependencies
+        (remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware certificate canonical-target projection agrees with the
+ordinary remaining-dependency canonical target after forgetting boundary data.
+-/
+theorem canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      canonical_completion_target_of_dependencies
+        (remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware certificate completion-criterion projection agrees with the
+ordinary remaining-dependency canonical criterion after forgetting boundary
+data.
+-/
+theorem completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq
+    (witness : Type u)
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload
+        witness payload =
+      canonical_completion_criterion_of_dependencies
+        witness
+        (remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
 The arbitrary-verification remaining-package constructor exposes the named
 strengthened remaining-package canonical payload route.
 -/
