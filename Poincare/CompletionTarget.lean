@@ -2886,6 +2886,67 @@ theorem remainingDependencyPackageWithEquationBoundary_components_payload_eq
   apply Subsingleton.elim
 
 /--
+The strengthened remaining-package component payload reconstructs the
+strengthened remaining dependency package.
+-/
+theorem remainingDependencyPackageWithEquationBoundary_of_components_payload :
+    (∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty
+              (Σ n : ℕ∞ω,
+                FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+        ExtinctionTopologyExtractionPackage.{u}) →
+      RemainingDependencyPackageWithEquationBoundary.{u} :=
+  poincareProofDependenciesWithEquationBoundary_of_components_payload
+
+/--
+The strengthened remaining-package component constructor is the aggregate
+strengthened component constructor under the abbreviation.
+-/
+theorem remainingDependencyPackageWithEquationBoundary_of_components_payload_eq :
+    remainingDependencyPackageWithEquationBoundary_of_components_payload.{u} =
+      poincareProofDependenciesWithEquationBoundary_of_components_payload.{u} := by
+  apply Subsingleton.elim
+
+/--
+Projecting the component payload from the strengthened remaining package
+reconstructed from that payload returns the original component payload.
+-/
+theorem remainingDependencyPackageWithEquationBoundary_components_payload_of_components_payload_eq
+    (payload :
+      ∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty
+              (Σ n : ℕ∞ω,
+                FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+        ExtinctionTopologyExtractionPackage.{u}) :
+    remainingDependencyPackageWithEquationBoundary_components_payload
+      (remainingDependencyPackageWithEquationBoundary_of_components_payload
+        payload) =
+      payload := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package component constructor recovers any
+strengthened remaining dependency package from its projected component payload.
+-/
+theorem remainingDependencyPackageWithEquationBoundary_of_components_payload_of_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    remainingDependencyPackageWithEquationBoundary_of_components_payload
+      (remainingDependencyPackageWithEquationBoundary_components_payload
+        dependencies) =
+      dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining dependency package is equivalent to its three
 component inputs, with equation-boundary data in the surgery component.
 -/
@@ -4069,6 +4130,61 @@ theorem remainingDependencyPackage_components_payload_to_aggregate_payload_eq
     (dependencies : RemainingDependencyPackage.{u}) :
     remainingDependencyPackage_components_payload dependencies =
       poincareProofDependencies_components_payload dependencies := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency component payload reconstructs the remaining
+dependency package.
+-/
+theorem remainingDependencyPackage_of_components_payload :
+    (∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+        ExtinctionTopologyExtractionPackage.{u}) →
+      RemainingDependencyPackage.{u} :=
+  poincareProofDependencies_of_components_payload
+
+/--
+The remaining-dependency component constructor is the aggregate component
+constructor under the abbreviation.
+-/
+theorem remainingDependencyPackage_of_components_payload_eq :
+    remainingDependencyPackage_of_components_payload.{u} =
+      poincareProofDependencies_of_components_payload.{u} := by
+  apply Subsingleton.elim
+
+/--
+Projecting the component payload from the remaining package reconstructed from
+that payload returns the original component payload.
+-/
+theorem remainingDependencyPackage_components_payload_of_components_payload_eq
+    (payload :
+      ∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+        ExtinctionTopologyExtractionPackage.{u}) :
+    remainingDependencyPackage_components_payload
+      (remainingDependencyPackage_of_components_payload payload) =
+      payload := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency component constructor recovers any remaining
+dependency package from its projected component payload.
+-/
+theorem remainingDependencyPackage_of_components_payload_of_dependencies_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    remainingDependencyPackage_of_components_payload
+      (remainingDependencyPackage_components_payload dependencies) =
+      dependencies := by
   apply Subsingleton.elim
 
 /--

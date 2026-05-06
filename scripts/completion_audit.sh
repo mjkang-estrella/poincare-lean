@@ -5362,6 +5362,14 @@ check_decl "strengthened remaining dependency components payload theorem is decl
   '^theorem remainingDependencyPackageWithEquationBoundary_components_payload\b' Poincare/CompletionTarget.lean
 check_decl "strengthened remaining dependency components payload equality contract is declared" \
   '^theorem remainingDependencyPackageWithEquationBoundary_components_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened remaining dependency component constructor is declared" \
+  '^theorem remainingDependencyPackageWithEquationBoundary_of_components_payload\b' Poincare/CompletionTarget.lean
+check_decl "strengthened remaining dependency component constructor equality contract is declared" \
+  '^theorem remainingDependencyPackageWithEquationBoundary_of_components_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened remaining dependency component projection-after-constructor roundtrip is declared" \
+  '^theorem remainingDependencyPackageWithEquationBoundary_components_payload_of_components_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened remaining dependency component constructor-after-projection roundtrip is declared" \
+  '^theorem remainingDependencyPackageWithEquationBoundary_of_components_payload_of_dependencies_eq\b' Poincare/CompletionTarget.lean
 check_decl "strengthened remaining dependency components iff theorem is declared" \
   '^theorem remainingDependencyPackageWithEquationBoundary_iff_components\b' Poincare/CompletionTarget.lean
 check_decl "strengthened remaining dependency components iff equality contract is declared" \
@@ -5534,6 +5542,14 @@ check_decl "remaining dependency component iff contract is declared" \
   '^theorem remainingDependencyPackage_iff_components\b' Poincare/CompletionTarget.lean
 check_decl "remaining dependency component payload equality contract is declared" \
   '^theorem remainingDependencyPackage_components_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component constructor is declared" \
+  '^theorem remainingDependencyPackage_of_components_payload\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component constructor equality contract is declared" \
+  '^theorem remainingDependencyPackage_of_components_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component projection-after-constructor roundtrip is declared" \
+  '^theorem remainingDependencyPackage_components_payload_of_components_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency component constructor-after-projection roundtrip is declared" \
+  '^theorem remainingDependencyPackage_of_components_payload_of_dependencies_eq\b' Poincare/CompletionTarget.lean
 check_decl "remaining dependency component iff equality contract is declared" \
   '^theorem remainingDependencyPackage_iff_components_eq\b' Poincare/CompletionTarget.lean
 check_decl "remaining dependency component-requirements payload theorem is declared" \
@@ -9135,6 +9151,10 @@ open scoped Manifold ContDiff
 #check Poincare.remaining_dependency_package_of_equation_boundary_remaining_dependency_package_eq
 #check Poincare.remainingDependencyPackageWithEquationBoundary_components_payload
 #check Poincare.remainingDependencyPackageWithEquationBoundary_components_payload_eq
+#check Poincare.remainingDependencyPackageWithEquationBoundary_of_components_payload
+#check Poincare.remainingDependencyPackageWithEquationBoundary_of_components_payload_eq
+#check Poincare.remainingDependencyPackageWithEquationBoundary_components_payload_of_components_payload_eq
+#check Poincare.remainingDependencyPackageWithEquationBoundary_of_components_payload_of_dependencies_eq
 #check Poincare.remainingDependencyPackageWithEquationBoundary_iff_components
 #check Poincare.remainingDependencyPackageWithEquationBoundary_iff_components_eq
 #check Poincare.remainingDependencyPackageWithEquationBoundary_component_requirements_payload
@@ -9221,6 +9241,10 @@ open scoped Manifold ContDiff
 #check Poincare.remainingDependencyPackage_components_payload
 #check Poincare.remainingDependencyPackage_iff_components
 #check Poincare.remainingDependencyPackage_components_payload_eq
+#check Poincare.remainingDependencyPackage_of_components_payload
+#check Poincare.remainingDependencyPackage_of_components_payload_eq
+#check Poincare.remainingDependencyPackage_components_payload_of_components_payload_eq
+#check Poincare.remainingDependencyPackage_of_components_payload_of_dependencies_eq
 #check Poincare.remainingDependencyPackage_iff_components_eq
 #check Poincare.remainingDependencyPackage_component_requirements_payload
 #check Poincare.remainingDependencyPackage_iff_component_requirements
@@ -12931,6 +12955,10 @@ open scoped Manifold ContDiff
 #check Poincare.remaining_dependency_package_of_equation_boundary_remaining_dependency_package_eq
 #check Poincare.remainingDependencyPackageWithEquationBoundary_components_payload
 #check Poincare.remainingDependencyPackageWithEquationBoundary_components_payload_eq
+#check Poincare.remainingDependencyPackageWithEquationBoundary_of_components_payload
+#check Poincare.remainingDependencyPackageWithEquationBoundary_of_components_payload_eq
+#check Poincare.remainingDependencyPackageWithEquationBoundary_components_payload_of_components_payload_eq
+#check Poincare.remainingDependencyPackageWithEquationBoundary_of_components_payload_of_dependencies_eq
 #check Poincare.remainingDependencyPackageWithEquationBoundary_iff_components
 #check Poincare.remainingDependencyPackageWithEquationBoundary_iff_components_eq
 #check Poincare.remainingDependencyPackageWithEquationBoundary_component_requirements_payload
@@ -13066,6 +13094,10 @@ open scoped Manifold ContDiff
       Poincare.ExtinctionTopologyExtractionPackage)
 
 #check Poincare.remainingDependencyPackage_components_payload_eq
+#check Poincare.remainingDependencyPackage_of_components_payload
+#check Poincare.remainingDependencyPackage_of_components_payload_eq
+#check Poincare.remainingDependencyPackage_components_payload_of_components_payload_eq
+#check Poincare.remainingDependencyPackage_of_components_payload_of_dependencies_eq
 #check Poincare.remainingDependencyPackage_iff_components_eq
 
 #check (Poincare.remainingDependencyPackage_component_requirements_payload :
