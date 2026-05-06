@@ -7465,6 +7465,9 @@ open scoped Manifold ContDiff
 #check Poincare.smoothability_bridge_payload_of_smoothability_package_eq
 #check Poincare.TangentCovariantTwoTensor
 #check Poincare.tangentCovariantTwoTensor_eq
+#check Poincare.zero_tangent_covariant_two_tensor
+#check Poincare.zero_tangent_covariant_two_tensor_eq
+#check Poincare.zero_tangent_covariant_two_tensor_apply
 #check Poincare.metric_of_ricci_flow_data
 #check Poincare.metric_of_ricci_flow_data_eq
 #check Poincare.curvature_data_of_ricci_flow_data
@@ -7477,10 +7480,16 @@ open scoped Manifold ContDiff
 #check Poincare.ricci_tensor_field_of_curvature_data_eq
 #check Poincare.scalar_curvature_field_of_curvature_data
 #check Poincare.scalar_curvature_field_of_curvature_data_eq
+#check Poincare.zero_ricci_tensor_field
+#check Poincare.zero_ricci_tensor_field_eq
+#check Poincare.zero_scalar_curvature_field
+#check Poincare.zero_scalar_curvature_field_eq
 #check Poincare.ricci_tensor_at_time_of_ricci_tensor_field
 #check Poincare.ricci_tensor_at_time_of_ricci_tensor_field_eq
+#check Poincare.ricci_tensor_at_time_of_zero_ricci_tensor_field_eq
 #check Poincare.scalar_curvature_at_time_of_scalar_curvature_field
 #check Poincare.scalar_curvature_at_time_of_scalar_curvature_field_eq
+#check Poincare.scalar_curvature_at_time_of_zero_scalar_curvature_field_eq
 #check Poincare.ricci_tensor_at_time_of_ricci_flow_data
 #check Poincare.ricci_tensor_at_time_of_ricci_flow_data_eq
 #check Poincare.scalar_curvature_at_time_of_ricci_flow_data
@@ -9799,6 +9808,9 @@ open scoped Manifold ContDiff
 #check Poincare.threeManifoldModelWithCorners_eq
 #check Poincare.TangentCovariantTwoTensor
 #check Poincare.tangentCovariantTwoTensor_eq
+#check Poincare.zero_tangent_covariant_two_tensor
+#check Poincare.zero_tangent_covariant_two_tensor_eq
+#check Poincare.zero_tangent_covariant_two_tensor_apply
 
 #check (Poincare.RicciFlowData.satisfies_equation :
   ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -9820,10 +9832,16 @@ open scoped Manifold ContDiff
 #check Poincare.ricci_tensor_field_of_curvature_data_eq
 #check Poincare.scalar_curvature_field_of_curvature_data
 #check Poincare.scalar_curvature_field_of_curvature_data_eq
+#check Poincare.zero_ricci_tensor_field
+#check Poincare.zero_ricci_tensor_field_eq
+#check Poincare.zero_scalar_curvature_field
+#check Poincare.zero_scalar_curvature_field_eq
 #check Poincare.ricci_tensor_at_time_of_ricci_tensor_field
 #check Poincare.ricci_tensor_at_time_of_ricci_tensor_field_eq
+#check Poincare.ricci_tensor_at_time_of_zero_ricci_tensor_field_eq
 #check Poincare.scalar_curvature_at_time_of_scalar_curvature_field
 #check Poincare.scalar_curvature_at_time_of_scalar_curvature_field_eq
+#check Poincare.scalar_curvature_at_time_of_zero_scalar_curvature_field_eq
 #check Poincare.ricci_tensor_at_time_of_ricci_flow_data
 #check Poincare.ricci_tensor_at_time_of_ricci_flow_data_eq
 #check Poincare.scalar_curvature_at_time_of_ricci_flow_data

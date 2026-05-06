@@ -54,6 +54,40 @@ theorem tangentCovariantTwoTensor_eq
   rfl
 
 /--
+The zero covariant two-tensor field on the tangent bundle.
+
+This is only a tensor candidate; it does not assert that any metric has zero
+Ricci curvature.
+-/
+noncomputable def zero_tangent_covariant_two_tensor
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    (I : ModelWithCorners ℝ E H)
+    (M : Type*) [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M] :
+    TangentCovariantTwoTensor I M :=
+  fun _x => 0
+
+/-- The zero tensor candidate is the pointwise zero bilinear form. -/
+@[simp] theorem zero_tangent_covariant_two_tensor_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    (I : ModelWithCorners ℝ E H)
+    (M : Type*) [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M] :
+    zero_tangent_covariant_two_tensor I M =
+      (fun _x => 0 : TangentCovariantTwoTensor I M) :=
+  rfl
+
+/-- At each point, the zero tensor candidate is the zero bilinear form. -/
+@[simp] theorem zero_tangent_covariant_two_tensor_apply
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (x : M) :
+    zero_tangent_covariant_two_tensor I M x = 0 :=
+  rfl
+
+/--
 Candidate Ricci tensor field for a time-dependent metric.
 
 The field is separate from the identification theorem below because mathlib does
@@ -67,6 +101,27 @@ structure RicciTensorField
     (_g : TimeDependentRiemannianMetric I n M) where
   /-- The candidate Ricci tensor at each time. -/
   tensorAtTime : ℝ → TangentCovariantTwoTensor I M
+
+/-- The zero candidate Ricci tensor field for a time-dependent metric. -/
+noncomputable def zero_ricci_tensor_field
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M) : RicciTensorField g where
+  tensorAtTime := fun _t => zero_tangent_covariant_two_tensor I M
+
+/-- The zero candidate Ricci tensor field is timewise the zero tensor. -/
+@[simp] theorem zero_ricci_tensor_field_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M) :
+    zero_ricci_tensor_field g =
+      ({ tensorAtTime := fun _t => zero_tangent_covariant_two_tensor I M } :
+        RicciTensorField g) :=
+  rfl
 
 /--
 Candidate scalar curvature field for a time-dependent metric.
@@ -83,6 +138,26 @@ structure ScalarCurvatureField
     (_g : TimeDependentRiemannianMetric I n M) where
   /-- The candidate scalar curvature at each time and point. -/
   scalarAtTime : ℝ → M → ℝ
+
+/-- The zero candidate scalar-curvature field for a time-dependent metric. -/
+noncomputable def zero_scalar_curvature_field
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M) : ScalarCurvatureField g where
+  scalarAtTime := fun _t _x => 0
+
+/-- The zero candidate scalar-curvature field is pointwise zero. -/
+@[simp] theorem zero_scalar_curvature_field_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M) :
+    zero_scalar_curvature_field g =
+      ({ scalarAtTime := fun _t _x => 0 } : ScalarCurvatureField g) :=
+  rfl
 
 /--
 Interface asserting that a candidate tensor is the Ricci tensor of a metric.
@@ -287,6 +362,17 @@ def ricci_tensor_at_time_of_ricci_tensor_field
     ricci_tensor_at_time_of_ricci_tensor_field ricci t = ricci.tensorAtTime t :=
   rfl
 
+/-- Evaluating the zero candidate Ricci tensor at any time returns the zero tensor. -/
+@[simp] theorem ricci_tensor_at_time_of_zero_ricci_tensor_field_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M) (t : ℝ) :
+    ricci_tensor_at_time_of_ricci_tensor_field (zero_ricci_tensor_field g) t =
+      zero_tangent_covariant_two_tensor I M :=
+  rfl
+
 /-- Evaluate a candidate scalar curvature field at a time and point. -/
 def scalar_curvature_at_time_of_scalar_curvature_field
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -307,6 +393,17 @@ def scalar_curvature_at_time_of_scalar_curvature_field
     (scalar : ScalarCurvatureField g) (t : ℝ) (x : M) :
     scalar_curvature_at_time_of_scalar_curvature_field scalar t x =
       scalar.scalarAtTime t x :=
+  rfl
+
+/-- Evaluating the zero candidate scalar curvature at any time and point gives zero. -/
+@[simp] theorem scalar_curvature_at_time_of_zero_scalar_curvature_field_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M) (t : ℝ) (x : M) :
+    scalar_curvature_at_time_of_scalar_curvature_field
+      (zero_scalar_curvature_field g) t x = 0 :=
   rfl
 
 /-- Evaluate the Ricci tensor field of Ricci-flow data at a time. -/
