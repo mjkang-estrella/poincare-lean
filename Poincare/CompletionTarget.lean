@@ -4716,6 +4716,19 @@ theorem remainingDependencyPackageWithEquationBoundary_component_requirements_pa
   apply Subsingleton.elim
 
 /--
+The ordinary remaining package reconstructed from the strengthened component
+requirements payload is exactly the forgetful remaining-dependency package.
+-/
+theorem remainingDependencyPackage_of_component_requirements_payload_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    remainingDependencyPackage_of_component_requirements_payload
+      (remainingDependencyPackageWithEquationBoundary_component_requirements_payload
+        dependencies) =
+      remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining dependency package exposes the five ordinary
 package-layer requirements after forgetting equation-boundary data.
 -/
@@ -4782,6 +4795,19 @@ theorem remainingDependencyPackageWithEquationBoundary_package_layer_requirement
       , topologyPackage_requirement_of_equation_boundary_dependencies
           dependencies
       ⟩ := by
+  apply Subsingleton.elim
+
+/--
+The ordinary remaining package reconstructed from the strengthened package-layer
+requirements payload is exactly the forgetful remaining-dependency package.
+-/
+theorem remainingDependencyPackage_of_package_layer_requirements_payload_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    remainingDependencyPackage_of_package_layer_requirements_payload
+      (remainingDependencyPackageWithEquationBoundary_package_layer_requirements_payload
+        dependencies) =
+      remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+        dependencies := by
   apply Subsingleton.elim
 
 /--
@@ -4877,6 +4903,19 @@ theorem remainingDependencyPackageWithEquationBoundary_milestone_requirements_pa
       , topologyPackage_requirement_of_equation_boundary_dependencies
           dependencies
       ⟩ := by
+  apply Subsingleton.elim
+
+/--
+The ordinary remaining package reconstructed from the strengthened milestone
+requirements payload is exactly the forgetful remaining-dependency package.
+-/
+theorem remainingDependencyPackage_of_milestone_requirements_payload_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    remainingDependencyPackage_of_milestone_requirements_payload
+      (remainingDependencyPackageWithEquationBoundary_milestone_requirements_payload
+        dependencies) =
+      remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+        dependencies := by
   apply Subsingleton.elim
 
 /--

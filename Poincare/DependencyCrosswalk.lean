@@ -732,6 +732,18 @@ theorem poincareProofDependencies_of_component_requirements_payload_of_dependenc
   apply Subsingleton.elim
 
 /--
+The ordinary aggregate dependency reconstructed from the strengthened
+component-slot payload is exactly the forgetful aggregate dependency package.
+-/
+theorem poincareProofDependencies_of_component_requirements_payload_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareProofDependencies_of_component_requirements_payload
+      (dependency_component_requirements_payload_of_equation_boundary_dependencies
+        dependencies) =
+      dependencies_of_equation_boundary_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
 The component-slot equivalence is exactly the named forward payload projection
 paired with the named reverse constructor.
 -/
@@ -1494,6 +1506,18 @@ theorem poincareProofDependencies_of_package_layer_requirements_payload_of_depen
       (dependency_package_layer_requirements_payload_of_dependencies
         dependencies) =
       dependencies := by
+  apply Subsingleton.elim
+
+/--
+The ordinary aggregate dependency reconstructed from the strengthened
+package-layer payload is exactly the forgetful aggregate dependency package.
+-/
+theorem poincareProofDependencies_of_package_layer_requirements_payload_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareProofDependencies_of_package_layer_requirements_payload
+      (dependency_package_layer_requirements_payload_of_equation_boundary_dependencies
+        dependencies) =
+      dependencies_of_equation_boundary_dependencies dependencies := by
   apply Subsingleton.elim
 
 /--
@@ -2286,6 +2310,18 @@ theorem poincareProofDependencies_of_milestone_requirements_payload_of_dependenc
       (dependency_milestone_requirements_payload_of_dependencies
         dependencies) =
       dependencies := by
+  apply Subsingleton.elim
+
+/--
+The ordinary aggregate dependency reconstructed from the strengthened milestone
+payload is exactly the forgetful aggregate dependency package.
+-/
+theorem poincareProofDependencies_of_milestone_requirements_payload_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareProofDependencies_of_milestone_requirements_payload
+      (dependency_milestone_requirements_payload_of_equation_boundary_dependencies
+        dependencies) =
+      dependencies_of_equation_boundary_dependencies dependencies := by
   apply Subsingleton.elim
 
 /--
