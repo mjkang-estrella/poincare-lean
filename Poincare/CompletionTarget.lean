@@ -16931,6 +16931,224 @@ theorem completion_certificate_of_milestone_extraction_derivation_requirements_p
   apply Subsingleton.elim
 
 /--
+The component-slot payload constructor for the certified boundary-target
+remaining-package route agrees with the ordinary boundary-target route.
+-/
+theorem completion_certificate_of_component_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_boundary_target_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_component_requirements_payload
+      (poincareCompletionCertificate_component_requirements_payload
+        (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+          dependencies
+          (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+            dependencies))) =
+      completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The package-layer payload constructor for the certified boundary-target
+remaining-package route agrees with the ordinary boundary-target route.
+-/
+theorem completion_certificate_of_package_layer_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_boundary_target_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_package_layer_requirements_payload
+      (poincareCompletionCertificate_package_layer_requirements_payload
+        (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+          dependencies
+          (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+            dependencies))) =
+      completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The milestone payload constructor for the certified boundary-target
+remaining-package route agrees with the ordinary boundary-target route.
+-/
+theorem completion_certificate_of_milestone_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_boundary_target_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_milestone_requirements_payload
+      (poincareCompletionCertificate_milestone_requirements_payload
+        (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+          dependencies
+          (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+            dependencies))) =
+      completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The component-slot payload constructor for the certified boundary-target
+aggregate route agrees with the ordinary boundary-target route.
+-/
+theorem completion_certificate_of_component_requirements_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_boundary_target_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_component_requirements_payload
+      (poincareCompletionCertificate_component_requirements_payload
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+          dependencies
+          (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+            dependencies))) =
+      completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The package-layer payload constructor for the certified boundary-target
+aggregate route agrees with the ordinary boundary-target route.
+-/
+theorem completion_certificate_of_package_layer_requirements_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_boundary_target_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_package_layer_requirements_payload
+      (poincareCompletionCertificate_package_layer_requirements_payload
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+          dependencies
+          (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+            dependencies))) =
+      completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The milestone payload constructor for the certified boundary-target aggregate
+route agrees with the ordinary boundary-target route.
+-/
+theorem completion_certificate_of_milestone_requirements_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_boundary_target_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_milestone_requirements_payload
+      (poincareCompletionCertificate_milestone_requirements_payload
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+          dependencies
+          (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+            dependencies))) =
+      completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The certified component-slot payload constructor for the certified
+boundary-target remaining-package route agrees with the ordinary boundary-target
+route.
+-/
+theorem completion_certificate_of_component_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_boundary_target_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_component_extraction_derivation_requirements_payload
+      (poincareCompletionCertificate_component_requirements_payload
+        (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+          dependencies
+          (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+            dependencies))) =
+      completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The certified package-layer payload constructor for the certified
+boundary-target remaining-package route agrees with the ordinary boundary-target
+route.
+-/
+theorem completion_certificate_of_package_layer_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_boundary_target_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+      (poincareCompletionCertificate_package_layer_requirements_payload
+        (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+          dependencies
+          (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+            dependencies))) =
+      completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The certified milestone payload constructor for the certified boundary-target
+remaining-package route agrees with the ordinary boundary-target route.
+-/
+theorem completion_certificate_of_milestone_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_boundary_target_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_milestone_extraction_derivation_requirements_payload
+      (poincareCompletionCertificate_milestone_requirements_payload
+        (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+          dependencies
+          (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+            dependencies))) =
+      completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The certified component-slot payload constructor for the certified
+boundary-target aggregate route agrees with the ordinary boundary-target route.
+-/
+theorem completion_certificate_of_component_extraction_derivation_requirements_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_boundary_target_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_component_extraction_derivation_requirements_payload
+      (poincareCompletionCertificate_component_requirements_payload
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+          dependencies
+          (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+            dependencies))) =
+      completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The certified package-layer payload constructor for the certified
+boundary-target aggregate route agrees with the ordinary boundary-target route.
+-/
+theorem completion_certificate_of_package_layer_extraction_derivation_requirements_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_boundary_target_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+      (poincareCompletionCertificate_package_layer_requirements_payload
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+          dependencies
+          (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+            dependencies))) =
+      completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The certified milestone payload constructor for the certified boundary-target
+aggregate route agrees with the ordinary boundary-target route.
+-/
+theorem completion_certificate_of_milestone_extraction_derivation_requirements_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_boundary_target_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_milestone_extraction_derivation_requirements_payload
+      (poincareCompletionCertificate_milestone_requirements_payload
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+          dependencies
+          (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+            dependencies))) =
+      completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate certified component certificate constructor is exactly the
 remaining-dependency certified component constructor after converting aggregate
 dependencies to the remaining-dependency package.
