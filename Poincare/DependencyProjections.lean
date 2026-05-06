@@ -1576,6 +1576,297 @@ theorem equation_boundary_verification_payload_of_dependencies_eq
   apply Subsingleton.elim
 
 /--
+An arbitrary verification payload exposes the selected equation-boundary
+package family without requiring callers to unpack the full payload shape.
+-/
+theorem ricci_flow_equation_boundary_packages_of_equation_boundary_verification_payload
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+          Nonempty
+            (RicciFlowEquationBoundaryPackage
+              (ricci_flow_data_of_surgery_package
+                (surgery_package_of_equation_boundary_surgery_package
+                  package))) := by
+  intro M _ _ _ _ _ _
+  rcases payload M with
+    ⟨n, package, _verification, _verification_eq, equationBoundary,
+      _equationBoundary_eq, _metricDerivative, _metricDerivative_eq,
+      _derivativeId, _equationAtTime, _analyticBoundary⟩
+  exact ⟨n, package, ⟨equationBoundary⟩⟩
+
+/--
+The equation-boundary package projection from a verification payload is the
+boundary component stored in that payload.
+-/
+theorem ricci_flow_equation_boundary_packages_of_equation_boundary_verification_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    ricci_flow_equation_boundary_packages_of_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases payload M with
+          ⟨n, package, _verification, _verification_eq, equationBoundary,
+            _equationBoundary_eq, _metricDerivative, _metricDerivative_eq,
+            _derivativeId, _equationAtTime, _analyticBoundary⟩
+        exact ⟨n, package, ⟨equationBoundary⟩⟩) := by
+  apply Subsingleton.elim
+
+/--
+An arbitrary verification payload forgets to the older equation/metric
+derivative dependency payload.
+-/
+theorem equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+        ∃ verification :
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package
+                (surgery_package_of_equation_boundary_surgery_package
+                  package))),
+        ∃ _verification_eq :
+          verification =
+            ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
+              package,
+        ∃ metricDerivative :
+          MetricTimeDerivativeData
+            (metric_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package
+                (surgery_package_of_equation_boundary_surgery_package
+                  package))),
+        ∃ _metricDerivative_eq :
+          metricDerivative =
+            metric_derivative_data_of_surgery_package_with_equation_boundary
+              package,
+          IsMetricTimeDerivativeOf
+            (metric_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package
+                (surgery_package_of_equation_boundary_surgery_package
+                  package)))
+            (metric_time_derivative_field_of_metric_derivative_data
+              metricDerivative) ∧
+          ∀ t : ℝ,
+            metric_time_derivative_at_time_of_metric_derivative_field
+              (metric_time_derivative_field_of_metric_derivative_data
+                metricDerivative) t =
+              ricci_flow_rhs_tensor
+                (curvature_data_of_ricci_flow_data
+                  (ricci_flow_data_of_surgery_package
+                    (surgery_package_of_equation_boundary_surgery_package
+                      package))) t := by
+  intro M _ _ _ _ _ _
+  rcases payload M with
+    ⟨n, package, verification, verification_eq, _equationBoundary,
+      _equationBoundary_eq, metricDerivative, metricDerivative_eq_verification,
+      derivativeId, equationAtTime, _analyticBoundary⟩
+  have metricDerivative_eq_package :
+      metricDerivative =
+        metric_derivative_data_of_surgery_package_with_equation_boundary
+          package := by
+    rw [metricDerivative_eq_verification, verification_eq]
+    exact Eq.symm
+      (metric_derivative_data_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq
+        package)
+  exact
+    ⟨n, package, verification, verification_eq, metricDerivative,
+      metricDerivative_eq_package, derivativeId, equationAtTime⟩
+
+/--
+The derivative projection from a verification payload is obtained by forgetting
+its boundary package and analytic-boundary components.
+-/
+theorem equation_boundary_derivative_payload_of_equation_boundary_verification_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases payload M with
+          ⟨n, package, verification, verification_eq, _equationBoundary,
+            _equationBoundary_eq, metricDerivative,
+            metricDerivative_eq_verification, derivativeId, equationAtTime,
+            _analyticBoundary⟩
+        have metricDerivative_eq_package :
+            metricDerivative =
+              metric_derivative_data_of_surgery_package_with_equation_boundary
+                package := by
+          rw [metricDerivative_eq_verification, verification_eq]
+          exact Eq.symm
+            (metric_derivative_data_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq
+              package)
+        exact
+          ⟨n, package, verification, verification_eq, metricDerivative,
+            metricDerivative_eq_package, derivativeId, equationAtTime⟩) := by
+  apply Subsingleton.elim
+
+/--
+An arbitrary verification payload reconstructs the full
+derivative-strengthened surgery payload for each selected package.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+          SurgeryPackageWithEquationBoundaryDerivativePayload package := by
+  intro M _ _ _ _ _ _
+  rcases payload M with
+    ⟨n, package, verification, verification_eq, equationBoundary,
+      _equationBoundary_eq, metricDerivative, metricDerivative_eq_verification,
+      derivativeId, equationAtTime, analyticBoundary⟩
+  have metricDerivative_eq_package :
+      metricDerivative =
+        metric_derivative_data_of_surgery_package_with_equation_boundary
+          package := by
+    rw [metricDerivative_eq_verification, verification_eq]
+    exact Eq.symm
+      (metric_derivative_data_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq
+        package)
+  exact
+    ⟨n, package,
+      surgery_package_of_equation_boundary_surgery_package package,
+      rfl, equationBoundary, verification, verification_eq,
+      metricDerivative, metricDerivative_eq_package, derivativeId,
+      equationAtTime, analyticBoundary,
+      finite_extinction_of_surgery_package_with_equation_boundary package⟩
+
+/--
+The full surgery-payload projection from a verification payload is exactly the
+payload tuple plus the finite-extinction projection of the selected package.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_equation_boundary_verification_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    surgery_package_with_equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases payload M with
+          ⟨n, package, verification, verification_eq, equationBoundary,
+            _equationBoundary_eq, metricDerivative,
+            metricDerivative_eq_verification, derivativeId, equationAtTime,
+            analyticBoundary⟩
+        have metricDerivative_eq_package :
+            metricDerivative =
+              metric_derivative_data_of_surgery_package_with_equation_boundary
+                package := by
+          rw [metricDerivative_eq_verification, verification_eq]
+          exact Eq.symm
+            (metric_derivative_data_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq
+              package)
+        exact
+          ⟨n, package,
+            surgery_package_of_equation_boundary_surgery_package package,
+            rfl, equationBoundary, verification, verification_eq,
+            metricDerivative, metricDerivative_eq_package, derivativeId,
+            equationAtTime, analyticBoundary,
+            finite_extinction_of_surgery_package_with_equation_boundary
+              package⟩) := by
+  apply Subsingleton.elim
+
+/--
+An arbitrary verification payload exposes theorem-shaped analytic foundation
+statements carrying the explicit equation boundary.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          AnalyticFoundationWithEquationBoundaryStatement flow := by
+  intro M _ _ _ _ _ _
+  rcases payload M with
+    ⟨n, package, _verification, _verification_eq, _equationBoundary,
+      _equationBoundary_eq, _metricDerivative, _metricDerivative_eq,
+      _derivativeId, _equationAtTime, analyticBoundary⟩
+  exact
+    ⟨n,
+      ricci_flow_data_of_surgery_package
+        (surgery_package_of_equation_boundary_surgery_package package),
+      analyticBoundary⟩
+
+/--
+The analytic-boundary statement projection from a verification payload is the
+analytic component stored in that payload.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases payload M with
+          ⟨n, package, _verification, _verification_eq, _equationBoundary,
+            _equationBoundary_eq, _metricDerivative, _metricDerivative_eq,
+            _derivativeId, _equationAtTime, analyticBoundary⟩
+        exact
+          ⟨n,
+            ricci_flow_data_of_surgery_package
+              (surgery_package_of_equation_boundary_surgery_package package),
+            analyticBoundary⟩) := by
+  apply Subsingleton.elim
+
+/--
+The named dependency equation-boundary package family is the projection of the
+named verification payload.
+-/
+theorem ricci_flow_equation_boundary_packages_of_dependencies_to_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ricci_flow_equation_boundary_packages_of_dependencies dependencies =
+      ricci_flow_equation_boundary_packages_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The named dependency derivative payload is the derivative projection of the
+named verification payload.
+-/
+theorem equation_boundary_derivative_payload_of_dependencies_to_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_derivative_payload_of_dependencies dependencies =
+      equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The named dependency full surgery derivative payload is reconstructed from the
+named verification payload.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_dependencies_to_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_derivative_payload_of_dependencies
+        dependencies =
+      surgery_package_with_equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 Strengthened dependencies expose theorem-shaped analytic foundation statements
 that include the explicit Ricci-flow equation boundary.
 -/
@@ -1618,6 +1909,19 @@ theorem analytic_foundation_with_equation_boundary_statements_of_dependencies_eq
           ⟨n, ricci_flow_data_of_surgery_package basePackage,
             analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
               package⟩) := by
+  apply Subsingleton.elim
+
+/--
+The named dependency analytic-boundary statement family is the analytic
+projection of the named verification payload.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_dependencies_to_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    analytic_foundation_with_equation_boundary_statements_of_dependencies
+        dependencies =
+      analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_dependencies
+          dependencies) := by
   apply Subsingleton.elim
 
 /--
