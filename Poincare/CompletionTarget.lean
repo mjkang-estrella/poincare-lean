@@ -14881,6 +14881,48 @@ theorem completion_certificate_of_equation_boundary_remaining_dependency_package
   apply Subsingleton.elim
 
 /--
+The component-slot payload certificate constructor applied to the strengthened
+remaining-package payload recovers the strengthened remaining-package
+certificate.
+-/
+theorem completion_certificate_of_component_requirements_payload_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_component_requirements_payload
+        (remainingDependencyPackageWithEquationBoundary_component_requirements_payload
+          dependencies) =
+      completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The package-layer payload certificate constructor applied to the strengthened
+remaining-package payload recovers the strengthened remaining-package
+certificate.
+-/
+theorem completion_certificate_of_package_layer_requirements_payload_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_package_layer_requirements_payload
+        (remainingDependencyPackageWithEquationBoundary_package_layer_requirements_payload
+          dependencies) =
+      completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The milestone payload certificate constructor applied to the strengthened
+remaining-package payload recovers the strengthened remaining-package
+certificate.
+-/
+theorem completion_certificate_of_milestone_requirements_payload_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_milestone_requirements_payload
+        (remainingDependencyPackageWithEquationBoundary_milestone_requirements_payload
+          dependencies) =
+      completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The aggregate proof dependency package produces a checked completion
 certificate through the raw component-slot requirement route.
 -/
@@ -14974,6 +15016,45 @@ theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_
         dependencies =
       completion_certificate_of_poincareProofDependencies_milestone_requirements
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The component-slot payload certificate constructor applied to the strengthened
+aggregate payload recovers the strengthened aggregate certificate.
+-/
+theorem completion_certificate_of_component_requirements_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_component_requirements_payload
+        (dependency_component_requirements_payload_of_equation_boundary_dependencies
+          dependencies) =
+      completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The package-layer payload certificate constructor applied to the strengthened
+aggregate payload recovers the strengthened aggregate certificate.
+-/
+theorem completion_certificate_of_package_layer_requirements_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_package_layer_requirements_payload
+        (dependency_package_layer_requirements_payload_of_equation_boundary_dependencies
+          dependencies) =
+      completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The milestone payload certificate constructor applied to the strengthened
+aggregate payload recovers the strengthened aggregate certificate.
+-/
+theorem completion_certificate_of_milestone_requirements_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_milestone_requirements_payload
+        (dependency_milestone_requirements_payload_of_equation_boundary_dependencies
+          dependencies) =
+      completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
   apply Subsingleton.elim
 
 /--
@@ -15079,6 +15160,48 @@ theorem completion_certificate_of_equation_boundary_remaining_dependency_package
   apply Subsingleton.elim
 
 /--
+The certified component-slot payload constructor applied to the strengthened
+remaining-package payload recovers the strengthened remaining-package
+certificate.
+-/
+theorem completion_certificate_of_component_extraction_derivation_requirements_payload_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_component_extraction_derivation_requirements_payload
+        (remainingDependencyPackageWithEquationBoundary_component_requirements_payload
+          dependencies) =
+      completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The certified package-layer payload constructor applied to the strengthened
+remaining-package payload recovers the strengthened remaining-package
+certificate.
+-/
+theorem completion_certificate_of_package_layer_extraction_derivation_requirements_payload_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+        (remainingDependencyPackageWithEquationBoundary_package_layer_requirements_payload
+          dependencies) =
+      completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The certified milestone payload constructor applied to the strengthened
+remaining-package payload recovers the strengthened remaining-package
+certificate.
+-/
+theorem completion_certificate_of_milestone_extraction_derivation_requirements_payload_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_milestone_extraction_derivation_requirements_payload
+        (remainingDependencyPackageWithEquationBoundary_milestone_requirements_payload
+          dependencies) =
+      completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The aggregate proof dependency package produces a checked completion
 certificate through the certified component-slot requirement route.
 -/
@@ -15172,6 +15295,45 @@ theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_
         dependencies =
       completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The certified component-slot payload constructor applied to the strengthened
+aggregate payload recovers the strengthened aggregate certificate.
+-/
+theorem completion_certificate_of_component_extraction_derivation_requirements_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_component_extraction_derivation_requirements_payload
+        (dependency_component_requirements_payload_of_equation_boundary_dependencies
+          dependencies) =
+      completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The certified package-layer payload constructor applied to the strengthened
+aggregate payload recovers the strengthened aggregate certificate.
+-/
+theorem completion_certificate_of_package_layer_extraction_derivation_requirements_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+        (dependency_package_layer_requirements_payload_of_equation_boundary_dependencies
+          dependencies) =
+      completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The certified milestone payload constructor applied to the strengthened
+aggregate payload recovers the strengthened aggregate certificate.
+-/
+theorem completion_certificate_of_milestone_extraction_derivation_requirements_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_milestone_extraction_derivation_requirements_payload
+        (dependency_milestone_requirements_payload_of_equation_boundary_dependencies
+          dependencies) =
+      completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
   apply Subsingleton.elim
 
 /--
