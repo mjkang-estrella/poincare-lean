@@ -26,9 +26,63 @@ structure PoincareProofDependencies where
       [ChartedSpace ThreeManifoldModel M]
       [SimplyConnectedSpace M] [CompactSpace M]
       [IsManifold ThreeManifoldModelWithCorners 1 M],
-        Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)
   /-- Completed post-extinction topological extraction package. -/
   topology : ExtinctionTopologyExtractionPackage.{u}
+
+/--
+Aggregate dependency package strengthened with explicit smooth-piece
+Ricci-flow equation boundaries for the selected finite-extinction surgery
+packages.
+
+This records a sharper version of the large remaining analytic obligation:
+finite extinction still comes through the ordinary surgery package, while the
+same selected package must also carry a concrete boundary proof of
+`∂ₜ g = -2 Ricci`.
+-/
+structure PoincareProofDependenciesWithEquationBoundary where
+  /-- Smoothability bridge from topological 3-manifolds to the surgery model. -/
+  smoothability : SmoothabilityPackage.{u}
+  /-- Completed surgery packages with explicit equation boundaries. -/
+  surgery :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        Nonempty
+          (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackageWithEquationBoundary n M)
+  /-- Completed post-extinction topological extraction package. -/
+  topology : ExtinctionTopologyExtractionPackage.{u}
+
+/--
+Forget explicit equation boundaries from the strengthened dependency package,
+recovering the ordinary aggregate dependencies consumed by the existing final
+assembly theorem.
+-/
+noncomputable def dependencies_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareProofDependencies.{u} where
+  smoothability := dependencies.smoothability
+  surgery := fun M => (dependencies.surgery M).map
+    (fun payload =>
+      ⟨payload.1,
+        surgery_package_of_equation_boundary_surgery_package payload.2⟩)
+  topology := dependencies.topology
+
+/--
+The strengthened dependency forgetful projection keeps smoothability and
+topology fixed and maps each strengthened surgery package to its base package.
+-/
+theorem dependencies_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependencies_of_equation_boundary_dependencies dependencies =
+      ({ smoothability := dependencies.smoothability
+         surgery := fun M => (dependencies.surgery M).map
+           (fun payload =>
+             ⟨payload.1,
+               surgery_package_of_equation_boundary_surgery_package payload.2⟩)
+         topology := dependencies.topology } : PoincareProofDependencies.{u}) :=
+  rfl
 
 /--
 The aggregate package exposes exactly its three outstanding component inputs:
@@ -115,6 +169,102 @@ theorem poincareProofDependencies_iff_components_eq :
     poincareProofDependencies_iff_components.{u} =
       ⟨poincareProofDependencies_components_payload,
         poincareProofDependencies_of_components_payload⟩ := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate package exposes exactly its smoothability package,
+boundary-carrying surgery package family, and topology extraction package.
+-/
+theorem poincareProofDependenciesWithEquationBoundary_components_payload
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _smoothability : SmoothabilityPackage.{u},
+    ∃ _surgery :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω,
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+      ExtinctionTopologyExtractionPackage.{u} := by
+  exact ⟨dependencies.smoothability, dependencies.surgery, dependencies.topology⟩
+
+/--
+The strengthened aggregate component payload is the tuple of its three stored
+dependency fields.
+-/
+theorem poincareProofDependenciesWithEquationBoundary_components_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareProofDependenciesWithEquationBoundary_components_payload
+        dependencies =
+      ⟨dependencies.smoothability, dependencies.surgery,
+        dependencies.topology⟩ := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package is equivalent to exactly its
+three component inputs.
+-/
+theorem poincareProofDependenciesWithEquationBoundary_iff_components :
+    PoincareProofDependenciesWithEquationBoundary.{u} ↔
+      ∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty
+              (Σ n : ℕ∞ω,
+                FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+        ExtinctionTopologyExtractionPackage.{u} := by
+  constructor
+  · exact poincareProofDependenciesWithEquationBoundary_components_payload
+  · rintro ⟨smoothability, surgery, topology⟩
+    exact ⟨smoothability, surgery, topology⟩
+
+/--
+The strengthened raw component payload reconstructs the strengthened aggregate
+dependency package.
+-/
+theorem poincareProofDependenciesWithEquationBoundary_of_components_payload :
+    (∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty
+              (Σ n : ℕ∞ω,
+                FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+        ExtinctionTopologyExtractionPackage.{u}) →
+      PoincareProofDependenciesWithEquationBoundary.{u} := by
+  rintro ⟨smoothability, surgery, topology⟩
+  exact ⟨smoothability, surgery, topology⟩
+
+/--
+The strengthened reverse component constructor is exactly the unpacking route
+from the raw component payload.
+-/
+theorem poincareProofDependenciesWithEquationBoundary_of_components_payload_eq :
+    poincareProofDependenciesWithEquationBoundary_of_components_payload.{u} =
+      (fun payload =>
+        by
+          rcases payload with ⟨smoothability, surgery, topology⟩
+          exact
+            ({ smoothability := smoothability
+               surgery := surgery
+               topology := topology } :
+              PoincareProofDependenciesWithEquationBoundary.{u})) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened raw component equivalence is exactly the named forward payload
+projection paired with the named reverse constructor.
+-/
+theorem poincareProofDependenciesWithEquationBoundary_iff_components_eq :
+    poincareProofDependenciesWithEquationBoundary_iff_components.{u} =
+      ⟨poincareProofDependenciesWithEquationBoundary_components_payload,
+        poincareProofDependenciesWithEquationBoundary_of_components_payload⟩ := by
   apply Subsingleton.elim
 
 /--
@@ -410,6 +560,29 @@ theorem poincare_completion_payload_of_dependencies_eq
   apply Subsingleton.elim
 
 /--
+The strengthened aggregate dependency package exposes the local target and the
+universe-indexed completion criterion by forgetting the explicit equation
+boundaries and using the existing final assembly route.
+-/
+theorem poincare_completion_payload_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+
+/--
+The strengthened aggregate completion payload is the ordinary aggregate payload
+of the forgetful projection.
+-/
+theorem poincare_completion_payload_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_dependencies dependencies =
+      poincare_completion_payload_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) :=
+  rfl
+
+/--
 The aggregate dependency package exposes the local target and completion
 criterion through the certified extraction-derivation route.
 -/
@@ -459,6 +632,32 @@ theorem poincare_statement_of_dependencies_eq
     poincare_statement_of_dependencies dependencies =
       (by
         rcases poincare_completion_payload_of_dependencies dependencies with
+          ⟨target, _criterion⟩
+        exact target) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package is sufficient for the target
+Poincare statement.
+-/
+theorem poincare_statement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} := by
+  rcases poincare_completion_payload_of_equation_boundary_dependencies
+      dependencies with
+    ⟨target, _criterion⟩
+  exact target
+
+/--
+The strengthened aggregate Poincare statement is selected from the named
+strengthened aggregate completion payload.
+-/
+theorem poincare_statement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_dependencies dependencies =
+      (by
+        rcases poincare_completion_payload_of_equation_boundary_dependencies
+            dependencies with
           ⟨target, _criterion⟩
         exact target) := by
   apply Subsingleton.elim
@@ -517,6 +716,32 @@ theorem canonical_three_sphere_statement_of_dependencies_eq
   apply Subsingleton.elim
 
 /--
+The strengthened aggregate dependency package exposes the canonical
+mathlib-shaped topological 3-sphere statement.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) :=
+  canonical_three_sphere_statement_of_poincare_statement
+    (poincare_statement_of_equation_boundary_dependencies dependencies)
+
+/--
+The strengthened aggregate canonical topological sphere statement is the
+canonical bridge applied to the named strengthened aggregate Poincare statement.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_equation_boundary_dependencies
+      dependencies =
+      canonical_three_sphere_statement_of_poincare_statement
+        (poincare_statement_of_equation_boundary_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency package also exposes the canonical mathlib-shaped
 topological 3-sphere statement through the certified extraction-derivation
 route.
@@ -564,6 +789,35 @@ theorem completion_criterion_of_dependencies_eq
     completion_criterion_of_dependencies witness dependencies =
       (by
         rcases poincare_completion_payload_of_dependencies dependencies with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package also discharges the project's
+explicit completion criterion at the same universe.
+-/
+theorem completion_criterion_of_equation_boundary_dependencies
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    CompletionCriterionAtUniverse witness := by
+  rcases poincare_completion_payload_of_equation_boundary_dependencies
+      dependencies with
+    ⟨_target, criterion⟩
+  exact criterion witness
+
+/--
+The strengthened aggregate completion criterion is selected from the named
+strengthened aggregate completion payload.
+-/
+theorem completion_criterion_of_equation_boundary_dependencies_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_equation_boundary_dependencies
+        witness dependencies =
+      (by
+        rcases poincare_completion_payload_of_equation_boundary_dependencies
+            dependencies with
           ⟨_target, criterion⟩
         exact criterion witness) := by
   apply Subsingleton.elim

@@ -1238,6 +1238,17 @@ set_option linter.unusedVariables false
 #check Poincare.finite_extinction_of_subobligations_statement_eq
 #check Poincare.finite_extinction_statement_payload_of_surgery_package
 #check Poincare.finite_extinction_statement_payload_of_surgery_package_eq
+#check Poincare.FiniteExtinctionSurgeryPackageWithEquationBoundary
+#check Poincare.surgery_package_of_equation_boundary_surgery_package
+#check Poincare.surgery_package_of_equation_boundary_surgery_package_eq
+#check Poincare.equation_boundary_of_surgery_package_with_equation_boundary
+#check Poincare.equation_boundary_of_surgery_package_with_equation_boundary_eq
+#check Poincare.analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+#check Poincare.analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary_eq
+#check Poincare.finite_extinction_of_surgery_package_with_equation_boundary
+#check Poincare.finite_extinction_of_surgery_package_with_equation_boundary_eq
+#check Poincare.surgery_package_with_equation_boundary_payload
+#check Poincare.surgery_package_with_equation_boundary_payload_eq
 
 #check (Poincare.ricci_flow_with_surgery_of_surgery_package :
   ∀ {n : ℕ∞ω}
@@ -2482,6 +2493,17 @@ set_option linter.unusedVariables false
       ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
 
 #check Poincare.poincare_completion_payload_of_dependencies_eq
+#check Poincare.PoincareProofDependenciesWithEquationBoundary
+#check Poincare.dependencies_of_equation_boundary_dependencies
+#check Poincare.dependencies_of_equation_boundary_dependencies_eq
+#check Poincare.poincareProofDependenciesWithEquationBoundary_components_payload
+#check Poincare.poincareProofDependenciesWithEquationBoundary_components_payload_eq
+#check Poincare.poincareProofDependenciesWithEquationBoundary_iff_components
+#check Poincare.poincareProofDependenciesWithEquationBoundary_of_components_payload
+#check Poincare.poincareProofDependenciesWithEquationBoundary_of_components_payload_eq
+#check Poincare.poincareProofDependenciesWithEquationBoundary_iff_components_eq
+#check Poincare.poincare_completion_payload_of_equation_boundary_dependencies
+#check Poincare.poincare_completion_payload_of_equation_boundary_dependencies_eq
 
 #check (Poincare.poincare_completion_payload_of_aggregate_extraction_derivation_dependencies :
   Poincare.PoincareProofDependencies →
@@ -2494,6 +2516,8 @@ set_option linter.unusedVariables false
   Poincare.PoincareProofDependencies → Poincare.PoincareConjectureStatement)
 
 #check Poincare.poincare_statement_of_dependencies_eq
+#check Poincare.poincare_statement_of_equation_boundary_dependencies
+#check Poincare.poincare_statement_of_equation_boundary_dependencies_eq
 
 #check (Poincare.poincare_statement_of_aggregate_extraction_derivation_dependencies :
   Poincare.PoincareProofDependencies → Poincare.PoincareConjectureStatement)
@@ -2508,6 +2532,8 @@ set_option linter.unusedVariables false
         Nonempty (M ≃ₜ Poincare.ThreeSphere))
 
 #check Poincare.canonical_three_sphere_statement_of_dependencies_eq
+#check Poincare.canonical_three_sphere_statement_of_equation_boundary_dependencies
+#check Poincare.canonical_three_sphere_statement_of_equation_boundary_dependencies_eq
 
 #check (Poincare.canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies :
   Poincare.PoincareProofDependencies →
@@ -2524,6 +2550,8 @@ set_option linter.unusedVariables false
       Poincare.CompletionCriterionAtUniverse witness)
 
 #check Poincare.completion_criterion_of_dependencies_eq
+#check Poincare.completion_criterion_of_equation_boundary_dependencies
+#check Poincare.completion_criterion_of_equation_boundary_dependencies_eq
 #check Poincare.completion_criterion_of_aggregate_extraction_derivation_dependencies_eq
 
 #check (Poincare.PoincareProofDependencies.smoothability :
@@ -2660,6 +2688,14 @@ set_option linter.unusedVariables false
         Nonempty (Σ n : ℕ∞ω, Poincare.FiniteExtinctionSurgeryPackage n M))
 
 #check Poincare.surgery_packages_of_dependencies_eq
+#check Poincare.surgery_packages_with_equation_boundary_of_dependencies
+#check Poincare.surgery_packages_with_equation_boundary_of_dependencies_eq
+#check Poincare.surgery_packages_of_equation_boundary_dependencies
+#check Poincare.surgery_packages_of_equation_boundary_dependencies_eq
+#check Poincare.ricci_flow_equation_boundary_packages_of_dependencies
+#check Poincare.ricci_flow_equation_boundary_packages_of_dependencies_eq
+#check Poincare.analytic_foundation_with_equation_boundary_statements_of_dependencies
+#check Poincare.analytic_foundation_with_equation_boundary_statements_of_dependencies_eq
 #check (Poincare.surgery_package_payload_of_dependencies :
   ∀ dependencies : Poincare.PoincareProofDependencies,
     ∀ (M : Type) [TopologicalSpace M] [T2Space M]

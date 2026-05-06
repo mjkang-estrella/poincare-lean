@@ -2404,6 +2404,28 @@ do
 done
 check_decl "finite-extinction surgery package is declared" \
   '^structure FiniteExtinctionSurgeryPackage\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package with equation boundary is declared" \
+  '^structure FiniteExtinctionSurgeryPackageWithEquationBoundary\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package equation-boundary forgetful projection is declared" \
+  '^noncomputable def surgery_package_of_equation_boundary_surgery_package\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package equation-boundary forgetful equality theorem is declared" \
+  '^@\[simp\] theorem surgery_package_of_equation_boundary_surgery_package_eq\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package equation-boundary projection is declared" \
+  '^def equation_boundary_of_surgery_package_with_equation_boundary\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package equation-boundary projection equality theorem is declared" \
+  '^@\[simp\] theorem equation_boundary_of_surgery_package_with_equation_boundary_eq\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package analytic-boundary theorem is declared" \
+  '^theorem analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package analytic-boundary equality theorem is declared" \
+  '^@\[simp\] theorem analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary_eq\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package equation-boundary extinction theorem is declared" \
+  '^theorem finite_extinction_of_surgery_package_with_equation_boundary\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package equation-boundary extinction equality theorem is declared" \
+  '^@\[simp\] theorem finite_extinction_of_surgery_package_with_equation_boundary_eq\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package equation-boundary payload theorem is declared" \
+  '^theorem surgery_package_with_equation_boundary_payload\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package equation-boundary payload equality theorem is declared" \
+  '^theorem surgery_package_with_equation_boundary_payload_eq\b' Poincare/Surgery.lean
 check_decl "surgery package analytic foundation projection is declared" \
   '^noncomputable def analytic_foundation_of_surgery_package\b' Poincare/Surgery.lean
 check_decl "surgery package analytic foundation equality theorem is declared" \
@@ -3732,6 +3754,12 @@ check_decl "explicit package-route extraction-derivation canonical statement equ
   '^theorem canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation_eq\b' Poincare/FullAssembly.lean
 check_decl "aggregate dependency package is declared" \
   '^structure PoincareProofDependencies\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency package with equation boundary is declared" \
+  '^structure PoincareProofDependenciesWithEquationBoundary\b' Poincare/Dependencies.lean
+check_decl "aggregate equation-boundary dependency forgetful projection is declared" \
+  '^noncomputable def dependencies_of_equation_boundary_dependencies\b' Poincare/Dependencies.lean
+check_decl "aggregate equation-boundary dependency forgetful equality theorem is declared" \
+  '^theorem dependencies_of_equation_boundary_dependencies_eq\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency component payload theorem is declared" \
   '^theorem poincareProofDependencies_components_payload\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency component payload equality contract is declared" \
@@ -3744,6 +3772,18 @@ check_decl "aggregate dependency component reverse constructor equality contract
   '^theorem poincareProofDependencies_of_components_payload_eq\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency component iff equality contract is declared" \
   '^theorem poincareProofDependencies_iff_components_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate equation-boundary dependency component payload theorem is declared" \
+  '^theorem poincareProofDependenciesWithEquationBoundary_components_payload\b' Poincare/Dependencies.lean
+check_decl "aggregate equation-boundary dependency component payload equality theorem is declared" \
+  '^theorem poincareProofDependenciesWithEquationBoundary_components_payload_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate equation-boundary dependency component iff theorem is declared" \
+  '^theorem poincareProofDependenciesWithEquationBoundary_iff_components\b' Poincare/Dependencies.lean
+check_decl "aggregate equation-boundary dependency component reverse theorem is declared" \
+  '^theorem poincareProofDependenciesWithEquationBoundary_of_components_payload\b' Poincare/Dependencies.lean
+check_decl "aggregate equation-boundary dependency component reverse equality theorem is declared" \
+  '^theorem poincareProofDependenciesWithEquationBoundary_of_components_payload_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate equation-boundary dependency component iff equality theorem is declared" \
+  '^theorem poincareProofDependenciesWithEquationBoundary_iff_components_eq\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency assembly inputs payload theorem is declared" \
   '^theorem poincare_assembly_inputs_payload_of_aggregate_dependencies\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency assembly inputs payload equality contract is declared" \
@@ -3776,6 +3816,10 @@ check_decl "aggregate dependency completion payload theorem is declared" \
   '^theorem poincare_completion_payload_of_dependencies\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency completion payload equality contract is declared" \
   '^theorem poincare_completion_payload_of_dependencies_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate equation-boundary dependency completion payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_equation_boundary_dependencies\b' Poincare/Dependencies.lean
+check_decl "aggregate equation-boundary dependency completion payload equality theorem is declared" \
+  '^theorem poincare_completion_payload_of_equation_boundary_dependencies_eq\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency extraction-derivation completion payload theorem is declared" \
   '^theorem poincare_completion_payload_of_aggregate_extraction_derivation_dependencies\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency extraction-derivation completion payload equality contract is declared" \
@@ -3784,6 +3828,10 @@ check_decl "aggregate dependency theorem is declared" \
   '^theorem poincare_statement_of_dependencies\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency theorem equality contract is declared" \
   '^theorem poincare_statement_of_dependencies_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate equation-boundary dependency theorem is declared" \
+  '^theorem poincare_statement_of_equation_boundary_dependencies\b' Poincare/Dependencies.lean
+check_decl "aggregate equation-boundary dependency theorem equality contract is declared" \
+  '^theorem poincare_statement_of_equation_boundary_dependencies_eq\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency extraction-derivation theorem is declared" \
   '^theorem poincare_statement_of_aggregate_extraction_derivation_dependencies\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency extraction-derivation theorem equality contract is declared" \
@@ -3792,6 +3840,10 @@ check_decl "aggregate dependency canonical statement theorem is declared" \
   '^theorem canonical_three_sphere_statement_of_dependencies\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency canonical statement equality contract is declared" \
   '^theorem canonical_three_sphere_statement_of_dependencies_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate equation-boundary dependency canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_equation_boundary_dependencies\b' Poincare/Dependencies.lean
+check_decl "aggregate equation-boundary dependency canonical statement equality theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_equation_boundary_dependencies_eq\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency extraction-derivation canonical statement theorem is declared" \
   '^theorem canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency extraction-derivation canonical statement equality contract is declared" \
@@ -3800,6 +3852,10 @@ check_decl "completion criterion dependency theorem is declared" \
   '^theorem completion_criterion_of_dependencies\b' Poincare/Dependencies.lean
 check_decl "completion criterion dependency equality contract is declared" \
   '^theorem completion_criterion_of_dependencies_eq\b' Poincare/Dependencies.lean
+check_decl "equation-boundary dependency completion criterion theorem is declared" \
+  '^theorem completion_criterion_of_equation_boundary_dependencies\b' Poincare/Dependencies.lean
+check_decl "equation-boundary dependency completion criterion equality theorem is declared" \
+  '^theorem completion_criterion_of_equation_boundary_dependencies_eq\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency extraction-derivation completion criterion theorem is declared" \
   '^theorem completion_criterion_of_aggregate_extraction_derivation_dependencies\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency extraction-derivation completion criterion equality contract is declared" \
@@ -3968,6 +4024,22 @@ check_decl "surgery dependency projection theorem is declared" \
   '^theorem surgery_packages_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "surgery dependency projection equality contract is declared" \
   '^theorem surgery_packages_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary surgery dependency projection theorem is declared" \
+  '^theorem surgery_packages_with_equation_boundary_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary surgery dependency projection equality theorem is declared" \
+  '^theorem surgery_packages_with_equation_boundary_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "ordinary surgery projection from equation-boundary dependencies is declared" \
+  '^theorem surgery_packages_of_equation_boundary_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "ordinary surgery projection from equation-boundary dependencies equality theorem is declared" \
+  '^theorem surgery_packages_of_equation_boundary_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary package dependency projection theorem is declared" \
+  '^theorem ricci_flow_equation_boundary_packages_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary package dependency projection equality theorem is declared" \
+  '^theorem ricci_flow_equation_boundary_packages_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "analytic equation-boundary dependency projection theorem is declared" \
+  '^theorem analytic_foundation_with_equation_boundary_statements_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "analytic equation-boundary dependency projection equality theorem is declared" \
+  '^theorem analytic_foundation_with_equation_boundary_statements_of_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency surgery package payload theorem is declared" \
   '^theorem surgery_package_payload_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency surgery package payload equality contract is declared" \
@@ -7893,6 +7965,17 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_of_subobligations_statement_eq
 #check Poincare.finite_extinction_statement_payload_of_surgery_package
 #check Poincare.finite_extinction_statement_payload_of_surgery_package_eq
+#check Poincare.FiniteExtinctionSurgeryPackageWithEquationBoundary
+#check Poincare.surgery_package_of_equation_boundary_surgery_package
+#check Poincare.surgery_package_of_equation_boundary_surgery_package_eq
+#check Poincare.equation_boundary_of_surgery_package_with_equation_boundary
+#check Poincare.equation_boundary_of_surgery_package_with_equation_boundary_eq
+#check Poincare.analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+#check Poincare.analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary_eq
+#check Poincare.finite_extinction_of_surgery_package_with_equation_boundary
+#check Poincare.finite_extinction_of_surgery_package_with_equation_boundary_eq
+#check Poincare.surgery_package_with_equation_boundary_payload
+#check Poincare.surgery_package_with_equation_boundary_payload_eq
 #check Poincare.poincare_statement_of_extinction_and_extraction
 #check Poincare.poincare_statement_of_extinction_and_extraction_eq
 #check Poincare.extinction_extraction_of_poincare_statement
@@ -9047,6 +9130,14 @@ open scoped Manifold ContDiff
 #check Poincare.smoothability_smooth_structure_derivation_statement_of_dependencies_eq
 #check Poincare.smoothability_package_of_dependencies_eq
 #check Poincare.surgery_packages_of_dependencies_eq
+#check Poincare.surgery_packages_with_equation_boundary_of_dependencies
+#check Poincare.surgery_packages_with_equation_boundary_of_dependencies_eq
+#check Poincare.surgery_packages_of_equation_boundary_dependencies
+#check Poincare.surgery_packages_of_equation_boundary_dependencies_eq
+#check Poincare.ricci_flow_equation_boundary_packages_of_dependencies
+#check Poincare.ricci_flow_equation_boundary_packages_of_dependencies_eq
+#check Poincare.analytic_foundation_with_equation_boundary_statements_of_dependencies
+#check Poincare.analytic_foundation_with_equation_boundary_statements_of_dependencies_eq
 #check Poincare.topology_package_of_dependencies_eq
 #check Poincare.surgery_package_payload_of_dependencies
 #check Poincare.surgery_package_payload_of_dependencies_eq
@@ -9381,18 +9472,35 @@ open scoped Manifold ContDiff
 #check Poincare.poincare_assembly_payload_of_dependencies_eq
 #check Poincare.poincare_completion_payload_of_dependencies
 #check Poincare.poincare_completion_payload_of_dependencies_eq
+#check Poincare.PoincareProofDependenciesWithEquationBoundary
+#check Poincare.dependencies_of_equation_boundary_dependencies
+#check Poincare.dependencies_of_equation_boundary_dependencies_eq
+#check Poincare.poincareProofDependenciesWithEquationBoundary_components_payload
+#check Poincare.poincareProofDependenciesWithEquationBoundary_components_payload_eq
+#check Poincare.poincareProofDependenciesWithEquationBoundary_iff_components
+#check Poincare.poincareProofDependenciesWithEquationBoundary_of_components_payload
+#check Poincare.poincareProofDependenciesWithEquationBoundary_of_components_payload_eq
+#check Poincare.poincareProofDependenciesWithEquationBoundary_iff_components_eq
+#check Poincare.poincare_completion_payload_of_equation_boundary_dependencies
+#check Poincare.poincare_completion_payload_of_equation_boundary_dependencies_eq
 #check Poincare.poincare_completion_payload_of_aggregate_extraction_derivation_dependencies
 #check Poincare.poincare_completion_payload_of_aggregate_extraction_derivation_dependencies_eq
 #check Poincare.poincare_statement_of_dependencies
 #check Poincare.poincare_statement_of_dependencies_eq
+#check Poincare.poincare_statement_of_equation_boundary_dependencies
+#check Poincare.poincare_statement_of_equation_boundary_dependencies_eq
 #check Poincare.poincare_statement_of_aggregate_extraction_derivation_dependencies
 #check Poincare.poincare_statement_of_aggregate_extraction_derivation_dependencies_eq
 #check Poincare.canonical_three_sphere_statement_of_dependencies
 #check Poincare.canonical_three_sphere_statement_of_dependencies_eq
+#check Poincare.canonical_three_sphere_statement_of_equation_boundary_dependencies
+#check Poincare.canonical_three_sphere_statement_of_equation_boundary_dependencies_eq
 #check Poincare.canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies
 #check Poincare.canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies_eq
 #check Poincare.completion_criterion_of_dependencies
 #check Poincare.completion_criterion_of_dependencies_eq
+#check Poincare.completion_criterion_of_equation_boundary_dependencies
+#check Poincare.completion_criterion_of_equation_boundary_dependencies_eq
 #check Poincare.completion_criterion_of_aggregate_extraction_derivation_dependencies
 #check Poincare.completion_criterion_of_aggregate_extraction_derivation_dependencies_eq
 #check Poincare.poincare_projection_assembly_inputs_payload_of_dependencies
@@ -10606,6 +10714,17 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_of_subobligations_statement_eq
 #check Poincare.finite_extinction_statement_payload_of_surgery_package
 #check Poincare.finite_extinction_statement_payload_of_surgery_package_eq
+#check Poincare.FiniteExtinctionSurgeryPackageWithEquationBoundary
+#check Poincare.surgery_package_of_equation_boundary_surgery_package
+#check Poincare.surgery_package_of_equation_boundary_surgery_package_eq
+#check Poincare.equation_boundary_of_surgery_package_with_equation_boundary
+#check Poincare.equation_boundary_of_surgery_package_with_equation_boundary_eq
+#check Poincare.analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+#check Poincare.analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary_eq
+#check Poincare.finite_extinction_of_surgery_package_with_equation_boundary
+#check Poincare.finite_extinction_of_surgery_package_with_equation_boundary_eq
+#check Poincare.surgery_package_with_equation_boundary_payload
+#check Poincare.surgery_package_with_equation_boundary_payload_eq
 #check Poincare.extinction_decomposition_of_topology_package
 #check Poincare.extinction_decomposition_of_topology_package_eq
 #check Poincare.extinction_surgery_trace_reconstruction_of_topology_package
@@ -11394,6 +11513,14 @@ open scoped Manifold ContDiff
 
 #check Poincare.smoothability_package_of_dependencies_eq
 #check Poincare.surgery_packages_of_dependencies_eq
+#check Poincare.surgery_packages_with_equation_boundary_of_dependencies
+#check Poincare.surgery_packages_with_equation_boundary_of_dependencies_eq
+#check Poincare.surgery_packages_of_equation_boundary_dependencies
+#check Poincare.surgery_packages_of_equation_boundary_dependencies_eq
+#check Poincare.ricci_flow_equation_boundary_packages_of_dependencies
+#check Poincare.ricci_flow_equation_boundary_packages_of_dependencies_eq
+#check Poincare.analytic_foundation_with_equation_boundary_statements_of_dependencies
+#check Poincare.analytic_foundation_with_equation_boundary_statements_of_dependencies_eq
 #check Poincare.topology_package_of_dependencies_eq
 #check Poincare.surgery_package_payload_of_dependencies
 #check Poincare.surgery_package_payload_of_dependencies_eq
@@ -11748,18 +11875,35 @@ open scoped Manifold ContDiff
 #check Poincare.poincare_assembly_payload_of_dependencies_eq
 #check Poincare.poincare_completion_payload_of_dependencies
 #check Poincare.poincare_completion_payload_of_dependencies_eq
+#check Poincare.PoincareProofDependenciesWithEquationBoundary
+#check Poincare.dependencies_of_equation_boundary_dependencies
+#check Poincare.dependencies_of_equation_boundary_dependencies_eq
+#check Poincare.poincareProofDependenciesWithEquationBoundary_components_payload
+#check Poincare.poincareProofDependenciesWithEquationBoundary_components_payload_eq
+#check Poincare.poincareProofDependenciesWithEquationBoundary_iff_components
+#check Poincare.poincareProofDependenciesWithEquationBoundary_of_components_payload
+#check Poincare.poincareProofDependenciesWithEquationBoundary_of_components_payload_eq
+#check Poincare.poincareProofDependenciesWithEquationBoundary_iff_components_eq
+#check Poincare.poincare_completion_payload_of_equation_boundary_dependencies
+#check Poincare.poincare_completion_payload_of_equation_boundary_dependencies_eq
 #check Poincare.poincare_completion_payload_of_aggregate_extraction_derivation_dependencies
 #check Poincare.poincare_completion_payload_of_aggregate_extraction_derivation_dependencies_eq
 #check Poincare.poincare_statement_of_dependencies
 #check Poincare.poincare_statement_of_dependencies_eq
+#check Poincare.poincare_statement_of_equation_boundary_dependencies
+#check Poincare.poincare_statement_of_equation_boundary_dependencies_eq
 #check Poincare.poincare_statement_of_aggregate_extraction_derivation_dependencies
 #check Poincare.poincare_statement_of_aggregate_extraction_derivation_dependencies_eq
 #check Poincare.canonical_three_sphere_statement_of_dependencies
 #check Poincare.canonical_three_sphere_statement_of_dependencies_eq
+#check Poincare.canonical_three_sphere_statement_of_equation_boundary_dependencies
+#check Poincare.canonical_three_sphere_statement_of_equation_boundary_dependencies_eq
 #check Poincare.canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies
 #check Poincare.canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies_eq
 #check Poincare.completion_criterion_of_dependencies
 #check Poincare.completion_criterion_of_dependencies_eq
+#check Poincare.completion_criterion_of_equation_boundary_dependencies
+#check Poincare.completion_criterion_of_equation_boundary_dependencies_eq
 #check Poincare.completion_criterion_of_aggregate_extraction_derivation_dependencies
 #check Poincare.completion_criterion_of_aggregate_extraction_derivation_dependencies_eq
 #check Poincare.poincare_target_payload_of_dependency_projections

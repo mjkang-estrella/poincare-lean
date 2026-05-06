@@ -9044,6 +9044,180 @@ theorem finite_extinction_statement_payload_of_surgery_package_eq
             subobligationsStatement⟩) := by
   apply Subsingleton.elim
 
+/--
+A finite-extinction surgery package strengthened with the explicit smooth-piece
+Ricci-flow equation boundary.
+
+The existing surgery package still carries the finite-extinction conclusion;
+this wrapper records the additional analytic proof object needed to identify
+the concrete equation `∂ₜ g = -2 Ricci` for the same projected flow.
+-/
+structure FiniteExtinctionSurgeryPackageWithEquationBoundary
+    (n : ℕ∞ω)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] where
+  /-- The underlying finite-extinction surgery package. -/
+  package : FiniteExtinctionSurgeryPackage n M
+  /-- Explicit smooth-piece equation boundary for the package's projected flow. -/
+  equationBoundary :
+    RicciFlowEquationBoundaryPackage (ricci_flow_data_of_surgery_package package)
+
+/-- Forget the explicit equation boundary from a strengthened surgery package. -/
+noncomputable def surgery_package_of_equation_boundary_surgery_package
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    FiniteExtinctionSurgeryPackage n M :=
+  package.package
+
+/-- The strengthened surgery-package forgetful projection is the stored package. -/
+@[simp] theorem surgery_package_of_equation_boundary_surgery_package_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    surgery_package_of_equation_boundary_surgery_package package =
+      package.package :=
+  rfl
+
+/--
+Project the explicit equation boundary from a strengthened surgery package.
+-/
+def equation_boundary_of_surgery_package_with_equation_boundary
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    RicciFlowEquationBoundaryPackage
+      (ricci_flow_data_of_surgery_package
+        (surgery_package_of_equation_boundary_surgery_package package)) :=
+  package.equationBoundary
+
+/-- The strengthened surgery-package equation-boundary projection is stored data. -/
+@[simp] theorem equation_boundary_of_surgery_package_with_equation_boundary_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    equation_boundary_of_surgery_package_with_equation_boundary package =
+      package.equationBoundary :=
+  rfl
+
+/--
+A strengthened surgery package supplies the analytic foundation together with
+the explicit equation boundary for its projected flow.
+-/
+theorem analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    AnalyticFoundationWithEquationBoundaryStatement
+      (ricci_flow_data_of_surgery_package
+        (surgery_package_of_equation_boundary_surgery_package package)) :=
+  analytic_foundation_with_equation_boundary_of_package
+    (analytic_foundation_of_surgery_package
+      (surgery_package_of_equation_boundary_surgery_package package))
+    (equation_boundary_of_surgery_package_with_equation_boundary package)
+
+/--
+The strengthened surgery-package analytic-boundary statement is assembled from
+the underlying analytic-foundation package and stored equation boundary.
+-/
+@[simp] theorem analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+        package =
+      analytic_foundation_with_equation_boundary_of_package
+        (analytic_foundation_of_surgery_package
+          (surgery_package_of_equation_boundary_surgery_package package))
+        (equation_boundary_of_surgery_package_with_equation_boundary package) :=
+  rfl
+
+/-- A strengthened surgery package still supplies the finite-extinction result. -/
+theorem finite_extinction_of_surgery_package_with_equation_boundary
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    FiniteExtinctionByRicciFlowWithSurgery M :=
+  finite_extinction_of_surgery_package
+    (surgery_package_of_equation_boundary_surgery_package package)
+
+/--
+The strengthened surgery-package finite-extinction projection delegates to the
+underlying surgery package.
+-/
+@[simp] theorem finite_extinction_of_surgery_package_with_equation_boundary_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    finite_extinction_of_surgery_package_with_equation_boundary package =
+      finite_extinction_of_surgery_package
+        (surgery_package_of_equation_boundary_surgery_package package) :=
+  rfl
+
+/--
+A strengthened surgery package exposes the ordinary package, equation-boundary
+package, analytic-boundary statement, and finite-extinction result together.
+-/
+theorem surgery_package_with_equation_boundary_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    ∃ basePackage : FiniteExtinctionSurgeryPackage n M,
+    ∃ _equationBoundary :
+      RicciFlowEquationBoundaryPackage
+        (ricci_flow_data_of_surgery_package basePackage),
+    ∃ _analyticBoundary :
+      AnalyticFoundationWithEquationBoundaryStatement
+        (ricci_flow_data_of_surgery_package basePackage),
+      FiniteExtinctionByRicciFlowWithSurgery M := by
+  exact
+    ⟨surgery_package_of_equation_boundary_surgery_package package,
+      equation_boundary_of_surgery_package_with_equation_boundary package,
+      analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+        package,
+      finite_extinction_of_surgery_package_with_equation_boundary package⟩
+
+/--
+The strengthened surgery-package payload is exactly the tuple of the underlying
+package, stored equation boundary, assembled analytic-boundary statement, and
+finite-extinction result.
+-/
+theorem surgery_package_with_equation_boundary_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    surgery_package_with_equation_boundary_payload package =
+      (by
+        exact
+          ⟨surgery_package_of_equation_boundary_surgery_package package,
+            equation_boundary_of_surgery_package_with_equation_boundary package,
+            analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+              package,
+            finite_extinction_of_surgery_package_with_equation_boundary
+              package⟩) := by
+  apply Subsingleton.elim
+
 section SurgeryPackageFiniteExtinctionProjectionEqualities
 
 variable {n : ℕ∞ω}

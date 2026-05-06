@@ -1132,6 +1132,144 @@ theorem surgery_packages_of_dependencies_eq
   rfl
 
 /--
+The strengthened dependency package supplies boundary-carrying surgery
+packages for every target manifold after smoothability regularity has been
+installed.
+-/
+theorem surgery_packages_with_equation_boundary_of_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        Nonempty
+          (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :=
+  dependencies.surgery
+
+/--
+The strengthened dependency-level boundary-carrying surgery package projection
+is the stored field.
+-/
+theorem surgery_packages_with_equation_boundary_of_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgery_packages_with_equation_boundary_of_dependencies dependencies =
+      dependencies.surgery :=
+  rfl
+
+/--
+Forgetting equation boundaries from strengthened dependencies supplies the
+ordinary finite-extinction surgery package family.
+-/
+theorem surgery_packages_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M) :=
+  surgery_packages_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+
+/--
+The ordinary surgery-package projection from strengthened dependencies is the
+ordinary projection applied to the forgetful aggregate dependency package.
+-/
+theorem surgery_packages_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgery_packages_of_equation_boundary_dependencies dependencies =
+      surgery_packages_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) :=
+  rfl
+
+/--
+Strengthened dependencies expose explicit Ricci-flow equation-boundary
+packages for the projected surgery flows.
+-/
+theorem ricci_flow_equation_boundary_packages_of_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+          Nonempty
+            (RicciFlowEquationBoundaryPackage
+              (ricci_flow_data_of_surgery_package
+                (surgery_package_of_equation_boundary_surgery_package
+                  package))) := by
+  intro M _ _ _ _ _ _
+  rcases surgery_packages_with_equation_boundary_of_dependencies
+      dependencies M with
+    ⟨⟨n, package⟩⟩
+  exact
+    ⟨n, package,
+      ⟨equation_boundary_of_surgery_package_with_equation_boundary package⟩⟩
+
+/--
+The strengthened dependency equation-boundary package projection is selected
+from the stored boundary-carrying surgery package family.
+-/
+theorem ricci_flow_equation_boundary_packages_of_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ricci_flow_equation_boundary_packages_of_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases surgery_packages_with_equation_boundary_of_dependencies
+            dependencies M with
+          ⟨⟨n, package⟩⟩
+        exact
+          ⟨n, package,
+            ⟨equation_boundary_of_surgery_package_with_equation_boundary
+              package⟩⟩) := by
+  apply Subsingleton.elim
+
+/--
+Strengthened dependencies expose theorem-shaped analytic foundation statements
+that include the explicit Ricci-flow equation boundary.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          AnalyticFoundationWithEquationBoundaryStatement flow := by
+  intro M _ _ _ _ _ _
+  rcases surgery_packages_with_equation_boundary_of_dependencies
+      dependencies M with
+    ⟨⟨n, package⟩⟩
+  let basePackage := surgery_package_of_equation_boundary_surgery_package
+    package
+  exact
+    ⟨n, ricci_flow_data_of_surgery_package basePackage,
+      analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+        package⟩
+
+/--
+The strengthened dependency analytic-boundary statement projection is selected
+from the stored boundary-carrying surgery package family.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    analytic_foundation_with_equation_boundary_statements_of_dependencies
+        dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases surgery_packages_with_equation_boundary_of_dependencies
+            dependencies M with
+          ⟨⟨n, package⟩⟩
+        let basePackage :=
+          surgery_package_of_equation_boundary_surgery_package package
+        exact
+          ⟨n, ricci_flow_data_of_surgery_package basePackage,
+            analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+              package⟩) := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package exposes, for every target manifold, the
 underlying finite-extinction surgery package and the three lower-level packages
 projected from it: analytic foundation, Ricci-flow-with-surgery construction,
