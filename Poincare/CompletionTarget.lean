@@ -15470,6 +15470,89 @@ theorem poincareCompletionCertificate_milestone_requirements_payload_of_completi
   apply Subsingleton.elim
 
 /--
+The raw-component payload constructor recovers any checked completion
+certificate from its projected raw-component payload.
+-/
+theorem completion_certificate_of_components_payload_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_components_payload
+      (poincareCompletionCertificate_components_payload certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The component-slot payload constructor recovers any checked completion
+certificate from its projected component-slot payload.
+-/
+theorem completion_certificate_of_component_requirements_payload_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_component_requirements_payload
+      (poincareCompletionCertificate_component_requirements_payload
+        certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The package-layer payload constructor recovers any checked completion
+certificate from its projected package-layer payload.
+-/
+theorem completion_certificate_of_package_layer_requirements_payload_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_package_layer_requirements_payload
+      (poincareCompletionCertificate_package_layer_requirements_payload
+        certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The milestone payload constructor recovers any checked completion certificate
+from its projected milestone payload.
+-/
+theorem completion_certificate_of_milestone_requirements_payload_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_milestone_requirements_payload
+      (poincareCompletionCertificate_milestone_requirements_payload
+        certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The certified component-slot payload constructor recovers any checked
+completion certificate from its projected component-slot payload.
+-/
+theorem completion_certificate_of_component_extraction_derivation_requirements_payload_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_component_extraction_derivation_requirements_payload
+      (poincareCompletionCertificate_component_requirements_payload
+        certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The certified package-layer payload constructor recovers any checked completion
+certificate from its projected package-layer payload.
+-/
+theorem completion_certificate_of_package_layer_extraction_derivation_requirements_payload_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+      (poincareCompletionCertificate_package_layer_requirements_payload
+        certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The certified milestone payload constructor recovers any checked completion
+certificate from its projected milestone payload.
+-/
+theorem completion_certificate_of_milestone_extraction_derivation_requirements_payload_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_milestone_extraction_derivation_requirements_payload
+      (poincareCompletionCertificate_milestone_requirements_payload
+        certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
 The aggregate certified component certificate constructor is exactly the
 remaining-dependency certified component constructor after converting aggregate
 dependencies to the remaining-dependency package.
