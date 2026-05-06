@@ -416,6 +416,28 @@ check_decl "curvature evolution equations interface is declared" \
   '^inductive HasCurvatureEvolutionEquations\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation package is declared" \
   '^structure RicciFlowAnalyticFoundationPackage\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow equation boundary package is declared" \
+  '^structure RicciFlowEquationBoundaryPackage\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow equation boundary verification projection is declared" \
+  '^def ricci_flow_equation_verification_of_boundary_package\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow equation boundary verification equality theorem is declared" \
+  '^@\[simp\] theorem ricci_flow_equation_verification_of_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow equation boundary metric-derivative projection is declared" \
+  '^def metric_derivative_data_of_equation_boundary_package\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow equation boundary metric-derivative equality theorem is declared" \
+  '^@\[simp\] theorem metric_derivative_data_of_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow equation boundary time theorem is declared" \
+  '^theorem equation_at_time_of_equation_boundary_package\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow equation boundary time equality theorem is declared" \
+  '^@\[simp\] theorem equation_at_time_of_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow equation boundary interface evidence theorem is declared" \
+  '^theorem equation_evidence_of_equation_boundary_package\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow equation boundary interface evidence equality theorem is declared" \
+  '^@\[simp\] theorem equation_evidence_of_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow equation boundary statement is declared" \
+  '^def RicciFlowEquationBoundaryStatement\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow equation boundary statement equality theorem is declared" \
+  '^theorem ricciFlowEquationBoundaryStatement_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation fixed derivation statement is declared" \
   '^def AnalyticFoundationDerivationStatement\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation fixed derivation statement equality contract is declared" \
@@ -7579,6 +7601,17 @@ open scoped Manifold ContDiff
 #check Poincare.scalar_curvature_theory_of_analytic_foundation_package
 #check Poincare.equation_derivation_of_analytic_foundation_package
 #check Poincare.equation_derivation_of_analytic_foundation_package_eq
+#check Poincare.RicciFlowEquationBoundaryPackage
+#check Poincare.ricci_flow_equation_verification_of_boundary_package
+#check Poincare.ricci_flow_equation_verification_of_boundary_package_eq
+#check Poincare.metric_derivative_data_of_equation_boundary_package
+#check Poincare.metric_derivative_data_of_equation_boundary_package_eq
+#check Poincare.equation_at_time_of_equation_boundary_package
+#check Poincare.equation_at_time_of_equation_boundary_package_eq
+#check Poincare.equation_evidence_of_equation_boundary_package
+#check Poincare.equation_evidence_of_equation_boundary_package_eq
+#check Poincare.RicciFlowEquationBoundaryStatement
+#check Poincare.ricciFlowEquationBoundaryStatement_eq
 #check Poincare.initial_metric_compatibility_of_analytic_foundation_package
 #check Poincare.deturck_gauge_fixing_of_analytic_foundation_package
 #check Poincare.deturck_background_metric_compatibility_of_analytic_foundation_package
@@ -9951,6 +9984,17 @@ open scoped Manifold ContDiff
 #check Poincare.scalar_curvature_theory_of_analytic_foundation_package
 #check Poincare.equation_derivation_of_analytic_foundation_package
 #check Poincare.equation_derivation_of_analytic_foundation_package_eq
+#check Poincare.RicciFlowEquationBoundaryPackage
+#check Poincare.ricci_flow_equation_verification_of_boundary_package
+#check Poincare.ricci_flow_equation_verification_of_boundary_package_eq
+#check Poincare.metric_derivative_data_of_equation_boundary_package
+#check Poincare.metric_derivative_data_of_equation_boundary_package_eq
+#check Poincare.equation_at_time_of_equation_boundary_package
+#check Poincare.equation_at_time_of_equation_boundary_package_eq
+#check Poincare.equation_evidence_of_equation_boundary_package
+#check Poincare.equation_evidence_of_equation_boundary_package_eq
+#check Poincare.RicciFlowEquationBoundaryStatement
+#check Poincare.ricciFlowEquationBoundaryStatement_eq
 #check Poincare.initial_metric_compatibility_of_analytic_foundation_package
 #check Poincare.deturck_gauge_fixing_of_analytic_foundation_package
 #check Poincare.deturck_background_metric_compatibility_of_analytic_foundation_package
