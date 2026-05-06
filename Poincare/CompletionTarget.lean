@@ -3186,6 +3186,45 @@ theorem equation_boundary_verification_payload_of_remaining_dependency_package_e
   apply Subsingleton.elim
 
 /--
+The strengthened remaining-package equation-boundary package family is the
+boundary projection of its named verification payload.
+-/
+theorem ricci_flow_equation_boundary_packages_of_remaining_dependency_package_to_verification_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ricci_flow_equation_boundary_packages_of_remaining_dependency_package
+        dependencies =
+      ricci_flow_equation_boundary_packages_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package derivative payload is the derivative
+projection of its named verification payload.
+-/
+theorem equation_boundary_derivative_payload_of_remaining_dependency_package_to_verification_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    equation_boundary_derivative_payload_of_remaining_dependency_package
+        dependencies =
+      equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package full surgery derivative payload is
+reconstructed from its named verification payload.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_remaining_dependency_package_to_verification_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_derivative_payload_of_remaining_dependency_package
+        dependencies =
+      surgery_package_with_equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining package exposes the analytic foundation together
 with its explicit equation-boundary package for each selected surgery package.
 -/
@@ -3211,6 +3250,19 @@ theorem analytic_foundation_with_equation_boundary_statements_of_remaining_depen
         dependencies =
       analytic_foundation_with_equation_boundary_statements_of_dependencies
         dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package analytic/equation-boundary statement family
+is the analytic projection of its named verification payload.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_remaining_dependency_package_to_verification_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    analytic_foundation_with_equation_boundary_statements_of_remaining_dependency_package
+        dependencies =
+      analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_remaining_dependency_package
+          dependencies) := by
   apply Subsingleton.elim
 
 /--
@@ -3682,6 +3734,141 @@ theorem equation_boundary_verification_payload_of_poincareProofDependenciesWithE
     equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
         dependencies =
       equation_boundary_verification_payload_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package exposes the equation-boundary
+package family through the strengthened remaining-package route.
+-/
+theorem ricci_flow_equation_boundary_packages_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+          Nonempty
+            (RicciFlowEquationBoundaryPackage
+              (ricci_flow_data_of_surgery_package
+                (surgery_package_of_equation_boundary_surgery_package
+                  package))) :=
+  ricci_flow_equation_boundary_packages_of_remaining_dependency_package
+    dependencies
+
+/--
+The strengthened aggregate equation-boundary package family is the strengthened
+remaining-package equation-boundary package family.
+-/
+theorem ricci_flow_equation_boundary_packages_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ricci_flow_equation_boundary_packages_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      ricci_flow_equation_boundary_packages_of_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate equation-boundary package family agrees with the
+named dependency projection.
+-/
+theorem ricci_flow_equation_boundary_packages_of_poincareProofDependenciesWithEquationBoundary_to_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ricci_flow_equation_boundary_packages_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      ricci_flow_equation_boundary_packages_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate equation-boundary package family is the boundary
+projection of its named verification payload.
+-/
+theorem ricci_flow_equation_boundary_packages_of_poincareProofDependenciesWithEquationBoundary_to_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ricci_flow_equation_boundary_packages_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      ricci_flow_equation_boundary_packages_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate derivative payload is the derivative projection of
+its named verification payload.
+-/
+theorem equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary_to_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate full surgery derivative payload is reconstructed
+from its named verification payload.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary_to_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      surgery_package_with_equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package exposes analytic foundation
+statements carrying explicit equation-boundary packages.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          AnalyticFoundationWithEquationBoundaryStatement flow :=
+  analytic_foundation_with_equation_boundary_statements_of_remaining_dependency_package
+    dependencies
+
+/--
+The strengthened aggregate analytic/equation-boundary statement family is the
+strengthened remaining-package analytic/equation-boundary statement family.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    analytic_foundation_with_equation_boundary_statements_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      analytic_foundation_with_equation_boundary_statements_of_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate analytic/equation-boundary statement family agrees
+with the named dependency projection.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_poincareProofDependenciesWithEquationBoundary_to_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    analytic_foundation_with_equation_boundary_statements_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      analytic_foundation_with_equation_boundary_statements_of_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate analytic/equation-boundary statement family is the
+analytic projection of its named verification payload.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_poincareProofDependenciesWithEquationBoundary_to_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    analytic_foundation_with_equation_boundary_statements_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+          dependencies) := by
   apply Subsingleton.elim
 
 /--
