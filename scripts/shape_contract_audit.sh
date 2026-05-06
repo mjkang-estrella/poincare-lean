@@ -16,7 +16,7 @@ cleanup() {
 trap cleanup EXIT
 
 rg -n '^(noncomputable[[:space:]]+)?(def|abbrev)[[:space:]]+[A-Za-z0-9_]+' \
-  Poincare/*.lean > "$decls_file"
+  Poincare/*.lean | sort -t: -k1,1 -k2,2n > "$decls_file"
 
 while IFS=: read -r path line rest; do
   name=$(

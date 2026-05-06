@@ -16268,7 +16268,8 @@ else
   echo "FAIL: Lean cannot confirm Poincare.poincare_conjecture : PoincareConjectureStatement"
   if rg -q 'PoincareConjectureStatement' Poincare; then
     echo "Related local references are conditional statements or definitions:"
-    rg -n '^\s*(def|theorem|lemma)\s+.*PoincareConjectureStatement|:\s*PoincareConjectureStatement' Poincare
+    rg -n '^\s*(def|theorem|lemma)\s+.*PoincareConjectureStatement|:\s*PoincareConjectureStatement' Poincare |
+      sort -t: -k1,1 -k2,2n
   fi
   status=1
 fi
