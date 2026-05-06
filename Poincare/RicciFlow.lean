@@ -795,6 +795,64 @@ theorem equation_at_time_of_ricci_flow_equation_verification
       verification.equationAtTime t :=
   rfl
 
+/-- A Ricci-flow equation verification carries metric-derivative identification evidence. -/
+theorem metric_time_derivative_identification_of_ricci_flow_equation_verification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (verification : RicciFlowEquationVerification curvature) :
+    IsMetricTimeDerivativeOf g
+      (metric_time_derivative_field_of_metric_derivative_data
+        (metric_derivative_data_of_ricci_flow_equation_verification verification)) :=
+  verification.metricDerivative.identifiesDerivative
+
+/-- The equation-verification derivative-identification theorem is stored evidence. -/
+@[simp] theorem metric_time_derivative_identification_of_ricci_flow_equation_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (verification : RicciFlowEquationVerification curvature) :
+    metric_time_derivative_identification_of_ricci_flow_equation_verification
+      verification = verification.metricDerivative.identifiesDerivative :=
+  rfl
+
+/--
+The equation equality also holds when the candidate derivative is reached
+through the named equation-verification projection.
+-/
+theorem equation_at_time_of_ricci_flow_equation_verification_projection
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (verification : RicciFlowEquationVerification curvature) (t : ℝ) :
+    metric_time_derivative_at_time_of_metric_derivative_field
+      (metric_time_derivative_field_of_metric_derivative_data
+        (metric_derivative_data_of_ricci_flow_equation_verification verification)) t =
+        ricci_flow_rhs_tensor curvature t :=
+  verification.equationAtTime t
+
+/-- The projection-routed equation theorem is stored equation evidence. -/
+@[simp] theorem equation_at_time_of_ricci_flow_equation_verification_projection_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (verification : RicciFlowEquationVerification curvature) (t : ℝ) :
+    equation_at_time_of_ricci_flow_equation_verification_projection
+      verification t = verification.equationAtTime t :=
+  rfl
+
 /--
 If the candidate Ricci tensor is the zero tensor field, the explicit
 right-hand side `-2 Ricci` is pointwise zero.
