@@ -8290,6 +8290,67 @@ theorem poincareCompletionCertificate_iff_remainingDependencyPackage_and_complet
   apply Subsingleton.elim
 
 /--
+The remaining-dependency plus project-payload constructor recovers any checked
+completion certificate from its projected fields.
+-/
+theorem completion_certificate_of_remaining_dependency_and_poincare_payload_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_remaining_dependency_and_poincare_payload
+      (remaining_dependency_package_of_completion_certificate certificate)
+      (poincare_completion_payload_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency plus canonical-payload constructor recovers any checked
+completion certificate from its projected fields.
+-/
+theorem completion_certificate_of_remaining_dependency_and_canonical_payload_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_remaining_dependency_and_canonical_payload
+      (remaining_dependency_package_of_completion_certificate certificate)
+      (canonical_completion_payload_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency plus target-statement constructor recovers any checked
+completion certificate from its projected fields.
+-/
+theorem completion_certificate_of_remaining_dependency_and_target_statement_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_remaining_dependency_and_target_statement
+      (remaining_dependency_package_of_completion_certificate certificate)
+      (target_statement_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency plus canonical-target constructor recovers any checked
+completion certificate from its projected fields.
+-/
+theorem completion_certificate_of_remaining_dependency_and_canonical_target_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_remaining_dependency_and_canonical_target
+      (remaining_dependency_package_of_completion_certificate certificate)
+      (canonical_completion_target_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency plus witness-indexed criterion constructor recovers
+any checked completion certificate from its projected fields.
+-/
+theorem completion_certificate_of_remaining_dependency_and_completion_criterion_of_completion_certificate_eq
+    (witness : Type u) (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_remaining_dependency_and_completion_criterion
+      (remaining_dependency_package_of_completion_certificate certificate)
+      witness
+      (completion_criterion_of_completion_certificate witness certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
 A completion certificate also exposes the aggregate proof dependency package
 named by the lower-level dependency spine.
 -/
@@ -10628,6 +10689,67 @@ theorem completion_criterion_of_completion_certificate_of_poincareProofDependenc
       (completion_certificate_of_poincareProofDependencies_and_completion_criterion
         dependencies witness criterion) =
       criterion := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency plus project-payload constructor recovers any checked
+completion certificate from its projected fields.
+-/
+theorem completion_certificate_of_poincareProofDependencies_and_poincare_payload_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_poincareProofDependencies_and_poincare_payload
+      (poincareProofDependencies_of_completion_certificate certificate)
+      (poincare_completion_payload_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency plus canonical-payload constructor recovers any
+checked completion certificate from its projected fields.
+-/
+theorem completion_certificate_of_poincareProofDependencies_and_canonical_payload_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_poincareProofDependencies_and_canonical_payload
+      (poincareProofDependencies_of_completion_certificate certificate)
+      (canonical_completion_payload_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency plus target-statement constructor recovers any checked
+completion certificate from its projected fields.
+-/
+theorem completion_certificate_of_poincareProofDependencies_and_target_statement_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_poincareProofDependencies_and_target_statement
+      (poincareProofDependencies_of_completion_certificate certificate)
+      (target_statement_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency plus canonical-target constructor recovers any checked
+completion certificate from its projected fields.
+-/
+theorem completion_certificate_of_poincareProofDependencies_and_canonical_target_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_poincareProofDependencies_and_canonical_target
+      (poincareProofDependencies_of_completion_certificate certificate)
+      (canonical_completion_target_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency plus witness-indexed criterion constructor recovers
+any checked completion certificate from its projected fields.
+-/
+theorem completion_certificate_of_poincareProofDependencies_and_completion_criterion_of_completion_certificate_eq
+    (witness : Type u) (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_poincareProofDependencies_and_completion_criterion
+      (poincareProofDependencies_of_completion_certificate certificate)
+      witness
+      (completion_criterion_of_completion_certificate witness certificate) =
+      certificate := by
   apply Subsingleton.elim
 
 /--
