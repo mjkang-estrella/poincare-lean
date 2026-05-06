@@ -3556,6 +3556,227 @@ theorem remainingDependencyPackage_iff_milestone_requirements_eq :
   apply Subsingleton.elim
 
 /--
+The strengthened remaining dependency package exposes the ordinary
+component-slot requirements after forgetting equation-boundary data.
+-/
+theorem remainingDependencyPackageWithEquationBoundary_component_requirements_payload
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ∃ _smoothability :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+    ∃ _surgery :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent :=
+  dependency_component_requirements_payload_of_equation_boundary_dependencies
+    dependencies
+
+/--
+The strengthened remaining-package component-slot payload is the strengthened
+aggregate dependency component-slot payload under the remaining-dependency
+abbreviation.
+-/
+theorem remainingDependencyPackageWithEquationBoundary_component_requirements_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    remainingDependencyPackageWithEquationBoundary_component_requirements_payload
+        dependencies =
+      dependency_component_requirements_payload_of_equation_boundary_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package component-slot payload is the ordinary
+remaining-package component-slot payload of the forgetful package.
+-/
+theorem remainingDependencyPackageWithEquationBoundary_component_requirements_payload_to_forgetful_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    remainingDependencyPackageWithEquationBoundary_component_requirements_payload
+        dependencies =
+      remainingDependencyPackage_component_requirements_payload
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package component-slot payload is also the tuple of
+the named strengthened component projections.
+-/
+theorem remainingDependencyPackageWithEquationBoundary_component_requirements_payload_to_named_projections_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    remainingDependencyPackageWithEquationBoundary_component_requirements_payload
+        dependencies =
+      ⟨ smoothabilityComponent_requirement_of_equation_boundary_dependencies
+          dependencies
+      , surgeryComponent_requirement_of_equation_boundary_dependencies
+          dependencies
+      , topologyComponent_requirement_of_equation_boundary_dependencies
+          dependencies
+      ⟩ := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining dependency package exposes the five ordinary
+package-layer requirements after forgetting equation-boundary data.
+-/
+theorem remainingDependencyPackageWithEquationBoundary_package_layer_requirements_payload
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ∃ _smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage,
+    ∃ _analytic :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage,
+    ∃ _surgery :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+    ∃ _finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage :=
+  dependency_package_layer_requirements_payload_of_equation_boundary_dependencies
+    dependencies
+
+/--
+The strengthened remaining-package package-layer payload is the strengthened
+aggregate dependency package-layer payload under the remaining-dependency
+abbreviation.
+-/
+theorem remainingDependencyPackageWithEquationBoundary_package_layer_requirements_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    remainingDependencyPackageWithEquationBoundary_package_layer_requirements_payload
+        dependencies =
+      dependency_package_layer_requirements_payload_of_equation_boundary_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package package-layer payload is the ordinary
+remaining-package package-layer payload of the forgetful package.
+-/
+theorem remainingDependencyPackageWithEquationBoundary_package_layer_requirements_payload_to_forgetful_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    remainingDependencyPackageWithEquationBoundary_package_layer_requirements_payload
+        dependencies =
+      remainingDependencyPackage_package_layer_requirements_payload
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package package-layer payload is also the tuple of
+the named strengthened package-layer projections.
+-/
+theorem remainingDependencyPackageWithEquationBoundary_package_layer_requirements_payload_to_named_projections_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    remainingDependencyPackageWithEquationBoundary_package_layer_requirements_payload
+        dependencies =
+      ⟨ smoothabilityPackage_requirement_of_equation_boundary_dependencies
+          dependencies
+      , analyticFoundationPackage_requirement_of_equation_boundary_dependencies
+          dependencies
+      , surgeryPackage_requirement_of_equation_boundary_dependencies
+          dependencies
+      , finiteExtinctionPackage_requirement_of_equation_boundary_dependencies
+          dependencies
+      , topologyPackage_requirement_of_equation_boundary_dependencies
+          dependencies
+      ⟩ := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining dependency package exposes all six ordinary
+milestone requirements after forgetting equation-boundary data.
+-/
+theorem remainingDependencyPackageWithEquationBoundary_milestone_requirements_payload
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ∃ _smoothabilityBridge :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+    ∃ _ricciFlowAnalyticFoundation :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation,
+    ∃ _ricciFlowWithSurgery :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery,
+    ∃ _perelmanSingularityControl :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl,
+    ∃ _finiteExtinction :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism :=
+  dependency_milestone_requirements_payload_of_equation_boundary_dependencies
+    dependencies
+
+/--
+The strengthened remaining-package milestone payload is the strengthened
+aggregate dependency milestone payload under the remaining-dependency
+abbreviation.
+-/
+theorem remainingDependencyPackageWithEquationBoundary_milestone_requirements_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    remainingDependencyPackageWithEquationBoundary_milestone_requirements_payload
+        dependencies =
+      dependency_milestone_requirements_payload_of_equation_boundary_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package milestone payload is the ordinary
+remaining-package milestone payload of the forgetful package.
+-/
+theorem remainingDependencyPackageWithEquationBoundary_milestone_requirements_payload_to_forgetful_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    remainingDependencyPackageWithEquationBoundary_milestone_requirements_payload
+        dependencies =
+      remainingDependencyPackage_milestone_requirements_payload
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package milestone payload is also the tuple of the
+named strengthened milestone projections.
+-/
+theorem remainingDependencyPackageWithEquationBoundary_milestone_requirements_payload_to_named_projections_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    remainingDependencyPackageWithEquationBoundary_milestone_requirements_payload
+        dependencies =
+      ⟨ smoothabilityBridge_requirement_of_equation_boundary_dependencies
+          dependencies
+      , ricciFlowAnalyticFoundation_requirement_of_equation_boundary_dependencies
+          dependencies
+      , ricciFlowWithSurgery_requirement_of_equation_boundary_dependencies
+          dependencies
+      , perelmanSingularityControl_requirement_of_equation_boundary_dependencies
+          dependencies
+      , finiteExtinction_requirement_of_equation_boundary_dependencies
+          dependencies
+      , extinctionToSphereHomeomorphism_requirement_of_equation_boundary_dependencies
+          dependencies
+      ⟩ := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package milestone payload is also the tuple of the
+strengthened package-layer projections assigned to the six ledger milestones.
+-/
+theorem remainingDependencyPackageWithEquationBoundary_milestone_requirements_payload_to_package_layer_projections_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    remainingDependencyPackageWithEquationBoundary_milestone_requirements_payload
+        dependencies =
+      ⟨ smoothabilityPackage_requirement_of_equation_boundary_dependencies
+          dependencies
+      , analyticFoundationPackage_requirement_of_equation_boundary_dependencies
+          dependencies
+      , surgeryPackage_requirement_of_equation_boundary_dependencies
+          dependencies
+      , surgeryPackage_requirement_of_equation_boundary_dependencies
+          dependencies
+      , finiteExtinctionPackage_requirement_of_equation_boundary_dependencies
+          dependencies
+      , topologyPackage_requirement_of_equation_boundary_dependencies
+          dependencies
+      ⟩ := by
+  apply Subsingleton.elim
+
+/--
 The remaining dependency package produces the canonical completion payload
 through the crosswalk component-slot requirement route.
 -/
