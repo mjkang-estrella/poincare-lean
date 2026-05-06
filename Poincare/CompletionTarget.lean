@@ -9985,6 +9985,97 @@ theorem equation_boundary_verification_payload_of_completion_certificate_with_eq
   apply Subsingleton.elim
 
 /--
+Projecting the checked certificate from the existential verification-payload
+constructor recovers the checked certificate built from the unpacked
+strengthened dependency package.
+-/
+theorem completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_eq
+    (payload :
+      ∃ dependencies : RemainingDependencyPackageWithEquationBoundary.{u},
+        EquationBoundaryVerificationPayload dependencies) :
+    completion_certificate_of_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload
+        payload) =
+      (by
+        rcases payload with ⟨dependencies, _verificationPayload⟩
+        exact
+          completion_certificate_of_equation_boundary_remaining_dependency_package
+            dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The existential verification-payload constructor exposes the unpacked payload's
+equation-boundary package projection.
+-/
+theorem ricci_flow_equation_boundary_packages_of_completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload_eq
+    (payload :
+      ∃ dependencies : RemainingDependencyPackageWithEquationBoundary.{u},
+        EquationBoundaryVerificationPayload dependencies) :
+    ricci_flow_equation_boundary_packages_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload
+        payload) =
+      (by
+        rcases payload with ⟨_dependencies, verificationPayload⟩
+        exact
+          ricci_flow_equation_boundary_packages_of_equation_boundary_verification_payload
+            verificationPayload) := by
+  apply Subsingleton.elim
+
+/--
+The existential verification-payload constructor exposes the unpacked payload's
+derivative payload projection.
+-/
+theorem equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload_eq
+    (payload :
+      ∃ dependencies : RemainingDependencyPackageWithEquationBoundary.{u},
+        EquationBoundaryVerificationPayload dependencies) :
+    equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload
+        payload) =
+      (by
+        rcases payload with ⟨_dependencies, verificationPayload⟩
+        exact
+          equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+            verificationPayload) := by
+  apply Subsingleton.elim
+
+/--
+The existential verification-payload constructor exposes the unpacked payload's
+full surgery-derivative projection.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload_eq
+    (payload :
+      ∃ dependencies : RemainingDependencyPackageWithEquationBoundary.{u},
+        EquationBoundaryVerificationPayload dependencies) :
+    surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload
+        payload) =
+      (by
+        rcases payload with ⟨_dependencies, verificationPayload⟩
+        exact
+          surgery_package_with_equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+            verificationPayload) := by
+  apply Subsingleton.elim
+
+/--
+The existential verification-payload constructor exposes the unpacked payload's
+analytic equation-boundary projection.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload_eq
+    (payload :
+      ∃ dependencies : RemainingDependencyPackageWithEquationBoundary.{u},
+        EquationBoundaryVerificationPayload dependencies) :
+    analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload
+        payload) =
+      (by
+        rcases payload with ⟨_dependencies, verificationPayload⟩
+        exact
+          analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload
+            verificationPayload) := by
+  apply Subsingleton.elim
+
+/--
 The existential verification-payload constructor recovers any boundary-aware
 certificate from its projected existential verification payload.
 -/
@@ -10084,6 +10175,41 @@ theorem remaining_dependency_package_of_completion_certificate_with_equation_bou
       remaining_dependency_package_of_completion_certificate
         (completion_certificate_of_equation_boundary_verification_payload
           payload) := by
+  apply Subsingleton.elim
+
+/--
+Projecting the strengthened dependency package from the existential
+verification-payload constructor recovers the unpacked strengthened package.
+-/
+theorem remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload_eq
+    (payload :
+      ∃ dependencies : RemainingDependencyPackageWithEquationBoundary.{u},
+        EquationBoundaryVerificationPayload dependencies) :
+    remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload
+        payload) =
+      (by
+        rcases payload with ⟨dependencies, _verificationPayload⟩
+        exact dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Projecting the ordinary dependency package from the existential
+verification-payload constructor recovers the forgetful image of the unpacked
+strengthened package.
+-/
+theorem remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload_eq
+    (payload :
+      ∃ dependencies : RemainingDependencyPackageWithEquationBoundary.{u},
+        EquationBoundaryVerificationPayload dependencies) :
+    remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload
+        payload) =
+      (by
+        rcases payload with ⟨dependencies, _verificationPayload⟩
+        exact
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependencies) := by
   apply Subsingleton.elim
 
 /--
