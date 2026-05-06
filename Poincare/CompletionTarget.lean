@@ -2993,6 +2993,68 @@ theorem ricci_flow_equation_boundary_packages_of_remaining_dependency_package_eq
   apply Subsingleton.elim
 
 /--
+The strengthened remaining package exposes the full projection-routed
+equation-boundary derivative payload for each selected surgery package.
+-/
+theorem equation_boundary_derivative_payload_of_remaining_dependency_package
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+        ∃ verification :
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package
+                (surgery_package_of_equation_boundary_surgery_package
+                  package))),
+        ∃ _verification_eq :
+          verification =
+            ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
+              package,
+        ∃ metricDerivative :
+          MetricTimeDerivativeData
+            (metric_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package
+                (surgery_package_of_equation_boundary_surgery_package
+                  package))),
+        ∃ _metricDerivative_eq :
+          metricDerivative =
+            metric_derivative_data_of_surgery_package_with_equation_boundary
+              package,
+          IsMetricTimeDerivativeOf
+            (metric_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package
+                (surgery_package_of_equation_boundary_surgery_package
+                  package)))
+            (metric_time_derivative_field_of_metric_derivative_data
+              metricDerivative) ∧
+          ∀ t : ℝ,
+            metric_time_derivative_at_time_of_metric_derivative_field
+              (metric_time_derivative_field_of_metric_derivative_data
+                metricDerivative) t =
+              ricci_flow_rhs_tensor
+                (curvature_data_of_ricci_flow_data
+                  (ricci_flow_data_of_surgery_package
+                    (surgery_package_of_equation_boundary_surgery_package
+                      package))) t :=
+  equation_boundary_derivative_payload_of_dependencies dependencies
+
+/--
+The strengthened remaining-package derivative payload is the
+dependency-projection derivative payload.
+-/
+theorem equation_boundary_derivative_payload_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    equation_boundary_derivative_payload_of_remaining_dependency_package
+        dependencies =
+      equation_boundary_derivative_payload_of_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining package exposes the analytic foundation together
 with its explicit equation-boundary package for each selected surgery package.
 -/
