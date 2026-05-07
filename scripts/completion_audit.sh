@@ -261,6 +261,12 @@ check_decl "time-dependent metric time-slice projection is declared" \
   '^def metric_at_time_of_time_dependent_metric\b' Poincare/RicciFlow.lean
 check_decl "time-dependent metric time-slice equality theorem is declared" \
   '^@\[simp\] theorem metric_at_time_of_time_dependent_metric_eq\b' Poincare/RicciFlow.lean
+check_decl "stationary time-dependent metric family constructor is declared" \
+  '^noncomputable def stationary_time_dependent_riemannian_metric\b' Poincare/RicciFlow.lean
+check_decl "stationary time-dependent metric family equality contract is declared" \
+  '^@\[simp\] theorem stationary_time_dependent_riemannian_metric_eq\b' Poincare/RicciFlow.lean
+check_decl "stationary time-dependent metric time-slice contract is declared" \
+  '^@\[simp\] theorem metric_at_time_of_stationary_time_dependent_riemannian_metric_eq\b' Poincare/RicciFlow.lean
 check_decl "Ricci-flow metric time-slice projection is declared" \
   '^def metric_at_time_of_ricci_flow_data\b' Poincare/RicciFlow.lean
 check_decl "Ricci-flow metric time-slice equality theorem is declared" \
@@ -387,10 +393,22 @@ check_decl "zero Ricci-flow data curvature projection contract is declared" \
   '^@\[simp\] theorem curvature_data_of_zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci-flow data equation-evidence projection contract is declared" \
   '^@\[simp\] theorem equation_evidence_of_zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci-flow data metric time-slice contract is declared" \
+  '^@\[simp\] theorem metric_at_time_of_zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci-flow data Ricci tensor time-slice contract is declared" \
+  '^@\[simp\] theorem ricci_tensor_at_time_of_zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci-flow data scalar time-slice contract is declared" \
+  '^@\[simp\] theorem scalar_curvature_at_time_of_zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
+check_decl "stationary zero Ricci-flow data metric time-slice contract is declared" \
+  '^@\[simp\] theorem metric_at_time_of_stationary_zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
 check_decl "zero-derivative zero-Ricci verification existence theorem is declared" \
   '^theorem zero_derivative_zero_ricci_equation_verification_exists\b' Poincare/RicciFlow.lean
 check_decl "zero-derivative zero-Ricci verification existence equality contract is declared" \
   '^theorem zero_derivative_zero_ricci_equation_verification_exists_eq\b' Poincare/RicciFlow.lean
+check_decl "stationary zero-derivative zero-Ricci verification existence theorem is declared" \
+  '^theorem stationary_zero_derivative_zero_ricci_equation_verification_exists\b' Poincare/RicciFlow.lean
+check_decl "stationary zero-derivative zero-Ricci verification equality contract is declared" \
+  '^theorem stationary_zero_derivative_zero_ricci_equation_verification_exists_eq\b' Poincare/RicciFlow.lean
 check_decl "Levi-Civita theory interface is declared" \
   '^inductive HasLeviCivitaConnectionTheory\b' Poincare/AnalyticFoundation.lean
 check_decl "Levi-Civita existence interface is declared" \

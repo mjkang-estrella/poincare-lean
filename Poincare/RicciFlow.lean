@@ -32,6 +32,30 @@ structure TimeDependentRiemannianMetric
   metricAtTime :
     ℝ → ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x)
 
+/-- A time-independent metric family obtained from one Riemannian metric. -/
+noncomputable def stationary_time_dependent_riemannian_metric
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x)) :
+    TimeDependentRiemannianMetric I n M where
+  metricAtTime := fun _t => metric
+
+/-- The stationary metric family stores the supplied metric at every time. -/
+@[simp] theorem stationary_time_dependent_riemannian_metric_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x)) :
+    stationary_time_dependent_riemannian_metric metric =
+      ({ metricAtTime := fun _t => metric } :
+        TimeDependentRiemannianMetric I n M) :=
+  rfl
+
 /-- A covariant two-tensor field on the tangent bundle. -/
 abbrev TangentCovariantTwoTensor
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -349,6 +373,20 @@ def metric_at_time_of_time_dependent_metric
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (g : TimeDependentRiemannianMetric I n M) (t : ℝ) :
     metric_at_time_of_time_dependent_metric g t = g.metricAtTime t :=
+  rfl
+
+/-- Evaluating a stationary metric family returns the supplied metric. -/
+@[simp] theorem metric_at_time_of_stationary_time_dependent_riemannian_metric_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (t : ℝ) :
+    metric_at_time_of_time_dependent_metric
+      (stationary_time_dependent_riemannian_metric metric) t =
+        metric :=
   rfl
 
 /-- Evaluate the metric family of Ricci-flow data at a time. -/
@@ -1275,6 +1313,81 @@ noncomputable def zero_ricci_flow_data
         equationEvidence :=
   rfl
 
+/-- The metric time-slice of zero Ricci-flow data is the supplied metric family. -/
+@[simp] theorem metric_at_time_of_zero_ricci_flow_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M)
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci))
+    (t : ℝ) :
+    metric_at_time_of_ricci_flow_data
+      (zero_ricci_flow_data g identifiesRicci equationEvidence) t =
+        g.metricAtTime t :=
+  rfl
+
+/-- The Ricci tensor time-slice of zero Ricci-flow data is the zero tensor. -/
+@[simp] theorem ricci_tensor_at_time_of_zero_ricci_flow_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci))
+    (t : ℝ) :
+    ricci_tensor_at_time_of_ricci_flow_data
+      (zero_ricci_flow_data g identifiesRicci equationEvidence) t =
+        zero_tangent_covariant_two_tensor I M :=
+  rfl
+
+/-- The scalar-curvature time-slice of zero Ricci-flow data is zero. -/
+@[simp] theorem scalar_curvature_at_time_of_zero_ricci_flow_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci))
+    (t : ℝ) (x : M) :
+    scalar_curvature_at_time_of_ricci_flow_data
+      (zero_ricci_flow_data g identifiesRicci equationEvidence) t x = 0 :=
+  rfl
+
+/--
+The metric time-slice of stationary zero Ricci-flow data is the original
+Riemannian metric.
+-/
+@[simp] theorem metric_at_time_of_stationary_zero_ricci_flow_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci))
+    (t : ℝ) :
+    metric_at_time_of_ricci_flow_data
+      (zero_ricci_flow_data
+        (stationary_time_dependent_riemannian_metric metric)
+        identifiesRicci equationEvidence) t =
+        metric :=
+  rfl
+
 /--
 Zero metric derivative and zero Ricci candidates satisfy the explicit
 Ricci-flow equation verification once their still-missing analytic
@@ -1332,6 +1445,74 @@ theorem zero_derivative_zero_ricci_equation_verification_exists_eq
         exact
           ⟨curvature, rfl, rfl, verification, rfl,
             verification.equationAtTime⟩) := by
+  apply Subsingleton.elim
+
+/--
+The stationary metric-family specialization of the zero derivative / zero Ricci
+equation-verification payload.
+-/
+theorem stationary_zero_derivative_zero_ricci_equation_verification_exists
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric))) :
+    ∃ curvature :
+        RicciCurvatureData
+          (stationary_time_dependent_riemannian_metric metric),
+      curvature.ricci =
+          zero_ricci_tensor_field
+            (stationary_time_dependent_riemannian_metric metric) ∧
+      curvature.scalar =
+          zero_scalar_curvature_field
+            (stationary_time_dependent_riemannian_metric metric) ∧
+      ∃ verification : RicciFlowEquationVerification curvature,
+        verification.metricDerivative.derivative =
+            zero_metric_time_derivative_field
+              (stationary_time_dependent_riemannian_metric metric) ∧
+        ∀ t,
+          metric_time_derivative_at_time_of_metric_derivative_field
+            verification.metricDerivative.derivative t =
+            ricci_flow_rhs_tensor curvature t :=
+  zero_derivative_zero_ricci_equation_verification_exists
+    identifiesDerivative identifiesRicci
+
+/--
+The stationary specialization delegates to the generic zero-candidate
+verification route.
+-/
+theorem stationary_zero_derivative_zero_ricci_equation_verification_exists_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric))) :
+    stationary_zero_derivative_zero_ricci_equation_verification_exists
+      metric identifiesDerivative identifiesRicci =
+      zero_derivative_zero_ricci_equation_verification_exists
+        identifiesDerivative identifiesRicci := by
   apply Subsingleton.elim
 
 end Poincare

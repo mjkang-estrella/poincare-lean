@@ -143,7 +143,12 @@ The current artifact is intentionally conservative:
   tensor fields, scalar curvature fields, Ricci tensor time slices, scalar
   curvature time slices, Ricci-identification evidence, and Ricci-flow equation
   evidence, with rewriteable definitional-equality contracts identifying those
-  named projections and evidence theorems with the stored structure fields.
+  named projections and evidence theorems with the stored structure fields. The
+  stationary metric-family constructor now packages a single Riemannian metric
+  as a time-independent family, proves its time-slice projection, and specializes
+  the zero-derivative/zero-Ricci equation-verification payload to that
+  stationary route; zero Ricci-flow data also exposes checked metric, Ricci, and
+  scalar-curvature time-slice projection contracts.
 - `Poincare/AnalyticFoundation.lean` narrows the Ricci-flow analytic foundation
   into no-constructor interfaces for Levi-Civita connection theory,
   Levi-Civita existence/uniqueness/torsion-free/metric-compatibility

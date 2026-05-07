@@ -99,7 +99,11 @@ analytic-payload boundary. The zero route now factors through the explicit zero
 equation-boundary package route after using the generic payload bridges. Thus
 the flat/stationary candidate route reaches the strengthened analytic
 equation-boundary statement without inventing any constructor for the missing
-equation interface.
+equation interface. The same layer now names the stationary time-dependent
+metric family induced by a single Riemannian metric, proves the resulting metric
+time slices, and specializes the zero-derivative/zero-Ricci verification payload
+and zero-flow metric/Ricci/scalar projection contracts to that stationary
+example.
 
 `Poincare/Surgery.lean` adds the next typed boundary: Ricci flow with surgery,
 Perelman singularity control, and derivation of finite extinction. These are
