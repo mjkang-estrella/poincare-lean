@@ -12031,6 +12031,129 @@ theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_
   apply Subsingleton.elim
 
 /--
+The strengthened remaining-package certified canonical-target certificate agrees
+with the ordinary remaining-dependency certificate after forgetting the
+equation-boundary data.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_to_remaining_dependency_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target
+        dependencies =
+      completion_certificate_of_remaining_dependency_package
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package certified project-statement certificate agrees
+with the ordinary remaining-dependency certificate after forgetting the
+equation-boundary data.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_to_remaining_dependency_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement
+        dependencies =
+      completion_certificate_of_remaining_dependency_package
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package certified completion-criterion certificate
+agrees with the ordinary remaining-dependency certificate after forgetting the
+equation-boundary data.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_to_remaining_dependency_eq
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion
+        witness dependencies =
+      completion_certificate_of_remaining_dependency_package
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate certified canonical-target certificate agrees with
+the ordinary aggregate certificate after forgetting equation-boundary data.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target
+        dependencies =
+      completion_certificate_of_poincareProofDependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate certified canonical-target certificate agrees with
+the ordinary remaining-dependency certificate after forgetting equation-boundary
+data through the remaining-dependency wrapper.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_remaining_dependency_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target
+        dependencies =
+      completion_certificate_of_remaining_dependency_package
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate certified project-statement certificate agrees with
+the ordinary aggregate certificate after forgetting equation-boundary data.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement
+        dependencies =
+      completion_certificate_of_poincareProofDependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate certified project-statement certificate agrees with
+the ordinary remaining-dependency certificate after forgetting equation-boundary
+data through the remaining-dependency wrapper.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_to_remaining_dependency_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement
+        dependencies =
+      completion_certificate_of_remaining_dependency_package
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate certified completion-criterion certificate agrees
+with the ordinary aggregate certificate after forgetting equation-boundary data.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_forgetful_dependencies_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion
+        witness dependencies =
+      completion_certificate_of_poincareProofDependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate certified completion-criterion certificate agrees
+with the ordinary remaining-dependency certificate after forgetting
+equation-boundary data through the remaining-dependency wrapper.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_remaining_dependency_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion
+        witness dependencies =
+      completion_certificate_of_remaining_dependency_package
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 A boundary-aware completion certificate payload preserves the strengthened
 dependency package, the checked completion certificate built from it, and the
 verification-routed equation-boundary payload.

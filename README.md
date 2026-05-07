@@ -891,7 +891,11 @@ The current artifact is intentionally conservative:
   forgetting equation-boundary data. The theorem-name, literal,
   aggregate-dependency, and project-statement payload routes now have the same
   boundary-target and forgetful ordinary projection equalities, including their
-  literal/aggregate/project payload certificate reconstructions.
+  literal/aggregate/project payload certificate reconstructions. The certified
+  extraction-derivation canonical-target, project-statement, and
+  completion-criterion certificate constructors are also pinned directly to the
+  ordinary remaining-dependency and aggregate certificates obtained after
+  forgetting the equation-boundary data.
   It also exposes the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/
