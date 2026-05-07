@@ -3530,6 +3530,22 @@ set_option linter.unusedVariables false
 #check Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections_eq
 #check Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
 #check Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_forgetful_dependencies_eq
+#check Poincare.poincare_completion_payload_of_equation_boundary_dependency_projections
+#check Poincare.poincare_completion_payload_of_equation_boundary_dependency_projections_eq
+#check Poincare.poincare_completion_payload_of_equation_boundary_dependency_projections_to_topology_statement_eq
+#check Poincare.poincare_completion_payload_of_equation_boundary_dependency_projections_to_forgetful_dependencies_eq
+#check Poincare.poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections
+#check Poincare.poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections_eq
+#check Poincare.poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
+#check Poincare.poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_forgetful_dependencies_eq
+#check Poincare.poincare_statement_of_equation_boundary_dependency_projections
+#check Poincare.poincare_statement_of_equation_boundary_dependency_projections_eq
+#check Poincare.poincare_statement_of_equation_boundary_dependency_projections_to_topology_statement_eq
+#check Poincare.poincare_statement_of_equation_boundary_dependency_projections_to_forgetful_dependencies_eq
+#check Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections
+#check Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections_eq
+#check Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
+#check Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_forgetful_dependencies_eq
 #check Poincare.finite_extinction_of_remaining_dependency_package
 #check Poincare.finite_extinction_of_remaining_dependency_package_eq
 #check Poincare.finite_extinction_of_remaining_dependency_package_to_dependencies_eq
@@ -9347,6 +9363,50 @@ if rg -q 'poincare_completion_payload_of_poincareConjectureStatement target' \
     Poincare/DependencyProjections.lean; then
   echo "FAIL: projection completion payload should reuse the projection target payload criterion"
   rg -n 'poincare_completion_payload_of_poincareConjectureStatement target' \
+    Poincare/DependencyProjections.lean || true
+  exit 1
+fi
+
+projection_equation_boundary_target_payload_count=$(
+  rg -c '\bpoincare_target_payload_of_equation_boundary_dependency_projections\b' \
+    Poincare/DependencyProjections.lean || true
+)
+if [ "$projection_equation_boundary_target_payload_count" != "6" ]; then
+  echo "FAIL: equation-boundary projection completion routes should consume the boundary projection target payload"
+  rg -n '\bpoincare_target_payload_of_equation_boundary_dependency_projections\b' \
+    Poincare/DependencyProjections.lean || true
+  exit 1
+fi
+
+projection_equation_boundary_extraction_derivation_target_payload_count=$(
+  rg -c '\bpoincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections\b' \
+    Poincare/DependencyProjections.lean || true
+)
+if [ "$projection_equation_boundary_extraction_derivation_target_payload_count" != "6" ]; then
+  echo "FAIL: equation-boundary certified projection completion routes should consume the boundary certified target payload"
+  rg -n '\bpoincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections\b' \
+    Poincare/DependencyProjections.lean || true
+  exit 1
+fi
+
+projection_equation_boundary_completion_payload_count=$(
+  rg -c '\bpoincare_completion_payload_of_equation_boundary_dependency_projections\b' \
+    Poincare/DependencyProjections.lean || true
+)
+if [ "$projection_equation_boundary_completion_payload_count" != "6" ]; then
+  echo "FAIL: equation-boundary projection statement routes should consume the boundary projection completion payload"
+  rg -n '\bpoincare_completion_payload_of_equation_boundary_dependency_projections\b' \
+    Poincare/DependencyProjections.lean || true
+  exit 1
+fi
+
+projection_equation_boundary_extraction_derivation_completion_payload_count=$(
+  rg -c '\bpoincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections\b' \
+    Poincare/DependencyProjections.lean || true
+)
+if [ "$projection_equation_boundary_extraction_derivation_completion_payload_count" != "6" ]; then
+  echo "FAIL: equation-boundary certified projection statement routes should consume the boundary certified completion payload"
+  rg -n '\bpoincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/DependencyProjections.lean || true
   exit 1
 fi

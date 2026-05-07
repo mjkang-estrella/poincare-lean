@@ -347,7 +347,9 @@ The current artifact is intentionally conservative:
   payload, with equality contracts back to the ordinary projection assembly
   inputs. It now also assembles those boundary projection inputs into raw and
   certified target payloads with equality contracts back to the ordinary
-  dependency projection target payloads. The completion-target
+  dependency projection target payloads, then exposes matching completion
+  payloads and Poincare statements for the boundary projection routes. The
+  completion-target
   wrapper layer now mirrors that finite-extinction route through the ordinary
   remaining package, strengthened remaining package, and strengthened aggregate
   package, with equality contracts to the verification-payload, pointwise

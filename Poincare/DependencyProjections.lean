@@ -9563,6 +9563,129 @@ theorem poincare_completion_payload_of_extraction_derivation_dependency_projecti
   apply Subsingleton.elim
 
 /--
+The strengthened dependency projection route exposes the local target and
+universe-indexed completion criterion through the boundary target payload.
+-/
+theorem poincare_completion_payload_of_equation_boundary_dependency_projections
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases poincare_target_payload_of_equation_boundary_dependency_projections
+      dependencies with
+    ⟨_finiteExtinction, _extraction, target, criterion⟩
+  exact ⟨target, criterion⟩
+
+/--
+The strengthened dependency projection completion payload is selected from the
+named boundary projection target payload.
+-/
+theorem poincare_completion_payload_of_equation_boundary_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_dependency_projections
+        dependencies =
+      (by
+        rcases
+            poincare_target_payload_of_equation_boundary_dependency_projections
+              dependencies with
+          ⟨_finiteExtinction, _extraction, target, criterion⟩
+        exact ⟨target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency projection completion payload is the payload of the
+boundary finite-extinction plus forgetful theorem-shaped topology-extraction
+route.
+-/
+theorem poincare_completion_payload_of_equation_boundary_dependency_projections_to_topology_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_dependency_projections
+        dependencies =
+      poincare_payload_of_finite_extinction_and_topology_extraction_statement
+        (finite_extinction_of_equation_boundary_dependencies dependencies)
+        (topology_extraction_statement_of_dependencies
+          (dependencies_of_equation_boundary_dependencies dependencies)) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data in the strengthened projection completion
+payload recovers the ordinary dependency projection completion payload.
+-/
+theorem poincare_completion_payload_of_equation_boundary_dependency_projections_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_dependency_projections
+        dependencies =
+      poincare_completion_payload_of_dependency_projections
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified dependency projection route exposes the local target
+and universe-indexed completion criterion through the boundary certified target
+payload.
+-/
+theorem poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases
+      poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies with
+    ⟨_finiteExtinction, _extractSphere, _derivation, target, criterion⟩
+  exact ⟨target, criterion⟩
+
+/--
+The strengthened certified dependency projection completion payload is selected
+from the named boundary certified projection target payload.
+-/
+theorem poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections
+              dependencies with
+          ⟨_finiteExtinction, _extractSphere, _derivation, target,
+            criterion⟩
+        exact ⟨target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified dependency projection completion payload is the
+payload selected from the extractor/derivation decomposition of the forgetful
+theorem-shaped topology statement.
+-/
+theorem poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_derivation.mp
+              (topology_extraction_statement_of_dependencies
+                (dependencies_of_equation_boundary_dependencies
+                  dependencies)) with
+          ⟨extractSphere, derivation⟩
+        exact
+          poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data in the strengthened certified projection
+completion payload recovers the ordinary certified dependency projection
+completion payload.
+-/
+theorem poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      poincare_completion_payload_of_extraction_derivation_dependency_projections
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency package also proves the Poincare target through the
 full finite-extinction and post-extinction extraction projection payload.
 -/
@@ -9675,6 +9798,126 @@ theorem poincare_statement_of_extraction_derivation_dependency_projections_to_pa
           poincare_statement_of_finite_extinction_and_extraction_derivation
             (finite_extinction_of_dependencies dependencies)
             extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency projection route proves the Poincare target through
+the boundary projection completion payload.
+-/
+theorem poincare_statement_of_equation_boundary_dependency_projections
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} := by
+  rcases
+      poincare_completion_payload_of_equation_boundary_dependency_projections
+        dependencies with
+    ⟨target, _criterion⟩
+  exact target
+
+/--
+The strengthened dependency projection Poincare statement is selected from the
+named boundary projection completion payload.
+-/
+theorem poincare_statement_of_equation_boundary_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_dependency_projections
+        dependencies =
+      (by
+        rcases
+            poincare_completion_payload_of_equation_boundary_dependency_projections
+              dependencies with
+          ⟨target, _criterion⟩
+        exact target) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency projection Poincare statement is the target of the
+boundary finite-extinction plus forgetful theorem-shaped topology-extraction
+route.
+-/
+theorem poincare_statement_of_equation_boundary_dependency_projections_to_topology_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_dependency_projections
+        dependencies =
+      poincare_statement_of_finite_extinction_and_topology_extraction_statement
+        (finite_extinction_of_equation_boundary_dependencies dependencies)
+        (topology_extraction_statement_of_dependencies
+          (dependencies_of_equation_boundary_dependencies dependencies)) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data in the strengthened projection Poincare
+statement recovers the ordinary dependency projection Poincare statement.
+-/
+theorem poincare_statement_of_equation_boundary_dependency_projections_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_dependency_projections
+        dependencies =
+      poincare_statement_of_dependency_projections
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified dependency projection route proves the Poincare
+target through the boundary certified projection completion payload.
+-/
+theorem poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} := by
+  rcases
+      poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies with
+    ⟨target, _criterion⟩
+  exact target
+
+/--
+The strengthened certified dependency projection Poincare statement is selected
+from the named boundary certified projection completion payload.
+-/
+theorem poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections
+              dependencies with
+          ⟨target, _criterion⟩
+        exact target) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified dependency projection Poincare statement is the
+target selected from the extractor/derivation decomposition of the forgetful
+theorem-shaped topology statement.
+-/
+theorem poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_derivation.mp
+              (topology_extraction_statement_of_dependencies
+                (dependencies_of_equation_boundary_dependencies
+                  dependencies)) with
+          ⟨extractSphere, derivation⟩
+        exact
+          poincare_statement_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data in the strengthened certified projection
+Poincare statement recovers the ordinary certified dependency projection
+Poincare statement.
+-/
+theorem poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      poincare_statement_of_extraction_derivation_dependency_projections
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
   apply Subsingleton.elim
 
 /--
