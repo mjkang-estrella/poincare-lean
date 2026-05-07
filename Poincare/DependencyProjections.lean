@@ -2222,6 +2222,26 @@ theorem analytic_foundation_derivation_statements_of_dependencies_eq
   dsimp
 
 /--
+The dependency-level analytic derivation projection agrees with rebuilding the
+fixed-flow derivation statement from the projected analytic sub-obligation
+payload.
+-/
+theorem analytic_foundation_derivation_statements_of_dependencies_to_subobligations_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      analytic_foundation_statement_payload_of_dependencies dependencies M
+    analytic_foundation_derivation_statements_of_dependencies dependencies M =
+      ⟨payload.choose, payload.choose_spec.choose_spec.choose,
+        analytic_foundation_derivation_statement_of_subobligations_payload
+          payload.choose_spec.choose_spec.choose
+          payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose⟩ := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies Ricci-flow data for every target
 manifold once the smoothability regularity has been installed.
 -/

@@ -4333,6 +4333,8 @@ check_decl "dependency analytic foundation derivation statement projection theor
   '^theorem analytic_foundation_derivation_statements_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency analytic foundation derivation statement equality contract is declared" \
   '^theorem analytic_foundation_derivation_statements_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency analytic foundation derivation sub-obligation route equality contract is declared" \
+  '^theorem analytic_foundation_derivation_statements_of_dependencies_to_subobligations_payload_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency Ricci-flow data projection theorem is declared" \
   '^theorem ricci_flow_data_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency Ricci-flow data equality contract is declared" \
@@ -13460,6 +13462,7 @@ open scoped Manifold ContDiff
 #check Poincare.analytic_foundation_statements_of_dependencies_eq
 #check Poincare.analytic_foundation_derivation_statements_of_dependencies
 #check Poincare.analytic_foundation_derivation_statements_of_dependencies_eq
+#check Poincare.analytic_foundation_derivation_statements_of_dependencies_to_subobligations_payload_eq
 #check Poincare.ricci_flow_data_of_dependencies
 #check Poincare.ricci_flow_data_of_dependencies_eq
 #check Poincare.ricci_flow_equation_evidence_of_dependencies
@@ -15934,6 +15937,7 @@ open scoped Manifold ContDiff
 #check Poincare.analytic_foundation_statements_of_dependencies_eq
 #check Poincare.analytic_foundation_derivation_statements_of_dependencies
 #check Poincare.analytic_foundation_derivation_statements_of_dependencies_eq
+#check Poincare.analytic_foundation_derivation_statements_of_dependencies_to_subobligations_payload_eq
 #check Poincare.ricci_flow_data_of_dependencies
 #check Poincare.ricci_flow_data_of_dependencies_eq
 #check Poincare.ricci_flow_equation_evidence_of_dependencies

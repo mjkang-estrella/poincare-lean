@@ -90,9 +90,12 @@ the fixed-flow analytic derivation statement from that payload, and
 `analytic_foundation_with_equation_boundary_of_subobligations_payload_and_ricci_flow_equation_verification`
 adds the corresponding flow-level route from that payload plus explicit
 equation verification to the strengthened analytic equation-boundary statement.
-The zero route uses both generic bridges. Thus the flat/stationary candidate
-route reaches the strengthened analytic equation-boundary statement without
-inventing any constructor for the missing equation interface.
+`DependencyProjections` pins its dependency-level analytic derivation projection
+back to this payload-to-derivation route while preserving the surgery
+analytic-payload boundary. The zero route uses both generic bridges. Thus the
+flat/stationary candidate route reaches the strengthened analytic
+equation-boundary statement without inventing any constructor for the missing
+equation interface.
 
 `Poincare/Surgery.lean` adds the next typed boundary: Ricci flow with surgery,
 Perelman singularity control, and derivation of finite extinction. These are

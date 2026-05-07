@@ -828,7 +828,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   and now carries the projected flow directly for downstream projections,
   statement-mediated analytic foundation outputs, Ricci-flow data, Ricci-flow
   equation evidence, the statement-mediated analytic sub-obligation payload,
-  the expanded analytic connection/curvature sub-obligation stack, with
+  the fixed-flow analytic derivation statement pinned back to the projected
+  analytic sub-obligation payload reconstruction route, the expanded analytic
+  connection/curvature sub-obligation stack, with
   `analytic_foundation_subobligations_of_dependencies` returning the named
   `AnalyticFoundationSubobligationsPayload` instead of the raw connection/PDE
   conjunction. It also projects surgery construction packages, package-level
@@ -925,11 +927,12 @@ It is not a proof. It is a work breakdown for future Lean development.
   The analytic sub-obligation projection destructures
   `analytic_foundation_statement_payload_of_dependencies`; downstream
   Ricci-flow data, equation-evidence, derivation-statement, and sub-obligation
-  projections consume the flow carried by that payload, while the raw analytic
-  derivation, sub-obligation, statement, and equation-evidence bridges stay out
-  of the dependency projection layer and are centralized below the surgery
-  payload boundary. The downstream analytic projections now also have equality
-  contracts back to the corresponding fields selected from
+  projections consume the flow carried by that payload. The dependency layer
+  now records that its derivation-statement projection agrees with the
+  centralized payload-to-derivation bridge, without re-destructuring the
+  analytic witness stack or bypassing the surgery analytic-payload boundary.
+  The downstream analytic projections now also have equality contracts back to
+  the corresponding fields selected from
   `analytic_foundation_statement_payload_of_dependencies`.
   Surgery-construction and Perelman-control downstream projections now have the
   same equality-contract treatment against
