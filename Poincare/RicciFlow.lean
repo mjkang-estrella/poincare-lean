@@ -906,6 +906,243 @@ Ricci curvature for any metric.
   norm_num
 
 /--
+Curvature data assembled from the zero Ricci and scalar-curvature candidates.
+
+The Ricci-identification evidence is still an input; this definition packages a
+candidate once future curvature theory proves that the candidate is really the
+Ricci tensor.
+-/
+noncomputable def zero_ricci_curvature_data
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g)) :
+    RicciCurvatureData g where
+  ricci := zero_ricci_tensor_field g
+  scalar := zero_scalar_curvature_field g
+  identifiesRicci := identifiesRicci
+
+/-- The zero curvature-data package is the explicit zero Ricci/scalar payload. -/
+@[simp] theorem zero_ricci_curvature_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g)) :
+    zero_ricci_curvature_data identifiesRicci =
+      ({ ricci := zero_ricci_tensor_field g
+         scalar := zero_scalar_curvature_field g
+         identifiesRicci := identifiesRicci } : RicciCurvatureData g) :=
+  rfl
+
+/-- The Ricci projection of zero curvature data is the zero Ricci candidate. -/
+@[simp] theorem ricci_tensor_field_of_zero_ricci_curvature_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g)) :
+    ricci_tensor_field_of_curvature_data
+      (zero_ricci_curvature_data identifiesRicci) =
+        zero_ricci_tensor_field g :=
+  rfl
+
+/-- The scalar projection of zero curvature data is the zero scalar candidate. -/
+@[simp] theorem scalar_curvature_field_of_zero_ricci_curvature_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g)) :
+    scalar_curvature_field_of_curvature_data
+      (zero_ricci_curvature_data identifiesRicci) =
+        zero_scalar_curvature_field g :=
+  rfl
+
+/-- The Ricci-identification projection of zero curvature data is the supplied evidence. -/
+@[simp] theorem ricci_identification_of_zero_ricci_curvature_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g)) :
+    ricci_identification_of_curvature_data
+      (zero_ricci_curvature_data identifiesRicci) =
+        identifiesRicci :=
+  rfl
+
+/--
+Metric-derivative data assembled from the zero derivative candidate.
+
+The derivative-identification evidence is still an input; this is the explicit
+package that a future metric-differentiation theorem must inhabit in the flat
+or stationary case.
+-/
+noncomputable def zero_metric_derivative_data
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g)) :
+    MetricTimeDerivativeData g where
+  derivative := zero_metric_time_derivative_field g
+  identifiesDerivative := identifiesDerivative
+
+/-- The zero metric-derivative package is the explicit zero derivative payload. -/
+@[simp] theorem zero_metric_derivative_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g)) :
+    zero_metric_derivative_data identifiesDerivative =
+      ({ derivative := zero_metric_time_derivative_field g
+         identifiesDerivative := identifiesDerivative } :
+        MetricTimeDerivativeData g) :=
+  rfl
+
+/-- The derivative projection of zero derivative data is the zero derivative candidate. -/
+@[simp] theorem metric_time_derivative_field_of_zero_metric_derivative_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g)) :
+    metric_time_derivative_field_of_metric_derivative_data
+      (zero_metric_derivative_data identifiesDerivative) =
+        zero_metric_time_derivative_field g :=
+  rfl
+
+/-- The derivative-identification projection is the supplied evidence. -/
+@[simp] theorem metric_time_derivative_identification_of_zero_metric_derivative_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g)) :
+    metric_time_derivative_identification_of_metric_derivative_data
+      (zero_metric_derivative_data identifiesDerivative) =
+        identifiesDerivative :=
+  rfl
+
+/--
+Concrete equation verification for the zero-derivative/zero-Ricci candidate.
+
+Both identification proofs remain explicit inputs. The result proves only the
+pointwise analytic equality `0 = -2 * 0`, not the abstract Ricci-flow equation
+interface.
+-/
+noncomputable def zero_ricci_flow_equation_verification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g)) :
+    RicciFlowEquationVerification
+      (zero_ricci_curvature_data identifiesRicci) where
+  metricDerivative := zero_metric_derivative_data identifiesDerivative
+  equationAtTime := by
+    intro t
+    change zero_tangent_covariant_two_tensor I M =
+      ricci_flow_rhs_tensor (zero_ricci_curvature_data identifiesRicci) t
+    exact (ricci_flow_rhs_tensor_of_zero_ricci_tensor_field_eq
+      (g := g) identifiesRicci t).symm
+
+/-- The zero equation verification is the explicit zero derivative equation payload. -/
+@[simp] theorem zero_ricci_flow_equation_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g)) :
+    zero_ricci_flow_equation_verification
+      identifiesDerivative identifiesRicci =
+      ({ metricDerivative := zero_metric_derivative_data identifiesDerivative
+         equationAtTime := by
+            intro t
+            change zero_tangent_covariant_two_tensor I M =
+              ricci_flow_rhs_tensor (zero_ricci_curvature_data identifiesRicci) t
+            exact (ricci_flow_rhs_tensor_of_zero_ricci_tensor_field_eq
+              (g := g) identifiesRicci t).symm } :
+        RicciFlowEquationVerification
+          (zero_ricci_curvature_data identifiesRicci)) :=
+  rfl
+
+/-- The metric-derivative projection of zero equation verification is the zero package. -/
+@[simp] theorem metric_derivative_data_of_zero_ricci_flow_equation_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g)) :
+    metric_derivative_data_of_ricci_flow_equation_verification
+      (zero_ricci_flow_equation_verification
+        identifiesDerivative identifiesRicci) =
+        zero_metric_derivative_data identifiesDerivative :=
+  rfl
+
+/-- The zero equation verification proves the expected pointwise equation. -/
+theorem equation_at_time_of_zero_ricci_flow_equation_verification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (t : ℝ) :
+    metric_time_derivative_at_time_of_metric_derivative_field
+      (metric_time_derivative_field_of_metric_derivative_data
+        (metric_derivative_data_of_ricci_flow_equation_verification
+          (zero_ricci_flow_equation_verification
+            identifiesDerivative identifiesRicci))) t =
+        ricci_flow_rhs_tensor (zero_ricci_curvature_data identifiesRicci) t :=
+  equation_at_time_of_ricci_flow_equation_verification_projection
+    (zero_ricci_flow_equation_verification
+      identifiesDerivative identifiesRicci) t
+
+/-- The named zero equation theorem is the stored equation proof. -/
+@[simp] theorem equation_at_time_of_zero_ricci_flow_equation_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (t : ℝ) :
+    equation_at_time_of_zero_ricci_flow_equation_verification
+      identifiesDerivative identifiesRicci t =
+      (zero_ricci_flow_equation_verification
+        identifiesDerivative identifiesRicci).equationAtTime t :=
+  rfl
+
+/--
 Zero metric derivative and zero Ricci candidates satisfy the explicit
 Ricci-flow equation verification once their still-missing analytic
 identification evidence is supplied.
@@ -932,23 +1169,10 @@ theorem zero_derivative_zero_ricci_equation_verification_exists
             verification.metricDerivative.derivative t =
             ricci_flow_rhs_tensor curvature t := by
   let curvature : RicciCurvatureData g :=
-    { ricci := zero_ricci_tensor_field g
-      scalar := zero_scalar_curvature_field g
-      identifiesRicci := identifiesRicci }
-  let derivativeData : MetricTimeDerivativeData g :=
-    { derivative := zero_metric_time_derivative_field g
-      identifiesDerivative := identifiesDerivative }
+    zero_ricci_curvature_data identifiesRicci
   let verification : RicciFlowEquationVerification curvature :=
-    { metricDerivative := derivativeData
-      equationAtTime := by
-        intro t
-        change zero_tangent_covariant_two_tensor I M =
-          ricci_flow_rhs_tensor
-            ({ ricci := zero_ricci_tensor_field g
-               scalar := zero_scalar_curvature_field g
-               identifiesRicci := identifiesRicci } : RicciCurvatureData g) t
-        exact (ricci_flow_rhs_tensor_of_zero_ricci_tensor_field_eq
-          (g := g) identifiesRicci t).symm }
+    zero_ricci_flow_equation_verification
+      identifiesDerivative identifiesRicci
   exact ⟨curvature, rfl, rfl, verification, rfl, verification.equationAtTime⟩
 
 /--
@@ -968,24 +1192,10 @@ theorem zero_derivative_zero_ricci_equation_verification_exists_eq
       identifiesDerivative identifiesRicci =
       (by
         let curvature : RicciCurvatureData g :=
-          { ricci := zero_ricci_tensor_field g
-            scalar := zero_scalar_curvature_field g
-            identifiesRicci := identifiesRicci }
-        let derivativeData : MetricTimeDerivativeData g :=
-          { derivative := zero_metric_time_derivative_field g
-            identifiesDerivative := identifiesDerivative }
+          zero_ricci_curvature_data identifiesRicci
         let verification : RicciFlowEquationVerification curvature :=
-          { metricDerivative := derivativeData
-            equationAtTime := by
-              intro t
-              change zero_tangent_covariant_two_tensor I M =
-                ricci_flow_rhs_tensor
-                  ({ ricci := zero_ricci_tensor_field g
-                     scalar := zero_scalar_curvature_field g
-                     identifiesRicci := identifiesRicci } :
-                    RicciCurvatureData g) t
-              exact (ricci_flow_rhs_tensor_of_zero_ricci_tensor_field_eq
-                (g := g) identifiesRicci t).symm }
+          zero_ricci_flow_equation_verification
+            identifiesDerivative identifiesRicci
         exact
           ⟨curvature, rfl, rfl, verification, rfl,
             verification.equationAtTime⟩) := by

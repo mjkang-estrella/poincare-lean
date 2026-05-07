@@ -77,7 +77,10 @@ Poincare statement.
 candidate Ricci tensor fields, Ricci-identification evidence, and the Ricci-flow
 equation as future theorem interfaces. It does not construct Ricci curvature
 from a connection, since that surface is still absent from the local mathlib
-checkout.
+checkout. It now also proves the algebraic zero-candidate consistency layer:
+given future evidence that the zero derivative and zero Ricci candidates are the
+correct derivative and Ricci tensor for a metric, the explicit equation payload
+verifies `∂ₜ g = -2 Ricci` by reducing both sides to zero.
 
 `Poincare/Surgery.lean` adds the next typed boundary: Ricci flow with surgery,
 Perelman singularity control, and derivation of finite extinction. These are

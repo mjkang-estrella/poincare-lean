@@ -248,7 +248,13 @@ It is not a proof. It is a work breakdown for future Lean development.
   scalar curvature values, Ricci-identification evidence, and Ricci-flow
   equation evidence. The projection/evidence equalities record that these named
   API surfaces are definitionally the corresponding `RicciFlowData` and
-  `RicciCurvatureData` fields.
+  `RicciCurvatureData` fields. The module also packages the zero Ricci/scalar
+  candidate data and zero metric-derivative data with their supplied
+  identification evidence, then constructs
+  `zero_ricci_flow_equation_verification`, a proof-bearing explicit
+  verification of the pointwise equation `0 = -2 * 0`. This does not construct
+  the no-constructor `SatisfiesRicciFlowEquation` interface, but it gives the
+  flat/stationary candidate route a checked equation payload.
 - `Poincare/AnalyticFoundation.lean` defines no-constructor interfaces for
   Levi-Civita connection theory, Levi-Civita
   existence/uniqueness/torsion-free/metric-compatibility sub-obligations,
