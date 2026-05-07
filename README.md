@@ -878,7 +878,11 @@ The current artifact is intentionally conservative:
   endpoints are now also pinned through the theorem-name payload, literal and
   aggregate canonical-statement payload projections and constructors, plus the
   literal, aggregate-dependency, and project-statement full payload projections
-  and constructors, for both projection certificates.
+  and constructors, for both projection certificates. The strengthened
+  equation-boundary projection certificates now expose the same theorem-name,
+  literal, aggregate-dependency, and project-statement payload projections, and
+  their literal/aggregate/project payloads reconstruct the corresponding checked
+  boundary projection certificates.
   It also exposes the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/
