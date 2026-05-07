@@ -95,8 +95,9 @@ factors explicit equation verification through that boundary-package route to
 reach the strengthened analytic equation-boundary statement.
 `DependencyProjections` pins its dependency-level analytic derivation projection
 back to this payload-to-derivation route while preserving the surgery
-analytic-payload boundary. The zero route uses both generic bridges. Thus the
-flat/stationary candidate route reaches the strengthened analytic
+analytic-payload boundary. The zero route now factors through the explicit zero
+equation-boundary package route after using the generic payload bridges. Thus
+the flat/stationary candidate route reaches the strengthened analytic
 equation-boundary statement without inventing any constructor for the missing
 equation interface.
 

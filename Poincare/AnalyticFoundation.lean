@@ -3200,8 +3200,64 @@ noncomputable def zero_ricci_flow_analytic_foundation_package
     subobligations
 
 /--
-Zero Ricci-flow analytic package data plus the explicit zero equation
-verification supplies the strengthened analytic equation-boundary statement.
+Zero Ricci-flow sub-obligation payload plus the explicit zero equation-boundary
+package supplies the strengthened analytic equation-boundary statement.
+-/
+theorem analytic_foundation_with_equation_boundary_of_zero_ricci_flow_subobligations_payload_and_boundary_package
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci))
+    (subobligations :
+      AnalyticFoundationSubobligationsPayload
+        (zero_ricci_flow_data g identifiesRicci equationEvidence)) :
+    AnalyticFoundationWithEquationBoundaryStatement
+      (zero_ricci_flow_data g identifiesRicci equationEvidence) := by
+  exact
+    analytic_foundation_with_equation_boundary_of_subobligations_payload_and_boundary_package
+      (zero_ricci_flow_data g identifiesRicci equationEvidence)
+      subobligations
+      (zero_ricci_flow_equation_boundary_package
+        identifiesDerivative identifiesRicci equationEvidence)
+
+/--
+The zero sub-obligation payload route delegates to the generic
+payload-plus-boundary-package assembler for the zero Ricci-flow data.
+-/
+@[simp] theorem analytic_foundation_with_equation_boundary_of_zero_ricci_flow_subobligations_payload_and_boundary_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci))
+    (subobligations :
+      AnalyticFoundationSubobligationsPayload
+        (zero_ricci_flow_data g identifiesRicci equationEvidence)) :
+    analytic_foundation_with_equation_boundary_of_zero_ricci_flow_subobligations_payload_and_boundary_package
+      identifiesDerivative identifiesRicci equationEvidence subobligations =
+      (by
+        exact
+          analytic_foundation_with_equation_boundary_of_subobligations_payload_and_boundary_package
+            (zero_ricci_flow_data g identifiesRicci equationEvidence)
+            subobligations
+            (zero_ricci_flow_equation_boundary_package
+              identifiesDerivative identifiesRicci equationEvidence)) := by
+  apply Subsingleton.elim
+
+/--
+Zero Ricci-flow analytic package data plus the explicit zero equation-boundary
+package supplies the strengthened analytic equation-boundary statement.
 -/
 theorem analytic_foundation_with_equation_boundary_of_zero_ricci_flow_analytic_foundation_package
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -3220,15 +3276,12 @@ theorem analytic_foundation_with_equation_boundary_of_zero_ricci_flow_analytic_f
     AnalyticFoundationWithEquationBoundaryStatement
       (zero_ricci_flow_data g identifiesRicci equationEvidence) := by
   exact
-    analytic_foundation_with_equation_boundary_of_subobligations_payload_and_ricci_flow_equation_verification
-      (zero_ricci_flow_data g identifiesRicci equationEvidence)
-      subobligations
-      (zero_ricci_flow_equation_verification
-        identifiesDerivative identifiesRicci)
+    analytic_foundation_with_equation_boundary_of_zero_ricci_flow_subobligations_payload_and_boundary_package
+      identifiesDerivative identifiesRicci equationEvidence subobligations
 
 /--
-The zero analytic equation-boundary route delegates to the generic
-payload-plus-verification assembler for the zero Ricci-flow data.
+The zero analytic equation-boundary route delegates to the zero
+sub-obligation-payload plus boundary-package route.
 -/
 @[simp] theorem analytic_foundation_with_equation_boundary_of_zero_ricci_flow_analytic_foundation_package_eq
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -3248,11 +3301,9 @@ payload-plus-verification assembler for the zero Ricci-flow data.
       identifiesDerivative identifiesRicci equationEvidence subobligations =
       (by
         exact
-          analytic_foundation_with_equation_boundary_of_subobligations_payload_and_ricci_flow_equation_verification
-            (zero_ricci_flow_data g identifiesRicci equationEvidence)
-            subobligations
-            (zero_ricci_flow_equation_verification
-              identifiesDerivative identifiesRicci)) := by
+          analytic_foundation_with_equation_boundary_of_zero_ricci_flow_subobligations_payload_and_boundary_package
+            identifiesDerivative identifiesRicci equationEvidence
+            subobligations) := by
   apply Subsingleton.elim
 
 /--

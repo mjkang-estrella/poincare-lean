@@ -311,9 +311,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   metric-derivative, Ricci-identification, and abstract equation-interface
   inputs explicit. Given the existing analytic sub-obligation payload for that
   zero flow data, `zero_ricci_flow_analytic_foundation_package` now delegates to
-  the generic payload-to-package bridge, and the strengthened zero analytic
-  equation-boundary statement delegates to the generic payload-plus-verification
-  route using the same explicit zero equation verification.
+  the generic payload-to-package bridge, the zero sub-obligation payload route
+  delegates through `zero_ricci_flow_equation_boundary_package`, and the
+  strengthened zero analytic equation-boundary statement delegates to that zero
+  payload-plus-boundary route.
 - `Poincare/Surgery.lean` defines no-constructor interfaces for Ricci flow with
   surgery, Perelman singularity control, and finite-extinction derivation, plus
   checked package projections to the analytic foundation. Its direct package

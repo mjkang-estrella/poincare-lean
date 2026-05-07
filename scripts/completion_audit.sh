@@ -555,6 +555,10 @@ check_decl "zero Ricci-flow analytic foundation package is declared" \
   '^noncomputable def zero_ricci_flow_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
 check_decl "zero Ricci-flow analytic foundation package equality contract is declared" \
   '^@\[simp\] theorem zero_ricci_flow_analytic_foundation_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "zero Ricci-flow sub-obligation boundary-package statement theorem is declared" \
+  '^theorem analytic_foundation_with_equation_boundary_of_zero_ricci_flow_subobligations_payload_and_boundary_package\b' Poincare/AnalyticFoundation.lean
+check_decl "zero Ricci-flow sub-obligation boundary-package statement equality contract is declared" \
+  '^@\[simp\] theorem analytic_foundation_with_equation_boundary_of_zero_ricci_flow_subobligations_payload_and_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "zero Ricci-flow analytic equation-boundary statement theorem is declared" \
   '^theorem analytic_foundation_with_equation_boundary_of_zero_ricci_flow_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
 check_decl "zero Ricci-flow analytic equation-boundary statement equality contract is declared" \
