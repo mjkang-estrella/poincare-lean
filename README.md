@@ -1440,6 +1440,9 @@ The current artifact is intentionally conservative:
   remaining-dependency routes, including constructor-specific contracts for the
   named remaining-package, named aggregate, arbitrary verification-payload, and
   existential verification-payload constructors.
+  Its boundary-aware verification certificate route now also projects the
+  pointwise equation payload through the direct verification, projected
+  strengthened dependency, and boundary-certificate paths.
   Its theorem-name, literal, aggregate-dependency, and project-statement
   artifact payload projections are also pinned directly to the projected
   strengthened dependency, boundary-certificate, ordinary remaining-dependency,
