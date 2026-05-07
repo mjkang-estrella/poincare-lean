@@ -335,7 +335,10 @@ The current artifact is intentionally conservative:
   analytic statement routes now pin their projections through the pointwise
   surgery payload. Arbitrary equation-boundary verification payloads now also
   route both their boundary surgery-package payload and analytic statement
-  projections through that reconstructed pointwise surgery payload. Boundary-aware
+  projections through that reconstructed pointwise surgery payload. The same
+  pointwise payload now exposes finite extinction directly, with named
+  strengthened surgery-package and arbitrary verification-payload extinction
+  projections routed through it. Boundary-aware
   verification certificates also recover the boundary surgery package payload
   through arbitrary remaining-package, arbitrary aggregate, existential
   verification-payload, named remaining-package, and named aggregate

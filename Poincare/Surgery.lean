@@ -10051,6 +10051,63 @@ theorem analytic_foundation_with_equation_boundary_of_surgery_package_with_equat
           package) := by
   apply Subsingleton.elim
 
+/--
+The scalar-pointwise surgery payload exposes the finite-extinction conclusion
+it carries for the target manifold.
+-/
+theorem finite_extinction_of_pointwise_equation_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M}
+    (payload :
+      SurgeryPackageWithEquationBoundaryPointwiseEquationPayload package) :
+    FiniteExtinctionByRicciFlowWithSurgery M := by
+  rcases payload with
+    ⟨_basePackage, _basePackage_eq, _equationBoundary, _verification,
+      _verification_eq, _metricDerivative, _metricDerivative_eq, _derivativeId,
+      _pointwiseEquation, _analyticBoundary, finiteExtinction⟩
+  exact finiteExtinction
+
+/--
+Projecting finite extinction from a scalar-pointwise surgery payload is exactly
+the stored finite-extinction field.
+-/
+theorem finite_extinction_of_pointwise_equation_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M}
+    (payload :
+      SurgeryPackageWithEquationBoundaryPointwiseEquationPayload package) :
+    finite_extinction_of_pointwise_equation_payload payload =
+      (by
+        rcases payload with
+          ⟨_basePackage, _basePackage_eq, _equationBoundary, _verification,
+            _verification_eq, _metricDerivative, _metricDerivative_eq,
+            _derivativeId, _pointwiseEquation, _analyticBoundary,
+            finiteExtinction⟩
+        exact finiteExtinction) := by
+  apply Subsingleton.elim
+
+/--
+The named strengthened surgery-package finite-extinction projection is the
+finite-extinction projection of the named scalar-pointwise surgery payload.
+-/
+theorem finite_extinction_of_surgery_package_with_equation_boundary_to_pointwise_equation_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    finite_extinction_of_surgery_package_with_equation_boundary package =
+      finite_extinction_of_pointwise_equation_payload
+        (surgery_package_with_equation_boundary_pointwise_equation_payload
+          package) := by
+  apply Subsingleton.elim
+
 section SurgeryPackageFiniteExtinctionProjectionEqualities
 
 variable {n : ℕ∞ω}

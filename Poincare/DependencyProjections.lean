@@ -2105,6 +2105,63 @@ theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_equ
   apply Subsingleton.elim
 
 /--
+An arbitrary verification payload exposes finite extinction through the
+scalar-pointwise surgery payload reconstructed for each selected package.
+-/
+theorem finite_extinction_of_equation_boundary_verification_payload
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        FiniteExtinctionByRicciFlowWithSurgery M := by
+  intro M _ _ _ _ _ _
+  rcases
+      surgery_package_with_equation_boundary_pointwise_equation_payload_of_equation_boundary_verification_payload
+        payload M with
+    ⟨_n, _package, pointwisePayload⟩
+  exact finite_extinction_of_pointwise_equation_payload pointwisePayload
+
+/--
+The finite-extinction projection from a verification payload is exactly the
+finite-extinction projection of the selected boundary-carrying surgery package.
+-/
+theorem finite_extinction_of_equation_boundary_verification_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    finite_extinction_of_equation_boundary_verification_payload payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases payload M with
+          ⟨_n, package, _verification, _verification_eq, _equationBoundary,
+            _equationBoundary_eq, _metricDerivative,
+            _metricDerivative_eq_verification, _derivativeId,
+            _equationAtTime, _analyticBoundary⟩
+        exact finite_extinction_of_surgery_package_with_equation_boundary
+          package) := by
+  apply Subsingleton.elim
+
+/--
+The verification-payload finite-extinction projection is the
+finite-extinction projection of the reconstructed scalar-pointwise surgery
+payload.
+-/
+theorem finite_extinction_of_equation_boundary_verification_payload_to_pointwise_equation_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    finite_extinction_of_equation_boundary_verification_payload payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            surgery_package_with_equation_boundary_pointwise_equation_payload_of_equation_boundary_verification_payload
+              payload M with
+          ⟨_n, _package, pointwisePayload⟩
+        exact finite_extinction_of_pointwise_equation_payload
+          pointwisePayload) := by
+  apply Subsingleton.elim
+
+/--
 An arbitrary verification payload reconstructs the full
 derivative-strengthened surgery payload for each selected package.
 -/
