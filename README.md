@@ -1410,7 +1410,8 @@ The current artifact is intentionally conservative:
   boundary, remaining-dependency, and aggregate routes.
   Their constructor-specific ordinary checked routes also recover the named or
   unpacked strengthened certificates before any forgetful projection is taken,
-  and now pin the corresponding ordinary remaining-dependency routes.
+  and now pin the corresponding ordinary remaining-dependency and fully
+  forgetful aggregate routes.
   The certificate-layer equality contracts now pin the reserved-name, literal
   payload, canonical payload, target/criterion projection, remaining/aggregate
   dependency, and project-statement routes to their named projections and
