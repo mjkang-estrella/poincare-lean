@@ -950,6 +950,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   and ordinary full-assembly payload projections, raw and certified, through
   the projected strengthened package and its forgetful remaining-dependency
   package.
+  The named remaining-package and aggregate boundary-aware certificate
+  constructors now have direct roundtrip contracts for those strengthened and
+  ordinary full-assembly projections, again raw and certified.
   It also projects the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/
