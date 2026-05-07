@@ -1399,6 +1399,9 @@ The current artifact is intentionally conservative:
   artifact payload projections are also pinned directly to the projected
   strengthened dependency, boundary-certificate, ordinary remaining-dependency,
   and ordinary aggregate routes where those routes are defined.
+  The reverse literal, aggregate-dependency, and project-statement payload
+  constructors for that checked certificate are pinned to the same projected,
+  boundary, remaining-dependency, and aggregate routes.
   The certificate-layer equality contracts now pin the reserved-name, literal
   payload, canonical payload, target/criterion projection, remaining/aggregate
   dependency, and project-statement routes to their named projections and
