@@ -898,7 +898,9 @@ The current artifact is intentionally conservative:
   forgetting the equation-boundary data, and their canonical topological
   statement projections are pinned through the same forgetful routes. Their
   literal and aggregate canonical-statement payload projections now follow those
-  same ordinary certificate routes as well.
+  same ordinary certificate routes as well, and reconstructing certificates from
+  those canonical-statement payloads follows the same ordinary remaining-dependency
+  and aggregate routes.
   It also exposes the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/
