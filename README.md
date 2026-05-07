@@ -1403,7 +1403,8 @@ The current artifact is intentionally conservative:
   named remaining-package, named aggregate, arbitrary verification-payload, and
   existential verification-payload constructors, including their routes through
   the ordinary remaining-dependency certificates after equation-boundary data is
-  forgotten.
+  forgotten and their aggregate routes through the fully forgetful dependency
+  certificate.
   The reverse literal, aggregate-dependency, and project-statement payload
   constructors for that checked certificate are pinned to the same projected,
   boundary, remaining-dependency, and aggregate routes.
