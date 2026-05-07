@@ -8401,6 +8401,73 @@ theorem finite_extinction_of_dependencies_to_package_eq
   apply Subsingleton.elim
 
 /--
+The strengthened dependency package supplies finite extinction by installing
+its smoothability bridge and extracting the witness from the named
+equation-boundary verification payload.
+-/
+theorem finite_extinction_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        FiniteExtinctionByRicciFlowWithSurgery M := by
+  intro M _ _ _ _ _
+  letI : IsManifold ThreeManifoldModelWithCorners 1 M :=
+    smoothability_bridge_of_dependencies
+      (dependencies_of_equation_boundary_dependencies dependencies) M
+  exact
+    finite_extinction_of_equation_boundary_verification_payload
+      (equation_boundary_verification_payload_of_dependencies dependencies) M
+
+/--
+The strengthened dependency finite-extinction theorem is exactly the
+verification-payload route after installing the forgetful smoothability bridge.
+-/
+theorem finite_extinction_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    finite_extinction_of_equation_boundary_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _
+        letI : IsManifold ThreeManifoldModelWithCorners 1 M :=
+          smoothability_bridge_of_dependencies
+            (dependencies_of_equation_boundary_dependencies dependencies) M
+        exact
+          finite_extinction_of_equation_boundary_verification_payload
+            (equation_boundary_verification_payload_of_dependencies
+              dependencies) M) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency finite-extinction theorem is the finite-extinction
+projection of the named verification payload.
+-/
+theorem finite_extinction_of_equation_boundary_dependencies_to_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    finite_extinction_of_equation_boundary_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _
+        letI : IsManifold ThreeManifoldModelWithCorners 1 M :=
+          smoothability_bridge_of_dependencies
+            (dependencies_of_equation_boundary_dependencies dependencies) M
+        exact
+          finite_extinction_of_equation_boundary_verification_payload
+            (equation_boundary_verification_payload_of_dependencies
+              dependencies) M) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation boundaries and then using the ordinary dependency
+finite-extinction theorem agrees with the strengthened dependency
+finite-extinction route.
+-/
+theorem finite_extinction_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    finite_extinction_of_equation_boundary_dependencies dependencies =
+      finite_extinction_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies the post-extinction topological
 extraction theorem used by the final assembly layer.
 -/

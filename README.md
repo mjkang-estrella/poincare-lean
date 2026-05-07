@@ -338,7 +338,10 @@ The current artifact is intentionally conservative:
   projections through that reconstructed pointwise surgery payload. The same
   pointwise payload now exposes finite extinction directly, with named
   strengthened surgery-package and arbitrary verification-payload extinction
-  projections routed through it. Boundary-aware
+  projections routed through it. The strengthened dependency package now also
+  supplies finite extinction through its named verification payload after
+  installing the smoothability bridge, and that route is pinned to the
+  forgetful ordinary-dependency finite-extinction theorem. Boundary-aware
   verification certificates also recover the boundary surgery package payload
   through arbitrary remaining-package, arbitrary aggregate, existential
   verification-payload, named remaining-package, and named aggregate
