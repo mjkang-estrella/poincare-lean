@@ -2847,6 +2847,20 @@ check_decl "finite-extinction surgery package derivative payload theorem is decl
   '^theorem surgery_package_with_equation_boundary_derivative_payload\b' Poincare/Surgery.lean
 check_decl "finite-extinction surgery package derivative payload equality theorem is declared" \
   '^theorem surgery_package_with_equation_boundary_derivative_payload_eq\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package pointwise payload shape is declared" \
+  '^abbrev SurgeryPackageWithEquationBoundaryPointwiseEquationPayload\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package pointwise payload shape equality theorem is declared" \
+  '^theorem surgeryPackageWithEquationBoundaryPointwiseEquationPayload_eq\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package pointwise payload theorem is declared" \
+  '^theorem surgery_package_with_equation_boundary_pointwise_equation_payload\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package pointwise payload equality theorem is declared" \
+  '^theorem surgery_package_with_equation_boundary_pointwise_equation_payload_eq\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package derivative payload pointwise reconstruction theorem is declared" \
+  '^theorem surgery_package_with_equation_boundary_derivative_payload_of_pointwise_equation_payload\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package derivative payload pointwise reconstruction equality theorem is declared" \
+  '^theorem surgery_package_with_equation_boundary_derivative_payload_of_pointwise_equation_payload_eq\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package pointwise-to-derivative route theorem is declared" \
+  '^theorem surgery_package_with_equation_boundary_pointwise_equation_payload_to_derivative_payload_eq\b' Poincare/Surgery.lean
 check_decl "surgery package analytic foundation projection is declared" \
   '^noncomputable def analytic_foundation_of_surgery_package\b' Poincare/Surgery.lean
 check_decl "surgery package analytic foundation equality theorem is declared" \
@@ -4547,6 +4561,14 @@ check_decl "equation-boundary surgery derivative dependency projection theorem i
   '^theorem surgery_package_with_equation_boundary_derivative_payload_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary surgery derivative dependency projection equality theorem is declared" \
   '^theorem surgery_package_with_equation_boundary_derivative_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary surgery pointwise dependency projection theorem is declared" \
+  '^theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary surgery pointwise dependency projection equality theorem is declared" \
+  '^theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary pointwise equation dependency pointwise surgery route theorem is declared" \
+  '^theorem equation_boundary_pointwise_equation_payload_of_dependencies_to_surgery_pointwise_equation_payload_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary surgery derivative dependency pointwise route theorem is declared" \
+  '^theorem surgery_package_with_equation_boundary_derivative_payload_of_dependencies_to_pointwise_equation_payload_eq\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary surgery package boundary payload dependency projection theorem is declared" \
   '^theorem surgery_package_with_equation_boundary_payload_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary surgery package boundary payload dependency projection equality theorem is declared" \
@@ -4573,10 +4595,16 @@ check_decl "equation-boundary pointwise equation projection from verification pa
   '^theorem equation_boundary_pointwise_equation_payload_of_equation_boundary_verification_payload\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary pointwise equation projection from verification payload equality theorem is declared" \
   '^theorem equation_boundary_pointwise_equation_payload_of_equation_boundary_verification_payload_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary surgery pointwise projection from verification payload is declared" \
+  '^theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_equation_boundary_verification_payload\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary surgery pointwise projection from verification payload equality theorem is declared" \
+  '^theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_equation_boundary_verification_payload_eq\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary surgery derivative projection from verification payload is declared" \
   '^theorem surgery_package_with_equation_boundary_derivative_payload_of_equation_boundary_verification_payload\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary surgery derivative projection from verification payload equality theorem is declared" \
   '^theorem surgery_package_with_equation_boundary_derivative_payload_of_equation_boundary_verification_payload_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary surgery derivative projection from verification payload pointwise route theorem is declared" \
+  '^theorem surgery_package_with_equation_boundary_derivative_payload_of_equation_boundary_verification_payload_to_pointwise_equation_payload_eq\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary surgery package boundary payload projection from verification payload is declared" \
   '^theorem surgery_package_with_equation_boundary_payload_of_equation_boundary_verification_payload\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary surgery package boundary payload projection from verification payload equality theorem is declared" \
@@ -5991,6 +6019,12 @@ check_decl "strengthened remaining dependency surgery derivative payload equalit
   '^theorem surgery_package_with_equation_boundary_derivative_payload_of_remaining_dependency_package_eq\b' Poincare/CompletionTarget.lean
 check_decl "strengthened remaining dependency surgery derivative dependency route contract is declared" \
   '^theorem surgery_package_with_equation_boundary_derivative_payload_of_remaining_dependency_package_to_dependencies_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened remaining dependency surgery pointwise payload theorem is declared" \
+  '^theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_remaining_dependency_package\b' Poincare/CompletionTarget.lean
+check_decl "strengthened remaining dependency surgery pointwise payload equality contract is declared" \
+  '^theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_remaining_dependency_package_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened remaining dependency surgery pointwise dependency route contract is declared" \
+  '^theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_remaining_dependency_package_to_dependencies_eq\b' Poincare/CompletionTarget.lean
 check_decl "strengthened remaining dependency surgery package boundary payload theorem is declared" \
   '^theorem surgery_package_with_equation_boundary_payload_of_remaining_dependency_package\b' Poincare/CompletionTarget.lean
 check_decl "strengthened remaining dependency surgery package boundary payload equality contract is declared" \
@@ -6013,6 +6047,8 @@ check_decl "strengthened remaining dependency equation-boundary pointwise equati
   '^theorem equation_boundary_pointwise_equation_payload_of_remaining_dependency_package_to_verification_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "strengthened remaining dependency surgery derivative verification route contract is declared" \
   '^theorem surgery_package_with_equation_boundary_derivative_payload_of_remaining_dependency_package_to_verification_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened remaining dependency surgery pointwise verification route contract is declared" \
+  '^theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_remaining_dependency_package_to_verification_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "strengthened remaining dependency surgery package boundary payload verification route contract is declared" \
   '^theorem surgery_package_with_equation_boundary_payload_of_remaining_dependency_package_to_verification_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "strengthened remaining dependency analytic equation-boundary projection theorem is declared" \
@@ -6139,6 +6175,12 @@ check_decl "strengthened aggregate dependency surgery derivative payload equalit
   '^theorem surgery_package_with_equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary_eq\b' Poincare/CompletionTarget.lean
 check_decl "strengthened aggregate dependency surgery derivative payload dependencies route contract is declared" \
   '^theorem surgery_package_with_equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary_to_dependencies_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened aggregate dependency surgery pointwise payload theorem is declared" \
+  '^theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary\b' Poincare/CompletionTarget.lean
+check_decl "strengthened aggregate dependency surgery pointwise payload equality contract is declared" \
+  '^theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened aggregate dependency surgery pointwise payload dependencies route contract is declared" \
+  '^theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary_to_dependencies_eq\b' Poincare/CompletionTarget.lean
 check_decl "strengthened aggregate dependency surgery package boundary payload theorem is declared" \
   '^theorem surgery_package_with_equation_boundary_payload_of_poincareProofDependenciesWithEquationBoundary\b' Poincare/CompletionTarget.lean
 check_decl "strengthened aggregate dependency surgery package boundary payload equality contract is declared" \
@@ -6167,6 +6209,8 @@ check_decl "strengthened aggregate dependency equation-boundary pointwise equati
   '^theorem equation_boundary_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary_to_verification_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "strengthened aggregate dependency surgery derivative verification route contract is declared" \
   '^theorem surgery_package_with_equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary_to_verification_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened aggregate dependency surgery pointwise verification route contract is declared" \
+  '^theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary_to_verification_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "strengthened aggregate dependency surgery package boundary payload verification route contract is declared" \
   '^theorem surgery_package_with_equation_boundary_payload_of_poincareProofDependenciesWithEquationBoundary_to_verification_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "strengthened aggregate dependency analytic equation-boundary projection theorem is declared" \
@@ -7174,6 +7218,12 @@ check_decl "boundary-aware verification certificate surgery derivative payload p
   '^theorem surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate surgery derivative payload projection equality contract is declared" \
   '^theorem surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "boundary-aware verification certificate surgery pointwise payload projection is declared" \
+  '^theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload\b' Poincare/CompletionTarget.lean
+check_decl "boundary-aware verification certificate surgery pointwise payload projection equality contract is declared" \
+  '^theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "boundary-aware verification certificate surgery derivative pointwise route is declared" \
+  '^theorem surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_pointwise_equation_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate analytic equation-boundary projection is declared" \
   '^theorem analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate analytic equation-boundary projection equality contract is declared" \

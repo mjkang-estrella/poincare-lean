@@ -3229,6 +3229,46 @@ theorem surgery_package_with_equation_boundary_derivative_payload_of_remaining_d
   apply Subsingleton.elim
 
 /--
+The strengthened remaining package exposes the scalar-pointwise surgery payload
+for each selected boundary-carrying surgery package.
+-/
+theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_remaining_dependency_package
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+          SurgeryPackageWithEquationBoundaryPointwiseEquationPayload package :=
+  surgery_package_with_equation_boundary_pointwise_equation_payload_of_dependencies
+    dependencies
+
+/--
+The strengthened remaining-package scalar-pointwise surgery payload is the
+dependency-projection scalar-pointwise surgery payload.
+-/
+theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_pointwise_equation_payload_of_remaining_dependency_package
+        dependencies =
+      surgery_package_with_equation_boundary_pointwise_equation_payload_of_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package scalar-pointwise surgery payload agrees
+directly with the named dependency projection.
+-/
+theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_remaining_dependency_package_to_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_pointwise_equation_payload_of_remaining_dependency_package
+        dependencies =
+      surgery_package_with_equation_boundary_pointwise_equation_payload_of_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining package exposes the boundary-carrying surgery
 package payload for each selected boundary-carrying surgery package.
 -/
@@ -3423,6 +3463,19 @@ theorem surgery_package_with_equation_boundary_derivative_payload_of_remaining_d
     surgery_package_with_equation_boundary_derivative_payload_of_remaining_dependency_package
         dependencies =
       surgery_package_with_equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package scalar-pointwise surgery payload is
+reconstructed from its named verification payload.
+-/
+theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_remaining_dependency_package_to_verification_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_pointwise_equation_payload_of_remaining_dependency_package
+        dependencies =
+      surgery_package_with_equation_boundary_pointwise_equation_payload_of_equation_boundary_verification_payload
         (equation_boundary_verification_payload_of_remaining_dependency_package
           dependencies) := by
   apply Subsingleton.elim
@@ -4366,6 +4419,46 @@ theorem surgery_package_with_equation_boundary_derivative_payload_of_poincarePro
   apply Subsingleton.elim
 
 /--
+The strengthened aggregate dependency package exposes the scalar-pointwise
+surgery payload through the strengthened remaining-package route.
+-/
+theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+          SurgeryPackageWithEquationBoundaryPointwiseEquationPayload package :=
+  surgery_package_with_equation_boundary_pointwise_equation_payload_of_remaining_dependency_package
+    dependencies
+
+/--
+The strengthened aggregate scalar-pointwise surgery payload is the strengthened
+remaining-package scalar-pointwise surgery payload.
+-/
+theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      surgery_package_with_equation_boundary_pointwise_equation_payload_of_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate scalar-pointwise surgery payload agrees with the
+named dependency projection.
+-/
+theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary_to_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      surgery_package_with_equation_boundary_pointwise_equation_payload_of_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate dependency package exposes the boundary-carrying
 surgery package payload through the strengthened remaining-package route.
 -/
@@ -4607,6 +4700,19 @@ theorem surgery_package_with_equation_boundary_derivative_payload_of_poincarePro
     surgery_package_with_equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary
         dependencies =
       surgery_package_with_equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate scalar-pointwise surgery payload is reconstructed
+from its named verification payload.
+-/
+theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary_to_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      surgery_package_with_equation_boundary_pointwise_equation_payload_of_equation_boundary_verification_payload
         (equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
           dependencies) := by
   apply Subsingleton.elim
@@ -11590,6 +11696,68 @@ theorem surgery_package_with_equation_boundary_derivative_payload_of_completion_
         exact
           surgery_package_with_equation_boundary_derivative_payload_of_equation_boundary_verification_payload
             verificationPayload) := by
+  apply Subsingleton.elim
+
+/--
+Project the scalar-pointwise surgery payload from a boundary-aware certificate
+through its stored verification payload.
+-/
+theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+          SurgeryPackageWithEquationBoundaryPointwiseEquationPayload package := by
+  rcases
+      equation_boundary_verification_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload with
+    ⟨_dependencies, verificationPayload⟩
+  exact
+    surgery_package_with_equation_boundary_pointwise_equation_payload_of_equation_boundary_verification_payload
+      verificationPayload
+
+/--
+The certificate scalar-pointwise surgery payload delegates through the stored
+verification-payload projection.
+-/
+theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    surgery_package_with_equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      (by
+        rcases
+            equation_boundary_verification_payload_of_completion_certificate_with_equation_boundary_verification_payload
+              payload with
+          ⟨_dependencies, verificationPayload⟩
+        exact
+          surgery_package_with_equation_boundary_pointwise_equation_payload_of_equation_boundary_verification_payload
+            verificationPayload) := by
+  apply Subsingleton.elim
+
+/--
+The certificate full surgery-derivative payload is reconstructed from the
+certificate scalar-pointwise surgery payload.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_pointwise_equation_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            surgery_package_with_equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload
+              payload M with
+          ⟨n, package, pointwisePayload⟩
+        exact
+          ⟨n, package,
+            surgery_package_with_equation_boundary_derivative_payload_of_pointwise_equation_payload
+              pointwisePayload⟩) := by
   apply Subsingleton.elim
 
 /--

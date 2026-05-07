@@ -9664,6 +9664,262 @@ theorem surgery_package_with_equation_boundary_derivative_payload_eq
               package⟩) := by
   apply Subsingleton.elim
 
+/--
+The scalar-pointwise version of the full boundary-carrying surgery payload.  It
+keeps the same package, equation boundary, verification, metric derivative,
+analytic-boundary statement, and finite-extinction conclusion as the derivative
+payload, but records the Ricci-flow equation after applying the tensor equation
+to every point and pair of tangent vectors.
+-/
+abbrev SurgeryPackageWithEquationBoundaryPointwiseEquationPayload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) : Prop :=
+    ∃ basePackage : FiniteExtinctionSurgeryPackage n M,
+    ∃ _basePackage_eq :
+      basePackage =
+        surgery_package_of_equation_boundary_surgery_package package,
+    ∃ _equationBoundary :
+      RicciFlowEquationBoundaryPackage
+        (ricci_flow_data_of_surgery_package
+          (surgery_package_of_equation_boundary_surgery_package package)),
+    ∃ verification :
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package
+            (surgery_package_of_equation_boundary_surgery_package package))),
+    ∃ _verification_eq :
+      verification =
+        ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
+          package,
+    ∃ metricDerivative :
+      MetricTimeDerivativeData
+        (metric_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package
+            (surgery_package_of_equation_boundary_surgery_package package))),
+    ∃ _metricDerivative_eq :
+      metricDerivative =
+        metric_derivative_data_of_surgery_package_with_equation_boundary
+          package,
+      IsMetricTimeDerivativeOf
+        (metric_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package
+            (surgery_package_of_equation_boundary_surgery_package package)))
+        (metric_time_derivative_field_of_metric_derivative_data
+          metricDerivative) ∧
+      (∀ (t : ℝ) (x : M)
+        (v w : TangentSpace ThreeManifoldModelWithCorners x),
+        metric_time_derivative_at_time_of_metric_derivative_field
+          (metric_time_derivative_field_of_metric_derivative_data
+            metricDerivative) t x v w =
+        ricci_flow_rhs_tensor
+          (curvature_data_of_ricci_flow_data
+            (ricci_flow_data_of_surgery_package
+              (surgery_package_of_equation_boundary_surgery_package
+                package))) t x v w) ∧
+      ∃ _analyticBoundary :
+        AnalyticFoundationWithEquationBoundaryStatement
+          (ricci_flow_data_of_surgery_package
+            (surgery_package_of_equation_boundary_surgery_package package)),
+        FiniteExtinctionByRicciFlowWithSurgery M
+
+/--
+The pointwise surgery payload expands to its explicit package, boundary,
+verification, metric-derivative, scalar equation, analytic-boundary, and
+finite-extinction tuple.
+-/
+theorem surgeryPackageWithEquationBoundaryPointwiseEquationPayload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    SurgeryPackageWithEquationBoundaryPointwiseEquationPayload package =
+      (∃ basePackage : FiniteExtinctionSurgeryPackage n M,
+      ∃ _basePackage_eq :
+        basePackage =
+          surgery_package_of_equation_boundary_surgery_package package,
+      ∃ _equationBoundary :
+        RicciFlowEquationBoundaryPackage
+          (ricci_flow_data_of_surgery_package
+            (surgery_package_of_equation_boundary_surgery_package package)),
+      ∃ verification :
+        RicciFlowEquationVerification
+          (curvature_data_of_ricci_flow_data
+            (ricci_flow_data_of_surgery_package
+              (surgery_package_of_equation_boundary_surgery_package package))),
+      ∃ _verification_eq :
+        verification =
+          ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
+            package,
+      ∃ metricDerivative :
+        MetricTimeDerivativeData
+          (metric_of_ricci_flow_data
+            (ricci_flow_data_of_surgery_package
+              (surgery_package_of_equation_boundary_surgery_package package))),
+      ∃ _metricDerivative_eq :
+        metricDerivative =
+          metric_derivative_data_of_surgery_package_with_equation_boundary
+            package,
+        IsMetricTimeDerivativeOf
+          (metric_of_ricci_flow_data
+            (ricci_flow_data_of_surgery_package
+              (surgery_package_of_equation_boundary_surgery_package package)))
+          (metric_time_derivative_field_of_metric_derivative_data
+            metricDerivative) ∧
+        (∀ (t : ℝ) (x : M)
+          (v w : TangentSpace ThreeManifoldModelWithCorners x),
+          metric_time_derivative_at_time_of_metric_derivative_field
+            (metric_time_derivative_field_of_metric_derivative_data
+              metricDerivative) t x v w =
+          ricci_flow_rhs_tensor
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package
+                (surgery_package_of_equation_boundary_surgery_package
+                  package))) t x v w) ∧
+        ∃ _analyticBoundary :
+          AnalyticFoundationWithEquationBoundaryStatement
+            (ricci_flow_data_of_surgery_package
+              (surgery_package_of_equation_boundary_surgery_package package)),
+          FiniteExtinctionByRicciFlowWithSurgery M) :=
+  rfl
+
+/--
+A strengthened surgery package exposes the scalar-pointwise equation payload
+alongside the same boundary and extinction data carried by the derivative
+payload.
+-/
+theorem surgery_package_with_equation_boundary_pointwise_equation_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    SurgeryPackageWithEquationBoundaryPointwiseEquationPayload package := by
+  exact
+    ⟨surgery_package_of_equation_boundary_surgery_package package,
+      rfl,
+      equation_boundary_of_surgery_package_with_equation_boundary package,
+      ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
+        package,
+      rfl,
+      metric_derivative_data_of_surgery_package_with_equation_boundary package,
+      rfl,
+      metric_time_derivative_identification_of_surgery_package_with_equation_boundary
+        package,
+      equation_at_time_apply_of_surgery_package_with_equation_boundary_projection
+        package,
+      analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+        package,
+      finite_extinction_of_surgery_package_with_equation_boundary package⟩
+
+/--
+The named pointwise surgery payload is exactly the tuple assembled from the
+package projections and the pointwise equation projection.
+-/
+theorem surgery_package_with_equation_boundary_pointwise_equation_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    surgery_package_with_equation_boundary_pointwise_equation_payload package =
+      (by
+        exact
+          ⟨surgery_package_of_equation_boundary_surgery_package package,
+            rfl,
+            equation_boundary_of_surgery_package_with_equation_boundary package,
+            ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
+              package,
+            rfl,
+            metric_derivative_data_of_surgery_package_with_equation_boundary
+              package,
+            rfl,
+            metric_time_derivative_identification_of_surgery_package_with_equation_boundary
+              package,
+            equation_at_time_apply_of_surgery_package_with_equation_boundary_projection
+              package,
+            analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+              package,
+            finite_extinction_of_surgery_package_with_equation_boundary
+              package⟩) := by
+  apply Subsingleton.elim
+
+/--
+The scalar-pointwise payload reconstructs the tensor-level derivative payload by
+function extensionality.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_pointwise_equation_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M}
+    (payload :
+      SurgeryPackageWithEquationBoundaryPointwiseEquationPayload package) :
+    SurgeryPackageWithEquationBoundaryDerivativePayload package := by
+  rcases payload with
+    ⟨basePackage, basePackage_eq, equationBoundary, verification,
+      verification_eq, metricDerivative, metricDerivative_eq, derivativeId,
+      pointwiseEquation, analyticBoundary, finiteExtinction⟩
+  exact
+    ⟨basePackage, basePackage_eq, equationBoundary, verification,
+      verification_eq, metricDerivative, metricDerivative_eq, derivativeId,
+      (fun t => by
+        funext x
+        ext v w
+        exact pointwiseEquation t x v w),
+      analyticBoundary, finiteExtinction⟩
+
+/--
+The derivative reconstruction from a scalar-pointwise payload is the explicit
+tuple obtained by tensor extensionality from the pointwise equation field.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_pointwise_equation_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M}
+    (payload :
+      SurgeryPackageWithEquationBoundaryPointwiseEquationPayload package) :
+    surgery_package_with_equation_boundary_derivative_payload_of_pointwise_equation_payload
+        payload =
+      (by
+        rcases payload with
+          ⟨basePackage, basePackage_eq, equationBoundary, verification,
+            verification_eq, metricDerivative, metricDerivative_eq,
+            derivativeId, pointwiseEquation, analyticBoundary,
+            finiteExtinction⟩
+        exact
+          ⟨basePackage, basePackage_eq, equationBoundary, verification,
+            verification_eq, metricDerivative, metricDerivative_eq,
+            derivativeId,
+            (fun t => by
+              funext x
+              ext v w
+              exact pointwiseEquation t x v w),
+            analyticBoundary, finiteExtinction⟩) := by
+  apply Subsingleton.elim
+
+/--
+Reconstructing the derivative payload from the named pointwise payload agrees
+with the existing package-level derivative payload theorem.
+-/
+theorem surgery_package_with_equation_boundary_pointwise_equation_payload_to_derivative_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    surgery_package_with_equation_boundary_derivative_payload package =
+      surgery_package_with_equation_boundary_derivative_payload_of_pointwise_equation_payload
+        (surgery_package_with_equation_boundary_pointwise_equation_payload
+          package) := by
+  apply Subsingleton.elim
+
 section SurgeryPackageFiniteExtinctionProjectionEqualities
 
 variable {n : ℕ∞ω}
