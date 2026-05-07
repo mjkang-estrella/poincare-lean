@@ -4377,6 +4377,20 @@ theorem canonical_three_sphere_statement_of_poincareProofDependenciesWithEquatio
   apply Subsingleton.elim
 
 /--
+The strengthened aggregate canonical topological statement agrees with the
+ordinary remaining-package canonical topological statement after forgetting
+equation-boundary data through the remaining-dependency wrapper.
+-/
+theorem canonical_three_sphere_statement_of_poincareProofDependenciesWithEquationBoundary_to_remaining_dependency_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      canonical_three_sphere_statement_of_dependencies
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining dependency package proves the canonical completion
 target through the certified extraction-derivation payload.
 -/
@@ -4634,6 +4648,20 @@ theorem canonical_completion_target_of_poincareProofDependenciesWithEquationBoun
   apply Subsingleton.elim
 
 /--
+The strengthened aggregate certified canonical target agrees with the ordinary
+certified aggregate target after forgetting equation-boundary data through the
+remaining-dependency wrapper.
+-/
+theorem canonical_completion_target_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_remaining_dependency_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_target_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        dependencies =
+      poincare_statement_of_aggregate_extraction_derivation_dependencies
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate dependency package proves the project Poincare
 statement through its certified canonical target route.
 -/
@@ -4689,6 +4717,20 @@ theorem poincare_statement_of_poincareProofDependenciesWithEquationBoundary_extr
         dependencies =
       poincare_statement_of_aggregate_extraction_derivation_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate certified project statement agrees with the ordinary
+certified aggregate project statement after forgetting equation-boundary data
+through the remaining-dependency wrapper.
+-/
+theorem poincare_statement_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_remaining_dependency_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        dependencies =
+      poincare_statement_of_aggregate_extraction_derivation_dependencies
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
   apply Subsingleton.elim
 
 /--
@@ -4763,6 +4805,22 @@ theorem completion_criterion_of_poincareProofDependenciesWithEquationBoundary_ex
   apply Subsingleton.elim
 
 /--
+The strengthened aggregate certified completion criterion agrees with the
+ordinary certified aggregate canonical criterion after forgetting
+equation-boundary data through the remaining-dependency wrapper.
+-/
+theorem completion_criterion_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_remaining_dependency_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        witness dependencies =
+      completion_criterion_of_aggregate_extraction_derivation_dependencies
+        witness
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate dependency package exposes the canonical three-sphere
 statement through the certified extraction-derivation target route.
 -/
@@ -4824,6 +4882,20 @@ theorem canonical_three_sphere_statement_of_poincareProofDependenciesWithEquatio
         dependencies =
       canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate certified canonical topological statement agrees with
+the ordinary certified aggregate topological statement after forgetting
+equation-boundary data through the remaining-dependency wrapper.
+-/
+theorem canonical_three_sphere_statement_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_remaining_dependency_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        dependencies =
+      canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
   apply Subsingleton.elim
 
 /-- The remaining dependency package supplies the smoothability package. -/
@@ -8385,6 +8457,20 @@ theorem canonical_completion_payload_of_poincareProofDependenciesWithEquationBou
   apply Subsingleton.elim
 
 /--
+The strengthened aggregate canonical payload agrees with the ordinary
+remaining-package canonical payload after forgetting equation-boundary data
+through the remaining-dependency wrapper.
+-/
+theorem canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary_to_remaining_dependency_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      canonical_completion_payload_of_dependencies
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate project payload agrees with the ordinary aggregate
 project payload after forgetting equation-boundary data.
 -/
@@ -8394,6 +8480,20 @@ theorem poincare_completion_payload_of_poincareProofDependenciesWithEquationBoun
         dependencies =
       poincare_completion_payload_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate project payload agrees with the ordinary
+remaining-package project payload after forgetting equation-boundary data through
+the remaining-dependency wrapper.
+-/
+theorem poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary_to_remaining_dependency_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      poincare_completion_payload_of_remaining_dependency_package
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
   apply Subsingleton.elim
 
 /--
@@ -8409,6 +8509,20 @@ theorem canonical_completion_target_of_poincareProofDependenciesWithEquationBoun
   apply Subsingleton.elim
 
 /--
+The strengthened aggregate canonical target agrees with the ordinary
+remaining-package canonical target after forgetting equation-boundary data
+through the remaining-dependency wrapper.
+-/
+theorem canonical_completion_target_of_poincareProofDependenciesWithEquationBoundary_to_remaining_dependency_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_target_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      canonical_completion_target_of_dependencies
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate project statement agrees with the ordinary aggregate
 project statement after forgetting equation-boundary data.
 -/
@@ -8418,6 +8532,20 @@ theorem poincare_statement_of_poincareProofDependenciesWithEquationBoundary_to_f
         dependencies =
       poincare_statement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate project statement agrees with the ordinary
+remaining-package project statement after forgetting equation-boundary data
+through the remaining-dependency wrapper.
+-/
+theorem poincare_statement_of_poincareProofDependenciesWithEquationBoundary_to_remaining_dependency_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      poincare_statement_of_dependencies
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
   apply Subsingleton.elim
 
 /--
@@ -8432,6 +8560,22 @@ theorem completion_criterion_of_poincareProofDependenciesWithEquationBoundary_to
       canonical_completion_criterion_of_dependencies
         witness
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate completion criterion agrees with the ordinary
+remaining-package canonical criterion after forgetting equation-boundary data
+through the remaining-dependency wrapper.
+-/
+theorem completion_criterion_of_poincareProofDependenciesWithEquationBoundary_to_remaining_dependency_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_poincareProofDependenciesWithEquationBoundary
+        witness dependencies =
+      canonical_completion_criterion_of_dependencies
+        witness
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
   apply Subsingleton.elim
 
 /--
