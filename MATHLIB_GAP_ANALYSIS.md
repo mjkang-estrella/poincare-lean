@@ -84,10 +84,13 @@ verifies `∂ₜ g = -2 Ricci` by reducing both sides to zero. The same explicit
 inputs now build zero Ricci-flow data and an analytic equation-boundary
 package. `analytic_foundation_package_of_subobligations_payload` supplies the
 generic bridge from fixed Ricci-flow data plus the ordinary analytic
-sub-obligation payload to a full analytic-foundation package, and the zero route
-uses that bridge. Thus the flat/stationary candidate route reaches the
-strengthened analytic equation-boundary statement without inventing any
-constructor for the missing equation interface.
+sub-obligation payload to a full analytic-foundation package, and
+`analytic_foundation_with_equation_boundary_of_subobligations_payload_and_ricci_flow_equation_verification`
+adds the corresponding flow-level route from that payload plus explicit
+equation verification to the strengthened analytic equation-boundary statement.
+The zero route uses both generic bridges. Thus the flat/stationary candidate
+route reaches the strengthened analytic equation-boundary statement without
+inventing any constructor for the missing equation interface.
 
 `Poincare/Surgery.lean` adds the next typed boundary: Ricci flow with surgery,
 Perelman singularity control, and derivation of finite extinction. These are

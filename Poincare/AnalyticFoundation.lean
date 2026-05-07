@@ -2982,6 +2982,80 @@ using the boundary package constructed from the supplied verification.
   apply Subsingleton.elim
 
 /--
+Fixed Ricci-flow data, the named analytic sub-obligation payload for that flow,
+and an explicit pointwise equation verification supply the strengthened
+analytic equation-boundary statement.
+-/
+theorem analytic_foundation_with_equation_boundary_of_subobligations_payload_and_ricci_flow_equation_verification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M)
+    (subobligations : AnalyticFoundationSubobligationsPayload flow)
+    (verification :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow)) :
+    AnalyticFoundationWithEquationBoundaryStatement flow := by
+  let package :=
+    analytic_foundation_package_of_subobligations_payload flow subobligations
+  have hflow : package.flow = flow :=
+    analytic_foundation_package_of_subobligations_payload_eq
+      flow subobligations
+  have hverification :
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) := by
+    change RicciFlowEquationVerification
+      (curvature_data_of_ricci_flow_data package.flow)
+    rw [hflow]
+    exact verification
+  have result :
+      AnalyticFoundationWithEquationBoundaryStatement
+        (ricci_flow_data_of_analytic_foundation_package package) :=
+    analytic_foundation_with_equation_boundary_of_package_and_ricci_flow_equation_verification
+      package hverification
+  simpa [ricci_flow_data_of_analytic_foundation_package, hflow] using result
+
+/--
+The flow-level payload-plus-verification route delegates through the generic
+payload-to-package bridge and the package-plus-verification assembler.
+-/
+@[simp] theorem analytic_foundation_with_equation_boundary_of_subobligations_payload_and_ricci_flow_equation_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M)
+    (subobligations : AnalyticFoundationSubobligationsPayload flow)
+    (verification :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow)) :
+    analytic_foundation_with_equation_boundary_of_subobligations_payload_and_ricci_flow_equation_verification
+      flow subobligations verification =
+      (by
+        let package :=
+          analytic_foundation_package_of_subobligations_payload
+            flow subobligations
+        have hflow : package.flow = flow :=
+          analytic_foundation_package_of_subobligations_payload_eq
+            flow subobligations
+        have hverification :
+            RicciFlowEquationVerification
+              (curvature_data_of_ricci_flow_data
+                (ricci_flow_data_of_analytic_foundation_package package)) := by
+          change RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data package.flow)
+          rw [hflow]
+          exact verification
+        have result :
+            AnalyticFoundationWithEquationBoundaryStatement
+              (ricci_flow_data_of_analytic_foundation_package package) :=
+          analytic_foundation_with_equation_boundary_of_package_and_ricci_flow_equation_verification
+            package hverification
+        simpa [ricci_flow_data_of_analytic_foundation_package, hflow] using
+          result) := by
+  apply Subsingleton.elim
+
+/--
 Analytic package for zero Ricci-flow data from the existing analytic
 sub-obligation payload.
 
@@ -3050,31 +3124,16 @@ theorem analytic_foundation_with_equation_boundary_of_zero_ricci_flow_analytic_f
         (zero_ricci_flow_data g identifiesRicci equationEvidence)) :
     AnalyticFoundationWithEquationBoundaryStatement
       (zero_ricci_flow_data g identifiesRicci equationEvidence) := by
-  let package :=
-    zero_ricci_flow_analytic_foundation_package
-      identifiesRicci equationEvidence subobligations
-  have hflow :
-      ricci_flow_data_of_analytic_foundation_package package =
-        zero_ricci_flow_data g identifiesRicci equationEvidence :=
-    zero_ricci_flow_analytic_foundation_package_eq
-      identifiesRicci equationEvidence subobligations
-  have hflow' :
-      package.flow = zero_ricci_flow_data g identifiesRicci equationEvidence := by
-    simpa [ricci_flow_data_of_analytic_foundation_package] using hflow
-  have boundary :
-      RicciFlowEquationBoundaryPackage
-        package.flow := by
-    rw [hflow']
-    exact zero_ricci_flow_equation_boundary_package
-      identifiesDerivative identifiesRicci equationEvidence
-  have result : AnalyticFoundationWithEquationBoundaryStatement package.flow := by
-    simpa [ricci_flow_data_of_analytic_foundation_package] using
-      analytic_foundation_with_equation_boundary_of_package package boundary
-  simpa [hflow'] using result
+  exact
+    analytic_foundation_with_equation_boundary_of_subobligations_payload_and_ricci_flow_equation_verification
+      (zero_ricci_flow_data g identifiesRicci equationEvidence)
+      subobligations
+      (zero_ricci_flow_equation_verification
+        identifiesDerivative identifiesRicci)
 
 /--
-The zero analytic equation-boundary route delegates to the package-plus-boundary
-assembler after projecting the zero flow data from the analytic package.
+The zero analytic equation-boundary route delegates to the generic
+payload-plus-verification assembler for the zero Ricci-flow data.
 -/
 @[simp] theorem analytic_foundation_with_equation_boundary_of_zero_ricci_flow_analytic_foundation_package_eq
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -3093,29 +3152,12 @@ assembler after projecting the zero flow data from the analytic package.
     analytic_foundation_with_equation_boundary_of_zero_ricci_flow_analytic_foundation_package
       identifiesDerivative identifiesRicci equationEvidence subobligations =
       (by
-        let package :=
-          zero_ricci_flow_analytic_foundation_package
-            identifiesRicci equationEvidence subobligations
-        have hflow :
-            ricci_flow_data_of_analytic_foundation_package package =
-              zero_ricci_flow_data g identifiesRicci equationEvidence :=
-          zero_ricci_flow_analytic_foundation_package_eq
-            identifiesRicci equationEvidence subobligations
-        have hflow' :
-            package.flow = zero_ricci_flow_data g identifiesRicci equationEvidence := by
-          simpa [ricci_flow_data_of_analytic_foundation_package] using hflow
-        have boundary :
-            RicciFlowEquationBoundaryPackage
-              package.flow := by
-          rw [hflow']
-          exact zero_ricci_flow_equation_boundary_package
-            identifiesDerivative identifiesRicci equationEvidence
-        have result :
-            AnalyticFoundationWithEquationBoundaryStatement package.flow := by
-          simpa [ricci_flow_data_of_analytic_foundation_package] using
-            analytic_foundation_with_equation_boundary_of_package
-              package boundary
-        simpa [hflow'] using result) := by
+        exact
+          analytic_foundation_with_equation_boundary_of_subobligations_payload_and_ricci_flow_equation_verification
+            (zero_ricci_flow_data g identifiesRicci equationEvidence)
+            subobligations
+            (zero_ricci_flow_equation_verification
+              identifiesDerivative identifiesRicci)) := by
   apply Subsingleton.elim
 
 /--

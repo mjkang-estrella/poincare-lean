@@ -285,7 +285,11 @@ It is not a proof. It is a work breakdown for future Lean development.
   reverse bridge
   `analytic_foundation_package_of_subobligations_payload` builds an
   analytic-foundation package from fixed Ricci-flow data and that same named
-  sub-obligation payload, with a checked flow-projection equality. The
+  sub-obligation payload, with a checked flow-projection equality; the
+  flow-level route
+  `analytic_foundation_with_equation_boundary_of_subobligations_payload_and_ricci_flow_equation_verification`
+  then combines that payload with explicit equation verification to produce the
+  strengthened analytic equation-boundary statement. The
   component assembler is pinned to the exact tuple of connection, curvature,
   DeTurck, continuation, regularity, evolution, Ricci-identification, and
   equation witnesses; the derivation-statement sub-obligation bridge is pinned
@@ -301,9 +305,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   metric-derivative, Ricci-identification, and abstract equation-interface
   inputs explicit. Given the existing analytic sub-obligation payload for that
   zero flow data, `zero_ricci_flow_analytic_foundation_package` now delegates to
-  the generic payload-to-package bridge, and the strengthened analytic
-  equation-boundary statement follows from the same explicit zero equation
-  verification.
+  the generic payload-to-package bridge, and the strengthened zero analytic
+  equation-boundary statement delegates to the generic payload-plus-verification
+  route using the same explicit zero equation verification.
 - `Poincare/Surgery.lean` defines no-constructor interfaces for Ricci flow with
   surgery, Perelman singularity control, and finite-extinction derivation, plus
   checked package projections to the analytic foundation. Its direct package
