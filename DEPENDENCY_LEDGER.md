@@ -953,6 +953,9 @@ It is not a proof. It is a work breakdown for future Lean development.
   The named remaining-package and aggregate boundary-aware certificate
   constructors now have direct roundtrip contracts for those strengthened and
   ordinary full-assembly projections, again raw and certified.
+  The arbitrary-verification remaining-package and aggregate boundary-aware
+  certificate constructors now have the same strengthened and ordinary
+  full-assembly projection roundtrip contracts.
   It also projects the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/
