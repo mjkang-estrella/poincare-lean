@@ -5823,6 +5823,30 @@ check_decl "strengthened aggregate dependency certified project payload forgetfu
   '^theorem poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_forgetful_dependencies_eq\b' Poincare/CompletionTarget.lean
 check_decl "strengthened aggregate dependency certified project payload remaining-dependency equality contract is declared" \
   '^theorem poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened remaining dependency full-assembly forgetful projection is declared" \
+  '^theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_to_remaining_dependency\b' Poincare/CompletionTarget.lean
+check_decl "strengthened remaining dependency full-assembly forgetful equality contract is declared" \
+  '^theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened remaining dependency certified full-assembly forgetful projection is declared" \
+  '^theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation_to_remaining_dependency\b' Poincare/CompletionTarget.lean
+check_decl "strengthened remaining dependency certified full-assembly forgetful equality contract is declared" \
+  '^theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened aggregate dependency full-assembly forgetful projection is declared" \
+  '^theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies\b' Poincare/CompletionTarget.lean
+check_decl "strengthened aggregate dependency full-assembly forgetful equality contract is declared" \
+  '^theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened aggregate dependency full-assembly remaining-dependency projection is declared" \
+  '^theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_to_remaining_dependency\b' Poincare/CompletionTarget.lean
+check_decl "strengthened aggregate dependency full-assembly remaining-dependency equality contract is declared" \
+  '^theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened aggregate dependency certified full-assembly forgetful projection is declared" \
+  '^theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_forgetful_dependencies\b' Poincare/CompletionTarget.lean
+check_decl "strengthened aggregate dependency certified full-assembly forgetful equality contract is declared" \
+  '^theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_forgetful_dependencies_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened aggregate dependency certified full-assembly remaining-dependency projection is declared" \
+  '^theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_remaining_dependency\b' Poincare/CompletionTarget.lean
+check_decl "strengthened aggregate dependency certified full-assembly remaining-dependency equality contract is declared" \
+  '^theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
 check_decl "strengthened aggregate dependency equation-boundary derivative payload theorem is declared" \
   '^theorem equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary\b' Poincare/CompletionTarget.lean
 check_decl "strengthened aggregate dependency equation-boundary derivative payload equality contract is declared" \

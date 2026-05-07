@@ -941,6 +941,11 @@ It is not a proof. It is a work breakdown for future Lean development.
   remaining-package and aggregate-package surfaces are also pinned back to the
   ordinary certified aggregate extraction-derivation payloads after forgetting
   equation-boundary data.
+  The strengthened remaining-package and aggregate full-assembly payload routes
+  now also expose ordinary forgetful full-assembly payload projections, raw and
+  certified, so the boundary-carrying surgery-family assembly layer can be
+  compared against the ordinary dependency assembly layer without changing the
+  strengthened payload type.
   It also projects the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/
