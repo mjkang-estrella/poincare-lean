@@ -1157,6 +1157,9 @@ The current artifact is intentionally conservative:
   pointwise equation-boundary payload for the selected surgery package.
   The strengthened aggregate package now mirrors that same pointwise
   equation-boundary payload through the strengthened remaining-package route.
+  Arbitrary verification payloads now also project to that pointwise equation
+  payload, and the dependency, remaining-package, and aggregate routes are
+  pinned through the verification-payload projection.
   The
   theorem
   `canonical_completion_payload_of_remaining_dependency_component_requirements`

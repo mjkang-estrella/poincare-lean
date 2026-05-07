@@ -3308,6 +3308,19 @@ theorem equation_boundary_derivative_payload_of_remaining_dependency_package_to_
   apply Subsingleton.elim
 
 /--
+The strengthened remaining-package pointwise equation payload is the pointwise
+projection of its named verification payload.
+-/
+theorem equation_boundary_pointwise_equation_payload_of_remaining_dependency_package_to_verification_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    equation_boundary_pointwise_equation_payload_of_remaining_dependency_package
+        dependencies =
+      equation_boundary_pointwise_equation_payload_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining-package full surgery derivative payload is
 reconstructed from its named verification payload.
 -/
@@ -4342,6 +4355,19 @@ theorem equation_boundary_derivative_payload_of_poincareProofDependenciesWithEqu
     equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary
         dependencies =
       equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate pointwise equation payload is the pointwise
+projection of its named verification payload.
+-/
+theorem equation_boundary_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary_to_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      equation_boundary_pointwise_equation_payload_of_equation_boundary_verification_payload
         (equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
           dependencies) := by
   apply Subsingleton.elim
