@@ -322,7 +322,9 @@ The current artifact is intentionally conservative:
   Boundary-aware verification certificates also recover the boundary surgery
   package payload through arbitrary remaining-package, arbitrary aggregate,
   existential verification-payload, named remaining-package, and named
-  aggregate constructors.
+  aggregate constructors. The public root, semantic, and axiom audits now also
+  check the direct-verification-payload and projected-strengthened-dependency
+  routes for the certificate-level equation-boundary projection family.
   The dependency-level surgery-construction route now exposes
   `surgery_construction_statement_payload_of_dependencies`, which packages the
   construction package, theorem-shaped construction statement, construction
