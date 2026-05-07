@@ -551,14 +551,26 @@ check_decl "zero Ricci-flow equation boundary package is declared" \
   '^noncomputable def zero_ricci_flow_equation_boundary_package\b' Poincare/AnalyticFoundation.lean
 check_decl "zero Ricci-flow equation boundary package equality contract is declared" \
   '^@\[simp\] theorem zero_ricci_flow_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow equation boundary package is declared" \
+  '^noncomputable def stationary_zero_ricci_flow_equation_boundary_package\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow equation boundary package equality contract is declared" \
+  '^@\[simp\] theorem stationary_zero_ricci_flow_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "zero Ricci-flow equation boundary verification projection contract is declared" \
   '^@\[simp\] theorem ricci_flow_equation_verification_of_zero_ricci_flow_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow equation boundary verification projection contract is declared" \
+  '^@\[simp\] theorem ricci_flow_equation_verification_of_stationary_zero_ricci_flow_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "zero Ricci-flow equation boundary equation-evidence projection contract is declared" \
   '^@\[simp\] theorem equation_evidence_of_zero_ricci_flow_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow equation boundary evidence projection contract is declared" \
+  '^@\[simp\] theorem equation_evidence_of_stationary_zero_ricci_flow_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "zero Ricci-flow data to equation-boundary statement theorem is declared" \
   '^theorem ricciFlowEquationBoundaryStatement_of_zero_ricci_flow_data\b' Poincare/AnalyticFoundation.lean
 check_decl "zero Ricci-flow data to equation-boundary statement equality contract is declared" \
   '^@\[simp\] theorem ricciFlowEquationBoundaryStatement_of_zero_ricci_flow_data_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow data to equation-boundary statement theorem is declared" \
+  '^theorem ricciFlowEquationBoundaryStatement_of_stationary_zero_ricci_flow_data\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow data to equation-boundary statement equality contract is declared" \
+  '^@\[simp\] theorem ricciFlowEquationBoundaryStatement_of_stationary_zero_ricci_flow_data_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic sub-obligation payload to package constructor is declared" \
   '^noncomputable def analytic_foundation_package_of_subobligations_payload\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic sub-obligation payload to package equality contract is declared" \
@@ -579,14 +591,26 @@ check_decl "zero Ricci-flow analytic foundation package is declared" \
   '^noncomputable def zero_ricci_flow_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
 check_decl "zero Ricci-flow analytic foundation package equality contract is declared" \
   '^@\[simp\] theorem zero_ricci_flow_analytic_foundation_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow analytic foundation package is declared" \
+  '^noncomputable def stationary_zero_ricci_flow_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow analytic foundation package equality contract is declared" \
+  '^@\[simp\] theorem stationary_zero_ricci_flow_analytic_foundation_package_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "zero Ricci-flow sub-obligation boundary-package statement theorem is declared" \
   '^theorem analytic_foundation_with_equation_boundary_of_zero_ricci_flow_subobligations_payload_and_boundary_package\b' Poincare/AnalyticFoundation.lean
 check_decl "zero Ricci-flow sub-obligation boundary-package statement equality contract is declared" \
   '^@\[simp\] theorem analytic_foundation_with_equation_boundary_of_zero_ricci_flow_subobligations_payload_and_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow sub-obligation boundary-package statement theorem is declared" \
+  '^theorem analytic_foundation_with_equation_boundary_of_stationary_zero_ricci_flow_subobligations_payload_and_boundary_package\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow sub-obligation boundary-package statement equality contract is declared" \
+  '^@\[simp\] theorem analytic_foundation_with_equation_boundary_of_stationary_zero_ricci_flow_subobligations_payload_and_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "zero Ricci-flow analytic equation-boundary statement theorem is declared" \
   '^theorem analytic_foundation_with_equation_boundary_of_zero_ricci_flow_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
 check_decl "zero Ricci-flow analytic equation-boundary statement equality contract is declared" \
   '^@\[simp\] theorem analytic_foundation_with_equation_boundary_of_zero_ricci_flow_analytic_foundation_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow analytic equation-boundary statement theorem is declared" \
+  '^theorem analytic_foundation_with_equation_boundary_of_stationary_zero_ricci_flow_analytic_foundation_package\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow analytic equation-boundary statement equality contract is declared" \
+  '^@\[simp\] theorem analytic_foundation_with_equation_boundary_of_stationary_zero_ricci_flow_analytic_foundation_package_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "strengthened analytic equation-boundary statement is declared" \
   '^def AnalyticFoundationWithEquationBoundaryStatement\b' Poincare/AnalyticFoundation.lean
 check_decl "strengthened analytic equation-boundary statement equality theorem is declared" \

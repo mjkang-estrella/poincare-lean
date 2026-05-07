@@ -103,7 +103,10 @@ equation interface. The same layer now names the stationary time-dependent
 metric family induced by a single Riemannian metric, proves the resulting metric
 time slices, and specializes the zero-derivative/zero-Ricci verification payload
 and zero-flow metric/Ricci/scalar projection contracts to that stationary
-example.
+example. `Poincare/AnalyticFoundation.lean` now lifts that stationary example
+through the equation-boundary package, the boundary statement, the
+analytic-foundation package route, and the strengthened analytic
+equation-boundary statement.
 
 `Poincare/Surgery.lean` adds the next typed boundary: Ricci flow with surgery,
 Perelman singularity control, and derivation of finite extinction. These are

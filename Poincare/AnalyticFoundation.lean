@@ -491,6 +491,63 @@ noncomputable def zero_ricci_flow_equation_boundary_package
           identifiesDerivative identifiesRicci) :=
   rfl
 
+/-- Equation-boundary package for stationary zero Ricci-flow data. -/
+noncomputable def stationary_zero_ricci_flow_equation_boundary_package
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci)) :
+    RicciFlowEquationBoundaryPackage
+      (zero_ricci_flow_data
+        (stationary_time_dependent_riemannian_metric metric)
+        identifiesRicci equationEvidence) :=
+  zero_ricci_flow_equation_boundary_package
+    identifiesDerivative identifiesRicci equationEvidence
+
+/-- The stationary zero equation-boundary package delegates to the zero package. -/
+@[simp] theorem stationary_zero_ricci_flow_equation_boundary_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci)) :
+    stationary_zero_ricci_flow_equation_boundary_package
+      metric identifiesDerivative identifiesRicci equationEvidence =
+      zero_ricci_flow_equation_boundary_package
+        identifiesDerivative identifiesRicci equationEvidence :=
+  rfl
+
 /-- The zero boundary package projects to the explicit zero equation verification. -/
 @[simp] theorem ricci_flow_equation_verification_of_zero_ricci_flow_equation_boundary_package_eq
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -510,6 +567,35 @@ noncomputable def zero_ricci_flow_equation_boundary_package
           identifiesDerivative identifiesRicci :=
   rfl
 
+/-- The stationary zero boundary package projects to the zero equation verification. -/
+@[simp] theorem ricci_flow_equation_verification_of_stationary_zero_ricci_flow_equation_boundary_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci)) :
+    ricci_flow_equation_verification_of_boundary_package
+      (stationary_zero_ricci_flow_equation_boundary_package
+        metric identifiesDerivative identifiesRicci equationEvidence) =
+      zero_ricci_flow_equation_verification
+        identifiesDerivative identifiesRicci :=
+  rfl
+
 /-- The zero boundary package keeps the supplied abstract equation evidence. -/
 @[simp] theorem equation_evidence_of_zero_ricci_flow_equation_boundary_package_eq
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -526,6 +612,34 @@ noncomputable def zero_ricci_flow_equation_boundary_package
       (zero_ricci_flow_equation_boundary_package
         identifiesDerivative identifiesRicci equationEvidence) =
         equationEvidence :=
+  rfl
+
+/-- The stationary zero boundary package keeps the supplied equation evidence. -/
+@[simp] theorem equation_evidence_of_stationary_zero_ricci_flow_equation_boundary_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci)) :
+    equation_evidence_of_equation_boundary_package
+      (stationary_zero_ricci_flow_equation_boundary_package
+        metric identifiesDerivative identifiesRicci equationEvidence) =
+      equationEvidence :=
   rfl
 
 /-- Zero Ricci-flow data with explicit zero verification exposes the boundary statement. -/
@@ -561,6 +675,66 @@ theorem ricciFlowEquationBoundaryStatement_of_zero_ricci_flow_data
       identifiesDerivative identifiesRicci equationEvidence =
       ⟨zero_ricci_flow_equation_boundary_package
         identifiesDerivative identifiesRicci equationEvidence⟩ := by
+  apply Subsingleton.elim
+
+/-- Stationary zero Ricci-flow data exposes the equation-boundary statement. -/
+theorem ricciFlowEquationBoundaryStatement_of_stationary_zero_ricci_flow_data
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci)) :
+    RicciFlowEquationBoundaryStatement
+      (zero_ricci_flow_data
+        (stationary_time_dependent_riemannian_metric metric)
+        identifiesRicci equationEvidence) :=
+  ⟨stationary_zero_ricci_flow_equation_boundary_package
+    metric identifiesDerivative identifiesRicci equationEvidence⟩
+
+/--
+The stationary zero boundary-statement route is nonemptiness of the stationary
+zero boundary package.
+-/
+@[simp] theorem ricciFlowEquationBoundaryStatement_of_stationary_zero_ricci_flow_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci)) :
+    ricciFlowEquationBoundaryStatement_of_stationary_zero_ricci_flow_data
+      metric identifiesDerivative identifiesRicci equationEvidence =
+      ⟨stationary_zero_ricci_flow_equation_boundary_package
+        metric identifiesDerivative identifiesRicci equationEvidence⟩ := by
   apply Subsingleton.elim
 
 /-- Interface for compatibility of the flow with the prescribed initial metric. -/
@@ -3199,6 +3373,64 @@ noncomputable def zero_ricci_flow_analytic_foundation_package
     (zero_ricci_flow_data g identifiesRicci equationEvidence)
     subobligations
 
+/-- Analytic-foundation package for stationary zero Ricci-flow data. -/
+noncomputable def stationary_zero_ricci_flow_analytic_foundation_package
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci))
+    (subobligations :
+      AnalyticFoundationSubobligationsPayload
+        (zero_ricci_flow_data
+          (stationary_time_dependent_riemannian_metric metric)
+          identifiesRicci equationEvidence)) :
+    RicciFlowAnalyticFoundationPackage I n M :=
+  zero_ricci_flow_analytic_foundation_package
+    identifiesRicci equationEvidence subobligations
+
+/-- The stationary zero analytic package stores the stationary zero flow data. -/
+@[simp] theorem stationary_zero_ricci_flow_analytic_foundation_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci))
+    (subobligations :
+      AnalyticFoundationSubobligationsPayload
+        (zero_ricci_flow_data
+          (stationary_time_dependent_riemannian_metric metric)
+          identifiesRicci equationEvidence)) :
+    ricci_flow_data_of_analytic_foundation_package
+      (stationary_zero_ricci_flow_analytic_foundation_package
+        metric identifiesRicci equationEvidence subobligations) =
+      zero_ricci_flow_data
+        (stationary_time_dependent_riemannian_metric metric)
+        identifiesRicci equationEvidence := by
+  exact
+    zero_ricci_flow_analytic_foundation_package_eq
+      identifiesRicci equationEvidence subobligations
+
 /--
 Zero Ricci-flow sub-obligation payload plus the explicit zero equation-boundary
 package supplies the strengthened analytic equation-boundary statement.
@@ -3256,6 +3488,92 @@ payload-plus-boundary-package assembler for the zero Ricci-flow data.
   apply Subsingleton.elim
 
 /--
+Stationary zero Ricci-flow sub-obligation payload plus its equation-boundary
+package supplies the strengthened analytic equation-boundary statement.
+-/
+theorem analytic_foundation_with_equation_boundary_of_stationary_zero_ricci_flow_subobligations_payload_and_boundary_package
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci))
+    (subobligations :
+      AnalyticFoundationSubobligationsPayload
+        (zero_ricci_flow_data
+          (stationary_time_dependent_riemannian_metric metric)
+          identifiesRicci equationEvidence)) :
+    AnalyticFoundationWithEquationBoundaryStatement
+      (zero_ricci_flow_data
+        (stationary_time_dependent_riemannian_metric metric)
+        identifiesRicci equationEvidence) := by
+  exact
+    analytic_foundation_with_equation_boundary_of_subobligations_payload_and_boundary_package
+      (zero_ricci_flow_data
+        (stationary_time_dependent_riemannian_metric metric)
+        identifiesRicci equationEvidence)
+      subobligations
+      (stationary_zero_ricci_flow_equation_boundary_package
+        metric identifiesDerivative identifiesRicci equationEvidence)
+
+/--
+The stationary zero sub-obligation route delegates to the generic
+payload-plus-boundary-package assembler.
+-/
+@[simp] theorem analytic_foundation_with_equation_boundary_of_stationary_zero_ricci_flow_subobligations_payload_and_boundary_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci))
+    (subobligations :
+      AnalyticFoundationSubobligationsPayload
+        (zero_ricci_flow_data
+          (stationary_time_dependent_riemannian_metric metric)
+          identifiesRicci equationEvidence)) :
+    analytic_foundation_with_equation_boundary_of_stationary_zero_ricci_flow_subobligations_payload_and_boundary_package
+      metric identifiesDerivative identifiesRicci equationEvidence subobligations =
+      (by
+        exact
+          analytic_foundation_with_equation_boundary_of_subobligations_payload_and_boundary_package
+            (zero_ricci_flow_data
+              (stationary_time_dependent_riemannian_metric metric)
+              identifiesRicci equationEvidence)
+            subobligations
+            (stationary_zero_ricci_flow_equation_boundary_package
+              metric identifiesDerivative identifiesRicci equationEvidence)) := by
+  apply Subsingleton.elim
+
+/--
 Zero Ricci-flow analytic package data plus the explicit zero equation-boundary
 package supplies the strengthened analytic equation-boundary statement.
 -/
@@ -3303,6 +3621,83 @@ sub-obligation-payload plus boundary-package route.
         exact
           analytic_foundation_with_equation_boundary_of_zero_ricci_flow_subobligations_payload_and_boundary_package
             identifiesDerivative identifiesRicci equationEvidence
+            subobligations) := by
+  apply Subsingleton.elim
+
+/--
+Stationary zero Ricci-flow analytic package data plus the explicit stationary
+equation-boundary package supplies the strengthened analytic statement.
+-/
+theorem analytic_foundation_with_equation_boundary_of_stationary_zero_ricci_flow_analytic_foundation_package
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci))
+    (subobligations :
+      AnalyticFoundationSubobligationsPayload
+        (zero_ricci_flow_data
+          (stationary_time_dependent_riemannian_metric metric)
+          identifiesRicci equationEvidence)) :
+    AnalyticFoundationWithEquationBoundaryStatement
+      (zero_ricci_flow_data
+        (stationary_time_dependent_riemannian_metric metric)
+        identifiesRicci equationEvidence) := by
+  exact
+    analytic_foundation_with_equation_boundary_of_stationary_zero_ricci_flow_subobligations_payload_and_boundary_package
+      metric identifiesDerivative identifiesRicci equationEvidence subobligations
+
+/--
+The stationary zero analytic route delegates to the stationary sub-obligation
+payload plus boundary-package route.
+-/
+@[simp] theorem analytic_foundation_with_equation_boundary_of_stationary_zero_ricci_flow_analytic_foundation_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci))
+    (subobligations :
+      AnalyticFoundationSubobligationsPayload
+        (zero_ricci_flow_data
+          (stationary_time_dependent_riemannian_metric metric)
+          identifiesRicci equationEvidence)) :
+    analytic_foundation_with_equation_boundary_of_stationary_zero_ricci_flow_analytic_foundation_package
+      metric identifiesDerivative identifiesRicci equationEvidence subobligations =
+      (by
+        exact
+          analytic_foundation_with_equation_boundary_of_stationary_zero_ricci_flow_subobligations_payload_and_boundary_package
+            metric identifiesDerivative identifiesRicci equationEvidence
             subobligations) := by
   apply Subsingleton.elim
 
