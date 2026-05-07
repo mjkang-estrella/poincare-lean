@@ -794,6 +794,100 @@ theorem equation_at_time_apply_of_stationary_zero_ricci_flow_equation_boundary_p
           metric identifiesDerivative identifiesRicci equationEvidence) t x v w :=
   rfl
 
+/-- The derivative side of the zero boundary package is pointwise scalar zero. -/
+@[simp] theorem metric_time_derivative_at_time_apply_of_zero_ricci_flow_equation_boundary_package
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    metric_time_derivative_at_time_of_metric_derivative_field
+      (metric_time_derivative_field_of_metric_derivative_data
+        (metric_derivative_data_of_equation_boundary_package
+          (zero_ricci_flow_equation_boundary_package
+            identifiesDerivative identifiesRicci equationEvidence))) t x v w = 0 :=
+  rfl
+
+/-- The zero boundary derivative proof is definitional. -/
+@[simp] theorem metric_time_derivative_at_time_apply_of_zero_ricci_flow_equation_boundary_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    metric_time_derivative_at_time_apply_of_zero_ricci_flow_equation_boundary_package
+      identifiesDerivative identifiesRicci equationEvidence t x v w = rfl := by
+  apply Subsingleton.elim
+
+/-- The derivative side of the stationary zero boundary package is pointwise zero. -/
+@[simp] theorem metric_time_derivative_at_time_apply_of_stationary_zero_ricci_flow_equation_boundary_package
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    metric_time_derivative_at_time_of_metric_derivative_field
+      (metric_time_derivative_field_of_metric_derivative_data
+        (metric_derivative_data_of_equation_boundary_package
+          (stationary_zero_ricci_flow_equation_boundary_package
+            metric identifiesDerivative identifiesRicci equationEvidence))) t x v w = 0 :=
+  rfl
+
+/-- The stationary zero boundary derivative proof is definitional. -/
+@[simp] theorem metric_time_derivative_at_time_apply_of_stationary_zero_ricci_flow_equation_boundary_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    metric_time_derivative_at_time_apply_of_stationary_zero_ricci_flow_equation_boundary_package
+      metric identifiesDerivative identifiesRicci equationEvidence t x v w = rfl := by
+  apply Subsingleton.elim
+
 /-- Zero Ricci-flow data with explicit zero verification exposes the boundary statement. -/
 theorem ricciFlowEquationBoundaryStatement_of_zero_ricci_flow_data
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
