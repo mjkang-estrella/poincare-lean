@@ -387,6 +387,10 @@ check_decl "Ricci-flow equation verification projection-routed time theorem is d
   '^theorem equation_at_time_of_ricci_flow_equation_verification_projection\b' Poincare/RicciFlow.lean
 check_decl "Ricci-flow equation verification projection-routed time equality theorem is declared" \
   '^@\[simp\] theorem equation_at_time_of_ricci_flow_equation_verification_projection_eq\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow equation verification projection-routed pointwise theorem is declared" \
+  '^theorem equation_at_time_apply_of_ricci_flow_equation_verification_projection\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow equation verification projection-routed pointwise equality theorem is declared" \
+  '^@\[simp\] theorem equation_at_time_apply_of_ricci_flow_equation_verification_projection_eq\b' Poincare/RicciFlow.lean
 check_decl "zero-Ricci right-hand side theorem is declared" \
   '^@\[simp\] theorem ricci_flow_rhs_tensor_of_zero_ricci_tensor_field_eq\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci curvature data right-hand side theorem is declared" \
@@ -431,6 +435,10 @@ check_decl "zero Ricci-flow equation verification time theorem is declared" \
   '^theorem equation_at_time_of_zero_ricci_flow_equation_verification\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci-flow equation verification time equality contract is declared" \
   '^@\[simp\] theorem equation_at_time_of_zero_ricci_flow_equation_verification_eq\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci-flow equation verification pointwise theorem is declared" \
+  '^theorem equation_at_time_apply_of_zero_ricci_flow_equation_verification\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci-flow equation verification pointwise equality contract is declared" \
+  '^@\[simp\] theorem equation_at_time_apply_of_zero_ricci_flow_equation_verification_eq\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci-flow data constructor is declared" \
   '^noncomputable def zero_ricci_flow_data\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci-flow data equality contract is declared" \
@@ -11250,9 +11258,13 @@ open scoped Manifold ContDiff
 #check Poincare.metric_time_derivative_identification_of_ricci_flow_equation_verification_eq
 #check Poincare.equation_at_time_of_ricci_flow_equation_verification_projection
 #check Poincare.equation_at_time_of_ricci_flow_equation_verification_projection_eq
+#check Poincare.equation_at_time_apply_of_ricci_flow_equation_verification_projection
+#check Poincare.equation_at_time_apply_of_ricci_flow_equation_verification_projection_eq
 #check Poincare.ricci_flow_rhs_tensor_of_zero_ricci_tensor_field_eq
 #check Poincare.ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data
 #check Poincare.ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data_eq
+#check Poincare.equation_at_time_apply_of_zero_ricci_flow_equation_verification
+#check Poincare.equation_at_time_apply_of_zero_ricci_flow_equation_verification_eq
 #check Poincare.zero_derivative_zero_ricci_equation_verification_exists
 #check Poincare.zero_derivative_zero_ricci_equation_verification_exists_eq
 #check Poincare.ricci_flow_data_of_analytic_foundation_package
@@ -15301,9 +15313,13 @@ open scoped Manifold ContDiff
 #check Poincare.metric_time_derivative_identification_of_ricci_flow_equation_verification_eq
 #check Poincare.equation_at_time_of_ricci_flow_equation_verification_projection
 #check Poincare.equation_at_time_of_ricci_flow_equation_verification_projection_eq
+#check Poincare.equation_at_time_apply_of_ricci_flow_equation_verification_projection
+#check Poincare.equation_at_time_apply_of_ricci_flow_equation_verification_projection_eq
 #check Poincare.ricci_flow_rhs_tensor_of_zero_ricci_tensor_field_eq
 #check Poincare.ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data
 #check Poincare.ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data_eq
+#check Poincare.equation_at_time_apply_of_zero_ricci_flow_equation_verification
+#check Poincare.equation_at_time_apply_of_zero_ricci_flow_equation_verification_eq
 #check Poincare.zero_derivative_zero_ricci_equation_verification_exists
 #check Poincare.zero_derivative_zero_ricci_equation_verification_exists_eq
 #check Poincare.ricci_flow_data_of_analytic_foundation_package

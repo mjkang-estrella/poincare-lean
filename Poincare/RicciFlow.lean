@@ -938,6 +938,44 @@ theorem equation_at_time_of_ricci_flow_equation_verification_projection
   rfl
 
 /--
+The projection-routed equation also holds pointwise at a point and pair of
+tangent vectors.
+-/
+theorem equation_at_time_apply_of_ricci_flow_equation_verification_projection
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (verification : RicciFlowEquationVerification curvature)
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    metric_time_derivative_at_time_of_metric_derivative_field
+      (metric_time_derivative_field_of_metric_derivative_data
+        (metric_derivative_data_of_ricci_flow_equation_verification verification)) t x v w =
+        ricci_flow_rhs_tensor curvature t x v w :=
+  congrArg (fun tensor => tensor x v w)
+    (equation_at_time_of_ricci_flow_equation_verification_projection
+      verification t)
+
+/-- The pointwise projection-routed equation proof is tensor equality application. -/
+@[simp] theorem equation_at_time_apply_of_ricci_flow_equation_verification_projection_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (verification : RicciFlowEquationVerification curvature)
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    equation_at_time_apply_of_ricci_flow_equation_verification_projection
+      verification t x v w =
+      congrArg (fun tensor => tensor x v w)
+        (equation_at_time_of_ricci_flow_equation_verification_projection
+          verification t) := by
+  apply Subsingleton.elim
+
+/--
 If the candidate Ricci tensor is the zero tensor field, the explicit
 right-hand side `-2 Ricci` is pointwise zero.
 
@@ -1317,6 +1355,48 @@ theorem equation_at_time_of_zero_ricci_flow_equation_verification
       identifiesDerivative identifiesRicci t =
       (zero_ricci_flow_equation_verification
         identifiesDerivative identifiesRicci).equationAtTime t :=
+  rfl
+
+/--
+The zero equation verification proves the Ricci-flow equation pointwise at a
+point and pair of tangent vectors.
+-/
+theorem equation_at_time_apply_of_zero_ricci_flow_equation_verification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    metric_time_derivative_at_time_of_metric_derivative_field
+      (metric_time_derivative_field_of_metric_derivative_data
+        (metric_derivative_data_of_ricci_flow_equation_verification
+          (zero_ricci_flow_equation_verification
+            identifiesDerivative identifiesRicci))) t x v w =
+        ricci_flow_rhs_tensor (zero_ricci_curvature_data identifiesRicci) t x v w :=
+  equation_at_time_apply_of_ricci_flow_equation_verification_projection
+    (zero_ricci_flow_equation_verification
+      identifiesDerivative identifiesRicci) t x v w
+
+/-- The pointwise zero equation theorem is the projection-routed proof. -/
+@[simp] theorem equation_at_time_apply_of_zero_ricci_flow_equation_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    equation_at_time_apply_of_zero_ricci_flow_equation_verification
+      identifiesDerivative identifiesRicci t x v w =
+      equation_at_time_apply_of_ricci_flow_equation_verification_projection
+        (zero_ricci_flow_equation_verification
+          identifiesDerivative identifiesRicci) t x v w :=
   rfl
 
 /--
