@@ -158,11 +158,12 @@ The current artifact is intentionally conservative:
   as a time-independent family, proves its time-slice projection, and specializes
   the zero-derivative/zero-Ricci equation-verification payload to that
   stationary route; zero Ricci-flow data also exposes checked metric, Ricci, and
-  scalar-curvature time-slice projection contracts, plus pointwise scalar zero
-  contracts for both the zero metric-derivative data and the zero-curvature
-  Ricci-flow right-hand side at `x v w`; the zero equation verification also has
-  a pointwise equation route at `x v w`. The analytic equation boundary now has
-  the matching stationary zero boundary package, statement route,
+  scalar-curvature time-slice projection contracts, flow-data-level zero RHS
+  contracts, plus pointwise scalar zero contracts for both the zero
+  metric-derivative data and the zero-curvature Ricci-flow right-hand side at
+  `x v w`; the zero equation verification also has a pointwise equation route
+  at `x v w`. The analytic equation boundary now has the matching stationary
+  zero boundary package, statement route,
   analytic-foundation package route, and strengthened equation-boundary
   statement route.
 - `Poincare/AnalyticFoundation.lean` narrows the Ricci-flow analytic foundation

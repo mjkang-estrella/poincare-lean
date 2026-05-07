@@ -736,6 +736,9 @@ import Poincare
 #print axioms Poincare.zero_ricci_flow_data_eq
 #print axioms Poincare.metric_of_zero_ricci_flow_data_eq
 #print axioms Poincare.curvature_data_of_zero_ricci_flow_data_eq
+#print axioms Poincare.ricci_flow_rhs_tensor_of_zero_ricci_flow_data_eq
+#print axioms Poincare.ricci_flow_rhs_tensor_apply_of_zero_ricci_flow_data
+#print axioms Poincare.ricci_flow_rhs_tensor_apply_of_zero_ricci_flow_data_eq
 #print axioms Poincare.equation_evidence_of_zero_ricci_flow_data_eq
 #print axioms Poincare.metric_at_time_of_zero_ricci_flow_data_eq
 #print axioms Poincare.ricci_tensor_at_time_of_zero_ricci_flow_data_eq

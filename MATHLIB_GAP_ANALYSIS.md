@@ -85,9 +85,10 @@ given future evidence that the zero derivative and zero Ricci candidates are the
 correct derivative and Ricci tensor for a metric, the explicit equation payload
 verifies `∂ₜ g = -2 Ricci` by reducing both sides to zero, including checked
 pointwise scalar zero statements for the zero metric-derivative data and the
-zero-curvature Ricci-flow right-hand side, plus a checked pointwise route for
-the zero equation verification itself. The same explicit inputs now build zero
-Ricci-flow data and an analytic equation-boundary package.
+zero-curvature Ricci-flow right-hand side, flow-data-level RHS zero projection
+contracts, plus a checked pointwise route for the zero equation verification
+itself. The same explicit inputs now build zero Ricci-flow data and an analytic
+equation-boundary package.
 `analytic_foundation_package_of_subobligations_payload` supplies the
 generic bridge from fixed Ricci-flow data plus the ordinary analytic
 sub-obligation payload to a full analytic-foundation package,

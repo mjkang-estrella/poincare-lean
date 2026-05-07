@@ -1464,6 +1464,66 @@ noncomputable def zero_ricci_flow_data
         zero_ricci_curvature_data identifiesRicci :=
   rfl
 
+/-- The right-hand side projected from zero Ricci-flow data is the zero tensor. -/
+@[simp] theorem ricci_flow_rhs_tensor_of_zero_ricci_flow_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M)
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci))
+    (t : ℝ) :
+    ricci_flow_rhs_tensor
+      (curvature_data_of_ricci_flow_data
+        (zero_ricci_flow_data g identifiesRicci equationEvidence)) t =
+        zero_tangent_covariant_two_tensor I M := by
+  change ricci_flow_rhs_tensor (zero_ricci_curvature_data identifiesRicci) t =
+    zero_tangent_covariant_two_tensor I M
+  exact
+    ricci_flow_rhs_tensor_of_zero_ricci_curvature_data_eq
+      (g := g) identifiesRicci t
+
+/-- Pointwise, the RHS projected from zero Ricci-flow data is scalar zero. -/
+@[simp] theorem ricci_flow_rhs_tensor_apply_of_zero_ricci_flow_data
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M)
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    ricci_flow_rhs_tensor
+      (curvature_data_of_ricci_flow_data
+        (zero_ricci_flow_data g identifiesRicci equationEvidence)) t x v w = 0 := by
+  change ricci_flow_rhs_tensor (zero_ricci_curvature_data identifiesRicci) t x v w = 0
+  exact
+    ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data
+      (g := g) identifiesRicci t x v w
+
+/-- The pointwise zero Ricci-flow-data RHS proof is the zero-curvature-data proof. -/
+@[simp] theorem ricci_flow_rhs_tensor_apply_of_zero_ricci_flow_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M)
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    ricci_flow_rhs_tensor_apply_of_zero_ricci_flow_data
+      g identifiesRicci equationEvidence t x v w =
+      (by
+        change ricci_flow_rhs_tensor (zero_ricci_curvature_data identifiesRicci) t x v w = 0
+        exact
+          ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data
+            (g := g) identifiesRicci t x v w) := by
+  apply Subsingleton.elim
+
 /-- The equation projection of zero Ricci-flow data is the supplied equation evidence. -/
 @[simp] theorem equation_evidence_of_zero_ricci_flow_data_eq
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
