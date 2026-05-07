@@ -313,7 +313,10 @@ The current artifact is intentionally conservative:
   contracts now pin the analytic, construction, and Perelman payload routes and
   their simplified dependency payloads back to the shared surgery package, while
   the finite-extinction routes pin statement, derivation, and extinction fields
-  back to that package.
+  back to that package. Strengthened equation-boundary surgery packages now
+  also lift the projection-routed Ricci-flow equation from their stored
+  boundary package pointwise at `x v w`, with equality contracts back to both
+  the boundary package and projected verification routes.
   The dependency-level surgery-construction route now exposes
   `surgery_construction_statement_payload_of_dependencies`, which packages the
   construction package, theorem-shaped construction statement, construction

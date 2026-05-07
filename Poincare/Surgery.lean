@@ -9298,6 +9298,61 @@ theorem equation_at_time_of_surgery_package_with_equation_boundary_projection_to
   rfl
 
 /--
+The strengthened surgery package supplies the projection-routed explicit
+Ricci-flow equation pointwise at a point and pair of tangent vectors.
+-/
+theorem equation_at_time_apply_of_surgery_package_with_equation_boundary_projection
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M)
+    (t : ℝ) (x : M) (v w : TangentSpace ThreeManifoldModelWithCorners x) :
+    metric_time_derivative_at_time_of_metric_derivative_field
+      (metric_time_derivative_field_of_metric_derivative_data
+        (metric_derivative_data_of_surgery_package_with_equation_boundary
+          package)) t x v w =
+        ricci_flow_rhs_tensor
+          (curvature_data_of_ricci_flow_data
+            (ricci_flow_data_of_surgery_package
+              (surgery_package_of_equation_boundary_surgery_package package))) t x v w :=
+  equation_at_time_apply_of_equation_boundary_package_projection
+    (equation_boundary_of_surgery_package_with_equation_boundary package) t x v w
+
+/-- The strengthened surgery-package pointwise equation theorem is boundary evidence. -/
+@[simp] theorem equation_at_time_apply_of_surgery_package_with_equation_boundary_projection_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M)
+    (t : ℝ) (x : M) (v w : TangentSpace ThreeManifoldModelWithCorners x) :
+    equation_at_time_apply_of_surgery_package_with_equation_boundary_projection
+      package t x v w =
+      equation_at_time_apply_of_equation_boundary_package_projection
+        (equation_boundary_of_surgery_package_with_equation_boundary package)
+        t x v w :=
+  rfl
+
+/--
+The strengthened surgery-package pointwise equation is the pointwise equation
+carried by its projected explicit equation verification.
+-/
+@[simp] theorem equation_at_time_apply_of_surgery_package_with_equation_boundary_projection_to_ricci_flow_equation_verification_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M)
+    (t : ℝ) (x : M) (v w : TangentSpace ThreeManifoldModelWithCorners x) :
+    equation_at_time_apply_of_surgery_package_with_equation_boundary_projection
+      package t x v w =
+      equation_at_time_apply_of_ricci_flow_equation_verification_projection
+        (ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
+          package) t x v w :=
+  rfl
+
+/--
 A strengthened surgery package supplies the analytic foundation together with
 the explicit equation boundary for its projected flow.
 -/
