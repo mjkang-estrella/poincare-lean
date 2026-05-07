@@ -888,7 +888,10 @@ The current artifact is intentionally conservative:
   same checked boundary projection certificates. Those canonical-statement
   routes are also pinned back to the matching boundary-target-payload
   certificates and to the ordinary aggregate projection certificates after
-  forgetting equation-boundary data.
+  forgetting equation-boundary data. The theorem-name, literal,
+  aggregate-dependency, and project-statement payload routes now have the same
+  boundary-target and forgetful ordinary projection equalities, including their
+  literal/aggregate/project payload certificate reconstructions.
   It also exposes the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/
