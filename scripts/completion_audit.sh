@@ -635,6 +635,10 @@ check_decl "Ricci-flow equation boundary projection-routed time theorem is decla
   '^theorem equation_at_time_of_equation_boundary_package_projection\b' Poincare/AnalyticFoundation.lean
 check_decl "Ricci-flow equation boundary projection-routed time equality theorem is declared" \
   '^@\[simp\] theorem equation_at_time_of_equation_boundary_package_projection_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow equation boundary projection-routed pointwise theorem is declared" \
+  '^theorem equation_at_time_apply_of_equation_boundary_package_projection\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow equation boundary projection-routed pointwise equality theorem is declared" \
+  '^@\[simp\] theorem equation_at_time_apply_of_equation_boundary_package_projection_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "Ricci-flow equation boundary interface evidence theorem is declared" \
   '^theorem equation_evidence_of_equation_boundary_package\b' Poincare/AnalyticFoundation.lean
 check_decl "Ricci-flow equation boundary interface evidence equality theorem is declared" \
@@ -671,6 +675,14 @@ check_decl "zero Ricci-flow equation boundary equation-evidence projection contr
   '^@\[simp\] theorem equation_evidence_of_zero_ricci_flow_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "stationary zero Ricci-flow equation boundary evidence projection contract is declared" \
   '^@\[simp\] theorem equation_evidence_of_stationary_zero_ricci_flow_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "zero Ricci-flow equation boundary pointwise projection theorem is declared" \
+  '^theorem equation_at_time_apply_of_zero_ricci_flow_equation_boundary_package_projection\b' Poincare/AnalyticFoundation.lean
+check_decl "zero Ricci-flow equation boundary pointwise projection equality theorem is declared" \
+  '^@\[simp\] theorem equation_at_time_apply_of_zero_ricci_flow_equation_boundary_package_projection_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow equation boundary pointwise projection theorem is declared" \
+  '^theorem equation_at_time_apply_of_stationary_zero_ricci_flow_equation_boundary_package_projection\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow equation boundary pointwise projection equality theorem is declared" \
+  '^@\[simp\] theorem equation_at_time_apply_of_stationary_zero_ricci_flow_equation_boundary_package_projection_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "zero Ricci-flow data to equation-boundary statement theorem is declared" \
   '^theorem ricciFlowEquationBoundaryStatement_of_zero_ricci_flow_data\b' Poincare/AnalyticFoundation.lean
 check_decl "zero Ricci-flow data to equation-boundary statement equality contract is declared" \
@@ -11360,6 +11372,8 @@ open scoped Manifold ContDiff
 #check Poincare.metric_time_derivative_identification_of_equation_boundary_package_eq
 #check Poincare.equation_at_time_of_equation_boundary_package_projection
 #check Poincare.equation_at_time_of_equation_boundary_package_projection_eq
+#check Poincare.equation_at_time_apply_of_equation_boundary_package_projection
+#check Poincare.equation_at_time_apply_of_equation_boundary_package_projection_eq
 #check Poincare.equation_evidence_of_equation_boundary_package
 #check Poincare.equation_evidence_of_equation_boundary_package_eq
 #check Poincare.RicciFlowEquationBoundaryStatement
@@ -15425,6 +15439,8 @@ open scoped Manifold ContDiff
 #check Poincare.metric_time_derivative_identification_of_equation_boundary_package_eq
 #check Poincare.equation_at_time_of_equation_boundary_package_projection
 #check Poincare.equation_at_time_of_equation_boundary_package_projection_eq
+#check Poincare.equation_at_time_apply_of_equation_boundary_package_projection
+#check Poincare.equation_at_time_apply_of_equation_boundary_package_projection_eq
 #check Poincare.equation_evidence_of_equation_boundary_package
 #check Poincare.equation_evidence_of_equation_boundary_package_eq
 #check Poincare.RicciFlowEquationBoundaryStatement
