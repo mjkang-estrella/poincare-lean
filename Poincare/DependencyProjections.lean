@@ -1517,6 +1517,26 @@ theorem surgery_package_with_equation_boundary_payload_of_dependencies_to_surger
   apply Subsingleton.elim
 
 /--
+The dependency-level boundary package payload is the forgetful projection of the
+package-level scalar-pointwise surgery payload.
+-/
+theorem surgery_package_with_equation_boundary_payload_of_dependencies_to_pointwise_equation_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_payload_of_dependencies
+        dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            surgery_package_with_equation_boundary_pointwise_equation_payload_of_dependencies
+              dependencies M with
+          ⟨n, package, pointwisePayload⟩
+        exact
+          ⟨n, package,
+            surgery_package_with_equation_boundary_payload_of_pointwise_equation_payload
+              pointwisePayload⟩) := by
+  apply Subsingleton.elim
+
+/--
 The older dependency-level equation/metric derivative payload is the forgetful
 projection of the full derivative-strengthened surgery payload.
 -/

@@ -3338,6 +3338,26 @@ theorem surgery_package_with_equation_boundary_payload_of_remaining_dependency_p
   apply Subsingleton.elim
 
 /--
+The strengthened remaining-package boundary package payload is the forgetful
+projection of the package-level scalar-pointwise surgery payload.
+-/
+theorem surgery_package_with_equation_boundary_payload_of_remaining_dependency_package_to_pointwise_equation_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_payload_of_remaining_dependency_package
+        dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            surgery_package_with_equation_boundary_pointwise_equation_payload_of_remaining_dependency_package
+              dependencies M with
+          ⟨n, package, pointwisePayload⟩
+        exact
+          ⟨n, package,
+            surgery_package_with_equation_boundary_payload_of_pointwise_equation_payload
+              pointwisePayload⟩) := by
+  apply Subsingleton.elim
+
+/--
 The older strengthened remaining-package equation/metric derivative payload is
 the forgetful projection of the full derivative-strengthened surgery payload.
 -/
@@ -4526,6 +4546,26 @@ theorem surgery_package_with_equation_boundary_payload_of_poincareProofDependenc
           ⟨n, package,
             surgery_package_of_equation_boundary_surgery_package package,
             equationBoundary, analyticBoundary, finiteExtinction⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate boundary package payload is the forgetful projection
+of the package-level scalar-pointwise surgery payload.
+-/
+theorem surgery_package_with_equation_boundary_payload_of_poincareProofDependenciesWithEquationBoundary_to_pointwise_equation_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            surgery_package_with_equation_boundary_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary
+              dependencies M with
+          ⟨n, package, pointwisePayload⟩
+        exact
+          ⟨n, package,
+            surgery_package_with_equation_boundary_payload_of_pointwise_equation_payload
+              pointwisePayload⟩) := by
   apply Subsingleton.elim
 
 /--
@@ -12838,6 +12878,27 @@ theorem surgery_package_with_equation_boundary_payload_of_completion_certificate
           ⟨n, package,
             surgery_package_of_equation_boundary_surgery_package package,
             equationBoundary, analyticBoundary, finiteExtinction⟩) := by
+  apply Subsingleton.elim
+
+/--
+The certificate boundary package payload is the forgetful projection of the
+certificate scalar-pointwise surgery payload.
+-/
+theorem surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_pointwise_equation_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            surgery_package_with_equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload
+              payload M with
+          ⟨n, package, pointwisePayload⟩
+        exact
+          ⟨n, package,
+            surgery_package_with_equation_boundary_payload_of_pointwise_equation_payload
+              pointwisePayload⟩) := by
   apply Subsingleton.elim
 
 /--

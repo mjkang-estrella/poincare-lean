@@ -9920,6 +9920,76 @@ theorem surgery_package_with_equation_boundary_pointwise_equation_payload_to_der
           package) := by
   apply Subsingleton.elim
 
+/--
+The scalar-pointwise surgery payload forgets to the older boundary surgery
+payload by keeping the projected package, equation boundary, analytic-boundary
+statement, and finite-extinction conclusion.
+-/
+theorem surgery_package_with_equation_boundary_payload_of_pointwise_equation_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M}
+    (payload :
+      SurgeryPackageWithEquationBoundaryPointwiseEquationPayload package) :
+    ∃ basePackage : FiniteExtinctionSurgeryPackage n M,
+    ∃ _equationBoundary :
+      RicciFlowEquationBoundaryPackage
+        (ricci_flow_data_of_surgery_package basePackage),
+    ∃ _analyticBoundary :
+      AnalyticFoundationWithEquationBoundaryStatement
+        (ricci_flow_data_of_surgery_package basePackage),
+      FiniteExtinctionByRicciFlowWithSurgery M := by
+  rcases payload with
+    ⟨_basePackage, _basePackage_eq, equationBoundary, _verification,
+      _verification_eq, _metricDerivative, _metricDerivative_eq, _derivativeId,
+      _pointwiseEquation, analyticBoundary, finiteExtinction⟩
+  exact
+    ⟨surgery_package_of_equation_boundary_surgery_package package,
+      equationBoundary, analyticBoundary, finiteExtinction⟩
+
+/--
+Forgetting a scalar-pointwise surgery payload is the explicit tuple of projected
+base package, equation boundary, analytic-boundary statement, and extinction.
+-/
+theorem surgery_package_with_equation_boundary_payload_of_pointwise_equation_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M}
+    (payload :
+      SurgeryPackageWithEquationBoundaryPointwiseEquationPayload package) :
+    surgery_package_with_equation_boundary_payload_of_pointwise_equation_payload
+        payload =
+      (by
+        rcases payload with
+          ⟨_basePackage, _basePackage_eq, equationBoundary, _verification,
+            _verification_eq, _metricDerivative, _metricDerivative_eq,
+            _derivativeId, _pointwiseEquation, analyticBoundary,
+            finiteExtinction⟩
+        exact
+          ⟨surgery_package_of_equation_boundary_surgery_package package,
+            equationBoundary, analyticBoundary, finiteExtinction⟩) := by
+  apply Subsingleton.elim
+
+/--
+The named boundary surgery payload is the forgetful projection of the named
+scalar-pointwise surgery payload.
+-/
+theorem surgery_package_with_equation_boundary_payload_to_pointwise_equation_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    surgery_package_with_equation_boundary_payload package =
+      surgery_package_with_equation_boundary_payload_of_pointwise_equation_payload
+        (surgery_package_with_equation_boundary_pointwise_equation_payload
+          package) := by
+  apply Subsingleton.elim
+
 section SurgeryPackageFiniteExtinctionProjectionEqualities
 
 variable {n : ℕ∞ω}
