@@ -882,7 +882,10 @@ The current artifact is intentionally conservative:
   equation-boundary projection certificates now expose the same theorem-name,
   literal, aggregate-dependency, and project-statement payload projections, and
   their literal/aggregate/project payloads reconstruct the corresponding checked
-  boundary projection certificates.
+  boundary projection certificates. Their canonical topological statement,
+  canonical-statement payload, and aggregate canonical-statement payload
+  projections are now also pinned, with payload constructors reconstructing the
+  same checked boundary projection certificates.
   It also exposes the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/
