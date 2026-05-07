@@ -4892,6 +4892,236 @@ theorem analytic_foundation_with_equation_boundary_statements_of_poincareProofDe
   apply Subsingleton.elim
 
 /--
+The remaining dependency package exposes universal finite extinction through
+the dependency-level finite-extinction theorem.
+-/
+theorem finite_extinction_of_remaining_dependency_package
+    (dependencies : RemainingDependencyPackage.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        FiniteExtinctionByRicciFlowWithSurgery M :=
+  finite_extinction_of_dependencies dependencies
+
+/--
+The remaining-package finite-extinction theorem is the dependency-level
+finite-extinction theorem under the remaining-package abbreviation.
+-/
+theorem finite_extinction_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    finite_extinction_of_remaining_dependency_package dependencies =
+      finite_extinction_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The remaining-package finite-extinction theorem agrees directly with the named
+dependency-level finite-extinction route.
+-/
+theorem finite_extinction_of_remaining_dependency_package_to_dependencies_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    finite_extinction_of_remaining_dependency_package dependencies =
+      finite_extinction_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining dependency package exposes universal finite
+extinction through the strengthened dependency-level route.
+-/
+theorem finite_extinction_of_equation_boundary_remaining_dependency_package
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        FiniteExtinctionByRicciFlowWithSurgery M :=
+  finite_extinction_of_equation_boundary_dependencies dependencies
+
+/--
+The strengthened remaining-package finite-extinction theorem is the
+strengthened dependency-level finite-extinction theorem.
+-/
+theorem finite_extinction_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    finite_extinction_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      finite_extinction_of_equation_boundary_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package finite-extinction theorem is obtained from
+the named verification payload after installing the forgetful smoothability
+bridge.
+-/
+theorem finite_extinction_of_equation_boundary_remaining_dependency_package_to_verification_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    finite_extinction_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      (by
+        intro M _ _ _ _ _
+        letI : IsManifold ThreeManifoldModelWithCorners 1 M :=
+          smoothability_bridge_of_dependencies
+            (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies) M
+        exact
+          finite_extinction_of_equation_boundary_verification_payload
+            (equation_boundary_verification_payload_of_remaining_dependency_package
+              dependencies) M) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package finite-extinction theorem is the
+finite-extinction projection of the scalar-pointwise surgery payload
+reconstructed from its named verification payload.
+-/
+theorem finite_extinction_of_equation_boundary_remaining_dependency_package_to_pointwise_equation_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    finite_extinction_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      (by
+        intro M _ _ _ _ _
+        letI : IsManifold ThreeManifoldModelWithCorners 1 M :=
+          smoothability_bridge_of_dependencies
+            (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies) M
+        rcases
+            surgery_package_with_equation_boundary_pointwise_equation_payload_of_equation_boundary_verification_payload
+              (equation_boundary_verification_payload_of_remaining_dependency_package
+                dependencies) M with
+          ⟨_n, _package, pointwisePayload⟩
+        exact finite_extinction_of_pointwise_equation_payload
+          pointwisePayload) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package finite-extinction theorem agrees with the
+ordinary finite-extinction theorem after forgetting equation-boundary data.
+-/
+theorem finite_extinction_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    finite_extinction_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      finite_extinction_of_remaining_dependency_package
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package finite-extinction theorem agrees directly
+with the ordinary dependency-level finite-extinction theorem after forgetting
+equation-boundary data.
+-/
+theorem finite_extinction_of_equation_boundary_remaining_dependency_package_to_forgetful_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    finite_extinction_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      finite_extinction_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package exposes universal finite
+extinction through the strengthened remaining-package route.
+-/
+theorem finite_extinction_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        FiniteExtinctionByRicciFlowWithSurgery M :=
+  finite_extinction_of_equation_boundary_remaining_dependency_package
+    dependencies
+
+/--
+The strengthened aggregate finite-extinction theorem is the strengthened
+remaining-package finite-extinction theorem.
+-/
+theorem finite_extinction_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    finite_extinction_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      finite_extinction_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate finite-extinction theorem agrees with the named
+dependency-level strengthened finite-extinction theorem.
+-/
+theorem finite_extinction_of_poincareProofDependenciesWithEquationBoundary_to_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    finite_extinction_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      finite_extinction_of_equation_boundary_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate finite-extinction theorem is obtained from the named
+verification payload after installing the forgetful smoothability bridge.
+-/
+theorem finite_extinction_of_poincareProofDependenciesWithEquationBoundary_to_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    finite_extinction_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      (by
+        intro M _ _ _ _ _
+        letI : IsManifold ThreeManifoldModelWithCorners 1 M :=
+          smoothability_bridge_of_dependencies
+            (dependencies_of_equation_boundary_dependencies dependencies) M
+        exact
+          finite_extinction_of_equation_boundary_verification_payload
+            (equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+              dependencies) M) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate finite-extinction theorem is the finite-extinction
+projection of the scalar-pointwise surgery payload reconstructed from its named
+verification payload.
+-/
+theorem finite_extinction_of_poincareProofDependenciesWithEquationBoundary_to_pointwise_equation_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    finite_extinction_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      (by
+        intro M _ _ _ _ _
+        letI : IsManifold ThreeManifoldModelWithCorners 1 M :=
+          smoothability_bridge_of_dependencies
+            (dependencies_of_equation_boundary_dependencies dependencies) M
+        rcases
+            surgery_package_with_equation_boundary_pointwise_equation_payload_of_equation_boundary_verification_payload
+              (equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+                dependencies) M with
+          ⟨_n, _package, pointwisePayload⟩
+        exact finite_extinction_of_pointwise_equation_payload
+          pointwisePayload) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate finite-extinction theorem agrees with the ordinary
+finite-extinction theorem after forgetting equation-boundary data.
+-/
+theorem finite_extinction_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    finite_extinction_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      finite_extinction_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate finite-extinction theorem agrees with the ordinary
+remaining-package finite-extinction theorem after forgetting equation-boundary
+data through the remaining-dependency wrapper.
+-/
+theorem finite_extinction_of_poincareProofDependenciesWithEquationBoundary_to_remaining_dependency_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    finite_extinction_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      finite_extinction_of_remaining_dependency_package
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining dependency package proves the canonical completion
 target through the strengthened aggregate dependency route.
 -/
