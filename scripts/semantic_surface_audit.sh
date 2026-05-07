@@ -5422,6 +5422,58 @@ set_option linter.unusedVariables false
 #check Poincare.canonical_completion_criterion_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
 #check Poincare.canonical_completion_criterion_of_extraction_derivation_dependency_projections_to_package_eq
 
+#check (Poincare.canonical_completion_payload_of_equation_boundary_dependency_projections :
+  Poincare.PoincareProofDependenciesWithEquationBoundary →
+    ∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check Poincare.canonical_completion_payload_of_equation_boundary_dependency_projections_eq
+#check Poincare.canonical_completion_payload_of_equation_boundary_dependency_projections_to_topology_statement_eq
+#check Poincare.canonical_completion_payload_of_equation_boundary_dependency_projections_to_forgetful_dependencies_eq
+
+#check (Poincare.canonical_completion_target_of_equation_boundary_dependency_projections :
+  Poincare.PoincareProofDependenciesWithEquationBoundary →
+    Poincare.canonicalCompletionTarget)
+
+#check Poincare.canonical_completion_target_of_equation_boundary_dependency_projections_eq
+#check Poincare.canonical_completion_target_of_equation_boundary_dependency_projections_to_topology_statement_eq
+#check Poincare.canonical_completion_target_of_equation_boundary_dependency_projections_to_forgetful_dependencies_eq
+
+#check (Poincare.canonical_completion_criterion_of_equation_boundary_dependency_projections :
+  ∀ witness : Type,
+    Poincare.PoincareProofDependenciesWithEquationBoundary →
+      Poincare.CompletionCriterionAtUniverse witness)
+
+#check Poincare.canonical_completion_criterion_of_equation_boundary_dependency_projections_eq
+#check Poincare.canonical_completion_criterion_of_equation_boundary_dependency_projections_to_topology_statement_eq
+#check Poincare.canonical_completion_criterion_of_equation_boundary_dependency_projections_to_forgetful_dependencies_eq
+
+#check (Poincare.canonical_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections :
+  Poincare.PoincareProofDependenciesWithEquationBoundary →
+    ∃ _target : Poincare.canonicalCompletionTarget,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check Poincare.canonical_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections_eq
+#check Poincare.canonical_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
+#check Poincare.canonical_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_forgetful_dependencies_eq
+
+#check (Poincare.canonical_completion_target_of_equation_boundary_extraction_derivation_dependency_projections :
+  Poincare.PoincareProofDependenciesWithEquationBoundary →
+    Poincare.canonicalCompletionTarget)
+
+#check Poincare.canonical_completion_target_of_equation_boundary_extraction_derivation_dependency_projections_eq
+#check Poincare.canonical_completion_target_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
+#check Poincare.canonical_completion_target_of_equation_boundary_extraction_derivation_dependency_projections_to_forgetful_dependencies_eq
+
+#check (Poincare.canonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections :
+  ∀ witness : Type,
+    Poincare.PoincareProofDependenciesWithEquationBoundary →
+      Poincare.CompletionCriterionAtUniverse witness)
+
+#check Poincare.canonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_eq
+#check Poincare.canonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
+#check Poincare.canonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_to_forgetful_dependencies_eq
+
 #check (Poincare.PoincareCompletionCertificate : Prop)
 
 #check Poincare.poincareCompletionCertificate_eq
@@ -9186,7 +9238,7 @@ canonical_payload_bridge_count=$(
   rg -c '\bcanonical_completion_payload_of_poincare_completion_payload\b' \
     Poincare/CompletionTarget.lean || true
 )
-if [ "$canonical_payload_bridge_count" != "44" ]; then
+if [ "$canonical_payload_bridge_count" != "48" ]; then
   echo "FAIL: canonical route payloads and the canonical/project payload iff should consume the shared Poincare-completion bridge"
   rg -n '\bcanonical_completion_payload_of_poincare_completion_payload\b' \
     Poincare/CompletionTarget.lean || true
@@ -9492,6 +9544,94 @@ if [ "$projection_equation_boundary_extraction_derivation_completion_criterion_c
   echo "FAIL: equation-boundary certified projection criterion endpoints should expose theorem, equality, statement, and forgetful routes"
   rg -n '\bcompletion_criterion_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/DependencyProjections.lean || true
+  exit 1
+fi
+
+canonical_completion_equation_boundary_payload_count=$(
+  rg -c '\bcanonical_completion_payload_of_equation_boundary_dependency_projections\b' \
+    Poincare/CompletionTarget.lean || true
+)
+if [ "$canonical_completion_equation_boundary_payload_count" != "8" ]; then
+  echo "FAIL: equation-boundary projection canonical completion payload endpoints should expose theorem, equality, topology, and forgetful routes"
+  rg -n '\bcanonical_completion_payload_of_equation_boundary_dependency_projections\b' \
+    Poincare/CompletionTarget.lean || true
+  exit 1
+fi
+
+canonical_completion_equation_boundary_target_count=$(
+  rg -c '\bcanonical_completion_target_of_equation_boundary_dependency_projections\b' \
+    Poincare/CompletionTarget.lean || true
+)
+if [ "$canonical_completion_equation_boundary_target_count" != "4" ]; then
+  echo "FAIL: equation-boundary projection canonical completion target endpoints should expose theorem, equality, topology, and forgetful routes"
+  rg -n '\bcanonical_completion_target_of_equation_boundary_dependency_projections\b' \
+    Poincare/CompletionTarget.lean || true
+  exit 1
+fi
+
+canonical_completion_equation_boundary_criterion_count=$(
+  rg -c '\bcanonical_completion_criterion_of_equation_boundary_dependency_projections\b' \
+    Poincare/CompletionTarget.lean || true
+)
+if [ "$canonical_completion_equation_boundary_criterion_count" != "4" ]; then
+  echo "FAIL: equation-boundary projection canonical completion criterion endpoints should expose theorem, equality, topology, and forgetful routes"
+  rg -n '\bcanonical_completion_criterion_of_equation_boundary_dependency_projections\b' \
+    Poincare/CompletionTarget.lean || true
+  exit 1
+fi
+
+canonical_completion_equation_boundary_extraction_derivation_payload_count=$(
+  rg -c '\bcanonical_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections\b' \
+    Poincare/CompletionTarget.lean || true
+)
+if [ "$canonical_completion_equation_boundary_extraction_derivation_payload_count" != "8" ]; then
+  echo "FAIL: equation-boundary certified projection canonical completion payload endpoints should expose theorem, equality, statement, and forgetful routes"
+  rg -n '\bcanonical_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections\b' \
+    Poincare/CompletionTarget.lean || true
+  exit 1
+fi
+
+canonical_completion_equation_boundary_extraction_derivation_target_count=$(
+  rg -c '\bcanonical_completion_target_of_equation_boundary_extraction_derivation_dependency_projections\b' \
+    Poincare/CompletionTarget.lean || true
+)
+if [ "$canonical_completion_equation_boundary_extraction_derivation_target_count" != "4" ]; then
+  echo "FAIL: equation-boundary certified projection canonical completion target endpoints should expose theorem, equality, statement, and forgetful routes"
+  rg -n '\bcanonical_completion_target_of_equation_boundary_extraction_derivation_dependency_projections\b' \
+    Poincare/CompletionTarget.lean || true
+  exit 1
+fi
+
+canonical_completion_equation_boundary_extraction_derivation_criterion_count=$(
+  rg -c '\bcanonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections\b' \
+    Poincare/CompletionTarget.lean || true
+)
+if [ "$canonical_completion_equation_boundary_extraction_derivation_criterion_count" != "4" ]; then
+  echo "FAIL: equation-boundary certified projection canonical completion criterion endpoints should expose theorem, equality, statement, and forgetful routes"
+  rg -n '\bcanonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections\b' \
+    Poincare/CompletionTarget.lean || true
+  exit 1
+fi
+
+canonical_completion_equation_boundary_completion_payload_count=$(
+  rg -c '\bpoincare_completion_payload_of_equation_boundary_dependency_projections\b' \
+    Poincare/CompletionTarget.lean || true
+)
+if [ "$canonical_completion_equation_boundary_completion_payload_count" != "2" ]; then
+  echo "FAIL: equation-boundary canonical completion payload route should consume the named boundary projection completion payload"
+  rg -n '\bpoincare_completion_payload_of_equation_boundary_dependency_projections\b' \
+    Poincare/CompletionTarget.lean || true
+  exit 1
+fi
+
+canonical_completion_equation_boundary_extraction_derivation_completion_payload_count=$(
+  rg -c '\bpoincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections\b' \
+    Poincare/CompletionTarget.lean || true
+)
+if [ "$canonical_completion_equation_boundary_extraction_derivation_completion_payload_count" != "2" ]; then
+  echo "FAIL: equation-boundary certified canonical completion payload route should consume the named boundary certified projection completion payload"
+  rg -n '\bpoincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections\b' \
+    Poincare/CompletionTarget.lean || true
   exit 1
 fi
 

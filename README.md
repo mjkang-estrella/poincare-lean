@@ -352,8 +352,12 @@ The current artifact is intentionally conservative:
   boundary projection endpoints now expose canonical topological 3-sphere
   statements and universe-indexed completion criteria, with equality contracts
   back to the topology-statement and forgetful ordinary projection routes. The
-  completion-target
-  wrapper layer now mirrors that finite-extinction route through the ordinary
+  completion-target layer now also lifts those raw and certified boundary
+  projection completion payloads into canonical payload, target, and
+  universe-indexed criterion endpoints, pinned back to the same
+  topology-statement, extractor/derivation, and forgetful ordinary projection
+  routes. Separately, the completion-target wrapper layer now mirrors that
+  finite-extinction route through the ordinary
   remaining package, strengthened remaining package, and strengthened aggregate
   package, with equality contracts to the verification-payload, pointwise
   surgery-payload, and forgetful ordinary-dependency routes. Boundary-aware
