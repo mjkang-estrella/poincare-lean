@@ -329,7 +329,11 @@ The current artifact is intentionally conservative:
   constructor, existential-constructor, and named-constructor roundtrip
   contracts. The pointwise surgery payload also forgets back to the older
   boundary surgery-package payload, and dependency, remaining-package,
-  aggregate, and certificate payload routes pin that projection. Boundary-aware
+  aggregate, and certificate payload routes pin that projection. It also
+  exposes the carried analytic equation-boundary statement directly, and the
+  dependency, remaining-package, aggregate, and boundary-aware certificate
+  analytic statement routes now pin their projections through the pointwise
+  surgery payload. Boundary-aware
   verification certificates also recover the boundary surgery package payload
   through arbitrary remaining-package, arbitrary aggregate, existential
   verification-payload, named remaining-package, and named aggregate

@@ -9990,6 +9990,67 @@ theorem surgery_package_with_equation_boundary_payload_to_pointwise_equation_pay
           package) := by
   apply Subsingleton.elim
 
+/--
+The scalar-pointwise surgery payload exposes the analytic-boundary statement
+it carries for the projected Ricci-flow data.
+-/
+theorem analytic_foundation_with_equation_boundary_of_pointwise_equation_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M}
+    (payload :
+      SurgeryPackageWithEquationBoundaryPointwiseEquationPayload package) :
+    AnalyticFoundationWithEquationBoundaryStatement
+      (ricci_flow_data_of_surgery_package
+        (surgery_package_of_equation_boundary_surgery_package package)) := by
+  rcases payload with
+    ⟨_basePackage, _basePackage_eq, _equationBoundary, _verification,
+      _verification_eq, _metricDerivative, _metricDerivative_eq, _derivativeId,
+      _pointwiseEquation, analyticBoundary, _finiteExtinction⟩
+  exact analyticBoundary
+
+/--
+Projecting the analytic-boundary statement from a scalar-pointwise surgery
+payload is the stored analytic-boundary field.
+-/
+theorem analytic_foundation_with_equation_boundary_of_pointwise_equation_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M}
+    (payload :
+      SurgeryPackageWithEquationBoundaryPointwiseEquationPayload package) :
+    analytic_foundation_with_equation_boundary_of_pointwise_equation_payload
+        payload =
+      (by
+        rcases payload with
+          ⟨_basePackage, _basePackage_eq, _equationBoundary, _verification,
+            _verification_eq, _metricDerivative, _metricDerivative_eq,
+            _derivativeId, _pointwiseEquation, analyticBoundary,
+            _finiteExtinction⟩
+        exact analyticBoundary) := by
+  apply Subsingleton.elim
+
+/--
+The named strengthened surgery-package analytic-boundary projection is the
+analytic projection of the named scalar-pointwise surgery payload.
+-/
+theorem analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary_to_pointwise_equation_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+        package =
+      analytic_foundation_with_equation_boundary_of_pointwise_equation_payload
+        (surgery_package_with_equation_boundary_pointwise_equation_payload
+          package) := by
+  apply Subsingleton.elim
+
 section SurgeryPackageFiniteExtinctionProjectionEqualities
 
 variable {n : ℕ∞ω}
