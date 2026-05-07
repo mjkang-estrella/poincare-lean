@@ -84,7 +84,9 @@ verifies `∂ₜ g = -2 Ricci` by reducing both sides to zero. The same explicit
 inputs now build zero Ricci-flow data and an analytic equation-boundary
 package. `analytic_foundation_package_of_subobligations_payload` supplies the
 generic bridge from fixed Ricci-flow data plus the ordinary analytic
-sub-obligation payload to a full analytic-foundation package, and
+sub-obligation payload to a full analytic-foundation package,
+`analytic_foundation_derivation_statement_of_subobligations_payload` rebuilds
+the fixed-flow analytic derivation statement from that payload, and
 `analytic_foundation_with_equation_boundary_of_subobligations_payload_and_ricci_flow_equation_verification`
 adds the corresponding flow-level route from that payload plus explicit
 equation verification to the strengthened analytic equation-boundary statement.

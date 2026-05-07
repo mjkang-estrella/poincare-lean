@@ -286,6 +286,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   `analytic_foundation_package_of_subobligations_payload` builds an
   analytic-foundation package from fixed Ricci-flow data and that same named
   sub-obligation payload, with a checked flow-projection equality; the
+  payload-to-derivation theorem
+  `analytic_foundation_derivation_statement_of_subobligations_payload`
+  reconstructs the fixed-flow analytic derivation statement from that payload;
+  the
   flow-level route
   `analytic_foundation_with_equation_boundary_of_subobligations_payload_and_ricci_flow_equation_verification`
   then combines that payload with explicit equation verification to produce the

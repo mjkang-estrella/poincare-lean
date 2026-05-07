@@ -539,6 +539,10 @@ check_decl "analytic sub-obligation payload to package constructor is declared" 
   '^noncomputable def analytic_foundation_package_of_subobligations_payload\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic sub-obligation payload to package equality contract is declared" \
   '^@\[simp\] theorem analytic_foundation_package_of_subobligations_payload_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic sub-obligation payload to derivation theorem is declared" \
+  '^theorem analytic_foundation_derivation_statement_of_subobligations_payload\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic sub-obligation payload to derivation equality contract is declared" \
+  '^@\[simp\] theorem analytic_foundation_derivation_statement_of_subobligations_payload_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic sub-obligation payload plus verification theorem is declared" \
   '^theorem analytic_foundation_with_equation_boundary_of_subobligations_payload_and_ricci_flow_equation_verification\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic sub-obligation payload plus verification equality contract is declared" \

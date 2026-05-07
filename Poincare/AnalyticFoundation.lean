@@ -2901,6 +2901,64 @@ theorem analytic_foundation_derivation_statement_of_analytic_foundation_package_
   rfl
 
 /--
+Fixed Ricci-flow data and the named analytic sub-obligation payload for that
+flow reconstruct the fixed-flow analytic derivation statement.
+-/
+theorem analytic_foundation_derivation_statement_of_subobligations_payload
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M)
+    (subobligations : AnalyticFoundationSubobligationsPayload flow) :
+    AnalyticFoundationDerivationStatement flow := by
+  let package :=
+    analytic_foundation_package_of_subobligations_payload flow subobligations
+  have hflow :
+      ricci_flow_data_of_analytic_foundation_package package = flow := by
+    change package.flow = flow
+    exact analytic_foundation_package_of_subobligations_payload_eq
+      flow subobligations
+  have result :
+      AnalyticFoundationDerivationStatement
+        (ricci_flow_data_of_analytic_foundation_package package) :=
+    analytic_foundation_derivation_statement_of_analytic_foundation_package
+      package
+  rw [← hflow]
+  exact result
+
+/--
+The payload-to-derivation route rebuilds the generic analytic package from the
+payload and delegates to the package-level derivation assembler.
+-/
+@[simp] theorem analytic_foundation_derivation_statement_of_subobligations_payload_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M)
+    (subobligations : AnalyticFoundationSubobligationsPayload flow) :
+    analytic_foundation_derivation_statement_of_subobligations_payload
+      flow subobligations =
+      (by
+        let package :=
+          analytic_foundation_package_of_subobligations_payload
+            flow subobligations
+        have hflow :
+            ricci_flow_data_of_analytic_foundation_package package = flow := by
+          change package.flow = flow
+          exact analytic_foundation_package_of_subobligations_payload_eq
+            flow subobligations
+        have result :
+            AnalyticFoundationDerivationStatement
+              (ricci_flow_data_of_analytic_foundation_package package) :=
+          analytic_foundation_derivation_statement_of_analytic_foundation_package
+            package
+        rw [← hflow]
+        exact result) := by
+  apply Subsingleton.elim
+
+/--
 An analytic-foundation package plus an explicit equation-boundary package
 supplies the strengthened analytic-boundary statement.
 -/
