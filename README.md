@@ -348,7 +348,10 @@ The current artifact is intentionally conservative:
   inputs. It now also assembles those boundary projection inputs into raw and
   certified target payloads with equality contracts back to the ordinary
   dependency projection target payloads, then exposes matching completion
-  payloads and Poincare statements for the boundary projection routes. The
+  payloads and Poincare statements for the boundary projection routes. The same
+  boundary projection endpoints now expose canonical topological 3-sphere
+  statements and universe-indexed completion criteria, with equality contracts
+  back to the topology-statement and forgetful ordinary projection routes. The
   completion-target
   wrapper layer now mirrors that finite-extinction route through the ordinary
   remaining package, strengthened remaining package, and strengthened aggregate

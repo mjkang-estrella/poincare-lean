@@ -10039,6 +10039,123 @@ theorem canonical_three_sphere_statement_of_extraction_derivation_dependency_pro
   apply Subsingleton.elim
 
 /--
+The strengthened equation-boundary projection route exposes the canonical
+mathlib-shaped topological 3-sphere statement.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_dependency_projections
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) :=
+  canonical_three_sphere_statement_of_poincare_statement
+    (poincare_statement_of_equation_boundary_dependency_projections
+      dependencies)
+
+/--
+The strengthened equation-boundary canonical topological statement is the
+canonical bridge applied to the named boundary projection Poincare statement.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_equation_boundary_dependency_projections
+        dependencies =
+      canonical_three_sphere_statement_of_poincare_statement
+        (poincare_statement_of_equation_boundary_dependency_projections
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened equation-boundary canonical statement factors through the
+finite-extinction plus theorem-shaped topology-extraction route.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_dependency_projections_to_topology_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_equation_boundary_dependency_projections
+        dependencies =
+      canonical_three_sphere_statement_of_poincare_statement
+        (poincare_statement_of_finite_extinction_and_topology_extraction_statement
+          (finite_extinction_of_equation_boundary_dependencies dependencies)
+          (topology_extraction_statement_of_dependencies
+            (dependencies_of_equation_boundary_dependencies
+              dependencies))) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data in the strengthened canonical statement
+recovers the ordinary projection canonical statement.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_dependency_projections_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_equation_boundary_dependency_projections
+        dependencies =
+      canonical_three_sphere_statement_of_dependency_projections
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified equation-boundary projection route exposes the
+canonical mathlib-shaped topological 3-sphere statement.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependency_projections
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) :=
+  canonical_three_sphere_statement_of_poincare_statement
+    (poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections
+      dependencies)
+
+/--
+The strengthened certified equation-boundary canonical statement is the
+canonical bridge applied to the named boundary certified Poincare statement.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      canonical_three_sphere_statement_of_poincare_statement
+        (poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified equation-boundary canonical statement factors
+through the extractor/derivation decomposition of the forgetful theorem-shaped
+topology statement.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_derivation.mp
+              (topology_extraction_statement_of_dependencies
+                (dependencies_of_equation_boundary_dependencies
+                  dependencies)) with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_three_sphere_statement_of_poincare_statement
+            (poincare_statement_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_of_equation_boundary_dependencies dependencies)
+              extractSphere derivation)) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data in the strengthened certified canonical
+statement recovers the ordinary certified projection canonical statement.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      canonical_three_sphere_statement_of_extraction_derivation_dependency_projections
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The projection-based assembly route also discharges the explicit
 universe-indexed completion criterion.
 -/
@@ -10161,6 +10278,139 @@ theorem completion_criterion_of_extraction_derivation_dependency_projections_to_
             extractSphere derivation with
           ⟨_target, criterion⟩
         exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened equation-boundary projection route also discharges the
+explicit universe-indexed completion criterion.
+-/
+theorem completion_criterion_of_equation_boundary_dependency_projections
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    CompletionCriterionAtUniverse witness := by
+  rcases
+      poincare_completion_payload_of_equation_boundary_dependency_projections
+        dependencies with
+    ⟨_target, criterion⟩
+  exact criterion witness
+
+/--
+The strengthened equation-boundary completion criterion is selected from the
+named boundary projection completion payload.
+-/
+theorem completion_criterion_of_equation_boundary_dependency_projections_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_equation_boundary_dependency_projections
+        witness dependencies =
+      (by
+        rcases
+            poincare_completion_payload_of_equation_boundary_dependency_projections
+              dependencies with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened equation-boundary completion criterion is carried by the
+finite-extinction plus theorem-shaped topology-extraction endpoint.
+-/
+theorem completion_criterion_of_equation_boundary_dependency_projections_to_topology_statement_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_equation_boundary_dependency_projections
+        witness dependencies =
+      (by
+        rcases
+            poincare_payload_of_finite_extinction_and_topology_extraction_statement
+              (finite_extinction_of_equation_boundary_dependencies dependencies)
+              (topology_extraction_statement_of_dependencies
+                (dependencies_of_equation_boundary_dependencies
+                  dependencies)) with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data in the strengthened completion criterion
+recovers the ordinary projection completion criterion.
+-/
+theorem completion_criterion_of_equation_boundary_dependency_projections_to_forgetful_dependencies_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_equation_boundary_dependency_projections
+        witness dependencies =
+      completion_criterion_of_dependency_projections witness
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified equation-boundary projection route also discharges
+the explicit universe-indexed completion criterion.
+-/
+theorem completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    CompletionCriterionAtUniverse witness := by
+  rcases
+      poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies with
+    ⟨_target, criterion⟩
+  exact criterion witness
+
+/--
+The strengthened certified equation-boundary completion criterion is selected
+from the named boundary certified projection completion payload.
+-/
+theorem completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections
+        witness dependencies =
+      (by
+        rcases
+            poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections
+              dependencies with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified equation-boundary completion criterion is carried
+by the extractor/derivation decomposition of the forgetful theorem-shaped
+topology statement.
+-/
+theorem completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections
+        witness dependencies =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_derivation.mp
+              (topology_extraction_statement_of_dependencies
+                (dependencies_of_equation_boundary_dependencies
+                  dependencies)) with
+          ⟨extractSphere, derivation⟩
+        rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data in the strengthened certified completion
+criterion recovers the ordinary certified projection completion criterion.
+-/
+theorem completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_to_forgetful_dependencies_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections
+        witness dependencies =
+      completion_criterion_of_extraction_derivation_dependency_projections
+        witness
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
   apply Subsingleton.elim
 
 end Poincare
