@@ -513,10 +513,18 @@ check_decl "zero-derivative zero-Ricci verification existence theorem is declare
   '^theorem zero_derivative_zero_ricci_equation_verification_exists\b' Poincare/RicciFlow.lean
 check_decl "zero-derivative zero-Ricci verification existence equality contract is declared" \
   '^theorem zero_derivative_zero_ricci_equation_verification_exists_eq\b' Poincare/RicciFlow.lean
+check_decl "zero-derivative zero-Ricci verification pointwise-zero payload theorem is declared" \
+  '^theorem zero_derivative_zero_ricci_equation_verification_pointwise_zero\b' Poincare/RicciFlow.lean
+check_decl "zero-derivative zero-Ricci verification pointwise-zero equality contract is declared" \
+  '^theorem zero_derivative_zero_ricci_equation_verification_pointwise_zero_eq\b' Poincare/RicciFlow.lean
 check_decl "stationary zero-derivative zero-Ricci verification existence theorem is declared" \
   '^theorem stationary_zero_derivative_zero_ricci_equation_verification_exists\b' Poincare/RicciFlow.lean
 check_decl "stationary zero-derivative zero-Ricci verification equality contract is declared" \
   '^theorem stationary_zero_derivative_zero_ricci_equation_verification_exists_eq\b' Poincare/RicciFlow.lean
+check_decl "stationary zero-derivative zero-Ricci verification pointwise-zero payload theorem is declared" \
+  '^theorem stationary_zero_derivative_zero_ricci_equation_verification_pointwise_zero\b' Poincare/RicciFlow.lean
+check_decl "stationary zero-derivative zero-Ricci verification pointwise-zero equality contract is declared" \
+  '^theorem stationary_zero_derivative_zero_ricci_equation_verification_pointwise_zero_eq\b' Poincare/RicciFlow.lean
 check_decl "Levi-Civita theory interface is declared" \
   '^inductive HasLeviCivitaConnectionTheory\b' Poincare/AnalyticFoundation.lean
 check_decl "Levi-Civita existence interface is declared" \
@@ -11481,6 +11489,12 @@ open scoped Manifold ContDiff
 #check Poincare.equation_at_time_apply_of_zero_ricci_flow_equation_verification_eq
 #check Poincare.zero_derivative_zero_ricci_equation_verification_exists
 #check Poincare.zero_derivative_zero_ricci_equation_verification_exists_eq
+#check Poincare.zero_derivative_zero_ricci_equation_verification_pointwise_zero
+#check Poincare.zero_derivative_zero_ricci_equation_verification_pointwise_zero_eq
+#check Poincare.stationary_zero_derivative_zero_ricci_equation_verification_exists
+#check Poincare.stationary_zero_derivative_zero_ricci_equation_verification_exists_eq
+#check Poincare.stationary_zero_derivative_zero_ricci_equation_verification_pointwise_zero
+#check Poincare.stationary_zero_derivative_zero_ricci_equation_verification_pointwise_zero_eq
 #check Poincare.ricci_flow_data_of_analytic_foundation_package
 #check Poincare.ricci_flow_data_of_analytic_foundation_package_eq
 #check Poincare.levi_civita_existence_of_analytic_foundation_package
@@ -15610,6 +15624,12 @@ open scoped Manifold ContDiff
 #check Poincare.equation_at_time_apply_of_zero_ricci_flow_equation_verification_eq
 #check Poincare.zero_derivative_zero_ricci_equation_verification_exists
 #check Poincare.zero_derivative_zero_ricci_equation_verification_exists_eq
+#check Poincare.zero_derivative_zero_ricci_equation_verification_pointwise_zero
+#check Poincare.zero_derivative_zero_ricci_equation_verification_pointwise_zero_eq
+#check Poincare.stationary_zero_derivative_zero_ricci_equation_verification_exists
+#check Poincare.stationary_zero_derivative_zero_ricci_equation_verification_exists_eq
+#check Poincare.stationary_zero_derivative_zero_ricci_equation_verification_pointwise_zero
+#check Poincare.stationary_zero_derivative_zero_ricci_equation_verification_pointwise_zero_eq
 #check Poincare.ricci_flow_data_of_analytic_foundation_package
 #check Poincare.ricci_flow_data_of_analytic_foundation_package_eq
 #check Poincare.levi_civita_existence_of_analytic_foundation_package

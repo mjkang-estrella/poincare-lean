@@ -2004,6 +2004,76 @@ theorem zero_derivative_zero_ricci_equation_verification_exists_eq
   apply Subsingleton.elim
 
 /--
+The zero-derivative/zero-Ricci verification payload also records both sides of
+the equation as pointwise scalar zero.
+-/
+theorem zero_derivative_zero_ricci_equation_verification_pointwise_zero
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g)) :
+    ∃ curvature : RicciCurvatureData g,
+      curvature.ricci = zero_ricci_tensor_field g ∧
+      curvature.scalar = zero_scalar_curvature_field g ∧
+      ∃ verification : RicciFlowEquationVerification curvature,
+        verification.metricDerivative.derivative =
+            zero_metric_time_derivative_field g ∧
+        (∀ t,
+          metric_time_derivative_at_time_of_metric_derivative_field
+            verification.metricDerivative.derivative t =
+          ricci_flow_rhs_tensor curvature t) ∧
+        ∀ t x v w,
+          metric_time_derivative_at_time_of_metric_derivative_field
+            verification.metricDerivative.derivative t x v w = 0 ∧
+          ricci_flow_rhs_tensor curvature t x v w = 0 := by
+  let curvature : RicciCurvatureData g :=
+    zero_ricci_curvature_data identifiesRicci
+  let verification : RicciFlowEquationVerification curvature :=
+    zero_ricci_flow_equation_verification
+      identifiesDerivative identifiesRicci
+  exact
+    ⟨curvature, rfl, rfl, verification, rfl,
+      verification.equationAtTime, fun t x v w => by
+        exact
+          ⟨rfl,
+            ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data
+              identifiesRicci t x v w⟩⟩
+
+/--
+The pointwise-zero zero-equation payload is exactly the explicit curvature and
+verification package with the two scalar-zero witnesses.
+-/
+theorem zero_derivative_zero_ricci_equation_verification_pointwise_zero_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g)) :
+    zero_derivative_zero_ricci_equation_verification_pointwise_zero
+      identifiesDerivative identifiesRicci =
+      (by
+        let curvature : RicciCurvatureData g :=
+          zero_ricci_curvature_data identifiesRicci
+        let verification : RicciFlowEquationVerification curvature :=
+          zero_ricci_flow_equation_verification
+            identifiesDerivative identifiesRicci
+        exact
+          ⟨curvature, rfl, rfl, verification, rfl,
+            verification.equationAtTime, fun t x v w => by
+              exact
+                ⟨rfl,
+                  ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data
+                    identifiesRicci t x v w⟩⟩) := by
+  apply Subsingleton.elim
+
+/--
 The stationary metric-family specialization of the zero derivative / zero Ricci
 equation-verification payload.
 -/
@@ -2045,6 +2115,51 @@ theorem stationary_zero_derivative_zero_ricci_equation_verification_exists
     identifiesDerivative identifiesRicci
 
 /--
+The stationary zero-derivative/zero-Ricci verification payload also records both
+sides of the equation as pointwise scalar zero.
+-/
+theorem stationary_zero_derivative_zero_ricci_equation_verification_pointwise_zero
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric))) :
+    ∃ curvature :
+        RicciCurvatureData
+          (stationary_time_dependent_riemannian_metric metric),
+      curvature.ricci =
+          zero_ricci_tensor_field
+            (stationary_time_dependent_riemannian_metric metric) ∧
+      curvature.scalar =
+          zero_scalar_curvature_field
+            (stationary_time_dependent_riemannian_metric metric) ∧
+      ∃ verification : RicciFlowEquationVerification curvature,
+        verification.metricDerivative.derivative =
+            zero_metric_time_derivative_field
+              (stationary_time_dependent_riemannian_metric metric) ∧
+        (∀ t,
+          metric_time_derivative_at_time_of_metric_derivative_field
+            verification.metricDerivative.derivative t =
+          ricci_flow_rhs_tensor curvature t) ∧
+        ∀ t x v w,
+          metric_time_derivative_at_time_of_metric_derivative_field
+            verification.metricDerivative.derivative t x v w = 0 ∧
+          ricci_flow_rhs_tensor curvature t x v w = 0 :=
+  zero_derivative_zero_ricci_equation_verification_pointwise_zero
+    identifiesDerivative identifiesRicci
+
+/--
 The stationary specialization delegates to the generic zero-candidate
 verification route.
 -/
@@ -2068,6 +2183,33 @@ theorem stationary_zero_derivative_zero_ricci_equation_verification_exists_eq
     stationary_zero_derivative_zero_ricci_equation_verification_exists
       metric identifiesDerivative identifiesRicci =
       zero_derivative_zero_ricci_equation_verification_exists
+        identifiesDerivative identifiesRicci := by
+  apply Subsingleton.elim
+
+/--
+The stationary pointwise-zero specialization delegates to the generic
+zero-candidate pointwise-zero payload route.
+-/
+theorem stationary_zero_derivative_zero_ricci_equation_verification_pointwise_zero_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric))) :
+    stationary_zero_derivative_zero_ricci_equation_verification_pointwise_zero
+      metric identifiesDerivative identifiesRicci =
+      zero_derivative_zero_ricci_equation_verification_pointwise_zero
         identifiesDerivative identifiesRicci := by
   apply Subsingleton.elim
 
