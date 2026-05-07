@@ -18084,6 +18084,139 @@ theorem completion_certificate_of_project_statement_payload_of_completion_certif
   apply Subsingleton.elim
 
 /--
+The literal-payload certificate constructor recovers the ordinary full-assembly
+payload for the remaining-dependency witness carried by the payload.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_of_literal_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        RemainingDependencyPackage.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_literal_payload payload) =
+      (by
+        rcases payload with
+          ⟨_theoremName, _theoremName_eq, dependencies, _target, _criterion⟩
+        exact
+          poincare_full_assembly_payload_of_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The literal-payload certificate constructor recovers the ordinary certified
+full-assembly payload for the remaining-dependency witness carried by the
+payload.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_literal_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        RemainingDependencyPackage.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_literal_payload payload) =
+      (by
+        rcases payload with
+          ⟨_theoremName, _theoremName_eq, dependencies, _target, _criterion⟩
+        exact
+          poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
+            dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate-dependency payload constructor recovers the ordinary
+full-assembly payload for the aggregate dependency witness carried by the
+payload.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_of_aggregate_dependency_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_aggregate_dependency_payload payload) =
+      (by
+        rcases payload with
+          ⟨_theoremName, _theoremName_eq, dependencies, _target, _criterion⟩
+        exact
+          poincare_full_assembly_payload_of_dependencies
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies)) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate-dependency payload constructor recovers the ordinary certified
+full-assembly payload for the aggregate dependency witness carried by the
+payload.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_aggregate_dependency_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_aggregate_dependency_payload payload) =
+      (by
+        rcases payload with
+          ⟨_theoremName, _theoremName_eq, dependencies, _target, _criterion⟩
+        exact
+          poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies)) := by
+  apply Subsingleton.elim
+
+/--
+The project-statement payload constructor recovers the ordinary full-assembly
+payload for the aggregate dependency witness carried by the payload.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_of_project_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        PoincareConjectureStatement.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_project_statement_payload payload) =
+      (by
+        rcases payload with
+          ⟨_theoremName, _theoremName_eq, dependencies, _target, _criterion⟩
+        exact
+          poincare_full_assembly_payload_of_dependencies
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies)) := by
+  apply Subsingleton.elim
+
+/--
+The project-statement payload constructor recovers the ordinary certified
+full-assembly payload for the aggregate dependency witness carried by the
+payload.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_project_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        PoincareConjectureStatement.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_project_statement_payload payload) =
+      (by
+        rcases payload with
+          ⟨_theoremName, _theoremName_eq, dependencies, _target, _criterion⟩
+        exact
+          poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies)) := by
+  apply Subsingleton.elim
+
+/--
 Projecting the theorem-name payload from the strengthened remaining-package
 certificate returns the reserved theorem name literal.
 -/

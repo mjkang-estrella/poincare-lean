@@ -1270,6 +1270,9 @@ The current artifact is intentionally conservative:
   analogous full payload with the project Poincare statement named directly.
   The literal, aggregate-dependency, and project-statement full payload
   constructors now have projection and reconstruction round-trip contracts.
+  They also expose ordinary and certified full-assembly projection contracts,
+  pinning each payload constructor back to the dependency witness carried by
+  that payload.
   `poincareCompletionCertificate_iff_components`,
   `poincareCompletionCertificate_iff_component_requirements`,
   `poincareCompletionCertificate_iff_package_layer_requirements`, and
