@@ -1401,7 +1401,9 @@ The current artifact is intentionally conservative:
   and ordinary aggregate routes where those routes are defined.
   Those ordinary artifact payload projections are now also pinned for the
   named remaining-package, named aggregate, arbitrary verification-payload, and
-  existential verification-payload constructors.
+  existential verification-payload constructors, including their routes through
+  the ordinary remaining-dependency certificates after equation-boundary data is
+  forgotten.
   The reverse literal, aggregate-dependency, and project-statement payload
   constructors for that checked certificate are pinned to the same projected,
   boundary, remaining-dependency, and aggregate routes.
