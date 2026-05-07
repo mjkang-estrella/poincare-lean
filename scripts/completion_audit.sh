@@ -691,6 +691,14 @@ check_decl "stationary zero Ricci-flow equation boundary pointwise derivative ze
   '^@\[simp\] theorem metric_time_derivative_at_time_apply_of_stationary_zero_ricci_flow_equation_boundary_package\b' Poincare/AnalyticFoundation.lean
 check_decl "stationary zero Ricci-flow equation boundary pointwise derivative zero equality theorem is declared" \
   '^@\[simp\] theorem metric_time_derivative_at_time_apply_of_stationary_zero_ricci_flow_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "zero Ricci-flow equation boundary pointwise paired-zero theorem is declared" \
+  '^theorem pointwise_zero_pair_of_zero_ricci_flow_equation_boundary_package\b' Poincare/AnalyticFoundation.lean
+check_decl "zero Ricci-flow equation boundary pointwise paired-zero equality theorem is declared" \
+  '^@\[simp\] theorem pointwise_zero_pair_of_zero_ricci_flow_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow equation boundary pointwise paired-zero theorem is declared" \
+  '^theorem pointwise_zero_pair_of_stationary_zero_ricci_flow_equation_boundary_package\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow equation boundary pointwise paired-zero equality theorem is declared" \
+  '^@\[simp\] theorem pointwise_zero_pair_of_stationary_zero_ricci_flow_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "zero Ricci-flow data to equation-boundary statement theorem is declared" \
   '^theorem ricciFlowEquationBoundaryStatement_of_zero_ricci_flow_data\b' Poincare/AnalyticFoundation.lean
 check_decl "zero Ricci-flow data to equation-boundary statement equality contract is declared" \
