@@ -363,7 +363,10 @@ The current artifact is intentionally conservative:
   routes. Their certificate projections now recover the forgetful aggregate and
   remaining packages, project payloads, target statements, canonical payloads,
   canonical targets, and universe-indexed criteria for both the raw and
-  certified boundary projection routes. Separately, the completion-target
+  certified boundary projection routes. The same certificate constructors are
+  now also pinned to the strengthened aggregate certificate, the boundary-target
+  payload certificate, and the ordinary aggregate projection certificate.
+  Separately, the completion-target
   wrapper layer now mirrors that
   finite-extinction route through the ordinary
   remaining package, strengthened remaining package, and strengthened aggregate
