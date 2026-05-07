@@ -946,6 +946,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   certified, so the boundary-carrying surgery-family assembly layer can be
   compared against the ordinary dependency assembly layer without changing the
   strengthened payload type.
+  Boundary-aware completion certificate payloads now also expose strengthened
+  and ordinary full-assembly payload projections, raw and certified, through
+  the projected strengthened package and its forgetful remaining-dependency
+  package.
   It also projects the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/
