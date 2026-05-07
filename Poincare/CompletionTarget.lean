@@ -12068,6 +12068,29 @@ theorem equation_boundary_derivative_payload_of_completion_certificate_with_equa
   apply Subsingleton.elim
 
 /--
+The certificate derivative projection is the forgetful projection of the
+certificate full surgery-derivative payload.
+-/
+theorem equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_surgery_derivative_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload
+              payload M with
+          ⟨n, package, _basePackage, _basePackage_eq, _equationBoundary,
+            verification, verification_eq, metricDerivative,
+            metricDerivative_eq, derivativeId, equationAtTime,
+            _analyticBoundary, _finiteExtinction⟩
+        exact
+          ⟨n, package, verification, verification_eq, metricDerivative,
+            metricDerivative_eq, derivativeId, equationAtTime⟩) := by
+  apply Subsingleton.elim
+
+/--
 The certificate pointwise equation projection can be routed through the direct
 dependent verification payload.
 -/
