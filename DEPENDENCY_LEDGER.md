@@ -252,11 +252,15 @@ It is not a proof. It is a work breakdown for future Lean development.
   candidate data and zero metric-derivative data with their supplied
   identification evidence, then constructs
   `zero_ricci_flow_equation_verification`, a proof-bearing explicit
-  verification of the pointwise equation `0 = -2 * 0`. It also packages those
-  zero Ricci/scalar candidates into `zero_ricci_flow_data` once the still-missing
-  abstract equation-interface evidence is supplied. This does not construct the
-  no-constructor `SatisfiesRicciFlowEquation` interface, but it gives the
-  flat/stationary candidate route a checked flow-data and equation payload.
+  verification of the pointwise equation `0 = -2 * 0`. The zero route now has
+  checked equalities showing that zero curvature data gives zero Ricci-flow RHS,
+  zero derivative data gives the zero derivative time slice, and the explicit
+  zero verification carries exactly the supplied derivative-identification
+  evidence. It also packages those zero Ricci/scalar candidates into
+  `zero_ricci_flow_data` once the still-missing abstract equation-interface
+  evidence is supplied. This does not construct the no-constructor
+  `SatisfiesRicciFlowEquation` interface, but it gives the flat/stationary
+  candidate route a checked flow-data and equation payload.
 - `Poincare/AnalyticFoundation.lean` defines no-constructor interfaces for
   Levi-Civita connection theory, Levi-Civita
   existence/uniqueness/torsion-free/metric-compatibility sub-obligations,

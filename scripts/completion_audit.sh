@@ -343,6 +343,8 @@ check_decl "Ricci-flow equation verification projection-routed time equality the
   '^@\[simp\] theorem equation_at_time_of_ricci_flow_equation_verification_projection_eq\b' Poincare/RicciFlow.lean
 check_decl "zero-Ricci right-hand side theorem is declared" \
   '^@\[simp\] theorem ricci_flow_rhs_tensor_of_zero_ricci_tensor_field_eq\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci curvature data right-hand side theorem is declared" \
+  '^@\[simp\] theorem ricci_flow_rhs_tensor_of_zero_ricci_curvature_data_eq\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci curvature data constructor is declared" \
   '^noncomputable def zero_ricci_curvature_data\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci curvature data equality contract is declared" \
@@ -359,6 +361,8 @@ check_decl "zero metric-derivative data equality contract is declared" \
   '^@\[simp\] theorem zero_metric_derivative_data_eq\b' Poincare/RicciFlow.lean
 check_decl "zero metric-derivative data derivative projection contract is declared" \
   '^@\[simp\] theorem metric_time_derivative_field_of_zero_metric_derivative_data_eq\b' Poincare/RicciFlow.lean
+check_decl "zero metric-derivative data time-slice projection contract is declared" \
+  '^@\[simp\] theorem metric_time_derivative_at_time_of_zero_metric_derivative_data_eq\b' Poincare/RicciFlow.lean
 check_decl "zero metric-derivative data identification projection contract is declared" \
   '^@\[simp\] theorem metric_time_derivative_identification_of_zero_metric_derivative_data_eq\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci-flow equation verification constructor is declared" \
@@ -367,6 +371,8 @@ check_decl "zero Ricci-flow equation verification equality contract is declared"
   '^@\[simp\] theorem zero_ricci_flow_equation_verification_eq\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci-flow equation verification derivative projection contract is declared" \
   '^@\[simp\] theorem metric_derivative_data_of_zero_ricci_flow_equation_verification_eq\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci-flow equation verification derivative-identification projection contract is declared" \
+  '^@\[simp\] theorem metric_time_derivative_identification_of_zero_ricci_flow_equation_verification_eq\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci-flow equation verification time theorem is declared" \
   '^theorem equation_at_time_of_zero_ricci_flow_equation_verification\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci-flow equation verification time equality contract is declared" \
@@ -10651,6 +10657,7 @@ open scoped Manifold ContDiff
 #check Poincare.metric_time_derivative_at_time_of_metric_derivative_field
 #check Poincare.metric_time_derivative_at_time_of_metric_derivative_field_eq
 #check Poincare.metric_time_derivative_at_time_of_zero_metric_time_derivative_field_eq
+#check Poincare.metric_time_derivative_at_time_of_zero_metric_derivative_data_eq
 #check Poincare.ricci_tensor_field_of_curvature_data
 #check Poincare.ricci_tensor_field_of_curvature_data_eq
 #check Poincare.scalar_curvature_field_of_curvature_data
@@ -10667,6 +10674,7 @@ open scoped Manifold ContDiff
 #check Poincare.ricci_flow_rhs_tensor_apply
 #check Poincare.ricci_flow_rhs_tensor_apply_eq
 #check Poincare.ricci_flow_rhs_tensor_apply_eq
+#check Poincare.ricci_flow_rhs_tensor_of_zero_ricci_curvature_data_eq
 #check Poincare.scalar_curvature_at_time_of_scalar_curvature_field
 #check Poincare.scalar_curvature_at_time_of_scalar_curvature_field_eq
 #check Poincare.scalar_curvature_at_time_of_zero_scalar_curvature_field_eq
@@ -14423,6 +14431,7 @@ open scoped Manifold ContDiff
 #check Poincare.metric_time_derivative_at_time_of_metric_derivative_field
 #check Poincare.metric_time_derivative_at_time_of_metric_derivative_field_eq
 #check Poincare.metric_time_derivative_at_time_of_zero_metric_time_derivative_field_eq
+#check Poincare.metric_time_derivative_at_time_of_zero_metric_derivative_data_eq
 #check Poincare.ricci_tensor_field_of_curvature_data
 #check Poincare.ricci_tensor_field_of_curvature_data_eq
 #check Poincare.scalar_curvature_field_of_curvature_data
@@ -14437,6 +14446,7 @@ open scoped Manifold ContDiff
 #check Poincare.ricci_flow_rhs_tensor
 #check Poincare.ricci_flow_rhs_tensor_eq
 #check Poincare.ricci_flow_rhs_tensor_apply
+#check Poincare.ricci_flow_rhs_tensor_of_zero_ricci_curvature_data_eq
 #check Poincare.scalar_curvature_at_time_of_scalar_curvature_field
 #check Poincare.scalar_curvature_at_time_of_scalar_curvature_field_eq
 #check Poincare.scalar_curvature_at_time_of_zero_scalar_curvature_field_eq
