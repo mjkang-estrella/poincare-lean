@@ -928,6 +928,11 @@ It is not a proof. It is a work breakdown for future Lean development.
   verification/derivative fields routed through the explicit verification while
   routing the analytic-boundary component through the stored
   boundary-carrying surgery package.
+  `Poincare/CompletionTarget.lean` now mirrors the aggregate dependency route
+  names at the strengthened remaining-package layer, pinning its equation-boundary
+  package family, derivative payload, full surgery derivative payload,
+  verification payload, and analytic equation-boundary statement family directly
+  to the named dependency projections.
   It also projects the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/

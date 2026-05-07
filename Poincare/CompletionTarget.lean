@@ -3054,6 +3054,18 @@ theorem ricci_flow_equation_boundary_packages_of_remaining_dependency_package_eq
   apply Subsingleton.elim
 
 /--
+The strengthened remaining-package equation-boundary package family agrees
+directly with the named dependency projection.
+-/
+theorem ricci_flow_equation_boundary_packages_of_remaining_dependency_package_to_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ricci_flow_equation_boundary_packages_of_remaining_dependency_package
+        dependencies =
+      ricci_flow_equation_boundary_packages_of_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining package exposes the full projection-routed
 equation-boundary derivative payload for each selected surgery package.
 -/
@@ -3116,6 +3128,18 @@ theorem equation_boundary_derivative_payload_of_remaining_dependency_package_eq
   apply Subsingleton.elim
 
 /--
+The strengthened remaining-package derivative payload agrees directly with the
+named dependency projection.
+-/
+theorem equation_boundary_derivative_payload_of_remaining_dependency_package_to_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    equation_boundary_derivative_payload_of_remaining_dependency_package
+        dependencies =
+      equation_boundary_derivative_payload_of_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining package exposes the full derivative-strengthened
 surgery payload for each selected boundary-carrying surgery package.
 -/
@@ -3136,6 +3160,18 @@ The strengthened remaining-package full surgery derivative payload is the
 dependency-projection full surgery derivative payload.
 -/
 theorem surgery_package_with_equation_boundary_derivative_payload_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_derivative_payload_of_remaining_dependency_package
+        dependencies =
+      surgery_package_with_equation_boundary_derivative_payload_of_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package full surgery derivative payload agrees
+directly with the named dependency projection.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_remaining_dependency_package_to_dependencies_eq
     (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
     surgery_package_with_equation_boundary_derivative_payload_of_remaining_dependency_package
         dependencies =
@@ -3179,6 +3215,17 @@ The strengthened remaining-package verification payload is the dependency-level
 verification payload.
 -/
 theorem equation_boundary_verification_payload_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    equation_boundary_verification_payload_of_remaining_dependency_package
+        dependencies =
+      equation_boundary_verification_payload_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package verification payload agrees directly with the
+named dependency-level verification payload.
+-/
+theorem equation_boundary_verification_payload_of_remaining_dependency_package_to_dependencies_eq
     (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
     equation_boundary_verification_payload_of_remaining_dependency_package
         dependencies =
@@ -3245,6 +3292,18 @@ The strengthened remaining-package analytic/equation-boundary projection is
 the dependency-projection analytic/equation-boundary projection.
 -/
 theorem analytic_foundation_with_equation_boundary_statements_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    analytic_foundation_with_equation_boundary_statements_of_remaining_dependency_package
+        dependencies =
+      analytic_foundation_with_equation_boundary_statements_of_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package analytic/equation-boundary statement family
+agrees directly with the named dependency projection.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_remaining_dependency_package_to_dependencies_eq
     (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
     analytic_foundation_with_equation_boundary_statements_of_remaining_dependency_package
         dependencies =
