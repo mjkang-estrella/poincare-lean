@@ -1389,6 +1389,10 @@ The current artifact is intentionally conservative:
   topology and extractor/derivation endpoints. The dependency-projection layer
   also names those endpoint contracts for the full assembly payload and explicit
   completion criterion.
+  The checked certificate projected from a boundary-aware verification payload
+  now also has ordinary and certified full-assembly contracts for its projected
+  strengthened dependency, boundary-certificate, and forgetful
+  remaining-dependency routes.
   The certificate-layer equality contracts now pin the reserved-name, literal
   payload, canonical payload, target/criterion projection, remaining/aggregate
   dependency, and project-statement routes to their named projections and
