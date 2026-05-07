@@ -160,7 +160,8 @@ The current artifact is intentionally conservative:
   stationary route; zero Ricci-flow data also exposes checked metric, Ricci, and
   scalar-curvature time-slice projection contracts, flow-data-level zero RHS
   contracts, supplied Ricci/equation evidence contracts, plus pointwise scalar
-  zero contracts for both the zero metric-derivative data and the zero-curvature
+  zero contracts for the zero metric-derivative data, the zero-curvature Ricci
+  tensor/scalar data, zero-flow Ricci tensor data, and the zero-curvature
   Ricci-flow right-hand side at `x v w`; the zero equation verification also
   has a pointwise equation route at `x v w`. The analytic equation boundary now
   has the matching stationary zero boundary package, statement route,

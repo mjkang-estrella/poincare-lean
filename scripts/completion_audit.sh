@@ -411,6 +411,14 @@ check_decl "zero Ricci curvature data Ricci projection contract is declared" \
   '^@\[simp\] theorem ricci_tensor_field_of_zero_ricci_curvature_data_eq\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci curvature data scalar projection contract is declared" \
   '^@\[simp\] theorem scalar_curvature_field_of_zero_ricci_curvature_data_eq\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci curvature data Ricci tensor time-slice contract is declared" \
+  '^@\[simp\] theorem ricci_tensor_at_time_of_zero_ricci_curvature_data_eq\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci curvature data pointwise Ricci tensor contract is declared" \
+  '^@\[simp\] theorem ricci_tensor_at_time_apply_of_zero_ricci_curvature_data\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci curvature data pointwise Ricci tensor equality contract is declared" \
+  '^@\[simp\] theorem ricci_tensor_at_time_apply_of_zero_ricci_curvature_data_eq\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci curvature data scalar time-slice contract is declared" \
+  '^@\[simp\] theorem scalar_curvature_at_time_of_zero_ricci_curvature_data_eq\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci curvature data identification projection contract is declared" \
   '^@\[simp\] theorem ricci_identification_of_zero_ricci_curvature_data_eq\b' Poincare/RicciFlow.lean
 check_decl "zero metric-derivative data constructor is declared" \
@@ -467,6 +475,10 @@ check_decl "zero Ricci-flow data metric time-slice contract is declared" \
   '^@\[simp\] theorem metric_at_time_of_zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci-flow data Ricci tensor time-slice contract is declared" \
   '^@\[simp\] theorem ricci_tensor_at_time_of_zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci-flow data pointwise Ricci tensor contract is declared" \
+  '^@\[simp\] theorem ricci_tensor_at_time_apply_of_zero_ricci_flow_data\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci-flow data pointwise Ricci tensor equality contract is declared" \
+  '^@\[simp\] theorem ricci_tensor_at_time_apply_of_zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci-flow data scalar time-slice contract is declared" \
   '^@\[simp\] theorem scalar_curvature_at_time_of_zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
 check_decl "stationary zero Ricci-flow data metric time-slice contract is declared" \

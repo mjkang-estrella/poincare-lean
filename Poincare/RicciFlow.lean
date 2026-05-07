@@ -1065,6 +1065,62 @@ noncomputable def zero_ricci_curvature_data
         zero_scalar_curvature_field g :=
   rfl
 
+/-- The zero curvature-data Ricci tensor is timewise the zero tensor. -/
+@[simp] theorem ricci_tensor_at_time_of_zero_ricci_curvature_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (t : ℝ) :
+    ricci_tensor_at_time_of_ricci_tensor_field
+      (ricci_tensor_field_of_curvature_data
+        (zero_ricci_curvature_data identifiesRicci)) t =
+        zero_tangent_covariant_two_tensor I M :=
+  rfl
+
+/-- Pointwise, the zero curvature-data Ricci tensor is scalar zero. -/
+@[simp] theorem ricci_tensor_at_time_apply_of_zero_ricci_curvature_data
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    ricci_tensor_at_time_of_ricci_tensor_field
+      (ricci_tensor_field_of_curvature_data
+        (zero_ricci_curvature_data identifiesRicci)) t x v w = 0 :=
+  rfl
+
+/-- The pointwise zero curvature-data Ricci tensor proof is definitional. -/
+@[simp] theorem ricci_tensor_at_time_apply_of_zero_ricci_curvature_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    ricci_tensor_at_time_apply_of_zero_ricci_curvature_data
+      identifiesRicci t x v w = rfl := by
+  apply Subsingleton.elim
+
+/-- The zero curvature-data scalar curvature is pointwise zero. -/
+@[simp] theorem scalar_curvature_at_time_of_zero_ricci_curvature_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (t : ℝ) (x : M) :
+    scalar_curvature_at_time_of_scalar_curvature_field
+      (scalar_curvature_field_of_curvature_data
+        (zero_ricci_curvature_data identifiesRicci)) t x = 0 :=
+  rfl
+
 /-- The Ricci-identification projection of zero curvature data is the supplied evidence. -/
 @[simp] theorem ricci_identification_of_zero_ricci_curvature_data_eq
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -1599,6 +1655,36 @@ noncomputable def zero_ricci_flow_data
       (zero_ricci_flow_data g identifiesRicci equationEvidence) t =
         zero_tangent_covariant_two_tensor I M :=
   rfl
+
+/-- Pointwise, the Ricci tensor time-slice of zero Ricci-flow data is scalar zero. -/
+@[simp] theorem ricci_tensor_at_time_apply_of_zero_ricci_flow_data
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    ricci_tensor_at_time_of_ricci_flow_data
+      (zero_ricci_flow_data g identifiesRicci equationEvidence) t x v w = 0 :=
+  rfl
+
+/-- The pointwise zero-flow Ricci tensor proof is definitional. -/
+@[simp] theorem ricci_tensor_at_time_apply_of_zero_ricci_flow_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    ricci_tensor_at_time_apply_of_zero_ricci_flow_data
+      identifiesRicci equationEvidence t x v w = rfl := by
+  apply Subsingleton.elim
 
 /-- The scalar-curvature time-slice of zero Ricci-flow data is zero. -/
 @[simp] theorem scalar_curvature_at_time_of_zero_ricci_flow_data_eq
