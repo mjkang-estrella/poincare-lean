@@ -83,9 +83,10 @@ from a connection, since that surface is still absent from the local mathlib
 checkout. It now also proves the algebraic zero-candidate consistency layer:
 given future evidence that the zero derivative and zero Ricci candidates are the
 correct derivative and Ricci tensor for a metric, the explicit equation payload
-verifies `∂ₜ g = -2 Ricci` by reducing both sides to zero. The same explicit
-inputs now build zero Ricci-flow data and an analytic equation-boundary
-package. `analytic_foundation_package_of_subobligations_payload` supplies the
+verifies `∂ₜ g = -2 Ricci` by reducing both sides to zero, including a checked
+pointwise scalar zero statement for the zero-curvature Ricci-flow right-hand
+side. The same explicit inputs now build zero Ricci-flow data and an analytic
+equation-boundary package. `analytic_foundation_package_of_subobligations_payload` supplies the
 generic bridge from fixed Ricci-flow data plus the ordinary analytic
 sub-obligation payload to a full analytic-foundation package,
 `analytic_foundation_derivation_statement_of_subobligations_payload` rebuilds

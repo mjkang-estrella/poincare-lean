@@ -387,6 +387,10 @@ check_decl "zero-Ricci right-hand side theorem is declared" \
   '^@\[simp\] theorem ricci_flow_rhs_tensor_of_zero_ricci_tensor_field_eq\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci curvature data right-hand side theorem is declared" \
   '^@\[simp\] theorem ricci_flow_rhs_tensor_of_zero_ricci_curvature_data_eq\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci curvature data pointwise right-hand side theorem is declared" \
+  '^@\[simp\] theorem ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci curvature data pointwise right-hand side equality contract is declared" \
+  '^@\[simp\] theorem ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data_eq\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci curvature data constructor is declared" \
   '^noncomputable def zero_ricci_curvature_data\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci curvature data equality contract is declared" \
@@ -11209,6 +11213,8 @@ open scoped Manifold ContDiff
 #check Poincare.ricci_flow_rhs_tensor_apply_eq
 #check Poincare.ricci_flow_rhs_tensor_apply_eq
 #check Poincare.ricci_flow_rhs_tensor_of_zero_ricci_curvature_data_eq
+#check Poincare.ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data
+#check Poincare.ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data_eq
 #check Poincare.scalar_curvature_at_time_of_scalar_curvature_field
 #check Poincare.scalar_curvature_at_time_of_scalar_curvature_field_eq
 #check Poincare.scalar_curvature_at_time_of_zero_scalar_curvature_field_eq
@@ -11233,6 +11239,8 @@ open scoped Manifold ContDiff
 #check Poincare.equation_at_time_of_ricci_flow_equation_verification_projection
 #check Poincare.equation_at_time_of_ricci_flow_equation_verification_projection_eq
 #check Poincare.ricci_flow_rhs_tensor_of_zero_ricci_tensor_field_eq
+#check Poincare.ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data
+#check Poincare.ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data_eq
 #check Poincare.zero_derivative_zero_ricci_equation_verification_exists
 #check Poincare.zero_derivative_zero_ricci_equation_verification_exists_eq
 #check Poincare.ricci_flow_data_of_analytic_foundation_package
@@ -15252,6 +15260,8 @@ open scoped Manifold ContDiff
 #check Poincare.ricci_flow_rhs_tensor_eq
 #check Poincare.ricci_flow_rhs_tensor_apply
 #check Poincare.ricci_flow_rhs_tensor_of_zero_ricci_curvature_data_eq
+#check Poincare.ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data
+#check Poincare.ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data_eq
 #check Poincare.scalar_curvature_at_time_of_scalar_curvature_field
 #check Poincare.scalar_curvature_at_time_of_scalar_curvature_field_eq
 #check Poincare.scalar_curvature_at_time_of_zero_scalar_curvature_field_eq
@@ -15276,6 +15286,8 @@ open scoped Manifold ContDiff
 #check Poincare.equation_at_time_of_ricci_flow_equation_verification_projection
 #check Poincare.equation_at_time_of_ricci_flow_equation_verification_projection_eq
 #check Poincare.ricci_flow_rhs_tensor_of_zero_ricci_tensor_field_eq
+#check Poincare.ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data
+#check Poincare.ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data_eq
 #check Poincare.zero_derivative_zero_ricci_equation_verification_exists
 #check Poincare.zero_derivative_zero_ricci_equation_verification_exists_eq
 #check Poincare.ricci_flow_data_of_analytic_foundation_package

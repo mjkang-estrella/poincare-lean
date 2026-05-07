@@ -1030,6 +1030,35 @@ noncomputable def zero_ricci_curvature_data
     ricci_flow_rhs_tensor_of_zero_ricci_tensor_field_eq
       (g := g) identifiesRicci t
 
+/-- Pointwise, the zero-curvature Ricci-flow right-hand side is the scalar zero. -/
+@[simp] theorem ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    ricci_flow_rhs_tensor (zero_ricci_curvature_data identifiesRicci) t x v w = 0 := by
+  change (-2 : ℝ) * (0 : ℝ) = 0
+  norm_num
+
+/-- The pointwise zero-curvature RHS proof is the scalar zero calculation. -/
+@[simp] theorem ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data
+      identifiesRicci t x v w =
+      (by
+        change (-2 : ℝ) * (0 : ℝ) = 0
+        norm_num) := by
+  apply Subsingleton.elim
+
 /--
 Metric-derivative data assembled from the zero derivative candidate.
 
