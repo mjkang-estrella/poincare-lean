@@ -324,13 +324,16 @@ The current artifact is intentionally conservative:
   `SurgeryPackageWithEquationBoundaryPointwiseEquationPayload`, and reconstruct
   the tensor-level derivative payload by extensionality. Dependency, remaining,
   aggregate, verification-payload, and boundary-aware certificate routes now
-  expose that package-level pointwise payload directly. Boundary-aware
-  verification certificates also recover the boundary surgery package payload
-  through arbitrary remaining-package, arbitrary aggregate, existential
-  verification-payload, named remaining-package, and named aggregate
-  constructors. The public root, semantic, and axiom audits now also check the
-  direct-verification-payload and projected-strengthened-dependency routes for
-  the certificate-level equation-boundary projection family.
+  expose that package-level pointwise payload directly, with direct
+  verification-payload, projected-dependency, boundary-certificate, arbitrary
+  constructor, existential-constructor, and named-constructor roundtrip
+  contracts. Boundary-aware verification certificates also recover the boundary
+  surgery package payload through arbitrary remaining-package, arbitrary
+  aggregate, existential verification-payload, named remaining-package, and
+  named aggregate constructors. The public root, semantic, and axiom audits now
+  also check the direct-verification-payload and projected-strengthened-
+  dependency routes for the certificate-level equation-boundary projection
+  family.
   The dependency-level surgery-construction route now exposes
   `surgery_construction_statement_payload_of_dependencies`, which packages the
   construction package, theorem-shaped construction statement, construction
