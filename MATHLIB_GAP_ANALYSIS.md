@@ -91,8 +91,8 @@ the fixed-flow analytic derivation statement from that payload,
 adds the corresponding route from that payload plus an already assembled
 equation-boundary package, and
 `analytic_foundation_with_equation_boundary_of_subobligations_payload_and_ricci_flow_equation_verification`
-adds the corresponding flow-level route from that payload plus explicit
-equation verification to the strengthened analytic equation-boundary statement.
+factors explicit equation verification through that boundary-package route to
+reach the strengthened analytic equation-boundary statement.
 `DependencyProjections` pins its dependency-level analytic derivation projection
 back to this payload-to-derivation route while preserving the surgery
 analytic-payload boundary. The zero route uses both generic bridges. Thus the

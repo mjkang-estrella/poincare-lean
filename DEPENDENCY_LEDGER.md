@@ -294,8 +294,8 @@ It is not a proof. It is a work breakdown for future Lean development.
   combines the same payload with an already assembled equation-boundary package;
   the flow-level verification route
   `analytic_foundation_with_equation_boundary_of_subobligations_payload_and_ricci_flow_equation_verification`
-  then combines that payload with explicit equation verification to produce the
-  strengthened analytic equation-boundary statement. The
+  now factors explicit equation verification through that boundary-package
+  route to produce the strengthened analytic equation-boundary statement. The
   component assembler is pinned to the exact tuple of connection, curvature,
   DeTurck, continuation, regularity, evolution, Ricci-identification, and
   equation witnesses; the derivation-statement sub-obligation bridge is pinned

@@ -3121,25 +3121,11 @@ theorem analytic_foundation_with_equation_boundary_of_subobligations_payload_and
     (verification :
       RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow)) :
     AnalyticFoundationWithEquationBoundaryStatement flow := by
-  let package :=
-    analytic_foundation_package_of_subobligations_payload flow subobligations
-  have hflow : package.flow = flow :=
-    analytic_foundation_package_of_subobligations_payload_eq
+  exact
+    analytic_foundation_with_equation_boundary_of_subobligations_payload_and_boundary_package
       flow subobligations
-  have hverification :
-      RicciFlowEquationVerification
-        (curvature_data_of_ricci_flow_data
-          (ricci_flow_data_of_analytic_foundation_package package)) := by
-    change RicciFlowEquationVerification
-      (curvature_data_of_ricci_flow_data package.flow)
-    rw [hflow]
-    exact verification
-  have result :
-      AnalyticFoundationWithEquationBoundaryStatement
-        (ricci_flow_data_of_analytic_foundation_package package) :=
-    analytic_foundation_with_equation_boundary_of_package_and_ricci_flow_equation_verification
-      package hverification
-  simpa [ricci_flow_data_of_analytic_foundation_package, hflow] using result
+      (equation_boundary_package_of_ricci_flow_equation_verification
+        flow verification)
 
 /--
 The flow-level payload-plus-verification route delegates through the generic
@@ -3157,27 +3143,11 @@ payload-to-package bridge and the package-plus-verification assembler.
     analytic_foundation_with_equation_boundary_of_subobligations_payload_and_ricci_flow_equation_verification
       flow subobligations verification =
       (by
-        let package :=
-          analytic_foundation_package_of_subobligations_payload
+        exact
+          analytic_foundation_with_equation_boundary_of_subobligations_payload_and_boundary_package
             flow subobligations
-        have hflow : package.flow = flow :=
-          analytic_foundation_package_of_subobligations_payload_eq
-            flow subobligations
-        have hverification :
-            RicciFlowEquationVerification
-              (curvature_data_of_ricci_flow_data
-                (ricci_flow_data_of_analytic_foundation_package package)) := by
-          change RicciFlowEquationVerification
-            (curvature_data_of_ricci_flow_data package.flow)
-          rw [hflow]
-          exact verification
-        have result :
-            AnalyticFoundationWithEquationBoundaryStatement
-              (ricci_flow_data_of_analytic_foundation_package package) :=
-          analytic_foundation_with_equation_boundary_of_package_and_ricci_flow_equation_verification
-            package hverification
-        simpa [ricci_flow_data_of_analytic_foundation_package, hflow] using
-          result) := by
+            (equation_boundary_package_of_ricci_flow_equation_verification
+              flow verification)) := by
   apply Subsingleton.elim
 
 /--
