@@ -1331,6 +1331,7 @@ The current artifact is intentionally conservative:
   same remaining-dependency package, and the direct aggregate proof-dependency
   raw/certified crosswalk routes have the same full-assembly projection
   contracts after the aggregate-to-remaining dependency conversion,
+  as do the aggregate-extraction and projection-route certificate constructors,
   the direct aggregate proof-dependency certified crosswalk certificate routes
   and matching iff contracts,
   `completion_certificate_of_aggregate_extraction_derivation_dependencies`, and
