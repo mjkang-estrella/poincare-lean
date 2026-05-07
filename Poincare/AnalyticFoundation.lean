@@ -308,6 +308,40 @@ theorem equation_at_time_of_equation_boundary_package_projection
       package.verification.equationAtTime t :=
   rfl
 
+/--
+The boundary-package projection-routed equation also holds pointwise at a point
+and pair of tangent vectors.
+-/
+theorem equation_at_time_apply_of_equation_boundary_package_projection
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (package : RicciFlowEquationBoundaryPackage flow)
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    metric_time_derivative_at_time_of_metric_derivative_field
+      (metric_time_derivative_field_of_metric_derivative_data
+        (metric_derivative_data_of_equation_boundary_package package)) t x v w =
+        ricci_flow_rhs_tensor (curvature_data_of_ricci_flow_data flow) t x v w :=
+  congrArg (fun tensor => tensor x v w)
+    (equation_at_time_of_equation_boundary_package_projection package t)
+
+/-- The pointwise boundary-package equation proof is tensor equality application. -/
+@[simp] theorem equation_at_time_apply_of_equation_boundary_package_projection_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (package : RicciFlowEquationBoundaryPackage flow)
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    equation_at_time_apply_of_equation_boundary_package_projection
+      package t x v w =
+      congrArg (fun tensor => tensor x v w)
+        (equation_at_time_of_equation_boundary_package_projection package t) := by
+  apply Subsingleton.elim
+
 /-- Project equation-interface evidence from an equation-boundary package. -/
 theorem equation_evidence_of_equation_boundary_package
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]

@@ -167,10 +167,9 @@ The current artifact is intentionally conservative:
   `x v w`; the zero equation verification also has a pointwise equation route
   at `x v w`. The stationary zero-flow route now mirrors those Ricci, scalar,
   and RHS zero facts after specializing the metric family. The analytic equation
-  boundary now
-  has the matching stationary zero boundary package, statement route,
-  analytic-foundation package route, and strengthened equation-boundary
-  statement route.
+  boundary now has the matching stationary zero boundary package, statement
+  route, analytic-foundation package route, strengthened equation-boundary
+  statement route, and projection-routed pointwise equation theorem at `x v w`.
 - `Poincare/AnalyticFoundation.lean` narrows the Ricci-flow analytic foundation
   into no-constructor interfaces for Levi-Civita connection theory,
   Levi-Civita existence/uniqueness/torsion-free/metric-compatibility
