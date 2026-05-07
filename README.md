@@ -1153,6 +1153,8 @@ The current artifact is intentionally conservative:
   boundary through all six milestone requirements. The remaining package-layer
   and milestone payloads are now also pinned to the generic package-layer
   projection tuple and to the milestone-assigned package-layer projection tuple.
+  The strengthened remaining package also mirrors the dependency-level
+  pointwise equation-boundary payload for the selected surgery package.
   The
   theorem
   `canonical_completion_payload_of_remaining_dependency_component_requirements`
