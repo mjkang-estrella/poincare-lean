@@ -1626,6 +1626,119 @@ theorem analyticFoundationSubobligationsPayload_eq
   rfl
 
 /--
+Build an analytic-foundation package from fixed Ricci-flow data and the named
+analytic sub-obligation payload for that same flow.
+
+This is the reusable payload-to-package direction: the flow already stores its
+Ricci-identification and equation evidence, while the payload supplies the
+Levi-Civita, curvature, DeTurck, continuation, regularity, uniqueness, and
+evolution-equation obligations.
+-/
+noncomputable def analytic_foundation_package_of_subobligations_payload
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M)
+    (subobligations : AnalyticFoundationSubobligationsPayload flow) :
+    RicciFlowAnalyticFoundationPackage I n M := by
+  rcases subobligations with
+    ⟨leviCivitaExistence, leviCivitaUniqueness, leviCivitaTorsionFree,
+      leviCivitaMetricCompatibility, leviCivita, riemannCurvatureConstruction,
+      riemannCurvatureSymmetries, firstBianchi, secondBianchi,
+      riemannCurvature, ricciContractionFormula, scalarCurvatureContraction,
+      ricciContraction, metricRegularity, metricTimeDerivative,
+      scalarCurvature, equationDerivation, initialMetricCompatibility,
+      deturckGauge, deturckBackgroundMetric, deturckVectorField,
+      deturckEquation, deturckLinearization, strictParabolicDeturck,
+      parabolicLinearTheory, parabolicFixedPoint, deturckShortTime,
+      shortTimeRegularityBootstrap, deturckDiffeomorphismODE,
+      deturckPullbackEquationIdentity, deturckPullback, shortTimeExistence,
+      maximalTimeInterval, continuationCriterion, curvatureBlowUpCriterion,
+      maximalSolutionExtension, parabolicSchauder, parabolicRegularity,
+      shiDerivativeEstimates, curvatureDerivativeBootstrap, maximumPrinciple,
+      uniquenessTheory, metricEvolution, ricciTensorEvolution,
+      scalarCurvatureEvolution, curvatureNormEvolution, curvatureEvolution⟩
+  exact
+    { flow := flow
+      leviCivitaExistence := leviCivitaExistence
+      leviCivitaUniqueness := leviCivitaUniqueness
+      leviCivitaTorsionFree := leviCivitaTorsionFree
+      leviCivitaMetricCompatibility := leviCivitaMetricCompatibility
+      leviCivita := leviCivita
+      riemannCurvatureConstruction := riemannCurvatureConstruction
+      riemannCurvatureSymmetries := riemannCurvatureSymmetries
+      firstBianchi := firstBianchi
+      secondBianchi := secondBianchi
+      riemannCurvature := riemannCurvature
+      ricciContractionFormula := ricciContractionFormula
+      scalarCurvatureContraction := scalarCurvatureContraction
+      ricciContraction := ricciContraction
+      metricRegularity := metricRegularity
+      metricTimeDerivative := metricTimeDerivative
+      scalarCurvature := scalarCurvature
+      equationDerivation := equationDerivation
+      initialMetricCompatibility := initialMetricCompatibility
+      deturckGauge := deturckGauge
+      deturckBackgroundMetric := deturckBackgroundMetric
+      deturckVectorField := deturckVectorField
+      deturckEquation := deturckEquation
+      deturckLinearization := deturckLinearization
+      strictParabolicDeturck := strictParabolicDeturck
+      parabolicLinearTheory := parabolicLinearTheory
+      parabolicFixedPoint := parabolicFixedPoint
+      deturckShortTime := deturckShortTime
+      shortTimeRegularityBootstrap := shortTimeRegularityBootstrap
+      deturckDiffeomorphismODE := deturckDiffeomorphismODE
+      deturckPullbackEquationIdentity := deturckPullbackEquationIdentity
+      deturckPullback := deturckPullback
+      shortTimeExistence := shortTimeExistence
+      maximalTimeInterval := maximalTimeInterval
+      continuationCriterion := continuationCriterion
+      curvatureBlowUpCriterion := curvatureBlowUpCriterion
+      maximalSolutionExtension := maximalSolutionExtension
+      parabolicSchauder := parabolicSchauder
+      parabolicRegularity := parabolicRegularity
+      shiDerivativeEstimates := shiDerivativeEstimates
+      curvatureDerivativeBootstrap := curvatureDerivativeBootstrap
+      maximumPrinciple := maximumPrinciple
+      uniquenessTheory := uniquenessTheory
+      metricEvolution := metricEvolution
+      ricciTensorEvolution := ricciTensorEvolution
+      scalarCurvatureEvolution := scalarCurvatureEvolution
+      curvatureNormEvolution := curvatureNormEvolution
+      curvatureEvolution := curvatureEvolution }
+
+/-- The generic analytic package constructor stores the supplied flow data. -/
+@[simp] theorem analytic_foundation_package_of_subobligations_payload_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M)
+    (subobligations : AnalyticFoundationSubobligationsPayload flow) :
+    (analytic_foundation_package_of_subobligations_payload
+      flow subobligations).flow = flow := by
+  rcases subobligations with
+    ⟨leviCivitaExistence, leviCivitaUniqueness, leviCivitaTorsionFree,
+      leviCivitaMetricCompatibility, leviCivita, riemannCurvatureConstruction,
+      riemannCurvatureSymmetries, firstBianchi, secondBianchi,
+      riemannCurvature, ricciContractionFormula, scalarCurvatureContraction,
+      ricciContraction, metricRegularity, metricTimeDerivative,
+      scalarCurvature, equationDerivation, initialMetricCompatibility,
+      deturckGauge, deturckBackgroundMetric, deturckVectorField,
+      deturckEquation, deturckLinearization, strictParabolicDeturck,
+      parabolicLinearTheory, parabolicFixedPoint, deturckShortTime,
+      shortTimeRegularityBootstrap, deturckDiffeomorphismODE,
+      deturckPullbackEquationIdentity, deturckPullback, shortTimeExistence,
+      maximalTimeInterval, continuationCriterion, curvatureBlowUpCriterion,
+      maximalSolutionExtension, parabolicSchauder, parabolicRegularity,
+      shiDerivativeEstimates, curvatureDerivativeBootstrap, maximumPrinciple,
+      uniquenessTheory, metricEvolution, ricciTensorEvolution,
+      scalarCurvatureEvolution, curvatureNormEvolution, curvatureEvolution⟩
+  rfl
+
+/--
 The fixed-flow analytic derivation statement exposes the named analytic
 connection, curvature, DeTurck, continuation, regularity, and evolution
 sub-obligations.
@@ -2888,73 +3001,10 @@ noncomputable def zero_ricci_flow_analytic_foundation_package
     (subobligations :
       AnalyticFoundationSubobligationsPayload
         (zero_ricci_flow_data g identifiesRicci equationEvidence)) :
-    RicciFlowAnalyticFoundationPackage I n M := by
-  rcases subobligations with
-    ⟨leviCivitaExistence, leviCivitaUniqueness, leviCivitaTorsionFree,
-      leviCivitaMetricCompatibility, leviCivita, riemannCurvatureConstruction,
-      riemannCurvatureSymmetries, firstBianchi, secondBianchi,
-      riemannCurvature, ricciContractionFormula, scalarCurvatureContraction,
-      ricciContraction, metricRegularity, metricTimeDerivative,
-      scalarCurvature, equationDerivation, initialMetricCompatibility,
-      deturckGauge, deturckBackgroundMetric, deturckVectorField,
-      deturckEquation, deturckLinearization, strictParabolicDeturck,
-      parabolicLinearTheory, parabolicFixedPoint, deturckShortTime,
-      shortTimeRegularityBootstrap, deturckDiffeomorphismODE,
-      deturckPullbackEquationIdentity, deturckPullback, shortTimeExistence,
-      maximalTimeInterval, continuationCriterion, curvatureBlowUpCriterion,
-      maximalSolutionExtension, parabolicSchauder, parabolicRegularity,
-      shiDerivativeEstimates, curvatureDerivativeBootstrap, maximumPrinciple,
-      uniquenessTheory, metricEvolution, ricciTensorEvolution,
-      scalarCurvatureEvolution, curvatureNormEvolution, curvatureEvolution⟩
-  exact
-    { flow := zero_ricci_flow_data g identifiesRicci equationEvidence
-      leviCivitaExistence := leviCivitaExistence
-      leviCivitaUniqueness := leviCivitaUniqueness
-      leviCivitaTorsionFree := leviCivitaTorsionFree
-      leviCivitaMetricCompatibility := leviCivitaMetricCompatibility
-      leviCivita := leviCivita
-      riemannCurvatureConstruction := riemannCurvatureConstruction
-      riemannCurvatureSymmetries := riemannCurvatureSymmetries
-      firstBianchi := firstBianchi
-      secondBianchi := secondBianchi
-      riemannCurvature := riemannCurvature
-      ricciContractionFormula := ricciContractionFormula
-      scalarCurvatureContraction := scalarCurvatureContraction
-      ricciContraction := ricciContraction
-      metricRegularity := metricRegularity
-      metricTimeDerivative := metricTimeDerivative
-      scalarCurvature := scalarCurvature
-      equationDerivation := equationDerivation
-      initialMetricCompatibility := initialMetricCompatibility
-      deturckGauge := deturckGauge
-      deturckBackgroundMetric := deturckBackgroundMetric
-      deturckVectorField := deturckVectorField
-      deturckEquation := deturckEquation
-      deturckLinearization := deturckLinearization
-      strictParabolicDeturck := strictParabolicDeturck
-      parabolicLinearTheory := parabolicLinearTheory
-      parabolicFixedPoint := parabolicFixedPoint
-      deturckShortTime := deturckShortTime
-      shortTimeRegularityBootstrap := shortTimeRegularityBootstrap
-      deturckDiffeomorphismODE := deturckDiffeomorphismODE
-      deturckPullbackEquationIdentity := deturckPullbackEquationIdentity
-      deturckPullback := deturckPullback
-      shortTimeExistence := shortTimeExistence
-      maximalTimeInterval := maximalTimeInterval
-      continuationCriterion := continuationCriterion
-      curvatureBlowUpCriterion := curvatureBlowUpCriterion
-      maximalSolutionExtension := maximalSolutionExtension
-      parabolicSchauder := parabolicSchauder
-      parabolicRegularity := parabolicRegularity
-      shiDerivativeEstimates := shiDerivativeEstimates
-      curvatureDerivativeBootstrap := curvatureDerivativeBootstrap
-      maximumPrinciple := maximumPrinciple
-      uniquenessTheory := uniquenessTheory
-      metricEvolution := metricEvolution
-      ricciTensorEvolution := ricciTensorEvolution
-      scalarCurvatureEvolution := scalarCurvatureEvolution
-      curvatureNormEvolution := curvatureNormEvolution
-      curvatureEvolution := curvatureEvolution }
+    RicciFlowAnalyticFoundationPackage I n M :=
+  analytic_foundation_package_of_subobligations_payload
+    (zero_ricci_flow_data g identifiesRicci equationEvidence)
+    subobligations
 
 /-- The zero analytic package stores the zero Ricci-flow data. -/
 @[simp] theorem zero_ricci_flow_analytic_foundation_package_eq
@@ -2973,24 +3023,12 @@ noncomputable def zero_ricci_flow_analytic_foundation_package
       (zero_ricci_flow_analytic_foundation_package
         identifiesRicci equationEvidence subobligations) =
         zero_ricci_flow_data g identifiesRicci equationEvidence := by
-  rcases subobligations with
-    ⟨leviCivitaExistence, leviCivitaUniqueness, leviCivitaTorsionFree,
-      leviCivitaMetricCompatibility, leviCivita, riemannCurvatureConstruction,
-      riemannCurvatureSymmetries, firstBianchi, secondBianchi,
-      riemannCurvature, ricciContractionFormula, scalarCurvatureContraction,
-      ricciContraction, metricRegularity, metricTimeDerivative,
-      scalarCurvature, equationDerivation, initialMetricCompatibility,
-      deturckGauge, deturckBackgroundMetric, deturckVectorField,
-      deturckEquation, deturckLinearization, strictParabolicDeturck,
-      parabolicLinearTheory, parabolicFixedPoint, deturckShortTime,
-      shortTimeRegularityBootstrap, deturckDiffeomorphismODE,
-      deturckPullbackEquationIdentity, deturckPullback, shortTimeExistence,
-      maximalTimeInterval, continuationCriterion, curvatureBlowUpCriterion,
-      maximalSolutionExtension, parabolicSchauder, parabolicRegularity,
-      shiDerivativeEstimates, curvatureDerivativeBootstrap, maximumPrinciple,
-      uniquenessTheory, metricEvolution, ricciTensorEvolution,
-      scalarCurvatureEvolution, curvatureNormEvolution, curvatureEvolution⟩
-  rfl
+  change (zero_ricci_flow_analytic_foundation_package
+    identifiesRicci equationEvidence subobligations).flow =
+      zero_ricci_flow_data g identifiesRicci equationEvidence
+  exact analytic_foundation_package_of_subobligations_payload_eq
+    (zero_ricci_flow_data g identifiesRicci equationEvidence)
+    subobligations
 
 /--
 Zero Ricci-flow analytic package data plus the explicit zero equation
