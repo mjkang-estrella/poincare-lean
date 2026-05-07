@@ -319,6 +319,10 @@ check_decl "metric time-derivative time-slice projection is declared" \
   '^def metric_time_derivative_at_time_of_metric_derivative_field\b' Poincare/RicciFlow.lean
 check_decl "metric time-derivative time-slice equality theorem is declared" \
   '^@\[simp\] theorem metric_time_derivative_at_time_of_metric_derivative_field_eq\b' Poincare/RicciFlow.lean
+check_decl "metric time-derivative pointwise application theorem is declared" \
+  '^@\[simp\] theorem metric_time_derivative_at_time_apply\b' Poincare/RicciFlow.lean
+check_decl "metric time-derivative pointwise application equality theorem is declared" \
+  '^@\[simp\] theorem metric_time_derivative_at_time_apply_eq\b' Poincare/RicciFlow.lean
 check_decl "Ricci tensor field projection is declared" \
   '^def ricci_tensor_field_of_curvature_data\b' Poincare/RicciFlow.lean
 check_decl "Ricci tensor field projection equality theorem is declared" \
@@ -409,6 +413,10 @@ check_decl "zero metric-derivative data derivative projection contract is declar
   '^@\[simp\] theorem metric_time_derivative_field_of_zero_metric_derivative_data_eq\b' Poincare/RicciFlow.lean
 check_decl "zero metric-derivative data time-slice projection contract is declared" \
   '^@\[simp\] theorem metric_time_derivative_at_time_of_zero_metric_derivative_data_eq\b' Poincare/RicciFlow.lean
+check_decl "zero metric-derivative data pointwise time-slice contract is declared" \
+  '^@\[simp\] theorem metric_time_derivative_at_time_apply_of_zero_metric_derivative_data\b' Poincare/RicciFlow.lean
+check_decl "zero metric-derivative data pointwise time-slice equality contract is declared" \
+  '^@\[simp\] theorem metric_time_derivative_at_time_apply_of_zero_metric_derivative_data_eq\b' Poincare/RicciFlow.lean
 check_decl "zero metric-derivative data identification projection contract is declared" \
   '^@\[simp\] theorem metric_time_derivative_identification_of_zero_metric_derivative_data_eq\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci-flow equation verification constructor is declared" \
@@ -11194,8 +11202,12 @@ open scoped Manifold ContDiff
 #check Poincare.metric_time_derivative_identification_of_metric_derivative_data_eq
 #check Poincare.metric_time_derivative_at_time_of_metric_derivative_field
 #check Poincare.metric_time_derivative_at_time_of_metric_derivative_field_eq
+#check Poincare.metric_time_derivative_at_time_apply
+#check Poincare.metric_time_derivative_at_time_apply_eq
 #check Poincare.metric_time_derivative_at_time_of_zero_metric_time_derivative_field_eq
 #check Poincare.metric_time_derivative_at_time_of_zero_metric_derivative_data_eq
+#check Poincare.metric_time_derivative_at_time_apply_of_zero_metric_derivative_data
+#check Poincare.metric_time_derivative_at_time_apply_of_zero_metric_derivative_data_eq
 #check Poincare.ricci_tensor_field_of_curvature_data
 #check Poincare.ricci_tensor_field_of_curvature_data_eq
 #check Poincare.scalar_curvature_field_of_curvature_data
@@ -15243,8 +15255,12 @@ open scoped Manifold ContDiff
 #check Poincare.metric_time_derivative_identification_of_metric_derivative_data_eq
 #check Poincare.metric_time_derivative_at_time_of_metric_derivative_field
 #check Poincare.metric_time_derivative_at_time_of_metric_derivative_field_eq
+#check Poincare.metric_time_derivative_at_time_apply
+#check Poincare.metric_time_derivative_at_time_apply_eq
 #check Poincare.metric_time_derivative_at_time_of_zero_metric_time_derivative_field_eq
 #check Poincare.metric_time_derivative_at_time_of_zero_metric_derivative_data_eq
+#check Poincare.metric_time_derivative_at_time_apply_of_zero_metric_derivative_data
+#check Poincare.metric_time_derivative_at_time_apply_of_zero_metric_derivative_data_eq
 #check Poincare.ricci_tensor_field_of_curvature_data
 #check Poincare.ricci_tensor_field_of_curvature_data_eq
 #check Poincare.scalar_curvature_field_of_curvature_data

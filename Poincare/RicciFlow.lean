@@ -478,6 +478,31 @@ def metric_time_derivative_at_time_of_metric_derivative_field
       derivative.derivativeAtTime t :=
   rfl
 
+/-- The named metric-derivative time slice applied at a point and two tangent vectors. -/
+@[simp] theorem metric_time_derivative_at_time_apply
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (derivative : MetricTimeDerivativeField g)
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    metric_time_derivative_at_time_of_metric_derivative_field derivative t x v w =
+      derivative.derivativeAtTime t x v w :=
+  rfl
+
+/-- The pointwise metric-derivative time-slice proof is definitional. -/
+@[simp] theorem metric_time_derivative_at_time_apply_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (derivative : MetricTimeDerivativeField g)
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    metric_time_derivative_at_time_apply derivative t x v w = rfl := by
+  apply Subsingleton.elim
+
 /-- Evaluating the zero metric derivative at any time returns the zero tensor. -/
 @[simp] theorem metric_time_derivative_at_time_of_zero_metric_time_derivative_field_eq
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -1125,6 +1150,38 @@ two-tensor at every time.
         (zero_metric_derivative_data identifiesDerivative)) t =
         zero_tangent_covariant_two_tensor I M :=
   rfl
+
+/--
+Pointwise, the zero metric-derivative data evaluates to the scalar zero at
+every time, point, and pair of tangent vectors.
+-/
+@[simp] theorem metric_time_derivative_at_time_apply_of_zero_metric_derivative_data
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    metric_time_derivative_at_time_of_metric_derivative_field
+      (metric_time_derivative_field_of_metric_derivative_data
+        (zero_metric_derivative_data identifiesDerivative)) t x v w = 0 :=
+  rfl
+
+/-- The pointwise zero metric-derivative-data proof is definitional. -/
+@[simp] theorem metric_time_derivative_at_time_apply_of_zero_metric_derivative_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    metric_time_derivative_at_time_apply_of_zero_metric_derivative_data
+      identifiesDerivative t x v w = rfl := by
+  apply Subsingleton.elim
 
 /-- The derivative-identification projection is the supplied evidence. -/
 @[simp] theorem metric_time_derivative_identification_of_zero_metric_derivative_data_eq
