@@ -1408,6 +1408,73 @@ theorem surgery_package_with_equation_boundary_derivative_payload_of_dependencie
   apply Subsingleton.elim
 
 /--
+Strengthened dependencies expose the boundary-carrying surgery package payload
+selected from their boundary-carrying surgery package family.
+-/
+theorem surgery_package_with_equation_boundary_payload_of_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ _package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+        ∃ basePackage : FiniteExtinctionSurgeryPackage n M,
+        ∃ _equationBoundary :
+          RicciFlowEquationBoundaryPackage
+            (ricci_flow_data_of_surgery_package basePackage),
+        ∃ _analyticBoundary :
+          AnalyticFoundationWithEquationBoundaryStatement
+            (ricci_flow_data_of_surgery_package basePackage),
+          FiniteExtinctionByRicciFlowWithSurgery M := by
+  intro M _ _ _ _ _ _
+  rcases surgery_packages_with_equation_boundary_of_dependencies
+      dependencies M with
+    ⟨⟨n, package⟩⟩
+  exact ⟨n, package, surgery_package_with_equation_boundary_payload package⟩
+
+/--
+The dependency-level boundary package payload is selected from the stored
+boundary-carrying surgery package family.
+-/
+theorem surgery_package_with_equation_boundary_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_payload_of_dependencies
+        dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases surgery_packages_with_equation_boundary_of_dependencies
+            dependencies M with
+          ⟨⟨n, package⟩⟩
+        exact
+          ⟨n, package,
+            surgery_package_with_equation_boundary_payload package⟩) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level boundary package payload is the forgetful projection of
+the full derivative-strengthened surgery payload.
+-/
+theorem surgery_package_with_equation_boundary_payload_of_dependencies_to_surgery_derivative_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_payload_of_dependencies
+        dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            surgery_package_with_equation_boundary_derivative_payload_of_dependencies
+              dependencies M with
+          ⟨n, package, _basePackage, _basePackage_eq, equationBoundary,
+            _verification, _verification_eq, _metricDerivative,
+            _metricDerivative_eq, _derivativeId, _equationAtTime,
+            analyticBoundary, finiteExtinction⟩
+        exact
+          ⟨n, package,
+            surgery_package_of_equation_boundary_surgery_package package,
+            equationBoundary, analyticBoundary, finiteExtinction⟩) := by
+  apply Subsingleton.elim
+
+/--
 The older dependency-level equation/metric derivative payload is the forgetful
 projection of the full derivative-strengthened surgery payload.
 -/
