@@ -446,6 +446,123 @@ theorem ricciFlowEquationBoundaryStatement_of_ricci_flow_equation_verification
           flow verification⟩ := by
   apply Subsingleton.elim
 
+/--
+Equation-boundary package for zero Ricci-flow data.
+
+The metric-derivative identification, Ricci identification, and abstract
+equation-interface evidence are all supplied inputs; this only routes the
+explicit zero equation verification through the analytic boundary package.
+-/
+noncomputable def zero_ricci_flow_equation_boundary_package
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci)) :
+    RicciFlowEquationBoundaryPackage
+      (zero_ricci_flow_data g identifiesRicci equationEvidence) :=
+  equation_boundary_package_of_ricci_flow_equation_verification
+    (zero_ricci_flow_data g identifiesRicci equationEvidence)
+    (zero_ricci_flow_equation_verification
+      identifiesDerivative identifiesRicci)
+
+/-- The zero equation-boundary package is assembled from the zero verification. -/
+@[simp] theorem zero_ricci_flow_equation_boundary_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci)) :
+    zero_ricci_flow_equation_boundary_package
+      identifiesDerivative identifiesRicci equationEvidence =
+      equation_boundary_package_of_ricci_flow_equation_verification
+        (zero_ricci_flow_data g identifiesRicci equationEvidence)
+        (zero_ricci_flow_equation_verification
+          identifiesDerivative identifiesRicci) :=
+  rfl
+
+/-- The zero boundary package projects to the explicit zero equation verification. -/
+@[simp] theorem ricci_flow_equation_verification_of_zero_ricci_flow_equation_boundary_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci)) :
+    ricci_flow_equation_verification_of_boundary_package
+      (zero_ricci_flow_equation_boundary_package
+        identifiesDerivative identifiesRicci equationEvidence) =
+        zero_ricci_flow_equation_verification
+          identifiesDerivative identifiesRicci :=
+  rfl
+
+/-- The zero boundary package keeps the supplied abstract equation evidence. -/
+@[simp] theorem equation_evidence_of_zero_ricci_flow_equation_boundary_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci)) :
+    equation_evidence_of_equation_boundary_package
+      (zero_ricci_flow_equation_boundary_package
+        identifiesDerivative identifiesRicci equationEvidence) =
+        equationEvidence :=
+  rfl
+
+/-- Zero Ricci-flow data with explicit zero verification exposes the boundary statement. -/
+theorem ricciFlowEquationBoundaryStatement_of_zero_ricci_flow_data
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci)) :
+    RicciFlowEquationBoundaryStatement
+      (zero_ricci_flow_data g identifiesRicci equationEvidence) :=
+  ⟨zero_ricci_flow_equation_boundary_package
+    identifiesDerivative identifiesRicci equationEvidence⟩
+
+/-- The zero boundary-statement route is nonemptiness of the zero boundary package. -/
+@[simp] theorem ricciFlowEquationBoundaryStatement_of_zero_ricci_flow_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci)) :
+    ricciFlowEquationBoundaryStatement_of_zero_ricci_flow_data
+      identifiesDerivative identifiesRicci equationEvidence =
+      ⟨zero_ricci_flow_equation_boundary_package
+        identifiesDerivative identifiesRicci equationEvidence⟩ := by
+  apply Subsingleton.elim
+
 /-- Interface for compatibility of the flow with the prescribed initial metric. -/
 inductive HasInitialMetricCompatibility
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]

@@ -252,9 +252,11 @@ It is not a proof. It is a work breakdown for future Lean development.
   candidate data and zero metric-derivative data with their supplied
   identification evidence, then constructs
   `zero_ricci_flow_equation_verification`, a proof-bearing explicit
-  verification of the pointwise equation `0 = -2 * 0`. This does not construct
-  the no-constructor `SatisfiesRicciFlowEquation` interface, but it gives the
-  flat/stationary candidate route a checked equation payload.
+  verification of the pointwise equation `0 = -2 * 0`. It also packages those
+  zero Ricci/scalar candidates into `zero_ricci_flow_data` once the still-missing
+  abstract equation-interface evidence is supplied. This does not construct the
+  no-constructor `SatisfiesRicciFlowEquation` interface, but it gives the
+  flat/stationary candidate route a checked flow-data and equation payload.
 - `Poincare/AnalyticFoundation.lean` defines no-constructor interfaces for
   Levi-Civita connection theory, Levi-Civita
   existence/uniqueness/torsion-free/metric-compatibility sub-obligations,
@@ -288,7 +290,12 @@ It is not a proof. It is a work breakdown for future Lean development.
   plus equation, DeTurck-equation, derivation-statement, statement, payload, and
   statement-level flow/Ricci/equation equalities, record that those package-level
   and theorem-shaped surfaces delegate exactly to the stored fields, component
-  assemblers, and destructuring routes.
+  assemblers, and destructuring routes. It also lifts zero Ricci-flow data and
+  its explicit zero equation verification into
+  `zero_ricci_flow_equation_boundary_package` and
+  `ricciFlowEquationBoundaryStatement_of_zero_ricci_flow_data`, keeping the
+  metric-derivative, Ricci-identification, and abstract equation-interface
+  inputs explicit.
 - `Poincare/Surgery.lean` defines no-constructor interfaces for Ricci flow with
   surgery, Perelman singularity control, and finite-extinction derivation, plus
   checked package projections to the analytic foundation. Its direct package

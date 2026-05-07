@@ -1143,6 +1143,86 @@ theorem equation_at_time_of_zero_ricci_flow_equation_verification
   rfl
 
 /--
+Ricci-flow data with zero Ricci/scalar candidates.
+
+The abstract equation-interface evidence is still an explicit input; this does
+not manufacture `SatisfiesRicciFlowEquation`.
+-/
+noncomputable def zero_ricci_flow_data
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M)
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci)) :
+    RicciFlowData I n M where
+  metric := g
+  curvature := zero_ricci_curvature_data identifiesRicci
+  equation := equationEvidence
+
+/-- The zero Ricci-flow data package stores the supplied metric and evidence. -/
+@[simp] theorem zero_ricci_flow_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M)
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci)) :
+    zero_ricci_flow_data g identifiesRicci equationEvidence =
+      ({ metric := g
+         curvature := zero_ricci_curvature_data identifiesRicci
+         equation := equationEvidence } : RicciFlowData I n M) :=
+  rfl
+
+/-- The metric projection of zero Ricci-flow data is the supplied metric. -/
+@[simp] theorem metric_of_zero_ricci_flow_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M)
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci)) :
+    metric_of_ricci_flow_data
+      (zero_ricci_flow_data g identifiesRicci equationEvidence) = g :=
+  rfl
+
+/-- The curvature projection of zero Ricci-flow data is the zero curvature package. -/
+@[simp] theorem curvature_data_of_zero_ricci_flow_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M)
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci)) :
+    curvature_data_of_ricci_flow_data
+      (zero_ricci_flow_data g identifiesRicci equationEvidence) =
+        zero_ricci_curvature_data identifiesRicci :=
+  rfl
+
+/-- The equation projection of zero Ricci-flow data is the supplied equation evidence. -/
+@[simp] theorem equation_evidence_of_zero_ricci_flow_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M)
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci)) :
+    equation_evidence_of_ricci_flow_data
+      (zero_ricci_flow_data g identifiesRicci equationEvidence) =
+        equationEvidence :=
+  rfl
+
+/--
 Zero metric derivative and zero Ricci candidates satisfy the explicit
 Ricci-flow equation verification once their still-missing analytic
 identification evidence is supplied.

@@ -371,6 +371,16 @@ check_decl "zero Ricci-flow equation verification time theorem is declared" \
   '^theorem equation_at_time_of_zero_ricci_flow_equation_verification\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci-flow equation verification time equality contract is declared" \
   '^@\[simp\] theorem equation_at_time_of_zero_ricci_flow_equation_verification_eq\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci-flow data constructor is declared" \
+  '^noncomputable def zero_ricci_flow_data\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci-flow data equality contract is declared" \
+  '^@\[simp\] theorem zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci-flow data metric projection contract is declared" \
+  '^@\[simp\] theorem metric_of_zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci-flow data curvature projection contract is declared" \
+  '^@\[simp\] theorem curvature_data_of_zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci-flow data equation-evidence projection contract is declared" \
+  '^@\[simp\] theorem equation_evidence_of_zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
 check_decl "zero-derivative zero-Ricci verification existence theorem is declared" \
   '^theorem zero_derivative_zero_ricci_equation_verification_exists\b' Poincare/RicciFlow.lean
 check_decl "zero-derivative zero-Ricci verification existence equality contract is declared" \
@@ -513,6 +523,18 @@ check_decl "Ricci-flow verification-to-boundary statement theorem is declared" \
   '^theorem ricciFlowEquationBoundaryStatement_of_ricci_flow_equation_verification\b' Poincare/AnalyticFoundation.lean
 check_decl "Ricci-flow verification-to-boundary statement equality theorem is declared" \
   '^@\[simp\] theorem ricciFlowEquationBoundaryStatement_of_ricci_flow_equation_verification_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "zero Ricci-flow equation boundary package is declared" \
+  '^noncomputable def zero_ricci_flow_equation_boundary_package\b' Poincare/AnalyticFoundation.lean
+check_decl "zero Ricci-flow equation boundary package equality contract is declared" \
+  '^@\[simp\] theorem zero_ricci_flow_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "zero Ricci-flow equation boundary verification projection contract is declared" \
+  '^@\[simp\] theorem ricci_flow_equation_verification_of_zero_ricci_flow_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "zero Ricci-flow equation boundary equation-evidence projection contract is declared" \
+  '^@\[simp\] theorem equation_evidence_of_zero_ricci_flow_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "zero Ricci-flow data to equation-boundary statement theorem is declared" \
+  '^theorem ricciFlowEquationBoundaryStatement_of_zero_ricci_flow_data\b' Poincare/AnalyticFoundation.lean
+check_decl "zero Ricci-flow data to equation-boundary statement equality contract is declared" \
+  '^@\[simp\] theorem ricciFlowEquationBoundaryStatement_of_zero_ricci_flow_data_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "strengthened analytic equation-boundary statement is declared" \
   '^def AnalyticFoundationWithEquationBoundaryStatement\b' Poincare/AnalyticFoundation.lean
 check_decl "strengthened analytic equation-boundary statement equality theorem is declared" \
