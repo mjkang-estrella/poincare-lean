@@ -895,7 +895,8 @@ The current artifact is intentionally conservative:
   extraction-derivation canonical-target, project-statement, and
   completion-criterion certificate constructors are also pinned directly to the
   ordinary remaining-dependency and aggregate certificates obtained after
-  forgetting the equation-boundary data.
+  forgetting the equation-boundary data, and their canonical topological
+  statement projections are pinned through the same forgetful routes.
   It also exposes the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/
