@@ -341,7 +341,11 @@ The current artifact is intentionally conservative:
   projections routed through it. The strengthened dependency package now also
   supplies finite extinction through its named verification payload after
   installing the smoothability bridge, and that route is pinned to the
-  forgetful ordinary-dependency finite-extinction theorem. The completion-target
+  forgetful ordinary-dependency finite-extinction theorem. The dependency
+  projection layer now pairs that boundary finite-extinction route with the
+  forgetful topology-extraction theorem and certified extractor/derivation
+  payload, with equality contracts back to the ordinary projection assembly
+  inputs. The completion-target
   wrapper layer now mirrors that finite-extinction route through the ordinary
   remaining package, strengthened remaining package, and strengthened aggregate
   package, with equality contracts to the verification-payload, pointwise

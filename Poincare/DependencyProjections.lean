@@ -8557,6 +8557,86 @@ theorem topology_extraction_derivation_payload_of_dependencies_to_statement_eq
   apply Subsingleton.elim
 
 /--
+The strengthened dependency package supplies the post-extinction topological
+extraction theorem after forgetting equation-boundary data.
+-/
+theorem extinction_extraction_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ExtinctionImpliesSphereStatement.{u} :=
+  extinction_extraction_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+
+/--
+The strengthened dependency final extractor is the ordinary dependency final
+extractor of the forgetful package.
+-/
+theorem extinction_extraction_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    extinction_extraction_of_equation_boundary_dependencies dependencies =
+      extinction_extraction_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency final extractor agrees directly with the forgetful
+ordinary dependency final extractor.
+-/
+theorem extinction_extraction_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    extinction_extraction_of_equation_boundary_dependencies dependencies =
+      extinction_extraction_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency final extractor is the extractor mediated by the
+forgetful theorem-shaped topology statement.
+-/
+theorem extinction_extraction_of_equation_boundary_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    extinction_extraction_of_equation_boundary_dependencies dependencies =
+      extinction_implies_sphere_of_topology_extraction_statement
+        (topology_extraction_statement_of_dependencies
+          (dependencies_of_equation_boundary_dependencies dependencies)) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency package supplies a final extractor paired with its
+topology derivation certificate after forgetting equation-boundary data.
+-/
+theorem topology_extraction_derivation_payload_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere :=
+  topology_extraction_derivation_payload_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+
+/--
+The strengthened dependency extraction/derivation payload is the ordinary
+dependency extraction/derivation payload of the forgetful package.
+-/
+theorem topology_extraction_derivation_payload_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    topology_extraction_derivation_payload_of_equation_boundary_dependencies
+        dependencies =
+      topology_extraction_derivation_payload_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency extraction/derivation payload agrees directly with
+the forgetful ordinary dependency extraction/derivation payload.
+-/
+theorem topology_extraction_derivation_payload_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    topology_extraction_derivation_payload_of_equation_boundary_dependencies
+        dependencies =
+      topology_extraction_derivation_payload_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies the two theorem-shaped inputs consumed
 by the final finite-extinction/topology-extraction assembly theorem through the
 projection route.
@@ -8608,6 +8688,76 @@ theorem poincare_projection_assembly_inputs_payload_of_dependencies_to_package_e
       ⟨finite_extinction_of_dependencies dependencies,
         extinction_implies_sphere_of_topology_package
           dependencies.topology⟩ := by
+  apply Subsingleton.elim
+
+/--
+A strengthened dependency package supplies the finite-extinction input through
+its boundary route and the topology-extraction input through the forgetful
+topology package.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+      ExtinctionImpliesSphereStatement.{u} :=
+  ⟨finite_extinction_of_equation_boundary_dependencies dependencies,
+    extinction_extraction_of_equation_boundary_dependencies dependencies⟩
+
+/--
+The strengthened dependency projection assembly-input payload is the pair of
+the strengthened finite-extinction route and the forgetful final extractor.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies
+        dependencies =
+      ⟨finite_extinction_of_equation_boundary_dependencies dependencies,
+        extinction_extraction_of_equation_boundary_dependencies dependencies⟩ := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency projection assembly-input payload pairs
+verification-payload finite extinction with the forgetful final extractor.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies_to_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies
+        dependencies =
+      (by
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let extraction :=
+          extinction_extraction_of_equation_boundary_dependencies dependencies
+        exact ⟨finiteExtinction, extraction⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency projection assembly-input payload uses the
+forgetful theorem-shaped topology statement for its final extractor.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies
+        dependencies =
+      ⟨finite_extinction_of_equation_boundary_dependencies dependencies,
+        extinction_implies_sphere_of_topology_extraction_statement
+          (topology_extraction_statement_of_dependencies
+            (dependencies_of_equation_boundary_dependencies dependencies))⟩ := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data in the strengthened projection assembly-input
+payload recovers the ordinary dependency projection assembly-input payload.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies
+        dependencies =
+      poincare_projection_assembly_inputs_payload_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
   apply Subsingleton.elim
 
 /--
@@ -8678,6 +8828,81 @@ theorem poincare_projection_assembly_inputs_payload_of_extraction_derivation_dep
           ⟨extractSphere, derivation⟩
         exact ⟨finite_extinction_of_dependencies dependencies, extractSphere,
           derivation⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened projection route also exposes the boundary finite-extinction
+input together with a certified final extractor and its derivation certificate.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere := by
+  rcases
+      topology_extraction_derivation_payload_of_equation_boundary_dependencies
+        dependencies with
+    ⟨extractSphere, derivation⟩
+  exact
+    ⟨finite_extinction_of_equation_boundary_dependencies dependencies,
+      extractSphere, derivation⟩
+
+/--
+The strengthened certified projection assembly-input payload is selected from
+the strengthened extraction/derivation payload and paired with boundary finite
+extinction.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      (by
+        rcases
+            topology_extraction_derivation_payload_of_equation_boundary_dependencies
+              dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          ⟨finite_extinction_of_equation_boundary_dependencies dependencies,
+            extractSphere, derivation⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified projection assembly-input payload is selected from
+the extractor/derivation decomposition of the forgetful theorem-shaped topology
+statement.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_derivation.mp
+              (topology_extraction_statement_of_dependencies
+                (dependencies_of_equation_boundary_dependencies
+                  dependencies)) with
+          ⟨extractSphere, derivation⟩
+        exact
+          ⟨finite_extinction_of_equation_boundary_dependencies dependencies,
+            extractSphere, derivation⟩) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data in the strengthened certified projection
+assembly-input payload recovers the ordinary certified dependency projection
+assembly-input payload.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
   apply Subsingleton.elim
 
 /--
