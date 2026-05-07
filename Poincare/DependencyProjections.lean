@@ -9069,6 +9069,173 @@ theorem poincare_target_payload_of_extraction_derivation_dependency_projections_
   apply Subsingleton.elim
 
 /--
+The strengthened dependency projection route exposes the boundary finite
+extinction input, the forgetful final extractor, the target statement, and the
+universe-indexed completion criterion through one named payload.
+-/
+theorem poincare_target_payload_of_equation_boundary_dependency_projections
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ _extractSphere : ExtinctionImpliesSphereStatement.{u},
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases
+      poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies
+        dependencies with
+    ⟨finiteExtinction, extraction⟩
+  rcases poincare_payload_of_extinction_and_extraction
+      finiteExtinction extraction with
+    ⟨target, criterion⟩
+  exact ⟨finiteExtinction, extraction, target, criterion⟩
+
+/--
+The strengthened dependency projection target payload is assembled from the
+boundary projection assembly-input payload and the final assembly bridge.
+-/
+theorem poincare_target_payload_of_equation_boundary_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_target_payload_of_equation_boundary_dependency_projections
+        dependencies =
+      (by
+        rcases
+            poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies
+              dependencies with
+          ⟨finiteExtinction, extraction⟩
+        rcases poincare_payload_of_extinction_and_extraction
+            finiteExtinction extraction with
+          ⟨target, criterion⟩
+        exact ⟨finiteExtinction, extraction, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency projection target payload factors through boundary
+finite extinction and the theorem-shaped topology extraction statement after
+forgetting equation-boundary data.
+-/
+theorem poincare_target_payload_of_equation_boundary_dependency_projections_to_topology_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_target_payload_of_equation_boundary_dependency_projections
+        dependencies =
+      (by
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies
+            (dependencies_of_equation_boundary_dependencies dependencies)
+        let extraction :=
+          extinction_implies_sphere_of_topology_extraction_statement
+            topologyStatement
+        rcases poincare_payload_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement with
+          ⟨target, criterion⟩
+        exact ⟨finiteExtinction, extraction, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data in the strengthened projection target payload
+recovers the ordinary dependency projection target payload.
+-/
+theorem poincare_target_payload_of_equation_boundary_dependency_projections_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_target_payload_of_equation_boundary_dependency_projections
+        dependencies =
+      poincare_target_payload_of_dependency_projections
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified dependency projection route exposes the boundary
+finite-extinction input together with a certified final extractor, the target
+statement, and the completion criterion.
+-/
+theorem poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+    ∃ _derivation :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere,
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases
+      poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies with
+    ⟨finiteExtinction, extractSphere, derivation⟩
+  rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+      finiteExtinction extractSphere derivation with
+    ⟨target, criterion⟩
+  exact ⟨finiteExtinction, extractSphere, derivation, target, criterion⟩
+
+/--
+The strengthened certified dependency projection target payload is assembled
+from the boundary certified projection assembly-input payload and the
+finite-extinction/extraction-derivation bridge.
+-/
+theorem poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies
+              dependencies with
+          ⟨finiteExtinction, extractSphere, derivation⟩
+        rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation with
+          ⟨target, criterion⟩
+        exact
+          ⟨finiteExtinction, extractSphere, derivation, target,
+            criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified dependency projection target payload factors through
+the extractor/derivation decomposition of the forgetful theorem-shaped topology
+statement.
+-/
+theorem poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      (by
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_derivation.mp
+              (topology_extraction_statement_of_dependencies
+                (dependencies_of_equation_boundary_dependencies
+                  dependencies)) with
+          ⟨extractSphere, derivation⟩
+        rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation with
+          ⟨target, criterion⟩
+        exact
+          ⟨finiteExtinction, extractSphere, derivation, target,
+            criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data in the strengthened certified projection
+target payload recovers the ordinary certified dependency projection target
+payload.
+-/
+theorem poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      poincare_target_payload_of_extraction_derivation_dependency_projections
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies the explicit packages, final assembly
 inputs, and target statement through the projection route.
 -/

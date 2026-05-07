@@ -3522,6 +3522,14 @@ set_option linter.unusedVariables false
 #check Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies_eq
 #check Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies_to_statement_eq
 #check Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
+#check Poincare.poincare_target_payload_of_equation_boundary_dependency_projections
+#check Poincare.poincare_target_payload_of_equation_boundary_dependency_projections_eq
+#check Poincare.poincare_target_payload_of_equation_boundary_dependency_projections_to_topology_statement_eq
+#check Poincare.poincare_target_payload_of_equation_boundary_dependency_projections_to_forgetful_dependencies_eq
+#check Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections
+#check Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections_eq
+#check Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
+#check Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_forgetful_dependencies_eq
 #check Poincare.finite_extinction_of_remaining_dependency_package
 #check Poincare.finite_extinction_of_remaining_dependency_package_eq
 #check Poincare.finite_extinction_of_remaining_dependency_package_to_dependencies_eq
@@ -9054,7 +9062,7 @@ topology_statement_extractor_count=$(
   rg -c '\bextinction_implies_sphere_of_topology_extraction_statement\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$topology_statement_extractor_count" != "7" ]; then
+if [ "$topology_statement_extractor_count" != "8" ]; then
   echo "FAIL: dependency topology statement-route contracts should account for the statement-mediated extractor"
   rg -n '\bextinction_implies_sphere_of_topology_extraction_statement\b' \
     Poincare/DependencyProjections.lean || true
@@ -9306,7 +9314,7 @@ projection_target_payload_count=$(
   rg -c '\bpoincare_target_payload_of_dependency_projections\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_target_payload_count" != "8" ]; then
+if [ "$projection_target_payload_count" != "9" ]; then
   echo "FAIL: projection full/completion routes should consume the projection target payload"
   rg -n '\bpoincare_target_payload_of_dependency_projections\b' \
     Poincare/DependencyProjections.lean || true
@@ -9317,7 +9325,7 @@ projection_extraction_derivation_target_payload_count=$(
   rg -c '\bpoincare_target_payload_of_extraction_derivation_dependency_projections\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_extraction_derivation_target_payload_count" != "8" ]; then
+if [ "$projection_extraction_derivation_target_payload_count" != "9" ]; then
   echo "FAIL: extraction-derivation full/completion routes should consume the extraction-derivation target payload"
   rg -n '\bpoincare_target_payload_of_extraction_derivation_dependency_projections\b' \
     Poincare/DependencyProjections.lean || true
@@ -9328,7 +9336,7 @@ projection_direct_extinction_payload_count=$(
   rg -c '\bpoincare_payload_of_extinction_and_extraction\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_direct_extinction_payload_count" != "5" ]; then
+if [ "$projection_direct_extinction_payload_count" != "7" ]; then
   echo "FAIL: projection final target assembly should be centralized in the projection target payload"
   rg -n '\bpoincare_payload_of_extinction_and_extraction\b' \
     Poincare/DependencyProjections.lean || true
