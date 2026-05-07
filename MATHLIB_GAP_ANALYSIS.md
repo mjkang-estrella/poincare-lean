@@ -81,9 +81,11 @@ checkout. It now also proves the algebraic zero-candidate consistency layer:
 given future evidence that the zero derivative and zero Ricci candidates are the
 correct derivative and Ricci tensor for a metric, the explicit equation payload
 verifies `∂ₜ g = -2 Ricci` by reducing both sides to zero. The same explicit
-inputs now build zero Ricci-flow data and an analytic equation-boundary package,
-so the flat/stationary candidate route reaches the existing boundary statement
-without inventing any constructor for the missing equation interface.
+inputs now build zero Ricci-flow data, an analytic equation-boundary package,
+and, given the ordinary analytic sub-obligation payload for that flow, a full
+analytic-foundation package. Thus the flat/stationary candidate route reaches
+the strengthened analytic equation-boundary statement without inventing any
+constructor for the missing equation interface.
 
 `Poincare/Surgery.lean` adds the next typed boundary: Ricci flow with surgery,
 Perelman singularity control, and derivation of finite extinction. These are

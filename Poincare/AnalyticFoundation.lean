@@ -2869,6 +2869,218 @@ using the boundary package constructed from the supplied verification.
   apply Subsingleton.elim
 
 /--
+Analytic package for zero Ricci-flow data from the existing analytic
+sub-obligation payload.
+
+All PDE, regularity, curvature-contraction, and evolution inputs remain in the
+payload; this constructor only records that the payload is attached to the
+zero Ricci-flow data package.
+-/
+noncomputable def zero_ricci_flow_analytic_foundation_package
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci))
+    (subobligations :
+      AnalyticFoundationSubobligationsPayload
+        (zero_ricci_flow_data g identifiesRicci equationEvidence)) :
+    RicciFlowAnalyticFoundationPackage I n M := by
+  rcases subobligations with
+    ⟨leviCivitaExistence, leviCivitaUniqueness, leviCivitaTorsionFree,
+      leviCivitaMetricCompatibility, leviCivita, riemannCurvatureConstruction,
+      riemannCurvatureSymmetries, firstBianchi, secondBianchi,
+      riemannCurvature, ricciContractionFormula, scalarCurvatureContraction,
+      ricciContraction, metricRegularity, metricTimeDerivative,
+      scalarCurvature, equationDerivation, initialMetricCompatibility,
+      deturckGauge, deturckBackgroundMetric, deturckVectorField,
+      deturckEquation, deturckLinearization, strictParabolicDeturck,
+      parabolicLinearTheory, parabolicFixedPoint, deturckShortTime,
+      shortTimeRegularityBootstrap, deturckDiffeomorphismODE,
+      deturckPullbackEquationIdentity, deturckPullback, shortTimeExistence,
+      maximalTimeInterval, continuationCriterion, curvatureBlowUpCriterion,
+      maximalSolutionExtension, parabolicSchauder, parabolicRegularity,
+      shiDerivativeEstimates, curvatureDerivativeBootstrap, maximumPrinciple,
+      uniquenessTheory, metricEvolution, ricciTensorEvolution,
+      scalarCurvatureEvolution, curvatureNormEvolution, curvatureEvolution⟩
+  exact
+    { flow := zero_ricci_flow_data g identifiesRicci equationEvidence
+      leviCivitaExistence := leviCivitaExistence
+      leviCivitaUniqueness := leviCivitaUniqueness
+      leviCivitaTorsionFree := leviCivitaTorsionFree
+      leviCivitaMetricCompatibility := leviCivitaMetricCompatibility
+      leviCivita := leviCivita
+      riemannCurvatureConstruction := riemannCurvatureConstruction
+      riemannCurvatureSymmetries := riemannCurvatureSymmetries
+      firstBianchi := firstBianchi
+      secondBianchi := secondBianchi
+      riemannCurvature := riemannCurvature
+      ricciContractionFormula := ricciContractionFormula
+      scalarCurvatureContraction := scalarCurvatureContraction
+      ricciContraction := ricciContraction
+      metricRegularity := metricRegularity
+      metricTimeDerivative := metricTimeDerivative
+      scalarCurvature := scalarCurvature
+      equationDerivation := equationDerivation
+      initialMetricCompatibility := initialMetricCompatibility
+      deturckGauge := deturckGauge
+      deturckBackgroundMetric := deturckBackgroundMetric
+      deturckVectorField := deturckVectorField
+      deturckEquation := deturckEquation
+      deturckLinearization := deturckLinearization
+      strictParabolicDeturck := strictParabolicDeturck
+      parabolicLinearTheory := parabolicLinearTheory
+      parabolicFixedPoint := parabolicFixedPoint
+      deturckShortTime := deturckShortTime
+      shortTimeRegularityBootstrap := shortTimeRegularityBootstrap
+      deturckDiffeomorphismODE := deturckDiffeomorphismODE
+      deturckPullbackEquationIdentity := deturckPullbackEquationIdentity
+      deturckPullback := deturckPullback
+      shortTimeExistence := shortTimeExistence
+      maximalTimeInterval := maximalTimeInterval
+      continuationCriterion := continuationCriterion
+      curvatureBlowUpCriterion := curvatureBlowUpCriterion
+      maximalSolutionExtension := maximalSolutionExtension
+      parabolicSchauder := parabolicSchauder
+      parabolicRegularity := parabolicRegularity
+      shiDerivativeEstimates := shiDerivativeEstimates
+      curvatureDerivativeBootstrap := curvatureDerivativeBootstrap
+      maximumPrinciple := maximumPrinciple
+      uniquenessTheory := uniquenessTheory
+      metricEvolution := metricEvolution
+      ricciTensorEvolution := ricciTensorEvolution
+      scalarCurvatureEvolution := scalarCurvatureEvolution
+      curvatureNormEvolution := curvatureNormEvolution
+      curvatureEvolution := curvatureEvolution }
+
+/-- The zero analytic package stores the zero Ricci-flow data. -/
+@[simp] theorem zero_ricci_flow_analytic_foundation_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci))
+    (subobligations :
+      AnalyticFoundationSubobligationsPayload
+        (zero_ricci_flow_data g identifiesRicci equationEvidence)) :
+    ricci_flow_data_of_analytic_foundation_package
+      (zero_ricci_flow_analytic_foundation_package
+        identifiesRicci equationEvidence subobligations) =
+        zero_ricci_flow_data g identifiesRicci equationEvidence := by
+  rcases subobligations with
+    ⟨leviCivitaExistence, leviCivitaUniqueness, leviCivitaTorsionFree,
+      leviCivitaMetricCompatibility, leviCivita, riemannCurvatureConstruction,
+      riemannCurvatureSymmetries, firstBianchi, secondBianchi,
+      riemannCurvature, ricciContractionFormula, scalarCurvatureContraction,
+      ricciContraction, metricRegularity, metricTimeDerivative,
+      scalarCurvature, equationDerivation, initialMetricCompatibility,
+      deturckGauge, deturckBackgroundMetric, deturckVectorField,
+      deturckEquation, deturckLinearization, strictParabolicDeturck,
+      parabolicLinearTheory, parabolicFixedPoint, deturckShortTime,
+      shortTimeRegularityBootstrap, deturckDiffeomorphismODE,
+      deturckPullbackEquationIdentity, deturckPullback, shortTimeExistence,
+      maximalTimeInterval, continuationCriterion, curvatureBlowUpCriterion,
+      maximalSolutionExtension, parabolicSchauder, parabolicRegularity,
+      shiDerivativeEstimates, curvatureDerivativeBootstrap, maximumPrinciple,
+      uniquenessTheory, metricEvolution, ricciTensorEvolution,
+      scalarCurvatureEvolution, curvatureNormEvolution, curvatureEvolution⟩
+  rfl
+
+/--
+Zero Ricci-flow analytic package data plus the explicit zero equation
+verification supplies the strengthened analytic equation-boundary statement.
+-/
+theorem analytic_foundation_with_equation_boundary_of_zero_ricci_flow_analytic_foundation_package
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci))
+    (subobligations :
+      AnalyticFoundationSubobligationsPayload
+        (zero_ricci_flow_data g identifiesRicci equationEvidence)) :
+    AnalyticFoundationWithEquationBoundaryStatement
+      (zero_ricci_flow_data g identifiesRicci equationEvidence) := by
+  let package :=
+    zero_ricci_flow_analytic_foundation_package
+      identifiesRicci equationEvidence subobligations
+  have hflow :
+      ricci_flow_data_of_analytic_foundation_package package =
+        zero_ricci_flow_data g identifiesRicci equationEvidence :=
+    zero_ricci_flow_analytic_foundation_package_eq
+      identifiesRicci equationEvidence subobligations
+  have hflow' :
+      package.flow = zero_ricci_flow_data g identifiesRicci equationEvidence := by
+    simpa [ricci_flow_data_of_analytic_foundation_package] using hflow
+  have boundary :
+      RicciFlowEquationBoundaryPackage
+        package.flow := by
+    rw [hflow']
+    exact zero_ricci_flow_equation_boundary_package
+      identifiesDerivative identifiesRicci equationEvidence
+  have result : AnalyticFoundationWithEquationBoundaryStatement package.flow := by
+    simpa [ricci_flow_data_of_analytic_foundation_package] using
+      analytic_foundation_with_equation_boundary_of_package package boundary
+  simpa [hflow'] using result
+
+/--
+The zero analytic equation-boundary route delegates to the package-plus-boundary
+assembler after projecting the zero flow data from the analytic package.
+-/
+@[simp] theorem analytic_foundation_with_equation_boundary_of_zero_ricci_flow_analytic_foundation_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci))
+    (subobligations :
+      AnalyticFoundationSubobligationsPayload
+        (zero_ricci_flow_data g identifiesRicci equationEvidence)) :
+    analytic_foundation_with_equation_boundary_of_zero_ricci_flow_analytic_foundation_package
+      identifiesDerivative identifiesRicci equationEvidence subobligations =
+      (by
+        let package :=
+          zero_ricci_flow_analytic_foundation_package
+            identifiesRicci equationEvidence subobligations
+        have hflow :
+            ricci_flow_data_of_analytic_foundation_package package =
+              zero_ricci_flow_data g identifiesRicci equationEvidence :=
+          zero_ricci_flow_analytic_foundation_package_eq
+            identifiesRicci equationEvidence subobligations
+        have hflow' :
+            package.flow = zero_ricci_flow_data g identifiesRicci equationEvidence := by
+          simpa [ricci_flow_data_of_analytic_foundation_package] using hflow
+        have boundary :
+            RicciFlowEquationBoundaryPackage
+              package.flow := by
+          rw [hflow']
+          exact zero_ricci_flow_equation_boundary_package
+            identifiesDerivative identifiesRicci equationEvidence
+        have result :
+            AnalyticFoundationWithEquationBoundaryStatement package.flow := by
+          simpa [ricci_flow_data_of_analytic_foundation_package] using
+            analytic_foundation_with_equation_boundary_of_package
+              package boundary
+        simpa [hflow'] using result) := by
+  apply Subsingleton.elim
+
+/--
 A completed analytic-foundation package supplies the theorem-shaped analytic
 foundation statement.
 -/

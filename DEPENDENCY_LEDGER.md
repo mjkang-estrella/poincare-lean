@@ -295,7 +295,11 @@ It is not a proof. It is a work breakdown for future Lean development.
   `zero_ricci_flow_equation_boundary_package` and
   `ricciFlowEquationBoundaryStatement_of_zero_ricci_flow_data`, keeping the
   metric-derivative, Ricci-identification, and abstract equation-interface
-  inputs explicit.
+  inputs explicit. Given the existing analytic sub-obligation payload for that
+  zero flow data, `zero_ricci_flow_analytic_foundation_package` now packages the
+  zero route as a `RicciFlowAnalyticFoundationPackage`, and the strengthened
+  analytic equation-boundary statement follows from the same explicit zero
+  equation verification.
 - `Poincare/Surgery.lean` defines no-constructor interfaces for Ricci flow with
   surgery, Perelman singularity control, and finite-extinction derivation, plus
   checked package projections to the analytic foundation. Its direct package
