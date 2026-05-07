@@ -34414,6 +34414,126 @@ theorem poincare_full_assembly_payload_of_completion_certificate_extraction_deri
         dependencies := by
   apply Subsingleton.elim
 
+theorem poincare_full_assembly_payload_of_completion_certificate_of_poincareProofDependencies_component_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_component_requirements
+        dependencies) =
+      poincare_full_assembly_payload_of_dependencies
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_poincareProofDependencies_component_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_poincareProofDependencies_component_requirements
+        dependencies) =
+      poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem poincare_full_assembly_payload_of_completion_certificate_of_poincareProofDependencies_package_layer_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_package_layer_requirements
+        dependencies) =
+      poincare_full_assembly_payload_of_dependencies
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_poincareProofDependencies_package_layer_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_poincareProofDependencies_package_layer_requirements
+        dependencies) =
+      poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem poincare_full_assembly_payload_of_completion_certificate_of_poincareProofDependencies_milestone_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_milestone_requirements
+        dependencies) =
+      poincare_full_assembly_payload_of_dependencies
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_poincareProofDependencies_milestone_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_poincareProofDependencies_milestone_requirements
+        dependencies) =
+      poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem poincare_full_assembly_payload_of_completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements
+        dependencies) =
+      poincare_full_assembly_payload_of_dependencies
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_poincareProofDependencies_component_extraction_derivation_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements
+        dependencies) =
+      poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem poincare_full_assembly_payload_of_completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+        dependencies) =
+      poincare_full_assembly_payload_of_dependencies
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+        dependencies) =
+      poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem poincare_full_assembly_payload_of_completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+        dependencies) =
+      poincare_full_assembly_payload_of_dependencies
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_poincareProofDependencies_milestone_extraction_derivation_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+        dependencies) =
+      poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
 theorem target_statement_of_completion_certificate_of_aggregate_extraction_derivation_dependencies_eq
     (dependencies : RemainingDependencyPackage.{u}) :
     target_statement_of_completion_certificate

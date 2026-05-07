@@ -1328,7 +1328,9 @@ The current artifact is intentionally conservative:
   the remaining-dependency certified component/package-layer/milestone
   certificate routes and matching iff contracts,
   their ordinary and certified full-assembly projections are pinned back to the
-  same remaining-dependency package,
+  same remaining-dependency package, and the direct aggregate proof-dependency
+  raw/certified crosswalk routes have the same full-assembly projection
+  contracts after the aggregate-to-remaining dependency conversion,
   the direct aggregate proof-dependency certified crosswalk certificate routes
   and matching iff contracts,
   `completion_certificate_of_aggregate_extraction_derivation_dependencies`, and
