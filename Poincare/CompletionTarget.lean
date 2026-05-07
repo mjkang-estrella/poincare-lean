@@ -3428,6 +3428,19 @@ theorem surgery_package_with_equation_boundary_derivative_payload_of_remaining_d
   apply Subsingleton.elim
 
 /--
+The strengthened remaining-package boundary package payload is reconstructed
+from its named verification payload.
+-/
+theorem surgery_package_with_equation_boundary_payload_of_remaining_dependency_package_to_verification_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_payload_of_remaining_dependency_package
+        dependencies =
+      surgery_package_with_equation_boundary_payload_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining package exposes the analytic foundation together
 with its explicit equation-boundary package for each selected surgery package.
 -/
@@ -4594,6 +4607,19 @@ theorem surgery_package_with_equation_boundary_derivative_payload_of_poincarePro
     surgery_package_with_equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary
         dependencies =
       surgery_package_with_equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate boundary package payload is reconstructed from its
+named verification payload.
+-/
+theorem surgery_package_with_equation_boundary_payload_of_poincareProofDependenciesWithEquationBoundary_to_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      surgery_package_with_equation_boundary_payload_of_equation_boundary_verification_payload
         (equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
           dependencies) := by
   apply Subsingleton.elim
@@ -12443,6 +12469,20 @@ theorem surgery_package_with_equation_boundary_derivative_payload_of_completion_
         payload =
       surgery_package_with_equation_boundary_derivative_payload_of_remaining_dependency_package
         (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The certificate boundary package payload can be routed through the direct
+dependent verification payload.
+-/
+theorem surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      surgery_package_with_equation_boundary_payload_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_for_completion_certificate_with_equation_boundary_verification_payload
           payload) := by
   apply Subsingleton.elim
 
