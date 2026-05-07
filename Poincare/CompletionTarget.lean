@@ -4130,6 +4130,57 @@ theorem equation_boundary_derivative_payload_of_poincareProofDependenciesWithEqu
   apply Subsingleton.elim
 
 /--
+The strengthened aggregate dependency package exposes the pointwise
+equation-boundary equation payload through the strengthened remaining-package
+route.
+-/
+theorem equation_boundary_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+          ∀ (t : ℝ) (x : M)
+            (v w : TangentSpace ThreeManifoldModelWithCorners x),
+            metric_time_derivative_at_time_of_metric_derivative_field
+              (metric_time_derivative_field_of_metric_derivative_data
+                (metric_derivative_data_of_surgery_package_with_equation_boundary
+                  package)) t x v w =
+              ricci_flow_rhs_tensor
+                (curvature_data_of_ricci_flow_data
+                  (ricci_flow_data_of_surgery_package
+                    (surgery_package_of_equation_boundary_surgery_package
+                      package))) t x v w :=
+  equation_boundary_pointwise_equation_payload_of_remaining_dependency_package
+    dependencies
+
+/--
+The strengthened aggregate pointwise equation payload is the strengthened
+remaining-package pointwise equation payload.
+-/
+theorem equation_boundary_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      equation_boundary_pointwise_equation_payload_of_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate pointwise equation payload agrees with the named
+dependency projection.
+-/
+theorem equation_boundary_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary_to_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      equation_boundary_pointwise_equation_payload_of_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate dependency package exposes the full
 derivative-strengthened surgery payload through the strengthened
 remaining-package route.

@@ -1155,6 +1155,8 @@ The current artifact is intentionally conservative:
   projection tuple and to the milestone-assigned package-layer projection tuple.
   The strengthened remaining package also mirrors the dependency-level
   pointwise equation-boundary payload for the selected surgery package.
+  The strengthened aggregate package now mirrors that same pointwise
+  equation-boundary payload through the strengthened remaining-package route.
   The
   theorem
   `canonical_completion_payload_of_remaining_dependency_component_requirements`
