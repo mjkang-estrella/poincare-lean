@@ -936,6 +936,14 @@ check_decl "reverse diffeomorphism inversion bridge is declared" \
   '^theorem diffeomorph_to_threeSphere_of_threeSphere_diffeomorph\b' Poincare/Assembly.lean
 check_decl "diffeomorphism target-side equivalence is declared" \
   '^theorem diffeomorph_to_threeSphere_iff_threeSphere_diffeomorph\b' Poincare/Assembly.lean
+check_decl "standard sphere self-diffeomorphism theorem is declared" \
+  '^theorem threeSphere_self_diffeomorph\b' Poincare/Assembly.lean
+check_decl "standard sphere self-diffeomorphism equality contract is declared" \
+  '^theorem threeSphere_self_diffeomorph_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere self-homeomorphism via self-diffeomorphism theorem is declared" \
+  '^theorem threeSphere_self_homeomorph_of_self_diffeomorph\b' Poincare/Assembly.lean
+check_decl "standard sphere self-homeomorphism via self-diffeomorphism equality contract is declared" \
+  '^theorem threeSphere_self_homeomorph_of_self_diffeomorph_eq\b' Poincare/Assembly.lean
 check_decl "diffeomorphism-to-homeomorphism equality contract is declared" \
   '^theorem homeomorph_of_diffeomorph_three_sphere_eq\b' Poincare/Assembly.lean
 check_decl "reverse diffeomorphism-to-homeomorphism equality contract is declared" \

@@ -118,6 +118,12 @@ decomposition data, 3-sphere recognition, and the extraction package that
 supplies `ExtinctionImpliesSphereStatement`. These remain interfaces because the
 needed 3-manifold classification theorem is not present locally.
 
+`Poincare/Assembly.lean` now also records the standard sphere's reflexive smooth
+self-diffeomorphism and the induced smooth-to-topological self-homeomorphism
+route. This is genuine local glue over mathlib's smooth-manifold sphere
+infrastructure, but it is only a base case and does not supply the missing
+classification or Ricci-flow theorems.
+
 `Poincare/Smoothability.lean` adds the bridge from the topological target
 statement to the smooth model used by Ricci flow with surgery. It remains an
 interface because the needed smoothability/compatibility theorem is not supplied

@@ -75,6 +75,35 @@ theorem diffeomorph_to_threeSphere_iff_threeSphere_diffeomorph
   · exact threeSphere_diffeomorph_of_diffeomorph_to_threeSphere
   · exact diffeomorph_to_threeSphere_of_threeSphere_diffeomorph
 
+/-- The standard 3-sphere is smoothly diffeomorphic to itself. -/
+theorem threeSphere_self_diffeomorph :
+    Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) := by
+  exact ⟨Diffeomorph.refl (𝓡 3) ThreeSphere ∞⟩
+
+/-- The standard 3-sphere self-diffeomorphism witness is reflexivity. -/
+theorem threeSphere_self_diffeomorph_eq :
+    threeSphere_self_diffeomorph =
+      ⟨Diffeomorph.refl (𝓡 3) ThreeSphere ∞⟩ := by
+  apply Subsingleton.elim
+
+/--
+The reflexive smooth self-diffeomorphism of the standard 3-sphere gives the
+reflexive topological self-homeomorphism through the smooth-to-topological
+assembly bridge.
+-/
+theorem threeSphere_self_homeomorph_of_self_diffeomorph :
+    Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=
+  homeomorph_of_diffeomorph_three_sphere threeSphere_self_diffeomorph
+
+/--
+The standard sphere self-homeomorphism route is exactly the smooth
+self-diffeomorphism route followed by the smooth-to-topological bridge.
+-/
+theorem threeSphere_self_homeomorph_of_self_diffeomorph_eq :
+    threeSphere_self_homeomorph_of_self_diffeomorph =
+      homeomorph_of_diffeomorph_three_sphere threeSphere_self_diffeomorph := by
+  apply Subsingleton.elim
+
 /--
 If the canonical 3-dimensional topological Poincare statement is available as a
 proof-bearing theorem, then it proves this project's target proposition.

@@ -33,8 +33,10 @@ The current artifact is intentionally conservative:
 - `Poincare/Assembly.lean` contains small proof-bearing assembly lemmas that do
   not prove Poincare, such as turning a diffeomorphism on either side of `S^3`
   into a homeomorphism to `S^3`, recording the equivalence between those two
-  diffeomorphism directions, and reducing the topological target to the smooth
-  Poincare statement plus a smoothability hypothesis. It also bridges both the
+  diffeomorphism directions, naming the standard sphere's reflexive smooth
+  self-diffeomorphism and its smooth-to-topological self-homeomorphism route,
+  and reducing the topological target to the smooth Poincare statement plus a
+  smoothability hypothesis. It also bridges both the
   canonical topological and smooth mathlib-shaped 3-sphere statements into the
   local target statements when supplied as explicit proof-bearing inputs, and
   composes the canonical smooth statement with smoothability into the local
@@ -436,6 +438,9 @@ The current artifact is intentionally conservative:
   concrete homeomorphism glue for the standard sphere's self-homeomorphism,
   intermediate-space composition, opposite-direction source transport, and both
   inverse-direction recognition maps now also has direct equality contracts.
+  The assembly layer separately pins the standard sphere's smooth reflexivity
+  witness and the induced self-homeomorphism route through
+  `homeomorph_of_diffeomorph_three_sphere`.
   The dependency-level classification payload
   `topology_classification_payload_of_dependencies` now centralizes the
   post-extinction classification stack, and the individual dependency-level
