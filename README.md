@@ -360,7 +360,11 @@ The current artifact is intentionally conservative:
   checked completion certificates directly, with certificate equality contracts
   back to the finite-extinction/topology-statement route, the
   extractor/derivation route, and the forgetful ordinary projection certificate
-  routes. Separately, the completion-target wrapper layer now mirrors that
+  routes. Their certificate projections now recover the forgetful aggregate and
+  remaining packages, project payloads, target statements, canonical payloads,
+  canonical targets, and universe-indexed criteria for both the raw and
+  certified boundary projection routes. Separately, the completion-target
+  wrapper layer now mirrors that
   finite-extinction route through the ordinary
   remaining package, strengthened remaining package, and strengthened aggregate
   package, with equality contracts to the verification-payload, pointwise

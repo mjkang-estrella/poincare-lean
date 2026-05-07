@@ -30135,6 +30135,193 @@ theorem completion_certificate_of_equation_boundary_extraction_derivation_depend
   apply Subsingleton.elim
 
 /--
+Projecting ordinary aggregate dependencies from the strengthened boundary
+projection certificate recovers the forgetful aggregate package.
+-/
+theorem poincareProofDependencies_of_completion_certificate_of_equation_boundary_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareProofDependencies_of_completion_certificate
+      (completion_certificate_of_equation_boundary_dependency_projections
+        dependencies) =
+      dependencies_of_equation_boundary_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the remaining package from the strengthened boundary projection
+certificate recovers the forgetful remaining package.
+-/
+theorem remaining_dependency_package_of_completion_certificate_of_equation_boundary_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    remaining_dependency_package_of_completion_certificate
+      (completion_certificate_of_equation_boundary_dependency_projections
+        dependencies) =
+      remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical payload from the strengthened boundary projection
+certificate recovers the strengthened boundary projection canonical payload.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_equation_boundary_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_equation_boundary_dependency_projections
+        dependencies) =
+      canonical_completion_payload_of_equation_boundary_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project payload from the strengthened boundary projection
+certificate recovers the strengthened boundary projection project payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_equation_boundary_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_equation_boundary_dependency_projections
+        dependencies) =
+      poincare_completion_payload_of_equation_boundary_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the target statement from the strengthened boundary projection
+certificate recovers the strengthened boundary projection target route.
+-/
+theorem target_statement_of_completion_certificate_of_equation_boundary_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    target_statement_of_completion_certificate
+      (completion_certificate_of_equation_boundary_dependency_projections
+        dependencies) =
+      poincare_statement_of_equation_boundary_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical target from the strengthened boundary projection
+certificate recovers the strengthened boundary projection canonical target.
+-/
+theorem canonical_completion_target_of_completion_certificate_of_equation_boundary_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_equation_boundary_dependency_projections
+        dependencies) =
+      canonical_completion_target_of_equation_boundary_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the completion criterion from the strengthened boundary projection
+certificate recovers the strengthened boundary projection canonical criterion.
+-/
+theorem completion_criterion_of_completion_certificate_of_equation_boundary_dependency_projections_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_equation_boundary_dependency_projections
+        dependencies) =
+      canonical_completion_criterion_of_equation_boundary_dependency_projections
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting ordinary aggregate dependencies from the strengthened certified
+boundary projection certificate recovers the forgetful aggregate package.
+-/
+theorem poincareProofDependencies_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareProofDependencies_of_completion_certificate
+      (completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies) =
+      dependencies_of_equation_boundary_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the remaining package from the strengthened certified boundary
+projection certificate recovers the forgetful remaining package.
+-/
+theorem remaining_dependency_package_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    remaining_dependency_package_of_completion_certificate
+      (completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies) =
+      remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical payload from the strengthened certified boundary
+projection certificate recovers the strengthened certified boundary projection
+canonical payload.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies) =
+      canonical_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project payload from the strengthened certified boundary
+projection certificate recovers the strengthened certified boundary projection
+project payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies) =
+      poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the target statement from the strengthened certified boundary
+projection certificate recovers the strengthened certified boundary projection
+target route.
+-/
+theorem target_statement_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    target_statement_of_completion_certificate
+      (completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies) =
+      poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical target from the strengthened certified boundary
+projection certificate recovers the strengthened certified boundary projection
+canonical target.
+-/
+theorem canonical_completion_target_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies) =
+      canonical_completion_target_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the completion criterion from the strengthened certified boundary
+projection certificate recovers the strengthened certified boundary projection
+canonical criterion.
+-/
+theorem completion_criterion_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies) =
+      canonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
 The completion certificate is equivalent to the remaining dependency package when
 the certificate is reconstructed through the certified extraction-derivation
 aggregate route.
