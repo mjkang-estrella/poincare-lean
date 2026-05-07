@@ -121,6 +121,27 @@ noncomputable def zero_tangent_covariant_two_tensor
     zero_tangent_covariant_two_tensor_apply (I := I) (M := M) x = rfl := by
   apply Subsingleton.elim
 
+/-- At each point and pair of tangent vectors, the zero tensor is scalar zero. -/
+@[simp] theorem zero_tangent_covariant_two_tensor_apply_apply
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (x : M) (v w : TangentSpace I x) :
+    zero_tangent_covariant_two_tensor I M x v w = 0 :=
+  rfl
+
+/-- The scalar zero-tensor application proof is definitional. -/
+@[simp] theorem zero_tangent_covariant_two_tensor_apply_apply_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (x : M) (v w : TangentSpace I x) :
+    zero_tangent_covariant_two_tensor_apply_apply (I := I) (M := M) x v w =
+      rfl := by
+  apply Subsingleton.elim
+
 /--
 Candidate Ricci tensor field for a time-dependent metric.
 
@@ -591,6 +612,29 @@ def ricci_tensor_at_time_of_ricci_tensor_field
     ricci_tensor_at_time_of_ricci_tensor_field (zero_ricci_tensor_field g) t =
       zero_tangent_covariant_two_tensor I M :=
   rfl
+
+/-- Pointwise, the zero candidate Ricci tensor is scalar zero. -/
+@[simp] theorem ricci_tensor_at_time_apply_of_zero_ricci_tensor_field
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M)
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    ricci_tensor_at_time_of_ricci_tensor_field
+      (zero_ricci_tensor_field g) t x v w = 0 :=
+  rfl
+
+/-- The pointwise zero Ricci-tensor-field proof is definitional. -/
+@[simp] theorem ricci_tensor_at_time_apply_of_zero_ricci_tensor_field_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M)
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    ricci_tensor_at_time_apply_of_zero_ricci_tensor_field g t x v w = rfl := by
+  apply Subsingleton.elim
 
 /-- The right-hand side `-2 Ricci` of the Ricci-flow equation. -/
 noncomputable def ricci_flow_rhs_tensor

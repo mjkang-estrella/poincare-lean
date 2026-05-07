@@ -277,6 +277,10 @@ check_decl "zero tangent covariant two-tensor point theorem is declared" \
   '^@\[simp\] theorem zero_tangent_covariant_two_tensor_apply\b' Poincare/RicciFlow.lean
 check_decl "zero tangent covariant two-tensor point equality contract is declared" \
   '^@\[simp\] theorem zero_tangent_covariant_two_tensor_apply_eq\b' Poincare/RicciFlow.lean
+check_decl "zero tangent covariant two-tensor scalar point theorem is declared" \
+  '^@\[simp\] theorem zero_tangent_covariant_two_tensor_apply_apply\b' Poincare/RicciFlow.lean
+check_decl "zero tangent covariant two-tensor scalar point equality contract is declared" \
+  '^@\[simp\] theorem zero_tangent_covariant_two_tensor_apply_apply_eq\b' Poincare/RicciFlow.lean
 check_decl "metric time-derivative candidate field is declared" \
   '^structure MetricTimeDerivativeField\b' Poincare/RicciFlow.lean
 check_decl "zero metric time-derivative candidate is declared" \
@@ -339,6 +343,12 @@ check_decl "Ricci tensor time-slice projection is declared" \
   '^def ricci_tensor_at_time_of_ricci_tensor_field\b' Poincare/RicciFlow.lean
 check_decl "Ricci tensor time-slice equality theorem is declared" \
   '^@\[simp\] theorem ricci_tensor_at_time_of_ricci_tensor_field_eq\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci tensor time-slice theorem is declared" \
+  '^@\[simp\] theorem ricci_tensor_at_time_of_zero_ricci_tensor_field_eq\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci tensor pointwise theorem is declared" \
+  '^@\[simp\] theorem ricci_tensor_at_time_apply_of_zero_ricci_tensor_field\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci tensor pointwise equality contract is declared" \
+  '^@\[simp\] theorem ricci_tensor_at_time_apply_of_zero_ricci_tensor_field_eq\b' Poincare/RicciFlow.lean
 check_decl "Ricci-flow right-hand side tensor is declared" \
   '^noncomputable def ricci_flow_rhs_tensor\b' Poincare/RicciFlow.lean
 check_decl "Ricci-flow right-hand side tensor equality theorem is declared" \
@@ -11221,7 +11231,8 @@ open scoped Manifold ContDiff
 #check Poincare.zero_tangent_covariant_two_tensor_eq
 #check Poincare.zero_tangent_covariant_two_tensor_apply
 #check Poincare.zero_tangent_covariant_two_tensor_apply_eq
-#check Poincare.zero_tangent_covariant_two_tensor_apply_eq
+#check Poincare.zero_tangent_covariant_two_tensor_apply_apply
+#check Poincare.zero_tangent_covariant_two_tensor_apply_apply_eq
 #check Poincare.MetricTimeDerivativeField
 #check Poincare.zero_metric_time_derivative_field
 #check Poincare.zero_metric_time_derivative_field_eq
@@ -11258,6 +11269,8 @@ open scoped Manifold ContDiff
 #check Poincare.ricci_tensor_at_time_of_ricci_tensor_field
 #check Poincare.ricci_tensor_at_time_of_ricci_tensor_field_eq
 #check Poincare.ricci_tensor_at_time_of_zero_ricci_tensor_field_eq
+#check Poincare.ricci_tensor_at_time_apply_of_zero_ricci_tensor_field
+#check Poincare.ricci_tensor_at_time_apply_of_zero_ricci_tensor_field_eq
 #check Poincare.ricci_flow_rhs_tensor
 #check Poincare.ricci_flow_rhs_tensor_eq
 #check Poincare.ricci_flow_rhs_tensor_apply
@@ -15274,6 +15287,8 @@ open scoped Manifold ContDiff
 #check Poincare.zero_tangent_covariant_two_tensor
 #check Poincare.zero_tangent_covariant_two_tensor_eq
 #check Poincare.zero_tangent_covariant_two_tensor_apply
+#check Poincare.zero_tangent_covariant_two_tensor_apply_apply
+#check Poincare.zero_tangent_covariant_two_tensor_apply_apply_eq
 #check Poincare.MetricTimeDerivativeField
 #check Poincare.zero_metric_time_derivative_field
 #check Poincare.zero_metric_time_derivative_field_eq
@@ -15319,6 +15334,8 @@ open scoped Manifold ContDiff
 #check Poincare.ricci_tensor_at_time_of_ricci_tensor_field
 #check Poincare.ricci_tensor_at_time_of_ricci_tensor_field_eq
 #check Poincare.ricci_tensor_at_time_of_zero_ricci_tensor_field_eq
+#check Poincare.ricci_tensor_at_time_apply_of_zero_ricci_tensor_field
+#check Poincare.ricci_tensor_at_time_apply_of_zero_ricci_tensor_field_eq
 #check Poincare.ricci_flow_rhs_tensor
 #check Poincare.ricci_flow_rhs_tensor_eq
 #check Poincare.ricci_flow_rhs_tensor_apply

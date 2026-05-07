@@ -621,6 +621,8 @@ set_option linter.unusedVariables false
 #check Poincare.zero_tangent_covariant_two_tensor
 #check Poincare.zero_tangent_covariant_two_tensor_eq
 #check Poincare.zero_tangent_covariant_two_tensor_apply
+#check Poincare.zero_tangent_covariant_two_tensor_apply_apply
+#check Poincare.zero_tangent_covariant_two_tensor_apply_apply_eq
 #check Poincare.MetricTimeDerivativeField
 #check Poincare.zero_metric_time_derivative_field
 #check Poincare.zero_metric_time_derivative_field_eq
@@ -666,6 +668,8 @@ set_option linter.unusedVariables false
 #check Poincare.ricci_tensor_at_time_of_ricci_tensor_field
 #check Poincare.ricci_tensor_at_time_of_ricci_tensor_field_eq
 #check Poincare.ricci_tensor_at_time_of_zero_ricci_tensor_field_eq
+#check Poincare.ricci_tensor_at_time_apply_of_zero_ricci_tensor_field
+#check Poincare.ricci_tensor_at_time_apply_of_zero_ricci_tensor_field_eq
 #check Poincare.ricci_flow_rhs_tensor
 #check Poincare.ricci_flow_rhs_tensor_eq
 #check Poincare.ricci_flow_rhs_tensor_apply

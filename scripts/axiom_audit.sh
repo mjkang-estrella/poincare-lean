@@ -657,6 +657,12 @@ import Poincare
 #print axioms Poincare.threeManifoldModelWithCorners_eq
 #print axioms Poincare.TangentCovariantTwoTensor
 #print axioms Poincare.tangentCovariantTwoTensor_eq
+#print axioms Poincare.zero_tangent_covariant_two_tensor
+#print axioms Poincare.zero_tangent_covariant_two_tensor_eq
+#print axioms Poincare.zero_tangent_covariant_two_tensor_apply
+#print axioms Poincare.zero_tangent_covariant_two_tensor_apply_eq
+#print axioms Poincare.zero_tangent_covariant_two_tensor_apply_apply
+#print axioms Poincare.zero_tangent_covariant_two_tensor_apply_apply_eq
 #print axioms Poincare.metric_of_ricci_flow_data
 #print axioms Poincare.metric_of_ricci_flow_data_eq
 #print axioms Poincare.curvature_data_of_ricci_flow_data
@@ -686,6 +692,8 @@ import Poincare
 #print axioms Poincare.ricci_tensor_at_time_of_ricci_tensor_field
 #print axioms Poincare.ricci_tensor_at_time_of_ricci_tensor_field_eq
 #print axioms Poincare.ricci_tensor_at_time_of_zero_ricci_tensor_field_eq
+#print axioms Poincare.ricci_tensor_at_time_apply_of_zero_ricci_tensor_field
+#print axioms Poincare.ricci_tensor_at_time_apply_of_zero_ricci_tensor_field_eq
 #print axioms Poincare.ricci_flow_rhs_tensor
 #print axioms Poincare.ricci_flow_rhs_tensor_eq
 #print axioms Poincare.ricci_flow_rhs_tensor_apply
