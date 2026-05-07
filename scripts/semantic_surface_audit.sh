@@ -562,6 +562,24 @@ set_option linter.unusedVariables false
   Nonempty (Poincare.ThreeSphere ≃ₜ Poincare.ThreeSphere))
 #check Poincare.threeSphere_self_homeomorph_of_self_diffeomorph_eq
 
+#check (Poincare.threeSphere_self_homeomorph_of_poincare_statement :
+  ∀ [SimplyConnectedSpace Poincare.ThreeSphere],
+    Poincare.PoincareConjectureStatement.{0} →
+      Nonempty (Poincare.ThreeSphere ≃ₜ Poincare.ThreeSphere))
+#check Poincare.threeSphere_self_homeomorph_of_poincare_statement_eq
+
+#check (Poincare.threeSphere_self_diffeomorph_of_smooth_statement :
+  ∀ [SimplyConnectedSpace Poincare.ThreeSphere],
+    Poincare.SmoothPoincareConjectureStatement.{0} →
+      Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere))
+#check Poincare.threeSphere_self_diffeomorph_of_smooth_statement_eq
+
+#check (Poincare.threeSphere_self_homeomorph_of_smooth_statement :
+  ∀ [SimplyConnectedSpace Poincare.ThreeSphere],
+    Poincare.SmoothPoincareConjectureStatement.{0} →
+      Nonempty (Poincare.ThreeSphere ≃ₜ Poincare.ThreeSphere))
+#check Poincare.threeSphere_self_homeomorph_of_smooth_statement_eq
+
 #check (Poincare.homeomorph_of_threeSphere_diffeomorph :
   ∀ {M : Type} [TopologicalSpace M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M],

@@ -105,6 +105,71 @@ theorem threeSphere_self_homeomorph_of_self_diffeomorph_eq :
   apply Subsingleton.elim
 
 /--
+Applying the project target statement to the standard sphere itself only needs
+the standard sphere's simple-connectedness as an additional local input.
+-/
+theorem threeSphere_self_homeomorph_of_poincare_statement
+    [SimplyConnectedSpace ThreeSphere]
+    (h : PoincareConjectureStatement.{0}) :
+    Nonempty (ThreeSphere ≃ₜ ThreeSphere) := by
+  exact h ThreeSphere
+
+/--
+The self-case projection from the project target is exactly application to the
+standard sphere.
+-/
+theorem threeSphere_self_homeomorph_of_poincare_statement_eq
+    [SimplyConnectedSpace ThreeSphere] :
+    threeSphere_self_homeomorph_of_poincare_statement =
+      (fun h : PoincareConjectureStatement.{0} => h ThreeSphere) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+Applying the smooth target statement to the standard sphere itself gives the
+standard smooth self-diffeomorphism witness, again modulo the local
+simple-connectedness input.
+-/
+theorem threeSphere_self_diffeomorph_of_smooth_statement
+    [SimplyConnectedSpace ThreeSphere]
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) := by
+  exact h ThreeSphere
+
+/--
+The smooth self-case projection is exactly application of the smooth statement
+to the standard sphere.
+-/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_eq
+    [SimplyConnectedSpace ThreeSphere] :
+    threeSphere_self_diffeomorph_of_smooth_statement =
+      (fun h : SmoothPoincareConjectureStatement.{0} => h ThreeSphere) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The smooth target statement also gives the standard topological
+self-homeomorphism after forgetting the self-diffeomorphism to a homeomorphism.
+-/
+theorem threeSphere_self_homeomorph_of_smooth_statement
+    [SimplyConnectedSpace ThreeSphere]
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    Nonempty (ThreeSphere ≃ₜ ThreeSphere) := by
+  exact homeomorph_of_diffeomorph_three_sphere (h ThreeSphere)
+
+/--
+The smooth-to-topological self-case route is exactly smooth self-application
+followed by `homeomorph_of_diffeomorph_three_sphere`.
+-/
+theorem threeSphere_self_homeomorph_of_smooth_statement_eq
+    [SimplyConnectedSpace ThreeSphere] :
+    threeSphere_self_homeomorph_of_smooth_statement =
+      (fun h : SmoothPoincareConjectureStatement.{0} =>
+        homeomorph_of_diffeomorph_three_sphere (h ThreeSphere)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 If the canonical 3-dimensional topological Poincare statement is available as a
 proof-bearing theorem, then it proves this project's target proposition.
 

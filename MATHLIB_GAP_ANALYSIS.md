@@ -126,6 +126,10 @@ self-diffeomorphism and the induced smooth-to-topological self-homeomorphism
 route. This is genuine local glue over mathlib's smooth-manifold sphere
 infrastructure, but it is only a base case and does not supply the missing
 classification or Ricci-flow theorems.
+It also exposes the self-case obtained by applying the topological or smooth
+target statements to `ThreeSphere` under an explicit
+`SimplyConnectedSpace ThreeSphere` hypothesis, making that remaining local input
+visible rather than silently relying on it.
 
 `Poincare/Statement.lean` now names the modeled target `S^3` T2, compact,
 smooth-manifold, and nonempty facts supplied by existing infrastructure, and it

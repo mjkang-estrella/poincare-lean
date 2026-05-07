@@ -39,6 +39,8 @@ The current artifact is intentionally conservative:
   into a homeomorphism to `S^3`, recording the equivalence between those two
   diffeomorphism directions, naming the standard sphere's reflexive smooth
   self-diffeomorphism and its smooth-to-topological self-homeomorphism route,
+  exposing the standard-sphere self-case obtained by applying the topological
+  or smooth target statement when `S^3` is supplied as simply connected,
   and reducing the topological target to the smooth Poincare statement plus a
   smoothability hypothesis. It also bridges both the
   canonical topological and smooth mathlib-shaped 3-sphere statements into the

@@ -976,6 +976,18 @@ check_decl "standard sphere self-homeomorphism via self-diffeomorphism theorem i
   '^theorem threeSphere_self_homeomorph_of_self_diffeomorph\b' Poincare/Assembly.lean
 check_decl "standard sphere self-homeomorphism via self-diffeomorphism equality contract is declared" \
   '^theorem threeSphere_self_homeomorph_of_self_diffeomorph_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere self-homeomorphism from target statement theorem is declared" \
+  '^theorem threeSphere_self_homeomorph_of_poincare_statement\b' Poincare/Assembly.lean
+check_decl "standard sphere self-homeomorphism from target statement equality contract is declared" \
+  '^theorem threeSphere_self_homeomorph_of_poincare_statement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere self-diffeomorphism from smooth statement theorem is declared" \
+  '^theorem threeSphere_self_diffeomorph_of_smooth_statement\b' Poincare/Assembly.lean
+check_decl "standard sphere self-diffeomorphism from smooth statement equality contract is declared" \
+  '^theorem threeSphere_self_diffeomorph_of_smooth_statement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere self-homeomorphism from smooth statement theorem is declared" \
+  '^theorem threeSphere_self_homeomorph_of_smooth_statement\b' Poincare/Assembly.lean
+check_decl "standard sphere self-homeomorphism from smooth statement equality contract is declared" \
+  '^theorem threeSphere_self_homeomorph_of_smooth_statement_eq\b' Poincare/Assembly.lean
 check_decl "diffeomorphism-to-homeomorphism equality contract is declared" \
   '^theorem homeomorph_of_diffeomorph_three_sphere_eq\b' Poincare/Assembly.lean
 check_decl "reverse diffeomorphism-to-homeomorphism equality contract is declared" \
@@ -11592,6 +11604,12 @@ open scoped Manifold ContDiff
 #check Poincare.canonical_smooth_three_sphere_statement_of_reverse_canonical_smooth_three_sphere_statement
 #check Poincare.reverse_canonical_smooth_three_sphere_statement_iff_smooth_statement
 #check Poincare.canonical_smooth_three_sphere_statement_iff_reverse_canonical_smooth_three_sphere_statement
+#check Poincare.threeSphere_self_homeomorph_of_poincare_statement
+#check Poincare.threeSphere_self_homeomorph_of_poincare_statement_eq
+#check Poincare.threeSphere_self_diffeomorph_of_smooth_statement
+#check Poincare.threeSphere_self_diffeomorph_of_smooth_statement_eq
+#check Poincare.threeSphere_self_homeomorph_of_smooth_statement
+#check Poincare.threeSphere_self_homeomorph_of_smooth_statement_eq
 #check Poincare.homeomorph_of_diffeomorph_three_sphere_eq
 #check Poincare.homeomorph_of_threeSphere_diffeomorph
 #check Poincare.homeomorph_of_threeSphere_diffeomorph_eq

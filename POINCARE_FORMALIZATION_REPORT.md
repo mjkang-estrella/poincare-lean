@@ -60,6 +60,13 @@ Recent local proof-bearing glue now includes `threeSphere_self_diffeomorph`,
 `threeSphere_self_homeomorph_of_self_diffeomorph_eq`, pinning the standard
 sphere's reflexive smooth self-diffeomorphism and its route through the
 smooth-to-topological assembly bridge.
+The same assembly layer now also exposes
+`threeSphere_self_homeomorph_of_poincare_statement`,
+`threeSphere_self_diffeomorph_of_smooth_statement`, and
+`threeSphere_self_homeomorph_of_smooth_statement`, each with an equality
+contract, making the remaining `SimplyConnectedSpace ThreeSphere` input explicit
+when applying the topological or smooth target statement to the standard sphere
+itself.
 
 The statement layer also now proves `threeSphere_t2Space`,
 `threeSphere_compactSpace`, `threeSphere_smoothManifold`,
