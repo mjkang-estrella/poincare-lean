@@ -319,6 +319,10 @@ The current artifact is intentionally conservative:
   also lift the projection-routed Ricci-flow equation from their stored
   boundary package pointwise at `x v w`, with equality contracts back to both
   the boundary package and projected verification routes.
+  Boundary-aware verification certificates also recover the boundary surgery
+  package payload through arbitrary remaining-package, arbitrary aggregate,
+  existential verification-payload, named remaining-package, and named
+  aggregate constructors.
   The dependency-level surgery-construction route now exposes
   `surgery_construction_statement_payload_of_dependencies`, which packages the
   construction package, theorem-shaped construction statement, construction

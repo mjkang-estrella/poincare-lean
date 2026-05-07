@@ -11862,6 +11862,20 @@ theorem surgery_package_with_equation_boundary_derivative_payload_of_completion_
 
 /--
 The remaining-package arbitrary-verification constructor exposes the supplied
+verification payload's boundary surgery package payload projection.
+-/
+theorem surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u})
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+        dependencies payload) =
+      surgery_package_with_equation_boundary_payload_of_equation_boundary_verification_payload
+        payload := by
+  apply Subsingleton.elim
+
+/--
+The remaining-package arbitrary-verification constructor exposes the supplied
 verification payload's analytic equation-boundary projection.
 -/
 theorem analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_eq
@@ -11927,6 +11941,20 @@ theorem surgery_package_with_equation_boundary_derivative_payload_of_completion_
       (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload
         dependencies payload) =
       surgery_package_with_equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+        payload := by
+  apply Subsingleton.elim
+
+/--
+The aggregate arbitrary-verification constructor exposes the supplied
+verification payload's boundary surgery package payload projection.
+-/
+theorem surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload
+        dependencies payload) =
+      surgery_package_with_equation_boundary_payload_of_equation_boundary_verification_payload
         payload := by
   apply Subsingleton.elim
 
@@ -12077,6 +12105,24 @@ theorem surgery_package_with_equation_boundary_derivative_payload_of_completion_
         rcases payload with ⟨_dependencies, verificationPayload⟩
         exact
           surgery_package_with_equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+            verificationPayload) := by
+  apply Subsingleton.elim
+
+/--
+The existential verification-payload constructor exposes the unpacked payload's
+boundary surgery package payload projection.
+-/
+theorem surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload_eq
+    (payload :
+      ∃ dependencies : RemainingDependencyPackageWithEquationBoundary.{u},
+        EquationBoundaryVerificationPayload dependencies) :
+    surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload
+        payload) =
+      (by
+        rcases payload with ⟨_dependencies, verificationPayload⟩
+        exact
+          surgery_package_with_equation_boundary_payload_of_equation_boundary_verification_payload
             verificationPayload) := by
   apply Subsingleton.elim
 
@@ -13480,6 +13526,20 @@ theorem surgery_package_with_equation_boundary_derivative_payload_of_completion_
   apply Subsingleton.elim
 
 /--
+Projecting the boundary surgery package payload from the boundary-aware
+remaining-package constructor recovers the strengthened remaining-package
+boundary surgery package payload.
+-/
+theorem surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package
+        dependencies) =
+      surgery_package_with_equation_boundary_payload_of_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 Projecting the analytic equation-boundary statement family from the
 boundary-aware remaining-package constructor recovers the strengthened
 remaining-package analytic/equation-boundary projection.
@@ -13544,6 +13604,20 @@ theorem surgery_package_with_equation_boundary_derivative_payload_of_completion_
       (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
         dependencies) =
       surgery_package_with_equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the boundary surgery package payload from the boundary-aware
+aggregate constructor recovers the strengthened aggregate boundary surgery
+package payload.
+-/
+theorem surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies) =
+      surgery_package_with_equation_boundary_payload_of_poincareProofDependenciesWithEquationBoundary
         dependencies := by
   apply Subsingleton.elim
 
