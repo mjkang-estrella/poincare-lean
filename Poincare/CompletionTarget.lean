@@ -9703,6 +9703,82 @@ theorem remaining_dependency_package_of_completion_certificate_eq
   apply Subsingleton.elim
 
 /--
+A completion certificate exposes the ordinary full end-to-end assembly payload
+through its stored remaining-dependency package.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate
+    (certificate : PoincareCompletionCertificate.{u}) :
+    ∃ _smoothabilityPackage : SmoothabilityPackage.{u},
+    ∃ _surgeryPackages :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+    ∃ _topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ _extractSphere : ExtinctionImpliesSphereStatement.{u},
+      PoincareConjectureStatement.{u} :=
+  poincare_full_assembly_payload_of_dependencies
+    (remaining_dependency_package_of_completion_certificate certificate)
+
+/--
+The completion-certificate full-assembly projection delegates to the stored
+remaining-dependency package.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate certificate =
+      poincare_full_assembly_payload_of_dependencies
+        (remaining_dependency_package_of_completion_certificate
+          certificate) := by
+  apply Subsingleton.elim
+
+/--
+A completion certificate exposes the ordinary certified full end-to-end
+assembly payload through its stored remaining-dependency package.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+    (certificate : PoincareCompletionCertificate.{u}) :
+    ∃ _smoothabilityPackage : SmoothabilityPackage.{u},
+    ∃ _surgeryPackages :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+    ∃ _topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+    ∃ _derivation :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere,
+      PoincareConjectureStatement.{u} :=
+  poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
+    (remaining_dependency_package_of_completion_certificate certificate)
+
+/--
+The completion-certificate certified full-assembly projection delegates to the
+stored remaining-dependency package.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+        certificate =
+      poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
+        (remaining_dependency_package_of_completion_certificate
+          certificate) := by
+  apply Subsingleton.elim
+
+/--
 A remaining-dependency package and an explicit project completion payload
 reconstruct the checked completion certificate.
 -/
@@ -15114,6 +15190,137 @@ theorem completion_criterion_of_completion_certificate_of_poincareProofDependenc
         dependencies) =
       completion_criterion_of_poincareProofDependenciesWithEquationBoundary
         witness dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the full-assembly payload from an ordinary remaining-package
+certificate recovers the full-assembly payload for that package.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_package dependencies) =
+      poincare_full_assembly_payload_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the certified full-assembly payload from an ordinary
+remaining-package certificate recovers the certified full-assembly payload for
+that package.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_remaining_dependency_package dependencies) =
+      poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the full-assembly payload from an ordinary aggregate dependency
+certificate recovers the ordinary aggregate full-assembly payload.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_of_poincareProofDependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies dependencies) =
+      poincare_full_assembly_payload_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the certified full-assembly payload from an ordinary aggregate
+dependency certificate recovers the ordinary aggregate certified full-assembly
+payload.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_poincareProofDependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_poincareProofDependencies dependencies) =
+      poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the full-assembly payload from a strengthened remaining-package
+certificate recovers the ordinary forgetful full-assembly payload.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies) =
+      poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_to_remaining_dependency
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the certified full-assembly payload from a strengthened
+remaining-package certificate recovers the ordinary forgetful certified
+full-assembly payload.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies) =
+      poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation_to_remaining_dependency
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the full-assembly payload from a strengthened aggregate certificate
+recovers the ordinary aggregate full-assembly payload after forgetting
+equation-boundary data.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies) =
+      poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the full-assembly payload from a strengthened aggregate certificate
+also recovers the ordinary remaining-package full-assembly payload through the
+remaining-dependency wrapper.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_remaining_dependency_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies) =
+      poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_to_remaining_dependency
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the certified full-assembly payload from a strengthened aggregate
+certificate recovers the ordinary aggregate certified full-assembly payload
+after forgetting equation-boundary data.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies) =
+      poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_forgetful_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the certified full-assembly payload from a strengthened aggregate
+certificate also recovers the ordinary remaining-package certified
+full-assembly payload through the remaining-dependency wrapper.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_poincareProofDependenciesWithEquationBoundary_to_remaining_dependency_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies) =
+      poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_remaining_dependency
+        dependencies := by
   apply Subsingleton.elim
 
 /--

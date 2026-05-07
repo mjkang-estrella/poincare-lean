@@ -960,6 +960,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   now has the matching strengthened and ordinary remaining-package
   full-assembly projection roundtrip contracts after unpacking its dependency
   witness.
+  Ordinary completion certificates now also expose raw and certified
+  full-assembly payload projections through their stored remaining-dependency
+  package, with roundtrip contracts for ordinary, strengthened remaining-package,
+  and strengthened aggregate certificate constructors.
   It also projects the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/
