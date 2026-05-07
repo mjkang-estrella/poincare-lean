@@ -1399,6 +1399,9 @@ The current artifact is intentionally conservative:
   artifact payload projections are also pinned directly to the projected
   strengthened dependency, boundary-certificate, ordinary remaining-dependency,
   and ordinary aggregate routes where those routes are defined.
+  Those ordinary artifact payload projections are now also pinned for the
+  named remaining-package, named aggregate, arbitrary verification-payload, and
+  existential verification-payload constructors.
   The reverse literal, aggregate-dependency, and project-statement payload
   constructors for that checked certificate are pinned to the same projected,
   boundary, remaining-dependency, and aggregate routes.
