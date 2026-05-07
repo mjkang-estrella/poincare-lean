@@ -536,6 +536,30 @@ def metric_time_derivative_at_time_of_metric_derivative_field
         zero_tangent_covariant_two_tensor I M :=
   rfl
 
+/-- Pointwise, the zero metric derivative field is scalar zero. -/
+@[simp] theorem metric_time_derivative_at_time_apply_of_zero_metric_time_derivative_field
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M)
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    metric_time_derivative_at_time_of_metric_derivative_field
+      (zero_metric_time_derivative_field g) t x v w = 0 :=
+  rfl
+
+/-- The pointwise zero metric-derivative-field proof is definitional. -/
+@[simp] theorem metric_time_derivative_at_time_apply_of_zero_metric_time_derivative_field_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M)
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    metric_time_derivative_at_time_apply_of_zero_metric_time_derivative_field
+      g t x v w = rfl := by
+  apply Subsingleton.elim
+
 /-- Project the candidate Ricci tensor from Ricci-curvature data. -/
 def ricci_tensor_field_of_curvature_data
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]

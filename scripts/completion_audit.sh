@@ -287,6 +287,10 @@ check_decl "zero metric time-derivative candidate is declared" \
   '^noncomputable def zero_metric_time_derivative_field\b' Poincare/RicciFlow.lean
 check_decl "zero metric time-derivative equality contract is declared" \
   '^@\[simp\] theorem zero_metric_time_derivative_field_eq\b' Poincare/RicciFlow.lean
+check_decl "zero metric time-derivative pointwise theorem is declared" \
+  '^@\[simp\] theorem metric_time_derivative_at_time_apply_of_zero_metric_time_derivative_field\b' Poincare/RicciFlow.lean
+check_decl "zero metric time-derivative pointwise equality contract is declared" \
+  '^@\[simp\] theorem metric_time_derivative_at_time_apply_of_zero_metric_time_derivative_field_eq\b' Poincare/RicciFlow.lean
 check_decl "metric time-derivative identification interface is declared" \
   '^inductive IsMetricTimeDerivativeOf\b' Poincare/RicciFlow.lean
 check_decl "metric time-derivative data is declared" \
@@ -11255,6 +11259,8 @@ open scoped Manifold ContDiff
 #check Poincare.metric_time_derivative_at_time_apply
 #check Poincare.metric_time_derivative_at_time_apply_eq
 #check Poincare.metric_time_derivative_at_time_of_zero_metric_time_derivative_field_eq
+#check Poincare.metric_time_derivative_at_time_apply_of_zero_metric_time_derivative_field
+#check Poincare.metric_time_derivative_at_time_apply_of_zero_metric_time_derivative_field_eq
 #check Poincare.metric_time_derivative_at_time_of_zero_metric_derivative_data_eq
 #check Poincare.metric_time_derivative_at_time_apply_of_zero_metric_derivative_data
 #check Poincare.metric_time_derivative_at_time_apply_of_zero_metric_derivative_data_eq
@@ -15320,6 +15326,8 @@ open scoped Manifold ContDiff
 #check Poincare.metric_time_derivative_at_time_apply
 #check Poincare.metric_time_derivative_at_time_apply_eq
 #check Poincare.metric_time_derivative_at_time_of_zero_metric_time_derivative_field_eq
+#check Poincare.metric_time_derivative_at_time_apply_of_zero_metric_time_derivative_field
+#check Poincare.metric_time_derivative_at_time_apply_of_zero_metric_time_derivative_field_eq
 #check Poincare.metric_time_derivative_at_time_of_zero_metric_derivative_data_eq
 #check Poincare.metric_time_derivative_at_time_apply_of_zero_metric_derivative_data
 #check Poincare.metric_time_derivative_at_time_apply_of_zero_metric_derivative_data_eq
