@@ -497,6 +497,18 @@ check_decl "zero Ricci-flow data scalar time-slice contract is declared" \
   '^@\[simp\] theorem scalar_curvature_at_time_of_zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
 check_decl "stationary zero Ricci-flow data metric time-slice contract is declared" \
   '^@\[simp\] theorem metric_at_time_of_stationary_zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
+check_decl "stationary zero Ricci-flow data Ricci tensor time-slice contract is declared" \
+  '^@\[simp\] theorem ricci_tensor_at_time_of_stationary_zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
+check_decl "stationary zero Ricci-flow data pointwise Ricci tensor contract is declared" \
+  '^@\[simp\] theorem ricci_tensor_at_time_apply_of_stationary_zero_ricci_flow_data\b' Poincare/RicciFlow.lean
+check_decl "stationary zero Ricci-flow data pointwise Ricci tensor equality contract is declared" \
+  '^@\[simp\] theorem ricci_tensor_at_time_apply_of_stationary_zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
+check_decl "stationary zero Ricci-flow data scalar time-slice contract is declared" \
+  '^@\[simp\] theorem scalar_curvature_at_time_of_stationary_zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
+check_decl "stationary zero Ricci-flow data pointwise RHS theorem is declared" \
+  '^@\[simp\] theorem ricci_flow_rhs_tensor_apply_of_stationary_zero_ricci_flow_data\b' Poincare/RicciFlow.lean
+check_decl "stationary zero Ricci-flow data pointwise RHS equality contract is declared" \
+  '^@\[simp\] theorem ricci_flow_rhs_tensor_apply_of_stationary_zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
 check_decl "zero-derivative zero-Ricci verification existence theorem is declared" \
   '^theorem zero_derivative_zero_ricci_equation_verification_exists\b' Poincare/RicciFlow.lean
 check_decl "zero-derivative zero-Ricci verification existence equality contract is declared" \

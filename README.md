@@ -165,7 +165,9 @@ The current artifact is intentionally conservative:
   tensor/scalar data, zero-flow Ricci tensor data, and the zero-curvature
   Ricci-flow right-hand side at
   `x v w`; the zero equation verification also has a pointwise equation route
-  at `x v w`. The analytic equation boundary now
+  at `x v w`. The stationary zero-flow route now mirrors those Ricci, scalar,
+  and RHS zero facts after specializing the metric family. The analytic equation
+  boundary now
   has the matching stationary zero boundary package, statement route,
   analytic-foundation package route, and strengthened equation-boundary
   statement route.

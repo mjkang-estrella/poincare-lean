@@ -1797,6 +1797,153 @@ Riemannian metric.
         metric :=
   rfl
 
+/-- The Ricci tensor of stationary zero Ricci-flow data is the zero tensor. -/
+@[simp] theorem ricci_tensor_at_time_of_stationary_zero_ricci_flow_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci))
+    (t : ℝ) :
+    ricci_tensor_at_time_of_ricci_flow_data
+      (zero_ricci_flow_data
+        (stationary_time_dependent_riemannian_metric metric)
+        identifiesRicci equationEvidence) t =
+        zero_tangent_covariant_two_tensor I M :=
+  rfl
+
+/-- Pointwise, stationary zero Ricci-flow data has zero Ricci tensor. -/
+@[simp] theorem ricci_tensor_at_time_apply_of_stationary_zero_ricci_flow_data
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    ricci_tensor_at_time_of_ricci_flow_data
+      (zero_ricci_flow_data
+        (stationary_time_dependent_riemannian_metric metric)
+        identifiesRicci equationEvidence) t x v w = 0 :=
+  rfl
+
+/-- The pointwise stationary zero Ricci-flow tensor proof is definitional. -/
+@[simp] theorem ricci_tensor_at_time_apply_of_stationary_zero_ricci_flow_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    ricci_tensor_at_time_apply_of_stationary_zero_ricci_flow_data
+      metric identifiesRicci equationEvidence t x v w = rfl := by
+  apply Subsingleton.elim
+
+/-- The scalar curvature of stationary zero Ricci-flow data is zero. -/
+@[simp] theorem scalar_curvature_at_time_of_stationary_zero_ricci_flow_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci))
+    (t : ℝ) (x : M) :
+    scalar_curvature_at_time_of_ricci_flow_data
+      (zero_ricci_flow_data
+        (stationary_time_dependent_riemannian_metric metric)
+        identifiesRicci equationEvidence) t x = 0 :=
+  rfl
+
+/-- Pointwise, the stationary zero Ricci-flow right-hand side is scalar zero. -/
+@[simp] theorem ricci_flow_rhs_tensor_apply_of_stationary_zero_ricci_flow_data
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    ricci_flow_rhs_tensor
+      (curvature_data_of_ricci_flow_data
+        (zero_ricci_flow_data
+          (stationary_time_dependent_riemannian_metric metric)
+          identifiesRicci equationEvidence)) t x v w = 0 :=
+  ricci_flow_rhs_tensor_apply_of_zero_ricci_flow_data
+    (stationary_time_dependent_riemannian_metric metric)
+    identifiesRicci equationEvidence t x v w
+
+/-- The stationary zero RHS proof delegates to the generic zero-flow RHS proof. -/
+@[simp] theorem ricci_flow_rhs_tensor_apply_of_stationary_zero_ricci_flow_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    ricci_flow_rhs_tensor_apply_of_stationary_zero_ricci_flow_data
+      metric identifiesRicci equationEvidence t x v w =
+      ricci_flow_rhs_tensor_apply_of_zero_ricci_flow_data
+        (stationary_time_dependent_riemannian_metric metric)
+        identifiesRicci equationEvidence t x v w := by
+  apply Subsingleton.elim
+
 /--
 Zero metric derivative and zero Ricci candidates satisfy the explicit
 Ricci-flow equation verification once their still-missing analytic
