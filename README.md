@@ -333,7 +333,9 @@ The current artifact is intentionally conservative:
   exposes the carried analytic equation-boundary statement directly, and the
   dependency, remaining-package, aggregate, and boundary-aware certificate
   analytic statement routes now pin their projections through the pointwise
-  surgery payload. Boundary-aware
+  surgery payload. Arbitrary equation-boundary verification payloads now also
+  route both their boundary surgery-package payload and analytic statement
+  projections through that reconstructed pointwise surgery payload. Boundary-aware
   verification certificates also recover the boundary surgery package payload
   through arbitrary remaining-package, arbitrary aggregate, existential
   verification-payload, named remaining-package, and named aggregate

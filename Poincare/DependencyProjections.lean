@@ -2250,6 +2250,27 @@ theorem surgery_package_with_equation_boundary_payload_of_equation_boundary_veri
   apply Subsingleton.elim
 
 /--
+The verification-payload boundary surgery-package projection is the forgetful
+projection of the verification-payload scalar-pointwise surgery payload.
+-/
+theorem surgery_package_with_equation_boundary_payload_of_equation_boundary_verification_payload_to_pointwise_equation_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    surgery_package_with_equation_boundary_payload_of_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            surgery_package_with_equation_boundary_pointwise_equation_payload_of_equation_boundary_verification_payload
+              payload M with
+          ⟨n, package, pointwisePayload⟩
+        exact
+          ⟨n, package,
+            surgery_package_with_equation_boundary_payload_of_pointwise_equation_payload
+              pointwisePayload⟩) := by
+  apply Subsingleton.elim
+
+/--
 An arbitrary verification payload exposes theorem-shaped analytic foundation
 statements carrying the explicit equation boundary.
 -/
@@ -2294,6 +2315,30 @@ theorem analytic_foundation_with_equation_boundary_statements_of_equation_bounda
             ricci_flow_data_of_surgery_package
               (surgery_package_of_equation_boundary_surgery_package package),
             analyticBoundary⟩) := by
+  apply Subsingleton.elim
+
+/--
+The verification-payload analytic/equation-boundary statement projection is
+the analytic projection of the verification-payload scalar-pointwise surgery
+payload.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload_to_pointwise_equation_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            surgery_package_with_equation_boundary_pointwise_equation_payload_of_equation_boundary_verification_payload
+              payload M with
+          ⟨n, package, pointwisePayload⟩
+        exact
+          ⟨n,
+            ricci_flow_data_of_surgery_package
+              (surgery_package_of_equation_boundary_surgery_package package),
+            analytic_foundation_with_equation_boundary_of_pointwise_equation_payload
+              pointwisePayload⟩) := by
   apply Subsingleton.elim
 
 /--
