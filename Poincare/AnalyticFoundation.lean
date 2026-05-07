@@ -2995,6 +2995,73 @@ derivation statement and the provided boundary package.
   rfl
 
 /--
+Fixed Ricci-flow data, the named analytic sub-obligation payload for that flow,
+and an already assembled equation-boundary package supply the strengthened
+analytic-boundary statement.
+-/
+theorem analytic_foundation_with_equation_boundary_of_subobligations_payload_and_boundary_package
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M)
+    (subobligations : AnalyticFoundationSubobligationsPayload flow)
+    (boundary : RicciFlowEquationBoundaryPackage flow) :
+    AnalyticFoundationWithEquationBoundaryStatement flow := by
+  let package :=
+    analytic_foundation_package_of_subobligations_payload flow subobligations
+  have hflow : package.flow = flow :=
+    analytic_foundation_package_of_subobligations_payload_eq
+      flow subobligations
+  have hboundary :
+      RicciFlowEquationBoundaryPackage
+        (ricci_flow_data_of_analytic_foundation_package package) := by
+    change RicciFlowEquationBoundaryPackage package.flow
+    rw [hflow]
+    exact boundary
+  have result :
+      AnalyticFoundationWithEquationBoundaryStatement
+        (ricci_flow_data_of_analytic_foundation_package package) :=
+    analytic_foundation_with_equation_boundary_of_package package hboundary
+  simpa [ricci_flow_data_of_analytic_foundation_package, hflow] using result
+
+/--
+The fixed-flow payload-plus-boundary route delegates through the generic
+payload-to-package bridge and the package-plus-boundary assembler.
+-/
+@[simp] theorem analytic_foundation_with_equation_boundary_of_subobligations_payload_and_boundary_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M)
+    (subobligations : AnalyticFoundationSubobligationsPayload flow)
+    (boundary : RicciFlowEquationBoundaryPackage flow) :
+    analytic_foundation_with_equation_boundary_of_subobligations_payload_and_boundary_package
+      flow subobligations boundary =
+      (by
+        let package :=
+          analytic_foundation_package_of_subobligations_payload
+            flow subobligations
+        have hflow : package.flow = flow :=
+          analytic_foundation_package_of_subobligations_payload_eq
+            flow subobligations
+        have hboundary :
+            RicciFlowEquationBoundaryPackage
+              (ricci_flow_data_of_analytic_foundation_package package) := by
+          change RicciFlowEquationBoundaryPackage package.flow
+          rw [hflow]
+          exact boundary
+        have result :
+            AnalyticFoundationWithEquationBoundaryStatement
+              (ricci_flow_data_of_analytic_foundation_package package) :=
+          analytic_foundation_with_equation_boundary_of_package
+            package hboundary
+        simpa [ricci_flow_data_of_analytic_foundation_package, hflow] using
+          result) := by
+  apply Subsingleton.elim
+
+/--
 An analytic-foundation package plus explicit pointwise equation verification
 supplies the strengthened analytic-boundary statement.
 -/

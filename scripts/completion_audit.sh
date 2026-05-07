@@ -543,6 +543,10 @@ check_decl "analytic sub-obligation payload to derivation theorem is declared" \
   '^theorem analytic_foundation_derivation_statement_of_subobligations_payload\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic sub-obligation payload to derivation equality contract is declared" \
   '^@\[simp\] theorem analytic_foundation_derivation_statement_of_subobligations_payload_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic sub-obligation payload plus boundary package theorem is declared" \
+  '^theorem analytic_foundation_with_equation_boundary_of_subobligations_payload_and_boundary_package\b' Poincare/AnalyticFoundation.lean
+check_decl "analytic sub-obligation payload plus boundary package equality contract is declared" \
+  '^@\[simp\] theorem analytic_foundation_with_equation_boundary_of_subobligations_payload_and_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic sub-obligation payload plus verification theorem is declared" \
   '^theorem analytic_foundation_with_equation_boundary_of_subobligations_payload_and_ricci_flow_equation_verification\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic sub-obligation payload plus verification equality contract is declared" \
@@ -10830,6 +10834,8 @@ open scoped Manifold ContDiff
 #check Poincare.analytic_foundation_statement_of_analytic_foundation_package_eq
 #check Poincare.analytic_foundation_with_equation_boundary_of_package
 #check Poincare.analytic_foundation_with_equation_boundary_of_package_eq
+#check Poincare.analytic_foundation_with_equation_boundary_of_subobligations_payload_and_boundary_package
+#check Poincare.analytic_foundation_with_equation_boundary_of_subobligations_payload_and_boundary_package_eq
 #check Poincare.analytic_foundation_with_equation_boundary_of_package_and_ricci_flow_equation_verification
 #check Poincare.analytic_foundation_with_equation_boundary_of_package_and_ricci_flow_equation_verification_eq
 #check Poincare.analytic_foundation_payload_of_analytic_foundation_package
@@ -14598,6 +14604,8 @@ open scoped Manifold ContDiff
 #check Poincare.analytic_foundation_statement_of_analytic_foundation_package_eq
 #check Poincare.analytic_foundation_with_equation_boundary_of_package
 #check Poincare.analytic_foundation_with_equation_boundary_of_package_eq
+#check Poincare.analytic_foundation_with_equation_boundary_of_subobligations_payload_and_boundary_package
+#check Poincare.analytic_foundation_with_equation_boundary_of_subobligations_payload_and_boundary_package_eq
 #check Poincare.analytic_foundation_with_equation_boundary_of_package_and_ricci_flow_equation_verification
 #check Poincare.analytic_foundation_with_equation_boundary_of_package_and_ricci_flow_equation_verification_eq
 #check Poincare.analytic_foundation_payload_of_analytic_foundation_package
