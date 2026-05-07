@@ -193,6 +193,10 @@ check_decl "target sphere nonempty theorem is declared" \
   '^theorem threeSphere_nonempty\b' Poincare/Statement.lean
 check_decl "target sphere nonempty equality contract is declared" \
   '^theorem threeSphere_nonempty_eq\b' Poincare/Statement.lean
+check_decl "target sphere prerequisite payload theorem is declared" \
+  '^theorem threeSphere_target_prerequisites_except_simpleConnected\b' Poincare/Statement.lean
+check_decl "target sphere prerequisite payload equality contract is declared" \
+  '^theorem threeSphere_target_prerequisites_except_simpleConnected_eq\b' Poincare/Statement.lean
 check_decl "topological statement shape contract is declared" \
   '^theorem poincareConjectureStatement_eq\b' Poincare/Statement.lean
 check_decl "topological statement iff contract is declared" \
@@ -10846,6 +10850,8 @@ open scoped Manifold ContDiff
 #check Poincare.threeSphere_connectedSpace_eq
 #check Poincare.threeSphere_nonempty
 #check Poincare.threeSphere_nonempty_eq
+#check Poincare.threeSphere_target_prerequisites_except_simpleConnected
+#check Poincare.threeSphere_target_prerequisites_except_simpleConnected_eq
 #check Poincare.poincareConjectureStatement_eq
 #check Poincare.poincareConjectureStatement_iff_canonical_three_sphere_statement
 #check Poincare.poincareConjectureStatement_iff_canonical_three_sphere_statement_eq
@@ -15139,6 +15145,16 @@ open scoped Manifold ContDiff
 #check (Poincare.threeSphere_nonempty :
   Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_nonempty_eq
+
+#check (Poincare.threeSphere_target_prerequisites_except_simpleConnected :
+  ∃ _t2 : T2Space Poincare.ThreeSphere,
+  ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) Poincare.ThreeSphere,
+  ∃ _compact : CompactSpace Poincare.ThreeSphere,
+  ∃ _smooth : IsManifold (𝓡 3) ∞ Poincare.ThreeSphere,
+  ∃ _path : PathConnectedSpace Poincare.ThreeSphere,
+  ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
+    Nonempty Poincare.ThreeSphere)
+#check Poincare.threeSphere_target_prerequisites_except_simpleConnected_eq
 
 #check (Poincare.poincareConjectureStatement_eq :
   Poincare.PoincareConjectureStatement =

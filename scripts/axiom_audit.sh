@@ -1438,6 +1438,8 @@ import Poincare
 #print axioms Poincare.threeSphere_connectedSpace_eq
 #print axioms Poincare.threeSphere_nonempty
 #print axioms Poincare.threeSphere_nonempty_eq
+#print axioms Poincare.threeSphere_target_prerequisites_except_simpleConnected
+#print axioms Poincare.threeSphere_target_prerequisites_except_simpleConnected_eq
 #print axioms Poincare.completionCriterionAtUniverse_of_completionCriterionAtUniverse
 #print axioms Poincare.completionCriterionAtUniverse_iff_completionCriterionAtUniverse
 #print axioms Poincare.completionCriterionAtUniverse_of_poincareConjectureStatement

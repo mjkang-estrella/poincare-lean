@@ -510,6 +510,16 @@ set_option linter.unusedVariables false
   Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_nonempty_eq
 
+#check (Poincare.threeSphere_target_prerequisites_except_simpleConnected :
+  ∃ _t2 : T2Space Poincare.ThreeSphere,
+  ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) Poincare.ThreeSphere,
+  ∃ _compact : CompactSpace Poincare.ThreeSphere,
+  ∃ _smooth : IsManifold (𝓡 3) ∞ Poincare.ThreeSphere,
+  ∃ _path : PathConnectedSpace Poincare.ThreeSphere,
+  ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
+    Nonempty Poincare.ThreeSphere)
+#check Poincare.threeSphere_target_prerequisites_except_simpleConnected_eq
+
 #check (Poincare.poincareConjectureStatement_eq :
   Poincare.PoincareConjectureStatement =
     (∀ (M : Type) [TopologicalSpace M] [T2Space M]

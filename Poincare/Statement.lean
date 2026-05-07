@@ -138,6 +138,33 @@ theorem threeSphere_nonempty_eq :
   apply Subsingleton.elim
 
 /--
+All standard-sphere prerequisites currently available locally for applying the
+target statement to `ThreeSphere`, excluding the simple-connectedness input.
+-/
+theorem threeSphere_target_prerequisites_except_simpleConnected :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere := by
+  exact ⟨threeSphere_t2Space, inferInstance, threeSphere_compactSpace,
+    threeSphere_smoothManifold, threeSphere_pathConnectedSpace,
+    threeSphere_connectedSpace, threeSphere_nonempty⟩
+
+/--
+The available standard-sphere prerequisite payload is exactly the tuple of the
+named local target-sphere witnesses.
+-/
+theorem threeSphere_target_prerequisites_except_simpleConnected_eq :
+    threeSphere_target_prerequisites_except_simpleConnected =
+      ⟨threeSphere_t2Space, inferInstance, threeSphere_compactSpace,
+        threeSphere_smoothManifold, threeSphere_pathConnectedSpace,
+        threeSphere_connectedSpace, threeSphere_nonempty⟩ := by
+  apply Subsingleton.elim
+
+/--
 The actual target statement of the Poincare Conjecture for this project.
 
 This is a proposition only. It is intentionally not declared as a theorem or

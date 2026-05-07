@@ -135,9 +135,10 @@ visible rather than silently relying on it.
 smooth-manifold, and nonempty facts supplied by existing infrastructure, and it
 uses the connected-sphere theorem to prove the modeled target is path-connected
 and connected after explicitly reducing the ambient Euclidean-space rank
-condition to the finite-dimensional rank of `ℝ^4`. This fills local
-standard-sphere prerequisites, not the missing simple connectedness or
-classification input.
+condition to the finite-dimensional rank of `ℝ^4`. It also packages these
+available prerequisites together while deliberately excluding
+`SimplyConnectedSpace ThreeSphere`. This fills local standard-sphere
+prerequisites, not the missing simple connectedness or classification input.
 
 `Poincare/Smoothability.lean` adds the bridge from the topological target
 statement to the smooth model used by Ricci flow with surgery. It remains an

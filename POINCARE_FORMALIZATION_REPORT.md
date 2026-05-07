@@ -72,7 +72,8 @@ The statement layer also now proves `threeSphere_t2Space`,
 `threeSphere_compactSpace`, `threeSphere_smoothManifold`,
 `threeSphere_euclidean_rank_gt_one`, `threeSphere_isPathConnected_set`,
 `threeSphere_pathConnectedSpace`, `threeSphere_connectedSpace`, and
-`threeSphere_nonempty`, with matching equality contracts, using mathlib's
+`threeSphere_nonempty`, with matching equality contracts, and centralizes them
+in `threeSphere_target_prerequisites_except_simpleConnected`, using mathlib's
 standard sphere/manifold instances and connected-sphere theorem for the concrete
 unit sphere in `EuclideanSpace ℝ (Fin 4)`.
 
