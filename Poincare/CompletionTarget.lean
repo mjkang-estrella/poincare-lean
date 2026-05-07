@@ -29985,6 +29985,156 @@ theorem completion_certificate_of_extraction_derivation_dependency_projections
   exact ⟨canonicalCompletionTheoremName, rfl, dependencies, target, criterion⟩
 
 /--
+The strengthened equation-boundary dependency projection route also produces a
+checked completion certificate directly from its canonical payload.
+-/
+theorem completion_certificate_of_equation_boundary_dependency_projections
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareCompletionCertificate.{u} := by
+  rcases canonical_completion_payload_of_equation_boundary_dependency_projections
+      dependencies with
+    ⟨target, criterion⟩
+  exact
+    ⟨canonicalCompletionTheoremName, rfl,
+      remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+        dependencies,
+      target, criterion⟩
+
+/--
+The strengthened equation-boundary projection certificate constructor is the
+record built from the named boundary projection canonical payload.
+-/
+theorem completion_certificate_of_equation_boundary_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_dependency_projections
+        dependencies =
+      (by
+        rcases
+            canonical_completion_payload_of_equation_boundary_dependency_projections
+              dependencies with
+          ⟨target, criterion⟩
+        exact
+          ⟨canonicalCompletionTheoremName, rfl,
+            remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies,
+            target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened equation-boundary projection certificate factors through the
+finite-extinction plus theorem-shaped topology-extraction canonical payload.
+-/
+theorem completion_certificate_of_equation_boundary_dependency_projections_to_topology_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_dependency_projections
+        dependencies =
+      (by
+        rcases
+          canonical_completion_payload_of_finite_extinction_and_topology_extraction_statement
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            (topology_extraction_statement_of_dependencies
+              (dependencies_of_equation_boundary_dependencies dependencies)) with
+          ⟨target, criterion⟩
+        exact
+          ⟨canonicalCompletionTheoremName, rfl,
+            remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies,
+            target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data in the strengthened projection certificate
+recovers the ordinary dependency-projection certificate.
+-/
+theorem completion_certificate_of_equation_boundary_dependency_projections_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_dependency_projections
+        dependencies =
+      completion_certificate_of_dependency_projections
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified equation-boundary dependency projection route also
+produces a checked completion certificate directly from its canonical payload.
+-/
+theorem completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareCompletionCertificate.{u} := by
+  rcases
+      canonical_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies with
+    ⟨target, criterion⟩
+  exact
+    ⟨canonicalCompletionTheoremName, rfl,
+      remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+        dependencies,
+      target, criterion⟩
+
+/--
+The strengthened certified equation-boundary projection certificate constructor
+is the record built from the named certified boundary projection canonical
+payload.
+-/
+theorem completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            canonical_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections
+              dependencies with
+          ⟨target, criterion⟩
+        exact
+          ⟨canonicalCompletionTheoremName, rfl,
+            remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies,
+            target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified equation-boundary projection certificate factors
+through the finite-extinction plus extractor/derivation canonical payload
+selected from the forgetful theorem-shaped topology statement.
+-/
+theorem completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_derivation.mp
+              (topology_extraction_statement_of_dependencies
+                (dependencies_of_equation_boundary_dependencies
+                  dependencies)) with
+          ⟨extractSphere, derivation⟩
+        rcases
+          canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation with
+          ⟨target, criterion⟩
+        exact
+          ⟨canonicalCompletionTheoremName, rfl,
+            remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies,
+            target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data in the strengthened certified projection
+certificate recovers the ordinary certified dependency-projection certificate.
+-/
+theorem completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      completion_certificate_of_extraction_derivation_dependency_projections
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The completion certificate is equivalent to the remaining dependency package when
 the certificate is reconstructed through the certified extraction-derivation
 aggregate route.

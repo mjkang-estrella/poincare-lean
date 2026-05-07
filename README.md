@@ -356,6 +356,10 @@ The current artifact is intentionally conservative:
   projection completion payloads into canonical payload, target, and
   universe-indexed criterion endpoints, pinned back to the same
   topology-statement, extractor/derivation, and forgetful ordinary projection
+  routes. Those canonical boundary projection payloads now also reconstruct
+  checked completion certificates directly, with certificate equality contracts
+  back to the finite-extinction/topology-statement route, the
+  extractor/derivation route, and the forgetful ordinary projection certificate
   routes. Separately, the completion-target wrapper layer now mirrors that
   finite-extinction route through the ordinary
   remaining package, strengthened remaining package, and strengthened aggregate
