@@ -41,6 +41,8 @@ open scoped Manifold ContDiff
 #check Poincare.threeSphere_t2Space_eq
 #check Poincare.threeSphere_compactSpace
 #check Poincare.threeSphere_compactSpace_eq
+#check Poincare.threeSphere_chartedSpace
+#check Poincare.threeSphere_chartedSpace_eq
 #check Poincare.threeSphere_smoothManifold
 #check Poincare.threeSphere_smoothManifold_eq
 #check Poincare.threeSphere_euclidean_rank_gt_one

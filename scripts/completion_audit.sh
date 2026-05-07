@@ -169,6 +169,10 @@ check_decl "target sphere compact theorem is declared" \
   '^theorem threeSphere_compactSpace\b' Poincare/Statement.lean
 check_decl "target sphere compact equality contract is declared" \
   '^theorem threeSphere_compactSpace_eq\b' Poincare/Statement.lean
+check_decl "target sphere charted-space witness is declared" \
+  '^@\[reducible\] noncomputable def threeSphere_chartedSpace\b' Poincare/Statement.lean
+check_decl "target sphere charted-space equality contract is declared" \
+  '^theorem threeSphere_chartedSpace_eq\b' Poincare/Statement.lean
 check_decl "target sphere smooth manifold theorem is declared" \
   '^theorem threeSphere_smoothManifold\b' Poincare/Statement.lean
 check_decl "target sphere smooth manifold equality contract is declared" \
@@ -10868,6 +10872,8 @@ open scoped Manifold ContDiff
 #check Poincare.threeSphere_t2Space_eq
 #check Poincare.threeSphere_compactSpace
 #check Poincare.threeSphere_compactSpace_eq
+#check Poincare.threeSphere_chartedSpace
+#check Poincare.threeSphere_chartedSpace_eq
 #check Poincare.threeSphere_smoothManifold
 #check Poincare.threeSphere_smoothManifold_eq
 #check Poincare.threeSphere_euclidean_rank_gt_one
@@ -15163,6 +15169,10 @@ open scoped Manifold ContDiff
 #check (Poincare.threeSphere_compactSpace :
   CompactSpace Poincare.ThreeSphere)
 #check Poincare.threeSphere_compactSpace_eq
+
+#check (Poincare.threeSphere_chartedSpace :
+  ChartedSpace (EuclideanSpace ℝ (Fin 3)) Poincare.ThreeSphere)
+#check Poincare.threeSphere_chartedSpace_eq
 
 #check (Poincare.threeSphere_smoothManifold :
   IsManifold (𝓡 3) ∞ Poincare.ThreeSphere)

@@ -10,10 +10,10 @@ The current artifact is intentionally conservative:
   3-sphere as the unit sphere in `EuclideanSpace ℝ (Fin 4)`, aligns with
   `Mathlib.Geometry.Manifold.PoincareConjecture`, and includes `rfl` lemmas for
   the exact target sphere model plus the topological and smooth statement shapes,
-  names the supplied T2, compact, and smooth-manifold facts for the standard
-  sphere, proves the ambient `ℝ^4` rank input for mathlib's connected-sphere
-  theorem and the resulting path-connected/connected/nonempty facts for the
-  target `S^3`, packages those available standard-sphere prerequisites except
+  names the supplied T2, compact, charted-space, and smooth-manifold facts for
+  the standard sphere, proves the ambient `ℝ^4` rank input for mathlib's
+  connected-sphere theorem and the resulting path-connected/connected/nonempty
+  facts for the target `S^3`, packages those available prerequisites except
   simple-connectedness into one checked payload, includes explicit iff contracts
   for those canonical topological and smooth statement shapes, and an iff
   contract plus both directions between the target statement and the explicit

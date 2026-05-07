@@ -1441,6 +1441,8 @@ import Poincare
 #print axioms Poincare.threeSphere_t2Space_eq
 #print axioms Poincare.threeSphere_compactSpace
 #print axioms Poincare.threeSphere_compactSpace_eq
+#print axioms Poincare.threeSphere_chartedSpace
+#print axioms Poincare.threeSphere_chartedSpace_eq
 #print axioms Poincare.threeSphere_smoothManifold
 #print axioms Poincare.threeSphere_smoothManifold_eq
 #print axioms Poincare.threeSphere_euclidean_rank_gt_one

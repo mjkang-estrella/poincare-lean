@@ -55,6 +55,17 @@ theorem threeSphere_compactSpace_eq :
     threeSphere_compactSpace = (inferInstance : CompactSpace ThreeSphere) := by
   apply Subsingleton.elim
 
+/-- The target 3-sphere carries the expected 3-dimensional charted-space structure. -/
+@[reducible] noncomputable def threeSphere_chartedSpace :
+    ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere :=
+  inferInstance
+
+/-- The target 3-sphere charted-space structure is mathlib's sphere instance. -/
+theorem threeSphere_chartedSpace_eq :
+    threeSphere_chartedSpace =
+      (inferInstance : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere) :=
+  rfl
+
 /-- The target 3-sphere carries the expected smooth manifold structure. -/
 theorem threeSphere_smoothManifold :
     IsManifold (𝓡 3) ∞ ThreeSphere :=
@@ -149,7 +160,7 @@ theorem threeSphere_target_prerequisites_except_simpleConnected :
     ∃ _path : PathConnectedSpace ThreeSphere,
     ∃ _connected : ConnectedSpace ThreeSphere,
       Nonempty ThreeSphere := by
-  exact ⟨threeSphere_t2Space, inferInstance, threeSphere_compactSpace,
+  exact ⟨threeSphere_t2Space, threeSphere_chartedSpace, threeSphere_compactSpace,
     threeSphere_smoothManifold, threeSphere_pathConnectedSpace,
     threeSphere_connectedSpace, threeSphere_nonempty⟩
 
@@ -159,7 +170,7 @@ named local target-sphere witnesses.
 -/
 theorem threeSphere_target_prerequisites_except_simpleConnected_eq :
     threeSphere_target_prerequisites_except_simpleConnected =
-      ⟨threeSphere_t2Space, inferInstance, threeSphere_compactSpace,
+      ⟨threeSphere_t2Space, threeSphere_chartedSpace, threeSphere_compactSpace,
         threeSphere_smoothManifold, threeSphere_pathConnectedSpace,
         threeSphere_connectedSpace, threeSphere_nonempty⟩ := by
   apply Subsingleton.elim

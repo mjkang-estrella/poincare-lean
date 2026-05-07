@@ -131,6 +131,10 @@ self-diffeomorphism and the induced smooth-to-topological self-homeomorphism
 route. This is genuine local glue over mathlib's smooth-manifold sphere
 infrastructure, but it is only a base case and does not supply the missing
 classification or Ricci-flow theorems.
+The statement layer now names the standard sphere's charted-space instance
+alongside its T2, compactness, smooth-manifold, path-connectedness,
+connectedness, and nonempty witnesses, while still leaving
+`SimplyConnectedSpace ThreeSphere` as an explicit missing input.
 It also exposes the self-case obtained by applying the topological or smooth
 target statements to `ThreeSphere` under an explicit
 `SimplyConnectedSpace ThreeSphere` hypothesis, making that remaining local input

@@ -486,6 +486,10 @@ set_option linter.unusedVariables false
   CompactSpace Poincare.ThreeSphere)
 #check Poincare.threeSphere_compactSpace_eq
 
+#check (Poincare.threeSphere_chartedSpace :
+  ChartedSpace (EuclideanSpace ℝ (Fin 3)) Poincare.ThreeSphere)
+#check Poincare.threeSphere_chartedSpace_eq
+
 #check (Poincare.threeSphere_smoothManifold :
   IsManifold (𝓡 3) ∞ Poincare.ThreeSphere)
 #check Poincare.threeSphere_smoothManifold_eq

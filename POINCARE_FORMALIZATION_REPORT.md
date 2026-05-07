@@ -68,8 +68,9 @@ contract, making the remaining `SimplyConnectedSpace ThreeSphere` input explicit
 when applying the topological or smooth target statement to the standard sphere
 itself.
 
-The statement layer also now proves `threeSphere_t2Space`,
-`threeSphere_compactSpace`, `threeSphere_smoothManifold`,
+The statement layer also now names `threeSphere_t2Space`,
+`threeSphere_compactSpace`, `threeSphere_chartedSpace`,
+`threeSphere_smoothManifold`,
 `threeSphere_euclidean_rank_gt_one`, `threeSphere_isPathConnected_set`,
 `threeSphere_pathConnectedSpace`, `threeSphere_connectedSpace`, and
 `threeSphere_nonempty`, with matching equality contracts, and centralizes them
