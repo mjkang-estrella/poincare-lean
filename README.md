@@ -896,7 +896,9 @@ The current artifact is intentionally conservative:
   completion-criterion certificate constructors are also pinned directly to the
   ordinary remaining-dependency and aggregate certificates obtained after
   forgetting the equation-boundary data, and their canonical topological
-  statement projections are pinned through the same forgetful routes.
+  statement projections are pinned through the same forgetful routes. Their
+  literal and aggregate canonical-statement payload projections now follow those
+  same ordinary certificate routes as well.
   It also exposes the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/
