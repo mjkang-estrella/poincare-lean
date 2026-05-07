@@ -61,11 +61,13 @@ Recent local proof-bearing glue now includes `threeSphere_self_diffeomorph`,
 sphere's reflexive smooth self-diffeomorphism and its route through the
 smooth-to-topological assembly bridge.
 
-The statement layer also now proves `threeSphere_euclidean_rank_gt_one`,
-`threeSphere_isPathConnected_set`, `threeSphere_pathConnectedSpace`, and
-`threeSphere_connectedSpace`, with matching equality contracts, using mathlib's
-connected-sphere theorem for the concrete unit sphere in `EuclideanSpace ℝ (Fin
-4)`.
+The statement layer also now proves `threeSphere_t2Space`,
+`threeSphere_compactSpace`, `threeSphere_smoothManifold`,
+`threeSphere_euclidean_rank_gt_one`, `threeSphere_isPathConnected_set`,
+`threeSphere_pathConnectedSpace`, `threeSphere_connectedSpace`, and
+`threeSphere_nonempty`, with matching equality contracts, using mathlib's
+standard sphere/manifold instances and connected-sphere theorem for the concrete
+unit sphere in `EuclideanSpace ℝ (Fin 4)`.
 
 | Requirement | Evidence | Status |
 | --- | --- | --- |

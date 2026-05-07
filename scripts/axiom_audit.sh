@@ -1416,6 +1416,12 @@ import Poincare
 #print axioms Poincare.surgeryPackageWithEquationBoundaryDerivativePayload_eq
 #print axioms Poincare.surgery_package_with_equation_boundary_derivative_payload
 #print axioms Poincare.surgery_package_with_equation_boundary_derivative_payload_eq
+#print axioms Poincare.threeSphere_t2Space
+#print axioms Poincare.threeSphere_t2Space_eq
+#print axioms Poincare.threeSphere_compactSpace
+#print axioms Poincare.threeSphere_compactSpace_eq
+#print axioms Poincare.threeSphere_smoothManifold
+#print axioms Poincare.threeSphere_smoothManifold_eq
 #print axioms Poincare.threeSphere_euclidean_rank_gt_one
 #print axioms Poincare.threeSphere_euclidean_rank_gt_one_eq
 #print axioms Poincare.threeSphere_isPathConnected_set
@@ -1424,6 +1430,8 @@ import Poincare
 #print axioms Poincare.threeSphere_pathConnectedSpace_eq
 #print axioms Poincare.threeSphere_connectedSpace
 #print axioms Poincare.threeSphere_connectedSpace_eq
+#print axioms Poincare.threeSphere_nonempty
+#print axioms Poincare.threeSphere_nonempty_eq
 #print axioms Poincare.completionCriterionAtUniverse_of_completionCriterionAtUniverse
 #print axioms Poincare.completionCriterionAtUniverse_iff_completionCriterionAtUniverse
 #print axioms Poincare.completionCriterionAtUniverse_of_poincareConjectureStatement

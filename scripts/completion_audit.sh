@@ -161,6 +161,18 @@ check_decl "Ricci tensor interface is declared" \
   '^inductive IsRicciTensorOf\b' Poincare/RicciFlow.lean
 check_decl "target sphere model contract is declared" \
   '^theorem threeSphere_eq\b' Poincare/Statement.lean
+check_decl "target sphere Hausdorff theorem is declared" \
+  '^theorem threeSphere_t2Space\b' Poincare/Statement.lean
+check_decl "target sphere Hausdorff equality contract is declared" \
+  '^theorem threeSphere_t2Space_eq\b' Poincare/Statement.lean
+check_decl "target sphere compact theorem is declared" \
+  '^theorem threeSphere_compactSpace\b' Poincare/Statement.lean
+check_decl "target sphere compact equality contract is declared" \
+  '^theorem threeSphere_compactSpace_eq\b' Poincare/Statement.lean
+check_decl "target sphere smooth manifold theorem is declared" \
+  '^theorem threeSphere_smoothManifold\b' Poincare/Statement.lean
+check_decl "target sphere smooth manifold equality contract is declared" \
+  '^theorem threeSphere_smoothManifold_eq\b' Poincare/Statement.lean
 check_decl "target sphere ambient rank witness is declared" \
   '^theorem threeSphere_euclidean_rank_gt_one\b' Poincare/Statement.lean
 check_decl "target sphere ambient rank equality contract is declared" \
@@ -177,6 +189,10 @@ check_decl "target sphere connected type theorem is declared" \
   '^theorem threeSphere_connectedSpace\b' Poincare/Statement.lean
 check_decl "target sphere connected type equality contract is declared" \
   '^theorem threeSphere_connectedSpace_eq\b' Poincare/Statement.lean
+check_decl "target sphere nonempty theorem is declared" \
+  '^theorem threeSphere_nonempty\b' Poincare/Statement.lean
+check_decl "target sphere nonempty equality contract is declared" \
+  '^theorem threeSphere_nonempty_eq\b' Poincare/Statement.lean
 check_decl "topological statement shape contract is declared" \
   '^theorem poincareConjectureStatement_eq\b' Poincare/Statement.lean
 check_decl "topological statement iff contract is declared" \
@@ -10802,6 +10818,12 @@ import Poincare
 open scoped Manifold ContDiff
 
 #check Poincare.threeSphere_eq
+#check Poincare.threeSphere_t2Space
+#check Poincare.threeSphere_t2Space_eq
+#check Poincare.threeSphere_compactSpace
+#check Poincare.threeSphere_compactSpace_eq
+#check Poincare.threeSphere_smoothManifold
+#check Poincare.threeSphere_smoothManifold_eq
 #check Poincare.threeSphere_euclidean_rank_gt_one
 #check Poincare.threeSphere_euclidean_rank_gt_one_eq
 #check Poincare.threeSphere_isPathConnected_set
@@ -10810,6 +10832,8 @@ open scoped Manifold ContDiff
 #check Poincare.threeSphere_pathConnectedSpace_eq
 #check Poincare.threeSphere_connectedSpace
 #check Poincare.threeSphere_connectedSpace_eq
+#check Poincare.threeSphere_nonempty
+#check Poincare.threeSphere_nonempty_eq
 #check Poincare.poincareConjectureStatement_eq
 #check Poincare.poincareConjectureStatement_iff_canonical_three_sphere_statement
 #check Poincare.poincareConjectureStatement_iff_canonical_three_sphere_statement_eq
@@ -15066,6 +15090,18 @@ open scoped Manifold ContDiff
   Poincare.ThreeSphere =
     Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))
 
+#check (Poincare.threeSphere_t2Space :
+  T2Space Poincare.ThreeSphere)
+#check Poincare.threeSphere_t2Space_eq
+
+#check (Poincare.threeSphere_compactSpace :
+  CompactSpace Poincare.ThreeSphere)
+#check Poincare.threeSphere_compactSpace_eq
+
+#check (Poincare.threeSphere_smoothManifold :
+  IsManifold (𝓡 3) ∞ Poincare.ThreeSphere)
+#check Poincare.threeSphere_smoothManifold_eq
+
 #check (Poincare.threeSphere_euclidean_rank_gt_one :
   1 < Module.rank ℝ (EuclideanSpace ℝ (Fin 4)))
 #check Poincare.threeSphere_euclidean_rank_gt_one_eq
@@ -15081,6 +15117,10 @@ open scoped Manifold ContDiff
 #check (Poincare.threeSphere_connectedSpace :
   ConnectedSpace Poincare.ThreeSphere)
 #check Poincare.threeSphere_connectedSpace_eq
+
+#check (Poincare.threeSphere_nonempty :
+  Nonempty Poincare.ThreeSphere)
+#check Poincare.threeSphere_nonempty_eq
 
 #check (Poincare.poincareConjectureStatement_eq :
   Poincare.PoincareConjectureStatement =

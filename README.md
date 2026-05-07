@@ -10,11 +10,13 @@ The current artifact is intentionally conservative:
   3-sphere as the unit sphere in `EuclideanSpace ℝ (Fin 4)`, aligns with
   `Mathlib.Geometry.Manifold.PoincareConjecture`, and includes `rfl` lemmas for
   the exact target sphere model plus the topological and smooth statement shapes,
-  proves the ambient `ℝ^4` rank input for mathlib's connected-sphere theorem and
-  the resulting path-connected/connected facts for the target `S^3`, includes
-  explicit iff contracts for those canonical topological and smooth statement
-  shapes, and an iff contract plus both directions between the target statement
-  and the explicit completion criterion. It also names witness-transfer and
+  names the supplied T2, compact, and smooth-manifold facts for the standard
+  sphere, proves the ambient `ℝ^4` rank input for mathlib's connected-sphere
+  theorem and the resulting path-connected/connected/nonempty facts for the
+  target `S^3`, includes explicit iff contracts for those canonical topological
+  and smooth statement shapes, and an iff contract plus both directions between
+  the target statement and the explicit completion criterion. It also names
+  witness-transfer and
   witness-equivalence lemmas for the universe-indexed completion criterion,
   centralizes the target plus completion-criterion existential payload in
   `poincare_completion_payload_of_poincareConjectureStatement`, projects that

@@ -478,6 +478,18 @@ set_option linter.unusedVariables false
   Poincare.ThreeSphere =
     Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))
 
+#check (Poincare.threeSphere_t2Space :
+  T2Space Poincare.ThreeSphere)
+#check Poincare.threeSphere_t2Space_eq
+
+#check (Poincare.threeSphere_compactSpace :
+  CompactSpace Poincare.ThreeSphere)
+#check Poincare.threeSphere_compactSpace_eq
+
+#check (Poincare.threeSphere_smoothManifold :
+  IsManifold (𝓡 3) ∞ Poincare.ThreeSphere)
+#check Poincare.threeSphere_smoothManifold_eq
+
 #check (Poincare.threeSphere_euclidean_rank_gt_one :
   1 < Module.rank ℝ (EuclideanSpace ℝ (Fin 4)))
 #check Poincare.threeSphere_euclidean_rank_gt_one_eq
@@ -493,6 +505,10 @@ set_option linter.unusedVariables false
 #check (Poincare.threeSphere_connectedSpace :
   ConnectedSpace Poincare.ThreeSphere)
 #check Poincare.threeSphere_connectedSpace_eq
+
+#check (Poincare.threeSphere_nonempty :
+  Nonempty Poincare.ThreeSphere)
+#check Poincare.threeSphere_nonempty_eq
 
 #check (Poincare.poincareConjectureStatement_eq :
   Poincare.PoincareConjectureStatement =

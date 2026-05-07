@@ -35,6 +35,37 @@ theorem threeSphere_eq :
     ThreeSphere = Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) :=
   rfl
 
+/-- The target 3-sphere is Hausdorff. -/
+theorem threeSphere_t2Space :
+    T2Space ThreeSphere :=
+  inferInstance
+
+/-- The target 3-sphere Hausdorff witness is the inherited subtype instance. -/
+theorem threeSphere_t2Space_eq :
+    threeSphere_t2Space = (inferInstance : T2Space ThreeSphere) := by
+  apply Subsingleton.elim
+
+/-- The target 3-sphere is compact. -/
+theorem threeSphere_compactSpace :
+    CompactSpace ThreeSphere :=
+  inferInstance
+
+/-- The target 3-sphere compactness witness is mathlib's compact sphere instance. -/
+theorem threeSphere_compactSpace_eq :
+    threeSphere_compactSpace = (inferInstance : CompactSpace ThreeSphere) := by
+  apply Subsingleton.elim
+
+/-- The target 3-sphere carries the expected smooth manifold structure. -/
+theorem threeSphere_smoothManifold :
+    IsManifold (𝓡 3) ∞ ThreeSphere :=
+  inferInstance
+
+/-- The target 3-sphere smoothness witness is mathlib's sphere manifold instance. -/
+theorem threeSphere_smoothManifold_eq :
+    threeSphere_smoothManifold =
+      (inferInstance : IsManifold (𝓡 3) ∞ ThreeSphere) := by
+  apply Subsingleton.elim
+
 /--
 The ambient Euclidean space for the project target sphere has rank greater than
 one, the input needed by mathlib's connected-sphere theorem.
@@ -87,6 +118,20 @@ theorem threeSphere_connectedSpace :
 /-- Connectedness follows from the named path-connectedness proof. -/
 theorem threeSphere_connectedSpace_eq :
     threeSphere_connectedSpace =
+      (by
+        letI : PathConnectedSpace ThreeSphere := threeSphere_pathConnectedSpace
+        infer_instance) := by
+  apply Subsingleton.elim
+
+/-- The target 3-sphere is nonempty. -/
+theorem threeSphere_nonempty :
+    Nonempty ThreeSphere := by
+  letI : PathConnectedSpace ThreeSphere := threeSphere_pathConnectedSpace
+  infer_instance
+
+/-- The target 3-sphere nonemptiness witness is induced by path-connectedness. -/
+theorem threeSphere_nonempty_eq :
+    threeSphere_nonempty =
       (by
         letI : PathConnectedSpace ThreeSphere := threeSphere_pathConnectedSpace
         infer_instance) := by
