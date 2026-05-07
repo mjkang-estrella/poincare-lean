@@ -453,8 +453,12 @@ check_decl "zero Ricci-flow data pointwise RHS theorem is declared" \
   '^@\[simp\] theorem ricci_flow_rhs_tensor_apply_of_zero_ricci_flow_data\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci-flow data pointwise RHS equality contract is declared" \
   '^@\[simp\] theorem ricci_flow_rhs_tensor_apply_of_zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci-flow data Ricci-identification evidence contract is declared" \
+  '^@\[simp\] theorem ricci_identification_of_zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci-flow data equation-evidence projection contract is declared" \
   '^@\[simp\] theorem equation_evidence_of_zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
+check_decl "zero Ricci-flow data dot-notation equation evidence contract is declared" \
+  '^@\[simp\] theorem satisfies_equation_of_zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci-flow data metric time-slice contract is declared" \
   '^@\[simp\] theorem metric_at_time_of_zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci-flow data Ricci tensor time-slice contract is declared" \

@@ -1524,6 +1524,21 @@ noncomputable def zero_ricci_flow_data
             (g := g) identifiesRicci t x v w) := by
   apply Subsingleton.elim
 
+/-- The Ricci-identification evidence of zero Ricci-flow data is the supplied proof. -/
+@[simp] theorem ricci_identification_of_zero_ricci_flow_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M)
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci)) :
+    ricci_identification_of_ricci_flow_data
+      (zero_ricci_flow_data g identifiesRicci equationEvidence) =
+        identifiesRicci :=
+  rfl
+
 /-- The equation projection of zero Ricci-flow data is the supplied equation evidence. -/
 @[simp] theorem equation_evidence_of_zero_ricci_flow_data_eq
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -1537,6 +1552,20 @@ noncomputable def zero_ricci_flow_data
     equation_evidence_of_ricci_flow_data
       (zero_ricci_flow_data g identifiesRicci equationEvidence) =
         equationEvidence :=
+  rfl
+
+/-- The dot-notation equation evidence of zero Ricci-flow data is the supplied proof. -/
+@[simp] theorem satisfies_equation_of_zero_ricci_flow_data_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M)
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci)) :
+    (zero_ricci_flow_data g identifiesRicci equationEvidence).satisfies_equation =
+      equationEvidence :=
   rfl
 
 /-- The metric time-slice of zero Ricci-flow data is the supplied metric family. -/
