@@ -919,6 +919,11 @@ It is not a proof. It is a work breakdown for future Lean development.
   projection certificates. The dependency-projection layer also exposes the
   full assembly payload and explicit completion criterion through endpoint-named
   equality contracts.
+  For the strengthened equation-boundary dependency surface,
+  `equation_boundary_verification_payload_of_dependencies` keeps the projected
+  verification/derivative fields routed through the explicit verification while
+  routing the analytic-boundary component through the stored
+  boundary-carrying surgery package.
   It also projects the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/

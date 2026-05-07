@@ -1516,8 +1516,6 @@ theorem equation_boundary_verification_payload_of_dependencies
   rcases surgery_packages_with_equation_boundary_of_dependencies
       dependencies M with
     ⟨⟨n, package⟩⟩
-  let basePackage :=
-    surgery_package_of_equation_boundary_surgery_package package
   let verification :=
     ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
       package
@@ -1534,14 +1532,14 @@ theorem equation_boundary_verification_payload_of_dependencies
         verification,
       equation_at_time_of_ricci_flow_equation_verification_projection
         verification,
-      analytic_foundation_with_equation_boundary_of_package_and_ricci_flow_equation_verification
-        (analytic_foundation_of_surgery_package basePackage)
-        verification⟩
+      analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+        package⟩
 
 /--
 The dependency-level verification payload is selected from the stored
-boundary-carrying surgery package family and routed through the projected
-explicit equation verification.
+boundary-carrying surgery package family. Its equation and derivative fields
+route through the projected explicit verification, while its analytic-boundary
+field uses the boundary-backed surgery-package route.
 -/
 theorem equation_boundary_verification_payload_of_dependencies_eq
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
@@ -1551,8 +1549,6 @@ theorem equation_boundary_verification_payload_of_dependencies_eq
         rcases surgery_packages_with_equation_boundary_of_dependencies
             dependencies M with
           ⟨⟨n, package⟩⟩
-        let basePackage :=
-          surgery_package_of_equation_boundary_surgery_package package
         let verification :=
           ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
             package
@@ -1570,9 +1566,8 @@ theorem equation_boundary_verification_payload_of_dependencies_eq
               verification,
             equation_at_time_of_ricci_flow_equation_verification_projection
               verification,
-            analytic_foundation_with_equation_boundary_of_package_and_ricci_flow_equation_verification
-              (analytic_foundation_of_surgery_package basePackage)
-              verification⟩) := by
+            analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+              package⟩) := by
   apply Subsingleton.elim
 
 /--
