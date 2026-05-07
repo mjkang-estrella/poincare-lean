@@ -956,6 +956,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   The arbitrary-verification remaining-package and aggregate boundary-aware
   certificate constructors now have the same strengthened and ordinary
   full-assembly projection roundtrip contracts.
+  The existential verification-payload boundary-aware certificate constructor
+  now has the matching strengthened and ordinary remaining-package
+  full-assembly projection roundtrip contracts after unpacking its dependency
+  witness.
   It also projects the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/
