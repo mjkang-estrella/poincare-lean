@@ -928,6 +928,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   verification/derivative fields routed through the explicit verification while
   routing the analytic-boundary component through the stored
   boundary-carrying surgery package.
+  `Poincare/Dependencies.lean` now adds explicit forgetful projections from
+  the strengthened equation-boundary target and full-assembly payloads, both raw
+  and certified, back to the ordinary aggregate target and full-assembly
+  payloads of `dependencies_of_equation_boundary_dependencies`.
   `Poincare/CompletionTarget.lean` now mirrors the aggregate dependency route
   names at the strengthened remaining-package layer, pinning its equation-boundary
   package family, derivative payload, full surgery derivative payload,

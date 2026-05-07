@@ -520,6 +520,37 @@ theorem poincare_target_payload_of_equation_boundary_dependencies_eq
   apply Subsingleton.elim
 
 /--
+Forgetting the boundary-carrying surgery family in the strengthened target
+payload recovers the ordinary aggregate target payload.
+-/
+theorem poincare_target_payload_of_equation_boundary_dependencies_to_forgetful_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ _extractSphere : ExtinctionImpliesSphereStatement.{u},
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases poincare_target_payload_of_equation_boundary_dependencies
+      dependencies with
+    ⟨_surgeryPackages, finiteExtinction, extractSphere, target, criterion⟩
+  exact ⟨finiteExtinction, extractSphere, target, criterion⟩
+
+/--
+The forgetful projection of the strengthened target payload is the ordinary
+aggregate target payload of the forgetful dependency package.
+-/
+theorem poincare_target_payload_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_target_payload_of_equation_boundary_dependencies_to_forgetful_dependencies
+        dependencies =
+      poincare_target_payload_of_aggregate_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate dependency package exposes the boundary-carrying
 surgery family together with the certified extraction-derivation assembly
 inputs, target statement, and completion criterion.
@@ -569,6 +600,42 @@ theorem poincare_target_payload_of_equation_boundary_extraction_derivation_depen
         exact
           ⟨dependencies.surgery, finiteExtinction, extractSphere, derivation,
             target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the boundary-carrying surgery family in the strengthened certified
+target payload recovers the ordinary certified aggregate target payload.
+-/
+theorem poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+    ∃ _derivation :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere,
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases
+      poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies with
+    ⟨_surgeryPackages, finiteExtinction, extractSphere, derivation, target,
+      criterion⟩
+  exact ⟨finiteExtinction, extractSphere, derivation, target, criterion⟩
+
+/--
+The forgetful projection of the strengthened certified target payload is the
+ordinary certified aggregate target payload of the forgetful dependency package.
+-/
+theorem poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies
+        dependencies =
+      poincare_target_payload_of_aggregate_extraction_derivation_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
   apply Subsingleton.elim
 
 /--
@@ -710,6 +777,49 @@ theorem poincare_full_assembly_payload_of_equation_boundary_dependencies_eq
   apply Subsingleton.elim
 
 /--
+Forgetting the boundary-carrying surgery family in the strengthened full
+assembly payload recovers the ordinary aggregate full assembly payload shape.
+-/
+theorem poincare_full_assembly_payload_of_equation_boundary_dependencies_to_forgetful_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _smoothabilityPackage : SmoothabilityPackage.{u},
+    ∃ _surgeryPackages :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+    ∃ _topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ _extractSphere : ExtinctionImpliesSphereStatement.{u},
+      PoincareConjectureStatement.{u} := by
+  rcases poincare_full_assembly_payload_of_equation_boundary_dependencies
+      dependencies with
+    ⟨_smoothabilityPackage, _boundarySurgeryPackages, _topologyPackage,
+      finiteExtinction, extractSphere, target⟩
+  exact
+    ⟨(dependencies_of_equation_boundary_dependencies dependencies).smoothability,
+      (dependencies_of_equation_boundary_dependencies dependencies).surgery,
+      (dependencies_of_equation_boundary_dependencies dependencies).topology,
+      finiteExtinction, extractSphere, target⟩
+
+/--
+The forgetful projection of the strengthened full assembly payload is the
+ordinary aggregate full assembly payload of the forgetful dependency package.
+-/
+theorem poincare_full_assembly_payload_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_equation_boundary_dependencies_to_forgetful_dependencies
+        dependencies =
+      poincare_full_assembly_payload_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate dependency package exposes the explicit end-to-end
 certified extraction-derivation assembly inputs and target statement while
 retaining the boundary-carrying surgery family.
@@ -762,6 +872,55 @@ theorem poincare_full_assembly_payload_of_equation_boundary_extraction_derivatio
         exact
           ⟨dependencies.smoothability, surgeryPackages, dependencies.topology,
             finiteExtinction, extractSphere, derivation, target⟩) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the boundary-carrying surgery family in the strengthened certified
+full assembly payload recovers the ordinary certified aggregate full assembly
+payload shape.
+-/
+theorem poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _smoothabilityPackage : SmoothabilityPackage.{u},
+    ∃ _surgeryPackages :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+    ∃ _topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+    ∃ _derivation :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere,
+      PoincareConjectureStatement.{u} := by
+  rcases
+      poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies with
+    ⟨_smoothabilityPackage, _boundarySurgeryPackages, _topologyPackage,
+      finiteExtinction, extractSphere, derivation, target⟩
+  exact
+    ⟨(dependencies_of_equation_boundary_dependencies dependencies).smoothability,
+      (dependencies_of_equation_boundary_dependencies dependencies).surgery,
+      (dependencies_of_equation_boundary_dependencies dependencies).topology,
+      finiteExtinction, extractSphere, derivation, target⟩
+
+/--
+The forgetful projection of the strengthened certified full assembly payload is
+the ordinary certified aggregate full assembly payload of the forgetful
+dependency package.
+-/
+theorem poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies
+        dependencies =
+      poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
   apply Subsingleton.elim
 
 /--
