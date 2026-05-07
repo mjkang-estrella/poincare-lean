@@ -161,6 +161,22 @@ check_decl "Ricci tensor interface is declared" \
   '^inductive IsRicciTensorOf\b' Poincare/RicciFlow.lean
 check_decl "target sphere model contract is declared" \
   '^theorem threeSphere_eq\b' Poincare/Statement.lean
+check_decl "target sphere ambient rank witness is declared" \
+  '^theorem threeSphere_euclidean_rank_gt_one\b' Poincare/Statement.lean
+check_decl "target sphere ambient rank equality contract is declared" \
+  '^theorem threeSphere_euclidean_rank_gt_one_eq\b' Poincare/Statement.lean
+check_decl "target sphere path-connected set theorem is declared" \
+  '^theorem threeSphere_isPathConnected_set\b' Poincare/Statement.lean
+check_decl "target sphere path-connected set equality contract is declared" \
+  '^theorem threeSphere_isPathConnected_set_eq\b' Poincare/Statement.lean
+check_decl "target sphere path-connected type theorem is declared" \
+  '^theorem threeSphere_pathConnectedSpace\b' Poincare/Statement.lean
+check_decl "target sphere path-connected type equality contract is declared" \
+  '^theorem threeSphere_pathConnectedSpace_eq\b' Poincare/Statement.lean
+check_decl "target sphere connected type theorem is declared" \
+  '^theorem threeSphere_connectedSpace\b' Poincare/Statement.lean
+check_decl "target sphere connected type equality contract is declared" \
+  '^theorem threeSphere_connectedSpace_eq\b' Poincare/Statement.lean
 check_decl "topological statement shape contract is declared" \
   '^theorem poincareConjectureStatement_eq\b' Poincare/Statement.lean
 check_decl "topological statement iff contract is declared" \
@@ -10786,6 +10802,14 @@ import Poincare
 open scoped Manifold ContDiff
 
 #check Poincare.threeSphere_eq
+#check Poincare.threeSphere_euclidean_rank_gt_one
+#check Poincare.threeSphere_euclidean_rank_gt_one_eq
+#check Poincare.threeSphere_isPathConnected_set
+#check Poincare.threeSphere_isPathConnected_set_eq
+#check Poincare.threeSphere_pathConnectedSpace
+#check Poincare.threeSphere_pathConnectedSpace_eq
+#check Poincare.threeSphere_connectedSpace
+#check Poincare.threeSphere_connectedSpace_eq
 #check Poincare.poincareConjectureStatement_eq
 #check Poincare.poincareConjectureStatement_iff_canonical_three_sphere_statement
 #check Poincare.poincareConjectureStatement_iff_canonical_three_sphere_statement_eq
@@ -15041,6 +15065,22 @@ open scoped Manifold ContDiff
 #check (Poincare.threeSphere_eq :
   Poincare.ThreeSphere =
     Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))
+
+#check (Poincare.threeSphere_euclidean_rank_gt_one :
+  1 < Module.rank ℝ (EuclideanSpace ℝ (Fin 4)))
+#check Poincare.threeSphere_euclidean_rank_gt_one_eq
+
+#check (Poincare.threeSphere_isPathConnected_set :
+  IsPathConnected (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)))
+#check Poincare.threeSphere_isPathConnected_set_eq
+
+#check (Poincare.threeSphere_pathConnectedSpace :
+  PathConnectedSpace Poincare.ThreeSphere)
+#check Poincare.threeSphere_pathConnectedSpace_eq
+
+#check (Poincare.threeSphere_connectedSpace :
+  ConnectedSpace Poincare.ThreeSphere)
+#check Poincare.threeSphere_connectedSpace_eq
 
 #check (Poincare.poincareConjectureStatement_eq :
   Poincare.PoincareConjectureStatement =

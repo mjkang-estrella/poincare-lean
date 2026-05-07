@@ -13,6 +13,7 @@ the canonical mathlib statement file `Mathlib.Geometry.Manifold.PoincareConjectu
 -/
 
 import Mathlib.Geometry.Manifold.PoincareConjecture
+import Mathlib.Analysis.Normed.Module.Connected
 
 universe u
 
@@ -33,6 +34,63 @@ abbrev ThreeSphere : Type :=
 theorem threeSphere_eq :
     ThreeSphere = Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) :=
   rfl
+
+/--
+The ambient Euclidean space for the project target sphere has rank greater than
+one, the input needed by mathlib's connected-sphere theorem.
+-/
+theorem threeSphere_euclidean_rank_gt_one :
+    1 < Module.rank ℝ (EuclideanSpace ℝ (Fin 4)) := by
+  rw [(EuclideanSpace.equiv (Fin 4) ℝ).toLinearEquiv.rank_eq]
+  rw [rank_fin_fun]
+  norm_num
+
+/-- The rank witness is the finite-dimensional rank computation for `ℝ^4`. -/
+theorem threeSphere_euclidean_rank_gt_one_eq :
+    threeSphere_euclidean_rank_gt_one =
+      (by
+        rw [(EuclideanSpace.equiv (Fin 4) ℝ).toLinearEquiv.rank_eq]
+        rw [rank_fin_fun]
+        norm_num) := by
+  apply Subsingleton.elim
+
+/-- The target 3-sphere is path-connected as a subset of Euclidean space. -/
+theorem threeSphere_isPathConnected_set :
+    IsPathConnected (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) := by
+  exact isPathConnected_sphere threeSphere_euclidean_rank_gt_one
+    (0 : EuclideanSpace ℝ (Fin 4)) (by norm_num)
+
+/-- The path-connectedness proof is mathlib's connected-sphere theorem. -/
+theorem threeSphere_isPathConnected_set_eq :
+    threeSphere_isPathConnected_set =
+      isPathConnected_sphere threeSphere_euclidean_rank_gt_one
+        (0 : EuclideanSpace ℝ (Fin 4)) (by norm_num) := by
+  apply Subsingleton.elim
+
+/-- The target 3-sphere type is path-connected. -/
+theorem threeSphere_pathConnectedSpace :
+    PathConnectedSpace ThreeSphere := by
+  exact isPathConnected_iff_pathConnectedSpace.mp threeSphere_isPathConnected_set
+
+/-- The target type's path-connectedness is induced from the ambient sphere. -/
+theorem threeSphere_pathConnectedSpace_eq :
+    threeSphere_pathConnectedSpace =
+      isPathConnected_iff_pathConnectedSpace.mp threeSphere_isPathConnected_set := by
+  apply Subsingleton.elim
+
+/-- The target 3-sphere type is connected. -/
+theorem threeSphere_connectedSpace :
+    ConnectedSpace ThreeSphere := by
+  letI : PathConnectedSpace ThreeSphere := threeSphere_pathConnectedSpace
+  infer_instance
+
+/-- Connectedness follows from the named path-connectedness proof. -/
+theorem threeSphere_connectedSpace_eq :
+    threeSphere_connectedSpace =
+      (by
+        letI : PathConnectedSpace ThreeSphere := threeSphere_pathConnectedSpace
+        infer_instance) := by
+  apply Subsingleton.elim
 
 /--
 The actual target statement of the Poincare Conjecture for this project.

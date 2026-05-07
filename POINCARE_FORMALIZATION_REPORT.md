@@ -61,6 +61,12 @@ Recent local proof-bearing glue now includes `threeSphere_self_diffeomorph`,
 sphere's reflexive smooth self-diffeomorphism and its route through the
 smooth-to-topological assembly bridge.
 
+The statement layer also now proves `threeSphere_euclidean_rank_gt_one`,
+`threeSphere_isPathConnected_set`, `threeSphere_pathConnectedSpace`, and
+`threeSphere_connectedSpace`, with matching equality contracts, using mathlib's
+connected-sphere theorem for the concrete unit sphere in `EuclideanSpace ℝ (Fin
+4)`.
+
 | Requirement | Evidence | Status |
 | --- | --- | --- |
 | Implement the whole proof in Lean | `Poincare/Statement.lean` builds and has no local `opaque`, `axiom`, `constant`, `postulate`, `sorry`, `admit`, or `proof_wanted` declarations, and no local proof claims, but the reserved theorem name `poincare_conjecture` is absent and Lean cannot typecheck `Poincare.poincare_conjecture : Poincare.PoincareConjectureStatement`; `scripts/completion_audit.sh` verifies the dependency-spine declarations, no-constructor interfaces, semantic conditional theorem types, lower-level package projection lemmas, package-layer/component-level aggregate dependency contracts, six-item milestone/crosswalk surface with named package-layer, component-slot, and milestone-requirement links, and absence of local `PoincareProofDependencies` claims including anonymous examples, then still fails on the missing proof | Not achieved |

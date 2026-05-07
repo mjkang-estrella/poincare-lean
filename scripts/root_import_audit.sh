@@ -37,6 +37,14 @@ import Poincare
 open scoped Manifold ContDiff
 
 #check Poincare.threeSphere_eq
+#check Poincare.threeSphere_euclidean_rank_gt_one
+#check Poincare.threeSphere_euclidean_rank_gt_one_eq
+#check Poincare.threeSphere_isPathConnected_set
+#check Poincare.threeSphere_isPathConnected_set_eq
+#check Poincare.threeSphere_pathConnectedSpace
+#check Poincare.threeSphere_pathConnectedSpace_eq
+#check Poincare.threeSphere_connectedSpace
+#check Poincare.threeSphere_connectedSpace_eq
 #check Poincare.poincareConjectureStatement_eq
 #check Poincare.extinctionImpliesSphereStatement_eq
 #check Poincare.poincareConjectureStatement_iff_canonical_three_sphere_statement

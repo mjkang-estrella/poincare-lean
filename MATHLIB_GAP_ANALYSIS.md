@@ -26,6 +26,9 @@ The project can import and build against:
 - `Mathlib.Analysis.ODE.PicardLindelof`
   - Provides local existence of integral curves and local flows for
     time-dependent vector fields in Banach spaces.
+- `Mathlib.Analysis.Normed.Module.Connected`
+  - Provides connectedness and path-connectedness theorems for spheres in real
+    normed spaces of rank greater than one.
 
 These are real formalized dependencies and are useful starting points.
 
@@ -123,6 +126,12 @@ self-diffeomorphism and the induced smooth-to-topological self-homeomorphism
 route. This is genuine local glue over mathlib's smooth-manifold sphere
 infrastructure, but it is only a base case and does not supply the missing
 classification or Ricci-flow theorems.
+
+`Poincare/Statement.lean` now uses the connected-sphere theorem to prove the
+modeled target `S^3` is path-connected and connected after explicitly reducing
+the ambient Euclidean-space rank condition to the finite-dimensional rank of
+`ℝ^4`. This fills a local standard-sphere topology fact, not the missing simple
+connectedness or classification input.
 
 `Poincare/Smoothability.lean` adds the bridge from the topological target
 statement to the smooth model used by Ricci flow with surgery. It remains an

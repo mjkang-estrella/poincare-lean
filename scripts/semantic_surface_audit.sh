@@ -478,6 +478,22 @@ set_option linter.unusedVariables false
   Poincare.ThreeSphere =
     Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))
 
+#check (Poincare.threeSphere_euclidean_rank_gt_one :
+  1 < Module.rank ℝ (EuclideanSpace ℝ (Fin 4)))
+#check Poincare.threeSphere_euclidean_rank_gt_one_eq
+
+#check (Poincare.threeSphere_isPathConnected_set :
+  IsPathConnected (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)))
+#check Poincare.threeSphere_isPathConnected_set_eq
+
+#check (Poincare.threeSphere_pathConnectedSpace :
+  PathConnectedSpace Poincare.ThreeSphere)
+#check Poincare.threeSphere_pathConnectedSpace_eq
+
+#check (Poincare.threeSphere_connectedSpace :
+  ConnectedSpace Poincare.ThreeSphere)
+#check Poincare.threeSphere_connectedSpace_eq
+
 #check (Poincare.poincareConjectureStatement_eq :
   Poincare.PoincareConjectureStatement =
     (∀ (M : Type) [TopologicalSpace M] [T2Space M]
