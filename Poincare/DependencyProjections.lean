@@ -2081,6 +2081,30 @@ theorem analytic_foundation_with_equation_boundary_statements_of_dependencies_to
   apply Subsingleton.elim
 
 /--
+The named dependency analytic-boundary statement family is the analytic
+projection of the full derivative-strengthened surgery payload.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_dependencies_to_surgery_derivative_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    analytic_foundation_with_equation_boundary_statements_of_dependencies
+        dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            surgery_package_with_equation_boundary_derivative_payload_of_dependencies
+              dependencies M with
+          ⟨n, package, _basePackage, _basePackage_eq, _equationBoundary,
+            _verification, _verification_eq, _metricDerivative,
+            _metricDerivative_eq, _derivativeId, _equationAtTime,
+            analyticBoundary, _finiteExtinction⟩
+        exact
+          ⟨n,
+            ricci_flow_data_of_surgery_package
+              (surgery_package_of_equation_boundary_surgery_package package),
+            analyticBoundary⟩) := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package exposes, for every target manifold, the
 underlying finite-extinction surgery package and the three lower-level packages
 projected from it: analytic foundation, Ricci-flow-with-surgery construction,

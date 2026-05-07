@@ -3412,6 +3412,30 @@ theorem analytic_foundation_with_equation_boundary_statements_of_remaining_depen
   apply Subsingleton.elim
 
 /--
+The strengthened remaining-package analytic/equation-boundary statement family
+is the analytic projection of the full derivative-strengthened surgery payload.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_remaining_dependency_package_to_surgery_derivative_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    analytic_foundation_with_equation_boundary_statements_of_remaining_dependency_package
+        dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            surgery_package_with_equation_boundary_derivative_payload_of_remaining_dependency_package
+              dependencies M with
+          ⟨n, package, _basePackage, _basePackage_eq, _equationBoundary,
+            _verification, _verification_eq, _metricDerivative,
+            _metricDerivative_eq, _derivativeId, _equationAtTime,
+            analyticBoundary, _finiteExtinction⟩
+        exact
+          ⟨n,
+            ricci_flow_data_of_surgery_package
+              (surgery_package_of_equation_boundary_surgery_package package),
+            analyticBoundary⟩) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining dependency package produces the canonical completion
 payload through the strengthened aggregate dependency route.
 -/
@@ -4486,6 +4510,30 @@ theorem analytic_foundation_with_equation_boundary_statements_of_poincareProofDe
       analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload
         (equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
           dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate analytic/equation-boundary statement family is the
+analytic projection of the full derivative-strengthened surgery payload.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_poincareProofDependenciesWithEquationBoundary_to_surgery_derivative_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    analytic_foundation_with_equation_boundary_statements_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            surgery_package_with_equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary
+              dependencies M with
+          ⟨n, package, _basePackage, _basePackage_eq, _equationBoundary,
+            _verification, _verification_eq, _metricDerivative,
+            _metricDerivative_eq, _derivativeId, _equationAtTime,
+            analyticBoundary, _finiteExtinction⟩
+        exact
+          ⟨n,
+            ricci_flow_data_of_surgery_package
+              (surgery_package_of_equation_boundary_surgery_package package),
+            analyticBoundary⟩) := by
   apply Subsingleton.elim
 
 /--
@@ -12240,6 +12288,31 @@ theorem analytic_foundation_with_equation_boundary_statements_of_completion_cert
       analytic_foundation_with_equation_boundary_statements_of_remaining_dependency_package
         (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
           payload) := by
+  apply Subsingleton.elim
+
+/--
+The certificate analytic/equation-boundary projection is the analytic
+projection of the certificate full surgery-derivative payload.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_surgery_derivative_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload
+              payload M with
+          ⟨n, package, _basePackage, _basePackage_eq, _equationBoundary,
+            _verification, _verification_eq, _metricDerivative,
+            _metricDerivative_eq, _derivativeId, _equationAtTime,
+            analyticBoundary, _finiteExtinction⟩
+        exact
+          ⟨n,
+            ricci_flow_data_of_surgery_package
+              (surgery_package_of_equation_boundary_surgery_package package),
+            analyticBoundary⟩) := by
   apply Subsingleton.elim
 
 /--
