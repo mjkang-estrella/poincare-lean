@@ -4519,6 +4519,10 @@ check_decl "equation-boundary derivative dependency projection theorem is declar
   '^theorem equation_boundary_derivative_payload_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary derivative dependency projection equality theorem is declared" \
   '^theorem equation_boundary_derivative_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary pointwise equation dependency projection theorem is declared" \
+  '^theorem equation_boundary_pointwise_equation_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary pointwise equation dependency projection equality theorem is declared" \
+  '^theorem equation_boundary_pointwise_equation_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary derivative dependency surgery-payload route theorem is declared" \
   '^theorem equation_boundary_derivative_payload_of_dependencies_to_surgery_derivative_payload_eq\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary surgery derivative dependency projection theorem is declared" \
@@ -14326,6 +14330,8 @@ open scoped Manifold ContDiff
 #check Poincare.ricci_flow_equation_boundary_packages_of_dependencies_eq
 #check Poincare.equation_boundary_derivative_payload_of_dependencies
 #check Poincare.equation_boundary_derivative_payload_of_dependencies_eq
+#check Poincare.equation_boundary_pointwise_equation_payload_of_dependencies
+#check Poincare.equation_boundary_pointwise_equation_payload_of_dependencies_eq
 #check Poincare.equation_boundary_derivative_payload_of_dependencies_to_surgery_derivative_payload_eq
 #check Poincare.surgery_package_with_equation_boundary_derivative_payload_of_dependencies
 #check Poincare.surgery_package_with_equation_boundary_derivative_payload_of_dependencies_eq
@@ -16890,6 +16896,8 @@ open scoped Manifold ContDiff
 #check Poincare.ricci_flow_equation_boundary_packages_of_dependencies_eq
 #check Poincare.equation_boundary_derivative_payload_of_dependencies
 #check Poincare.equation_boundary_derivative_payload_of_dependencies_eq
+#check Poincare.equation_boundary_pointwise_equation_payload_of_dependencies
+#check Poincare.equation_boundary_pointwise_equation_payload_of_dependencies_eq
 #check Poincare.equation_boundary_derivative_payload_of_dependencies_to_surgery_derivative_payload_eq
 #check Poincare.surgery_package_with_equation_boundary_derivative_payload_of_dependencies
 #check Poincare.surgery_package_with_equation_boundary_derivative_payload_of_dependencies_eq

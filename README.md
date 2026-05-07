@@ -303,7 +303,9 @@ The current artifact is intentionally conservative:
   `dependencies.surgery` through one named bridge; an equality contract pins
   that shared bridge to the stored surgery family. The dependency-level
   analytic-foundation package projection is now pinned to mapping that stored
-  surgery family to each analytic subpackage. The package-routed payloads
+  surgery family to each analytic subpackage. The strengthened dependency
+  surface also projects the selected boundary-carrying surgery package's
+  pointwise equation route at `t x v w`. The package-routed payloads
   `analytic_foundation_statement_payload_with_surgery_package_of_dependencies`,
   `surgery_construction_statement_payload_with_surgery_package_of_dependencies`,
   `perelman_control_statement_payload_with_surgery_package_of_dependencies`,

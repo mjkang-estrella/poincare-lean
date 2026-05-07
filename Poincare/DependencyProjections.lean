@@ -1317,6 +1317,56 @@ theorem equation_boundary_derivative_payload_of_dependencies_eq
   apply Subsingleton.elim
 
 /--
+Strengthened dependencies expose the projection-routed equation-boundary
+equation pointwise through their selected surgery package.
+-/
+theorem equation_boundary_pointwise_equation_payload_of_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+          ∀ (t : ℝ) (x : M)
+            (v w : TangentSpace ThreeManifoldModelWithCorners x),
+            metric_time_derivative_at_time_of_metric_derivative_field
+              (metric_time_derivative_field_of_metric_derivative_data
+                (metric_derivative_data_of_surgery_package_with_equation_boundary
+                  package)) t x v w =
+              ricci_flow_rhs_tensor
+                (curvature_data_of_ricci_flow_data
+                  (ricci_flow_data_of_surgery_package
+                    (surgery_package_of_equation_boundary_surgery_package
+                      package))) t x v w := by
+  intro M _ _ _ _ _ _
+  rcases surgery_packages_with_equation_boundary_of_dependencies
+      dependencies M with
+    ⟨⟨n, package⟩⟩
+  exact
+    ⟨n, package,
+      equation_at_time_apply_of_surgery_package_with_equation_boundary_projection
+        package⟩
+
+/--
+The dependency pointwise equation payload is selected from the stored
+boundary-carrying surgery package family.
+-/
+theorem equation_boundary_pointwise_equation_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_pointwise_equation_payload_of_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases surgery_packages_with_equation_boundary_of_dependencies
+            dependencies M with
+          ⟨⟨n, package⟩⟩
+        exact
+          ⟨n, package,
+            equation_at_time_apply_of_surgery_package_with_equation_boundary_projection
+              package⟩) := by
+  apply Subsingleton.elim
+
+/--
 Strengthened dependencies expose the full derivative-strengthened surgery
 payload selected from their boundary-carrying surgery package family.
 -/
