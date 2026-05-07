@@ -452,7 +452,8 @@ The current artifact is intentionally conservative:
   inverse-direction recognition maps now also has direct equality contracts.
   The assembly layer separately pins the standard sphere's smooth reflexivity
   witness and the induced self-homeomorphism route through
-  `homeomorph_of_diffeomorph_three_sphere`.
+  `homeomorph_of_diffeomorph_three_sphere`; the topology layer now also records
+  that its reflexive self-homeomorphism witness agrees with that smooth route.
   The dependency-level classification payload
   `topology_classification_payload_of_dependencies` now centralizes the
   post-extinction classification stack, and the individual dependency-level

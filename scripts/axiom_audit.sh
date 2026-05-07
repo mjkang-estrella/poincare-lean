@@ -430,6 +430,7 @@ import Poincare
 #print axioms Poincare.threeSphere_self_homeomorph_of_smooth_statement_eq
 #print axioms Poincare.threeSphere_self_homeomorph
 #print axioms Poincare.threeSphere_self_homeomorph_eq
+#print axioms Poincare.threeSphere_self_homeomorph_self_diffeomorph_route_eq
 #print axioms Poincare.homeomorph_to_threeSphere_of_homeomorph
 #print axioms Poincare.homeomorph_to_threeSphere_of_homeomorph_eq
 #print axioms Poincare.homeomorph_to_threeSphere_of_homeomorph_source

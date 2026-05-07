@@ -1719,6 +1719,7 @@ set_option linter.unusedVariables false
   Nonempty (Poincare.ThreeSphere ≃ₜ Poincare.ThreeSphere))
 
 #check Poincare.threeSphere_self_homeomorph_eq
+#check Poincare.threeSphere_self_homeomorph_self_diffeomorph_route_eq
 
 #check (Poincare.homeomorph_to_threeSphere_of_homeomorph :
   ∀ {M N : Type} [TopologicalSpace M] [TopologicalSpace N],

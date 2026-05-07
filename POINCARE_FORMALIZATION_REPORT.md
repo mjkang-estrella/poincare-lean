@@ -60,6 +60,9 @@ Recent local proof-bearing glue now includes `threeSphere_self_diffeomorph`,
 `threeSphere_self_homeomorph_of_self_diffeomorph_eq`, pinning the standard
 sphere's reflexive smooth self-diffeomorphism and its route through the
 smooth-to-topological assembly bridge.
+The topology-extraction layer also proves
+`threeSphere_self_homeomorph_self_diffeomorph_route_eq`, tying its reflexive
+self-homeomorphism witness back to that smooth route.
 The same assembly layer now also exposes
 `threeSphere_self_homeomorph_of_poincare_statement`,
 `threeSphere_self_diffeomorph_of_smooth_statement`, and

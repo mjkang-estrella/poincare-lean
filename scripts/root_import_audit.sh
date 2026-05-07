@@ -100,6 +100,7 @@ open scoped Manifold ContDiff
 #check Poincare.smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_statement_eq
 #check Poincare.threeSphere_self_homeomorph
 #check Poincare.threeSphere_self_homeomorph_eq
+#check Poincare.threeSphere_self_homeomorph_self_diffeomorph_route_eq
 #check Poincare.homeomorph_to_threeSphere_of_homeomorph
 #check Poincare.homeomorph_to_threeSphere_of_homeomorph_eq
 #check Poincare.homeomorph_to_threeSphere_of_homeomorph_source

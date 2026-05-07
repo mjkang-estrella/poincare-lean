@@ -29,6 +29,15 @@ theorem threeSphere_self_homeomorph_eq :
   apply Subsingleton.elim
 
 /--
+The topology-extraction self-homeomorphism witness agrees with the assembly
+route obtained by forgetting the standard sphere's reflexive self-diffeomorphism.
+-/
+theorem threeSphere_self_homeomorph_self_diffeomorph_route_eq :
+    threeSphere_self_homeomorph =
+      threeSphere_self_homeomorph_of_self_diffeomorph := by
+  apply Subsingleton.elim
+
+/--
 Homeomorphism recognition composes through an intermediate space.
 
 This is a small proof-bearing topology lemma used by the extraction layer: once
