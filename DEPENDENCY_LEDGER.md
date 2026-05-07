@@ -937,6 +937,10 @@ It is not a proof. It is a work breakdown for future Lean development.
   package family, derivative payload, full surgery derivative payload,
   verification payload, and analytic equation-boundary statement family directly
   to the named dependency projections.
+  The certified strengthened project/canonical completion payloads at both the
+  remaining-package and aggregate-package surfaces are also pinned back to the
+  ordinary certified aggregate extraction-derivation payloads after forgetting
+  equation-boundary data.
   It also projects the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/
