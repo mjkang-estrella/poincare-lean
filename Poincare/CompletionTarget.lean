@@ -3251,6 +3251,31 @@ theorem equation_boundary_derivative_payload_of_remaining_dependency_package_to_
   apply Subsingleton.elim
 
 /--
+The strengthened remaining-package pointwise equation payload is the pointwise
+projection of the full derivative-strengthened surgery payload.
+-/
+theorem equation_boundary_pointwise_equation_payload_of_remaining_dependency_package_to_surgery_derivative_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    equation_boundary_pointwise_equation_payload_of_remaining_dependency_package
+        dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            surgery_package_with_equation_boundary_derivative_payload_of_remaining_dependency_package
+              dependencies M with
+          ⟨n, package, _basePackage, _basePackage_eq, _equationBoundary,
+            _verification, _verification_eq, metricDerivative,
+            metricDerivative_eq, _derivativeId, equationAtTime,
+            _analyticBoundary, _finiteExtinction⟩
+        exact
+          ⟨n, package, by
+            intro t x v w
+            rw [← metricDerivative_eq]
+            exact congrArg (fun tensor => tensor x v w)
+              (equationAtTime t)⟩) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining package exposes the verification-routed analytic
 equation-boundary payload for each selected surgery package.
 -/
@@ -4254,6 +4279,31 @@ theorem equation_boundary_derivative_payload_of_poincareProofDependenciesWithEqu
         exact
           ⟨n, package, verification, verification_eq, metricDerivative,
             metricDerivative_eq, derivativeId, equationAtTime⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate pointwise equation payload is the pointwise
+projection of the full derivative-strengthened surgery payload.
+-/
+theorem equation_boundary_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary_to_surgery_derivative_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            surgery_package_with_equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary
+              dependencies M with
+          ⟨n, package, _basePackage, _basePackage_eq, _equationBoundary,
+            _verification, _verification_eq, metricDerivative,
+            metricDerivative_eq, _derivativeId, equationAtTime,
+            _analyticBoundary, _finiteExtinction⟩
+        exact
+          ⟨n, package, by
+            intro t x v w
+            rw [← metricDerivative_eq]
+            exact congrArg (fun tensor => tensor x v w)
+              (equationAtTime t)⟩) := by
   apply Subsingleton.elim
 
 /--

@@ -1160,6 +1160,8 @@ The current artifact is intentionally conservative:
   Arbitrary verification payloads now also project to that pointwise equation
   payload, and the dependency, remaining-package, and aggregate routes are
   pinned through the verification-payload projection.
+  The same pointwise payloads are now pinned as pointwise projections of the
+  full derivative-strengthened surgery payload routes.
   The
   theorem
   `canonical_completion_payload_of_remaining_dependency_component_requirements`
