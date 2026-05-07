@@ -174,7 +174,8 @@ The current artifact is intentionally conservative:
   statement route, and generic plus zero/stationary-zero projection-routed
   pointwise equation theorems at `x v w`; the zero/stationary-zero boundary
   packages also expose pointwise scalar-zero derivative sides and paired
-  derivative/RHS zero witnesses.
+  derivative/RHS zero witnesses, plus named payloads bundling each boundary
+  package with the uniform paired-zero witness for all `t x v w`.
 - `Poincare/AnalyticFoundation.lean` narrows the Ricci-flow analytic foundation
   into no-constructor interfaces for Levi-Civita connection theory,
   Levi-Civita existence/uniqueness/torsion-free/metric-compatibility
