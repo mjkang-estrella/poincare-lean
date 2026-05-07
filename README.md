@@ -1444,7 +1444,8 @@ The current artifact is intentionally conservative:
   existential verification-payload constructors.
   Its boundary-aware verification certificate route now also projects the
   pointwise equation payload through the direct verification, projected
-  strengthened dependency, and boundary-certificate paths.
+  strengthened dependency, boundary-certificate, and full surgery-derivative
+  paths.
   Its theorem-name, literal, aggregate-dependency, and project-statement
   artifact payload projections are also pinned directly to the projected
   strengthened dependency, boundary-certificate, ordinary remaining-dependency,
