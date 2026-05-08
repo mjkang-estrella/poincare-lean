@@ -605,7 +605,11 @@ The current artifact is intentionally conservative:
   compactification model's own concrete loop-nullhomotopy obligation as
   `OnePointThreeSpaceLoopNullhomotopyStatement`, with equivalences to both
   compactification simple-connectedness and `ThreeSphereLoopNullhomotopyStatement`.
-  It packages the
+  It also names the compactification model's concrete path-homotopy uniqueness
+  obligation as `OnePointThreeSpacePathHomotopyStatement`, proves its
+  equivalence with compactification simple-connectedness and
+  `ThreeSpherePathHomotopyStatement`, and pins the compactification path/loop
+  conversions to the named loop-nullhomotopy route. It packages the
   compactification model's full homotopy/manifold prerequisites as
   `onePoint_threeSpace_homotopy_manifold_prerequisites` when the standard
   sphere's simple-connectedness input is supplied, with

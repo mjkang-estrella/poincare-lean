@@ -839,6 +839,208 @@ theorem onePoint_threeSpace_loopNullhomotopyStatement_iff_threeSphereLoopNullhom
   apply Subsingleton.elim
 
 /--
+The concrete path-homotopy uniqueness obligation for the one-point
+compactification model. This is the compactification-side analogue of
+`ThreeSpherePathHomotopyStatement`.
+-/
+def OnePointThreeSpacePathHomotopyStatement : Prop :=
+  ∀ {x y : OnePoint (EuclideanSpace ℝ (Fin 3))} (p q : Path x y),
+    Path.Homotopic p q
+
+/-- The compactification path-homotopy obligation expands to every parallel path pair. -/
+theorem onePointThreeSpacePathHomotopyStatement_eq :
+    OnePointThreeSpacePathHomotopyStatement =
+      (∀ {x y : OnePoint (EuclideanSpace ℝ (Fin 3))} (p q : Path x y),
+        Path.Homotopic p q) :=
+  rfl
+
+/--
+For the compactification model, simple-connectedness is equivalent to the
+concrete path-homotopy obligation because path-connectedness has already been
+transported from `ThreeSphere`.
+-/
+theorem onePoint_threeSpace_simplyConnectedSpace_iff_pathHomotopyStatement :
+    SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) ↔
+      OnePointThreeSpacePathHomotopyStatement := by
+  rw [onePointThreeSpacePathHomotopyStatement_eq,
+    simply_connected_iff_paths_homotopic']
+  exact ⟨fun h => h.2,
+    fun h => ⟨onePoint_threeSpace_pathConnectedSpace, h⟩⟩
+
+/-- The compactification simple-connectedness reduction is mathlib's path criterion. -/
+theorem onePoint_threeSpace_simplyConnectedSpace_iff_pathHomotopyStatement_eq :
+    onePoint_threeSpace_simplyConnectedSpace_iff_pathHomotopyStatement =
+      (by
+        rw [onePointThreeSpacePathHomotopyStatement_eq,
+          simply_connected_iff_paths_homotopic']
+        exact ⟨fun h => h.2,
+          fun h => ⟨onePoint_threeSpace_pathConnectedSpace, h⟩⟩) := by
+  apply Subsingleton.elim
+
+/-- A proof of the compactification path-homotopy obligation supplies simple-connectedness. -/
+theorem onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement
+    (h : OnePointThreeSpacePathHomotopyStatement) :
+    SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+  onePoint_threeSpace_simplyConnectedSpace_iff_pathHomotopyStatement.mpr h
+
+/-- The compactification path-homotopy-to-simple-connectedness route is the criterion projection. -/
+theorem onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement_eq :
+    onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement =
+      onePoint_threeSpace_simplyConnectedSpace_iff_pathHomotopyStatement.mpr := by
+  funext h
+  apply Subsingleton.elim
+
+/-- A supplied compactification simple-connectedness instance gives path-homotopy uniqueness. -/
+theorem onePoint_threeSpace_pathHomotopyStatement_of_simplyConnectedSpace
+    [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))] :
+    OnePointThreeSpacePathHomotopyStatement :=
+  onePoint_threeSpace_simplyConnectedSpace_iff_pathHomotopyStatement.mp inferInstance
+
+/-- The compactification simple-connectedness-to-path route is the criterion projection. -/
+theorem onePoint_threeSpace_pathHomotopyStatement_of_simplyConnectedSpace_eq
+    [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))] :
+    (onePoint_threeSpace_pathHomotopyStatement_of_simplyConnectedSpace :
+      OnePointThreeSpacePathHomotopyStatement) =
+      (onePoint_threeSpace_simplyConnectedSpace_iff_pathHomotopyStatement.mp inferInstance :
+        OnePointThreeSpacePathHomotopyStatement) := by
+  apply Subsingleton.elim
+
+/-- Path-homotopy uniqueness implies loop-nullhomotopy by comparing a loop to `Path.refl`. -/
+theorem onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement
+    (h : OnePointThreeSpacePathHomotopyStatement) :
+    OnePointThreeSpaceLoopNullhomotopyStatement := by
+  intro x γ
+  exact h γ (Path.refl x)
+
+/-- The compactification path-to-loop route is evaluation at a loop and the stationary loop. -/
+theorem onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement_eq :
+    onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement =
+      (fun h : OnePointThreeSpacePathHomotopyStatement =>
+        fun x γ => h γ (Path.refl x)) := by
+  funext h x γ
+  apply Subsingleton.elim
+
+/-- Loop-nullhomotopy implies path-homotopy uniqueness through simple-connectedness. -/
+theorem onePoint_threeSpace_pathHomotopyStatement_of_loopNullhomotopyStatement
+    (h : OnePointThreeSpaceLoopNullhomotopyStatement) :
+    OnePointThreeSpacePathHomotopyStatement :=
+  onePoint_threeSpace_simplyConnectedSpace_iff_pathHomotopyStatement.mp
+    (onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement h)
+
+/--
+The compactification loop-to-path route is simple-connectedness from
+loop-nullhomotopy followed by the path-homotopy criterion.
+-/
+theorem onePoint_threeSpace_pathHomotopyStatement_of_loopNullhomotopyStatement_eq :
+    onePoint_threeSpace_pathHomotopyStatement_of_loopNullhomotopyStatement =
+      (fun h : OnePointThreeSpaceLoopNullhomotopyStatement =>
+        (onePoint_threeSpace_simplyConnectedSpace_iff_pathHomotopyStatement.mp
+          (onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement h) :
+            OnePointThreeSpacePathHomotopyStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The two compactification-side simple-connectedness obligations are equivalent. -/
+theorem onePoint_threeSpace_pathHomotopyStatement_iff_loopNullhomotopyStatement :
+    OnePointThreeSpacePathHomotopyStatement ↔
+      OnePointThreeSpaceLoopNullhomotopyStatement :=
+  ⟨onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement,
+    onePoint_threeSpace_pathHomotopyStatement_of_loopNullhomotopyStatement⟩
+
+/-- The compactification path/loop equivalence is the pair of named conversion routes. -/
+theorem onePoint_threeSpace_pathHomotopyStatement_iff_loopNullhomotopyStatement_eq :
+    onePoint_threeSpace_pathHomotopyStatement_iff_loopNullhomotopyStatement =
+      ⟨onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement,
+        onePoint_threeSpace_pathHomotopyStatement_of_loopNullhomotopyStatement⟩ := by
+  apply Subsingleton.elim
+
+/-- Path-homotopy uniqueness of `ThreeSphere` transports to the compactification model. -/
+theorem onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePathHomotopyStatement
+    (h : ThreeSpherePathHomotopyStatement) :
+    OnePointThreeSpacePathHomotopyStatement := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_pathHomotopyStatement h
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+  exact (onePoint_threeSpace_pathHomotopyStatement_of_simplyConnectedSpace :
+    OnePointThreeSpacePathHomotopyStatement)
+
+/-- The transported compactification path-homotopy route factors through simple-connectedness. -/
+theorem onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePathHomotopyStatement_eq :
+    onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePathHomotopyStatement =
+      (fun h : ThreeSpherePathHomotopyStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_pathHomotopyStatement h
+        letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+        (onePoint_threeSpace_pathHomotopyStatement_of_simplyConnectedSpace :
+          OnePointThreeSpacePathHomotopyStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The transported compactification path route agrees with the named loop route. -/
+theorem onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePathHomotopyStatement_loop_route_eq :
+    onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePathHomotopyStatement =
+      (fun h : ThreeSpherePathHomotopyStatement =>
+        (onePoint_threeSpace_pathHomotopyStatement_of_loopNullhomotopyStatement
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement h)) :
+          OnePointThreeSpacePathHomotopyStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- Compactification path-homotopy uniqueness transports back to `ThreeSphere`. -/
+theorem threeSpherePathHomotopyStatement_of_onePoint_threeSpace_pathHomotopyStatement
+    (h : OnePointThreeSpacePathHomotopyStatement) :
+    ThreeSpherePathHomotopyStatement := by
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement h
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_onePoint_threeSpace
+  exact (threeSphere_pathHomotopyStatement_of_simplyConnectedSpace :
+    ThreeSpherePathHomotopyStatement)
+
+/-- The reverse compactification path-homotopy route factors through simple-connectedness. -/
+theorem threeSpherePathHomotopyStatement_of_onePoint_threeSpace_pathHomotopyStatement_eq :
+    threeSpherePathHomotopyStatement_of_onePoint_threeSpace_pathHomotopyStatement =
+      (fun h : OnePointThreeSpacePathHomotopyStatement =>
+        letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement h
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_onePoint_threeSpace
+        (threeSphere_pathHomotopyStatement_of_simplyConnectedSpace :
+          ThreeSpherePathHomotopyStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The reverse compactification path route agrees with the named loop route. -/
+theorem threeSpherePathHomotopyStatement_of_onePoint_threeSpace_pathHomotopyStatement_loop_route_eq :
+    threeSpherePathHomotopyStatement_of_onePoint_threeSpace_pathHomotopyStatement =
+      (fun h : OnePointThreeSpacePathHomotopyStatement =>
+        (threeSphere_pathHomotopyStatement_of_loopNullhomotopyStatement
+          (threeSphereLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement h)) :
+          ThreeSpherePathHomotopyStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The compactification and standard-sphere path-homotopy obligations are equivalent. -/
+theorem onePoint_threeSpace_pathHomotopyStatement_iff_threeSpherePathHomotopyStatement :
+    OnePointThreeSpacePathHomotopyStatement ↔ ThreeSpherePathHomotopyStatement := by
+  constructor
+  · exact threeSpherePathHomotopyStatement_of_onePoint_threeSpace_pathHomotopyStatement
+  · exact onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePathHomotopyStatement
+
+/-- The compactification path-homotopy equivalence is the pair of named transports. -/
+theorem onePoint_threeSpace_pathHomotopyStatement_iff_threeSpherePathHomotopyStatement_eq :
+    onePoint_threeSpace_pathHomotopyStatement_iff_threeSpherePathHomotopyStatement =
+      (by
+        constructor
+        · exact threeSpherePathHomotopyStatement_of_onePoint_threeSpace_pathHomotopyStatement
+        · exact onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePathHomotopyStatement) := by
+  apply Subsingleton.elim
+
+/--
 The one-point compactification model carries a charted-space structure
 transported from the standard sphere.
 -/

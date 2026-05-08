@@ -2433,6 +2433,59 @@ universe u
     Poincare.ThreeSphereLoopNullhomotopyStatement)
 #check Poincare.onePoint_threeSpace_loopNullhomotopyStatement_iff_threeSphereLoopNullhomotopyStatement_eq
 
+#check (Poincare.OnePointThreeSpacePathHomotopyStatement : Prop)
+#check (Poincare.onePointThreeSpacePathHomotopyStatement_eq :
+  Poincare.OnePointThreeSpacePathHomotopyStatement =
+    (∀ {x y : OnePoint (EuclideanSpace ℝ (Fin 3))} (p q : Path x y),
+      Path.Homotopic p q))
+
+#check (Poincare.onePoint_threeSpace_simplyConnectedSpace_iff_pathHomotopyStatement :
+  SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) ↔
+    Poincare.OnePointThreeSpacePathHomotopyStatement)
+#check Poincare.onePoint_threeSpace_simplyConnectedSpace_iff_pathHomotopyStatement_eq
+
+#check (Poincare.onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement :
+  Poincare.OnePointThreeSpacePathHomotopyStatement →
+    SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))))
+#check Poincare.onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement_eq
+
+#check (Poincare.onePoint_threeSpace_pathHomotopyStatement_of_simplyConnectedSpace :
+  ∀ [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))],
+    Poincare.OnePointThreeSpacePathHomotopyStatement)
+#check Poincare.onePoint_threeSpace_pathHomotopyStatement_of_simplyConnectedSpace_eq
+
+#check (Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement :
+  Poincare.OnePointThreeSpacePathHomotopyStatement →
+    Poincare.OnePointThreeSpaceLoopNullhomotopyStatement)
+#check Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement_eq
+
+#check (Poincare.onePoint_threeSpace_pathHomotopyStatement_of_loopNullhomotopyStatement :
+  Poincare.OnePointThreeSpaceLoopNullhomotopyStatement →
+    Poincare.OnePointThreeSpacePathHomotopyStatement)
+#check Poincare.onePoint_threeSpace_pathHomotopyStatement_of_loopNullhomotopyStatement_eq
+
+#check (Poincare.onePoint_threeSpace_pathHomotopyStatement_iff_loopNullhomotopyStatement :
+  Poincare.OnePointThreeSpacePathHomotopyStatement ↔
+    Poincare.OnePointThreeSpaceLoopNullhomotopyStatement)
+#check Poincare.onePoint_threeSpace_pathHomotopyStatement_iff_loopNullhomotopyStatement_eq
+
+#check (Poincare.onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePathHomotopyStatement :
+  Poincare.ThreeSpherePathHomotopyStatement →
+    Poincare.OnePointThreeSpacePathHomotopyStatement)
+#check Poincare.onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePathHomotopyStatement_eq
+#check Poincare.onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePathHomotopyStatement_loop_route_eq
+
+#check (Poincare.threeSpherePathHomotopyStatement_of_onePoint_threeSpace_pathHomotopyStatement :
+  Poincare.OnePointThreeSpacePathHomotopyStatement →
+    Poincare.ThreeSpherePathHomotopyStatement)
+#check Poincare.threeSpherePathHomotopyStatement_of_onePoint_threeSpace_pathHomotopyStatement_eq
+#check Poincare.threeSpherePathHomotopyStatement_of_onePoint_threeSpace_pathHomotopyStatement_loop_route_eq
+
+#check (Poincare.onePoint_threeSpace_pathHomotopyStatement_iff_threeSpherePathHomotopyStatement :
+  Poincare.OnePointThreeSpacePathHomotopyStatement ↔
+    Poincare.ThreeSpherePathHomotopyStatement)
+#check Poincare.onePoint_threeSpace_pathHomotopyStatement_iff_threeSpherePathHomotopyStatement_eq
+
 #check (Poincare.onePoint_threeSpace_chartedSpace :
   ChartedSpace (EuclideanSpace ℝ (Fin 3)) (OnePoint (EuclideanSpace ℝ (Fin 3))))
 #check Poincare.onePoint_threeSpace_chartedSpace_eq
