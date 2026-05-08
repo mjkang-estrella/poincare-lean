@@ -397,6 +397,14 @@ check_decl "Ricci-flow equation verification time theorem is declared" \
   '^theorem equation_at_time_of_ricci_flow_equation_verification\b' Poincare/RicciFlow.lean
 check_decl "Ricci-flow equation verification time equality theorem is declared" \
   '^@\[simp\] theorem equation_at_time_of_ricci_flow_equation_verification_eq\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow equation verification direct pointwise theorem is declared" \
+  '^theorem equation_at_time_apply_of_ricci_flow_equation_verification\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow equation verification direct pointwise equality theorem is declared" \
+  '^@\[simp\] theorem equation_at_time_apply_of_ricci_flow_equation_verification_eq\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow equation verification pointwise payload theorem is declared" \
+  '^theorem pointwise_equation_payload_of_ricci_flow_equation_verification\b' Poincare/RicciFlow.lean
+check_decl "Ricci-flow equation verification pointwise payload equality theorem is declared" \
+  '^@\[simp\] theorem pointwise_equation_payload_of_ricci_flow_equation_verification_eq\b' Poincare/RicciFlow.lean
 check_decl "Ricci-flow equation verification derivative-identification theorem is declared" \
   '^theorem metric_time_derivative_identification_of_ricci_flow_equation_verification\b' Poincare/RicciFlow.lean
 check_decl "Ricci-flow equation verification derivative-identification equality theorem is declared" \
@@ -12480,6 +12488,10 @@ open scoped Manifold ContDiff
 #check Poincare.metric_derivative_data_of_ricci_flow_equation_verification_eq
 #check Poincare.equation_at_time_of_ricci_flow_equation_verification
 #check Poincare.equation_at_time_of_ricci_flow_equation_verification_eq
+#check Poincare.equation_at_time_apply_of_ricci_flow_equation_verification
+#check Poincare.equation_at_time_apply_of_ricci_flow_equation_verification_eq
+#check Poincare.pointwise_equation_payload_of_ricci_flow_equation_verification
+#check Poincare.pointwise_equation_payload_of_ricci_flow_equation_verification_eq
 #check Poincare.metric_time_derivative_identification_of_ricci_flow_equation_verification
 #check Poincare.metric_time_derivative_identification_of_ricci_flow_equation_verification_eq
 #check Poincare.equation_at_time_of_ricci_flow_equation_verification_projection
@@ -17005,6 +17017,10 @@ open scoped Manifold ContDiff
 #check Poincare.metric_derivative_data_of_ricci_flow_equation_verification_eq
 #check Poincare.equation_at_time_of_ricci_flow_equation_verification
 #check Poincare.equation_at_time_of_ricci_flow_equation_verification_eq
+#check Poincare.equation_at_time_apply_of_ricci_flow_equation_verification
+#check Poincare.equation_at_time_apply_of_ricci_flow_equation_verification_eq
+#check Poincare.pointwise_equation_payload_of_ricci_flow_equation_verification
+#check Poincare.pointwise_equation_payload_of_ricci_flow_equation_verification_eq
 #check Poincare.metric_time_derivative_identification_of_ricci_flow_equation_verification
 #check Poincare.metric_time_derivative_identification_of_ricci_flow_equation_verification_eq
 #check Poincare.equation_at_time_of_ricci_flow_equation_verification_projection

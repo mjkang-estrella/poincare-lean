@@ -947,6 +947,77 @@ theorem equation_at_time_of_ricci_flow_equation_verification
       verification.equationAtTime t :=
   rfl
 
+/--
+The stored equation equality in an explicit Ricci-flow verification holds
+pointwise at each point and pair of tangent vectors.
+-/
+theorem equation_at_time_apply_of_ricci_flow_equation_verification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (verification : RicciFlowEquationVerification curvature)
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    metric_time_derivative_at_time_of_metric_derivative_field
+      verification.metricDerivative.derivative t x v w =
+      ricci_flow_rhs_tensor curvature t x v w :=
+  congrArg (fun tensor : TangentCovariantTwoTensor I M => tensor x v w)
+    (verification.equationAtTime t)
+
+/-- The direct pointwise equation theorem is obtained by applying stored tensor equality. -/
+@[simp] theorem equation_at_time_apply_of_ricci_flow_equation_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (verification : RicciFlowEquationVerification curvature)
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    equation_at_time_apply_of_ricci_flow_equation_verification
+      verification t x v w =
+      congrArg (fun tensor : TangentCovariantTwoTensor I M => tensor x v w)
+        (verification.equationAtTime t) := by
+  apply Subsingleton.elim
+
+/--
+An explicit Ricci-flow equation verification gives a reusable scalar pointwise
+equation payload.
+-/
+theorem pointwise_equation_payload_of_ricci_flow_equation_verification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (verification : RicciFlowEquationVerification curvature) :
+    ∀ t x v w,
+      metric_time_derivative_at_time_of_metric_derivative_field
+        verification.metricDerivative.derivative t x v w =
+        ricci_flow_rhs_tensor curvature t x v w :=
+  fun t x v w =>
+    equation_at_time_apply_of_ricci_flow_equation_verification
+      verification t x v w
+
+/-- The pointwise equation payload is the direct pointwise equation theorem. -/
+@[simp] theorem pointwise_equation_payload_of_ricci_flow_equation_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (verification : RicciFlowEquationVerification curvature) :
+    pointwise_equation_payload_of_ricci_flow_equation_verification
+      verification =
+      (fun t x v w =>
+        equation_at_time_apply_of_ricci_flow_equation_verification
+          verification t x v w) := by
+  apply Subsingleton.elim
+
 /-- A Ricci-flow equation verification carries metric-derivative identification evidence. -/
 theorem metric_time_derivative_identification_of_ricci_flow_equation_verification
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]

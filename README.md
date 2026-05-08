@@ -154,6 +154,9 @@ The current artifact is intentionally conservative:
   curvature time slices, Ricci-identification evidence, and Ricci-flow equation
   evidence, with rewriteable definitional-equality contracts identifying those
   named projections and evidence theorems with the stored structure fields. The
+  explicit Ricci-flow equation verification now exposes its stored tensor
+  equality directly at each scalar point `x v w`, plus a reusable pointwise
+  equation payload, before any projection-routed wrapper is applied. The
   stationary metric-family constructor now packages a single Riemannian metric
   as a time-independent family, proves its time-slice projection, and specializes
   the zero-derivative/zero-Ricci equation-verification payload to that
