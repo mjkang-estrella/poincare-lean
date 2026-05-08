@@ -1689,6 +1689,52 @@ theorem equation_boundary_direct_pointwise_equation_payload_of_dependencies_to_s
   apply Subsingleton.elim
 
 /--
+The dependency-level pointwise equation payload is reconstructed from the
+dependency-level direct stored-verification scalar equation payload.
+-/
+theorem equation_boundary_pointwise_equation_payload_of_dependencies_to_direct_pointwise_equation_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_pointwise_equation_payload_of_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            equation_boundary_direct_pointwise_equation_payload_of_dependencies
+              dependencies M with
+          ⟨n, package, directPayload⟩
+        exact
+          ⟨n, package, by
+            intro t x v w
+            simpa
+              [metric_derivative_data_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq]
+              using directPayload t x v w⟩) := by
+  apply Subsingleton.elim
+
+/--
+The older dependency-level equation/metric derivative payload is reconstructed
+from the dependency-level direct stored-verification scalar equation payload.
+-/
+theorem equation_boundary_derivative_payload_of_dependencies_to_direct_pointwise_equation_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_derivative_payload_of_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            equation_boundary_direct_pointwise_equation_payload_of_dependencies
+              dependencies M with
+          ⟨n, package, directPayload⟩
+        rcases
+            surgery_package_with_equation_boundary_derivative_payload_of_direct_pointwise_equation_payload
+              directPayload with
+          ⟨_basePackage, _basePackage_eq, _equationBoundary, verification,
+            verification_eq, metricDerivative, metricDerivative_eq,
+            derivativeId, equationAtTime, _analyticBoundary,
+            _finiteExtinction⟩
+        exact
+          ⟨n, package, verification, verification_eq, metricDerivative,
+            metricDerivative_eq, derivativeId, equationAtTime⟩) := by
+  apply Subsingleton.elim
+
+/--
 The dependency-level scalar-pointwise surgery payload is reconstructed from the
 dependency-level direct stored-verification scalar equation payload.
 -/
@@ -2298,6 +2344,57 @@ theorem equation_boundary_direct_pointwise_equation_payload_of_equation_boundary
           ⟨n, package,
             surgery_package_with_equation_boundary_direct_pointwise_equation_payload
               package⟩) := by
+  apply Subsingleton.elim
+
+/--
+The verification-payload pointwise equation projection is reconstructed from
+the verification-payload direct stored-verification scalar equation payload.
+-/
+theorem equation_boundary_pointwise_equation_payload_of_equation_boundary_verification_payload_to_direct_pointwise_equation_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    equation_boundary_pointwise_equation_payload_of_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            equation_boundary_direct_pointwise_equation_payload_of_equation_boundary_verification_payload
+              payload M with
+          ⟨n, package, directPayload⟩
+        exact
+          ⟨n, package, by
+            intro t x v w
+            simpa
+              [metric_derivative_data_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq]
+              using directPayload t x v w⟩) := by
+  apply Subsingleton.elim
+
+/--
+The older verification-payload equation/metric derivative projection is
+reconstructed from the verification-payload direct stored-verification scalar
+equation payload.
+-/
+theorem equation_boundary_derivative_payload_of_equation_boundary_verification_payload_to_direct_pointwise_equation_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            equation_boundary_direct_pointwise_equation_payload_of_equation_boundary_verification_payload
+              payload M with
+          ⟨n, package, directPayload⟩
+        rcases
+            surgery_package_with_equation_boundary_derivative_payload_of_direct_pointwise_equation_payload
+              directPayload with
+          ⟨_basePackage, _basePackage_eq, _equationBoundary, verification,
+            verification_eq, metricDerivative, metricDerivative_eq,
+            derivativeId, equationAtTime, _analyticBoundary,
+            _finiteExtinction⟩
+        exact
+          ⟨n, package, verification, verification_eq, metricDerivative,
+            metricDerivative_eq, derivativeId, equationAtTime⟩) := by
   apply Subsingleton.elim
 
 /--

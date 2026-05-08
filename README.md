@@ -186,9 +186,13 @@ The current artifact is intentionally conservative:
   package, dependency, verification-payload, remaining/aggregate, and
   boundary-aware certificate layers, and the tensor-level derivative surgery
   payload is now reconstructed from that same direct payload across those
-  surfaces. The boundary surgery payload, analytic-boundary statement, and
-  finite-extinction projections are now routed through the direct payload where
-  those projection surfaces exist; the
+  surfaces. The older equation-boundary pointwise-equation and
+  equation/metric-derivative payload families now also route directly through
+  the stored scalar equation across dependency, verification-payload,
+  remaining/aggregate, and boundary-aware certificate surfaces. The boundary
+  surgery payload, analytic-boundary statement, and finite-extinction
+  projections are now routed through the direct payload where those projection
+  surfaces exist; the
   zero/stationary-zero boundary
   packages also expose pointwise scalar-zero derivative sides and paired
   derivative/RHS zero witnesses, plus named payloads bundling each boundary
