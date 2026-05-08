@@ -18842,6 +18842,86 @@ theorem completion_criterion_of_completion_certificate_with_equation_boundary_ve
   apply Subsingleton.elim
 
 /--
+The boundary-aware certificate canonical-payload projection is the same project
+payload viewed through the canonical/project target identification.
+-/
+theorem canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_project_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware certificate project-payload projection is the same canonical
+payload viewed through the project/canonical target identification.
+-/
+theorem poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_canonical_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware certificate canonical target agrees with its project target
+statement endpoint.
+-/
+theorem canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload_to_target_statement_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      target_statement_of_completion_certificate_with_equation_boundary_verification_payload
+        payload := by
+  apply Subsingleton.elim
+
+/--
+Project the canonical completion criterion from a boundary-aware certificate
+payload through its stored checked certificate.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload
+    (witness : Type u)
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    CompletionCriterionAtUniverse witness :=
+  canonical_completion_criterion_of_completion_certificate witness
+    (completion_certificate_of_equation_boundary_verification_payload payload)
+
+/--
+The boundary-aware certificate canonical-criterion projection delegates through
+the checked-certificate projection.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_eq
+    (witness : Type u)
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload
+        witness payload =
+      canonical_completion_criterion_of_completion_certificate witness
+        (completion_certificate_of_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware certificate canonical criterion agrees with its project
+completion-criterion endpoint.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_project_criterion_eq
+    (witness : Type u)
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload
+        witness payload =
+      completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload
+        witness payload := by
+  apply Subsingleton.elim
+
+/--
 The boundary-aware certificate canonical-payload projection can be routed
 through the projected strengthened dependency package.
 -/

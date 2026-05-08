@@ -1476,6 +1476,10 @@ The current artifact is intentionally conservative:
   The generic checked completion certificate projection layer now also pins its
   canonical/project payload, target, and criterion endpoints in both audited
   directions.
+  The boundary-aware equation-verification certificate wrapper mirrors that
+  endpoint layer: its canonical/project payloads, canonical target/project
+  statement, and canonical/project criterion projections are now pinned directly
+  before routing through the projected strengthened dependency package.
   `remainingDependencyPackage_eq`,
   `remainingDependencyPackage_iff_poincareProofDependencies`, and
   `remainingDependencyPackage_iff_components` identify the remaining-dependency
