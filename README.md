@@ -904,7 +904,8 @@ The current artifact is intentionally conservative:
   payload routes are also pinned directly to the ordinary aggregate certificate
   after equation-boundary data is forgotten, and the explicit literal/aggregate
   canonical-statement payload constructors now reconstruct the checked
-  equation-boundary certificates directly.
+  equation-boundary certificates and the ordinary forgetful certificates
+  directly.
   It also exposes the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/
