@@ -669,7 +669,10 @@ topology-package projection stack.
 The fixed-manifold derivation statement assembled from a topology package is
 now pinned directly to the component assembly route over the package
 projections by
-`extinction_topology_derivation_statement_of_topology_package_eq`.
+`extinction_topology_derivation_statement_of_topology_package_eq`; the
+package-built theorem-shaped extraction statement also records direct
+homeomorphism and two-field derivation-payload route equalities back to the
+package homeomorphism and derivation statement.
 The narrower homeomorphism assembly and homeomorphism derivation statements
 extracted from a full topology derivation statement are now pinned to their
 explicit destructuring routes as well.

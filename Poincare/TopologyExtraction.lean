@@ -8013,6 +8013,41 @@ theorem topology_derivation_statement_of_extinction_topology_extraction_statemen
   apply Subsingleton.elim
 
 /--
+For a topology extraction statement built from a package, the direct
+homeomorphism projection is the package homeomorphism route.
+-/
+theorem homeomorphism_of_extinction_topology_extraction_statement_of_topology_package_eq
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    homeomorphism_of_topology_extraction_statement
+      (extinction_topology_extraction_statement_of_topology_package package)
+      M extinction =
+      homeomorphism_of_topology_package package M extinction := by
+  apply Subsingleton.elim
+
+/--
+For a topology extraction statement built from a package, the two-field
+homeomorphism/derivation payload is the package homeomorphism route paired with
+the package derivation route.
+-/
+theorem topology_derivation_statement_payload_of_extinction_topology_extraction_statement_of_topology_package_eq
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_derivation_statement_payload_of_extraction_statement
+      (extinction_topology_extraction_statement_of_topology_package package)
+      M extinction =
+      ⟨homeomorphism_of_topology_package package M extinction,
+        extinction_topology_derivation_statement_of_topology_package
+          package M extinction⟩ := by
+  apply Subsingleton.elim
+
+/--
 The theorem-shaped topology extraction statement directly exposes the
 classification sub-obligation payload through its projected derivation
 statement.

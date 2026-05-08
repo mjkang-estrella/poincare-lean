@@ -560,7 +560,9 @@ The current artifact is intentionally conservative:
   and statement aliases back to that theorem-shaped extraction route and to the
   stored topology package derivation route. The
   package-to-extraction bridge now assembles the fixed derivation statement from
-  the named components; the fixed-extinction payload and homeomorphism are
+  the named components, with direct equality contracts for the package-built
+  extraction statement's homeomorphism and two-field derivation payload; the
+  fixed-extinction payload and homeomorphism are
   extracted through
   `topology_derivation_statement_payload_of_extraction_statement`,
   `homeomorphism_of_topology_extraction_statement`, and
