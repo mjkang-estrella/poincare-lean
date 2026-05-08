@@ -1330,6 +1330,9 @@ The current artifact is intentionally conservative:
   `canonical_completion_target_of_surgery_and_topology_extraction_statement`,
   and
   `canonical_completion_criterion_of_surgery_and_topology_extraction_statement`,
+  with equality contracts pinning the explicit package payload, target, and
+  criterion to that theorem-shaped topology route after building the topology
+  statement from the topology package,
   the surgery-plus-extractor-derivation route exposes
   `canonical_completion_payload_of_surgery_and_extraction_derivation`,
   `canonical_completion_target_of_surgery_and_extraction_derivation`, and

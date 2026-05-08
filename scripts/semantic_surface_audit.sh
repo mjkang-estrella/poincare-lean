@@ -5623,6 +5623,10 @@ universe u
 
 #check Poincare.canonical_completion_criterion_of_surgery_and_topology_extraction_statement_eq
 
+#check Poincare.canonical_completion_payload_of_surgery_and_topology_packages_to_extraction_statement_eq
+#check Poincare.canonical_completion_target_of_surgery_and_topology_packages_to_extraction_statement_eq
+#check Poincare.canonical_completion_criterion_of_surgery_and_topology_packages_to_extraction_statement_eq
+
 #check (Poincare.canonical_completion_payload_of_surgery_and_extraction_derivation :
   Poincare.SmoothabilityPackage →
     (∀ (M : Type) [TopologicalSpace M] [T2Space M]
