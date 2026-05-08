@@ -1632,6 +1632,10 @@ The current artifact is intentionally conservative:
   conversion.
   The aggregate certified component wrapper also has direct package-route
   contracts after that conversion and remaining component-payload projection.
+  The certified remaining-dependency component, package-layer, and milestone
+  project payload/statement/criterion routes have direct endpoint contracts to
+  the package-level certified extraction route or certified component-slot
+  route selected by the stored remaining-dependency payloads.
   The aggregate certified package-layer and milestone wrappers likewise have
   direct endpoint contracts to the package-level certified extraction route and
   certified component-slot route selected after converting through the stored
