@@ -181,7 +181,10 @@ The current artifact is intentionally conservative:
   certificates also now expose direct stored-verification pointwise equation
   payloads before the projection wrapper, and the verification-payload plus
   remaining/aggregate routes now factor those direct payloads through the
-  scalar-pointwise surgery payload; the
+  scalar-pointwise surgery payload. The scalar-pointwise surgery payload itself
+  is now reconstructible from the direct stored-verification payload at the
+  package, dependency, verification-payload, remaining/aggregate, and
+  boundary-aware certificate layers; the
   zero/stationary-zero boundary
   packages also expose pointwise scalar-zero derivative sides and paired
   derivative/RHS zero witnesses, plus named payloads bundling each boundary

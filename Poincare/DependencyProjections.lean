@@ -1669,6 +1669,26 @@ theorem equation_boundary_direct_pointwise_equation_payload_of_dependencies_to_s
   apply Subsingleton.elim
 
 /--
+The dependency-level scalar-pointwise surgery payload is reconstructed from the
+dependency-level direct stored-verification scalar equation payload.
+-/
+theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_dependencies_to_direct_pointwise_equation_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_pointwise_equation_payload_of_dependencies
+        dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            equation_boundary_direct_pointwise_equation_payload_of_dependencies
+              dependencies M with
+          ⟨n, package, directPayload⟩
+        exact
+          ⟨n, package,
+            surgery_package_with_equation_boundary_pointwise_equation_payload_of_direct_pointwise_equation_payload
+              directPayload⟩) := by
+  apply Subsingleton.elim
+
+/--
 The dependency-level derivative payload is reconstructed from the selected
 package-level scalar-pointwise payload.
 -/
@@ -2238,6 +2258,27 @@ theorem equation_boundary_direct_pointwise_equation_payload_of_equation_boundary
           ⟨n, package,
             surgery_package_with_equation_boundary_direct_pointwise_equation_payload
               package⟩) := by
+  apply Subsingleton.elim
+
+/--
+The verification-payload scalar-pointwise surgery payload is reconstructed from
+the verification-payload direct stored-verification scalar equation payload.
+-/
+theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_equation_boundary_verification_payload_to_direct_pointwise_equation_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    surgery_package_with_equation_boundary_pointwise_equation_payload_of_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            equation_boundary_direct_pointwise_equation_payload_of_equation_boundary_verification_payload
+              payload M with
+          ⟨n, package, directPayload⟩
+        exact
+          ⟨n, package,
+            surgery_package_with_equation_boundary_pointwise_equation_payload_of_direct_pointwise_equation_payload
+              directPayload⟩) := by
   apply Subsingleton.elim
 
 /--

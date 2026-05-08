@@ -10006,6 +10006,94 @@ theorem surgery_package_with_equation_boundary_pointwise_equation_payload_eq
   apply Subsingleton.elim
 
 /--
+The direct stored-verification scalar equation reconstructs the full
+scalar-pointwise surgery payload by reusing the same package, equation
+boundary, analytic-boundary statement, and finite-extinction fields.
+-/
+theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_direct_pointwise_equation_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M}
+    (payload :
+      SurgeryPackageWithEquationBoundaryDirectPointwiseEquationPayload package) :
+    SurgeryPackageWithEquationBoundaryPointwiseEquationPayload package := by
+  exact
+    ⟨surgery_package_of_equation_boundary_surgery_package package,
+      rfl,
+      equation_boundary_of_surgery_package_with_equation_boundary package,
+      ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
+        package,
+      rfl,
+      metric_derivative_data_of_surgery_package_with_equation_boundary package,
+      rfl,
+      metric_time_derivative_identification_of_surgery_package_with_equation_boundary
+        package,
+      (by
+        intro t x v w
+        simpa
+          [metric_derivative_data_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq]
+          using payload t x v w),
+      analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+        package,
+      finite_extinction_of_surgery_package_with_equation_boundary package⟩
+
+/--
+The pointwise payload reconstructed from a direct scalar equation is exactly
+the tuple assembled from the package projections and that direct equation.
+-/
+theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_direct_pointwise_equation_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M}
+    (payload :
+      SurgeryPackageWithEquationBoundaryDirectPointwiseEquationPayload package) :
+    surgery_package_with_equation_boundary_pointwise_equation_payload_of_direct_pointwise_equation_payload
+        payload =
+      (by
+        exact
+          ⟨surgery_package_of_equation_boundary_surgery_package package,
+            rfl,
+            equation_boundary_of_surgery_package_with_equation_boundary package,
+            ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
+              package,
+            rfl,
+            metric_derivative_data_of_surgery_package_with_equation_boundary
+              package,
+            rfl,
+            metric_time_derivative_identification_of_surgery_package_with_equation_boundary
+              package,
+            (by
+              intro t x v w
+              simpa
+                [metric_derivative_data_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq]
+                using payload t x v w),
+            analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+              package,
+            finite_extinction_of_surgery_package_with_equation_boundary
+              package⟩) := by
+  apply Subsingleton.elim
+
+/--
+The named scalar-pointwise surgery payload can be reconstructed from the named
+direct stored-verification scalar equation payload.
+-/
+theorem surgery_package_with_equation_boundary_pointwise_equation_payload_to_direct_pointwise_equation_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    surgery_package_with_equation_boundary_pointwise_equation_payload package =
+      surgery_package_with_equation_boundary_pointwise_equation_payload_of_direct_pointwise_equation_payload
+        (surgery_package_with_equation_boundary_direct_pointwise_equation_payload
+          package) := by
+  apply Subsingleton.elim
+
+/--
 The scalar-pointwise payload reconstructs the tensor-level derivative payload by
 function extensionality.
 -/
