@@ -33,7 +33,9 @@ The current artifact is intentionally conservative:
   extending the existing prerequisite payloads that deliberately leave that
   input open.  The remaining simple-connectedness input is also reduced to the
   concrete `ThreeSphereLoopNullhomotopyStatement` via mathlib's
-  loop-nullhomotopy criterion and the named path-connectedness proof for `S^3`.
+  loop-nullhomotopy criterion and the named path-connectedness proof for `S^3`,
+  and that concrete obligation feeds the full standard-sphere prerequisite
+  payloads directly.
 - `Poincare/Milestones.lean` and `DEPENDENCY_LEDGER.md` name the missing
   Ricci-flow and topology proof obligations as data, not as proved
   propositions.
@@ -51,7 +53,8 @@ The current artifact is intentionally conservative:
   exposing the standard-sphere self-case obtained by applying the topological
   or smooth target statement when `S^3` is supplied as simply connected,
   packaging those self-case endpoints with the full homotopy-oriented
-  standard-sphere prerequisites,
+  standard-sphere prerequisites, and exposing the same self-case routes from the
+  concrete loop-nullhomotopy obligation,
   and reducing the topological target to the smooth Poincare statement plus a
   smoothability hypothesis. It also bridges both the
   canonical topological and smooth mathlib-shaped 3-sphere statements into the

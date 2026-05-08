@@ -273,6 +273,86 @@ theorem threeSphere_self_homeomorph_payload_of_smooth_statement_eq
   apply Subsingleton.elim
 
 /--
+The concrete loop-nullhomotopy obligation is enough to apply the project target
+statement to the standard sphere itself.
+-/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopyStatement
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    Nonempty (ThreeSphere ≃ₜ ThreeSphere) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+  exact threeSphere_self_homeomorph_of_poincare_statement h
+
+/--
+The target-statement self route from loop-nullhomotopy is exactly the existing
+self route after converting loop-nullhomotopy to simple-connectedness.
+-/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopyStatement_eq :
+    threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopyStatement =
+      (fun hLoop : ThreeSphereLoopNullhomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+          threeSphere_self_homeomorph_of_poincare_statement h) := by
+  funext hLoop h
+  apply Subsingleton.elim
+
+/--
+The concrete loop-nullhomotopy obligation is enough to apply the smooth target
+statement to the standard sphere itself.
+-/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_loopNullhomotopyStatement
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+  exact threeSphere_self_diffeomorph_of_smooth_statement h
+
+/--
+The smooth self-diffeomorphism route from loop-nullhomotopy is exactly the
+existing smooth self route after converting loop-nullhomotopy to
+simple-connectedness.
+-/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_loopNullhomotopyStatement_eq :
+    threeSphere_self_diffeomorph_of_smooth_statement_and_loopNullhomotopyStatement =
+      (fun hLoop : ThreeSphereLoopNullhomotopyStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+          threeSphere_self_diffeomorph_of_smooth_statement h) := by
+  funext hLoop h
+  apply Subsingleton.elim
+
+/--
+The smooth target plus the concrete loop-nullhomotopy obligation gives the
+topological self-homeomorphism after forgetting smooth structure.
+-/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    Nonempty (ThreeSphere ≃ₜ ThreeSphere) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+  exact threeSphere_self_homeomorph_of_smooth_statement h
+
+/--
+The smooth-to-topological self route from loop-nullhomotopy is exactly the
+existing smooth-to-topological self route after converting loop-nullhomotopy to
+simple-connectedness.
+-/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement_eq :
+    threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement =
+      (fun hLoop : ThreeSphereLoopNullhomotopyStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+          threeSphere_self_homeomorph_of_smooth_statement h) := by
+  funext hLoop h
+  apply Subsingleton.elim
+
+/--
 If the canonical 3-dimensional topological Poincare statement is available as a
 proof-bearing theorem, then it proves this project's target proposition.
 
