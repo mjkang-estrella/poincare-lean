@@ -4353,6 +4353,32 @@ check_decl "one-point compactification local path Poincare candidate prerequisit
   '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification local path Poincare candidate loop-route contract is declared" \
   '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement_loop_route_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification self-homeomorphism is declared" \
+  '^theorem onePoint_threeSpace_self_homeomorph\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification self-homeomorphism equality contract is declared" \
+  '^theorem onePoint_threeSpace_self_homeomorph_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification self-homeomorphism payload is declared" \
+  '^theorem onePoint_threeSpace_self_homeomorph_payload\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification self-homeomorphism payload equality contract is declared" \
+  '^theorem onePoint_threeSpace_self_homeomorph_payload_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification self payload prerequisite projection is declared" \
+  '^theorem onePoint_threeSpace_topological_manifold_prerequisites_of_self_homeomorph_payload\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification self payload prerequisite projection equality contract is declared" \
+  '^theorem onePoint_threeSpace_topological_manifold_prerequisites_of_self_homeomorph_payload_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification self payload endpoint projection is declared" \
+  '^theorem onePoint_threeSpace_self_homeomorph_of_self_homeomorph_payload\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification self payload endpoint projection equality contract is declared" \
+  '^theorem onePoint_threeSpace_self_homeomorph_of_self_homeomorph_payload_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification self loop Poincare candidate prerequisite route is declared" \
+  '^theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_loopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification self loop Poincare candidate prerequisite route equality contract is declared" \
+  '^theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_loopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification self path Poincare candidate prerequisite route is declared" \
+  '^theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification self path Poincare candidate prerequisite route equality contract is declared" \
+  '^theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification self path Poincare candidate loop-route contract is declared" \
+  '^theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement_loop_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "smoothability package is declared" \
   '^structure SmoothabilityPackage\b' Poincare/Smoothability.lean
 check_decl "smoothability Moise triangulation interface is declared" \
@@ -13146,6 +13172,19 @@ open scoped Manifold ContDiff
 #check Poincare.poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement
 #check Poincare.poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement_eq
 #check Poincare.poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement_loop_route_eq
+#check Poincare.onePoint_threeSpace_self_homeomorph
+#check Poincare.onePoint_threeSpace_self_homeomorph_eq
+#check Poincare.onePoint_threeSpace_self_homeomorph_payload
+#check Poincare.onePoint_threeSpace_self_homeomorph_payload_eq
+#check Poincare.onePoint_threeSpace_topological_manifold_prerequisites_of_self_homeomorph_payload
+#check Poincare.onePoint_threeSpace_topological_manifold_prerequisites_of_self_homeomorph_payload_eq
+#check Poincare.onePoint_threeSpace_self_homeomorph_of_self_homeomorph_payload
+#check Poincare.onePoint_threeSpace_self_homeomorph_of_self_homeomorph_payload_eq
+#check Poincare.poincare_candidate_prerequisites_of_onePoint_threeSpace_self_loopNullhomotopyStatement
+#check Poincare.poincare_candidate_prerequisites_of_onePoint_threeSpace_self_loopNullhomotopyStatement_eq
+#check Poincare.poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement
+#check Poincare.poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement_eq
+#check Poincare.poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement_loop_route_eq
 #check Poincare.threeSphere_self_homeomorph
 #check Poincare.threeSphere_self_homeomorph_eq
 #check Poincare.threeSphere_self_homeomorph_self_diffeomorph_route_eq

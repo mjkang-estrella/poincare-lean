@@ -1866,6 +1866,140 @@ theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of
         (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h := by
   apply Subsingleton.elim
 
+/-- The one-point compactification model is homeomorphic to itself. -/
+theorem onePoint_threeSpace_self_homeomorph :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ
+      (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+  ⟨Homeomorph.refl (OnePoint (EuclideanSpace ℝ (Fin 3)))⟩
+
+/-- The compactification self-homeomorphism witness is the reflexive homeomorphism. -/
+theorem onePoint_threeSpace_self_homeomorph_eq :
+    onePoint_threeSpace_self_homeomorph =
+      ⟨Homeomorph.refl (OnePoint (EuclideanSpace ℝ (Fin 3)))⟩ := by
+  apply Subsingleton.elim
+
+/--
+The compactification model's topological-manifold prerequisites pair with the
+direct reflexive self-homeomorphism endpoint.
+-/
+theorem onePoint_threeSpace_self_homeomorph_payload :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ
+          (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  exact ⟨onePoint_threeSpace_topological_manifold_prerequisites,
+    onePoint_threeSpace_self_homeomorph⟩
+
+/-- The compactification self payload is the topological payload paired with reflexivity. -/
+theorem onePoint_threeSpace_self_homeomorph_payload_eq :
+    onePoint_threeSpace_self_homeomorph_payload =
+      ⟨onePoint_threeSpace_topological_manifold_prerequisites,
+        onePoint_threeSpace_self_homeomorph⟩ := by
+  apply Subsingleton.elim
+
+/-- Project the compactification topological-manifold prerequisites from the self payload. -/
+theorem onePoint_threeSpace_topological_manifold_prerequisites_of_self_homeomorph_payload :
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  rcases onePoint_threeSpace_self_homeomorph_payload with ⟨prerequisites, _endpoint⟩
+  exact prerequisites
+
+/-- The projected compactification prerequisite component is the named local payload. -/
+theorem onePoint_threeSpace_topological_manifold_prerequisites_of_self_homeomorph_payload_eq :
+    onePoint_threeSpace_topological_manifold_prerequisites_of_self_homeomorph_payload =
+      onePoint_threeSpace_topological_manifold_prerequisites := by
+  apply Subsingleton.elim
+
+/-- Project the compactification self-homeomorphism endpoint from the self payload. -/
+theorem onePoint_threeSpace_self_homeomorph_of_self_homeomorph_payload :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ
+      (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  rcases onePoint_threeSpace_self_homeomorph_payload with ⟨_prerequisites, endpoint⟩
+  exact endpoint
+
+/-- The projected compactification endpoint is the named reflexive self-homeomorphism. -/
+theorem onePoint_threeSpace_self_homeomorph_of_self_homeomorph_payload_eq :
+    onePoint_threeSpace_self_homeomorph_of_self_homeomorph_payload =
+      onePoint_threeSpace_self_homeomorph := by
+  apply Subsingleton.elim
+
+/--
+The compactification model becomes a local Poincare-candidate payload from its
+own loop-nullhomotopy obligation and reflexive self-recognition.
+-/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_loopNullhomotopyStatement
+    (hLoop : OnePointThreeSpaceLoopNullhomotopyStatement) :
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+  poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+    hLoop onePoint_threeSpace_self_homeomorph
+
+/-- The compactification self loop-candidate route is the general local-loop route at reflexivity. -/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_loopNullhomotopyStatement_eq
+    (hLoop : OnePointThreeSpaceLoopNullhomotopyStatement) :
+    poincare_candidate_prerequisites_of_onePoint_threeSpace_self_loopNullhomotopyStatement hLoop =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+        hLoop onePoint_threeSpace_self_homeomorph := by
+  apply Subsingleton.elim
+
+/--
+The compactification model becomes a local Poincare-candidate payload from its
+own path-homotopy obligation and reflexive self-recognition.
+-/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement
+    (hPath : OnePointThreeSpacePathHomotopyStatement) :
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+  poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement
+    hPath onePoint_threeSpace_self_homeomorph
+
+/-- The compactification self path-candidate route is the general local-path route at reflexivity. -/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement_eq
+    (hPath : OnePointThreeSpacePathHomotopyStatement) :
+    poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement hPath =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement
+        hPath onePoint_threeSpace_self_homeomorph := by
+  apply Subsingleton.elim
+
+/-- The compactification self path-candidate route agrees with the self loop-candidate route. -/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement_loop_route_eq
+    (hPath : OnePointThreeSpacePathHomotopyStatement) :
+    poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement hPath =
+      poincare_candidate_prerequisites_of_onePoint_threeSpace_self_loopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) := by
+  apply Subsingleton.elim
+
 /-- The standard target sphere is homeomorphic to itself. -/
 theorem threeSphere_self_homeomorph :
     Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=

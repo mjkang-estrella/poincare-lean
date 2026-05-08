@@ -648,6 +648,16 @@ The current artifact is intentionally conservative:
   `poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement`
   and
   `poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement`.
+  For the compactification model itself,
+  `onePoint_threeSpace_self_homeomorph` records the reflexive recognition
+  endpoint, `onePoint_threeSpace_self_homeomorph_payload` pairs it with the
+  named compactification `C^0` manifold prerequisite payload, and the self
+  loop/path routes
+  `poincare_candidate_prerequisites_of_onePoint_threeSpace_self_loopNullhomotopyStatement`
+  and
+  `poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement`
+  package the model as a local Poincare candidate from compactification-local
+  homotopy obligations.
   It
   names universal compactification recognition as
   `OnePointThreeSpaceRecognitionStatement`, and
