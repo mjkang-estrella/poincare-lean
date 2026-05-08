@@ -2001,6 +2001,81 @@ theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotop
   apply Subsingleton.elim
 
 /--
+Universal compactification recognition, applied to the compactification model
+itself, recovers the model's self-homeomorphism endpoint.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement
+    [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))]
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ
+      (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_t2Space
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_chartedSpace
+  letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_compactSpace
+  exact recognize (OnePoint (EuclideanSpace ℝ (Fin 3)))
+
+/-- The universal-recognition self endpoint is direct application to the model. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_eq
+    [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))] :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement =
+      (fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+        letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_t2Space
+        letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+            (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_chartedSpace
+        letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_compactSpace
+        recognize (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  funext recognize
+  apply Subsingleton.elim
+
+/-- The universal-recognition self endpoint agrees with reflexive recognition. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_direct_route_eq
+    [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))]
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement
+      recognize =
+      onePoint_threeSpace_self_homeomorph := by
+  apply Subsingleton.elim
+
+/--
+Universal compactification recognition applied to the model also gives the
+target `ThreeSphere` endpoint after composing with the model map.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement
+    [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))]
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
+    (onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement
+      recognize)
+
+/-- The universal-recognition target endpoint is self-recognition followed by the model map. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_eq
+    [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))]
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement
+      recognize =
+      homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
+        (onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement
+          recognize) := by
+  apply Subsingleton.elim
+
+/-- The universal-recognition target endpoint agrees with the direct model homeomorphism. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_direct_route_eq
+    [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))]
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement
+      recognize =
+      onePoint_threeSpace_homeomorph_threeSphere := by
+  apply Subsingleton.elim
+
+/--
 Applying the project target statement to the one-point compactification model
 uses the named compactification typeclass witnesses and only requires
 simple-connectedness as the remaining local input.

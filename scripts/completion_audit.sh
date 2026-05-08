@@ -4379,6 +4379,18 @@ check_decl "one-point compactification self path Poincare candidate prerequisite
   '^theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification self path Poincare candidate loop-route contract is declared" \
   '^theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement_loop_route_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification universal-recognition self endpoint is declared" \
+  '^theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification universal-recognition self endpoint equality contract is declared" \
+  '^theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification universal-recognition self endpoint direct-route contract is declared" \
+  '^theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_direct_route_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification universal-recognition target endpoint is declared" \
+  '^theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification universal-recognition target endpoint equality contract is declared" \
+  '^theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification universal-recognition target endpoint direct-route contract is declared" \
+  '^theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_direct_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification target self-application route is declared" \
   '^theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification target self-application equality contract is declared" \
@@ -13227,6 +13239,12 @@ open scoped Manifold ContDiff
 #check Poincare.poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement
 #check Poincare.poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement_eq
 #check Poincare.poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement_loop_route_eq
+#check Poincare.onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement
+#check Poincare.onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_eq
+#check Poincare.onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_direct_route_eq
+#check Poincare.onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement
+#check Poincare.onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_eq
+#check Poincare.onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_direct_route_eq
 #check Poincare.onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement
 #check Poincare.onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_eq
 #check Poincare.onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_direct_route_eq

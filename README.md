@@ -658,6 +658,12 @@ The current artifact is intentionally conservative:
   `poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement`
   package the model as a local Poincare candidate from compactification-local
   homotopy obligations.
+  Universal compactification recognition now has an explicit model self-case:
+  `onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement`
+  applies `OnePointThreeSpaceRecognitionStatement` to the compactification
+  model itself, and
+  `onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement`
+  composes that endpoint to the target sphere with direct-route contracts.
   The same self-case now applies a supplied `PoincareConjectureStatement` to
   the compactification model through
   `onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement`, replaces
