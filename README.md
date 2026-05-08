@@ -902,7 +902,10 @@ The current artifact is intentionally conservative:
   those canonical-statement payloads follows the same ordinary remaining-dependency
   and aggregate routes. The remaining-package aggregate canonical-statement
   payload routes are also pinned directly to the ordinary aggregate certificate
-  after equation-boundary data is forgotten, and the explicit literal/aggregate
+  after equation-boundary data is forgotten, and the remaining-package canonical
+  topological statement, literal canonical-statement payload projection, and
+  literal canonical-statement payload reconstruction routes now have the same
+  direct ordinary aggregate endpoints. The explicit literal/aggregate
   canonical-statement payload constructors now reconstruct the checked
   equation-boundary certificates and the ordinary forgetful certificates
   directly. The matching literal, aggregate-dependency, and project-statement
