@@ -1593,6 +1593,9 @@ The current artifact is intentionally conservative:
   The certified remaining-dependency component wrapper also has direct equality
   contracts pinning those canonical outputs to the package-level certified
   extraction route selected by the stored component requirements.
+  The certified remaining-dependency package-layer wrapper has the same direct
+  package-route contracts after selecting the stored smoothability,
+  finite-extinction, and topology package layers.
   The remaining-dependency crosswalk wrappers also expose direct project
   payload, target-statement, and criterion projections through
   `poincare_completion_payload_of_remaining_dependency_*`,

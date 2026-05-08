@@ -8592,6 +8592,102 @@ theorem canonical_three_sphere_statement_of_remaining_dependency_package_layer_e
   apply Subsingleton.elim
 
 /--
+The remaining-dependency certified package-layer canonical payload agrees
+directly with the package-level certified extraction canonical payload selected
+by the stored smoothability, finite-extinction, and topology layers.
+-/
+theorem canonical_completion_payload_of_remaining_dependency_package_layer_extraction_derivation_requirements_to_package_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_payload_of_remaining_dependency_package_layer_extraction_derivation_requirements
+      dependencies =
+      (by
+        rcases remainingDependencyPackage_package_layer_requirements_payload
+            dependencies with
+          ⟨ smoothabilityRequirement
+          , _analyticRequirement
+          , _surgeryRequirement
+          , finiteExtinctionRequirement
+          , topologyRequirement
+          ⟩
+        exact
+          canonical_completion_payload_of_surgery_and_topology_package_extraction_derivation
+            smoothabilityRequirement finiteExtinctionRequirement
+            topologyRequirement) := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency certified package-layer canonical target agrees
+directly with the package-level certified extraction canonical target selected
+by the stored smoothability, finite-extinction, and topology layers.
+-/
+theorem canonical_completion_target_of_remaining_dependency_package_layer_extraction_derivation_requirements_to_package_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_remaining_dependency_package_layer_extraction_derivation_requirements
+      dependencies =
+      (by
+        rcases remainingDependencyPackage_package_layer_requirements_payload
+            dependencies with
+          ⟨ smoothabilityRequirement
+          , _analyticRequirement
+          , _surgeryRequirement
+          , finiteExtinctionRequirement
+          , topologyRequirement
+          ⟩
+        exact
+          canonical_completion_target_of_surgery_and_topology_package_extraction_derivation
+            smoothabilityRequirement finiteExtinctionRequirement
+            topologyRequirement) := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency certified package-layer canonical criterion agrees
+directly with the package-level certified extraction canonical criterion
+selected by the stored smoothability, finite-extinction, and topology layers.
+-/
+theorem canonical_completion_criterion_of_remaining_dependency_package_layer_extraction_derivation_requirements_to_package_extraction_derivation_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_remaining_dependency_package_layer_extraction_derivation_requirements
+      witness dependencies =
+      (by
+        rcases remainingDependencyPackage_package_layer_requirements_payload
+            dependencies with
+          ⟨ smoothabilityRequirement
+          , _analyticRequirement
+          , _surgeryRequirement
+          , finiteExtinctionRequirement
+          , topologyRequirement
+          ⟩
+        exact
+          canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation
+            witness smoothabilityRequirement finiteExtinctionRequirement
+            topologyRequirement) := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency certified package-layer canonical statement agrees
+directly with the package-level certified extraction canonical statement
+selected by the stored smoothability, finite-extinction, and topology layers.
+-/
+theorem canonical_three_sphere_statement_of_remaining_dependency_package_layer_extraction_derivation_requirements_to_package_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_remaining_dependency_package_layer_extraction_derivation_requirements
+      dependencies =
+      (by
+        rcases remainingDependencyPackage_package_layer_requirements_payload
+            dependencies with
+          ⟨ smoothabilityRequirement
+          , _analyticRequirement
+          , _surgeryRequirement
+          , finiteExtinctionRequirement
+          , topologyRequirement
+          ⟩
+        exact
+          canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation
+            smoothabilityRequirement finiteExtinctionRequirement
+            topologyRequirement) := by
+  apply Subsingleton.elim
+
+/--
 The remaining-dependency milestone canonical payload destructures the named
 milestone requirements payload and applies the milestone route.
 -/
