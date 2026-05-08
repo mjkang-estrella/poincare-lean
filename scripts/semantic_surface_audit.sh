@@ -2190,6 +2190,36 @@ set_option linter.unusedVariables false
 #check Poincare.spherical_trivial_deck_quotient_identification_of_topology_package_eq
 #check Poincare.simply_connected_extinction_recognition_of_topology_package_eq
 
+#check (Poincare.onePoint_threeSpace_finrank_eq :
+  Module.finrank ℝ (EuclideanSpace ℝ (Fin 3)) + 1 = Fintype.card (Fin 4))
+#check Poincare.onePoint_threeSpace_finrank_eq_eq
+
+#check (Poincare.onePoint_threeSpace_homeomorph_threeSphere :
+  Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3)) ≃ₜ Poincare.ThreeSphere))
+#check Poincare.onePoint_threeSpace_homeomorph_threeSphere_eq
+
+#check (Poincare.threeSphere_homeomorph_onePoint_threeSpace :
+  Nonempty (Poincare.ThreeSphere ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+#check Poincare.threeSphere_homeomorph_onePoint_threeSpace_eq
+
+#check (Poincare.homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace :
+  ∀ {M : Type} [TopologicalSpace M],
+    Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) →
+      Nonempty (M ≃ₜ Poincare.ThreeSphere))
+#check Poincare.homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace_eq
+
+#check (Poincare.homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere :
+  ∀ {M : Type} [TopologicalSpace M],
+    Nonempty (M ≃ₜ Poincare.ThreeSphere) →
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+#check Poincare.homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere_eq
+
+#check (Poincare.homeomorph_to_threeSphere_iff_homeomorph_to_onePoint_threeSpace :
+  ∀ {M : Type} [TopologicalSpace M],
+    Nonempty (M ≃ₜ Poincare.ThreeSphere) ↔
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+#check Poincare.homeomorph_to_threeSphere_iff_homeomorph_to_onePoint_threeSpace_eq
+
 #check (Poincare.threeSphere_self_homeomorph :
   Nonempty (Poincare.ThreeSphere ≃ₜ Poincare.ThreeSphere))
 

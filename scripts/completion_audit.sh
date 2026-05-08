@@ -4049,6 +4049,30 @@ check_decl "standard sphere homeomorphism direction iff theorem is declared" \
   '^theorem homeomorph_to_threeSphere_iff_threeSphere_homeomorph\b' Poincare/TopologyExtraction.lean
 check_decl "standard sphere homeomorphism direction iff equality contract is declared" \
   '^theorem homeomorph_to_threeSphere_iff_threeSphere_homeomorph_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification finite-rank equation is declared" \
+  '^theorem onePoint_threeSpace_finrank_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification finite-rank equation equality contract is declared" \
+  '^theorem onePoint_threeSpace_finrank_eq_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification target homeomorphism is declared" \
+  '^theorem onePoint_threeSpace_homeomorph_threeSphere\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification target homeomorphism equality contract is declared" \
+  '^theorem onePoint_threeSpace_homeomorph_threeSphere_eq\b' Poincare/TopologyExtraction.lean
+check_decl "standard sphere one-point compactification homeomorphism is declared" \
+  '^theorem threeSphere_homeomorph_onePoint_threeSpace\b' Poincare/TopologyExtraction.lean
+check_decl "standard sphere one-point compactification homeomorphism equality contract is declared" \
+  '^theorem threeSphere_homeomorph_onePoint_threeSpace_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification recognition-to-target theorem is declared" \
+  '^theorem homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification recognition-to-target equality contract is declared" \
+  '^theorem homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace_eq\b' Poincare/TopologyExtraction.lean
+check_decl "target-to-one-point compactification recognition theorem is declared" \
+  '^theorem homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere\b' Poincare/TopologyExtraction.lean
+check_decl "target-to-one-point compactification recognition equality contract is declared" \
+  '^theorem homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification recognition iff theorem is declared" \
+  '^theorem homeomorph_to_threeSphere_iff_homeomorph_to_onePoint_threeSpace\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification recognition iff equality contract is declared" \
+  '^theorem homeomorph_to_threeSphere_iff_homeomorph_to_onePoint_threeSpace_eq\b' Poincare/TopologyExtraction.lean
 check_decl "smoothability package is declared" \
   '^structure SmoothabilityPackage\b' Poincare/Smoothability.lean
 check_decl "smoothability Moise triangulation interface is declared" \
@@ -12690,6 +12714,18 @@ open scoped Manifold ContDiff
 #check Poincare.smoothPoincareConjectureStatement_eq
 #check Poincare.smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_statement
 #check Poincare.smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_statement_eq
+#check Poincare.onePoint_threeSpace_finrank_eq
+#check Poincare.onePoint_threeSpace_finrank_eq_eq
+#check Poincare.onePoint_threeSpace_homeomorph_threeSphere
+#check Poincare.onePoint_threeSpace_homeomorph_threeSphere_eq
+#check Poincare.threeSphere_homeomorph_onePoint_threeSpace
+#check Poincare.threeSphere_homeomorph_onePoint_threeSpace_eq
+#check Poincare.homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
+#check Poincare.homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace_eq
+#check Poincare.homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere
+#check Poincare.homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere_eq
+#check Poincare.homeomorph_to_threeSphere_iff_homeomorph_to_onePoint_threeSpace
+#check Poincare.homeomorph_to_threeSphere_iff_homeomorph_to_onePoint_threeSpace_eq
 #check Poincare.threeSphere_self_homeomorph
 #check Poincare.threeSphere_self_homeomorph_eq
 #check Poincare.threeSphere_self_homeomorph_self_diffeomorph_route_eq

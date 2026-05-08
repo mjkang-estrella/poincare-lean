@@ -587,7 +587,13 @@ The current artifact is intentionally conservative:
   assembly route applied to the package projections. The full classification
   sub-obligation bridge plus the narrower homeomorphism assembly/derivation
   statement bridges are pinned to their destructuring routes from the full
-  derivation statement. The
+  derivation statement. The topology layer also imports mathlib's one-point
+  compactification sphere theorem and proves the finite-rank equation for
+  `EuclideanSpace ℝ (Fin 3)`, a homeomorphism
+  `OnePoint (EuclideanSpace ℝ (Fin 3)) ≃ₜ ThreeSphere`, its reverse route, and
+  both directions of the recognition equivalence between the compactification
+  model and the project target sphere, with equality contracts and audit
+  coverage for those routes. The
   concrete homeomorphism glue for the standard sphere's self-homeomorphism,
   intermediate-space composition, opposite-direction source transport, and both
   inverse-direction recognition maps now also has direct equality contracts.

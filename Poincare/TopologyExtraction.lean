@@ -7,12 +7,130 @@ needed to identify the manifold with the standard 3-sphere.
 -/
 
 import Poincare.RicciFlowInterface
+import Mathlib.Topology.Compactification.OnePoint.Sphere
 
 universe u
 
 open scoped Manifold ContDiff
 
 namespace Poincare
+
+/--
+The one-point compactification model uses three-dimensional Euclidean space, so
+its ambient sphere has the four coordinates of the project target.
+-/
+theorem onePoint_threeSpace_finrank_eq :
+    Module.finrank ℝ (EuclideanSpace ℝ (Fin 3)) + 1 = Fintype.card (Fin 4) := by
+  rw [finrank_euclideanSpace_fin]
+  norm_num
+
+/-- The finite-rank equation is the standard computation for `ℝ^3` and `Fin 4`. -/
+theorem onePoint_threeSpace_finrank_eq_eq :
+    onePoint_threeSpace_finrank_eq =
+      (by
+        rw [finrank_euclideanSpace_fin]
+        norm_num) := by
+  apply Subsingleton.elim
+
+/--
+Mathlib's one-point compactification of three-dimensional Euclidean space is
+homeomorphic to the project's concrete `ThreeSphere`.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere :
+    Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3)) ≃ₜ ThreeSphere) := by
+  exact ⟨onePointEquivSphereOfFinrankEq (ι := Fin 4)
+    (V := EuclideanSpace ℝ (Fin 3)) onePoint_threeSpace_finrank_eq⟩
+
+/-- The compactification homeomorphism is mathlib's finite-rank sphere route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_eq :
+    onePoint_threeSpace_homeomorph_threeSphere =
+      ⟨onePointEquivSphereOfFinrankEq (ι := Fin 4)
+        (V := EuclideanSpace ℝ (Fin 3)) onePoint_threeSpace_finrank_eq⟩ := by
+  apply Subsingleton.elim
+
+/-- The standard sphere is homeomorphic to the one-point compactification model. -/
+theorem threeSphere_homeomorph_onePoint_threeSpace :
+    Nonempty (ThreeSphere ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  rcases onePoint_threeSpace_homeomorph_threeSphere with ⟨e⟩
+  exact ⟨e.symm⟩
+
+/-- The reverse compactification route is inversion of the forward route. -/
+theorem threeSphere_homeomorph_onePoint_threeSpace_eq :
+    threeSphere_homeomorph_onePoint_threeSpace =
+      (by
+        rcases onePoint_threeSpace_homeomorph_threeSphere with ⟨e⟩
+        exact ⟨e.symm⟩) := by
+  apply Subsingleton.elim
+
+/--
+Recognition through the one-point compactification model implies recognition
+against the project target sphere.
+-/
+theorem homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    Nonempty (M ≃ₜ ThreeSphere) := by
+  rcases h with ⟨eM⟩
+  rcases onePoint_threeSpace_homeomorph_threeSphere with ⟨eS⟩
+  exact ⟨eM.trans eS⟩
+
+/-- The compactification-to-target route is composition with the named model map. -/
+theorem homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace_eq
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace h =
+      (by
+        rcases h with ⟨eM⟩
+        rcases onePoint_threeSpace_homeomorph_threeSphere with ⟨eS⟩
+        exact ⟨eM.trans eS⟩) := by
+  apply Subsingleton.elim
+
+/--
+Recognition against the project target sphere can be restated through the
+one-point compactification model.
+-/
+theorem homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  rcases h with ⟨eM⟩
+  rcases onePoint_threeSpace_homeomorph_threeSphere with ⟨eS⟩
+  exact ⟨eM.trans eS.symm⟩
+
+/-- The target-to-compactification route is composition with the inverse model map. -/
+theorem homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere_eq
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h =
+      (by
+        rcases h with ⟨eM⟩
+        rcases onePoint_threeSpace_homeomorph_threeSphere with ⟨eS⟩
+        exact ⟨eM.trans eS.symm⟩) := by
+  apply Subsingleton.elim
+
+/--
+For any source space, being homeomorphic to the project target sphere is
+equivalent to being homeomorphic to the one-point compactification model.
+-/
+theorem homeomorph_to_threeSphere_iff_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M] :
+    Nonempty (M ≃ₜ ThreeSphere) ↔
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  constructor
+  · exact homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere
+  · exact homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
+
+/-- The compactification recognition equivalence is the pair of named transports. -/
+theorem homeomorph_to_threeSphere_iff_homeomorph_to_onePoint_threeSpace_eq
+    {M : Type u} [TopologicalSpace M] :
+    (homeomorph_to_threeSphere_iff_homeomorph_to_onePoint_threeSpace :
+      Nonempty (M ≃ₜ ThreeSphere) ↔
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) =
+      (by
+        constructor
+        · exact homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere
+        · exact homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace) := by
+  apply Subsingleton.elim
 
 /-- The standard target sphere is homeomorphic to itself. -/
 theorem threeSphere_self_homeomorph :
