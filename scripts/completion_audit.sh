@@ -4085,6 +4085,14 @@ check_decl "named one-point compactification recognition target reduction is dec
   '^theorem poincareConjectureStatement_of_onePointThreeSpaceRecognitionStatement\b' Poincare/TopologyExtraction.lean
 check_decl "named one-point compactification recognition target reduction equality contract is declared" \
   '^theorem poincareConjectureStatement_of_onePointThreeSpaceRecognitionStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "reverse named one-point compactification recognition route is declared" \
+  '^theorem onePointThreeSpaceRecognitionStatement_of_poincareConjectureStatement\b' Poincare/TopologyExtraction.lean
+check_decl "reverse named one-point compactification recognition route equality contract is declared" \
+  '^theorem onePointThreeSpaceRecognitionStatement_of_poincareConjectureStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "Poincare one-point compactification recognition equivalence is declared" \
+  '^theorem poincareConjectureStatement_iff_onePointThreeSpaceRecognitionStatement\b' Poincare/TopologyExtraction.lean
+check_decl "Poincare one-point compactification recognition equivalence equality contract is declared" \
+  '^theorem poincareConjectureStatement_iff_onePointThreeSpaceRecognitionStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification recognition completion payload is declared" \
   '^theorem poincare_payload_of_onePoint_threeSpace_recognition\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification recognition completion payload equality contract is declared" \
@@ -4113,6 +4121,18 @@ check_decl "named finite-extinction one-point compactification extractor is decl
   '^theorem extinction_implies_sphere_of_extinctionOnePointThreeSpaceRecognitionStatement\b' Poincare/TopologyExtraction.lean
 check_decl "named finite-extinction one-point compactification extractor equality contract is declared" \
   '^theorem extinction_implies_sphere_of_extinctionOnePointThreeSpaceRecognitionStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "reverse raw finite-extinction one-point compactification extractor is declared" \
+  '^theorem onePoint_threeSpace_recognition_of_extinction_implies_sphere\b' Poincare/TopologyExtraction.lean
+check_decl "reverse raw finite-extinction one-point compactification extractor equality contract is declared" \
+  '^theorem onePoint_threeSpace_recognition_of_extinction_implies_sphere_eq\b' Poincare/TopologyExtraction.lean
+check_decl "reverse named finite-extinction one-point compactification extractor is declared" \
+  '^theorem extinctionOnePointThreeSpaceRecognitionStatement_of_extinctionImpliesSphereStatement\b' Poincare/TopologyExtraction.lean
+check_decl "reverse named finite-extinction one-point compactification extractor equality contract is declared" \
+  '^theorem extinctionOnePointThreeSpaceRecognitionStatement_of_extinctionImpliesSphereStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "finite-extinction one-point compactification extraction equivalence is declared" \
+  '^theorem extinctionImpliesSphereStatement_iff_extinctionOnePointThreeSpaceRecognitionStatement\b' Poincare/TopologyExtraction.lean
+check_decl "finite-extinction one-point compactification extraction equivalence equality contract is declared" \
+  '^theorem extinctionImpliesSphereStatement_iff_extinctionOnePointThreeSpaceRecognitionStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "named finite-extinction one-point compactification target route is declared" \
   '^theorem poincare_statement_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement\b' Poincare/TopologyExtraction.lean
 check_decl "named finite-extinction one-point compactification target route equality contract is declared" \
@@ -12828,6 +12848,10 @@ open scoped Manifold ContDiff
 #check Poincare.poincareConjectureStatement_of_onePoint_threeSpace_recognition_eq
 #check Poincare.poincareConjectureStatement_of_onePointThreeSpaceRecognitionStatement
 #check Poincare.poincareConjectureStatement_of_onePointThreeSpaceRecognitionStatement_eq
+#check Poincare.onePointThreeSpaceRecognitionStatement_of_poincareConjectureStatement
+#check Poincare.onePointThreeSpaceRecognitionStatement_of_poincareConjectureStatement_eq
+#check Poincare.poincareConjectureStatement_iff_onePointThreeSpaceRecognitionStatement
+#check Poincare.poincareConjectureStatement_iff_onePointThreeSpaceRecognitionStatement_eq
 #check Poincare.poincare_payload_of_onePoint_threeSpace_recognition
 #check Poincare.poincare_payload_of_onePoint_threeSpace_recognition_eq
 #check Poincare.poincare_payload_of_onePointThreeSpaceRecognitionStatement
@@ -12842,6 +12866,12 @@ open scoped Manifold ContDiff
 #check Poincare.extinctionOnePointThreeSpaceRecognitionStatement_eq
 #check Poincare.extinction_implies_sphere_of_extinctionOnePointThreeSpaceRecognitionStatement
 #check Poincare.extinction_implies_sphere_of_extinctionOnePointThreeSpaceRecognitionStatement_eq
+#check Poincare.onePoint_threeSpace_recognition_of_extinction_implies_sphere
+#check Poincare.onePoint_threeSpace_recognition_of_extinction_implies_sphere_eq
+#check Poincare.extinctionOnePointThreeSpaceRecognitionStatement_of_extinctionImpliesSphereStatement
+#check Poincare.extinctionOnePointThreeSpaceRecognitionStatement_of_extinctionImpliesSphereStatement_eq
+#check Poincare.extinctionImpliesSphereStatement_iff_extinctionOnePointThreeSpaceRecognitionStatement
+#check Poincare.extinctionImpliesSphereStatement_iff_extinctionOnePointThreeSpaceRecognitionStatement_eq
 #check Poincare.poincare_statement_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
 #check Poincare.poincare_statement_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement_eq
 #check Poincare.poincare_payload_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement

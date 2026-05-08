@@ -2244,6 +2244,16 @@ universe u
     Poincare.PoincareConjectureStatement.{u})
 #check Poincare.poincareConjectureStatement_of_onePointThreeSpaceRecognitionStatement_eq
 
+#check (Poincare.onePointThreeSpaceRecognitionStatement_of_poincareConjectureStatement :
+  Poincare.PoincareConjectureStatement.{u} →
+    Poincare.OnePointThreeSpaceRecognitionStatement.{u})
+#check Poincare.onePointThreeSpaceRecognitionStatement_of_poincareConjectureStatement_eq
+
+#check (Poincare.poincareConjectureStatement_iff_onePointThreeSpaceRecognitionStatement :
+  Poincare.PoincareConjectureStatement.{u} ↔
+    Poincare.OnePointThreeSpaceRecognitionStatement.{u})
+#check Poincare.poincareConjectureStatement_iff_onePointThreeSpaceRecognitionStatement_eq
+
 #check (Poincare.poincare_payload_of_onePoint_threeSpace_recognition :
   (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
@@ -2309,6 +2319,25 @@ universe u
   Poincare.ExtinctionOnePointThreeSpaceRecognitionStatement.{u} →
     Poincare.ExtinctionImpliesSphereStatement.{u})
 #check Poincare.extinction_implies_sphere_of_extinctionOnePointThreeSpaceRecognitionStatement_eq
+
+#check (Poincare.onePoint_threeSpace_recognition_of_extinction_implies_sphere :
+  Poincare.ExtinctionImpliesSphereStatement.{u} →
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Poincare.FiniteExtinctionByRicciFlowWithSurgery M →
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+#check Poincare.onePoint_threeSpace_recognition_of_extinction_implies_sphere_eq
+
+#check (Poincare.extinctionOnePointThreeSpaceRecognitionStatement_of_extinctionImpliesSphereStatement :
+  Poincare.ExtinctionImpliesSphereStatement.{u} →
+    Poincare.ExtinctionOnePointThreeSpaceRecognitionStatement.{u})
+#check Poincare.extinctionOnePointThreeSpaceRecognitionStatement_of_extinctionImpliesSphereStatement_eq
+
+#check (Poincare.extinctionImpliesSphereStatement_iff_extinctionOnePointThreeSpaceRecognitionStatement :
+  Poincare.ExtinctionImpliesSphereStatement.{u} ↔
+    Poincare.ExtinctionOnePointThreeSpaceRecognitionStatement.{u})
+#check Poincare.extinctionImpliesSphereStatement_iff_extinctionOnePointThreeSpaceRecognitionStatement_eq
 
 #check (Poincare.poincare_statement_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement :
   (∀ (M : Type u) [TopologicalSpace M] [T2Space M]

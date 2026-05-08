@@ -193,6 +193,46 @@ theorem poincareConjectureStatement_of_onePointThreeSpaceRecognitionStatement_eq
   apply Subsingleton.elim
 
 /--
+Conversely, the project target statement recognizes every candidate as the
+one-point compactification model by composing with the inverse model map.
+-/
+theorem onePointThreeSpaceRecognitionStatement_of_poincareConjectureStatement
+    (h : PoincareConjectureStatement.{u}) :
+    OnePointThreeSpaceRecognitionStatement.{u} := by
+  intro M _top _t2 _charted _simple _compact
+  exact homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere (h M)
+
+/-- The reverse universal compactification-recognition route is pointwise model composition. -/
+theorem onePointThreeSpaceRecognitionStatement_of_poincareConjectureStatement_eq
+    (h : PoincareConjectureStatement.{u}) :
+    onePointThreeSpaceRecognitionStatement_of_poincareConjectureStatement h =
+      (by
+        intro M _top _t2 _charted _simple _compact
+        exact homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere
+          (h M)) := by
+  apply Subsingleton.elim
+
+/--
+The project target statement is equivalent to universal recognition by the
+one-point compactification model.
+-/
+theorem poincareConjectureStatement_iff_onePointThreeSpaceRecognitionStatement :
+    PoincareConjectureStatement.{u} ↔
+      OnePointThreeSpaceRecognitionStatement.{u} := by
+  constructor
+  · exact onePointThreeSpaceRecognitionStatement_of_poincareConjectureStatement
+  · exact poincareConjectureStatement_of_onePointThreeSpaceRecognitionStatement
+
+/-- The compactification-recognition equivalence is the pair of named routes. -/
+theorem poincareConjectureStatement_iff_onePointThreeSpaceRecognitionStatement_eq :
+    poincareConjectureStatement_iff_onePointThreeSpaceRecognitionStatement.{u} =
+      (by
+        constructor
+        · exact onePointThreeSpaceRecognitionStatement_of_poincareConjectureStatement
+        · exact poincareConjectureStatement_of_onePointThreeSpaceRecognitionStatement) := by
+  apply Subsingleton.elim
+
+/--
 Universal recognition by the one-point compactification model exposes the
 project completion payload.
 -/
@@ -263,6 +303,31 @@ theorem extinction_implies_sphere_of_onePoint_threeSpace_recognition_eq
         intro M _top _t2 _charted _simple _compact extinction
         exact homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
           (recognize M extinction)) := by
+  apply Subsingleton.elim
+
+/--
+Conversely, a finite-extinction-to-sphere extractor recognizes the one-point
+compactification model after extinction by composing with the inverse model map.
+-/
+theorem onePoint_threeSpace_recognition_of_extinction_implies_sphere
+    (extract : ExtinctionImpliesSphereStatement.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        FiniteExtinctionByRicciFlowWithSurgery M →
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  intro M _top _t2 _charted _simple _compact extinction
+  exact homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere
+    (extract M extinction)
+
+/-- The reverse extinction compactification route is pointwise inverse-model composition. -/
+theorem onePoint_threeSpace_recognition_of_extinction_implies_sphere_eq
+    (extract : ExtinctionImpliesSphereStatement.{u}) :
+    onePoint_threeSpace_recognition_of_extinction_implies_sphere extract =
+      (by
+        intro M _top _t2 _charted _simple _compact extinction
+        exact homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere
+          (extract M extinction)) := by
   apply Subsingleton.elim
 
 /--
@@ -387,6 +452,45 @@ theorem extinction_implies_sphere_of_extinctionOnePointThreeSpaceRecognitionStat
     extinction_implies_sphere_of_extinctionOnePointThreeSpaceRecognitionStatement
       recognize =
       extinction_implies_sphere_of_onePoint_threeSpace_recognition recognize := by
+  apply Subsingleton.elim
+
+/--
+The usual finite-extinction-to-sphere interface also supplies the named
+one-point compactification recognition interface.
+-/
+theorem extinctionOnePointThreeSpaceRecognitionStatement_of_extinctionImpliesSphereStatement
+    (extract : ExtinctionImpliesSphereStatement.{u}) :
+    ExtinctionOnePointThreeSpaceRecognitionStatement.{u} := by
+  exact onePoint_threeSpace_recognition_of_extinction_implies_sphere extract
+
+/-- The named reverse extinction-recognition route is the raw reverse route. -/
+theorem extinctionOnePointThreeSpaceRecognitionStatement_of_extinctionImpliesSphereStatement_eq
+    (extract : ExtinctionImpliesSphereStatement.{u}) :
+    extinctionOnePointThreeSpaceRecognitionStatement_of_extinctionImpliesSphereStatement
+      extract =
+      onePoint_threeSpace_recognition_of_extinction_implies_sphere extract := by
+  apply Subsingleton.elim
+
+/--
+The theorem-shaped finite-extinction extraction interface is equivalent to the
+same interface stated against the one-point compactification model.
+-/
+theorem extinctionImpliesSphereStatement_iff_extinctionOnePointThreeSpaceRecognitionStatement :
+    ExtinctionImpliesSphereStatement.{u} ↔
+      ExtinctionOnePointThreeSpaceRecognitionStatement.{u} := by
+  constructor
+  · exact extinctionOnePointThreeSpaceRecognitionStatement_of_extinctionImpliesSphereStatement
+  · exact extinction_implies_sphere_of_extinctionOnePointThreeSpaceRecognitionStatement
+
+/-- The extinction compactification-recognition equivalence is the pair of named routes. -/
+theorem extinctionImpliesSphereStatement_iff_extinctionOnePointThreeSpaceRecognitionStatement_eq :
+    extinctionImpliesSphereStatement_iff_extinctionOnePointThreeSpaceRecognitionStatement.{u} =
+      (by
+        constructor
+        · exact
+            extinctionOnePointThreeSpaceRecognitionStatement_of_extinctionImpliesSphereStatement
+        · exact
+            extinction_implies_sphere_of_extinctionOnePointThreeSpaceRecognitionStatement) := by
   apply Subsingleton.elim
 
 /--
