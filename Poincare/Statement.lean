@@ -545,7 +545,7 @@ theorem threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement_eq :
 
 /--
 The concrete path-homotopy obligation supplies the full target prerequisite
-payload by first converting to loop-nullhomotopy.
+payload by converting path-homotopy directly to simple-connectedness.
 -/
 theorem threeSphere_target_prerequisites_of_pathHomotopyStatement
     (h : ThreeSpherePathHomotopyStatement) :
@@ -556,25 +556,28 @@ theorem threeSphere_target_prerequisites_of_pathHomotopyStatement
     ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
     ∃ _path : PathConnectedSpace ThreeSphere,
     ∃ _connected : ConnectedSpace ThreeSphere,
-      Nonempty ThreeSphere :=
-  threeSphere_target_prerequisites_of_loopNullhomotopyStatement
-    (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement h)
+      Nonempty ThreeSphere := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_pathHomotopyStatement h
+  exact threeSphere_target_prerequisites
 
 /--
-The path-homotopy target-prerequisite route is exactly the loop-nullhomotopy
-prerequisite route after converting path-homotopy to loop-nullhomotopy.
+The path-homotopy target-prerequisite route is exactly the full target payload
+after converting path-homotopy to simple-connectedness.
 -/
 theorem threeSphere_target_prerequisites_of_pathHomotopyStatement_eq :
     threeSphere_target_prerequisites_of_pathHomotopyStatement =
       (fun h : ThreeSpherePathHomotopyStatement =>
-        threeSphere_target_prerequisites_of_loopNullhomotopyStatement
-          (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement h)) := by
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_pathHomotopyStatement h
+        threeSphere_target_prerequisites) := by
   funext h
   apply Subsingleton.elim
 
 /--
 The concrete path-homotopy obligation supplies the full homotopy-oriented
-prerequisite payload by first converting to loop-nullhomotopy.
+prerequisite payload by converting path-homotopy directly to
+simple-connectedness.
 -/
 theorem threeSphere_homotopy_prerequisites_of_pathHomotopyStatement
     (h : ThreeSpherePathHomotopyStatement) :
@@ -586,19 +589,21 @@ theorem threeSphere_homotopy_prerequisites_of_pathHomotopyStatement
     ∃ _path : PathConnectedSpace ThreeSphere,
     ∃ _locPath : LocPathConnectedSpace ThreeSphere,
     ∃ _connected : ConnectedSpace ThreeSphere,
-      Nonempty ThreeSphere :=
-  threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement
-    (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement h)
+      Nonempty ThreeSphere := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_pathHomotopyStatement h
+  exact threeSphere_homotopy_prerequisites
 
 /--
-The path-homotopy homotopy-prerequisite route is exactly the loop-nullhomotopy
-homotopy-prerequisite route after converting path-homotopy to loop-nullhomotopy.
+The path-homotopy homotopy-prerequisite route is exactly the full homotopy
+payload after converting path-homotopy to simple-connectedness.
 -/
 theorem threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_eq :
     threeSphere_homotopy_prerequisites_of_pathHomotopyStatement =
       (fun h : ThreeSpherePathHomotopyStatement =>
-        threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement
-          (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement h)) := by
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_pathHomotopyStatement h
+        threeSphere_homotopy_prerequisites) := by
   funext h
   apply Subsingleton.elim
 
