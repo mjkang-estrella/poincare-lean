@@ -2239,6 +2239,42 @@ universe u
       ∀ witness : Type u, Poincare.CompletionCriterionAtUniverse witness)
 #check Poincare.poincare_payload_of_onePoint_threeSpace_recognition_eq
 
+#check (Poincare.extinction_implies_sphere_of_onePoint_threeSpace_recognition :
+  (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Poincare.FiniteExtinctionByRicciFlowWithSurgery M →
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
+    Poincare.ExtinctionImpliesSphereStatement.{u})
+#check Poincare.extinction_implies_sphere_of_onePoint_threeSpace_recognition_eq
+
+#check (Poincare.poincare_statement_of_finite_extinction_and_onePoint_threeSpace_recognition :
+  (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
+  (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Poincare.FiniteExtinctionByRicciFlowWithSurgery M →
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
+    Poincare.PoincareConjectureStatement.{u})
+#check Poincare.poincare_statement_of_finite_extinction_and_onePoint_threeSpace_recognition_eq
+
+#check (Poincare.poincare_payload_of_finite_extinction_and_onePoint_threeSpace_recognition :
+  (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
+  (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Poincare.FiniteExtinctionByRicciFlowWithSurgery M →
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
+    ∃ _target : Poincare.PoincareConjectureStatement.{u},
+      ∀ witness : Type u, Poincare.CompletionCriterionAtUniverse witness)
+#check Poincare.poincare_payload_of_finite_extinction_and_onePoint_threeSpace_recognition_eq
+
 #check (Poincare.onePoint_threeSpace_t2Space :
   T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))))
 #check Poincare.onePoint_threeSpace_t2Space_eq

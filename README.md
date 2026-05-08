@@ -604,8 +604,11 @@ The current artifact is intentionally conservative:
   `poincareConjectureStatement_of_onePoint_threeSpace_recognition`, the
   reduction from universal compactification recognition to the project target
   statement, plus `poincare_payload_of_onePoint_threeSpace_recognition`, the
-  corresponding completion payload, with equality contracts and audit coverage
-  for those routes. The
+  corresponding completion payload. It also records the finite-extinction
+  extractor route
+  `extinction_implies_sphere_of_onePoint_threeSpace_recognition` and the target
+  and payload assembly from finite extinction plus compactification recognition,
+  with equality contracts and audit coverage for those routes. The
   concrete homeomorphism glue for the standard sphere's self-homeomorphism,
   intermediate-space composition, opposite-direction source transport, and both
   inverse-direction recognition maps now also has direct equality contracts.
