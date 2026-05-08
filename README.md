@@ -667,6 +667,13 @@ The current artifact is intentionally conservative:
   endpoint with the local homotopy/manifold prerequisite payloads.  Direct-route
   contracts pin those target-statement endpoints back to the explicit
   `onePoint_threeSpace_homeomorph_threeSphere` model homeomorphism.
+  The pointwise finite-extinction compactification-recognition route
+  `onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement`
+  now recovers the compactification self endpoint from a model-level extinction
+  witness, and
+  `onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement`
+  composes that endpoint to the target sphere, again pinned to the direct model
+  homeomorphisms.
   It
   names universal compactification recognition as
   `OnePointThreeSpaceRecognitionStatement`, and
