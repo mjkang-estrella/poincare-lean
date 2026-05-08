@@ -133,6 +133,25 @@ theorem homeomorph_to_threeSphere_iff_homeomorph_to_onePoint_threeSpace_eq
   apply Subsingleton.elim
 
 /--
+Named universal recognition statement using the one-point compactification
+model instead of the project target sphere.
+-/
+def OnePointThreeSpaceRecognitionStatement : Prop :=
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+
+/-- The named universal compactification-recognition statement expands to its pointwise shape. -/
+theorem onePointThreeSpaceRecognitionStatement_eq :
+    OnePointThreeSpaceRecognitionStatement.{u} =
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+  rfl
+
+/--
 If every candidate manifold in the Poincare statement is recognized as the
 one-point compactification model, the project target statement follows.
 -/
@@ -158,6 +177,22 @@ theorem poincareConjectureStatement_of_onePoint_threeSpace_recognition_eq
   apply Subsingleton.elim
 
 /--
+The named compactification-recognition statement implies the project target
+statement.
+-/
+theorem poincareConjectureStatement_of_onePointThreeSpaceRecognitionStatement
+    (h : OnePointThreeSpaceRecognitionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  exact poincareConjectureStatement_of_onePoint_threeSpace_recognition h
+
+/-- The named compactification-recognition target route is the raw pointwise route. -/
+theorem poincareConjectureStatement_of_onePointThreeSpaceRecognitionStatement_eq
+    (h : OnePointThreeSpaceRecognitionStatement.{u}) :
+    poincareConjectureStatement_of_onePointThreeSpaceRecognitionStatement h =
+      poincareConjectureStatement_of_onePoint_threeSpace_recognition h := by
+  apply Subsingleton.elim
+
+/--
 Universal recognition by the one-point compactification model exposes the
 project completion payload.
 -/
@@ -180,6 +215,23 @@ theorem poincare_payload_of_onePoint_threeSpace_recognition_eq
     poincare_payload_of_onePoint_threeSpace_recognition h =
       poincare_completion_payload_of_poincareConjectureStatement
         (poincareConjectureStatement_of_onePoint_threeSpace_recognition h) := by
+  apply Subsingleton.elim
+
+/--
+The named compactification-recognition statement exposes the project completion
+payload.
+-/
+theorem poincare_payload_of_onePointThreeSpaceRecognitionStatement
+    (h : OnePointThreeSpaceRecognitionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  exact poincare_payload_of_onePoint_threeSpace_recognition h
+
+/-- The named compactification-recognition payload route is the raw pointwise payload. -/
+theorem poincare_payload_of_onePointThreeSpaceRecognitionStatement_eq
+    (h : OnePointThreeSpaceRecognitionStatement.{u}) :
+    poincare_payload_of_onePointThreeSpaceRecognitionStatement h =
+      poincare_payload_of_onePoint_threeSpace_recognition h := by
   apply Subsingleton.elim
 
 /--

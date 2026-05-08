@@ -2222,6 +2222,15 @@ set_option linter.unusedVariables false
 
 universe u
 
+#check (Poincare.OnePointThreeSpaceRecognitionStatement.{u} :
+  Prop)
+#check (Poincare.onePointThreeSpaceRecognitionStatement_eq :
+  Poincare.OnePointThreeSpaceRecognitionStatement.{u} =
+    (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))))
+
 #check (Poincare.poincareConjectureStatement_of_onePoint_threeSpace_recognition :
   (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
@@ -2229,6 +2238,11 @@ universe u
       Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
     Poincare.PoincareConjectureStatement.{u})
 #check Poincare.poincareConjectureStatement_of_onePoint_threeSpace_recognition_eq
+
+#check (Poincare.poincareConjectureStatement_of_onePointThreeSpaceRecognitionStatement :
+  Poincare.OnePointThreeSpaceRecognitionStatement.{u} →
+    Poincare.PoincareConjectureStatement.{u})
+#check Poincare.poincareConjectureStatement_of_onePointThreeSpaceRecognitionStatement_eq
 
 #check (Poincare.poincare_payload_of_onePoint_threeSpace_recognition :
   (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
@@ -2238,6 +2252,12 @@ universe u
     ∃ _target : Poincare.PoincareConjectureStatement.{u},
       ∀ witness : Type u, Poincare.CompletionCriterionAtUniverse witness)
 #check Poincare.poincare_payload_of_onePoint_threeSpace_recognition_eq
+
+#check (Poincare.poincare_payload_of_onePointThreeSpaceRecognitionStatement :
+  Poincare.OnePointThreeSpaceRecognitionStatement.{u} →
+    ∃ _target : Poincare.PoincareConjectureStatement.{u},
+      ∀ witness : Type u, Poincare.CompletionCriterionAtUniverse witness)
+#check Poincare.poincare_payload_of_onePointThreeSpaceRecognitionStatement_eq
 
 #check (Poincare.extinction_implies_sphere_of_onePoint_threeSpace_recognition :
   (∀ (M : Type u) [TopologicalSpace M] [T2Space M]

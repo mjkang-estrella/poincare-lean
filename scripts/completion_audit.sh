@@ -4073,14 +4073,26 @@ check_decl "one-point compactification recognition iff theorem is declared" \
   '^theorem homeomorph_to_threeSphere_iff_homeomorph_to_onePoint_threeSpace\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification recognition iff equality contract is declared" \
   '^theorem homeomorph_to_threeSphere_iff_homeomorph_to_onePoint_threeSpace_eq\b' Poincare/TopologyExtraction.lean
+check_decl "named one-point compactification recognition statement is declared" \
+  '^def OnePointThreeSpaceRecognitionStatement\b' Poincare/TopologyExtraction.lean
+check_decl "named one-point compactification recognition statement equality contract is declared" \
+  '^theorem onePointThreeSpaceRecognitionStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification recognition target reduction is declared" \
   '^theorem poincareConjectureStatement_of_onePoint_threeSpace_recognition\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification recognition target reduction equality contract is declared" \
   '^theorem poincareConjectureStatement_of_onePoint_threeSpace_recognition_eq\b' Poincare/TopologyExtraction.lean
+check_decl "named one-point compactification recognition target reduction is declared" \
+  '^theorem poincareConjectureStatement_of_onePointThreeSpaceRecognitionStatement\b' Poincare/TopologyExtraction.lean
+check_decl "named one-point compactification recognition target reduction equality contract is declared" \
+  '^theorem poincareConjectureStatement_of_onePointThreeSpaceRecognitionStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification recognition completion payload is declared" \
   '^theorem poincare_payload_of_onePoint_threeSpace_recognition\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification recognition completion payload equality contract is declared" \
   '^theorem poincare_payload_of_onePoint_threeSpace_recognition_eq\b' Poincare/TopologyExtraction.lean
+check_decl "named one-point compactification recognition completion payload is declared" \
+  '^theorem poincare_payload_of_onePointThreeSpaceRecognitionStatement\b' Poincare/TopologyExtraction.lean
+check_decl "named one-point compactification recognition completion payload equality contract is declared" \
+  '^theorem poincare_payload_of_onePointThreeSpaceRecognitionStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "finite-extinction one-point compactification extractor is declared" \
   '^theorem extinction_implies_sphere_of_onePoint_threeSpace_recognition\b' Poincare/TopologyExtraction.lean
 check_decl "finite-extinction one-point compactification extractor equality contract is declared" \
@@ -12806,10 +12818,16 @@ open scoped Manifold ContDiff
 #check Poincare.homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere_eq
 #check Poincare.homeomorph_to_threeSphere_iff_homeomorph_to_onePoint_threeSpace
 #check Poincare.homeomorph_to_threeSphere_iff_homeomorph_to_onePoint_threeSpace_eq
+#check Poincare.OnePointThreeSpaceRecognitionStatement
+#check Poincare.onePointThreeSpaceRecognitionStatement_eq
 #check Poincare.poincareConjectureStatement_of_onePoint_threeSpace_recognition
 #check Poincare.poincareConjectureStatement_of_onePoint_threeSpace_recognition_eq
+#check Poincare.poincareConjectureStatement_of_onePointThreeSpaceRecognitionStatement
+#check Poincare.poincareConjectureStatement_of_onePointThreeSpaceRecognitionStatement_eq
 #check Poincare.poincare_payload_of_onePoint_threeSpace_recognition
 #check Poincare.poincare_payload_of_onePoint_threeSpace_recognition_eq
+#check Poincare.poincare_payload_of_onePointThreeSpaceRecognitionStatement
+#check Poincare.poincare_payload_of_onePointThreeSpaceRecognitionStatement_eq
 #check Poincare.extinction_implies_sphere_of_onePoint_threeSpace_recognition
 #check Poincare.extinction_implies_sphere_of_onePoint_threeSpace_recognition_eq
 #check Poincare.poincare_statement_of_finite_extinction_and_onePoint_threeSpace_recognition
