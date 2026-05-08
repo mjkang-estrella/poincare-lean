@@ -9909,6 +9909,106 @@ theorem canonical_completion_criterion_of_poincareProofDependencies_package_laye
   apply Subsingleton.elim
 
 /--
+The aggregate certified package-layer canonical payload agrees directly with
+the package-level certified extraction canonical payload selected after
+converting to the remaining-dependency package-layer payload.
+-/
+theorem canonical_completion_payload_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_to_package_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_payload_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+      dependencies =
+      (by
+        rcases remainingDependencyPackage_package_layer_requirements_payload
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies) with
+          ⟨ smoothabilityRequirement
+          , _analyticRequirement
+          , _surgeryRequirement
+          , finiteExtinctionRequirement
+          , topologyRequirement
+          ⟩
+        exact
+          canonical_completion_payload_of_surgery_and_topology_package_extraction_derivation
+            smoothabilityRequirement finiteExtinctionRequirement
+            topologyRequirement) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate certified package-layer canonical target agrees directly with the
+package-level certified extraction canonical target selected after converting to
+the remaining-dependency package-layer payload.
+-/
+theorem canonical_completion_target_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_to_package_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_target_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+      dependencies =
+      (by
+        rcases remainingDependencyPackage_package_layer_requirements_payload
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies) with
+          ⟨ smoothabilityRequirement
+          , _analyticRequirement
+          , _surgeryRequirement
+          , finiteExtinctionRequirement
+          , topologyRequirement
+          ⟩
+        exact
+          canonical_completion_target_of_surgery_and_topology_package_extraction_derivation
+            smoothabilityRequirement finiteExtinctionRequirement
+            topologyRequirement) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate certified package-layer canonical criterion agrees directly with
+the package-level certified extraction canonical criterion selected after
+converting to the remaining-dependency package-layer payload.
+-/
+theorem canonical_completion_criterion_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_to_package_extraction_derivation_eq
+    (witness : Type u) (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_criterion_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+      witness dependencies =
+      (by
+        rcases remainingDependencyPackage_package_layer_requirements_payload
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies) with
+          ⟨ smoothabilityRequirement
+          , _analyticRequirement
+          , _surgeryRequirement
+          , finiteExtinctionRequirement
+          , topologyRequirement
+          ⟩
+        exact
+          canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation
+            witness smoothabilityRequirement finiteExtinctionRequirement
+            topologyRequirement) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate certified package-layer canonical statement agrees directly with
+the package-level certified extraction canonical statement selected after
+converting to the remaining-dependency package-layer payload.
+-/
+theorem canonical_three_sphere_statement_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_to_package_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_three_sphere_statement_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+      dependencies =
+      (by
+        rcases remainingDependencyPackage_package_layer_requirements_payload
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies) with
+          ⟨ smoothabilityRequirement
+          , _analyticRequirement
+          , _surgeryRequirement
+          , finiteExtinctionRequirement
+          , topologyRequirement
+          ⟩
+        exact
+          canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation
+            smoothabilityRequirement finiteExtinctionRequirement
+            topologyRequirement) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate milestone canonical statement route converts to the remaining
 dependency package and then applies the remaining-dependency milestone route.
 -/
@@ -10012,6 +10112,106 @@ theorem canonical_completion_criterion_of_poincareProofDependencies_milestone_ex
         witness
         (remainingDependencyPackage_iff_poincareProofDependencies.mpr
           dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate certified milestone canonical payload agrees directly with the
+certified component-slot canonical payload selected after converting to the
+remaining-dependency milestone payload.
+-/
+theorem canonical_completion_payload_of_poincareProofDependencies_milestone_extraction_derivation_requirements_to_component_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_payload_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+      dependencies =
+      (by
+        rcases remainingDependencyPackage_milestone_requirements_payload
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies) with
+          ⟨ smoothabilityBridgeRequirement
+          , _ricciFlowAnalyticFoundationRequirement
+          , _ricciFlowWithSurgeryRequirement
+          , _perelmanSingularityControlRequirement
+          , finiteExtinctionRequirement
+          , extinctionToSphereHomeomorphismRequirement
+          ⟩
+        exact canonical_completion_payload_of_component_extraction_derivation_requirements
+          smoothabilityBridgeRequirement finiteExtinctionRequirement
+          extinctionToSphereHomeomorphismRequirement) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate certified milestone canonical target agrees directly with the
+certified component-slot canonical target selected after converting to the
+remaining-dependency milestone payload.
+-/
+theorem canonical_completion_target_of_poincareProofDependencies_milestone_extraction_derivation_requirements_to_component_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_target_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+      dependencies =
+      (by
+        rcases remainingDependencyPackage_milestone_requirements_payload
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies) with
+          ⟨ smoothabilityBridgeRequirement
+          , _ricciFlowAnalyticFoundationRequirement
+          , _ricciFlowWithSurgeryRequirement
+          , _perelmanSingularityControlRequirement
+          , finiteExtinctionRequirement
+          , extinctionToSphereHomeomorphismRequirement
+          ⟩
+        exact canonical_completion_target_of_component_extraction_derivation_requirements
+          smoothabilityBridgeRequirement finiteExtinctionRequirement
+          extinctionToSphereHomeomorphismRequirement) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate certified milestone canonical criterion agrees directly with the
+certified component-slot canonical criterion selected after converting to the
+remaining-dependency milestone payload.
+-/
+theorem canonical_completion_criterion_of_poincareProofDependencies_milestone_extraction_derivation_requirements_to_component_extraction_derivation_eq
+    (witness : Type u) (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_criterion_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+      witness dependencies =
+      (by
+        rcases remainingDependencyPackage_milestone_requirements_payload
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies) with
+          ⟨ smoothabilityBridgeRequirement
+          , _ricciFlowAnalyticFoundationRequirement
+          , _ricciFlowWithSurgeryRequirement
+          , _perelmanSingularityControlRequirement
+          , finiteExtinctionRequirement
+          , extinctionToSphereHomeomorphismRequirement
+          ⟩
+        exact canonical_completion_criterion_of_component_extraction_derivation_requirements
+          witness smoothabilityBridgeRequirement finiteExtinctionRequirement
+          extinctionToSphereHomeomorphismRequirement) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate certified milestone canonical statement agrees directly with the
+certified component-slot canonical statement selected after converting to the
+remaining-dependency milestone payload.
+-/
+theorem canonical_three_sphere_statement_of_poincareProofDependencies_milestone_extraction_derivation_requirements_to_component_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_three_sphere_statement_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+      dependencies =
+      (by
+        rcases remainingDependencyPackage_milestone_requirements_payload
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies) with
+          ⟨ smoothabilityBridgeRequirement
+          , _ricciFlowAnalyticFoundationRequirement
+          , _ricciFlowWithSurgeryRequirement
+          , _perelmanSingularityControlRequirement
+          , finiteExtinctionRequirement
+          , extinctionToSphereHomeomorphismRequirement
+          ⟩
+        exact canonical_three_sphere_statement_of_component_extraction_derivation_requirements
+          smoothabilityBridgeRequirement finiteExtinctionRequirement
+          extinctionToSphereHomeomorphismRequirement) := by
   apply Subsingleton.elim
 
 /--

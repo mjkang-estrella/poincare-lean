@@ -1632,6 +1632,10 @@ The current artifact is intentionally conservative:
   conversion.
   The aggregate certified component wrapper also has direct package-route
   contracts after that conversion and remaining component-payload projection.
+  The aggregate certified package-layer and milestone wrappers likewise have
+  direct endpoint contracts to the package-level certified extraction route and
+  certified component-slot route selected after converting through the stored
+  remaining-dependency package-layer and milestone payloads.
   Their project payload, target-statement, and criterion projections now also
   have equality contracts pinning each `poincare_completion_payload_of_poincareProofDependencies_*`,
   `poincare_statement_of_poincareProofDependencies_*`, and
