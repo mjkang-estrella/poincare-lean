@@ -241,6 +241,14 @@ check_decl "target sphere simple-connectedness path-homotopy equivalence is decl
   '^theorem threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement\b' Poincare/Statement.lean
 check_decl "target sphere simple-connectedness path-homotopy equivalence equality contract is declared" \
   '^theorem threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere simple-connectedness from path-homotopy theorem is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_of_pathHomotopyStatement\b' Poincare/Statement.lean
+check_decl "target sphere simple-connectedness from path-homotopy equality contract is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_of_pathHomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere path-homotopy from simple-connectedness theorem is declared" \
+  '^theorem threeSphere_pathHomotopyStatement_of_simplyConnectedSpace\b' Poincare/Statement.lean
+check_decl "target sphere path-homotopy from simple-connectedness equality contract is declared" \
+  '^theorem threeSphere_pathHomotopyStatement_of_simplyConnectedSpace_eq\b' Poincare/Statement.lean
 check_decl "target sphere loop-nullhomotopy from path-homotopy theorem is declared" \
   '^theorem threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement\b' Poincare/Statement.lean
 check_decl "target sphere loop-nullhomotopy from path-homotopy equality contract is declared" \
@@ -12568,6 +12576,10 @@ open scoped Manifold ContDiff
 #check Poincare.threeSpherePathHomotopyStatement_eq
 #check Poincare.threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement
 #check Poincare.threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement_eq
+#check Poincare.threeSphere_simplyConnectedSpace_of_pathHomotopyStatement
+#check Poincare.threeSphere_simplyConnectedSpace_of_pathHomotopyStatement_eq
+#check Poincare.threeSphere_pathHomotopyStatement_of_simplyConnectedSpace
+#check Poincare.threeSphere_pathHomotopyStatement_of_simplyConnectedSpace_eq
 #check Poincare.threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
 #check Poincare.threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement_eq
 #check Poincare.threeSphere_pathHomotopyStatement_of_loopNullhomotopyStatement
@@ -17568,6 +17580,16 @@ open scoped Manifold ContDiff
   SimplyConnectedSpace Poincare.ThreeSphere ↔
     Poincare.ThreeSpherePathHomotopyStatement)
 #check Poincare.threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement_eq
+
+#check (Poincare.threeSphere_simplyConnectedSpace_of_pathHomotopyStatement :
+  Poincare.ThreeSpherePathHomotopyStatement →
+    SimplyConnectedSpace Poincare.ThreeSphere)
+#check Poincare.threeSphere_simplyConnectedSpace_of_pathHomotopyStatement_eq
+
+#check (Poincare.threeSphere_pathHomotopyStatement_of_simplyConnectedSpace :
+  ∀ [SimplyConnectedSpace Poincare.ThreeSphere],
+    Poincare.ThreeSpherePathHomotopyStatement)
+#check Poincare.threeSphere_pathHomotopyStatement_of_simplyConnectedSpace_eq
 
 #check (Poincare.threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement :
   Poincare.ThreeSpherePathHomotopyStatement →

@@ -38,8 +38,9 @@ The current artifact is intentionally conservative:
   payloads directly.
   A parallel `ThreeSpherePathHomotopyStatement` records the equivalent concrete
   obligation that any two parallel paths in `S^3` are homotopic, with named
-  conversions to and from the loop-nullhomotopy obligation, and now feeds those
-  standard-sphere prerequisite payloads directly through that conversion.
+  routes to and from simple-connectedness, conversions to and from the
+  loop-nullhomotopy obligation, and direct feeds into those standard-sphere
+  prerequisite payloads.
 - `Poincare/Milestones.lean` and `DEPENDENCY_LEDGER.md` name the missing
   Ricci-flow and topology proof obligations as data, not as proved
   propositions.

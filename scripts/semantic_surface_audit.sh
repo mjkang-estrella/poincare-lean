@@ -596,6 +596,16 @@ set_option linter.unusedVariables false
     Poincare.ThreeSpherePathHomotopyStatement)
 #check Poincare.threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement_eq
 
+#check (Poincare.threeSphere_simplyConnectedSpace_of_pathHomotopyStatement :
+  Poincare.ThreeSpherePathHomotopyStatement →
+    SimplyConnectedSpace Poincare.ThreeSphere)
+#check Poincare.threeSphere_simplyConnectedSpace_of_pathHomotopyStatement_eq
+
+#check (Poincare.threeSphere_pathHomotopyStatement_of_simplyConnectedSpace :
+  ∀ [SimplyConnectedSpace Poincare.ThreeSphere],
+    Poincare.ThreeSpherePathHomotopyStatement)
+#check Poincare.threeSphere_pathHomotopyStatement_of_simplyConnectedSpace_eq
+
 #check (Poincare.threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement :
   Poincare.ThreeSpherePathHomotopyStatement →
     Poincare.ThreeSphereLoopNullhomotopyStatement)

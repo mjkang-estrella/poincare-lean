@@ -389,6 +389,46 @@ theorem threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement_eq :
           fun h => ⟨threeSphere_pathConnectedSpace, h⟩⟩) := by
   apply Subsingleton.elim
 
+/--
+The concrete path-homotopy obligation directly supplies simple-connectedness
+for the standard sphere.
+-/
+theorem threeSphere_simplyConnectedSpace_of_pathHomotopyStatement
+    (h : ThreeSpherePathHomotopyStatement) :
+    SimplyConnectedSpace ThreeSphere :=
+  threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement.mpr h
+
+/--
+The path-homotopy-to-simple-connectedness route is exactly the reverse
+direction of the named path-homotopy criterion.
+-/
+theorem threeSphere_simplyConnectedSpace_of_pathHomotopyStatement_eq :
+    threeSphere_simplyConnectedSpace_of_pathHomotopyStatement =
+      threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement.mpr := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+Simple-connectedness directly supplies the concrete path-homotopy obligation
+for the standard sphere.
+-/
+theorem threeSphere_pathHomotopyStatement_of_simplyConnectedSpace
+    [SimplyConnectedSpace ThreeSphere] :
+    ThreeSpherePathHomotopyStatement :=
+  threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement.mp inferInstance
+
+/--
+The simple-connectedness-to-path-homotopy route is exactly the forward direction
+of the named path-homotopy criterion.
+-/
+theorem threeSphere_pathHomotopyStatement_of_simplyConnectedSpace_eq
+    [SimplyConnectedSpace ThreeSphere] :
+    (threeSphere_pathHomotopyStatement_of_simplyConnectedSpace :
+      ThreeSpherePathHomotopyStatement) =
+      (threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement.mp inferInstance :
+        ThreeSpherePathHomotopyStatement) := by
+  apply Subsingleton.elim
+
 /-- Path-homotopy uniqueness implies loop-nullhomotopy by comparing a loop to `Path.refl`. -/
 theorem threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
     (h : ThreeSpherePathHomotopyStatement) :
