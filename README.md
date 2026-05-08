@@ -1319,6 +1319,10 @@ The current artifact is intentionally conservative:
   certificate now exposes the same finite-extinction endpoint for its
   canonical payload, project payload, target statement, canonical target,
   completion criterion, and raw/certified full-assembly witnesses.
+  The canonical 3-sphere statement plus canonical-statement and aggregate
+  canonical-statement payloads for those boundary-aware and checked
+  certificate routes are also pinned to that finite-extinction/topology
+  endpoint, including the corresponding payload-constructor round trips.
   The
   theorem
   `canonical_completion_payload_of_remaining_dependency_component_requirements`
