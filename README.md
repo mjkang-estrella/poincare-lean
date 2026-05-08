@@ -184,7 +184,9 @@ The current artifact is intentionally conservative:
   scalar-pointwise surgery payload. The scalar-pointwise surgery payload itself
   is now reconstructible from the direct stored-verification payload at the
   package, dependency, verification-payload, remaining/aggregate, and
-  boundary-aware certificate layers; the
+  boundary-aware certificate layers, and the tensor-level derivative surgery
+  payload is now reconstructed from that same direct payload across those
+  surfaces; the
   zero/stationary-zero boundary
   packages also expose pointwise scalar-zero derivative sides and paired
   derivative/RHS zero witnesses, plus named payloads bundling each boundary

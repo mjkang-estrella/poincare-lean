@@ -10167,6 +10167,59 @@ theorem surgery_package_with_equation_boundary_pointwise_equation_payload_to_der
   apply Subsingleton.elim
 
 /--
+The direct stored-verification scalar equation reconstructs the tensor-level
+derivative surgery payload by first rebuilding the scalar-pointwise payload and
+then applying tensor extensionality.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_direct_pointwise_equation_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M}
+    (payload :
+      SurgeryPackageWithEquationBoundaryDirectPointwiseEquationPayload package) :
+    SurgeryPackageWithEquationBoundaryDerivativePayload package :=
+  surgery_package_with_equation_boundary_derivative_payload_of_pointwise_equation_payload
+    (surgery_package_with_equation_boundary_pointwise_equation_payload_of_direct_pointwise_equation_payload
+      payload)
+
+/--
+The derivative payload reconstructed from a direct scalar equation is the
+pointwise reconstruction applied to the direct-payload scalar-pointwise tuple.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_direct_pointwise_equation_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M}
+    (payload :
+      SurgeryPackageWithEquationBoundaryDirectPointwiseEquationPayload package) :
+    surgery_package_with_equation_boundary_derivative_payload_of_direct_pointwise_equation_payload
+        payload =
+      surgery_package_with_equation_boundary_derivative_payload_of_pointwise_equation_payload
+        (surgery_package_with_equation_boundary_pointwise_equation_payload_of_direct_pointwise_equation_payload
+          payload) :=
+  rfl
+
+/--
+The named tensor-level derivative surgery payload can be reconstructed from the
+named direct stored-verification scalar equation payload.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_to_direct_pointwise_equation_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    surgery_package_with_equation_boundary_derivative_payload package =
+      surgery_package_with_equation_boundary_derivative_payload_of_direct_pointwise_equation_payload
+        (surgery_package_with_equation_boundary_direct_pointwise_equation_payload
+          package) := by
+  apply Subsingleton.elim
+
+/--
 The scalar-pointwise surgery payload forgets to the older boundary surgery
 payload by keeping the projected package, equation boundary, analytic-boundary
 statement, and finite-extinction conclusion.

@@ -3488,6 +3488,27 @@ theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_rem
   apply Subsingleton.elim
 
 /--
+The strengthened remaining-package derivative surgery payload is reconstructed
+from the strengthened remaining-package direct stored-verification scalar
+equation payload.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_remaining_dependency_package_to_direct_pointwise_equation_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_derivative_payload_of_remaining_dependency_package
+        dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            equation_boundary_direct_pointwise_equation_payload_of_remaining_dependency_package
+              dependencies M with
+          ⟨n, package, directPayload⟩
+        exact
+          ⟨n, package,
+            surgery_package_with_equation_boundary_derivative_payload_of_direct_pointwise_equation_payload
+              directPayload⟩) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining package exposes the verification-routed analytic
 equation-boundary payload for each selected surgery package.
 -/
@@ -4892,6 +4913,26 @@ theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_poi
         exact
           ⟨n, package,
             surgery_package_with_equation_boundary_pointwise_equation_payload_of_direct_pointwise_equation_payload
+              directPayload⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate derivative surgery payload is reconstructed from
+the strengthened aggregate direct stored-verification scalar equation payload.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary_to_direct_pointwise_equation_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            equation_boundary_direct_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary
+              dependencies M with
+          ⟨n, package, directPayload⟩
+        exact
+          ⟨n, package,
+            surgery_package_with_equation_boundary_derivative_payload_of_direct_pointwise_equation_payload
               directPayload⟩) := by
   apply Subsingleton.elim
 
@@ -13932,6 +13973,27 @@ theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_com
         exact
           ⟨n, package,
             surgery_package_with_equation_boundary_pointwise_equation_payload_of_direct_pointwise_equation_payload
+              directPayload⟩) := by
+  apply Subsingleton.elim
+
+/--
+The certificate derivative surgery payload is reconstructed from the certificate
+direct stored-verification scalar equation payload.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_pointwise_equation_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            equation_boundary_direct_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload
+              payload M with
+          ⟨n, package, directPayload⟩
+        exact
+          ⟨n, package,
+            surgery_package_with_equation_boundary_derivative_payload_of_direct_pointwise_equation_payload
               directPayload⟩) := by
   apply Subsingleton.elim
 
