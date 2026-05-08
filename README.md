@@ -594,9 +594,12 @@ The current artifact is intentionally conservative:
   both directions of the recognition equivalence between the compactification
   model and the project target sphere. It also transports Hausdorff, compact,
   path-connected, locally path-connected, connected, and nonempty prerequisites
-  to the compactification model through that homeomorphism and bundles them as
-  `onePoint_threeSpace_topological_prerequisites`, with equality contracts and
-  audit coverage for those routes. The
+  to the compactification model through that homeomorphism, pushes forward a
+  `ChartedSpace (EuclideanSpace ℝ (Fin 3))` structure from `ThreeSphere`, derives
+  a `C^0` 3-manifold witness for those charts, and bundles the result as
+  `onePoint_threeSpace_topological_prerequisites` and
+  `onePoint_threeSpace_topological_manifold_prerequisites`, with equality
+  contracts and audit coverage for those routes. The
   concrete homeomorphism glue for the standard sphere's self-homeomorphism,
   intermediate-space composition, opposite-direction source transport, and both
   inverse-direction recognition maps now also has direct equality contracts.

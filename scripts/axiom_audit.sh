@@ -500,8 +500,14 @@ import Poincare
 #print axioms Poincare.onePoint_threeSpace_connectedSpace_eq
 #print axioms Poincare.onePoint_threeSpace_nonempty
 #print axioms Poincare.onePoint_threeSpace_nonempty_eq
+#print axioms Poincare.onePoint_threeSpace_chartedSpace
+#print axioms Poincare.onePoint_threeSpace_chartedSpace_eq
+#print axioms Poincare.onePoint_threeSpace_topologicalManifold
+#print axioms Poincare.onePoint_threeSpace_topologicalManifold_eq
 #print axioms Poincare.onePoint_threeSpace_topological_prerequisites
 #print axioms Poincare.onePoint_threeSpace_topological_prerequisites_eq
+#print axioms Poincare.onePoint_threeSpace_topological_manifold_prerequisites
+#print axioms Poincare.onePoint_threeSpace_topological_manifold_prerequisites_eq
 #print axioms Poincare.threeSphere_self_homeomorph
 #print axioms Poincare.threeSphere_self_homeomorph_eq
 #print axioms Poincare.threeSphere_self_homeomorph_self_diffeomorph_route_eq

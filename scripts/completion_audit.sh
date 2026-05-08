@@ -4097,10 +4097,22 @@ check_decl "one-point compactification nonempty theorem is declared" \
   '^theorem onePoint_threeSpace_nonempty\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification nonempty equality contract is declared" \
   '^theorem onePoint_threeSpace_nonempty_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification charted-space structure is declared" \
+  '^@\[reducible\] noncomputable def onePoint_threeSpace_chartedSpace\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification charted-space equality contract is declared" \
+  '^theorem onePoint_threeSpace_chartedSpace_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification topological manifold theorem is declared" \
+  '^theorem onePoint_threeSpace_topologicalManifold\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification topological manifold equality contract is declared" \
+  '^theorem onePoint_threeSpace_topologicalManifold_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification topological prerequisite payload is declared" \
   '^theorem onePoint_threeSpace_topological_prerequisites\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification topological prerequisite payload equality contract is declared" \
   '^theorem onePoint_threeSpace_topological_prerequisites_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification topological manifold prerequisite payload is declared" \
+  '^theorem onePoint_threeSpace_topological_manifold_prerequisites\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification topological manifold prerequisite payload equality contract is declared" \
+  '^theorem onePoint_threeSpace_topological_manifold_prerequisites_eq\b' Poincare/TopologyExtraction.lean
 check_decl "smoothability package is declared" \
   '^structure SmoothabilityPackage\b' Poincare/Smoothability.lean
 check_decl "smoothability Moise triangulation interface is declared" \
@@ -12766,8 +12778,14 @@ open scoped Manifold ContDiff
 #check Poincare.onePoint_threeSpace_connectedSpace_eq
 #check Poincare.onePoint_threeSpace_nonempty
 #check Poincare.onePoint_threeSpace_nonempty_eq
+#check Poincare.onePoint_threeSpace_chartedSpace
+#check Poincare.onePoint_threeSpace_chartedSpace_eq
+#check Poincare.onePoint_threeSpace_topologicalManifold
+#check Poincare.onePoint_threeSpace_topologicalManifold_eq
 #check Poincare.onePoint_threeSpace_topological_prerequisites
 #check Poincare.onePoint_threeSpace_topological_prerequisites_eq
+#check Poincare.onePoint_threeSpace_topological_manifold_prerequisites
+#check Poincare.onePoint_threeSpace_topological_manifold_prerequisites_eq
 #check Poincare.threeSphere_self_homeomorph
 #check Poincare.threeSphere_self_homeomorph_eq
 #check Poincare.threeSphere_self_homeomorph_self_diffeomorph_route_eq

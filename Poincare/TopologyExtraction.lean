@@ -225,6 +225,44 @@ theorem onePoint_threeSpace_nonempty_eq :
   apply Subsingleton.elim
 
 /--
+The one-point compactification model carries a charted-space structure
+transported from the standard sphere.
+-/
+@[reducible] noncomputable def onePoint_threeSpace_chartedSpace :
+    ChartedSpace (EuclideanSpace ℝ (Fin 3)) (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  let e := Classical.choice threeSphere_homeomorph_onePoint_threeSpace
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere := threeSphere_chartedSpace
+  exact e.isLocalHomeomorph.chartedSpace e.surjective
+
+/-- The compactification charted-space structure is pushed forward along the model map. -/
+theorem onePoint_threeSpace_chartedSpace_eq :
+    onePoint_threeSpace_chartedSpace =
+      (by
+        let e := Classical.choice threeSphere_homeomorph_onePoint_threeSpace
+        letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere := threeSphere_chartedSpace
+        exact e.isLocalHomeomorph.chartedSpace e.surjective) := by
+  rfl
+
+/-- The compactification model is a topological 3-manifold for the transported charts. -/
+theorem onePoint_threeSpace_topologicalManifold :
+    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+      onePoint_threeSpace_chartedSpace
+    IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_chartedSpace
+  infer_instance
+
+/-- The topological-manifold witness is the generic `C^0` witness for the transported charts. -/
+theorem onePoint_threeSpace_topologicalManifold_eq :
+    onePoint_threeSpace_topologicalManifold =
+      (by
+        letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+            (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_chartedSpace
+        infer_instance) := by
+  apply Subsingleton.elim
+
+/--
 The compactification model has the basic topological prerequisites supplied by
 its homeomorphism with `ThreeSphere`.
 -/
@@ -243,6 +281,34 @@ theorem onePoint_threeSpace_topological_prerequisites :
 theorem onePoint_threeSpace_topological_prerequisites_eq :
     onePoint_threeSpace_topological_prerequisites =
       ⟨onePoint_threeSpace_t2Space, onePoint_threeSpace_compactSpace,
+        onePoint_threeSpace_pathConnectedSpace, onePoint_threeSpace_locPathConnectedSpace,
+        onePoint_threeSpace_connectedSpace, onePoint_threeSpace_nonempty⟩ := by
+  apply Subsingleton.elim
+
+/--
+The compactification model has a proof-bearing `C^0` 3-manifold prerequisite
+payload, with charts transported from `ThreeSphere`.
+-/
+theorem onePoint_threeSpace_topological_manifold_prerequisites :
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  exact ⟨onePoint_threeSpace_t2Space, onePoint_threeSpace_chartedSpace,
+    onePoint_threeSpace_compactSpace, onePoint_threeSpace_topologicalManifold,
+    onePoint_threeSpace_pathConnectedSpace, onePoint_threeSpace_locPathConnectedSpace,
+    onePoint_threeSpace_connectedSpace, onePoint_threeSpace_nonempty⟩
+
+/-- The compactification `C^0` manifold payload is the tuple of named local witnesses. -/
+theorem onePoint_threeSpace_topological_manifold_prerequisites_eq :
+    onePoint_threeSpace_topological_manifold_prerequisites =
+      ⟨onePoint_threeSpace_t2Space, onePoint_threeSpace_chartedSpace,
+        onePoint_threeSpace_compactSpace, onePoint_threeSpace_topologicalManifold,
         onePoint_threeSpace_pathConnectedSpace, onePoint_threeSpace_locPathConnectedSpace,
         onePoint_threeSpace_connectedSpace, onePoint_threeSpace_nonempty⟩ := by
   apply Subsingleton.elim
