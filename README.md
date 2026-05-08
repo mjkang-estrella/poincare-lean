@@ -1636,6 +1636,9 @@ The current artifact is intentionally conservative:
   direct endpoint contracts to the package-level certified extraction route and
   certified component-slot route selected after converting through the stored
   remaining-dependency package-layer and milestone payloads.
+  The certified aggregate component, package-layer, and milestone project
+  payload/statement/criterion routes now carry the same direct endpoint
+  contracts at the project-facing layer.
   Their project payload, target-statement, and criterion projections now also
   have equality contracts pinning each `poincare_completion_payload_of_poincareProofDependencies_*`,
   `poincare_statement_of_poincareProofDependencies_*`, and
