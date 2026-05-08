@@ -4593,6 +4593,12 @@ universe u
 #check Poincare.topology_extraction_statement_payload_of_dependencies_to_statement_eq
 #check Poincare.topology_derivation_statement_payload_of_dependencies_to_statement_eq
 #check Poincare.homeomorphism_of_extinction_and_dependencies_to_statement_eq
+#check Poincare.topology_classification_subobligations_of_dependencies_to_statement_eq
+#check Poincare.topology_derivation_statement_of_dependencies_to_statement_eq
+#check Poincare.topology_homeomorphism_assembly_statement_of_dependencies_to_statement_eq
+#check Poincare.topology_homeomorphism_derivation_statement_of_dependencies_to_statement_eq
+#check Poincare.topology_homeomorphism_assembly_of_dependencies_to_statement_eq
+#check Poincare.topology_homeomorphism_derivation_of_dependencies_to_statement_eq
 #check Poincare.extinction_extraction_of_dependencies_to_statement_eq
 #check Poincare.topology_extraction_derivation_payload_of_dependencies_to_statement_eq
 #check Poincare.poincare_projection_assembly_inputs_payload_of_dependencies_to_statement_eq
@@ -10941,7 +10947,7 @@ topology_statement_classification_count=$(
   rg -c '\btopology_classification_subobligations_of_derivation_statement\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$topology_statement_classification_count" != "1" ]; then
+if [ "$topology_statement_classification_count" != "2" ]; then
   echo "FAIL: dependency topology statement-route contracts should account for the classification payload reconstruction"
   rg -n '\btopology_classification_subobligations_of_derivation_statement\b' \
     Poincare/DependencyProjections.lean || true
@@ -10952,7 +10958,7 @@ topology_statement_assembly_count=$(
   rg -c '\btopology_homeomorphism_assembly_statement_of_derivation_statement\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$topology_statement_assembly_count" != "1" ]; then
+if [ "$topology_statement_assembly_count" != "3" ]; then
   echo "FAIL: dependency topology statement-route contracts should account for the homeomorphism assembly statement"
   rg -n '\btopology_homeomorphism_assembly_statement_of_derivation_statement\b' \
     Poincare/DependencyProjections.lean || true
@@ -10963,7 +10969,7 @@ topology_statement_derivation_count=$(
   rg -c '\btopology_homeomorphism_derivation_statement_of_derivation_statement\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$topology_statement_derivation_count" != "1" ]; then
+if [ "$topology_statement_derivation_count" != "3" ]; then
   echo "FAIL: dependency topology statement-route contracts should account for the homeomorphism derivation statement"
   rg -n '\btopology_homeomorphism_derivation_statement_of_derivation_statement\b' \
     Poincare/DependencyProjections.lean || true

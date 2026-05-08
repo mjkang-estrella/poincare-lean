@@ -555,8 +555,9 @@ The current artifact is intentionally conservative:
   `ExtinctionTopologyClassificationSubobligationsPayload` and the homeomorphism
   assembly/derivation statements, and the theorem-shaped topology extraction
   statement. Equality contracts also pin the dependency-level
-  homeomorphism assembly/derivation certificates and statement aliases back to
-  that theorem-shaped extraction route. The
+  classification sub-obligations, derivation statement, homeomorphism
+  assembly/derivation statements, concrete assembly/derivation certificates,
+  and statement aliases back to that theorem-shaped extraction route. The
   package-to-extraction bridge now assembles the fixed derivation statement from
   the named components; the fixed-extinction payload and homeomorphism are
   extracted through
@@ -1168,9 +1169,10 @@ The current artifact is intentionally conservative:
   paired with its `ExtinctionTopologyDerivationForExtractionStatement`
   certificate, with equality contracts pinning the dependency payload,
   theorem-shaped statement, derivation-statement payload, projected
-  homeomorphism route, assembly/derivation statements, direct
-  assembly/derivation certificates, statement aliases, derivation payload, and
-  extractor to the stored topology package route.
+  homeomorphism route, classification sub-obligations, assembly/derivation
+  statements, direct assembly/derivation certificates, statement aliases,
+  derivation payload, and extractor to the stored topology package and
+  theorem-shaped topology statement routes.
   The final projected Poincare theorem destructures
   `poincare_completion_payload_of_dependency_projections`, while the target and
   full projection payloads remain the named sources for the completion criterion,
