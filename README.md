@@ -689,7 +689,9 @@ The current artifact is intentionally conservative:
   `SimplyConnectedSpace` input with
   `OnePointThreeSpaceLoopNullhomotopyStatement` and
   `OnePointThreeSpacePathHomotopyStatement`, with the path extinction route
-  pinned back through the loop-mediated route.
+  pinned back through the loop-mediated route, and the loop/path extinction
+  payloads pair those endpoints with the corresponding compactification-local
+  homotopy/manifold prerequisite packages.
   It
   names universal compactification recognition as
   `OnePointThreeSpaceRecognitionStatement`, and

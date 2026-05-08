@@ -2914,6 +2914,118 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpa
       onePoint_threeSpace_homeomorph_threeSphere := by
   apply Subsingleton.elim
 
+/--
+The compactification loop-nullhomotopy extinction-recognition endpoint also
+packages the local homotopy/manifold prerequisites needed to apply recognition
+to the compactification model after finite extinction.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+    (hLoop : OnePointThreeSpaceLoopNullhomotopyStatement)
+    (extinction :
+      letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_t2Space
+      letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+          (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_chartedSpace
+      letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+      letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_compactSpace
+      FiniteExtinctionByRicciFlowWithSurgery
+        (OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointLoopNullhomotopyStatement
+      hLoop,
+    onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+      hLoop extinction recognize⟩
+
+/-- The loop extinction-recognition payload pairs the local prerequisites with the loop endpoint. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement =
+      (fun hLoop : OnePointThreeSpaceLoopNullhomotopyStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointLoopNullhomotopyStatement
+                hLoop,
+              onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+                hLoop extinction recognize⟩) := by
+  funext hLoop extinction recognize
+  apply Subsingleton.elim
+
+/--
+The compactification path-homotopy extinction-recognition endpoint also
+packages the local homotopy/manifold prerequisites needed to apply recognition
+to the compactification model after finite extinction.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement
+    (hPath : OnePointThreeSpacePathHomotopyStatement)
+    (extinction :
+      letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_t2Space
+      letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+          (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_chartedSpace
+      letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement hPath
+      letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_compactSpace
+      FiniteExtinctionByRicciFlowWithSurgery
+        (OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathHomotopyStatement
+      hPath,
+    onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement
+      hPath extinction recognize⟩
+
+/-- The path extinction-recognition payload pairs the local prerequisites with the path endpoint. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement =
+      (fun hPath : OnePointThreeSpacePathHomotopyStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathHomotopyStatement
+                hPath,
+              onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement
+                hPath extinction recognize⟩) := by
+  funext hPath extinction recognize
+  apply Subsingleton.elim
+
+/-- The path extinction-recognition payload agrees with the loop-mediated payload route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement_loop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement =
+      (fun hPath : OnePointThreeSpacePathHomotopyStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement hPath)
+              extinction recognize) := by
+  funext hPath extinction recognize
+  apply Subsingleton.elim
+
 /-- The standard target sphere is homeomorphic to itself. -/
 theorem threeSphere_self_homeomorph :
     Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=
