@@ -566,7 +566,8 @@ The current artifact is intentionally conservative:
   `homeomorphism_of_topology_extraction_statement`, and
   `topology_derivation_statement_of_extraction_statement`, with direct
   extraction-statement projections also exposing the classification payload and
-  homeomorphism assembly/derivation statements. Package-level topology
+  homeomorphism assembly/derivation statements, and a fixed-extinction payload
+  route assembled from those named projections. Package-level topology
   payloads `topology_extraction_payload_of_topology_package` and
   `topology_extraction_statement_payload_of_topology_package` centralize the
   theorem-shaped extraction interface, fixed derivation statement,
@@ -1175,8 +1176,8 @@ The current artifact is intentionally conservative:
   homeomorphism route, classification sub-obligations, assembly/derivation
   statements, direct assembly/derivation certificates, statement aliases,
   derivation payload, and extractor to the stored topology package,
-  theorem-shaped topology statement, and direct extraction-statement projection
-  routes.
+  theorem-shaped topology statement, direct extraction-statement projection
+  routes, and the fixed-extinction payload assembled from those projections.
   The final projected Poincare theorem destructures
   `poincare_completion_payload_of_dependency_projections`, while the target and
   full projection payloads remain the named sources for the completion criterion,

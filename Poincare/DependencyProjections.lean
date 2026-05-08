@@ -8098,6 +8098,35 @@ theorem topology_extraction_statement_payload_of_dependencies_to_statement_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level fixed-extinction topology payload can be rebuilt directly
+from the dependency-level theorem-shaped topology statement and its named
+extraction-statement projection bridges.
+-/
+theorem topology_extraction_statement_payload_of_dependencies_to_extraction_statement_projections_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_dependencies
+      dependencies M extinction =
+      (by
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies dependencies
+        exact ⟨topologyStatement,
+          homeomorphism_of_topology_extraction_statement
+            topologyStatement M extinction,
+          topology_derivation_statement_of_extraction_statement
+            topologyStatement M extinction,
+          topology_classification_subobligations_of_extraction_statement
+            topologyStatement M extinction,
+          topology_homeomorphism_assembly_statement_of_extraction_statement
+            topologyStatement M extinction,
+          topology_homeomorphism_derivation_statement_of_extraction_statement
+            topologyStatement M extinction⟩) := by
+  apply Subsingleton.elim
+
+/--
 The dependency-level fixed-extinction derivation payload is the payload of the
 dependency-level theorem-shaped topology statement.
 -/

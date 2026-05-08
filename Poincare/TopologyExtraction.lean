@@ -8581,6 +8581,35 @@ theorem topology_extraction_statement_payload_of_topology_package_eq
   apply Subsingleton.elim
 
 /--
+The fixed-extinction package payload can also be rebuilt directly from the
+package-built theorem-shaped extraction statement and its named projection
+bridges.
+-/
+theorem topology_extraction_statement_payload_of_topology_package_to_extraction_statement_projections_eq
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_topology_package
+      package M extinction =
+      (by
+        let topologyStatement :=
+          extinction_topology_extraction_statement_of_topology_package package
+        exact ⟨topologyStatement,
+          homeomorphism_of_topology_extraction_statement
+            topologyStatement M extinction,
+          topology_derivation_statement_of_extraction_statement
+            topologyStatement M extinction,
+          topology_classification_subobligations_of_extraction_statement
+            topologyStatement M extinction,
+          topology_homeomorphism_assembly_statement_of_extraction_statement
+            topologyStatement M extinction,
+          topology_homeomorphism_derivation_statement_of_extraction_statement
+            topologyStatement M extinction⟩) := by
+  apply Subsingleton.elim
+
+/--
 A completed topology package directly exposes the named post-extinction
 classification sub-obligation payload for each finite-extinction input.
 -/
