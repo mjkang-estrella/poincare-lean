@@ -12354,6 +12354,26 @@ theorem canonical_completion_criterion_of_dependencies_eq
   apply Subsingleton.elim
 
 /--
+The aggregate canonical target is the same aggregate project statement
+endpoint.
+-/
+theorem canonical_completion_target_of_dependencies_to_project_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_dependencies dependencies =
+      poincare_statement_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The aggregate canonical criterion is the same aggregate project criterion
+endpoint.
+-/
+theorem canonical_completion_criterion_of_dependencies_to_project_criterion_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_dependencies witness dependencies =
+      completion_criterion_of_dependencies witness dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining-package canonical payload agrees with the ordinary
 remaining-package canonical payload after forgetting equation-boundary data.
 -/
@@ -12673,6 +12693,30 @@ theorem canonical_completion_criterion_of_aggregate_extraction_derivation_depend
               dependencies with
           ⟨_target, criterion⟩
         exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The certified aggregate canonical target is the same certified aggregate
+project statement endpoint.
+-/
+theorem canonical_completion_target_of_aggregate_extraction_derivation_dependencies_to_project_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_aggregate_extraction_derivation_dependencies
+      dependencies =
+      poincare_statement_of_aggregate_extraction_derivation_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The certified aggregate canonical criterion is the same certified aggregate
+project criterion endpoint.
+-/
+theorem canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies_to_project_criterion_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies
+      witness dependencies =
+      completion_criterion_of_aggregate_extraction_derivation_dependencies
+        witness dependencies := by
   apply Subsingleton.elim
 
 /--

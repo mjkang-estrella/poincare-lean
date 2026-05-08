@@ -8167,10 +8167,14 @@ check_decl "canonical completion target dependency theorem is declared" \
   '^theorem canonical_completion_target_of_dependencies\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion target dependency equality contract is declared" \
   '^theorem canonical_completion_target_of_dependencies_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion target dependency project-endpoint contract is declared" \
+  '^theorem canonical_completion_target_of_dependencies_to_project_statement_eq\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion aggregate dependency criterion theorem is declared" \
   '^theorem canonical_completion_criterion_of_dependencies\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion aggregate dependency criterion equality contract is declared" \
   '^theorem canonical_completion_criterion_of_dependencies_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion aggregate dependency criterion project-endpoint contract is declared" \
+  '^theorem canonical_completion_criterion_of_dependencies_to_project_criterion_eq\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion aggregate extraction-derivation dependency payload theorem is declared" \
   '^theorem canonical_completion_payload_of_aggregate_extraction_derivation_dependencies\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion aggregate extraction-derivation dependency payload equality contract is declared" \
@@ -8179,10 +8183,14 @@ check_decl "canonical completion aggregate extraction-derivation dependency targ
   '^theorem canonical_completion_target_of_aggregate_extraction_derivation_dependencies\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion aggregate extraction-derivation dependency target equality contract is declared" \
   '^theorem canonical_completion_target_of_aggregate_extraction_derivation_dependencies_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion aggregate extraction-derivation dependency target project-endpoint contract is declared" \
+  '^theorem canonical_completion_target_of_aggregate_extraction_derivation_dependencies_to_project_statement_eq\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion aggregate extraction-derivation dependency criterion theorem is declared" \
   '^theorem canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion aggregate extraction-derivation dependency criterion equality contract is declared" \
   '^theorem canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion aggregate extraction-derivation dependency criterion project-endpoint contract is declared" \
+  '^theorem canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies_to_project_criterion_eq\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion projection payload theorem is declared" \
   '^theorem canonical_completion_payload_of_dependency_projections\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion projection payload equality contract is declared" \
@@ -15510,14 +15518,18 @@ open scoped Manifold ContDiff
 #check Poincare.canonical_completion_payload_of_dependencies_eq
 #check Poincare.canonical_completion_target_of_dependencies
 #check Poincare.canonical_completion_target_of_dependencies_eq
+#check Poincare.canonical_completion_target_of_dependencies_to_project_statement_eq
 #check Poincare.canonical_completion_criterion_of_dependencies
 #check Poincare.canonical_completion_criterion_of_dependencies_eq
+#check Poincare.canonical_completion_criterion_of_dependencies_to_project_criterion_eq
 #check Poincare.canonical_completion_payload_of_aggregate_extraction_derivation_dependencies
 #check Poincare.canonical_completion_payload_of_aggregate_extraction_derivation_dependencies_eq
 #check Poincare.canonical_completion_target_of_aggregate_extraction_derivation_dependencies
 #check Poincare.canonical_completion_target_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.canonical_completion_target_of_aggregate_extraction_derivation_dependencies_to_project_statement_eq
 #check Poincare.canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies
 #check Poincare.canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies_to_project_criterion_eq
 #check Poincare.canonical_completion_payload_of_dependency_projections
 #check Poincare.canonical_completion_payload_of_dependency_projections_eq
 #check Poincare.canonical_completion_payload_of_dependency_projections_to_topology_statement_eq
@@ -21770,6 +21782,7 @@ open scoped Manifold ContDiff
     Poincare.canonicalCompletionTarget)
 
 #check Poincare.canonical_completion_target_of_dependencies_eq
+#check Poincare.canonical_completion_target_of_dependencies_to_project_statement_eq
 
 #check (Poincare.canonical_completion_criterion_of_dependencies :
   ∀ witness : Type,
@@ -21777,6 +21790,7 @@ open scoped Manifold ContDiff
       Poincare.CompletionCriterionAtUniverse witness)
 
 #check Poincare.canonical_completion_criterion_of_dependencies_eq
+#check Poincare.canonical_completion_criterion_of_dependencies_to_project_criterion_eq
 
 #check (Poincare.canonical_completion_payload_of_aggregate_extraction_derivation_dependencies :
   Poincare.RemainingDependencyPackage →
@@ -21790,6 +21804,7 @@ open scoped Manifold ContDiff
     Poincare.canonicalCompletionTarget)
 
 #check Poincare.canonical_completion_target_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.canonical_completion_target_of_aggregate_extraction_derivation_dependencies_to_project_statement_eq
 
 #check (Poincare.canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies :
   ∀ witness : Type,
@@ -21797,6 +21812,7 @@ open scoped Manifold ContDiff
       Poincare.CompletionCriterionAtUniverse witness)
 
 #check Poincare.canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies_to_project_criterion_eq
 
 #check (Poincare.PoincareCompletionCertificate : Prop)
 

@@ -6782,6 +6782,7 @@ universe u
     Poincare.canonicalCompletionTarget)
 
 #check Poincare.canonical_completion_target_of_dependencies_eq
+#check Poincare.canonical_completion_target_of_dependencies_to_project_statement_eq
 
 #check (Poincare.canonical_completion_criterion_of_dependencies :
   ∀ witness : Type,
@@ -6789,6 +6790,7 @@ universe u
       Poincare.CompletionCriterionAtUniverse witness)
 
 #check Poincare.canonical_completion_criterion_of_dependencies_eq
+#check Poincare.canonical_completion_criterion_of_dependencies_to_project_criterion_eq
 
 #check (Poincare.canonical_completion_payload_of_aggregate_extraction_derivation_dependencies :
   Poincare.RemainingDependencyPackage →
@@ -6802,6 +6804,7 @@ universe u
     Poincare.canonicalCompletionTarget)
 
 #check Poincare.canonical_completion_target_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.canonical_completion_target_of_aggregate_extraction_derivation_dependencies_to_project_statement_eq
 
 #check (Poincare.canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies :
   ∀ witness : Type,
@@ -6809,6 +6812,7 @@ universe u
       Poincare.CompletionCriterionAtUniverse witness)
 
 #check Poincare.canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies_to_project_criterion_eq
 
 #check (Poincare.canonical_completion_payload_of_dependency_projections :
   Poincare.RemainingDependencyPackage →

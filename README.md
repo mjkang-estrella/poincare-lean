@@ -1467,6 +1467,9 @@ The current artifact is intentionally conservative:
   bridge from the project target payload to the canonical completion payload;
   the reverse payload bridge and iff contract make this canonical/project
   payload identification bidirectional.
+  The aggregate and aggregate certified extraction routes now also pin their
+  canonical target and criterion endpoints back to their project statement and
+  criterion wrappers.
   `remainingDependencyPackage_eq`,
   `remainingDependencyPackage_iff_poincareProofDependencies`, and
   `remainingDependencyPackage_iff_components` identify the remaining-dependency
