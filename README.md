@@ -374,7 +374,9 @@ The current artifact is intentionally conservative:
   reconstruction routes. The same three certificate families now also
   reconstruct ordinary remaining-package and aggregate certificates directly
   from their projected canonical-statement and aggregate canonical-statement
-  payloads.
+  payloads. Their noncanonical theorem-name and literal payload projections,
+  plus literal-payload reconstructions, now also expose the ordinary aggregate
+  endpoints for the strengthened remaining-package routes.
   Separately, the completion-target
   wrapper layer now mirrors that
   finite-extinction route through the ordinary
@@ -1543,7 +1545,8 @@ The current artifact is intentionally conservative:
   aggregate-dependency, project-statement, canonical/project payload, target,
   canonical-target, and completion-criterion projections now name the same
   ordinary forgetful endpoints. The remaining-package theorem-name and literal
-  payload projections now also name the ordinary aggregate endpoints directly.
+  payload projections, together with the matching literal-payload
+  reconstructions, now also name the ordinary aggregate endpoints directly.
   The dependency-projection layer
   also names those endpoint contracts for the full assembly payload and explicit
   completion criterion.
