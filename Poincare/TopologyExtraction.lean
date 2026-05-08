@@ -708,6 +708,40 @@ theorem topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_
           connected, nonempty⟩) := by
   apply Subsingleton.elim
 
+/--
+A simply connected space recognized as the one-point compactification model
+inherits the transported compactification prerequisite payload together with
+the given simple-connectedness instance.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M] [SimplyConnectedSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  rcases topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h with
+    ⟨t2, charted, compact, topological, path, locPath, connected, nonempty⟩
+  exact ⟨t2, charted, inferInstance, compact, topological, path, locPath, connected,
+    nonempty⟩
+
+/-- The candidate prerequisite payload reuses compactification transport and the source instance. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq
+    {M : Type u} [TopologicalSpace M] [SimplyConnectedSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace h =
+      (by
+        rcases topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h with
+          ⟨t2, charted, compact, topological, path, locPath, connected, nonempty⟩
+        exact ⟨t2, charted, inferInstance, compact, topological, path, locPath,
+          connected, nonempty⟩) := by
+  apply Subsingleton.elim
+
 /-- The standard target sphere is homeomorphic to itself. -/
 theorem threeSphere_self_homeomorph :
     Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=

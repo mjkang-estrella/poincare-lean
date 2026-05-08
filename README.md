@@ -600,8 +600,11 @@ The current artifact is intentionally conservative:
   `onePoint_threeSpace_topological_prerequisites` and
   `onePoint_threeSpace_topological_manifold_prerequisites`. The same layer now
   transports that `C^0` prerequisite payload to any source space already
-  recognized as homeomorphic to the compactification model, names universal
-  compactification recognition as `OnePointThreeSpaceRecognitionStatement`, and
+  recognized as homeomorphic to the compactification model, and packages the
+  transported payload with the source's `SimplyConnectedSpace` instance as
+  `poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace`. It
+  names universal compactification recognition as
+  `OnePointThreeSpaceRecognitionStatement`, and
   records
   `poincareConjectureStatement_of_onePoint_threeSpace_recognition`, the
   reduction from universal compactification recognition to the project target
