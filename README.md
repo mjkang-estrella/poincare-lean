@@ -1630,6 +1630,8 @@ The current artifact is intentionally conservative:
   contracts pinning them to the corresponding remaining-dependency wrapper
   routes after the `remainingDependencyPackage_iff_poincareProofDependencies`
   conversion.
+  The aggregate certified component wrapper also has direct package-route
+  contracts after that conversion and remaining component-payload projection.
   Their project payload, target-statement, and criterion projections now also
   have equality contracts pinning each `poincare_completion_payload_of_poincareProofDependencies_*`,
   `poincare_statement_of_poincareProofDependencies_*`, and

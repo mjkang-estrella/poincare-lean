@@ -9593,6 +9593,82 @@ theorem canonical_completion_criterion_of_poincareProofDependencies_component_ex
   apply Subsingleton.elim
 
 /--
+The aggregate certified component canonical payload agrees directly with the
+package-level certified extraction canonical payload selected after converting
+to the remaining-dependency component payload.
+-/
+theorem canonical_completion_payload_of_poincareProofDependencies_component_extraction_derivation_requirements_to_package_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_payload_of_poincareProofDependencies_component_extraction_derivation_requirements
+      dependencies =
+      (by
+        rcases remainingDependencyPackage_component_requirements_payload
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies) with
+          ⟨smoothabilityRequirement, surgeryRequirement, topologyRequirement⟩
+        exact
+          canonical_completion_payload_of_surgery_and_topology_package_extraction_derivation
+            smoothabilityRequirement surgeryRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate certified component canonical target agrees directly with the
+package-level certified extraction canonical target selected after converting to
+the remaining-dependency component payload.
+-/
+theorem canonical_completion_target_of_poincareProofDependencies_component_extraction_derivation_requirements_to_package_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_target_of_poincareProofDependencies_component_extraction_derivation_requirements
+      dependencies =
+      (by
+        rcases remainingDependencyPackage_component_requirements_payload
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies) with
+          ⟨smoothabilityRequirement, surgeryRequirement, topologyRequirement⟩
+        exact
+          canonical_completion_target_of_surgery_and_topology_package_extraction_derivation
+            smoothabilityRequirement surgeryRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate certified component canonical criterion agrees directly with the
+package-level certified extraction canonical criterion selected after converting
+to the remaining-dependency component payload.
+-/
+theorem canonical_completion_criterion_of_poincareProofDependencies_component_extraction_derivation_requirements_to_package_extraction_derivation_eq
+    (witness : Type u) (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_criterion_of_poincareProofDependencies_component_extraction_derivation_requirements
+      witness dependencies =
+      (by
+        rcases remainingDependencyPackage_component_requirements_payload
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies) with
+          ⟨smoothabilityRequirement, surgeryRequirement, topologyRequirement⟩
+        exact
+          canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation
+            witness smoothabilityRequirement surgeryRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate certified component canonical statement agrees directly with the
+package-level certified extraction canonical statement selected after converting
+to the remaining-dependency component payload.
+-/
+theorem canonical_three_sphere_statement_of_poincareProofDependencies_component_extraction_derivation_requirements_to_package_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_three_sphere_statement_of_poincareProofDependencies_component_extraction_derivation_requirements
+      dependencies =
+      (by
+        rcases remainingDependencyPackage_component_requirements_payload
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies) with
+          ⟨smoothabilityRequirement, surgeryRequirement, topologyRequirement⟩
+        exact
+          canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation
+            smoothabilityRequirement surgeryRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate proof dependency package exposes the canonical completion payload
 through the crosswalk package-layer requirement route.
 -/
