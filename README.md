@@ -905,7 +905,10 @@ The current artifact is intentionally conservative:
   after equation-boundary data is forgotten, and the explicit literal/aggregate
   canonical-statement payload constructors now reconstruct the checked
   equation-boundary certificates and the ordinary forgetful certificates
-  directly.
+  directly. The matching literal, aggregate-dependency, and project-statement
+  full payload reconstruction routes now also fill the remaining
+  remaining-package-to-ordinary aggregate and ordinary remaining-dependency
+  endpoints for the certified extraction-derivation certificates.
   It also exposes the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/
@@ -1522,6 +1525,8 @@ The current artifact is intentionally conservative:
   topology and extractor/derivation endpoints, with certified boundary literal,
   aggregate-dependency, and project-statement payload reconstructions routed
   through the ordinary forgetful remaining-dependency and aggregate certificates,
+  including the remaining-package certified literal-to-aggregate and
+  aggregate/project-to-remaining reconstruction endpoints,
   and certified extraction-derivation theorem-name, literal,
   aggregate-dependency, project-statement, canonical/project payload, target,
   canonical-target, and completion-criterion projections now name the same
