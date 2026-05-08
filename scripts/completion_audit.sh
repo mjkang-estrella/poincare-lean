@@ -4177,6 +4177,34 @@ check_decl "compactification simple-connectedness equivalence is declared" \
   '^theorem onePoint_threeSpace_simplyConnectedSpace_iff_threeSphere\b' Poincare/TopologyExtraction.lean
 check_decl "compactification simple-connectedness equivalence equality contract is declared" \
   '^theorem onePoint_threeSpace_simplyConnectedSpace_iff_threeSphere_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification loop-nullhomotopy statement is declared" \
+  '^def OnePointThreeSpaceLoopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification loop-nullhomotopy statement equality contract is declared" \
+  '^theorem onePointThreeSpaceLoopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification simple-connectedness loop-nullhomotopy equivalence is declared" \
+  '^theorem onePoint_threeSpace_simplyConnectedSpace_iff_loopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification simple-connectedness loop-nullhomotopy equivalence equality contract is declared" \
+  '^theorem onePoint_threeSpace_simplyConnectedSpace_iff_loopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification simple-connectedness from loop-nullhomotopy is declared" \
+  '^theorem onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification simple-connectedness from loop-nullhomotopy equality contract is declared" \
+  '^theorem onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification loop-nullhomotopy from simple-connectedness is declared" \
+  '^theorem onePoint_threeSpace_loopNullhomotopyStatement_of_simplyConnectedSpace\b' Poincare/TopologyExtraction.lean
+check_decl "compactification loop-nullhomotopy from simple-connectedness equality contract is declared" \
+  '^theorem onePoint_threeSpace_loopNullhomotopyStatement_of_simplyConnectedSpace_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification loop-nullhomotopy transport from sphere is declared" \
+  '^theorem onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification loop-nullhomotopy transport from sphere equality contract is declared" \
+  '^theorem onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "sphere loop-nullhomotopy transport from compactification is declared" \
+  '^theorem threeSphereLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "sphere loop-nullhomotopy transport from compactification equality contract is declared" \
+  '^theorem threeSphereLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification loop-nullhomotopy equivalence with sphere is declared" \
+  '^theorem onePoint_threeSpace_loopNullhomotopyStatement_iff_threeSphereLoopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification loop-nullhomotopy equivalence with sphere equality contract is declared" \
+  '^theorem onePoint_threeSpace_loopNullhomotopyStatement_iff_threeSphereLoopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification charted-space structure is declared" \
   '^@\[reducible\] noncomputable def onePoint_threeSpace_chartedSpace\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification charted-space equality contract is declared" \
@@ -12938,6 +12966,20 @@ open scoped Manifold ContDiff
 #check Poincare.threeSphere_simplyConnectedSpace_of_onePoint_threeSpace_eq
 #check Poincare.onePoint_threeSpace_simplyConnectedSpace_iff_threeSphere
 #check Poincare.onePoint_threeSpace_simplyConnectedSpace_iff_threeSphere_eq
+#check Poincare.OnePointThreeSpaceLoopNullhomotopyStatement
+#check Poincare.onePointThreeSpaceLoopNullhomotopyStatement_eq
+#check Poincare.onePoint_threeSpace_simplyConnectedSpace_iff_loopNullhomotopyStatement
+#check Poincare.onePoint_threeSpace_simplyConnectedSpace_iff_loopNullhomotopyStatement_eq
+#check Poincare.onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
+#check Poincare.onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement_eq
+#check Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_simplyConnectedSpace
+#check Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_simplyConnectedSpace_eq
+#check Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+#check Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement_eq
+#check Poincare.threeSphereLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+#check Poincare.threeSphereLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement_eq
+#check Poincare.onePoint_threeSpace_loopNullhomotopyStatement_iff_threeSphereLoopNullhomotopyStatement
+#check Poincare.onePoint_threeSpace_loopNullhomotopyStatement_iff_threeSphereLoopNullhomotopyStatement_eq
 #check Poincare.onePoint_threeSpace_chartedSpace
 #check Poincare.onePoint_threeSpace_chartedSpace_eq
 #check Poincare.onePoint_threeSpace_topologicalManifold

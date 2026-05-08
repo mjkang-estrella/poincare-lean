@@ -602,6 +602,10 @@ The current artifact is intentionally conservative:
   simple-connectedness in both directions between `ThreeSphere` and the
   compactification model, records
   `onePoint_threeSpace_simplyConnectedSpace_iff_threeSphere`, and packages the
+  compactification model's own concrete loop-nullhomotopy obligation as
+  `OnePointThreeSpaceLoopNullhomotopyStatement`, with equivalences to both
+  compactification simple-connectedness and `ThreeSphereLoopNullhomotopyStatement`.
+  It packages the
   compactification model's full homotopy/manifold prerequisites as
   `onePoint_threeSpace_homotopy_manifold_prerequisites` when the standard
   sphere's simple-connectedness input is supplied, with
