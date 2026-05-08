@@ -1398,6 +1398,9 @@ The current artifact is intentionally conservative:
   `canonical_completion_criterion_of_milestone_extraction_derivation_requirements`,
   plus
   `canonical_three_sphere_statement_of_milestone_extraction_derivation_requirements`,
+  with equality contracts pinning those canonical outputs to the certified
+  component-slot route applied to the consumed smoothability,
+  finite-extinction, and extinction-to-sphere milestones,
   the aggregate route exposes `canonical_completion_payload_of_dependencies`, the
   aggregate certified extraction route exposes
   `canonical_completion_payload_of_aggregate_extraction_derivation_dependencies`,

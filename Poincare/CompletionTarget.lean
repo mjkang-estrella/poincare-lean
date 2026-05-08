@@ -3091,6 +3091,127 @@ theorem canonical_three_sphere_statement_of_milestone_extraction_derivation_requ
           finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) := by
   apply Subsingleton.elim
 
+/--
+The milestone certified extraction canonical payload agrees with the certified
+component-slot canonical payload applied to the consumed smoothability,
+finite-extinction, and extinction-to-sphere milestones.
+-/
+theorem canonical_completion_payload_of_milestone_extraction_derivation_requirements_to_component_extraction_derivation_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    canonical_completion_payload_of_milestone_extraction_derivation_requirements
+      smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+      ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+      finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement =
+      canonical_completion_payload_of_component_extraction_derivation_requirements
+        smoothabilityBridgeRequirement finiteExtinctionRequirement
+        extinctionToSphereHomeomorphismRequirement := by
+  apply Subsingleton.elim
+
+/--
+The milestone certified extraction canonical target agrees with the certified
+component-slot canonical target applied to the consumed smoothability,
+finite-extinction, and extinction-to-sphere milestones.
+-/
+theorem canonical_completion_target_of_milestone_extraction_derivation_requirements_to_component_extraction_derivation_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    canonical_completion_target_of_milestone_extraction_derivation_requirements
+      smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+      ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+      finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement =
+      canonical_completion_target_of_component_extraction_derivation_requirements
+        smoothabilityBridgeRequirement finiteExtinctionRequirement
+        extinctionToSphereHomeomorphismRequirement := by
+  apply Subsingleton.elim
+
+/--
+The milestone certified extraction canonical criterion agrees with the certified
+component-slot canonical criterion applied to the consumed smoothability,
+finite-extinction, and extinction-to-sphere milestones.
+-/
+theorem canonical_completion_criterion_of_milestone_extraction_derivation_requirements_to_component_extraction_derivation_eq
+    (witness : Type u)
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    canonical_completion_criterion_of_milestone_extraction_derivation_requirements
+      witness smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+      ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+      finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement =
+      canonical_completion_criterion_of_component_extraction_derivation_requirements
+        witness smoothabilityBridgeRequirement finiteExtinctionRequirement
+        extinctionToSphereHomeomorphismRequirement := by
+  apply Subsingleton.elim
+
+/--
+The milestone certified extraction canonical statement agrees with the certified
+component-slot canonical statement applied to the consumed smoothability,
+finite-extinction, and extinction-to-sphere milestones.
+-/
+theorem canonical_three_sphere_statement_of_milestone_extraction_derivation_requirements_to_component_extraction_derivation_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    canonical_three_sphere_statement_of_milestone_extraction_derivation_requirements
+      smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+      ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+      finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement =
+      canonical_three_sphere_statement_of_component_extraction_derivation_requirements
+        smoothabilityBridgeRequirement finiteExtinctionRequirement
+        extinctionToSphereHomeomorphismRequirement := by
+  apply Subsingleton.elim
+
 /-- The aggregate dependency proposition currently needed to prove the target. -/
 abbrev RemainingDependencyPackage : Prop :=
   PoincareProofDependencies.{u}
