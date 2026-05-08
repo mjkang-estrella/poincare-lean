@@ -16241,6 +16241,98 @@ theorem completion_criterion_of_completion_certificate_with_equation_boundary_ve
   apply Subsingleton.elim
 
 /--
+The boundary-aware certificate canonical-payload projection is the canonical
+payload carried by its certificate-level finite-extinction projection and the
+projected forgetful topology statement.
+-/
+theorem canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      canonical_completion_payload_of_finite_extinction_and_topology_extraction_statement
+        (finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+          payload)
+        (topology_extraction_statement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
+            payload)) := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware certificate project-payload projection is the project
+payload carried by its certificate-level finite-extinction projection and the
+projected forgetful topology statement.
+-/
+theorem poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      poincare_payload_of_finite_extinction_and_topology_extraction_statement
+        (finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+          payload)
+        (topology_extraction_statement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
+            payload)) := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware certificate target-statement projection is the target
+assembled from its certificate-level finite-extinction projection and the
+projected forgetful topology statement.
+-/
+theorem target_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    target_statement_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      poincare_statement_of_finite_extinction_and_topology_extraction_statement
+        (finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+          payload)
+        (topology_extraction_statement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
+            payload)) := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware certificate canonical-target projection is the canonical
+target assembled from its certificate-level finite-extinction projection and
+the projected forgetful topology statement.
+-/
+theorem canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+        (finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+          payload)
+        (topology_extraction_statement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
+            payload)) := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware certificate completion criterion is the canonical criterion
+assembled from its certificate-level finite-extinction projection and the
+projected forgetful topology statement.
+-/
+theorem completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction_eq
+    (witness : Type u)
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload
+        witness payload =
+      canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+        witness
+        (finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+          payload)
+        (topology_extraction_statement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
+            payload)) := by
+  apply Subsingleton.elim
+
+/--
 The boundary-aware certificate payload exposes the strengthened full-assembly
 payload through its projected strengthened dependency package.
 -/

@@ -1309,6 +1309,9 @@ The current artifact is intentionally conservative:
   The arbitrary, existential, named remaining-package, and named aggregate
   boundary-aware certificate constructors now recover those finite-extinction
   routes explicitly.
+  The canonical-payload, project-payload, target-statement, canonical-target,
+  and completion-criterion certificate projections are also pinned through that
+  finite-extinction route and the projected forgetful topology statement.
   The strengthened and certified full-assembly witnesses built from a
   boundary-aware certificate are now also pinned to that certificate-level
   finite-extinction projection.
