@@ -1577,6 +1577,189 @@ theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_
   apply Subsingleton.elim
 
 /--
+The compactification model's own loop-nullhomotopy obligation supplies
+simple-connectedness for any source recognized as the compactification model.
+-/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+    {M : Type u} [TopologicalSpace M]
+    (hLoop : OnePointThreeSpaceLoopNullhomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    SimplyConnectedSpace M := by
+  rcases h with ⟨e⟩
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+  exact e.toHomotopyEquiv.simplyConnectedSpace
+
+/-- Source simple-connectedness follows by compactification recognition and local loop-nullhomotopy. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hLoop : OnePointThreeSpaceLoopNullhomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+      hLoop h =
+      (by
+        rcases h with ⟨e⟩
+        letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+        exact e.toHomotopyEquiv.simplyConnectedSpace) := by
+  apply Subsingleton.elim
+
+/--
+The compactification model's own path-homotopy obligation supplies
+simple-connectedness for any source recognized as the compactification model.
+-/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement
+    {M : Type u} [TopologicalSpace M]
+    (hPath : OnePointThreeSpacePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    SimplyConnectedSpace M := by
+  rcases h with ⟨e⟩
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement hPath
+  exact e.toHomotopyEquiv.simplyConnectedSpace
+
+/-- Source simple-connectedness follows by compactification recognition and local path-homotopy. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : OnePointThreeSpacePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement
+      hPath h =
+      (by
+        rcases h with ⟨e⟩
+        letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement hPath
+        exact e.toHomotopyEquiv.simplyConnectedSpace) := by
+  apply Subsingleton.elim
+
+/-- The local path route to source simple-connectedness agrees with the local loop route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : OnePointThreeSpacePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement
+      hPath h =
+      simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h := by
+  apply Subsingleton.elim
+
+/--
+The compactification model's own loop-nullhomotopy obligation supplies the full
+source homotopy/manifold prerequisite payload for any source recognized as the
+one-point compactification model.
+-/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+    {M : Type u} [TopologicalSpace M]
+    (hLoop : OnePointThreeSpaceLoopNullhomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  rcases topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h with
+    ⟨t2, charted, compact, topological, path, locPath, connected, nonempty⟩
+  exact ⟨t2, charted,
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+      hLoop h,
+    compact, topological, path, locPath, connected, nonempty⟩
+
+/-- The local loop source prerequisite route is compactification transport plus local simple-connectedness. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hLoop : OnePointThreeSpaceLoopNullhomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+      hLoop h =
+      (by
+        rcases topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h with
+          ⟨t2, charted, compact, topological, path, locPath, connected, nonempty⟩
+        exact ⟨t2, charted,
+          simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+            hLoop h,
+          compact, topological, path, locPath, connected, nonempty⟩) := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere loop source route agrees with the local compactification-loop route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement_onePoint_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+      hLoop h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+          hLoop) h := by
+  apply Subsingleton.elim
+
+/--
+The compactification model's own path-homotopy obligation supplies the full
+source homotopy/manifold prerequisite payload for any source recognized as the
+one-point compactification model.
+-/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement
+    {M : Type u} [TopologicalSpace M]
+    (hPath : OnePointThreeSpacePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  rcases topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h with
+    ⟨t2, charted, compact, topological, path, locPath, connected, nonempty⟩
+  exact ⟨t2, charted,
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement
+      hPath h,
+    compact, topological, path, locPath, connected, nonempty⟩
+
+/-- The local path source prerequisite route is compactification transport plus local simple-connectedness. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : OnePointThreeSpacePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement
+      hPath h =
+      (by
+        rcases topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h with
+          ⟨t2, charted, compact, topological, path, locPath, connected, nonempty⟩
+        exact ⟨t2, charted,
+          simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement
+            hPath h,
+          compact, topological, path, locPath, connected, nonempty⟩) := by
+  apply Subsingleton.elim
+
+/-- The local compactification path source route agrees with the local loop source route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : OnePointThreeSpacePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement
+      hPath h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere path source route agrees with the local compactification-path route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement_onePoint_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement
+      hPath h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement
+        (onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePathHomotopyStatement hPath) h := by
+  apply Subsingleton.elim
+
+/--
 A simply connected space recognized as the one-point compactification model
 inherits the transported compactification prerequisite payload together with
 the given simple-connectedness instance.

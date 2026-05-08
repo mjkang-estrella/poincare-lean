@@ -633,7 +633,15 @@ The current artifact is intentionally conservative:
   the standard-sphere simple-connectedness input; the loop-nullhomotopy variant
   `homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement`
   uses the concrete homotopy obligation instead, and the path-homotopy source
-  route is tied back to that loop route. It also packages the
+  route is tied back to that loop route. It also adds local compactification
+  source routes
+  `simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement`,
+  `simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement`,
+  `homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement`,
+  and
+  `homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement`,
+  tying the standard-sphere loop/path routes back to compactification-local
+  loop/path obligations. It also packages the
   transported payload with an already supplied source `SimplyConnectedSpace` instance as
   `poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace`. It
   names universal compactification recognition as
