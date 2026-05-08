@@ -2275,6 +2275,21 @@ set_option linter.unusedVariables false
     Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))))
 #check Poincare.onePoint_threeSpace_topological_manifold_prerequisites_eq
 
+universe u
+
+#check (Poincare.topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace :
+  ∀ {M : Type u} [TopologicalSpace M],
+    Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) →
+      ∃ _t2 : T2Space M,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+      ∃ _compact : CompactSpace M,
+      ∃ _topological : IsManifold (𝓡 3) 0 M,
+      ∃ _path : PathConnectedSpace M,
+      ∃ _locPath : LocPathConnectedSpace M,
+      ∃ _connected : ConnectedSpace M,
+        Nonempty M)
+#check Poincare.topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq
+
 #check (Poincare.threeSphere_self_homeomorph :
   Nonempty (Poincare.ThreeSphere ≃ₜ Poincare.ThreeSphere))
 

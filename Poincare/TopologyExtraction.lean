@@ -313,6 +313,85 @@ theorem onePoint_threeSpace_topological_manifold_prerequisites_eq :
         onePoint_threeSpace_connectedSpace, onePoint_threeSpace_nonempty⟩ := by
   apply Subsingleton.elim
 
+/--
+Any space recognized as the one-point compactification model inherits the same
+basic `C^0` 3-manifold prerequisite payload.
+-/
+theorem topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  rcases h with ⟨e⟩
+  letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) := onePoint_threeSpace_t2Space
+  letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_compactSpace
+  letI : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_pathConnectedSpace
+  letI : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_locPathConnectedSpace
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_chartedSpace
+  let charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M :=
+    e.symm.isLocalHomeomorph.chartedSpace e.symm.surjective
+  let topological : IsManifold (𝓡 3) 0 M := by
+    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M := charted
+    infer_instance
+  let path : PathConnectedSpace M :=
+    e.symm.surjective.pathConnectedSpace e.symm.continuous
+  let locPath : LocPathConnectedSpace M :=
+    e.isOpenEmbedding.locPathConnectedSpace
+  let connected : ConnectedSpace M := by
+    letI : PathConnectedSpace M := path
+    infer_instance
+  let nonempty : Nonempty M := by
+    letI : PathConnectedSpace M := path
+    infer_instance
+  exact ⟨e.symm.t2Space, charted, e.symm.compactSpace, topological, path, locPath,
+    connected, nonempty⟩
+
+/-- The compactification-recognition prerequisite route is explicit transport along the homeomorphism. -/
+theorem topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h =
+      (by
+        rcases h with ⟨e⟩
+        letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) := onePoint_threeSpace_t2Space
+        letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_compactSpace
+        letI : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_pathConnectedSpace
+        letI : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_locPathConnectedSpace
+        letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+            (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_chartedSpace
+        let charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M :=
+          e.symm.isLocalHomeomorph.chartedSpace e.symm.surjective
+        let topological : IsManifold (𝓡 3) 0 M := by
+          letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M := charted
+          infer_instance
+        let path : PathConnectedSpace M :=
+          e.symm.surjective.pathConnectedSpace e.symm.continuous
+        let locPath : LocPathConnectedSpace M :=
+          e.isOpenEmbedding.locPathConnectedSpace
+        let connected : ConnectedSpace M := by
+          letI : PathConnectedSpace M := path
+          infer_instance
+        let nonempty : Nonempty M := by
+          letI : PathConnectedSpace M := path
+          infer_instance
+        exact ⟨e.symm.t2Space, charted, e.symm.compactSpace, topological, path, locPath,
+          connected, nonempty⟩) := by
+  apply Subsingleton.elim
+
 /-- The standard target sphere is homeomorphic to itself. -/
 theorem threeSphere_self_homeomorph :
     Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=

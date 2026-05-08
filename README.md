@@ -598,7 +598,9 @@ The current artifact is intentionally conservative:
   `ChartedSpace (EuclideanSpace ℝ (Fin 3))` structure from `ThreeSphere`, derives
   a `C^0` 3-manifold witness for those charts, and bundles the result as
   `onePoint_threeSpace_topological_prerequisites` and
-  `onePoint_threeSpace_topological_manifold_prerequisites`, with equality
+  `onePoint_threeSpace_topological_manifold_prerequisites`. The same layer now
+  transports that `C^0` prerequisite payload to any source space already
+  recognized as homeomorphic to the compactification model, with equality
   contracts and audit coverage for those routes. The
   concrete homeomorphism glue for the standard sphere's self-homeomorphism,
   intermediate-space composition, opposite-direction source transport, and both

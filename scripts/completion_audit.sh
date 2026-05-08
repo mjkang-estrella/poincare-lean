@@ -4113,6 +4113,10 @@ check_decl "one-point compactification topological manifold prerequisite payload
   '^theorem onePoint_threeSpace_topological_manifold_prerequisites\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification topological manifold prerequisite payload equality contract is declared" \
   '^theorem onePoint_threeSpace_topological_manifold_prerequisites_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification recognition prerequisite transport is declared" \
+  '^theorem topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification recognition prerequisite transport equality contract is declared" \
+  '^theorem topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq\b' Poincare/TopologyExtraction.lean
 check_decl "smoothability package is declared" \
   '^structure SmoothabilityPackage\b' Poincare/Smoothability.lean
 check_decl "smoothability Moise triangulation interface is declared" \
@@ -12786,6 +12790,8 @@ open scoped Manifold ContDiff
 #check Poincare.onePoint_threeSpace_topological_prerequisites_eq
 #check Poincare.onePoint_threeSpace_topological_manifold_prerequisites
 #check Poincare.onePoint_threeSpace_topological_manifold_prerequisites_eq
+#check Poincare.topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace
+#check Poincare.topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq
 #check Poincare.threeSphere_self_homeomorph
 #check Poincare.threeSphere_self_homeomorph_eq
 #check Poincare.threeSphere_self_homeomorph_self_diffeomorph_route_eq
