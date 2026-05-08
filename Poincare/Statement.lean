@@ -120,6 +120,21 @@ theorem threeSphere_pathConnectedSpace_eq :
       isPathConnected_iff_pathConnectedSpace.mp threeSphere_isPathConnected_set := by
   apply Subsingleton.elim
 
+/-- The target 3-sphere is locally path-connected through its charted-space structure. -/
+theorem threeSphere_locPathConnectedSpace :
+    LocPathConnectedSpace ThreeSphere := by
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere := threeSphere_chartedSpace
+  exact ChartedSpace.locPathConnectedSpace (H := EuclideanSpace ℝ (Fin 3)) (M := ThreeSphere)
+
+/-- Local path-connectedness follows from the named standard charted-space structure. -/
+theorem threeSphere_locPathConnectedSpace_eq :
+    threeSphere_locPathConnectedSpace =
+      (by
+        letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere := threeSphere_chartedSpace
+        exact ChartedSpace.locPathConnectedSpace
+          (H := EuclideanSpace ℝ (Fin 3)) (M := ThreeSphere)) := by
+  apply Subsingleton.elim
+
 /-- The target 3-sphere type is connected. -/
 theorem threeSphere_connectedSpace :
     ConnectedSpace ThreeSphere := by
@@ -206,6 +221,71 @@ theorem threeSphere_target_prerequisites_eq
         threeSphere_compactSpace, threeSphere_smoothManifold,
         threeSphere_pathConnectedSpace, threeSphere_connectedSpace,
         threeSphere_nonempty⟩ := by
+  apply Subsingleton.elim
+
+/--
+Standard-sphere prerequisites useful for homotopy-level arguments, excluding
+the simple-connectedness input.  This extends the target prerequisite payload
+with local path-connectedness, which is often required by covering-space and
+fundamental-group arguments.
+-/
+theorem threeSphere_homotopy_prerequisites_except_simpleConnected :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere := by
+  exact ⟨threeSphere_t2Space, threeSphere_chartedSpace, threeSphere_compactSpace,
+    threeSphere_smoothManifold, threeSphere_pathConnectedSpace,
+    threeSphere_locPathConnectedSpace, threeSphere_connectedSpace,
+    threeSphere_nonempty⟩
+
+/--
+The homotopy prerequisite payload is exactly the tuple of named standard-sphere
+facts, still leaving simple-connectedness outside the local proof surface.
+-/
+theorem threeSphere_homotopy_prerequisites_except_simpleConnected_eq :
+    threeSphere_homotopy_prerequisites_except_simpleConnected =
+      ⟨threeSphere_t2Space, threeSphere_chartedSpace, threeSphere_compactSpace,
+        threeSphere_smoothManifold, threeSphere_pathConnectedSpace,
+        threeSphere_locPathConnectedSpace, threeSphere_connectedSpace,
+        threeSphere_nonempty⟩ := by
+  apply Subsingleton.elim
+
+/--
+Full standard-sphere homotopy prerequisites, with simple-connectedness kept as
+an explicit typeclass input rather than locally asserted.
+-/
+theorem threeSphere_homotopy_prerequisites [SimplyConnectedSpace ThreeSphere] :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere := by
+  exact ⟨threeSphere_t2Space, threeSphere_chartedSpace, inferInstance,
+    threeSphere_compactSpace, threeSphere_smoothManifold,
+    threeSphere_pathConnectedSpace, threeSphere_locPathConnectedSpace,
+    threeSphere_connectedSpace, threeSphere_nonempty⟩
+
+/--
+The full homotopy prerequisite payload is exactly the named standard-sphere
+fact tuple, with simple-connectedness supplied by the current typeclass context.
+-/
+theorem threeSphere_homotopy_prerequisites_eq
+    [SimplyConnectedSpace ThreeSphere] :
+    threeSphere_homotopy_prerequisites =
+      ⟨threeSphere_t2Space, threeSphere_chartedSpace,
+        (inferInstance : SimplyConnectedSpace ThreeSphere),
+        threeSphere_compactSpace, threeSphere_smoothManifold,
+        threeSphere_pathConnectedSpace, threeSphere_locPathConnectedSpace,
+        threeSphere_connectedSpace, threeSphere_nonempty⟩ := by
   apply Subsingleton.elim
 
 /--

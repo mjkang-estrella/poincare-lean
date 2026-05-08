@@ -170,6 +170,109 @@ theorem threeSphere_self_homeomorph_of_smooth_statement_eq
   apply Subsingleton.elim
 
 /--
+Applying the project target to the standard sphere exposes both the full
+homotopy-oriented standard-sphere prerequisite payload and the self-homeomorphism
+endpoint.  The simple-connectedness of `S^3` remains an explicit input.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement
+    [SimplyConnectedSpace ThreeSphere]
+    (h : PoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₜ ThreeSphere) := by
+  exact ⟨threeSphere_homotopy_prerequisites,
+    threeSphere_self_homeomorph_of_poincare_statement h⟩
+
+/--
+The project-target self-application payload is exactly the homotopy prerequisite
+payload paired with the existing self-homeomorphism route.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_eq
+    [SimplyConnectedSpace ThreeSphere] :
+    threeSphere_self_homeomorph_payload_of_poincare_statement =
+      (fun h : PoincareConjectureStatement.{0} =>
+        ⟨threeSphere_homotopy_prerequisites,
+          threeSphere_self_homeomorph_of_poincare_statement h⟩) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+Applying the smooth target to the standard sphere exposes the same prerequisite
+payload with the smooth self-diffeomorphism endpoint.
+-/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement
+    [SimplyConnectedSpace ThreeSphere]
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) := by
+  exact ⟨threeSphere_homotopy_prerequisites,
+    threeSphere_self_diffeomorph_of_smooth_statement h⟩
+
+/--
+The smooth self-diffeomorphism payload is exactly the homotopy prerequisite
+payload paired with the existing smooth self-application route.
+-/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_eq
+    [SimplyConnectedSpace ThreeSphere] :
+    threeSphere_self_diffeomorph_payload_of_smooth_statement =
+      (fun h : SmoothPoincareConjectureStatement.{0} =>
+        ⟨threeSphere_homotopy_prerequisites,
+          threeSphere_self_diffeomorph_of_smooth_statement h⟩) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The smooth target also exposes the homotopy prerequisite payload with the
+topological self-homeomorphism obtained by forgetting smooth structure.
+-/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement
+    [SimplyConnectedSpace ThreeSphere]
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₜ ThreeSphere) := by
+  exact ⟨threeSphere_homotopy_prerequisites,
+    threeSphere_self_homeomorph_of_smooth_statement h⟩
+
+/--
+The smooth-to-topological self payload is exactly the homotopy prerequisite
+payload paired with the existing smooth-to-topological self route.
+-/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_eq
+    [SimplyConnectedSpace ThreeSphere] :
+    threeSphere_self_homeomorph_payload_of_smooth_statement =
+      (fun h : SmoothPoincareConjectureStatement.{0} =>
+        ⟨threeSphere_homotopy_prerequisites,
+          threeSphere_self_homeomorph_of_smooth_statement h⟩) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 If the canonical 3-dimensional topological Poincare statement is available as a
 proof-bearing theorem, then it proves this project's target proposition.
 

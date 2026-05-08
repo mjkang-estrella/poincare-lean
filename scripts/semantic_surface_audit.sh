@@ -506,6 +506,10 @@ set_option linter.unusedVariables false
   PathConnectedSpace Poincare.ThreeSphere)
 #check Poincare.threeSphere_pathConnectedSpace_eq
 
+#check (Poincare.threeSphere_locPathConnectedSpace :
+  LocPathConnectedSpace Poincare.ThreeSphere)
+#check Poincare.threeSphere_locPathConnectedSpace_eq
+
 #check (Poincare.threeSphere_connectedSpace :
   ConnectedSpace Poincare.ThreeSphere)
 #check Poincare.threeSphere_connectedSpace_eq
@@ -535,6 +539,30 @@ set_option linter.unusedVariables false
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_target_prerequisites_eq
+
+#check (Poincare.threeSphere_homotopy_prerequisites_except_simpleConnected :
+  ∃ _t2 : T2Space Poincare.ThreeSphere,
+  ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) Poincare.ThreeSphere,
+  ∃ _compact : CompactSpace Poincare.ThreeSphere,
+  ∃ _smooth : IsManifold (𝓡 3) ∞ Poincare.ThreeSphere,
+  ∃ _path : PathConnectedSpace Poincare.ThreeSphere,
+  ∃ _locPath : LocPathConnectedSpace Poincare.ThreeSphere,
+  ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
+    Nonempty Poincare.ThreeSphere)
+#check Poincare.threeSphere_homotopy_prerequisites_except_simpleConnected_eq
+
+#check (Poincare.threeSphere_homotopy_prerequisites :
+  [SimplyConnectedSpace Poincare.ThreeSphere] →
+  ∃ _t2 : T2Space Poincare.ThreeSphere,
+  ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) Poincare.ThreeSphere,
+  ∃ _simplyConnected : SimplyConnectedSpace Poincare.ThreeSphere,
+  ∃ _compact : CompactSpace Poincare.ThreeSphere,
+  ∃ _smooth : IsManifold (𝓡 3) ∞ Poincare.ThreeSphere,
+  ∃ _path : PathConnectedSpace Poincare.ThreeSphere,
+  ∃ _locPath : LocPathConnectedSpace Poincare.ThreeSphere,
+  ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
+    Nonempty Poincare.ThreeSphere)
+#check Poincare.threeSphere_homotopy_prerequisites_eq
 
 #check (Poincare.poincareConjectureStatement_eq :
   Poincare.PoincareConjectureStatement =
@@ -605,6 +633,54 @@ set_option linter.unusedVariables false
     Poincare.SmoothPoincareConjectureStatement.{0} →
       Nonempty (Poincare.ThreeSphere ≃ₜ Poincare.ThreeSphere))
 #check Poincare.threeSphere_self_homeomorph_of_smooth_statement_eq
+
+#check (Poincare.threeSphere_self_homeomorph_payload_of_poincare_statement :
+  ∀ [SimplyConnectedSpace Poincare.ThreeSphere],
+    Poincare.PoincareConjectureStatement.{0} →
+      ∃ _prerequisites :
+        (∃ _t2 : T2Space Poincare.ThreeSphere,
+        ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) Poincare.ThreeSphere,
+        ∃ _simplyConnected : SimplyConnectedSpace Poincare.ThreeSphere,
+        ∃ _compact : CompactSpace Poincare.ThreeSphere,
+        ∃ _smooth : IsManifold (𝓡 3) ∞ Poincare.ThreeSphere,
+        ∃ _path : PathConnectedSpace Poincare.ThreeSphere,
+        ∃ _locPath : LocPathConnectedSpace Poincare.ThreeSphere,
+        ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
+          Nonempty Poincare.ThreeSphere),
+          Nonempty (Poincare.ThreeSphere ≃ₜ Poincare.ThreeSphere))
+#check Poincare.threeSphere_self_homeomorph_payload_of_poincare_statement_eq
+
+#check (Poincare.threeSphere_self_diffeomorph_payload_of_smooth_statement :
+  ∀ [SimplyConnectedSpace Poincare.ThreeSphere],
+    Poincare.SmoothPoincareConjectureStatement.{0} →
+      ∃ _prerequisites :
+        (∃ _t2 : T2Space Poincare.ThreeSphere,
+        ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) Poincare.ThreeSphere,
+        ∃ _simplyConnected : SimplyConnectedSpace Poincare.ThreeSphere,
+        ∃ _compact : CompactSpace Poincare.ThreeSphere,
+        ∃ _smooth : IsManifold (𝓡 3) ∞ Poincare.ThreeSphere,
+        ∃ _path : PathConnectedSpace Poincare.ThreeSphere,
+        ∃ _locPath : LocPathConnectedSpace Poincare.ThreeSphere,
+        ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
+          Nonempty Poincare.ThreeSphere),
+          Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere))
+#check Poincare.threeSphere_self_diffeomorph_payload_of_smooth_statement_eq
+
+#check (Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement :
+  ∀ [SimplyConnectedSpace Poincare.ThreeSphere],
+    Poincare.SmoothPoincareConjectureStatement.{0} →
+      ∃ _prerequisites :
+        (∃ _t2 : T2Space Poincare.ThreeSphere,
+        ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) Poincare.ThreeSphere,
+        ∃ _simplyConnected : SimplyConnectedSpace Poincare.ThreeSphere,
+        ∃ _compact : CompactSpace Poincare.ThreeSphere,
+        ∃ _smooth : IsManifold (𝓡 3) ∞ Poincare.ThreeSphere,
+        ∃ _path : PathConnectedSpace Poincare.ThreeSphere,
+        ∃ _locPath : LocPathConnectedSpace Poincare.ThreeSphere,
+        ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
+          Nonempty Poincare.ThreeSphere),
+          Nonempty (Poincare.ThreeSphere ≃ₜ Poincare.ThreeSphere))
+#check Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement_eq
 
 #check (Poincare.homeomorph_of_threeSphere_diffeomorph :
   ∀ {M : Type} [TopologicalSpace M]

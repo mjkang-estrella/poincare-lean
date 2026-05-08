@@ -12,9 +12,10 @@ The current artifact is intentionally conservative:
   the exact target sphere model plus the topological and smooth statement shapes,
   names the supplied T2, compact, charted-space, and smooth-manifold facts for
   the standard sphere, proves the ambient `ℝ^4` rank input for mathlib's
-  connected-sphere theorem and the resulting path-connected/connected/nonempty
-  facts for the target `S^3`, packages those available prerequisites except
-  simple-connectedness into one checked payload, includes explicit iff contracts
+  connected-sphere theorem and the resulting path-connected, locally
+  path-connected, connected, and nonempty facts for the target `S^3`, packages
+  those available prerequisites except simple-connectedness into checked target
+  and homotopy payloads, includes explicit iff contracts
   for those canonical topological and smooth statement shapes, and an iff
   contract plus both directions between the target statement and the explicit
   completion criterion. It also names
@@ -27,9 +28,10 @@ The current artifact is intentionally conservative:
   the target/criterion and the payload. The statement layer now also pins those
   canonical-statement, witness-transfer, target/criterion projection, and
   target/criterion payload routes with equality contracts.
-  It also names the full standard-sphere prerequisite payload under the explicit
-  `SimplyConnectedSpace ThreeSphere` assumption, extending the existing
-  prerequisite payload that deliberately leaves that input open.
+  It also names the full standard-sphere target and homotopy prerequisite
+  payloads under the explicit `SimplyConnectedSpace ThreeSphere` assumption,
+  extending the existing prerequisite payloads that deliberately leave that
+  input open.
 - `Poincare/Milestones.lean` and `DEPENDENCY_LEDGER.md` name the missing
   Ricci-flow and topology proof obligations as data, not as proved
   propositions.
@@ -46,6 +48,8 @@ The current artifact is intentionally conservative:
   self-diffeomorphism and its smooth-to-topological self-homeomorphism route,
   exposing the standard-sphere self-case obtained by applying the topological
   or smooth target statement when `S^3` is supplied as simply connected,
+  packaging those self-case endpoints with the full homotopy-oriented
+  standard-sphere prerequisites,
   and reducing the topological target to the smooth Poincare statement plus a
   smoothability hypothesis. It also bridges both the
   canonical topological and smooth mathlib-shaped 3-sphere statements into the
