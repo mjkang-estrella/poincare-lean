@@ -1416,6 +1416,10 @@ The current artifact is intentionally conservative:
   `canonical_completion_target_of_extraction_derivation_dependency_projections`,
   and
   `canonical_completion_criterion_of_extraction_derivation_dependency_projections`.
+  The projection-based dependency routes now pin their canonical completion
+  target and criterion endpoints directly to the project statement and project
+  criterion endpoints exposed by `DependencyProjections.lean`, including
+  certified and equation-boundary variants.
   The projection-route canonical payload, target, and criterion contracts now
   also factor through finite extinction plus
   `topology_extraction_statement_of_dependencies`; the certified

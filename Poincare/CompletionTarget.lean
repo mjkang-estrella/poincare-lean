@@ -12418,6 +12418,16 @@ theorem canonical_completion_target_of_dependency_projections_to_package_eq
   apply Subsingleton.elim
 
 /--
+The projection-route canonical target is the same project statement endpoint
+exposed by the dependency-projection layer.
+-/
+theorem canonical_completion_target_of_dependency_projections_to_project_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_dependency_projections dependencies =
+      poincare_statement_of_dependency_projections dependencies := by
+  apply Subsingleton.elim
+
+/--
 The projection-based dependency assembly route also discharges the explicit
 universe-indexed completion criterion through the final canonical-completion
 payload.
@@ -12472,6 +12482,17 @@ theorem canonical_completion_criterion_of_dependency_projections_to_package_eq
         (finite_extinction_of_dependencies dependencies)
         (extinction_implies_sphere_of_topology_package
           dependencies.topology) := by
+  apply Subsingleton.elim
+
+/--
+The projection-route canonical criterion is the same project criterion endpoint
+exposed by the dependency-projection layer.
+-/
+theorem canonical_completion_criterion_of_dependency_projections_to_project_criterion_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_dependency_projections
+      witness dependencies =
+      completion_criterion_of_dependency_projections witness dependencies := by
   apply Subsingleton.elim
 
 /--
@@ -12605,6 +12626,18 @@ theorem canonical_completion_target_of_extraction_derivation_dependency_projecti
   apply Subsingleton.elim
 
 /--
+The certified projection-route canonical target is the same certified project
+statement endpoint exposed by the dependency-projection layer.
+-/
+theorem canonical_completion_target_of_extraction_derivation_dependency_projections_to_project_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_extraction_derivation_dependency_projections
+      dependencies =
+      poincare_statement_of_extraction_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The certified extraction-derivation projection route also discharges the
 explicit universe-indexed completion criterion through its canonical-completion
 payload.
@@ -12671,6 +12704,18 @@ theorem canonical_completion_criterion_of_extraction_derivation_dependency_proje
             witness
             (finite_extinction_of_dependencies dependencies)
             extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+The certified projection-route canonical criterion is the same certified
+project criterion endpoint exposed by the dependency-projection layer.
+-/
+theorem canonical_completion_criterion_of_extraction_derivation_dependency_projections_to_project_criterion_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_extraction_derivation_dependency_projections
+      witness dependencies =
+      completion_criterion_of_extraction_derivation_dependency_projections
+        witness dependencies := by
   apply Subsingleton.elim
 
 /--
@@ -12781,6 +12826,18 @@ theorem canonical_completion_target_of_equation_boundary_dependency_projections_
   apply Subsingleton.elim
 
 /--
+The strengthened projection-route canonical target is the same strengthened
+project statement endpoint exposed by the dependency-projection layer.
+-/
+theorem canonical_completion_target_of_equation_boundary_dependency_projections_to_project_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_target_of_equation_boundary_dependency_projections
+        dependencies =
+      poincare_statement_of_equation_boundary_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened equation-boundary projection route also discharges the
 canonical universe-indexed completion criterion.
 -/
@@ -12840,6 +12897,19 @@ theorem canonical_completion_criterion_of_equation_boundary_dependency_projectio
       canonical_completion_criterion_of_dependency_projections
         witness
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened projection-route canonical criterion is the same strengthened
+project criterion endpoint exposed by the dependency-projection layer.
+-/
+theorem canonical_completion_criterion_of_equation_boundary_dependency_projections_to_project_criterion_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_equation_boundary_dependency_projections
+        witness dependencies =
+      completion_criterion_of_equation_boundary_dependency_projections
+        witness dependencies := by
   apply Subsingleton.elim
 
 /--
@@ -12968,6 +13038,19 @@ theorem canonical_completion_target_of_equation_boundary_extraction_derivation_d
   apply Subsingleton.elim
 
 /--
+The strengthened certified projection-route canonical target is the same
+strengthened certified project statement endpoint exposed by the
+dependency-projection layer.
+-/
+theorem canonical_completion_target_of_equation_boundary_extraction_derivation_dependency_projections_to_project_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_target_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened certified equation-boundary projection route also discharges
 the canonical universe-indexed completion criterion.
 -/
@@ -13035,6 +13118,20 @@ theorem canonical_completion_criterion_of_equation_boundary_extraction_derivatio
       canonical_completion_criterion_of_extraction_derivation_dependency_projections
         witness
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified projection-route canonical criterion is the same
+strengthened certified project criterion endpoint exposed by the
+dependency-projection layer.
+-/
+theorem canonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_to_project_criterion_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections
+        witness dependencies =
+      completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections
+        witness dependencies := by
   apply Subsingleton.elim
 
 /--
