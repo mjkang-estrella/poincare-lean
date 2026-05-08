@@ -900,7 +900,9 @@ The current artifact is intentionally conservative:
   literal and aggregate canonical-statement payload projections now follow those
   same ordinary certificate routes as well, and reconstructing certificates from
   those canonical-statement payloads follows the same ordinary remaining-dependency
-  and aggregate routes.
+  and aggregate routes. The remaining-package aggregate canonical-statement
+  payload routes are also pinned directly to the ordinary aggregate certificate
+  after equation-boundary data is forgotten.
   It also exposes the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/
