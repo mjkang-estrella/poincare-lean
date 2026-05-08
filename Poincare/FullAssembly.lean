@@ -190,6 +190,29 @@ theorem poincare_assembly_inputs_payload_of_surgery_and_topology_packages_eq
   apply Subsingleton.elim
 
 /--
+The explicit package assembly inputs are the finite-extinction input paired
+with the extractor obtained from the package-built theorem-shaped topology
+statement.
+-/
+theorem poincare_assembly_inputs_payload_of_surgery_and_topology_packages_to_extraction_statement_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    poincare_assembly_inputs_payload_of_surgery_and_topology_packages
+      smoothabilityPackage surgeryPackages topologyPackage =
+      ⟨finite_extinction_input_of_smoothability_and_surgery_packages
+        smoothabilityPackage surgeryPackages,
+        extinction_implies_sphere_of_topology_extraction_statement
+          (extinction_topology_extraction_statement_of_topology_package
+            topologyPackage)⟩ := by
+  apply Subsingleton.elim
+
+/--
 The explicit package route also exposes the finite-extinction input together
 with a final extractor and its topology derivation certificate.
 -/
@@ -566,6 +589,34 @@ theorem poincare_target_payload_of_surgery_and_topology_packages_eq
   apply Subsingleton.elim
 
 /--
+The explicit package target payload is the theorem-shaped topology target
+payload for the package-built topology extraction statement, with that
+statement converted back to its final extractor.
+-/
+theorem poincare_target_payload_of_surgery_and_topology_packages_to_extraction_statement_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    poincare_target_payload_of_surgery_and_topology_packages
+      smoothabilityPackage surgeryPackages topologyPackage =
+      (by
+        rcases poincare_target_payload_of_surgery_and_topology_extraction_statement
+            smoothabilityPackage surgeryPackages
+            (extinction_topology_extraction_statement_of_topology_package
+              topologyPackage) with
+          ⟨finiteExtinction, topologyStatement, target, criterion⟩
+        exact ⟨finiteExtinction,
+          extinction_implies_sphere_of_topology_extraction_statement
+            topologyStatement,
+          target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
 If every compact simply connected topological 3-manifold carries the smooth
 regularity needed by the surgery interface, every such smooth 3-manifold has a
 completed surgery package, and the post-extinction topology extraction package
@@ -763,6 +814,28 @@ theorem poincare_completion_payload_of_surgery_and_topology_extraction_statement
   apply Subsingleton.elim
 
 /--
+The explicit package completion payload agrees with the theorem-shaped
+topology completion payload for the package-built topology extraction
+statement.
+-/
+theorem poincare_completion_payload_of_surgery_and_topology_packages_to_extraction_statement_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    poincare_completion_payload_of_surgery_and_topology_packages
+      smoothabilityPackage surgeryPackages topologyPackage =
+      poincare_completion_payload_of_surgery_and_topology_extraction_statement
+        smoothabilityPackage surgeryPackages
+        (extinction_topology_extraction_statement_of_topology_package
+          topologyPackage) := by
+  apply Subsingleton.elim
+
+/--
 The smoothability and surgery package route, together with a final extractor
 and its topology derivation certificate, exposes the target and completion
 criterion as one payload.
@@ -939,6 +1012,27 @@ theorem poincare_statement_of_surgery_and_topology_extraction_statement_eq
               smoothabilityPackage surgeryPackages topologyStatement with
           ⟨_finiteExtinction, _topologyStatement, target, _criterion⟩
         exact target) := by
+  apply Subsingleton.elim
+
+/--
+The explicit package Poincare statement agrees with the theorem-shaped topology
+statement route for the package-built topology extraction statement.
+-/
+theorem poincare_statement_of_surgery_and_topology_packages_to_extraction_statement_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    poincare_statement_of_surgery_and_topology_packages
+      smoothabilityPackage surgeryPackages topologyPackage =
+      poincare_statement_of_surgery_and_topology_extraction_statement
+        smoothabilityPackage surgeryPackages
+        (extinction_topology_extraction_statement_of_topology_package
+          topologyPackage) := by
   apply Subsingleton.elim
 
 /--

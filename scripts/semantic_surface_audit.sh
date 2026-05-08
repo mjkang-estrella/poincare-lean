@@ -3268,6 +3268,7 @@ universe u
 
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages_eq
+#check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages_to_extraction_statement_eq
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation_eq
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_extraction_statement
@@ -3292,6 +3293,7 @@ universe u
       ∃ _target : Poincare.PoincareConjectureStatement,
         ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
 #check Poincare.poincare_target_payload_of_surgery_and_topology_packages_eq
+#check Poincare.poincare_target_payload_of_surgery_and_topology_packages_to_extraction_statement_eq
 
 #check (Poincare.poincare_target_payload_of_surgery_and_topology_extraction_statement :
   Poincare.SmoothabilityPackage →
@@ -3429,6 +3431,7 @@ universe u
       ∃ _target : Poincare.PoincareConjectureStatement,
         ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
 #check Poincare.poincare_completion_payload_of_surgery_and_topology_packages_eq
+#check Poincare.poincare_completion_payload_of_surgery_and_topology_packages_to_extraction_statement_eq
 
 #check (Poincare.poincare_completion_payload_of_surgery_and_topology_package_extraction_derivation :
   Poincare.SmoothabilityPackage →
@@ -3478,6 +3481,7 @@ universe u
     Poincare.ExtinctionTopologyExtractionPackage →
       Poincare.PoincareConjectureStatement)
 #check Poincare.poincare_statement_of_surgery_and_topology_packages_eq
+#check Poincare.poincare_statement_of_surgery_and_topology_packages_to_extraction_statement_eq
 
 #check (Poincare.poincare_statement_of_surgery_and_topology_package_extraction_derivation :
   Poincare.SmoothabilityPackage →
@@ -11525,8 +11529,8 @@ explicit_target_payload_count=$(
   rg -c '\bpoincare_target_payload_of_surgery_and_topology_packages\b' \
     Poincare/FullAssembly.lean || true
 )
-if [ "$explicit_target_payload_count" != "6" ]; then
-  echo "FAIL: explicit package full/completion routes should consume the explicit target payload"
+if [ "$explicit_target_payload_count" != "7" ]; then
+  echo "FAIL: explicit package full/completion and statement-route contracts should consume the explicit target payload"
   rg -n '\bpoincare_target_payload_of_surgery_and_topology_packages\b' \
     Poincare/FullAssembly.lean || true
   exit 1

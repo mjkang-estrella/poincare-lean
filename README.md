@@ -929,7 +929,9 @@ The current artifact is intentionally conservative:
   The extinction-to-sphere input is now extracted by destructuring
   `topology_extraction_payload_of_topology_package`, so the full assembly
   layer consumes the package-level topology extraction payload instead of the
-  raw final topology projection. The named
+  raw final topology projection. Package-route assembly inputs, target payload,
+  completion payload, and final statement are also pinned directly to the
+  package-built theorem-shaped topology extraction statement. The named
   `poincare_assembly_inputs_payload_of_surgery_and_topology_packages`
   centralizes that final input pair before the target statement is assembled.
   `poincare_target_payload_of_surgery_and_topology_packages` centralizes the

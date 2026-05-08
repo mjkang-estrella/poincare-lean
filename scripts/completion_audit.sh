@@ -4869,6 +4869,8 @@ check_decl "explicit package-route assembly inputs payload theorem is declared" 
   '^theorem poincare_assembly_inputs_payload_of_surgery_and_topology_packages\b' Poincare/FullAssembly.lean
 check_decl "explicit package-route assembly inputs payload equality contract is declared" \
   '^theorem poincare_assembly_inputs_payload_of_surgery_and_topology_packages_eq\b' Poincare/FullAssembly.lean
+check_decl "explicit package-route assembly inputs statement route equality contract is declared" \
+  '^theorem poincare_assembly_inputs_payload_of_surgery_and_topology_packages_to_extraction_statement_eq\b' Poincare/FullAssembly.lean
 check_decl "explicit package-route extraction-derivation assembly inputs payload theorem is declared" \
   '^theorem poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation\b' Poincare/FullAssembly.lean
 check_decl "explicit package-route extraction-derivation assembly inputs payload equality contract is declared" \
@@ -4885,6 +4887,8 @@ check_decl "explicit package-route target payload theorem is declared" \
   '^theorem poincare_target_payload_of_surgery_and_topology_packages\b' Poincare/FullAssembly.lean
 check_decl "explicit package-route target payload equality contract is declared" \
   '^theorem poincare_target_payload_of_surgery_and_topology_packages_eq\b' Poincare/FullAssembly.lean
+check_decl "explicit package-route target payload statement route equality contract is declared" \
+  '^theorem poincare_target_payload_of_surgery_and_topology_packages_to_extraction_statement_eq\b' Poincare/FullAssembly.lean
 check_decl "explicit package-route extraction-derivation target payload theorem is declared" \
   '^theorem poincare_target_payload_of_surgery_and_topology_package_extraction_derivation\b' Poincare/FullAssembly.lean
 check_decl "explicit package-route extraction-derivation target payload equality contract is declared" \
@@ -4909,6 +4913,8 @@ check_decl "end-to-end conditional completion payload theorem is declared" \
   '^theorem poincare_completion_payload_of_surgery_and_topology_packages\b' Poincare/FullAssembly.lean
 check_decl "end-to-end conditional completion payload equality contract is declared" \
   '^theorem poincare_completion_payload_of_surgery_and_topology_packages_eq\b' Poincare/FullAssembly.lean
+check_decl "end-to-end conditional completion payload statement route equality contract is declared" \
+  '^theorem poincare_completion_payload_of_surgery_and_topology_packages_to_extraction_statement_eq\b' Poincare/FullAssembly.lean
 check_decl "explicit package-route extraction-derivation completion payload theorem is declared" \
   '^theorem poincare_completion_payload_of_surgery_and_topology_package_extraction_derivation\b' Poincare/FullAssembly.lean
 check_decl "explicit package-route extraction-derivation completion payload equality contract is declared" \
@@ -4925,6 +4931,8 @@ check_decl "end-to-end conditional assembly theorem is declared" \
   '^theorem poincare_statement_of_surgery_and_topology_packages\b' Poincare/FullAssembly.lean
 check_decl "end-to-end conditional assembly theorem equality contract is declared" \
   '^theorem poincare_statement_of_surgery_and_topology_packages_eq\b' Poincare/FullAssembly.lean
+check_decl "end-to-end conditional assembly theorem statement route equality contract is declared" \
+  '^theorem poincare_statement_of_surgery_and_topology_packages_to_extraction_statement_eq\b' Poincare/FullAssembly.lean
 check_decl "theorem-shaped topology route assembly theorem is declared" \
   '^theorem poincare_statement_of_surgery_and_topology_extraction_statement\b' Poincare/FullAssembly.lean
 check_decl "theorem-shaped topology route assembly theorem equality contract is declared" \
@@ -14560,6 +14568,7 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_input_of_smoothability_and_surgery_packages_eq
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages_eq
+#check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages_to_extraction_statement_eq
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation_eq
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_extraction_statement
@@ -14568,6 +14577,7 @@ open scoped Manifold ContDiff
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_extraction_derivation_eq
 #check Poincare.poincare_target_payload_of_surgery_and_topology_packages
 #check Poincare.poincare_target_payload_of_surgery_and_topology_packages_eq
+#check Poincare.poincare_target_payload_of_surgery_and_topology_packages_to_extraction_statement_eq
 #check Poincare.poincare_target_payload_of_surgery_and_topology_package_extraction_derivation
 #check Poincare.poincare_target_payload_of_surgery_and_topology_package_extraction_derivation_eq
 #check Poincare.poincare_target_payload_of_surgery_and_topology_extraction_statement
@@ -14582,6 +14592,7 @@ open scoped Manifold ContDiff
 #check Poincare.poincare_statement_of_surgery_and_topology_extraction_statement_eq
 #check Poincare.poincare_completion_payload_of_surgery_and_topology_packages
 #check Poincare.poincare_completion_payload_of_surgery_and_topology_packages_eq
+#check Poincare.poincare_completion_payload_of_surgery_and_topology_packages_to_extraction_statement_eq
 #check Poincare.poincare_completion_payload_of_surgery_and_topology_package_extraction_derivation
 #check Poincare.poincare_completion_payload_of_surgery_and_topology_package_extraction_derivation_eq
 #check Poincare.poincare_completion_payload_of_surgery_and_topology_extraction_statement
@@ -14590,6 +14601,7 @@ open scoped Manifold ContDiff
 #check Poincare.poincare_completion_payload_of_surgery_and_extraction_derivation_eq
 #check Poincare.poincare_statement_of_surgery_and_topology_packages
 #check Poincare.poincare_statement_of_surgery_and_topology_packages_eq
+#check Poincare.poincare_statement_of_surgery_and_topology_packages_to_extraction_statement_eq
 #check Poincare.poincare_statement_of_surgery_and_extraction_derivation
 #check Poincare.poincare_statement_of_surgery_and_extraction_derivation_eq
 #check Poincare.poincare_statement_of_surgery_and_topology_package_extraction_derivation
@@ -20625,12 +20637,14 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_input_of_smoothability_and_surgery_packages_eq
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages_eq
+#check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages_to_extraction_statement_eq
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation_eq
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_extraction_statement
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_extraction_statement_eq
 #check Poincare.poincare_target_payload_of_surgery_and_topology_packages
 #check Poincare.poincare_target_payload_of_surgery_and_topology_packages_eq
+#check Poincare.poincare_target_payload_of_surgery_and_topology_packages_to_extraction_statement_eq
 #check Poincare.poincare_target_payload_of_surgery_and_topology_package_extraction_derivation
 #check Poincare.poincare_target_payload_of_surgery_and_topology_package_extraction_derivation_eq
 #check Poincare.poincare_target_payload_of_surgery_and_topology_extraction_statement
@@ -20641,10 +20655,12 @@ open scoped Manifold ContDiff
 #check Poincare.poincare_assembly_payload_of_surgery_and_topology_packages_eq
 #check Poincare.poincare_completion_payload_of_surgery_and_topology_packages
 #check Poincare.poincare_completion_payload_of_surgery_and_topology_packages_eq
+#check Poincare.poincare_completion_payload_of_surgery_and_topology_packages_to_extraction_statement_eq
 #check Poincare.poincare_completion_payload_of_surgery_and_topology_package_extraction_derivation
 #check Poincare.poincare_completion_payload_of_surgery_and_topology_package_extraction_derivation_eq
 #check Poincare.poincare_statement_of_surgery_and_topology_packages
 #check Poincare.poincare_statement_of_surgery_and_topology_packages_eq
+#check Poincare.poincare_statement_of_surgery_and_topology_packages_to_extraction_statement_eq
 #check Poincare.poincare_statement_of_surgery_and_topology_extraction_statement
 #check Poincare.poincare_statement_of_surgery_and_topology_extraction_statement_eq
 #check Poincare.poincare_statement_of_surgery_and_topology_package_extraction_derivation
