@@ -376,7 +376,10 @@ The current artifact is intentionally conservative:
   from their projected canonical-statement and aggregate canonical-statement
   payloads. Their noncanonical theorem-name and literal payload projections,
   plus literal-payload reconstructions, now also expose the ordinary aggregate
-  endpoints for the strengthened remaining-package routes.
+  endpoints for the strengthened remaining-package routes. The completion-target
+  canonical payload, project payload, target, canonical-target, and
+  completion-criterion projections now have the same ordinary aggregate
+  endpoints for those strengthened remaining-package routes.
   Separately, the completion-target
   wrapper layer now mirrors that
   finite-extinction route through the ordinary
