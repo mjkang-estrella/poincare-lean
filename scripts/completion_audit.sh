@@ -5273,6 +5273,10 @@ check_decl "equation-boundary dependency finite-extinction projection equality c
   '^theorem finite_extinction_of_equation_boundary_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary dependency finite-extinction verification route contract is declared" \
   '^theorem finite_extinction_of_equation_boundary_dependencies_to_verification_payload_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary dependency finite-extinction pointwise route contract is declared" \
+  '^theorem finite_extinction_of_equation_boundary_dependencies_to_pointwise_equation_payload_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary dependency finite-extinction direct pointwise route contract is declared" \
+  '^theorem finite_extinction_of_equation_boundary_dependencies_to_direct_pointwise_equation_payload_eq\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary dependency finite-extinction forgetful route contract is declared" \
   '^theorem finite_extinction_of_equation_boundary_dependencies_to_forgetful_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary dependency extraction projection theorem is declared" \

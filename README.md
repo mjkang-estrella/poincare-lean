@@ -189,10 +189,12 @@ The current artifact is intentionally conservative:
   surfaces. The older equation-boundary pointwise-equation and
   equation/metric-derivative payload families now also route directly through
   the stored scalar equation across dependency, verification-payload,
-  remaining/aggregate, and boundary-aware certificate surfaces. The boundary
-  surgery payload, analytic-boundary statement, and finite-extinction
-  projections are now routed through the direct payload where those projection
-  surfaces exist; the
+  remaining/aggregate, and boundary-aware certificate surfaces. The
+  strengthened dependency finite-extinction theorem now also has
+  scalar-pointwise and direct stored-equation projection routes, matching the
+  remaining/aggregate finite-extinction routes. The boundary surgery payload,
+  analytic-boundary statement, and finite-extinction projections are now routed
+  through the direct payload where those projection surfaces exist; the
   zero/stationary-zero boundary
   packages also expose pointwise scalar-zero derivative sides and paired
   derivative/RHS zero witnesses, plus named payloads bundling each boundary

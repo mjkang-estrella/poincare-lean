@@ -8889,6 +8889,47 @@ theorem finite_extinction_of_equation_boundary_dependencies_to_verification_payl
   apply Subsingleton.elim
 
 /--
+The strengthened dependency finite-extinction theorem is the finite-extinction
+projection of the scalar-pointwise surgery payload reconstructed from the named
+verification payload.
+-/
+theorem finite_extinction_of_equation_boundary_dependencies_to_pointwise_equation_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    finite_extinction_of_equation_boundary_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _
+        letI : IsManifold ThreeManifoldModelWithCorners 1 M :=
+          smoothability_bridge_of_dependencies
+            (dependencies_of_equation_boundary_dependencies dependencies) M
+        rcases
+            surgery_package_with_equation_boundary_pointwise_equation_payload_of_dependencies
+              dependencies M with
+          ⟨_n, _package, pointwisePayload⟩
+        exact finite_extinction_of_pointwise_equation_payload
+          pointwisePayload) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency finite-extinction theorem is reconstructed from the
+strengthened dependency direct stored-verification scalar equation payload.
+-/
+theorem finite_extinction_of_equation_boundary_dependencies_to_direct_pointwise_equation_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    finite_extinction_of_equation_boundary_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _
+        letI : IsManifold ThreeManifoldModelWithCorners 1 M :=
+          smoothability_bridge_of_dependencies
+            (dependencies_of_equation_boundary_dependencies dependencies) M
+        rcases
+            equation_boundary_direct_pointwise_equation_payload_of_dependencies
+              dependencies M with
+          ⟨_n, _package, directPayload⟩
+        exact finite_extinction_of_direct_pointwise_equation_payload
+          directPayload) := by
+  apply Subsingleton.elim
+
+/--
 Forgetting equation boundaries and then using the ordinary dependency
 finite-extinction theorem agrees with the strengthened dependency
 finite-extinction route.
