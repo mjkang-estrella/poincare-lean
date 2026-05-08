@@ -1356,6 +1356,9 @@ The current artifact is intentionally conservative:
   `canonical_completion_target_of_component_requirements`, and
   `canonical_completion_criterion_of_component_requirements`, plus
   `canonical_three_sphere_statement_of_component_requirements`; the
+  component-slot certified extraction route now pins its canonical payload,
+  target, criterion, and canonical statement back to the package-level
+  certified extraction route applied to the same component requirements; the
   package-layer requirement route exposes
   `poincare_completion_payload_of_package_layer_requirements`,
   `canonical_completion_payload_of_package_layer_requirements`,

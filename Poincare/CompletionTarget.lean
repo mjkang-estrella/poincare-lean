@@ -1775,6 +1775,79 @@ theorem canonical_three_sphere_statement_of_component_extraction_derivation_requ
   apply Subsingleton.elim
 
 /--
+The component-slot certified extraction canonical payload agrees with the
+package-level certified extraction canonical payload applied to the three
+component requirements.
+-/
+theorem canonical_completion_payload_of_component_extraction_derivation_requirements_to_package_extraction_derivation_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    canonical_completion_payload_of_component_extraction_derivation_requirements
+      smoothabilityRequirement surgeryRequirement topologyRequirement =
+      canonical_completion_payload_of_surgery_and_topology_package_extraction_derivation
+        smoothabilityRequirement surgeryRequirement topologyRequirement := by
+  apply Subsingleton.elim
+
+/--
+The component-slot certified extraction canonical target agrees with the
+package-level certified extraction canonical target applied to the three
+component requirements.
+-/
+theorem canonical_completion_target_of_component_extraction_derivation_requirements_to_package_extraction_derivation_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    canonical_completion_target_of_component_extraction_derivation_requirements
+      smoothabilityRequirement surgeryRequirement topologyRequirement =
+      canonical_completion_target_of_surgery_and_topology_package_extraction_derivation
+        smoothabilityRequirement surgeryRequirement topologyRequirement := by
+  apply Subsingleton.elim
+
+/--
+The component-slot certified extraction canonical criterion agrees with the
+package-level certified extraction canonical criterion applied to the three
+component requirements.
+-/
+theorem canonical_completion_criterion_of_component_extraction_derivation_requirements_to_package_extraction_derivation_eq
+    (witness : Type u)
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    canonical_completion_criterion_of_component_extraction_derivation_requirements
+      witness smoothabilityRequirement surgeryRequirement topologyRequirement =
+      canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation
+        witness smoothabilityRequirement surgeryRequirement topologyRequirement := by
+  apply Subsingleton.elim
+
+/--
+The component-slot certified extraction canonical statement agrees with the
+package-level certified extraction canonical statement applied to the three
+component requirements.
+-/
+theorem canonical_three_sphere_statement_of_component_extraction_derivation_requirements_to_package_extraction_derivation_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    canonical_three_sphere_statement_of_component_extraction_derivation_requirements
+      smoothabilityRequirement surgeryRequirement topologyRequirement =
+      canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation
+        smoothabilityRequirement surgeryRequirement topologyRequirement := by
+  apply Subsingleton.elim
+
+/--
 The five package-layer requirements also produce the project target and
 explicit completion criterion payload. The final assembly only consumes the
 smoothability, finite-extinction, and topology layers directly; the analytic
