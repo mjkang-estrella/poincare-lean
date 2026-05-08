@@ -1174,8 +1174,9 @@ The current artifact is intentionally conservative:
   theorem-shaped statement, derivation-statement payload, projected
   homeomorphism route, classification sub-obligations, assembly/derivation
   statements, direct assembly/derivation certificates, statement aliases,
-  derivation payload, and extractor to the stored topology package and
-  theorem-shaped topology statement routes.
+  derivation payload, and extractor to the stored topology package,
+  theorem-shaped topology statement, and direct extraction-statement projection
+  routes.
   The final projected Poincare theorem destructures
   `poincare_completion_payload_of_dependency_projections`, while the target and
   full projection payloads remain the named sources for the completion criterion,
