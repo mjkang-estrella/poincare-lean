@@ -1196,10 +1196,26 @@ check_decl "standard sphere reflexive self-diffeomorphism payload theorem is dec
   '^theorem threeSphere_self_diffeomorph_payload\b' Poincare/Assembly.lean
 check_decl "standard sphere reflexive self-diffeomorphism payload equality contract is declared" \
   '^theorem threeSphere_self_diffeomorph_payload_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere self-diffeomorphism payload prerequisite projection is declared" \
+  '^theorem threeSphere_target_prerequisites_except_simpleConnected_of_self_diffeomorph_payload\b' Poincare/Assembly.lean
+check_decl "standard sphere self-diffeomorphism payload prerequisite projection equality contract is declared" \
+  '^theorem threeSphere_target_prerequisites_except_simpleConnected_of_self_diffeomorph_payload_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere self-diffeomorphism payload endpoint projection is declared" \
+  '^theorem threeSphere_self_diffeomorph_of_self_diffeomorph_payload\b' Poincare/Assembly.lean
+check_decl "standard sphere self-diffeomorphism payload endpoint projection equality contract is declared" \
+  '^theorem threeSphere_self_diffeomorph_of_self_diffeomorph_payload_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere self-homeomorphism payload via self-diffeomorphism theorem is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_self_diffeomorph\b' Poincare/Assembly.lean
 check_decl "standard sphere self-homeomorphism payload via self-diffeomorphism equality contract is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_self_diffeomorph_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere self-homeomorphism smooth payload prerequisite projection is declared" \
+  '^theorem threeSphere_target_prerequisites_except_simpleConnected_of_self_homeomorph_payload_of_self_diffeomorph\b' Poincare/Assembly.lean
+check_decl "standard sphere self-homeomorphism smooth payload prerequisite projection equality contract is declared" \
+  '^theorem threeSphere_target_prerequisites_except_simpleConnected_of_self_homeomorph_payload_of_self_diffeomorph_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere self-homeomorphism smooth payload endpoint projection is declared" \
+  '^theorem threeSphere_self_homeomorph_of_self_homeomorph_payload_of_self_diffeomorph\b' Poincare/Assembly.lean
+check_decl "standard sphere self-homeomorphism smooth payload endpoint projection equality contract is declared" \
+  '^theorem threeSphere_self_homeomorph_of_self_homeomorph_payload_of_self_diffeomorph_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere self-homeomorphism from target statement theorem is declared" \
   '^theorem threeSphere_self_homeomorph_of_poincare_statement\b' Poincare/Assembly.lean
 check_decl "standard sphere self-homeomorphism from target statement equality contract is declared" \
@@ -3999,6 +4015,14 @@ check_decl "standard sphere direct self-homeomorphism payload theorem is declare
   '^theorem threeSphere_self_homeomorph_payload\b' Poincare/TopologyExtraction.lean
 check_decl "standard sphere direct self-homeomorphism payload equality contract is declared" \
   '^theorem threeSphere_self_homeomorph_payload_eq\b' Poincare/TopologyExtraction.lean
+check_decl "standard sphere direct self-homeomorphism payload prerequisite projection is declared" \
+  '^theorem threeSphere_target_prerequisites_except_simpleConnected_of_self_homeomorph_payload\b' Poincare/TopologyExtraction.lean
+check_decl "standard sphere direct self-homeomorphism payload prerequisite projection equality contract is declared" \
+  '^theorem threeSphere_target_prerequisites_except_simpleConnected_of_self_homeomorph_payload_eq\b' Poincare/TopologyExtraction.lean
+check_decl "standard sphere direct self-homeomorphism payload endpoint projection is declared" \
+  '^theorem threeSphere_self_homeomorph_of_self_homeomorph_payload\b' Poincare/TopologyExtraction.lean
+check_decl "standard sphere direct self-homeomorphism payload endpoint projection equality contract is declared" \
+  '^theorem threeSphere_self_homeomorph_of_self_homeomorph_payload_eq\b' Poincare/TopologyExtraction.lean
 check_decl "standard sphere direct self-homeomorphism payload smooth-route equality contract is declared" \
   '^theorem threeSphere_self_homeomorph_payload_self_diffeomorph_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "homeomorphism transitivity to standard sphere theorem is declared" \
@@ -12671,6 +12695,10 @@ open scoped Manifold ContDiff
 #check Poincare.threeSphere_self_homeomorph_self_diffeomorph_route_eq
 #check Poincare.threeSphere_self_homeomorph_payload
 #check Poincare.threeSphere_self_homeomorph_payload_eq
+#check Poincare.threeSphere_target_prerequisites_except_simpleConnected_of_self_homeomorph_payload
+#check Poincare.threeSphere_target_prerequisites_except_simpleConnected_of_self_homeomorph_payload_eq
+#check Poincare.threeSphere_self_homeomorph_of_self_homeomorph_payload
+#check Poincare.threeSphere_self_homeomorph_of_self_homeomorph_payload_eq
 #check Poincare.threeSphere_self_homeomorph_payload_self_diffeomorph_route_eq
 #check Poincare.homeomorph_to_threeSphere_of_homeomorph
 #check Poincare.homeomorph_to_threeSphere_of_homeomorph_eq
@@ -13442,8 +13470,16 @@ open scoped Manifold ContDiff
 #check Poincare.threeSphere_self_homeomorph_of_self_diffeomorph_eq
 #check Poincare.threeSphere_self_diffeomorph_payload
 #check Poincare.threeSphere_self_diffeomorph_payload_eq
+#check Poincare.threeSphere_target_prerequisites_except_simpleConnected_of_self_diffeomorph_payload
+#check Poincare.threeSphere_target_prerequisites_except_simpleConnected_of_self_diffeomorph_payload_eq
+#check Poincare.threeSphere_self_diffeomorph_of_self_diffeomorph_payload
+#check Poincare.threeSphere_self_diffeomorph_of_self_diffeomorph_payload_eq
 #check Poincare.threeSphere_self_homeomorph_payload_of_self_diffeomorph
 #check Poincare.threeSphere_self_homeomorph_payload_of_self_diffeomorph_eq
+#check Poincare.threeSphere_target_prerequisites_except_simpleConnected_of_self_homeomorph_payload_of_self_diffeomorph
+#check Poincare.threeSphere_target_prerequisites_except_simpleConnected_of_self_homeomorph_payload_of_self_diffeomorph_eq
+#check Poincare.threeSphere_self_homeomorph_of_self_homeomorph_payload_of_self_diffeomorph
+#check Poincare.threeSphere_self_homeomorph_of_self_homeomorph_payload_of_self_diffeomorph_eq
 #check Poincare.threeSphere_self_homeomorph_of_poincare_statement
 #check Poincare.threeSphere_self_homeomorph_of_poincare_statement_eq
 #check Poincare.threeSphere_self_diffeomorph_of_smooth_statement

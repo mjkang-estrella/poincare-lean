@@ -64,6 +64,36 @@ theorem threeSphere_self_homeomorph_payload_eq :
         threeSphere_self_homeomorph⟩ := by
   apply Subsingleton.elim
 
+/-- Project the target-prerequisite component from the direct topology payload. -/
+theorem threeSphere_target_prerequisites_except_simpleConnected_of_self_homeomorph_payload :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere := by
+  rcases threeSphere_self_homeomorph_payload with ⟨prerequisites, _endpoint⟩
+  exact prerequisites
+
+/-- The projected prerequisite component is the named standard-sphere payload. -/
+theorem threeSphere_target_prerequisites_except_simpleConnected_of_self_homeomorph_payload_eq :
+    threeSphere_target_prerequisites_except_simpleConnected_of_self_homeomorph_payload =
+      threeSphere_target_prerequisites_except_simpleConnected := by
+  apply Subsingleton.elim
+
+/-- Project the reflexive topological endpoint from the direct topology payload. -/
+theorem threeSphere_self_homeomorph_of_self_homeomorph_payload :
+    Nonempty (ThreeSphere ≃ₜ ThreeSphere) := by
+  rcases threeSphere_self_homeomorph_payload with ⟨_prerequisites, endpoint⟩
+  exact endpoint
+
+/-- The projected topological endpoint is the named reflexive self-homeomorphism. -/
+theorem threeSphere_self_homeomorph_of_self_homeomorph_payload_eq :
+    threeSphere_self_homeomorph_of_self_homeomorph_payload =
+      threeSphere_self_homeomorph := by
+  apply Subsingleton.elim
+
 /--
 The direct topology payload agrees with the smooth-forgetful assembly payload.
 -/

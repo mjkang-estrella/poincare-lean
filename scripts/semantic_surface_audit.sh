@@ -736,6 +736,18 @@ set_option linter.unusedVariables false
       Nonempty Poincare.ThreeSphere),
       Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere))
 #check Poincare.threeSphere_self_diffeomorph_payload_eq
+#check (Poincare.threeSphere_target_prerequisites_except_simpleConnected_of_self_diffeomorph_payload :
+  ∃ _t2 : T2Space Poincare.ThreeSphere,
+  ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) Poincare.ThreeSphere,
+  ∃ _compact : CompactSpace Poincare.ThreeSphere,
+  ∃ _smooth : IsManifold (𝓡 3) ∞ Poincare.ThreeSphere,
+  ∃ _path : PathConnectedSpace Poincare.ThreeSphere,
+  ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
+    Nonempty Poincare.ThreeSphere)
+#check Poincare.threeSphere_target_prerequisites_except_simpleConnected_of_self_diffeomorph_payload_eq
+#check (Poincare.threeSphere_self_diffeomorph_of_self_diffeomorph_payload :
+  Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere))
+#check Poincare.threeSphere_self_diffeomorph_of_self_diffeomorph_payload_eq
 
 #check (Poincare.threeSphere_self_homeomorph_payload_of_self_diffeomorph :
   ∃ _prerequisites :
@@ -748,6 +760,18 @@ set_option linter.unusedVariables false
       Nonempty Poincare.ThreeSphere),
       Nonempty (Poincare.ThreeSphere ≃ₜ Poincare.ThreeSphere))
 #check Poincare.threeSphere_self_homeomorph_payload_of_self_diffeomorph_eq
+#check (Poincare.threeSphere_target_prerequisites_except_simpleConnected_of_self_homeomorph_payload_of_self_diffeomorph :
+  ∃ _t2 : T2Space Poincare.ThreeSphere,
+  ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) Poincare.ThreeSphere,
+  ∃ _compact : CompactSpace Poincare.ThreeSphere,
+  ∃ _smooth : IsManifold (𝓡 3) ∞ Poincare.ThreeSphere,
+  ∃ _path : PathConnectedSpace Poincare.ThreeSphere,
+  ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
+    Nonempty Poincare.ThreeSphere)
+#check Poincare.threeSphere_target_prerequisites_except_simpleConnected_of_self_homeomorph_payload_of_self_diffeomorph_eq
+#check (Poincare.threeSphere_self_homeomorph_of_self_homeomorph_payload_of_self_diffeomorph :
+  Nonempty (Poincare.ThreeSphere ≃ₜ Poincare.ThreeSphere))
+#check Poincare.threeSphere_self_homeomorph_of_self_homeomorph_payload_of_self_diffeomorph_eq
 
 #check (Poincare.threeSphere_self_homeomorph_of_poincare_statement :
   ∀ [SimplyConnectedSpace Poincare.ThreeSphere],
@@ -2183,6 +2207,18 @@ set_option linter.unusedVariables false
       Nonempty Poincare.ThreeSphere),
       Nonempty (Poincare.ThreeSphere ≃ₜ Poincare.ThreeSphere))
 #check Poincare.threeSphere_self_homeomorph_payload_eq
+#check (Poincare.threeSphere_target_prerequisites_except_simpleConnected_of_self_homeomorph_payload :
+  ∃ _t2 : T2Space Poincare.ThreeSphere,
+  ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) Poincare.ThreeSphere,
+  ∃ _compact : CompactSpace Poincare.ThreeSphere,
+  ∃ _smooth : IsManifold (𝓡 3) ∞ Poincare.ThreeSphere,
+  ∃ _path : PathConnectedSpace Poincare.ThreeSphere,
+  ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
+    Nonempty Poincare.ThreeSphere)
+#check Poincare.threeSphere_target_prerequisites_except_simpleConnected_of_self_homeomorph_payload_eq
+#check (Poincare.threeSphere_self_homeomorph_of_self_homeomorph_payload :
+  Nonempty (Poincare.ThreeSphere ≃ₜ Poincare.ThreeSphere))
+#check Poincare.threeSphere_self_homeomorph_of_self_homeomorph_payload_eq
 #check Poincare.threeSphere_self_homeomorph_payload_self_diffeomorph_route_eq
 
 #check (Poincare.homeomorph_to_threeSphere_of_homeomorph :

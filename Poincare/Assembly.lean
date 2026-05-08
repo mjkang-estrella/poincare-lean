@@ -131,6 +131,36 @@ theorem threeSphere_self_diffeomorph_payload_eq :
         threeSphere_self_diffeomorph⟩ := by
   apply Subsingleton.elim
 
+/-- Project the target-prerequisite component from the self-diffeomorphism payload. -/
+theorem threeSphere_target_prerequisites_except_simpleConnected_of_self_diffeomorph_payload :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere := by
+  rcases threeSphere_self_diffeomorph_payload with ⟨prerequisites, _endpoint⟩
+  exact prerequisites
+
+/-- The projected prerequisite component is the named standard-sphere payload. -/
+theorem threeSphere_target_prerequisites_except_simpleConnected_of_self_diffeomorph_payload_eq :
+    threeSphere_target_prerequisites_except_simpleConnected_of_self_diffeomorph_payload =
+      threeSphere_target_prerequisites_except_simpleConnected := by
+  apply Subsingleton.elim
+
+/-- Project the reflexive smooth endpoint from the self-diffeomorphism payload. -/
+theorem threeSphere_self_diffeomorph_of_self_diffeomorph_payload :
+    Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) := by
+  rcases threeSphere_self_diffeomorph_payload with ⟨_prerequisites, endpoint⟩
+  exact endpoint
+
+/-- The projected smooth endpoint is the named reflexive self-diffeomorphism. -/
+theorem threeSphere_self_diffeomorph_of_self_diffeomorph_payload_eq :
+    threeSphere_self_diffeomorph_of_self_diffeomorph_payload =
+      threeSphere_self_diffeomorph := by
+  apply Subsingleton.elim
+
 /--
 The same prerequisite payload pairs with the self-homeomorphism obtained from
 the reflexive smooth self-diffeomorphism.
@@ -156,6 +186,38 @@ theorem threeSphere_self_homeomorph_payload_of_self_diffeomorph_eq :
     threeSphere_self_homeomorph_payload_of_self_diffeomorph =
       ⟨threeSphere_target_prerequisites_except_simpleConnected,
         threeSphere_self_homeomorph_of_self_diffeomorph⟩ := by
+  apply Subsingleton.elim
+
+/-- Project the target-prerequisite component from the smooth-forgetful payload. -/
+theorem threeSphere_target_prerequisites_except_simpleConnected_of_self_homeomorph_payload_of_self_diffeomorph :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere := by
+  rcases threeSphere_self_homeomorph_payload_of_self_diffeomorph with
+    ⟨prerequisites, _endpoint⟩
+  exact prerequisites
+
+/-- The projected prerequisite component is the named standard-sphere payload. -/
+theorem threeSphere_target_prerequisites_except_simpleConnected_of_self_homeomorph_payload_of_self_diffeomorph_eq :
+    threeSphere_target_prerequisites_except_simpleConnected_of_self_homeomorph_payload_of_self_diffeomorph =
+      threeSphere_target_prerequisites_except_simpleConnected := by
+  apply Subsingleton.elim
+
+/-- Project the topological endpoint from the smooth-forgetful payload. -/
+theorem threeSphere_self_homeomorph_of_self_homeomorph_payload_of_self_diffeomorph :
+    Nonempty (ThreeSphere ≃ₜ ThreeSphere) := by
+  rcases threeSphere_self_homeomorph_payload_of_self_diffeomorph with
+    ⟨_prerequisites, endpoint⟩
+  exact endpoint
+
+/-- The projected topological endpoint is the named smooth-forgetful route. -/
+theorem threeSphere_self_homeomorph_of_self_homeomorph_payload_of_self_diffeomorph_eq :
+    threeSphere_self_homeomorph_of_self_homeomorph_payload_of_self_diffeomorph =
+      threeSphere_self_homeomorph_of_self_diffeomorph := by
   apply Subsingleton.elim
 
 /--
