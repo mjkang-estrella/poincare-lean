@@ -566,13 +566,18 @@ The current artifact is intentionally conservative:
   `homeomorphism_of_topology_extraction_statement`, and
   `topology_derivation_statement_of_extraction_statement`, with direct
   extraction-statement projections also exposing the classification payload and
-  homeomorphism assembly/derivation statements, and a fixed-extinction payload
-  route assembled from those named projections. Package-level topology
+  homeomorphism assembly/derivation statements, and
+  `topology_extraction_statement_payload_of_extraction_statement`, a
+  fixed-extinction payload route assembled from those named projections.
+  Package-level topology
   payloads `topology_extraction_payload_of_topology_package` and
   `topology_extraction_statement_payload_of_topology_package` centralize the
   theorem-shaped extraction interface, fixed derivation statement,
   classification payload, and homeomorphism assembly/derivation statement
-  route. `topology_extraction_derivation_payload_of_topology_package` certifies
+  route, with the package fixed-extinction payload pinned to the statement
+  route by
+  `topology_extraction_statement_payload_of_topology_package_to_extraction_statement_payload_eq`.
+  `topology_extraction_derivation_payload_of_topology_package` certifies
   that same package-level extraction statement as a final extractor paired with
   topology derivation evidence for the homeomorphism it returns. Equality
   contracts now tie the topology-package projection spine back to stored
@@ -766,6 +771,9 @@ The current artifact is intentionally conservative:
   Equality contracts now pin the projected homeomorphism, derivation statement,
   assembly statement, and homeomorphism-derivation statement back to those
   named extraction payload routes.
+  `topology_extraction_statement_payload_of_dependencies_to_extraction_statement_payload_eq`
+  now pins the fixed-extinction dependency payload to the dependency
+  theorem-shaped topology extraction statement payload route.
   `topology_classification_subobligations_of_dependencies` also destructures
   the named dependency-level classification payload instead of reapplying the
   raw derivation-statement bridge.
@@ -777,6 +785,9 @@ The current artifact is intentionally conservative:
   `extinction_extraction_of_dependencies` destructure the dependency payload,
   so the raw package-to-statement and statement-to-extraction bridges stay
   inside the topology package layer.
+  The fixed-extinction statement payload now routes through
+  `topology_extraction_statement_payload_of_extraction_statement`, and the
+  package and dependency equality contracts record that route.
   Equality contracts
   `topology_extraction_payload_of_dependencies_eq`,
   `topology_extraction_statement_payload_of_dependencies_eq`,

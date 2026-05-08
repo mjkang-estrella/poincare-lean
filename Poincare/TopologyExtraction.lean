@@ -8133,6 +8133,66 @@ theorem topology_homeomorphism_derivation_statement_of_extraction_statement_eq
   apply Subsingleton.elim
 
 /--
+The theorem-shaped topology extraction statement exposes the fixed-extinction
+payload consisting of the statement itself, its projected homeomorphism, its
+derivation statement, and the statement-level classification and
+homeomorphism-statement projections.
+-/
+theorem topology_extraction_statement_payload_of_extraction_statement
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ∃ _topologyStatement : ExtinctionTopologyExtractionStatement.{u},
+    ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ _derivationStatement :
+      ExtinctionTopologyDerivationStatement M extinction homeomorphism,
+    ∃ _classificationSubobligations :
+      ExtinctionTopologyClassificationSubobligationsPayload M extinction,
+    ∃ _assemblyStatement :
+      ExtinctionTopologyHomeomorphismAssemblyStatement M extinction
+        homeomorphism,
+      ExtinctionTopologyHomeomorphismDerivationStatement M extinction
+        homeomorphism := by
+  exact ⟨topologyStatement,
+    homeomorphism_of_topology_extraction_statement
+      topologyStatement M extinction,
+    topology_derivation_statement_of_extraction_statement
+      topologyStatement M extinction,
+    topology_classification_subobligations_of_extraction_statement
+      topologyStatement M extinction,
+    topology_homeomorphism_assembly_statement_of_extraction_statement
+      topologyStatement M extinction,
+    topology_homeomorphism_derivation_statement_of_extraction_statement
+      topologyStatement M extinction⟩
+
+/--
+The fixed-extinction payload projected from a theorem-shaped topology
+extraction statement is exactly the tuple of the named statement projections.
+-/
+theorem topology_extraction_statement_payload_of_extraction_statement_eq
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_extraction_statement
+      topologyStatement M extinction =
+      ⟨topologyStatement,
+        homeomorphism_of_topology_extraction_statement
+          topologyStatement M extinction,
+        topology_derivation_statement_of_extraction_statement
+          topologyStatement M extinction,
+        topology_classification_subobligations_of_extraction_statement
+          topologyStatement M extinction,
+        topology_homeomorphism_assembly_statement_of_extraction_statement
+          topologyStatement M extinction,
+        topology_homeomorphism_derivation_statement_of_extraction_statement
+          topologyStatement M extinction⟩ := by
+  apply Subsingleton.elim
+
+/--
 The theorem-shaped topology extraction statement supplies the existing
 finite-extinction-to-sphere interface.
 -/
@@ -8607,6 +8667,23 @@ theorem topology_extraction_statement_payload_of_topology_package_to_extraction_
             topologyStatement M extinction,
           topology_homeomorphism_derivation_statement_of_extraction_statement
             topologyStatement M extinction⟩) := by
+  apply Subsingleton.elim
+
+/--
+The package fixed-extinction topology payload is the fixed-extinction payload
+of the package-built theorem-shaped topology extraction statement.
+-/
+theorem topology_extraction_statement_payload_of_topology_package_to_extraction_statement_payload_eq
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_topology_package
+      package M extinction =
+      topology_extraction_statement_payload_of_extraction_statement
+        (extinction_topology_extraction_statement_of_topology_package package)
+        M extinction := by
   apply Subsingleton.elim
 
 /--

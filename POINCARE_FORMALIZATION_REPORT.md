@@ -659,8 +659,11 @@ homeomorphism, and spherical homeomorphism-lift projections.
 `topology_extraction_statement_payload_of_topology_package`, which centralize
 the theorem-shaped extraction interface, fixed derivation statement,
 classification payload, and homeomorphism assembly/derivation statement route
-at the package layer. The dependency-level topology payloads now destructure
-those package-level payloads, while the classification projections stop at
+at the package layer. `topology_extraction_statement_payload_of_extraction_statement`
+now names the same fixed-extinction payload directly from any theorem-shaped
+topology extraction statement, and the package payload is pinned to that route.
+The dependency-level topology payloads now destructure those package-level
+payloads, while the classification projections stop at
 `topology_classification_payload_of_dependencies` instead of rebuilding the raw
 topology-package projection stack.
 The fixed-manifold derivation statement assembled from a topology package is
@@ -771,6 +774,10 @@ payload, theorem-shaped statement payload, derivation-statement payload,
 projected homeomorphism route, assembly/derivation statements, direct
 assembly/derivation certificates, statement aliases, extraction statement,
 derivation payload, and final extractor to the stored topology package route.
+`topology_extraction_statement_payload_of_dependencies_to_extraction_statement_payload_eq`
+also records that the dependency fixed-extinction payload is exactly the
+payload obtained from the dependency theorem-shaped topology extraction
+statement.
 
 `Poincare/DependencyProjections.lean` also exposes
 `poincare_projection_assembly_inputs_payload_of_dependencies`, which
