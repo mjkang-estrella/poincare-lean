@@ -1332,6 +1332,10 @@ The current artifact is intentionally conservative:
   The canonical-statement and aggregate canonical-statement payload
   constructors for the checked-certificate projection now also round-trip
   through that finite-extinction/topology reconstruction.
+  Those checked canonical-statement payloads and constructors are also routed
+  back through the projected boundary certificate, the ordinary
+  remaining-dependency certificate, and the aggregate forgetful certificate
+  where applicable.
   The
   theorem
   `canonical_completion_payload_of_remaining_dependency_component_requirements`
