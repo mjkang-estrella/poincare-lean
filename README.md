@@ -1306,6 +1306,9 @@ The current artifact is intentionally conservative:
   dependent verification payload, the scalar-pointwise surgery payload, the
   direct stored-verification scalar equation payload, the full
   surgery-derivative payload, and the boundary surgery-package payload.
+  The arbitrary, existential, named remaining-package, and named aggregate
+  boundary-aware certificate constructors now recover those finite-extinction
+  routes explicitly.
   The
   theorem
   `canonical_completion_payload_of_remaining_dependency_component_requirements`

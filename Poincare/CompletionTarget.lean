@@ -14777,6 +14777,74 @@ theorem finite_extinction_of_completion_certificate_with_equation_boundary_verif
   apply Subsingleton.elim
 
 /--
+The remaining-package arbitrary-verification constructor exposes finite
+extinction through the supplied verification payload after installing the
+strengthened remaining package's smoothability bridge.
+-/
+theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u})
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+        dependencies payload) =
+      (by
+        intro M _ _ _ _ _
+        letI : IsManifold ThreeManifoldModelWithCorners 1 M :=
+          smoothability_bridge_of_dependencies
+            (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies) M
+        exact
+          finite_extinction_of_equation_boundary_verification_payload
+            payload M) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate arbitrary-verification constructor exposes finite extinction
+through the supplied verification payload after installing the strengthened
+aggregate package's smoothability bridge.
+-/
+theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload
+        dependencies payload) =
+      (by
+        intro M _ _ _ _ _
+        letI : IsManifold ThreeManifoldModelWithCorners 1 M :=
+          smoothability_bridge_of_dependencies
+            (dependencies_of_equation_boundary_dependencies
+              dependencies) M
+        exact
+          finite_extinction_of_equation_boundary_verification_payload
+            payload M) := by
+  apply Subsingleton.elim
+
+/--
+The existential verification-payload constructor exposes finite extinction
+through the unpacked verification payload after installing the unpacked
+strengthened dependency package's smoothability bridge.
+-/
+theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload_eq
+    (payload :
+      ∃ dependencies : RemainingDependencyPackageWithEquationBoundary.{u},
+        EquationBoundaryVerificationPayload dependencies) :
+    finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload
+        payload) =
+      (by
+        intro M _ _ _ _ _
+        rcases payload with ⟨dependencies, verificationPayload⟩
+        letI : IsManifold ThreeManifoldModelWithCorners 1 M :=
+          smoothability_bridge_of_dependencies
+            (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies) M
+        exact
+          finite_extinction_of_equation_boundary_verification_payload
+            verificationPayload M) := by
+  apply Subsingleton.elim
+
+/--
 The existential verification-payload projection is the pair of the direct
 strengthened dependency projection and the dependent verification projection.
 -/
@@ -15707,6 +15775,19 @@ theorem analytic_foundation_with_equation_boundary_statements_of_completion_cert
   apply Subsingleton.elim
 
 /--
+Projecting finite extinction from the boundary-aware remaining-package
+constructor recovers the strengthened remaining-package finite-extinction route.
+-/
+theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package
+        dependencies) =
+      finite_extinction_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 Projecting the equation-boundary package family from the boundary-aware
 aggregate constructor recovers the strengthened aggregate boundary-package
 projection.
@@ -15813,6 +15894,19 @@ theorem analytic_foundation_with_equation_boundary_statements_of_completion_cert
       (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
         dependencies) =
       analytic_foundation_with_equation_boundary_statements_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting finite extinction from the boundary-aware aggregate constructor
+recovers the strengthened aggregate finite-extinction route.
+-/
+theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies) =
+      finite_extinction_of_poincareProofDependenciesWithEquationBoundary
         dependencies := by
   apply Subsingleton.elim
 
