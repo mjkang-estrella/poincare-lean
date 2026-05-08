@@ -1579,6 +1579,26 @@ theorem surgery_package_with_equation_boundary_payload_of_dependencies_to_pointw
   apply Subsingleton.elim
 
 /--
+The dependency-level boundary package payload is reconstructed from the
+dependency-level direct stored-verification scalar equation payload.
+-/
+theorem surgery_package_with_equation_boundary_payload_of_dependencies_to_direct_pointwise_equation_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgery_package_with_equation_boundary_payload_of_dependencies
+        dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            equation_boundary_direct_pointwise_equation_payload_of_dependencies
+              dependencies M with
+          ⟨n, package, directPayload⟩
+        exact
+          ⟨n, package,
+            surgery_package_with_equation_boundary_payload_of_direct_pointwise_equation_payload
+              directPayload⟩) := by
+  apply Subsingleton.elim
+
+/--
 The older dependency-level equation/metric derivative payload is the forgetful
 projection of the full derivative-strengthened surgery payload.
 -/
@@ -2359,6 +2379,24 @@ theorem finite_extinction_of_equation_boundary_verification_payload_to_pointwise
   apply Subsingleton.elim
 
 /--
+The verification-payload finite-extinction projection is reconstructed from the
+verification-payload direct stored-verification scalar equation payload.
+-/
+theorem finite_extinction_of_equation_boundary_verification_payload_to_direct_pointwise_equation_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    finite_extinction_of_equation_boundary_verification_payload payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            equation_boundary_direct_pointwise_equation_payload_of_equation_boundary_verification_payload
+              payload M with
+          ⟨_n, _package, directPayload⟩
+        exact finite_extinction_of_direct_pointwise_equation_payload
+          directPayload) := by
+  apply Subsingleton.elim
+
+/--
 An arbitrary verification payload reconstructs the full
 derivative-strengthened surgery payload for each selected package.
 -/
@@ -2546,6 +2584,27 @@ theorem surgery_package_with_equation_boundary_payload_of_equation_boundary_veri
   apply Subsingleton.elim
 
 /--
+The verification-payload boundary surgery-package projection is reconstructed
+from the verification-payload direct stored-verification scalar equation payload.
+-/
+theorem surgery_package_with_equation_boundary_payload_of_equation_boundary_verification_payload_to_direct_pointwise_equation_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    surgery_package_with_equation_boundary_payload_of_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            equation_boundary_direct_pointwise_equation_payload_of_equation_boundary_verification_payload
+              payload M with
+          ⟨n, package, directPayload⟩
+        exact
+          ⟨n, package,
+            surgery_package_with_equation_boundary_payload_of_direct_pointwise_equation_payload
+              directPayload⟩) := by
+  apply Subsingleton.elim
+
+/--
 An arbitrary verification payload exposes theorem-shaped analytic foundation
 statements carrying the explicit equation boundary.
 -/
@@ -2614,6 +2673,30 @@ theorem analytic_foundation_with_equation_boundary_statements_of_equation_bounda
               (surgery_package_of_equation_boundary_surgery_package package),
             analytic_foundation_with_equation_boundary_of_pointwise_equation_payload
               pointwisePayload⟩) := by
+  apply Subsingleton.elim
+
+/--
+The verification-payload analytic/equation-boundary statement projection is
+reconstructed from the verification-payload direct stored-verification scalar
+equation payload.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload_to_direct_pointwise_equation_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            equation_boundary_direct_pointwise_equation_payload_of_equation_boundary_verification_payload
+              payload M with
+          ⟨n, package, directPayload⟩
+        exact
+          ⟨n,
+            ricci_flow_data_of_surgery_package
+              (surgery_package_of_equation_boundary_surgery_package package),
+            analytic_foundation_with_equation_boundary_of_direct_pointwise_equation_payload
+              directPayload⟩) := by
   apply Subsingleton.elim
 
 /--
@@ -2793,6 +2876,28 @@ theorem analytic_foundation_with_equation_boundary_statements_of_dependencies_to
               (surgery_package_of_equation_boundary_surgery_package package),
             analytic_foundation_with_equation_boundary_of_pointwise_equation_payload
               pointwisePayload⟩) := by
+  apply Subsingleton.elim
+
+/--
+The named dependency analytic-boundary statement family is reconstructed from
+the dependency-level direct stored-verification scalar equation payload.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_dependencies_to_direct_pointwise_equation_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    analytic_foundation_with_equation_boundary_statements_of_dependencies
+        dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            equation_boundary_direct_pointwise_equation_payload_of_dependencies
+              dependencies M with
+          ⟨n, package, directPayload⟩
+        exact
+          ⟨n,
+            ricci_flow_data_of_surgery_package
+              (surgery_package_of_equation_boundary_surgery_package package),
+            analytic_foundation_with_equation_boundary_of_direct_pointwise_equation_payload
+              directPayload⟩) := by
   apply Subsingleton.elim
 
 /--

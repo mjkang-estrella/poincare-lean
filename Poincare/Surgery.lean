@@ -10290,6 +10290,66 @@ theorem surgery_package_with_equation_boundary_payload_to_pointwise_equation_pay
   apply Subsingleton.elim
 
 /--
+The direct stored-verification scalar equation reconstructs the older boundary
+surgery payload through the scalar-pointwise payload.
+-/
+theorem surgery_package_with_equation_boundary_payload_of_direct_pointwise_equation_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M}
+    (payload :
+      SurgeryPackageWithEquationBoundaryDirectPointwiseEquationPayload package) :
+    ∃ basePackage : FiniteExtinctionSurgeryPackage n M,
+    ∃ _equationBoundary :
+      RicciFlowEquationBoundaryPackage
+        (ricci_flow_data_of_surgery_package basePackage),
+    ∃ _analyticBoundary :
+      AnalyticFoundationWithEquationBoundaryStatement
+        (ricci_flow_data_of_surgery_package basePackage),
+      FiniteExtinctionByRicciFlowWithSurgery M :=
+  surgery_package_with_equation_boundary_payload_of_pointwise_equation_payload
+    (surgery_package_with_equation_boundary_pointwise_equation_payload_of_direct_pointwise_equation_payload
+      payload)
+
+/--
+The boundary payload reconstructed from a direct scalar equation is the
+pointwise forgetful projection applied to the direct-payload scalar-pointwise
+tuple.
+-/
+theorem surgery_package_with_equation_boundary_payload_of_direct_pointwise_equation_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M}
+    (payload :
+      SurgeryPackageWithEquationBoundaryDirectPointwiseEquationPayload package) :
+    surgery_package_with_equation_boundary_payload_of_direct_pointwise_equation_payload
+        payload =
+      surgery_package_with_equation_boundary_payload_of_pointwise_equation_payload
+        (surgery_package_with_equation_boundary_pointwise_equation_payload_of_direct_pointwise_equation_payload
+          payload) :=
+  rfl
+
+/--
+The named boundary surgery payload can be reconstructed from the named direct
+stored-verification scalar equation payload.
+-/
+theorem surgery_package_with_equation_boundary_payload_to_direct_pointwise_equation_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    surgery_package_with_equation_boundary_payload package =
+      surgery_package_with_equation_boundary_payload_of_direct_pointwise_equation_payload
+        (surgery_package_with_equation_boundary_direct_pointwise_equation_payload
+          package) := by
+  apply Subsingleton.elim
+
+/--
 The scalar-pointwise surgery payload exposes the analytic-boundary statement
 it carries for the projected Ricci-flow data.
 -/
@@ -10351,6 +10411,61 @@ theorem analytic_foundation_with_equation_boundary_of_surgery_package_with_equat
   apply Subsingleton.elim
 
 /--
+The direct stored-verification scalar equation reconstructs the analytic
+equation-boundary statement through the scalar-pointwise payload.
+-/
+theorem analytic_foundation_with_equation_boundary_of_direct_pointwise_equation_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M}
+    (payload :
+      SurgeryPackageWithEquationBoundaryDirectPointwiseEquationPayload package) :
+    AnalyticFoundationWithEquationBoundaryStatement
+      (ricci_flow_data_of_surgery_package
+        (surgery_package_of_equation_boundary_surgery_package package)) :=
+  analytic_foundation_with_equation_boundary_of_pointwise_equation_payload
+    (surgery_package_with_equation_boundary_pointwise_equation_payload_of_direct_pointwise_equation_payload
+      payload)
+
+/--
+The analytic statement reconstructed from a direct scalar equation is the
+analytic projection applied to the direct-payload scalar-pointwise tuple.
+-/
+theorem analytic_foundation_with_equation_boundary_of_direct_pointwise_equation_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M}
+    (payload :
+      SurgeryPackageWithEquationBoundaryDirectPointwiseEquationPayload package) :
+    analytic_foundation_with_equation_boundary_of_direct_pointwise_equation_payload
+        payload =
+      analytic_foundation_with_equation_boundary_of_pointwise_equation_payload
+        (surgery_package_with_equation_boundary_pointwise_equation_payload_of_direct_pointwise_equation_payload
+          payload) :=
+  rfl
+
+/--
+The named strengthened surgery-package analytic-boundary projection can be
+reconstructed from the named direct stored-verification scalar equation payload.
+-/
+theorem analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary_to_direct_pointwise_equation_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+        package =
+      analytic_foundation_with_equation_boundary_of_direct_pointwise_equation_payload
+        (surgery_package_with_equation_boundary_direct_pointwise_equation_payload
+          package) := by
+  apply Subsingleton.elim
+
+/--
 The scalar-pointwise surgery payload exposes the finite-extinction conclusion
 it carries for the target manifold.
 -/
@@ -10404,6 +10519,58 @@ theorem finite_extinction_of_surgery_package_with_equation_boundary_to_pointwise
     finite_extinction_of_surgery_package_with_equation_boundary package =
       finite_extinction_of_pointwise_equation_payload
         (surgery_package_with_equation_boundary_pointwise_equation_payload
+          package) := by
+  apply Subsingleton.elim
+
+/--
+The direct stored-verification scalar equation reconstructs the finite
+extinction conclusion through the scalar-pointwise payload.
+-/
+theorem finite_extinction_of_direct_pointwise_equation_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M}
+    (payload :
+      SurgeryPackageWithEquationBoundaryDirectPointwiseEquationPayload package) :
+    FiniteExtinctionByRicciFlowWithSurgery M :=
+  finite_extinction_of_pointwise_equation_payload
+    (surgery_package_with_equation_boundary_pointwise_equation_payload_of_direct_pointwise_equation_payload
+      payload)
+
+/--
+The finite-extinction conclusion reconstructed from a direct scalar equation is
+the finite-extinction projection applied to the direct-payload scalar-pointwise
+tuple.
+-/
+theorem finite_extinction_of_direct_pointwise_equation_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M}
+    (payload :
+      SurgeryPackageWithEquationBoundaryDirectPointwiseEquationPayload package) :
+    finite_extinction_of_direct_pointwise_equation_payload payload =
+      finite_extinction_of_pointwise_equation_payload
+        (surgery_package_with_equation_boundary_pointwise_equation_payload_of_direct_pointwise_equation_payload
+          payload) :=
+  rfl
+
+/--
+The named strengthened surgery-package finite-extinction projection can be
+reconstructed from the named direct stored-verification scalar equation payload.
+-/
+theorem finite_extinction_of_surgery_package_with_equation_boundary_to_direct_pointwise_equation_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    finite_extinction_of_surgery_package_with_equation_boundary package =
+      finite_extinction_of_direct_pointwise_equation_payload
+        (surgery_package_with_equation_boundary_direct_pointwise_equation_payload
           package) := by
   apply Subsingleton.elim
 
