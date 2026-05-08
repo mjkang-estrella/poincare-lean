@@ -296,6 +296,106 @@ theorem poincare_payload_of_finite_extinction_and_onePoint_threeSpace_recognitio
           finiteExtinction recognize) := by
   apply Subsingleton.elim
 
+/--
+Named compactification-recognition statement after finite extinction.
+
+This is the same topology-extraction target as
+`ExtinctionImpliesSphereStatement`, but with the endpoint stated as the
+one-point compactification model before composing with the model sphere map.
+-/
+def ExtinctionOnePointThreeSpaceRecognitionStatement : Prop :=
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      FiniteExtinctionByRicciFlowWithSurgery M →
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+
+/-- The named extinction compactification-recognition statement expands to its extractor shape. -/
+theorem extinctionOnePointThreeSpaceRecognitionStatement_eq :
+    ExtinctionOnePointThreeSpaceRecognitionStatement.{u} =
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M →
+            Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+  rfl
+
+/--
+The named compactification-recognition statement after extinction satisfies the
+existing finite-extinction-to-sphere interface.
+-/
+theorem extinction_implies_sphere_of_extinctionOnePointThreeSpaceRecognitionStatement
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
+    ExtinctionImpliesSphereStatement.{u} := by
+  exact extinction_implies_sphere_of_onePoint_threeSpace_recognition recognize
+
+/-- The named extinction-recognition route is the raw compactification-recognition route. -/
+theorem extinction_implies_sphere_of_extinctionOnePointThreeSpaceRecognitionStatement_eq
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
+    extinction_implies_sphere_of_extinctionOnePointThreeSpaceRecognitionStatement
+      recognize =
+      extinction_implies_sphere_of_onePoint_threeSpace_recognition recognize := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction plus the named compactification-recognition theorem
+after extinction discharges the project target statement.
+-/
+theorem poincare_statement_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  exact poincare_statement_of_finite_extinction_and_onePoint_threeSpace_recognition
+    finiteExtinction recognize
+
+/-- The named extinction-recognition target route is the raw finite-extinction route. -/
+theorem poincare_statement_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
+    poincare_statement_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+      finiteExtinction recognize =
+      poincare_statement_of_finite_extinction_and_onePoint_threeSpace_recognition
+        finiteExtinction recognize := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction plus the named compactification-recognition theorem
+after extinction exposes the project completion payload.
+-/
+theorem poincare_payload_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  exact poincare_payload_of_finite_extinction_and_onePoint_threeSpace_recognition
+    finiteExtinction recognize
+
+/-- The named extinction-recognition payload route is the raw finite-extinction payload. -/
+theorem poincare_payload_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
+    poincare_payload_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+      finiteExtinction recognize =
+      poincare_payload_of_finite_extinction_and_onePoint_threeSpace_recognition
+        finiteExtinction recognize := by
+  apply Subsingleton.elim
+
 /-- The one-point compactification model is Hausdorff. -/
 theorem onePoint_threeSpace_t2Space :
     T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
