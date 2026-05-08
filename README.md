@@ -176,10 +176,10 @@ The current artifact is intentionally conservative:
   route, analytic-foundation package route, strengthened equation-boundary
   statement route, and generic plus zero/stationary-zero projection-routed
   pointwise equation theorems at `x v w`; equation-boundary packages,
-  strengthened surgery packages, dependency projections, and strengthened
-  remaining/aggregate dependency packages also now expose direct
-  stored-verification pointwise equation payloads before the projection
-  wrapper; the
+  strengthened surgery packages, dependency projections, strengthened
+  remaining/aggregate dependency packages, and boundary-aware completion
+  certificates also now expose direct stored-verification pointwise equation
+  payloads before the projection wrapper; the
   zero/stationary-zero boundary
   packages also expose pointwise scalar-zero derivative sides and paired
   derivative/RHS zero witnesses, plus named payloads bundling each boundary
