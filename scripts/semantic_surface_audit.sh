@@ -2818,6 +2818,65 @@ universe u
 #check Poincare.poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement_eq
 #check Poincare.poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement_loop_route_eq
 
+#check (Poincare.onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement :
+  ∀ [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))],
+    Poincare.PoincareConjectureStatement →
+      Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ Poincare.ThreeSphere))
+#check Poincare.onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_eq
+#check Poincare.onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_direct_route_eq
+
+#check (Poincare.onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointLoopNullhomotopyStatement :
+  Poincare.OnePointThreeSpaceLoopNullhomotopyStatement →
+    Poincare.PoincareConjectureStatement →
+      Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ Poincare.ThreeSphere))
+#check Poincare.onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointLoopNullhomotopyStatement_eq
+#check Poincare.onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointLoopNullhomotopyStatement_direct_route_eq
+
+#check (Poincare.onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathHomotopyStatement :
+  Poincare.OnePointThreeSpacePathHomotopyStatement →
+    Poincare.PoincareConjectureStatement →
+      Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ Poincare.ThreeSphere))
+#check Poincare.onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathHomotopyStatement_eq
+#check Poincare.onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathHomotopyStatement_loop_route_eq
+#check Poincare.onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathHomotopyStatement_direct_route_eq
+
+#check (Poincare.onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointLoopNullhomotopyStatement :
+  Poincare.OnePointThreeSpaceLoopNullhomotopyStatement →
+    Poincare.PoincareConjectureStatement →
+      ∃ _prerequisites :
+        (∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+          (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        ∃ _topological : IsManifold (𝓡 3) 0
+          (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+          Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ Poincare.ThreeSphere))
+#check Poincare.onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointLoopNullhomotopyStatement_eq
+
+#check (Poincare.onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointPathHomotopyStatement :
+  Poincare.OnePointThreeSpacePathHomotopyStatement →
+    Poincare.PoincareConjectureStatement →
+      ∃ _prerequisites :
+        (∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+          (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        ∃ _topological : IsManifold (𝓡 3) 0
+          (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+          Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ Poincare.ThreeSphere))
+#check Poincare.onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointPathHomotopyStatement_eq
+#check Poincare.onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointPathHomotopyStatement_loop_route_eq
+
 #check (Poincare.threeSphere_self_homeomorph :
   Nonempty (Poincare.ThreeSphere ≃ₜ Poincare.ThreeSphere))
 

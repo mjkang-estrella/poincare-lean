@@ -2000,6 +2000,207 @@ theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotop
         (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) := by
   apply Subsingleton.elim
 
+/--
+Applying the project target statement to the one-point compactification model
+uses the named compactification typeclass witnesses and only requires
+simple-connectedness as the remaining local input.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement
+    [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))]
+    (h : PoincareConjectureStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) := by
+  letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_t2Space
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_chartedSpace
+  letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_compactSpace
+  exact h (OnePoint (EuclideanSpace ℝ (Fin 3)))
+
+/-- The compactification target self-application is exactly pointwise target application. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_eq
+    [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))] :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement =
+      (fun h : PoincareConjectureStatement.{0} =>
+        letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_t2Space
+        letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+            (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_chartedSpace
+        letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_compactSpace
+        h (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The target-statement compactification self-case endpoint agrees with the
+direct one-point compactification homeomorphism to `ThreeSphere`.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_direct_route_eq
+    [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))]
+    (h : PoincareConjectureStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement h =
+      onePoint_threeSpace_homeomorph_threeSphere := by
+  apply Subsingleton.elim
+
+/--
+The compactification loop-nullhomotopy obligation is enough to apply the
+project target statement to the compactification model.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointLoopNullhomotopyStatement
+    (hLoop : OnePointThreeSpaceLoopNullhomotopyStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) := by
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+  exact onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement h
+
+/-- The loop compactification self-case first turns loop-nullhomotopy into simple-connectedness. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointLoopNullhomotopyStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointLoopNullhomotopyStatement =
+      (fun hLoop : OnePointThreeSpaceLoopNullhomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+          onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement h) := by
+  funext hLoop h
+  apply Subsingleton.elim
+
+/-- The loop compactification target route agrees with the direct model homeomorphism. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointLoopNullhomotopyStatement_direct_route_eq
+    (hLoop : OnePointThreeSpaceLoopNullhomotopyStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointLoopNullhomotopyStatement
+      hLoop h =
+      onePoint_threeSpace_homeomorph_threeSphere := by
+  apply Subsingleton.elim
+
+/--
+The compactification path-homotopy obligation is enough to apply the project
+target statement to the compactification model.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathHomotopyStatement
+    (hPath : OnePointThreeSpacePathHomotopyStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) := by
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement hPath
+  exact onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement h
+
+/-- The path compactification self-case first turns path-homotopy into simple-connectedness. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathHomotopyStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathHomotopyStatement =
+      (fun hPath : OnePointThreeSpacePathHomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement hPath
+          onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement h) := by
+  funext hPath h
+  apply Subsingleton.elim
+
+/-- The path compactification target route agrees with the loop-mediated route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathHomotopyStatement_loop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathHomotopyStatement =
+      (fun hPath : OnePointThreeSpacePathHomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointLoopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h) := by
+  funext hPath h
+  apply Subsingleton.elim
+
+/-- The path compactification target route agrees with the direct model homeomorphism. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathHomotopyStatement_direct_route_eq
+    (hPath : OnePointThreeSpacePathHomotopyStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathHomotopyStatement
+      hPath h =
+      onePoint_threeSpace_homeomorph_threeSphere := by
+  apply Subsingleton.elim
+
+/--
+The compactification loop-nullhomotopy target self-case exposes both the local
+homotopy/manifold prerequisites and the target endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointLoopNullhomotopyStatement
+    (hLoop : OnePointThreeSpaceLoopNullhomotopyStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointLoopNullhomotopyStatement
+      hLoop,
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointLoopNullhomotopyStatement
+      hLoop h⟩
+
+/-- The loop target payload is the local prerequisite route paired with the loop endpoint. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointLoopNullhomotopyStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointLoopNullhomotopyStatement =
+      (fun hLoop : OnePointThreeSpaceLoopNullhomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointLoopNullhomotopyStatement
+              hLoop,
+            onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointLoopNullhomotopyStatement
+              hLoop h⟩) := by
+  funext hLoop h
+  apply Subsingleton.elim
+
+/--
+The compactification path-homotopy target self-case exposes both the local
+homotopy/manifold prerequisites and the target endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointPathHomotopyStatement
+    (hPath : OnePointThreeSpacePathHomotopyStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathHomotopyStatement
+      hPath,
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathHomotopyStatement
+      hPath h⟩
+
+/-- The path target payload is the local prerequisite route paired with the path endpoint. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointPathHomotopyStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointPathHomotopyStatement =
+      (fun hPath : OnePointThreeSpacePathHomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathHomotopyStatement
+              hPath,
+            onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathHomotopyStatement
+              hPath h⟩) := by
+  funext hPath h
+  apply Subsingleton.elim
+
+/-- The path target payload agrees with the loop-mediated target payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointPathHomotopyStatement_loop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointPathHomotopyStatement =
+      (fun hPath : OnePointThreeSpacePathHomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointLoopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h) := by
+  funext hPath h
+  apply Subsingleton.elim
+
 /-- The standard target sphere is homeomorphic to itself. -/
 theorem threeSphere_self_homeomorph :
     Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=
