@@ -4201,6 +4201,14 @@ check_decl "one-point compactification recognition prerequisite transport is dec
   '^theorem topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification recognition prerequisite transport equality contract is declared" \
   '^theorem topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq\b' Poincare/TopologyExtraction.lean
+check_decl "source simple-connectedness compactification transport is declared" \
+  '^theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace\b' Poincare/TopologyExtraction.lean
+check_decl "source simple-connectedness compactification transport equality contract is declared" \
+  '^theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_eq\b' Poincare/TopologyExtraction.lean
+check_decl "source homotopy manifold compactification prerequisite transport is declared" \
+  '^theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace\b' Poincare/TopologyExtraction.lean
+check_decl "source homotopy manifold compactification prerequisite transport equality contract is declared" \
+  '^theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification Poincare candidate prerequisite transport is declared" \
   '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification Poincare candidate prerequisite equality contract is declared" \
@@ -12922,6 +12930,10 @@ open scoped Manifold ContDiff
 #check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_eq
 #check Poincare.topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace
 #check Poincare.topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq
+#check Poincare.simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+#check Poincare.simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_eq
+#check Poincare.homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace
+#check Poincare.homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq
 #check Poincare.poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace
 #check Poincare.poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq
 #check Poincare.threeSphere_self_homeomorph
