@@ -1522,8 +1522,9 @@ The current artifact is intentionally conservative:
   topology and extractor/derivation endpoints, with certified boundary literal,
   aggregate-dependency, and project-statement payload reconstructions routed
   through the ordinary forgetful remaining-dependency and aggregate certificates,
-  and certified extraction-derivation canonical/project payload, target, and
-  canonical-target projections now name the same ordinary forgetful endpoints. The dependency-projection layer
+  and certified extraction-derivation canonical/project payload, target,
+  canonical-target, and completion-criterion projections now name the same
+  ordinary forgetful endpoints. The dependency-projection layer
   also names those endpoint contracts for the full assembly payload and explicit
   completion criterion.
   The checked certificate projected from a boundary-aware verification payload
