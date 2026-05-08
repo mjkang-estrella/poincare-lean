@@ -261,6 +261,14 @@ check_decl "target sphere homotopy prerequisites from loop-nullhomotopy theorem 
   '^theorem threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites from loop-nullhomotopy equality contract is declared" \
   '^theorem threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere target prerequisites from path-homotopy theorem is declared" \
+  '^theorem threeSphere_target_prerequisites_of_pathHomotopyStatement\b' Poincare/Statement.lean
+check_decl "target sphere target prerequisites from path-homotopy equality contract is declared" \
+  '^theorem threeSphere_target_prerequisites_of_pathHomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere homotopy prerequisites from path-homotopy theorem is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_pathHomotopyStatement\b' Poincare/Statement.lean
+check_decl "target sphere homotopy prerequisites from path-homotopy equality contract is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_eq\b' Poincare/Statement.lean
 check_decl "topological statement shape contract is declared" \
   '^theorem poincareConjectureStatement_eq\b' Poincare/Statement.lean
 check_decl "topological statement iff contract is declared" \
@@ -1208,6 +1216,18 @@ check_decl "standard sphere smooth self-homeomorphism route from loop-nullhomoto
   '^theorem threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-homeomorphism route from loop-nullhomotopy equality contract is declared" \
   '^theorem threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere target self route from path-homotopy theorem is declared" \
+  '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatement\b' Poincare/Assembly.lean
+check_decl "standard sphere target self route from path-homotopy equality contract is declared" \
+  '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-diffeomorphism route from path-homotopy theorem is declared" \
+  '^theorem threeSphere_self_diffeomorph_of_smooth_statement_and_pathHomotopyStatement\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-diffeomorphism route from path-homotopy equality contract is declared" \
+  '^theorem threeSphere_self_diffeomorph_of_smooth_statement_and_pathHomotopyStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-homeomorphism route from path-homotopy theorem is declared" \
+  '^theorem threeSphere_self_homeomorph_of_smooth_statement_and_pathHomotopyStatement\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-homeomorphism route from path-homotopy equality contract is declared" \
+  '^theorem threeSphere_self_homeomorph_of_smooth_statement_and_pathHomotopyStatement_eq\b' Poincare/Assembly.lean
 check_decl "diffeomorphism-to-homeomorphism equality contract is declared" \
   '^theorem homeomorph_of_diffeomorph_three_sphere_eq\b' Poincare/Assembly.lean
 check_decl "reverse diffeomorphism-to-homeomorphism equality contract is declared" \
@@ -12534,6 +12554,10 @@ open scoped Manifold ContDiff
 #check Poincare.threeSphere_target_prerequisites_of_loopNullhomotopyStatement_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement
 #check Poincare.threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement_eq
+#check Poincare.threeSphere_target_prerequisites_of_pathHomotopyStatement
+#check Poincare.threeSphere_target_prerequisites_of_pathHomotopyStatement_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_pathHomotopyStatement
+#check Poincare.threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_eq
 #check Poincare.poincareConjectureStatement_eq
 #check Poincare.poincareConjectureStatement_iff_canonical_three_sphere_statement
 #check Poincare.poincareConjectureStatement_iff_canonical_three_sphere_statement_eq
@@ -13359,6 +13383,12 @@ open scoped Manifold ContDiff
 #check Poincare.threeSphere_self_diffeomorph_of_smooth_statement_and_loopNullhomotopyStatement_eq
 #check Poincare.threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement
 #check Poincare.threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement_eq
+#check Poincare.threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatement
+#check Poincare.threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatement_eq
+#check Poincare.threeSphere_self_diffeomorph_of_smooth_statement_and_pathHomotopyStatement
+#check Poincare.threeSphere_self_diffeomorph_of_smooth_statement_and_pathHomotopyStatement_eq
+#check Poincare.threeSphere_self_homeomorph_of_smooth_statement_and_pathHomotopyStatement
+#check Poincare.threeSphere_self_homeomorph_of_smooth_statement_and_pathHomotopyStatement_eq
 #check Poincare.homeomorph_of_diffeomorph_three_sphere_eq
 #check Poincare.homeomorph_of_threeSphere_diffeomorph
 #check Poincare.homeomorph_of_threeSphere_diffeomorph_eq
@@ -17542,6 +17572,31 @@ open scoped Manifold ContDiff
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement_eq
+
+#check (Poincare.threeSphere_target_prerequisites_of_pathHomotopyStatement :
+  Poincare.ThreeSpherePathHomotopyStatement →
+  ∃ _t2 : T2Space Poincare.ThreeSphere,
+  ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) Poincare.ThreeSphere,
+  ∃ _simplyConnected : SimplyConnectedSpace Poincare.ThreeSphere,
+  ∃ _compact : CompactSpace Poincare.ThreeSphere,
+  ∃ _smooth : IsManifold (𝓡 3) ∞ Poincare.ThreeSphere,
+  ∃ _path : PathConnectedSpace Poincare.ThreeSphere,
+  ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
+    Nonempty Poincare.ThreeSphere)
+#check Poincare.threeSphere_target_prerequisites_of_pathHomotopyStatement_eq
+
+#check (Poincare.threeSphere_homotopy_prerequisites_of_pathHomotopyStatement :
+  Poincare.ThreeSpherePathHomotopyStatement →
+  ∃ _t2 : T2Space Poincare.ThreeSphere,
+  ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) Poincare.ThreeSphere,
+  ∃ _simplyConnected : SimplyConnectedSpace Poincare.ThreeSphere,
+  ∃ _compact : CompactSpace Poincare.ThreeSphere,
+  ∃ _smooth : IsManifold (𝓡 3) ∞ Poincare.ThreeSphere,
+  ∃ _path : PathConnectedSpace Poincare.ThreeSphere,
+  ∃ _locPath : LocPathConnectedSpace Poincare.ThreeSphere,
+  ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
+    Nonempty Poincare.ThreeSphere)
+#check Poincare.threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_eq
 
 #check (Poincare.poincareConjectureStatement_eq :
   Poincare.PoincareConjectureStatement =

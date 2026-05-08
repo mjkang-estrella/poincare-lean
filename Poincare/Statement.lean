@@ -504,6 +504,65 @@ theorem threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement_eq :
   apply Subsingleton.elim
 
 /--
+The concrete path-homotopy obligation supplies the full target prerequisite
+payload by first converting to loop-nullhomotopy.
+-/
+theorem threeSphere_target_prerequisites_of_pathHomotopyStatement
+    (h : ThreeSpherePathHomotopyStatement) :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere :=
+  threeSphere_target_prerequisites_of_loopNullhomotopyStatement
+    (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement h)
+
+/--
+The path-homotopy target-prerequisite route is exactly the loop-nullhomotopy
+prerequisite route after converting path-homotopy to loop-nullhomotopy.
+-/
+theorem threeSphere_target_prerequisites_of_pathHomotopyStatement_eq :
+    threeSphere_target_prerequisites_of_pathHomotopyStatement =
+      (fun h : ThreeSpherePathHomotopyStatement =>
+        threeSphere_target_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The concrete path-homotopy obligation supplies the full homotopy-oriented
+prerequisite payload by first converting to loop-nullhomotopy.
+-/
+theorem threeSphere_homotopy_prerequisites_of_pathHomotopyStatement
+    (h : ThreeSpherePathHomotopyStatement) :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere :=
+  threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement
+    (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement h)
+
+/--
+The path-homotopy homotopy-prerequisite route is exactly the loop-nullhomotopy
+homotopy-prerequisite route after converting path-homotopy to loop-nullhomotopy.
+-/
+theorem threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_eq :
+    threeSphere_homotopy_prerequisites_of_pathHomotopyStatement =
+      (fun h : ThreeSpherePathHomotopyStatement =>
+        threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The actual target statement of the Poincare Conjecture for this project.
 
 This is a proposition only. It is intentionally not declared as a theorem or
