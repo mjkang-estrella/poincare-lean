@@ -1387,6 +1387,9 @@ The current artifact is intentionally conservative:
   `canonical_completion_criterion_of_package_layer_extraction_derivation_requirements`,
   plus
   `canonical_three_sphere_statement_of_package_layer_extraction_derivation_requirements`,
+  with equality contracts pinning those canonical outputs to the package-level
+  certified extraction route applied to the consumed smoothability,
+  finite-extinction, and topology package layers,
   the certified milestone route exposes
   `poincare_completion_payload_of_milestone_extraction_derivation_requirements`,
   `canonical_completion_payload_of_milestone_extraction_derivation_requirements`,

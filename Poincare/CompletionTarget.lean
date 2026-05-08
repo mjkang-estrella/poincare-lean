@@ -2376,6 +2376,112 @@ theorem canonical_three_sphere_statement_of_package_layer_extraction_derivation_
   apply Subsingleton.elim
 
 /--
+The package-layer certified extraction canonical payload agrees with the
+package-level certified extraction canonical payload applied to the consumed
+smoothability, finite-extinction, and topology layers.
+-/
+theorem canonical_completion_payload_of_package_layer_extraction_derivation_requirements_to_package_extraction_derivation_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    canonical_completion_payload_of_package_layer_extraction_derivation_requirements
+      smoothabilityRequirement analyticRequirement surgeryRequirement
+      finiteExtinctionRequirement topologyRequirement =
+      canonical_completion_payload_of_surgery_and_topology_package_extraction_derivation
+        smoothabilityRequirement finiteExtinctionRequirement topologyRequirement := by
+  apply Subsingleton.elim
+
+/--
+The package-layer certified extraction canonical target agrees with the
+package-level certified extraction canonical target applied to the consumed
+smoothability, finite-extinction, and topology layers.
+-/
+theorem canonical_completion_target_of_package_layer_extraction_derivation_requirements_to_package_extraction_derivation_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    canonical_completion_target_of_package_layer_extraction_derivation_requirements
+      smoothabilityRequirement analyticRequirement surgeryRequirement
+      finiteExtinctionRequirement topologyRequirement =
+      canonical_completion_target_of_surgery_and_topology_package_extraction_derivation
+        smoothabilityRequirement finiteExtinctionRequirement topologyRequirement := by
+  apply Subsingleton.elim
+
+/--
+The package-layer certified extraction canonical criterion agrees with the
+package-level certified extraction canonical criterion applied to the consumed
+smoothability, finite-extinction, and topology layers.
+-/
+theorem canonical_completion_criterion_of_package_layer_extraction_derivation_requirements_to_package_extraction_derivation_eq
+    (witness : Type u)
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    canonical_completion_criterion_of_package_layer_extraction_derivation_requirements
+      witness smoothabilityRequirement analyticRequirement surgeryRequirement
+      finiteExtinctionRequirement topologyRequirement =
+      canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation
+        witness smoothabilityRequirement finiteExtinctionRequirement
+        topologyRequirement := by
+  apply Subsingleton.elim
+
+/--
+The package-layer certified extraction canonical statement agrees with the
+package-level certified extraction canonical statement applied to the consumed
+smoothability, finite-extinction, and topology layers.
+-/
+theorem canonical_three_sphere_statement_of_package_layer_extraction_derivation_requirements_to_package_extraction_derivation_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    canonical_three_sphere_statement_of_package_layer_extraction_derivation_requirements
+      smoothabilityRequirement analyticRequirement surgeryRequirement
+      finiteExtinctionRequirement topologyRequirement =
+      canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation
+        smoothabilityRequirement finiteExtinctionRequirement topologyRequirement := by
+  apply Subsingleton.elim
+
+/--
 The six milestone requirements also produce the project target and explicit
 completion criterion payload.
 -/
