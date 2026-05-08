@@ -179,7 +179,9 @@ The current artifact is intentionally conservative:
   strengthened surgery packages, dependency projections, strengthened
   remaining/aggregate dependency packages, and boundary-aware completion
   certificates also now expose direct stored-verification pointwise equation
-  payloads before the projection wrapper; the
+  payloads before the projection wrapper, and the verification-payload plus
+  remaining/aggregate routes now factor those direct payloads through the
+  scalar-pointwise surgery payload; the
   zero/stationary-zero boundary
   packages also expose pointwise scalar-zero derivative sides and paired
   derivative/RHS zero witnesses, plus named payloads bundling each boundary

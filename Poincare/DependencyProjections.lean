@@ -2219,6 +2219,28 @@ theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_equ
   apply Subsingleton.elim
 
 /--
+The verification-payload direct pointwise equation payload is the direct
+stored-verification projection of the reconstructed scalar-pointwise surgery
+payload.
+-/
+theorem equation_boundary_direct_pointwise_equation_payload_of_equation_boundary_verification_payload_to_surgery_pointwise_equation_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    equation_boundary_direct_pointwise_equation_payload_of_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            surgery_package_with_equation_boundary_pointwise_equation_payload_of_equation_boundary_verification_payload
+              payload M with
+          ⟨n, package, _pointwisePayload⟩
+        exact
+          ⟨n, package,
+            surgery_package_with_equation_boundary_direct_pointwise_equation_payload
+              package⟩) := by
+  apply Subsingleton.elim
+
+/--
 An arbitrary verification payload exposes finite extinction through the
 scalar-pointwise surgery payload reconstructed for each selected package.
 -/
