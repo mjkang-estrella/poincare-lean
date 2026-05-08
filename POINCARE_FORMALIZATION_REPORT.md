@@ -74,7 +74,7 @@ endpoints with the full homotopy-oriented standard-sphere prerequisites, plus
 explicit routes and payload forms that consume the concrete loop-nullhomotopy
 obligation instead of an ambient simple-connectedness typeclass; the same
 self-case endpoints and payloads now also accept the concrete path-homotopy
-obligation by routing it through loop-nullhomotopy.
+obligation through its direct simple-connectedness route.
 
 The statement layer also now names `threeSphere_t2Space`,
 `threeSphere_compactSpace`, `threeSphere_chartedSpace`,

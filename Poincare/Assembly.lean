@@ -359,21 +359,22 @@ statement to the standard sphere itself.
 theorem threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatement
     (hPath : ThreeSpherePathHomotopyStatement)
     (h : PoincareConjectureStatement.{0}) :
-    Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=
-  threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopyStatement
-    (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h
+    Nonempty (ThreeSphere ≃ₜ ThreeSphere) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_pathHomotopyStatement hPath
+  exact threeSphere_self_homeomorph_of_poincare_statement h
 
 /--
-The target-statement self route from path-homotopy is exactly the
-loop-nullhomotopy self route after converting path-homotopy to
-loop-nullhomotopy.
+The target-statement self route from path-homotopy is exactly the existing self
+route after converting path-homotopy to simple-connectedness.
 -/
 theorem threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatement_eq :
     threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatement =
       (fun hPath : ThreeSpherePathHomotopyStatement =>
         fun h : PoincareConjectureStatement.{0} =>
-          threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopyStatement
-            (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h) := by
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_pathHomotopyStatement hPath
+          threeSphere_self_homeomorph_of_poincare_statement h) := by
   funext hPath h
   apply Subsingleton.elim
 
@@ -384,21 +385,22 @@ statement to the standard sphere itself.
 theorem threeSphere_self_diffeomorph_of_smooth_statement_and_pathHomotopyStatement
     (hPath : ThreeSpherePathHomotopyStatement)
     (h : SmoothPoincareConjectureStatement.{0}) :
-    Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) :=
-  threeSphere_self_diffeomorph_of_smooth_statement_and_loopNullhomotopyStatement
-    (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h
+    Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_pathHomotopyStatement hPath
+  exact threeSphere_self_diffeomorph_of_smooth_statement h
 
 /--
-The smooth self-diffeomorphism route from path-homotopy is exactly the
-loop-nullhomotopy smooth self route after converting path-homotopy to
-loop-nullhomotopy.
+The smooth self-diffeomorphism route from path-homotopy is exactly the existing
+smooth self route after converting path-homotopy to simple-connectedness.
 -/
 theorem threeSphere_self_diffeomorph_of_smooth_statement_and_pathHomotopyStatement_eq :
     threeSphere_self_diffeomorph_of_smooth_statement_and_pathHomotopyStatement =
       (fun hPath : ThreeSpherePathHomotopyStatement =>
         fun h : SmoothPoincareConjectureStatement.{0} =>
-          threeSphere_self_diffeomorph_of_smooth_statement_and_loopNullhomotopyStatement
-            (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h) := by
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_pathHomotopyStatement hPath
+          threeSphere_self_diffeomorph_of_smooth_statement h) := by
   funext hPath h
   apply Subsingleton.elim
 
@@ -409,21 +411,23 @@ topological self-homeomorphism after forgetting smooth structure.
 theorem threeSphere_self_homeomorph_of_smooth_statement_and_pathHomotopyStatement
     (hPath : ThreeSpherePathHomotopyStatement)
     (h : SmoothPoincareConjectureStatement.{0}) :
-    Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=
-  threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement
-    (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h
+    Nonempty (ThreeSphere ≃ₜ ThreeSphere) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_pathHomotopyStatement hPath
+  exact threeSphere_self_homeomorph_of_smooth_statement h
 
 /--
-The smooth-to-topological self route from path-homotopy is exactly the
-loop-nullhomotopy smooth-to-topological self route after converting
-path-homotopy to loop-nullhomotopy.
+The smooth-to-topological self route from path-homotopy is exactly the existing
+smooth-to-topological self route after converting path-homotopy to
+simple-connectedness.
 -/
 theorem threeSphere_self_homeomorph_of_smooth_statement_and_pathHomotopyStatement_eq :
     threeSphere_self_homeomorph_of_smooth_statement_and_pathHomotopyStatement =
       (fun hPath : ThreeSpherePathHomotopyStatement =>
         fun h : SmoothPoincareConjectureStatement.{0} =>
-          threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement
-            (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h) := by
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_pathHomotopyStatement hPath
+          threeSphere_self_homeomorph_of_smooth_statement h) := by
   funext hPath h
   apply Subsingleton.elim
 
