@@ -1315,6 +1315,10 @@ The current artifact is intentionally conservative:
   The strengthened and certified full-assembly witnesses built from a
   boundary-aware certificate are now also pinned to that certificate-level
   finite-extinction projection.
+  The ordinary checked certificate extracted from a boundary-aware
+  certificate now exposes the same finite-extinction endpoint for its
+  canonical payload, project payload, target statement, canonical target,
+  completion criterion, and raw/certified full-assembly witnesses.
   The
   theorem
   `canonical_completion_payload_of_remaining_dependency_component_requirements`
