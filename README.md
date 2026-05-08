@@ -948,7 +948,9 @@ The current artifact is intentionally conservative:
   target payload; the final statement theorem destructures the completion
   payload. The canonical endpoint
   `canonical_three_sphere_statement_of_surgery_and_topology_packages` exposes the
-  same route as the mathlib-shaped topological 3-sphere statement. The
+  same route as the mathlib-shaped topological 3-sphere statement, with
+  `canonical_three_sphere_statement_of_surgery_and_topology_packages_to_extraction_statement_eq`
+  pinning it to the theorem-shaped topology route built from the package. The
   theorem-shaped topology route
   `poincare_assembly_inputs_payload_of_surgery_and_topology_extraction_statement`,
   `poincare_target_payload_of_surgery_and_topology_extraction_statement`, and

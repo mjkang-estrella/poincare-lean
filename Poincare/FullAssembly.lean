@@ -1209,6 +1209,28 @@ theorem canonical_three_sphere_statement_of_surgery_and_topology_extraction_stat
   apply Subsingleton.elim
 
 /--
+The explicit package canonical topological statement agrees with the
+theorem-shaped topology statement route for the package-built topology
+extraction statement.
+-/
+theorem canonical_three_sphere_statement_of_surgery_and_topology_packages_to_extraction_statement_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    canonical_three_sphere_statement_of_surgery_and_topology_packages
+      smoothabilityPackage surgeryPackages topologyPackage =
+      canonical_three_sphere_statement_of_surgery_and_topology_extraction_statement
+        smoothabilityPackage surgeryPackages
+        (extinction_topology_extraction_statement_of_topology_package
+          topologyPackage) := by
+  apply Subsingleton.elim
+
+/--
 The smoothability and surgery package route, together with a final extractor
 and its topology derivation certificate, exposes the canonical topological
 3-sphere statement.
