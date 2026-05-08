@@ -233,6 +233,26 @@ check_decl "target sphere loop-nullhomotopy from simple-connectedness theorem is
   '^theorem threeSphere_loopNullhomotopyStatement_of_simplyConnectedSpace\b' Poincare/Statement.lean
 check_decl "target sphere loop-nullhomotopy from simple-connectedness equality contract is declared" \
   '^theorem threeSphere_loopNullhomotopyStatement_of_simplyConnectedSpace_eq\b' Poincare/Statement.lean
+check_decl "target sphere path-homotopy statement is declared" \
+  '^def ThreeSpherePathHomotopyStatement\b' Poincare/Statement.lean
+check_decl "target sphere path-homotopy statement equality contract is declared" \
+  '^theorem threeSpherePathHomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere simple-connectedness path-homotopy equivalence is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement\b' Poincare/Statement.lean
+check_decl "target sphere simple-connectedness path-homotopy equivalence equality contract is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere loop-nullhomotopy from path-homotopy theorem is declared" \
+  '^theorem threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement\b' Poincare/Statement.lean
+check_decl "target sphere loop-nullhomotopy from path-homotopy equality contract is declared" \
+  '^theorem threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere path-homotopy from loop-nullhomotopy theorem is declared" \
+  '^theorem threeSphere_pathHomotopyStatement_of_loopNullhomotopyStatement\b' Poincare/Statement.lean
+check_decl "target sphere path-homotopy from loop-nullhomotopy equality contract is declared" \
+  '^theorem threeSphere_pathHomotopyStatement_of_loopNullhomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere path-homotopy loop-nullhomotopy equivalence is declared" \
+  '^theorem threeSphere_pathHomotopyStatement_iff_loopNullhomotopyStatement\b' Poincare/Statement.lean
+check_decl "target sphere path-homotopy loop-nullhomotopy equivalence equality contract is declared" \
+  '^theorem threeSphere_pathHomotopyStatement_iff_loopNullhomotopyStatement_eq\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites from loop-nullhomotopy theorem is declared" \
   '^theorem threeSphere_target_prerequisites_of_loopNullhomotopyStatement\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites from loop-nullhomotopy equality contract is declared" \
@@ -12500,6 +12520,16 @@ open scoped Manifold ContDiff
 #check Poincare.threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement_eq
 #check Poincare.threeSphere_loopNullhomotopyStatement_of_simplyConnectedSpace
 #check Poincare.threeSphere_loopNullhomotopyStatement_of_simplyConnectedSpace_eq
+#check Poincare.ThreeSpherePathHomotopyStatement
+#check Poincare.threeSpherePathHomotopyStatement_eq
+#check Poincare.threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement
+#check Poincare.threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement_eq
+#check Poincare.threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
+#check Poincare.threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement_eq
+#check Poincare.threeSphere_pathHomotopyStatement_of_loopNullhomotopyStatement
+#check Poincare.threeSphere_pathHomotopyStatement_of_loopNullhomotopyStatement_eq
+#check Poincare.threeSphere_pathHomotopyStatement_iff_loopNullhomotopyStatement
+#check Poincare.threeSphere_pathHomotopyStatement_iff_loopNullhomotopyStatement_eq
 #check Poincare.threeSphere_target_prerequisites_of_loopNullhomotopyStatement
 #check Poincare.threeSphere_target_prerequisites_of_loopNullhomotopyStatement_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement
@@ -17461,6 +17491,32 @@ open scoped Manifold ContDiff
   [SimplyConnectedSpace Poincare.ThreeSphere] →
     Poincare.ThreeSphereLoopNullhomotopyStatement)
 #check Poincare.threeSphere_loopNullhomotopyStatement_of_simplyConnectedSpace_eq
+
+#check (Poincare.ThreeSpherePathHomotopyStatement : Prop)
+#check (Poincare.threeSpherePathHomotopyStatement_eq :
+  Poincare.ThreeSpherePathHomotopyStatement =
+    (∀ {x y : Poincare.ThreeSphere} (p q : Path x y),
+      Path.Homotopic p q))
+
+#check (Poincare.threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement :
+  SimplyConnectedSpace Poincare.ThreeSphere ↔
+    Poincare.ThreeSpherePathHomotopyStatement)
+#check Poincare.threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement_eq
+
+#check (Poincare.threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement :
+  Poincare.ThreeSpherePathHomotopyStatement →
+    Poincare.ThreeSphereLoopNullhomotopyStatement)
+#check Poincare.threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement_eq
+
+#check (Poincare.threeSphere_pathHomotopyStatement_of_loopNullhomotopyStatement :
+  Poincare.ThreeSphereLoopNullhomotopyStatement →
+    Poincare.ThreeSpherePathHomotopyStatement)
+#check Poincare.threeSphere_pathHomotopyStatement_of_loopNullhomotopyStatement_eq
+
+#check (Poincare.threeSphere_pathHomotopyStatement_iff_loopNullhomotopyStatement :
+  Poincare.ThreeSpherePathHomotopyStatement ↔
+    Poincare.ThreeSphereLoopNullhomotopyStatement)
+#check Poincare.threeSphere_pathHomotopyStatement_iff_loopNullhomotopyStatement_eq
 
 #check (Poincare.threeSphere_target_prerequisites_of_loopNullhomotopyStatement :
   Poincare.ThreeSphereLoopNullhomotopyStatement →

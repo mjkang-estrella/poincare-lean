@@ -354,6 +354,93 @@ theorem threeSphere_loopNullhomotopyStatement_of_simplyConnectedSpace_eq
   apply Subsingleton.elim
 
 /--
+The concrete path-homotopy uniqueness obligation whose proof would also supply
+`SimplyConnectedSpace ThreeSphere`.
+-/
+def ThreeSpherePathHomotopyStatement : Prop :=
+  ∀ {x y : ThreeSphere} (p q : Path x y), Path.Homotopic p q
+
+/-- The path-homotopy obligation expands to homotopy of every parallel path pair. -/
+theorem threeSpherePathHomotopyStatement_eq :
+    ThreeSpherePathHomotopyStatement =
+      (∀ {x y : ThreeSphere} (p q : Path x y), Path.Homotopic p q) :=
+  rfl
+
+/--
+For the standard sphere, simple-connectedness is equivalent to the concrete
+path-homotopy obligation because path-connectedness has already been proved.
+-/
+theorem threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement :
+    SimplyConnectedSpace ThreeSphere ↔ ThreeSpherePathHomotopyStatement := by
+  rw [threeSpherePathHomotopyStatement_eq,
+    simply_connected_iff_paths_homotopic']
+  exact ⟨fun h => h.2, fun h => ⟨threeSphere_pathConnectedSpace, h⟩⟩
+
+/--
+The simple-connectedness/path-homotopy reduction is exactly mathlib's
+path-homotopy criterion specialized with the named path-connectedness proof.
+-/
+theorem threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement_eq :
+    threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement =
+      (by
+        rw [threeSpherePathHomotopyStatement_eq,
+          simply_connected_iff_paths_homotopic']
+        exact ⟨fun h => h.2,
+          fun h => ⟨threeSphere_pathConnectedSpace, h⟩⟩) := by
+  apply Subsingleton.elim
+
+/-- Path-homotopy uniqueness implies loop-nullhomotopy by comparing a loop to `Path.refl`. -/
+theorem threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
+    (h : ThreeSpherePathHomotopyStatement) :
+    ThreeSphereLoopNullhomotopyStatement := by
+  intro x γ
+  exact h γ (Path.refl x)
+
+/-- The path-to-loop route is evaluation at a loop and the stationary loop. -/
+theorem threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement_eq :
+    threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement =
+      (fun h : ThreeSpherePathHomotopyStatement =>
+        fun x γ => h γ (Path.refl x)) := by
+  funext h x γ
+  apply Subsingleton.elim
+
+/-- Loop-nullhomotopy implies path-homotopy uniqueness through simple-connectedness. -/
+theorem threeSphere_pathHomotopyStatement_of_loopNullhomotopyStatement
+    (h : ThreeSphereLoopNullhomotopyStatement) :
+    ThreeSpherePathHomotopyStatement :=
+  threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement.mp
+    (threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement h)
+
+/--
+The loop-to-path route is simple-connectedness from loop-nullhomotopy followed
+by the path-homotopy criterion.
+-/
+theorem threeSphere_pathHomotopyStatement_of_loopNullhomotopyStatement_eq :
+    threeSphere_pathHomotopyStatement_of_loopNullhomotopyStatement =
+      (fun h : ThreeSphereLoopNullhomotopyStatement =>
+        (threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement.mp
+          (threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement h) :
+            ThreeSpherePathHomotopyStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The two concrete simple-connectedness obligations for `S^3` are equivalent. -/
+theorem threeSphere_pathHomotopyStatement_iff_loopNullhomotopyStatement :
+    ThreeSpherePathHomotopyStatement ↔ ThreeSphereLoopNullhomotopyStatement :=
+  ⟨threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement,
+    threeSphere_pathHomotopyStatement_of_loopNullhomotopyStatement⟩
+
+/--
+The path/loop obligation equivalence is exactly the pair of named conversion
+routes.
+-/
+theorem threeSphere_pathHomotopyStatement_iff_loopNullhomotopyStatement_eq :
+    threeSphere_pathHomotopyStatement_iff_loopNullhomotopyStatement =
+      ⟨threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement,
+        threeSphere_pathHomotopyStatement_of_loopNullhomotopyStatement⟩ := by
+  apply Subsingleton.elim
+
+/--
 The concrete loop-nullhomotopy obligation supplies the full target prerequisite
 payload for applying the project statement to the standard sphere.
 -/

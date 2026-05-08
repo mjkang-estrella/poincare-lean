@@ -585,6 +585,32 @@ set_option linter.unusedVariables false
     Poincare.ThreeSphereLoopNullhomotopyStatement)
 #check Poincare.threeSphere_loopNullhomotopyStatement_of_simplyConnectedSpace_eq
 
+#check (Poincare.ThreeSpherePathHomotopyStatement : Prop)
+#check (Poincare.threeSpherePathHomotopyStatement_eq :
+  Poincare.ThreeSpherePathHomotopyStatement =
+    (∀ {x y : Poincare.ThreeSphere} (p q : Path x y),
+      Path.Homotopic p q))
+
+#check (Poincare.threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement :
+  SimplyConnectedSpace Poincare.ThreeSphere ↔
+    Poincare.ThreeSpherePathHomotopyStatement)
+#check Poincare.threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement_eq
+
+#check (Poincare.threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement :
+  Poincare.ThreeSpherePathHomotopyStatement →
+    Poincare.ThreeSphereLoopNullhomotopyStatement)
+#check Poincare.threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement_eq
+
+#check (Poincare.threeSphere_pathHomotopyStatement_of_loopNullhomotopyStatement :
+  Poincare.ThreeSphereLoopNullhomotopyStatement →
+    Poincare.ThreeSpherePathHomotopyStatement)
+#check Poincare.threeSphere_pathHomotopyStatement_of_loopNullhomotopyStatement_eq
+
+#check (Poincare.threeSphere_pathHomotopyStatement_iff_loopNullhomotopyStatement :
+  Poincare.ThreeSpherePathHomotopyStatement ↔
+    Poincare.ThreeSphereLoopNullhomotopyStatement)
+#check Poincare.threeSphere_pathHomotopyStatement_iff_loopNullhomotopyStatement_eq
+
 #check (Poincare.threeSphere_target_prerequisites_of_loopNullhomotopyStatement :
   Poincare.ThreeSphereLoopNullhomotopyStatement →
   ∃ _t2 : T2Space Poincare.ThreeSphere,

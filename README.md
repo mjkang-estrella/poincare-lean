@@ -36,6 +36,9 @@ The current artifact is intentionally conservative:
   loop-nullhomotopy criterion and the named path-connectedness proof for `S^3`,
   and that concrete obligation feeds the full standard-sphere prerequisite
   payloads directly.
+  A parallel `ThreeSpherePathHomotopyStatement` records the equivalent concrete
+  obligation that any two parallel paths in `S^3` are homotopic, with named
+  conversions to and from the loop-nullhomotopy obligation.
 - `Poincare/Milestones.lean` and `DEPENDENCY_LEDGER.md` name the missing
   Ricci-flow and topology proof obligations as data, not as proved
   propositions.
