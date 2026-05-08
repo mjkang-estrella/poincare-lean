@@ -18757,6 +18757,261 @@ theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_
   apply Subsingleton.elim
 
 /--
+The boundary-target-payload remaining-package certificate projects to the
+ordinary aggregate full-assembly endpoint after forgetting equation-boundary
+data.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_forgetful_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_to_forgetful_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The boundary-target-payload remaining-package certificate projects to the
+ordinary remaining-package full-assembly endpoint after forgetting
+equation-boundary data.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_remaining_dependency_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_to_remaining_dependency
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The aggregate boundary-target-payload certificate projects to the ordinary
+aggregate full-assembly endpoint after forgetting equation-boundary data.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The aggregate boundary-target-payload certificate projects to the ordinary
+remaining-package full-assembly endpoint after forgetting equation-boundary
+data.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_remaining_dependency_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_to_remaining_dependency
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The boundary-preserving extraction-derivation target-payload remaining-package
+certificate projects to the ordinary aggregate full-assembly endpoint after
+forgetting equation-boundary data.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_forgetful_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_to_forgetful_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The boundary-preserving extraction-derivation target-payload remaining-package
+certificate projects to the ordinary remaining-package full-assembly endpoint
+after forgetting equation-boundary data.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_remaining_dependency_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_to_remaining_dependency
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The aggregate boundary-preserving extraction-derivation target-payload
+certificate projects to the ordinary aggregate full-assembly endpoint after
+forgetting equation-boundary data.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The aggregate boundary-preserving extraction-derivation target-payload
+certificate projects to the ordinary remaining-package full-assembly endpoint
+after forgetting equation-boundary data.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_remaining_dependency_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_to_remaining_dependency
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The boundary-target-payload remaining-package certificate projects to the
+ordinary aggregate certified full-assembly endpoint after forgetting
+equation-boundary data.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_forgetful_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation_to_forgetful_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The boundary-target-payload remaining-package certificate projects to the
+ordinary remaining-package certified full-assembly endpoint after forgetting
+equation-boundary data.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_remaining_dependency_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation_to_remaining_dependency
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The aggregate boundary-target-payload certificate projects to the ordinary
+aggregate certified full-assembly endpoint after forgetting equation-boundary
+data.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_forgetful_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The aggregate boundary-target-payload certificate projects to the ordinary
+remaining-package certified full-assembly endpoint after forgetting
+equation-boundary data.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_remaining_dependency_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_remaining_dependency
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The boundary-preserving extraction-derivation target-payload remaining-package
+certificate projects to the ordinary aggregate certified full-assembly endpoint
+after forgetting equation-boundary data.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_forgetful_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation_to_forgetful_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The boundary-preserving extraction-derivation target-payload remaining-package
+certificate projects to the ordinary remaining-package certified full-assembly
+endpoint after forgetting equation-boundary data.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_remaining_dependency_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation_to_remaining_dependency
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The aggregate boundary-preserving extraction-derivation target-payload
+certificate projects to the ordinary aggregate certified full-assembly endpoint
+after forgetting equation-boundary data.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_forgetful_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The aggregate boundary-preserving extraction-derivation target-payload
+certificate projects to the ordinary remaining-package certified full-assembly
+endpoint after forgetting equation-boundary data.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_remaining_dependency_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_remaining_dependency
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 Projecting aggregate dependencies from the boundary-target-payload
 remaining-package certificate also recovers the forgetful aggregate package.
 -/
