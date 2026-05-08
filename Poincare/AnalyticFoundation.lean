@@ -251,6 +251,70 @@ theorem equation_at_time_of_equation_boundary_package
       package.verification.equationAtTime t :=
   rfl
 
+/--
+An equation-boundary package supplies the explicit equation pointwise through
+its stored verification.
+-/
+theorem equation_at_time_apply_of_equation_boundary_package
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (package : RicciFlowEquationBoundaryPackage flow)
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    metric_time_derivative_at_time_of_metric_derivative_field
+      package.verification.metricDerivative.derivative t x v w =
+        ricci_flow_rhs_tensor (curvature_data_of_ricci_flow_data flow) t x v w :=
+  equation_at_time_apply_of_ricci_flow_equation_verification
+    package.verification t x v w
+
+/-- The direct boundary-package pointwise equation theorem is stored verification evidence. -/
+@[simp] theorem equation_at_time_apply_of_equation_boundary_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (package : RicciFlowEquationBoundaryPackage flow)
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    equation_at_time_apply_of_equation_boundary_package package t x v w =
+      equation_at_time_apply_of_ricci_flow_equation_verification
+        package.verification t x v w := by
+  apply Subsingleton.elim
+
+/--
+An equation-boundary package exposes the stored verification as a reusable
+pointwise scalar equation payload.
+-/
+theorem pointwise_equation_payload_of_equation_boundary_package
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (package : RicciFlowEquationBoundaryPackage flow) :
+    ∀ t x v w,
+      metric_time_derivative_at_time_of_metric_derivative_field
+        package.verification.metricDerivative.derivative t x v w =
+        ricci_flow_rhs_tensor
+          (curvature_data_of_ricci_flow_data flow) t x v w :=
+  pointwise_equation_payload_of_ricci_flow_equation_verification
+    package.verification
+
+/-- The boundary-package pointwise equation payload is the stored verification payload. -/
+@[simp] theorem pointwise_equation_payload_of_equation_boundary_package_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (package : RicciFlowEquationBoundaryPackage flow) :
+    pointwise_equation_payload_of_equation_boundary_package package =
+      pointwise_equation_payload_of_ricci_flow_equation_verification
+        package.verification :=
+  rfl
+
 /-- An equation-boundary package carries metric-derivative identification evidence. -/
 theorem metric_time_derivative_identification_of_equation_boundary_package
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]

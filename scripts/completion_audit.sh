@@ -643,6 +643,14 @@ check_decl "Ricci-flow equation boundary time theorem is declared" \
   '^theorem equation_at_time_of_equation_boundary_package\b' Poincare/AnalyticFoundation.lean
 check_decl "Ricci-flow equation boundary time equality theorem is declared" \
   '^@\[simp\] theorem equation_at_time_of_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow equation boundary direct pointwise theorem is declared" \
+  '^theorem equation_at_time_apply_of_equation_boundary_package\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow equation boundary direct pointwise equality theorem is declared" \
+  '^@\[simp\] theorem equation_at_time_apply_of_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow equation boundary pointwise payload theorem is declared" \
+  '^theorem pointwise_equation_payload_of_equation_boundary_package\b' Poincare/AnalyticFoundation.lean
+check_decl "Ricci-flow equation boundary pointwise payload equality theorem is declared" \
+  '^@\[simp\] theorem pointwise_equation_payload_of_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "Ricci-flow equation boundary derivative-identification theorem is declared" \
   '^theorem metric_time_derivative_identification_of_equation_boundary_package\b' Poincare/AnalyticFoundation.lean
 check_decl "Ricci-flow equation boundary derivative-identification equality theorem is declared" \
@@ -2833,6 +2841,16 @@ check_decl "finite-extinction surgery package pointwise applied equation project
   '^@\[simp\] theorem equation_at_time_apply_of_surgery_package_with_equation_boundary_projection_eq\b' Poincare/Surgery.lean
 check_decl "finite-extinction surgery package pointwise applied equation verification route equality theorem is declared" \
   '^@\[simp\] theorem equation_at_time_apply_of_surgery_package_with_equation_boundary_projection_to_ricci_flow_equation_verification_eq\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package direct pointwise applied equation theorem is declared" \
+  '^theorem equation_at_time_apply_of_surgery_package_with_equation_boundary\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package direct pointwise applied equation equality theorem is declared" \
+  '^@\[simp\] theorem equation_at_time_apply_of_surgery_package_with_equation_boundary_eq\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package direct pointwise verification route equality theorem is declared" \
+  '^@\[simp\] theorem equation_at_time_apply_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package pointwise equation payload theorem is declared" \
+  '^theorem pointwise_equation_payload_of_surgery_package_with_equation_boundary\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery package pointwise equation payload equality theorem is declared" \
+  '^@\[simp\] theorem pointwise_equation_payload_of_surgery_package_with_equation_boundary_eq\b' Poincare/Surgery.lean
 check_decl "finite-extinction surgery package analytic-boundary theorem is declared" \
   '^theorem analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary\b' Poincare/Surgery.lean
 check_decl "finite-extinction surgery package analytic-boundary equality theorem is declared" \
@@ -12538,6 +12556,10 @@ open scoped Manifold ContDiff
 #check Poincare.metric_derivative_data_of_equation_boundary_package_eq
 #check Poincare.equation_at_time_of_equation_boundary_package
 #check Poincare.equation_at_time_of_equation_boundary_package_eq
+#check Poincare.equation_at_time_apply_of_equation_boundary_package
+#check Poincare.equation_at_time_apply_of_equation_boundary_package_eq
+#check Poincare.pointwise_equation_payload_of_equation_boundary_package
+#check Poincare.pointwise_equation_payload_of_equation_boundary_package_eq
 #check Poincare.metric_time_derivative_identification_of_equation_boundary_package
 #check Poincare.metric_time_derivative_identification_of_equation_boundary_package_eq
 #check Poincare.equation_at_time_of_equation_boundary_package_projection
@@ -12841,6 +12863,11 @@ open scoped Manifold ContDiff
 #check Poincare.equation_at_time_apply_of_surgery_package_with_equation_boundary_projection
 #check Poincare.equation_at_time_apply_of_surgery_package_with_equation_boundary_projection_eq
 #check Poincare.equation_at_time_apply_of_surgery_package_with_equation_boundary_projection_to_ricci_flow_equation_verification_eq
+#check Poincare.equation_at_time_apply_of_surgery_package_with_equation_boundary
+#check Poincare.equation_at_time_apply_of_surgery_package_with_equation_boundary_eq
+#check Poincare.equation_at_time_apply_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq
+#check Poincare.pointwise_equation_payload_of_surgery_package_with_equation_boundary
+#check Poincare.pointwise_equation_payload_of_surgery_package_with_equation_boundary_eq
 #check Poincare.analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
 #check Poincare.analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary_eq
 #check Poincare.analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq
@@ -17067,6 +17094,10 @@ open scoped Manifold ContDiff
 #check Poincare.metric_derivative_data_of_equation_boundary_package_eq
 #check Poincare.equation_at_time_of_equation_boundary_package
 #check Poincare.equation_at_time_of_equation_boundary_package_eq
+#check Poincare.equation_at_time_apply_of_equation_boundary_package
+#check Poincare.equation_at_time_apply_of_equation_boundary_package_eq
+#check Poincare.pointwise_equation_payload_of_equation_boundary_package
+#check Poincare.pointwise_equation_payload_of_equation_boundary_package_eq
 #check Poincare.metric_time_derivative_identification_of_equation_boundary_package
 #check Poincare.metric_time_derivative_identification_of_equation_boundary_package_eq
 #check Poincare.equation_at_time_of_equation_boundary_package_projection
@@ -17690,6 +17721,11 @@ open scoped Manifold ContDiff
 #check Poincare.equation_at_time_apply_of_surgery_package_with_equation_boundary_projection
 #check Poincare.equation_at_time_apply_of_surgery_package_with_equation_boundary_projection_eq
 #check Poincare.equation_at_time_apply_of_surgery_package_with_equation_boundary_projection_to_ricci_flow_equation_verification_eq
+#check Poincare.equation_at_time_apply_of_surgery_package_with_equation_boundary
+#check Poincare.equation_at_time_apply_of_surgery_package_with_equation_boundary_eq
+#check Poincare.equation_at_time_apply_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq
+#check Poincare.pointwise_equation_payload_of_surgery_package_with_equation_boundary
+#check Poincare.pointwise_equation_payload_of_surgery_package_with_equation_boundary_eq
 #check Poincare.analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
 #check Poincare.analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary_eq
 #check Poincare.analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary_to_ricci_flow_equation_verification_eq
