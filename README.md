@@ -1596,6 +1596,9 @@ The current artifact is intentionally conservative:
   The certified remaining-dependency package-layer wrapper has the same direct
   package-route contracts after selecting the stored smoothability,
   finite-extinction, and topology package layers.
+  The certified remaining-dependency milestone wrapper similarly pins its
+  canonical outputs to the certified component route after selecting the stored
+  smoothability, finite-extinction, and extinction-to-sphere milestones.
   The remaining-dependency crosswalk wrappers also expose direct project
   payload, target-statement, and criterion projections through
   `poincare_completion_payload_of_remaining_dependency_*`,

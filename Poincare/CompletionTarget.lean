@@ -8830,6 +8830,102 @@ theorem canonical_three_sphere_statement_of_remaining_dependency_milestone_extra
   apply Subsingleton.elim
 
 /--
+The remaining-dependency certified milestone canonical payload agrees directly
+with the certified component-slot canonical payload selected by the stored
+smoothability, finite-extinction, and extinction-to-sphere milestones.
+-/
+theorem canonical_completion_payload_of_remaining_dependency_milestone_extraction_derivation_requirements_to_component_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_payload_of_remaining_dependency_milestone_extraction_derivation_requirements
+      dependencies =
+      (by
+        rcases remainingDependencyPackage_milestone_requirements_payload
+            dependencies with
+          ⟨ smoothabilityBridgeRequirement
+          , _ricciFlowAnalyticFoundationRequirement
+          , _ricciFlowWithSurgeryRequirement
+          , _perelmanSingularityControlRequirement
+          , finiteExtinctionRequirement
+          , extinctionToSphereHomeomorphismRequirement
+          ⟩
+        exact canonical_completion_payload_of_component_extraction_derivation_requirements
+          smoothabilityBridgeRequirement finiteExtinctionRequirement
+          extinctionToSphereHomeomorphismRequirement) := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency certified milestone canonical target agrees directly
+with the certified component-slot canonical target selected by the stored
+smoothability, finite-extinction, and extinction-to-sphere milestones.
+-/
+theorem canonical_completion_target_of_remaining_dependency_milestone_extraction_derivation_requirements_to_component_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_remaining_dependency_milestone_extraction_derivation_requirements
+      dependencies =
+      (by
+        rcases remainingDependencyPackage_milestone_requirements_payload
+            dependencies with
+          ⟨ smoothabilityBridgeRequirement
+          , _ricciFlowAnalyticFoundationRequirement
+          , _ricciFlowWithSurgeryRequirement
+          , _perelmanSingularityControlRequirement
+          , finiteExtinctionRequirement
+          , extinctionToSphereHomeomorphismRequirement
+          ⟩
+        exact canonical_completion_target_of_component_extraction_derivation_requirements
+          smoothabilityBridgeRequirement finiteExtinctionRequirement
+          extinctionToSphereHomeomorphismRequirement) := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency certified milestone canonical criterion agrees directly
+with the certified component-slot canonical criterion selected by the stored
+smoothability, finite-extinction, and extinction-to-sphere milestones.
+-/
+theorem canonical_completion_criterion_of_remaining_dependency_milestone_extraction_derivation_requirements_to_component_extraction_derivation_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_remaining_dependency_milestone_extraction_derivation_requirements
+      witness dependencies =
+      (by
+        rcases remainingDependencyPackage_milestone_requirements_payload
+            dependencies with
+          ⟨ smoothabilityBridgeRequirement
+          , _ricciFlowAnalyticFoundationRequirement
+          , _ricciFlowWithSurgeryRequirement
+          , _perelmanSingularityControlRequirement
+          , finiteExtinctionRequirement
+          , extinctionToSphereHomeomorphismRequirement
+          ⟩
+        exact canonical_completion_criterion_of_component_extraction_derivation_requirements
+          witness smoothabilityBridgeRequirement finiteExtinctionRequirement
+          extinctionToSphereHomeomorphismRequirement) := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency certified milestone canonical statement agrees
+directly with the certified component-slot canonical statement selected by the
+stored smoothability, finite-extinction, and extinction-to-sphere milestones.
+-/
+theorem canonical_three_sphere_statement_of_remaining_dependency_milestone_extraction_derivation_requirements_to_component_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_remaining_dependency_milestone_extraction_derivation_requirements
+      dependencies =
+      (by
+        rcases remainingDependencyPackage_milestone_requirements_payload
+            dependencies with
+          ⟨ smoothabilityBridgeRequirement
+          , _ricciFlowAnalyticFoundationRequirement
+          , _ricciFlowWithSurgeryRequirement
+          , _perelmanSingularityControlRequirement
+          , finiteExtinctionRequirement
+          , extinctionToSphereHomeomorphismRequirement
+          ⟩
+        exact canonical_three_sphere_statement_of_component_extraction_derivation_requirements
+          smoothabilityBridgeRequirement finiteExtinctionRequirement
+          extinctionToSphereHomeomorphismRequirement) := by
+  apply Subsingleton.elim
+
+/--
 The remaining dependency package exposes the project completion payload through
 the crosswalk component-slot requirement route.
 -/
