@@ -2220,6 +2220,16 @@ set_option linter.unusedVariables false
       Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
 #check Poincare.homeomorph_to_threeSphere_iff_homeomorph_to_onePoint_threeSpace_eq
 
+universe u
+
+#check (Poincare.poincareConjectureStatement_of_onePoint_threeSpace_recognition :
+  (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
+    Poincare.PoincareConjectureStatement.{u})
+#check Poincare.poincareConjectureStatement_of_onePoint_threeSpace_recognition_eq
+
 #check (Poincare.onePoint_threeSpace_t2Space :
   T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))))
 #check Poincare.onePoint_threeSpace_t2Space_eq
@@ -2274,8 +2284,6 @@ set_option linter.unusedVariables false
   ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
     Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))))
 #check Poincare.onePoint_threeSpace_topological_manifold_prerequisites_eq
-
-universe u
 
 #check (Poincare.topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace :
   ∀ {M : Type u} [TopologicalSpace M],

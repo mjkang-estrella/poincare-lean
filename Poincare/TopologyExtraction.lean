@@ -132,6 +132,31 @@ theorem homeomorph_to_threeSphere_iff_homeomorph_to_onePoint_threeSpace_eq
         · exact homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace) := by
   apply Subsingleton.elim
 
+/--
+If every candidate manifold in the Poincare statement is recognized as the
+one-point compactification model, the project target statement follows.
+-/
+theorem poincareConjectureStatement_of_onePoint_threeSpace_recognition
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    PoincareConjectureStatement.{u} := by
+  intro M _top _t2 _charted _simple _compact
+  exact homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace (h M)
+
+/-- The compactification-recognition reduction is pointwise composition with the model map. -/
+theorem poincareConjectureStatement_of_onePoint_threeSpace_recognition_eq
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincareConjectureStatement_of_onePoint_threeSpace_recognition h =
+      (by
+        intro M _top _t2 _charted _simple _compact
+        exact homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace (h M)) := by
+  apply Subsingleton.elim
+
 /-- The one-point compactification model is Hausdorff. -/
 theorem onePoint_threeSpace_t2Space :
     T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
