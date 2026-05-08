@@ -16922,6 +16922,41 @@ theorem completion_certificate_of_canonical_statement_payload_of_completion_cert
   apply Subsingleton.elim
 
 /--
+The canonical-statement payload constructor for the checked certificate
+projected from a boundary-aware verification payload factors through the
+certificate-level finite-extinction projection and projected topology
+statement.
+-/
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_finite_extinction_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_equation_boundary_verification_payload
+          payload)) =
+      completion_certificate_of_canonical_statement_payload
+        (by
+          let dependencies :=
+            remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
+              payload
+          let finiteExtinction :=
+            finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+              payload
+          let topologyStatement :=
+            topology_extraction_statement_of_dependencies dependencies
+          let target :=
+            canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+              finiteExtinction topologyStatement
+          exact
+            ⟨"poincare_conjecture", rfl, dependencies, target,
+              canonical_three_sphere_statement_of_canonical_completion_target
+                target,
+              fun witness =>
+                canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+                  witness finiteExtinction topologyStatement⟩) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate canonical-statement payload constructor for a boundary-aware
 verification payload recovers the checked certificate when the payload is
 rebuilt from the certificate-level finite-extinction projection and projected
@@ -16955,6 +16990,44 @@ theorem completion_certificate_of_aggregate_canonical_statement_payload_of_compl
                 witness finiteExtinction topologyStatement⟩) =
       completion_certificate_of_equation_boundary_verification_payload
         payload := by
+  apply Subsingleton.elim
+
+/--
+The aggregate canonical-statement payload constructor for the checked
+certificate projected from a boundary-aware verification payload factors
+through the certificate-level finite-extinction projection and projected
+topology statement.
+-/
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_finite_extinction_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_equation_boundary_verification_payload
+          payload)) =
+      completion_certificate_of_aggregate_canonical_statement_payload
+        (by
+          let dependencies :=
+            remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
+              payload
+          let finiteExtinction :=
+            finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+              payload
+          let topologyStatement :=
+            topology_extraction_statement_of_dependencies dependencies
+          let target :=
+            canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+              finiteExtinction topologyStatement
+          exact
+            ⟨"poincare_conjecture", rfl,
+              remainingDependencyPackage_iff_poincareProofDependencies.mp
+                dependencies,
+              target,
+              canonical_three_sphere_statement_of_canonical_completion_target
+                target,
+              fun witness =>
+                canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+                  witness finiteExtinction topologyStatement⟩) := by
   apply Subsingleton.elim
 
 /--

@@ -1329,6 +1329,9 @@ The current artifact is intentionally conservative:
   The literal, aggregate-dependency, and project-statement payload constructors
   for those same certificate routes now round-trip through the same
   finite-extinction/topology reconstruction.
+  The canonical-statement and aggregate canonical-statement payload
+  constructors for the checked-certificate projection now also round-trip
+  through that finite-extinction/topology reconstruction.
   The
   theorem
   `canonical_completion_payload_of_remaining_dependency_component_requirements`
