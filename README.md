@@ -1590,6 +1590,9 @@ The current artifact is intentionally conservative:
   The certified component, package-layer, and milestone wrappers have parallel
   `canonical_completion_*_of_remaining_dependency_*_extraction_derivation_requirements_eq`
   equality contracts for their payload, target, criterion, and statement routes.
+  The certified remaining-dependency component wrapper also has direct equality
+  contracts pinning those canonical outputs to the package-level certified
+  extraction route selected by the stored component requirements.
   The remaining-dependency crosswalk wrappers also expose direct project
   payload, target-statement, and criterion projections through
   `poincare_completion_payload_of_remaining_dependency_*`,

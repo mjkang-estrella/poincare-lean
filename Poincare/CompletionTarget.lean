@@ -8139,6 +8139,78 @@ theorem canonical_three_sphere_statement_of_remaining_dependency_component_extra
   apply Subsingleton.elim
 
 /--
+The remaining-dependency certified component canonical payload agrees directly
+with the package-level certified extraction canonical payload selected by the
+stored component requirements.
+-/
+theorem canonical_completion_payload_of_remaining_dependency_component_extraction_derivation_requirements_to_package_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_payload_of_remaining_dependency_component_extraction_derivation_requirements
+      dependencies =
+      (by
+        rcases remainingDependencyPackage_component_requirements_payload
+            dependencies with
+          ⟨smoothabilityRequirement, surgeryRequirement, topologyRequirement⟩
+        exact
+          canonical_completion_payload_of_surgery_and_topology_package_extraction_derivation
+            smoothabilityRequirement surgeryRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency certified component canonical target agrees directly
+with the package-level certified extraction canonical target selected by the
+stored component requirements.
+-/
+theorem canonical_completion_target_of_remaining_dependency_component_extraction_derivation_requirements_to_package_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_remaining_dependency_component_extraction_derivation_requirements
+      dependencies =
+      (by
+        rcases remainingDependencyPackage_component_requirements_payload
+            dependencies with
+          ⟨smoothabilityRequirement, surgeryRequirement, topologyRequirement⟩
+        exact
+          canonical_completion_target_of_surgery_and_topology_package_extraction_derivation
+            smoothabilityRequirement surgeryRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency certified component canonical criterion agrees directly
+with the package-level certified extraction canonical criterion selected by the
+stored component requirements.
+-/
+theorem canonical_completion_criterion_of_remaining_dependency_component_extraction_derivation_requirements_to_package_extraction_derivation_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_remaining_dependency_component_extraction_derivation_requirements
+      witness dependencies =
+      (by
+        rcases remainingDependencyPackage_component_requirements_payload
+            dependencies with
+          ⟨smoothabilityRequirement, surgeryRequirement, topologyRequirement⟩
+        exact
+          canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation
+            witness smoothabilityRequirement surgeryRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency certified component canonical statement agrees directly
+with the package-level certified extraction canonical statement selected by the
+stored component requirements.
+-/
+theorem canonical_three_sphere_statement_of_remaining_dependency_component_extraction_derivation_requirements_to_package_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_remaining_dependency_component_extraction_derivation_requirements
+      dependencies =
+      (by
+        rcases remainingDependencyPackage_component_requirements_payload
+            dependencies with
+          ⟨smoothabilityRequirement, surgeryRequirement, topologyRequirement⟩
+        exact
+          canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation
+            smoothabilityRequirement surgeryRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+/--
 The remaining dependency package produces the canonical completion payload
 through the crosswalk package-layer requirement route.
 -/
