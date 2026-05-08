@@ -56,6 +56,8 @@ The current artifact is intentionally conservative:
   into a homeomorphism to `S^3`, recording the equivalence between those two
   diffeomorphism directions, naming the standard sphere's reflexive smooth
   self-diffeomorphism and its smooth-to-topological self-homeomorphism route,
+  pairing those reflexive endpoints with the available standard-sphere target
+  prerequisites without a simple-connectedness input,
   exposing the standard-sphere self-case obtained by applying the topological
   or smooth target statement when `S^3` is supplied as simply connected,
   packaging those self-case endpoints with the full homotopy-oriented
@@ -591,7 +593,9 @@ The current artifact is intentionally conservative:
   The assembly layer separately pins the standard sphere's smooth reflexivity
   witness and the induced self-homeomorphism route through
   `homeomorph_of_diffeomorph_three_sphere`; the topology layer now also records
-  that its reflexive self-homeomorphism witness agrees with that smooth route.
+  that its reflexive self-homeomorphism witness agrees with that smooth route,
+  and both layers expose matching prerequisite-plus-endpoint payloads for the
+  standard sphere self-case.
   The dependency-level classification payload
   `topology_classification_payload_of_dependencies` now centralizes the
   post-extinction classification stack, and the individual dependency-level

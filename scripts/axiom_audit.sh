@@ -422,6 +422,10 @@ import Poincare
 #print axioms Poincare.threeSphere_self_diffeomorph_eq
 #print axioms Poincare.threeSphere_self_homeomorph_of_self_diffeomorph
 #print axioms Poincare.threeSphere_self_homeomorph_of_self_diffeomorph_eq
+#print axioms Poincare.threeSphere_self_diffeomorph_payload
+#print axioms Poincare.threeSphere_self_diffeomorph_payload_eq
+#print axioms Poincare.threeSphere_self_homeomorph_payload_of_self_diffeomorph
+#print axioms Poincare.threeSphere_self_homeomorph_payload_of_self_diffeomorph_eq
 #print axioms Poincare.threeSphere_self_homeomorph_of_poincare_statement
 #print axioms Poincare.threeSphere_self_homeomorph_of_poincare_statement_eq
 #print axioms Poincare.threeSphere_self_diffeomorph_of_smooth_statement
@@ -467,6 +471,9 @@ import Poincare
 #print axioms Poincare.threeSphere_self_homeomorph
 #print axioms Poincare.threeSphere_self_homeomorph_eq
 #print axioms Poincare.threeSphere_self_homeomorph_self_diffeomorph_route_eq
+#print axioms Poincare.threeSphere_self_homeomorph_payload
+#print axioms Poincare.threeSphere_self_homeomorph_payload_eq
+#print axioms Poincare.threeSphere_self_homeomorph_payload_self_diffeomorph_route_eq
 #print axioms Poincare.homeomorph_to_threeSphere_of_homeomorph
 #print axioms Poincare.homeomorph_to_threeSphere_of_homeomorph_eq
 #print axioms Poincare.homeomorph_to_threeSphere_of_homeomorph_source
@@ -1733,6 +1740,10 @@ import Poincare
 #print axioms Poincare.threeSphere_self_diffeomorph_eq
 #print axioms Poincare.threeSphere_self_homeomorph_of_self_diffeomorph
 #print axioms Poincare.threeSphere_self_homeomorph_of_self_diffeomorph_eq
+#print axioms Poincare.threeSphere_self_diffeomorph_payload
+#print axioms Poincare.threeSphere_self_diffeomorph_payload_eq
+#print axioms Poincare.threeSphere_self_homeomorph_payload_of_self_diffeomorph
+#print axioms Poincare.threeSphere_self_homeomorph_payload_of_self_diffeomorph_eq
 #print axioms Poincare.threeSphere_self_homeomorph_of_poincare_statement
 #print axioms Poincare.threeSphere_self_homeomorph_of_poincare_statement_eq
 #print axioms Poincare.threeSphere_self_diffeomorph_of_smooth_statement

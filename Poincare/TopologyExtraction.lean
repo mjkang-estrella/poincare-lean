@@ -38,6 +38,41 @@ theorem threeSphere_self_homeomorph_self_diffeomorph_route_eq :
   apply Subsingleton.elim
 
 /--
+The available standard-sphere target prerequisites pair with the direct
+reflexive self-homeomorphism endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₜ ThreeSphere) := by
+  exact ⟨threeSphere_target_prerequisites_except_simpleConnected,
+    threeSphere_self_homeomorph⟩
+
+/--
+The direct topology self-homeomorphism payload is exactly the target
+prerequisite payload paired with the reflexive self-homeomorphism.
+-/
+theorem threeSphere_self_homeomorph_payload_eq :
+    threeSphere_self_homeomorph_payload =
+      ⟨threeSphere_target_prerequisites_except_simpleConnected,
+        threeSphere_self_homeomorph⟩ := by
+  apply Subsingleton.elim
+
+/--
+The direct topology payload agrees with the smooth-forgetful assembly payload.
+-/
+theorem threeSphere_self_homeomorph_payload_self_diffeomorph_route_eq :
+    threeSphere_self_homeomorph_payload =
+      threeSphere_self_homeomorph_payload_of_self_diffeomorph := by
+  apply Subsingleton.elim
+
+/--
 Homeomorphism recognition composes through an intermediate space.
 
 This is a small proof-bearing topology lemma used by the extraction layer: once

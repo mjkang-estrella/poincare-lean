@@ -105,6 +105,60 @@ theorem threeSphere_self_homeomorph_of_self_diffeomorph_eq :
   apply Subsingleton.elim
 
 /--
+The available standard-sphere target prerequisites pair with the reflexive
+smooth self-diffeomorphism endpoint, with no simple-connectedness input needed.
+-/
+theorem threeSphere_self_diffeomorph_payload :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) := by
+  exact ⟨threeSphere_target_prerequisites_except_simpleConnected,
+    threeSphere_self_diffeomorph⟩
+
+/--
+The standard-sphere self-diffeomorphism payload is exactly the target
+prerequisite payload paired with the reflexive smooth self-diffeomorphism.
+-/
+theorem threeSphere_self_diffeomorph_payload_eq :
+    threeSphere_self_diffeomorph_payload =
+      ⟨threeSphere_target_prerequisites_except_simpleConnected,
+        threeSphere_self_diffeomorph⟩ := by
+  apply Subsingleton.elim
+
+/--
+The same prerequisite payload pairs with the self-homeomorphism obtained from
+the reflexive smooth self-diffeomorphism.
+-/
+theorem threeSphere_self_homeomorph_payload_of_self_diffeomorph :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₜ ThreeSphere) := by
+  exact ⟨threeSphere_target_prerequisites_except_simpleConnected,
+    threeSphere_self_homeomorph_of_self_diffeomorph⟩
+
+/--
+The smooth-forgetful self-homeomorphism payload is exactly the target
+prerequisite payload paired with the named self-homeomorphism route.
+-/
+theorem threeSphere_self_homeomorph_payload_of_self_diffeomorph_eq :
+    threeSphere_self_homeomorph_payload_of_self_diffeomorph =
+      ⟨threeSphere_target_prerequisites_except_simpleConnected,
+        threeSphere_self_homeomorph_of_self_diffeomorph⟩ := by
+  apply Subsingleton.elim
+
+/--
 Applying the project target statement to the standard sphere itself only needs
 the standard sphere's simple-connectedness as an additional local input.
 -/
