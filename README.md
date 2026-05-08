@@ -770,7 +770,10 @@ The current artifact is intentionally conservative:
   `topology_homeomorphism_derivation_statement_via_extraction_of_dependencies`.
   Equality contracts now pin the projected homeomorphism, derivation statement,
   assembly statement, and homeomorphism-derivation statement back to those
-  named extraction payload routes.
+  named extraction payload routes, and the via-extraction derivation,
+  assembly-statement, and derivation-statement projections now have direct
+  statement-route contracts back to the dependency theorem-shaped topology
+  extraction statement.
   `topology_extraction_statement_payload_of_dependencies_to_extraction_statement_payload_eq`
   now pins the fixed-extinction dependency payload to the dependency
   theorem-shaped topology extraction statement payload route.

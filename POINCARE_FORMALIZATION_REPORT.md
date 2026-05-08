@@ -777,6 +777,9 @@ derivation payload, and final extractor to the stored topology package route.
 `topology_extraction_statement_payload_of_dependencies_to_extraction_statement_payload_eq`
 also records that the dependency fixed-extinction payload is exactly the
 payload obtained from the dependency theorem-shaped topology extraction
+statement. The via-extraction derivation statement, homeomorphism assembly
+statement, and homeomorphism derivation statement now also have direct
+statement-route equality contracts to that dependency theorem-shaped topology
 statement.
 
 `Poincare/DependencyProjections.lean` also exposes

@@ -8177,6 +8177,69 @@ theorem homeomorphism_of_extinction_and_dependencies_to_statement_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level topology derivation statement selected through the
+extraction payload follows the dependency-level theorem-shaped topology
+statement.
+-/
+theorem topology_derivation_statement_via_extraction_of_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_derivation_statement_via_extraction_of_dependencies
+      dependencies M extinction =
+      (by
+        rw [homeomorphism_of_extinction_and_dependencies_to_statement_eq
+          dependencies M extinction]
+        exact topology_derivation_statement_of_extraction_statement
+          (topology_extraction_statement_of_dependencies dependencies)
+          M extinction) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level homeomorphism assembly statement selected through the
+extraction payload follows the dependency-level theorem-shaped topology
+statement.
+-/
+theorem topology_homeomorphism_assembly_statement_via_extraction_of_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_homeomorphism_assembly_statement_via_extraction_of_dependencies
+      dependencies M extinction =
+      (by
+        rw [homeomorphism_of_extinction_and_dependencies_to_statement_eq
+          dependencies M extinction]
+        exact topology_homeomorphism_assembly_statement_of_extraction_statement
+          (topology_extraction_statement_of_dependencies dependencies)
+          M extinction) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level homeomorphism derivation statement selected through the
+extraction payload follows the dependency-level theorem-shaped topology
+statement.
+-/
+theorem topology_homeomorphism_derivation_statement_via_extraction_of_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_homeomorphism_derivation_statement_via_extraction_of_dependencies
+      dependencies M extinction =
+      (by
+        rw [homeomorphism_of_extinction_and_dependencies_to_statement_eq
+          dependencies M extinction]
+        exact topology_homeomorphism_derivation_statement_of_extraction_statement
+          (topology_extraction_statement_of_dependencies dependencies)
+          M extinction) := by
+  apply Subsingleton.elim
+
+/--
 The dependency-level topology classification sub-obligation projection is the
 classification projection of the dependency-level theorem-shaped topology
 statement.
