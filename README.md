@@ -1470,6 +1470,9 @@ The current artifact is intentionally conservative:
   The aggregate and aggregate certified extraction routes now also pin their
   canonical target and criterion endpoints back to their project statement and
   criterion wrappers.
+  The strengthened equation-boundary aggregate and remaining-package routes now
+  expose the same canonical criterion endpoint layer and pin raw/certified
+  canonical target and criterion endpoints to their project wrappers.
   `remainingDependencyPackage_eq`,
   `remainingDependencyPackage_iff_poincareProofDependencies`, and
   `remainingDependencyPackage_iff_components` identify the remaining-dependency
