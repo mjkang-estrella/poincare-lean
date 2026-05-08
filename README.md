@@ -1301,6 +1301,11 @@ The current artifact is intentionally conservative:
   pinned through the verification-payload projection.
   The same pointwise payloads are now pinned as pointwise projections of the
   full derivative-strengthened surgery payload routes.
+  Boundary-aware completion certificates now also expose a finite-extinction
+  projection pinned to the projected strengthened dependency package, the direct
+  dependent verification payload, the scalar-pointwise surgery payload, the
+  direct stored-verification scalar equation payload, the full
+  surgery-derivative payload, and the boundary surgery-package payload.
   The
   theorem
   `canonical_completion_payload_of_remaining_dependency_component_requirements`

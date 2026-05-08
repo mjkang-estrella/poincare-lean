@@ -14583,6 +14583,200 @@ theorem analytic_foundation_with_equation_boundary_statements_of_completion_cert
   apply Subsingleton.elim
 
 /--
+A boundary-aware completion certificate exposes universal finite extinction
+through its projected strengthened dependency package.
+-/
+theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        FiniteExtinctionByRicciFlowWithSurgery M := by
+  intro M _ _ _ _ _
+  exact
+    finite_extinction_of_equation_boundary_remaining_dependency_package
+      (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+        payload) M
+
+/--
+The certificate finite-extinction projection is the strengthened
+remaining-package finite-extinction projection selected by the certificate's
+projected dependency package.
+-/
+theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _
+        exact
+          finite_extinction_of_equation_boundary_remaining_dependency_package
+            (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+              payload) M) := by
+  apply Subsingleton.elim
+
+/--
+The certificate finite-extinction projection can be routed through the direct
+dependent verification payload after installing the certificate's projected
+smoothability bridge.
+-/
+theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _
+        let dependencies :=
+          remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+            payload
+        letI : IsManifold ThreeManifoldModelWithCorners 1 M :=
+          smoothability_bridge_of_dependencies
+            (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies) M
+        exact
+          finite_extinction_of_equation_boundary_verification_payload
+            (equation_boundary_verification_payload_for_completion_certificate_with_equation_boundary_verification_payload
+              payload) M) := by
+  apply Subsingleton.elim
+
+/--
+The certificate finite-extinction projection can be routed through the
+projected strengthened dependency package.
+-/
+theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      finite_extinction_of_equation_boundary_remaining_dependency_package
+        (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The certificate finite-extinction projection can also be routed through the
+boundary certificate's projected strengthened dependency package.
+-/
+theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      finite_extinction_of_equation_boundary_remaining_dependency_package
+        (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The certificate finite-extinction projection is the finite-extinction
+projection of the certificate scalar-pointwise surgery payload.
+-/
+theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_pointwise_equation_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _
+        let dependencies :=
+          remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+            payload
+        letI : IsManifold ThreeManifoldModelWithCorners 1 M :=
+          smoothability_bridge_of_dependencies
+            (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies) M
+        rcases
+            surgery_package_with_equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload
+              payload M with
+          ⟨_n, _package, pointwisePayload⟩
+        exact finite_extinction_of_pointwise_equation_payload
+          pointwisePayload) := by
+  apply Subsingleton.elim
+
+/--
+The certificate finite-extinction projection is reconstructed from the
+certificate direct stored-verification scalar equation payload.
+-/
+theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_pointwise_equation_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _
+        let dependencies :=
+          remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+            payload
+        letI : IsManifold ThreeManifoldModelWithCorners 1 M :=
+          smoothability_bridge_of_dependencies
+            (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies) M
+        rcases
+            equation_boundary_direct_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload
+              payload M with
+          ⟨_n, _package, directPayload⟩
+        exact finite_extinction_of_direct_pointwise_equation_payload
+          directPayload) := by
+  apply Subsingleton.elim
+
+/--
+The certificate finite-extinction projection is the finite-extinction field of
+the certificate full surgery-derivative payload.
+-/
+theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_surgery_derivative_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _
+        let dependencies :=
+          remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+            payload
+        letI : IsManifold ThreeManifoldModelWithCorners 1 M :=
+          smoothability_bridge_of_dependencies
+            (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies) M
+        rcases
+            surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload
+              payload M with
+          ⟨_n, _package, _basePackage, _basePackage_eq,
+            _equationBoundary, _verification, _verification_eq,
+            _metricDerivative, _metricDerivative_eq, _derivativeId,
+            _equationAtTime, _analyticBoundary, finiteExtinction⟩
+        exact finiteExtinction) := by
+  apply Subsingleton.elim
+
+/--
+The certificate finite-extinction projection is the finite-extinction field of
+the certificate boundary surgery-package payload.
+-/
+theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _
+        let dependencies :=
+          remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+            payload
+        letI : IsManifold ThreeManifoldModelWithCorners 1 M :=
+          smoothability_bridge_of_dependencies
+            (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies) M
+        rcases
+            surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload
+              payload M with
+          ⟨_n, _package, _basePackage, _equationBoundary,
+            _analyticBoundary, finiteExtinction⟩
+        exact finiteExtinction) := by
+  apply Subsingleton.elim
+
+/--
 The existential verification-payload projection is the pair of the direct
 strengthened dependency projection and the dependent verification projection.
 -/

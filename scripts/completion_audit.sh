@@ -7605,6 +7605,24 @@ check_decl "boundary-aware verification certificate analytic equation-boundary p
   '^theorem analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_pointwise_equation_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate analytic equation-boundary direct pointwise route is declared" \
   '^theorem analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_pointwise_equation_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "boundary-aware verification certificate finite-extinction projection is declared" \
+  '^theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload\b' Poincare/CompletionTarget.lean
+check_decl "boundary-aware verification certificate finite-extinction equality contract is declared" \
+  '^theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "boundary-aware verification certificate finite-extinction direct verification route is declared" \
+  '^theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "boundary-aware verification certificate finite-extinction projected dependency route is declared" \
+  '^theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "boundary-aware verification certificate finite-extinction boundary-certificate route is declared" \
+  '^theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq\b' Poincare/CompletionTarget.lean
+check_decl "boundary-aware verification certificate finite-extinction pointwise route is declared" \
+  '^theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_pointwise_equation_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "boundary-aware verification certificate finite-extinction direct pointwise route is declared" \
+  '^theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_pointwise_equation_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "boundary-aware verification certificate finite-extinction surgery-derivative route is declared" \
+  '^theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_surgery_derivative_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "boundary-aware verification certificate finite-extinction boundary payload route is declared" \
+  '^theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate dependent verification projection pair contract is declared" \
   '^theorem equation_boundary_verification_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate projected dependency constructor roundtrip is declared" \
