@@ -1347,6 +1347,8 @@ The current artifact is intentionally conservative:
   `canonical_completion_target_of_surgery_and_topology_package_extraction_derivation`,
   and
   `canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation`,
+  with direct equality contracts pinning those canonical routes to the
+  extractor/derivation routes selected from the topology package,
   the
   component-slot requirement route exposes
   `poincare_completion_payload_of_component_requirements`,
