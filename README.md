@@ -1323,6 +1323,9 @@ The current artifact is intentionally conservative:
   canonical-statement payloads for those boundary-aware and checked
   certificate routes are also pinned to that finite-extinction/topology
   endpoint, including the corresponding payload-constructor round trips.
+  The reserved theorem-name and literal payload routes for both the
+  boundary-aware certificate and its checked-certificate projection now point
+  at the same finite-extinction/topology endpoint.
   The
   theorem
   `canonical_completion_payload_of_remaining_dependency_component_requirements`

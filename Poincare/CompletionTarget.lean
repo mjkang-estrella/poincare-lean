@@ -25129,6 +25129,18 @@ theorem poincareCompletionCertificate_theoremName_payload_of_completion_certific
   apply Subsingleton.elim
 
 /--
+The boundary-aware theorem-name payload exposes the reserved name at the same
+certificate-level finite-extinction endpoint used for the target route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincareCompletionCertificate_theoremName_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+/--
 The boundary-aware literal payload can be routed through the projected
 strengthened dependency package.
 -/
@@ -25167,6 +25179,35 @@ theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_
         (completion_certificate_of_remaining_dependency_package
           (remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
             payload)) := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware literal payload can be rebuilt from the certificate-level
+finite-extinction projection and the projected theorem-shaped topology
+statement.
+-/
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincareCompletionCertificate_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      (by
+        let dependencies :=
+          remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
+            payload
+        let finiteExtinction :=
+          finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+            payload
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement
+        exact
+          ⟨"poincare_conjecture", rfl, dependencies, target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+                witness finiteExtinction topologyStatement⟩) := by
   apply Subsingleton.elim
 
 /--
@@ -25329,6 +25370,20 @@ theorem poincareCompletionCertificate_theoremName_payload_of_completion_certific
   apply Subsingleton.elim
 
 /--
+The checked certificate projected from a boundary-aware payload exposes the
+reserved theorem-name payload at the same certificate-level finite-extinction
+endpoint used for its target route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_finite_extinction_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_equation_boundary_verification_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+/--
 The checked certificate projected from a boundary-aware payload exposes its
 literal payload through the projected strengthened dependency package.
 -/
@@ -25370,6 +25425,36 @@ theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_
         (completion_certificate_of_remaining_dependency_package
           (remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
             payload)) := by
+  apply Subsingleton.elim
+
+/--
+The checked certificate projected from a boundary-aware payload exposes its
+literal payload through the certificate-level finite-extinction projection and
+the projected theorem-shaped topology statement.
+-/
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_finite_extinction_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_equation_boundary_verification_payload
+        payload) =
+      (by
+        let dependencies :=
+          remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
+            payload
+        let finiteExtinction :=
+          finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+            payload
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement
+        exact
+          ⟨"poincare_conjecture", rfl, dependencies, target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+                witness finiteExtinction topologyStatement⟩) := by
   apply Subsingleton.elim
 
 /--
