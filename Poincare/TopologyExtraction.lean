@@ -834,6 +834,39 @@ theorem onePoint_threeSpace_homotopy_manifold_prerequisites_eq
   apply Subsingleton.elim
 
 /--
+The concrete loop-nullhomotopy obligation for `ThreeSphere` supplies the full
+compactification homotopy/manifold prerequisite payload.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
+    (h : ThreeSphereLoopNullhomotopyStatement) :
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement h
+  exact onePoint_threeSpace_homotopy_manifold_prerequisites
+
+/--
+The loop-nullhomotopy compactification prerequisite route is the full payload
+after converting loop-nullhomotopy to standard-sphere simple-connectedness.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement =
+      (fun h : ThreeSphereLoopNullhomotopyStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement h
+        onePoint_threeSpace_homotopy_manifold_prerequisites) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 Any space recognized as the one-point compactification model inherits the same
 basic `C^0` 3-manifold prerequisite payload.
 -/
@@ -971,6 +1004,44 @@ theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq
         exact ⟨t2, charted,
           simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace h,
           compact, topological, path, locPath, connected, nonempty⟩) := by
+  apply Subsingleton.elim
+
+/--
+The concrete loop-nullhomotopy obligation for `ThreeSphere` supplies the full
+source homotopy/manifold prerequisite payload for any source recognized as the
+one-point compactification model.
+-/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+    {M : Type u} [TopologicalSpace M]
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+  exact homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h
+
+/--
+The loop-nullhomotopy source prerequisite route is the full source payload after
+converting loop-nullhomotopy to standard-sphere simple-connectedness.
+-/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+      hLoop h =
+      (by
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+        exact homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h) := by
   apply Subsingleton.elim
 
 /--

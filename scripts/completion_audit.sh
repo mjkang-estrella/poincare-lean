@@ -4197,6 +4197,10 @@ check_decl "one-point compactification homotopy manifold prerequisite payload is
   '^theorem onePoint_threeSpace_homotopy_manifold_prerequisites\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification homotopy manifold prerequisite payload equality contract is declared" \
   '^theorem onePoint_threeSpace_homotopy_manifold_prerequisites_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification loop-nullhomotopy homotopy manifold prerequisite route is declared" \
+  '^theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification loop-nullhomotopy homotopy manifold prerequisite route equality contract is declared" \
+  '^theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification recognition prerequisite transport is declared" \
   '^theorem topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification recognition prerequisite transport equality contract is declared" \
@@ -4209,6 +4213,10 @@ check_decl "source homotopy manifold compactification prerequisite transport is 
   '^theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace\b' Poincare/TopologyExtraction.lean
 check_decl "source homotopy manifold compactification prerequisite transport equality contract is declared" \
   '^theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq\b' Poincare/TopologyExtraction.lean
+check_decl "source loop-nullhomotopy homotopy manifold compactification prerequisite transport is declared" \
+  '^theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "source loop-nullhomotopy homotopy manifold compactification prerequisite transport equality contract is declared" \
+  '^theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification Poincare candidate prerequisite transport is declared" \
   '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification Poincare candidate prerequisite equality contract is declared" \
@@ -12928,12 +12936,16 @@ open scoped Manifold ContDiff
 #check Poincare.onePoint_threeSpace_topological_manifold_prerequisites_eq
 #check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites
 #check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_eq
+#check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
+#check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement_eq
 #check Poincare.topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace
 #check Poincare.topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq
 #check Poincare.simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace
 #check Poincare.simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_eq
 #check Poincare.homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace
 #check Poincare.homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq
+#check Poincare.homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+#check Poincare.homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement_eq
 #check Poincare.poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace
 #check Poincare.poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq
 #check Poincare.threeSphere_self_homeomorph
