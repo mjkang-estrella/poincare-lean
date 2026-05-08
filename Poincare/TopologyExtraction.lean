@@ -1242,6 +1242,111 @@ theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathHomotopyState
   apply Subsingleton.elim
 
 /--
+The compactification model's own loop-nullhomotopy obligation directly supplies
+the full compactification homotopy/manifold prerequisite payload.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointLoopNullhomotopyStatement
+    (h : OnePointThreeSpaceLoopNullhomotopyStatement) :
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  exact ⟨onePoint_threeSpace_t2Space, onePoint_threeSpace_chartedSpace,
+    onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement h,
+    onePoint_threeSpace_compactSpace, onePoint_threeSpace_topologicalManifold,
+    onePoint_threeSpace_pathConnectedSpace, onePoint_threeSpace_locPathConnectedSpace,
+    onePoint_threeSpace_connectedSpace, onePoint_threeSpace_nonempty⟩
+
+/-- The compactification loop payload route uses the local loop-to-simple-connectedness proof. -/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointLoopNullhomotopyStatement_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointLoopNullhomotopyStatement =
+      (fun h : OnePointThreeSpaceLoopNullhomotopyStatement =>
+        ⟨onePoint_threeSpace_t2Space, onePoint_threeSpace_chartedSpace,
+          onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement h,
+          onePoint_threeSpace_compactSpace, onePoint_threeSpace_topologicalManifold,
+          onePoint_threeSpace_pathConnectedSpace, onePoint_threeSpace_locPathConnectedSpace,
+          onePoint_threeSpace_connectedSpace, onePoint_threeSpace_nonempty⟩) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The standard-sphere loop route to compactification prerequisites agrees with
+the direct compactification-loop route after transporting the loop obligation.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement_onePoint_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement =
+      (fun h : ThreeSphereLoopNullhomotopyStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointLoopNullhomotopyStatement
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+            h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The compactification model's own path-homotopy obligation directly supplies
+the full compactification homotopy/manifold prerequisite payload.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathHomotopyStatement
+    (h : OnePointThreeSpacePathHomotopyStatement) :
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  exact ⟨onePoint_threeSpace_t2Space, onePoint_threeSpace_chartedSpace,
+    onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement h,
+    onePoint_threeSpace_compactSpace, onePoint_threeSpace_topologicalManifold,
+    onePoint_threeSpace_pathConnectedSpace, onePoint_threeSpace_locPathConnectedSpace,
+    onePoint_threeSpace_connectedSpace, onePoint_threeSpace_nonempty⟩
+
+/-- The compactification path payload route uses the local path-to-simple-connectedness proof. -/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathHomotopyStatement_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathHomotopyStatement =
+      (fun h : OnePointThreeSpacePathHomotopyStatement =>
+        ⟨onePoint_threeSpace_t2Space, onePoint_threeSpace_chartedSpace,
+          onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement h,
+          onePoint_threeSpace_compactSpace, onePoint_threeSpace_topologicalManifold,
+          onePoint_threeSpace_pathConnectedSpace, onePoint_threeSpace_locPathConnectedSpace,
+          onePoint_threeSpace_connectedSpace, onePoint_threeSpace_nonempty⟩) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The compactification path route to prerequisites agrees with the direct
+compactification-loop route.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathHomotopyStatement_loop_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathHomotopyStatement =
+      (fun h : OnePointThreeSpacePathHomotopyStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointLoopNullhomotopyStatement
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The standard-sphere path route to compactification prerequisites agrees with
+the direct compactification-path route after transporting the path obligation.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathHomotopyStatement_onePoint_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathHomotopyStatement =
+      (fun h : ThreeSpherePathHomotopyStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathHomotopyStatement
+          (onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePathHomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 Any space recognized as the one-point compactification model inherits the same
 basic `C^0` 3-manifold prerequisite payload.
 -/

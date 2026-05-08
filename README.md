@@ -617,7 +617,12 @@ The current artifact is intentionally conservative:
   removing that raw input in favor of the concrete loop-nullhomotopy obligation.
   The parallel
   `onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathHomotopyStatement`
-  route is pinned to the loop route by a direct compatibility contract.
+  route is pinned to the loop route by a direct compatibility contract. It also
+  adds direct compactification-side payload routes
+  `onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointLoopNullhomotopyStatement`
+  and
+  `onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathHomotopyStatement`,
+  with compatibility contracts back to the standard-sphere loop/path routes.
   The same layer now
   transports the `C^0` prerequisite payload to any source space already
   recognized as homeomorphic to the compactification model, transports
