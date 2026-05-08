@@ -667,7 +667,9 @@ The current artifact is intentionally conservative:
   loop/path variants replace the raw compactification `SimplyConnectedSpace`
   input with `OnePointThreeSpaceLoopNullhomotopyStatement` and
   `OnePointThreeSpacePathHomotopyStatement`, with path routes pinned back to
-  the loop-mediated routes.
+  the loop-mediated routes, and the loop/path recognition payloads pair those
+  endpoints with the corresponding compactification-local homotopy/manifold
+  prerequisite packages.
   The same self-case now applies a supplied `PoincareConjectureStatement` to
   the compactification model through
   `onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement`, replaces
