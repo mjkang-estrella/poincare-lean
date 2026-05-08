@@ -8013,6 +8013,126 @@ theorem topology_derivation_statement_of_extinction_topology_extraction_statemen
   apply Subsingleton.elim
 
 /--
+The theorem-shaped topology extraction statement directly exposes the
+classification sub-obligation payload through its projected derivation
+statement.
+-/
+theorem topology_classification_subobligations_of_extraction_statement
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ExtinctionTopologyClassificationSubobligationsPayload M extinction := by
+  exact topology_classification_subobligations_of_derivation_statement
+    M extinction
+    (homeomorphism_of_topology_extraction_statement
+      topologyStatement M extinction)
+    (topology_derivation_statement_of_extraction_statement
+      topologyStatement M extinction)
+
+/--
+The classification payload projected from a theorem-shaped topology extraction
+statement is the classification bridge applied to its projected homeomorphism
+and derivation statement.
+-/
+theorem topology_classification_subobligations_of_extraction_statement_eq
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_classification_subobligations_of_extraction_statement
+      topologyStatement M extinction =
+      topology_classification_subobligations_of_derivation_statement
+        M extinction
+        (homeomorphism_of_topology_extraction_statement
+          topologyStatement M extinction)
+        (topology_derivation_statement_of_extraction_statement
+          topologyStatement M extinction) := by
+  apply Subsingleton.elim
+
+/--
+The theorem-shaped topology extraction statement directly exposes the
+homeomorphism assembly statement through its projected derivation statement.
+-/
+theorem topology_homeomorphism_assembly_statement_of_extraction_statement
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ExtinctionTopologyHomeomorphismAssemblyStatement M extinction
+      (homeomorphism_of_topology_extraction_statement
+        topologyStatement M extinction) := by
+  exact topology_homeomorphism_assembly_statement_of_derivation_statement
+    M extinction
+    (homeomorphism_of_topology_extraction_statement
+      topologyStatement M extinction)
+    (topology_derivation_statement_of_extraction_statement
+      topologyStatement M extinction)
+
+/--
+The homeomorphism assembly statement projected from a theorem-shaped topology
+extraction statement is the corresponding derivation-statement bridge.
+-/
+theorem topology_homeomorphism_assembly_statement_of_extraction_statement_eq
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_homeomorphism_assembly_statement_of_extraction_statement
+      topologyStatement M extinction =
+      topology_homeomorphism_assembly_statement_of_derivation_statement
+        M extinction
+        (homeomorphism_of_topology_extraction_statement
+          topologyStatement M extinction)
+        (topology_derivation_statement_of_extraction_statement
+          topologyStatement M extinction) := by
+  apply Subsingleton.elim
+
+/--
+The theorem-shaped topology extraction statement directly exposes the
+homeomorphism derivation statement through its projected derivation statement.
+-/
+theorem topology_homeomorphism_derivation_statement_of_extraction_statement
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ExtinctionTopologyHomeomorphismDerivationStatement M extinction
+      (homeomorphism_of_topology_extraction_statement
+        topologyStatement M extinction) := by
+  exact topology_homeomorphism_derivation_statement_of_derivation_statement
+    M extinction
+    (homeomorphism_of_topology_extraction_statement
+      topologyStatement M extinction)
+    (topology_derivation_statement_of_extraction_statement
+      topologyStatement M extinction)
+
+/--
+The homeomorphism derivation statement projected from a theorem-shaped topology
+extraction statement is the corresponding derivation-statement bridge.
+-/
+theorem topology_homeomorphism_derivation_statement_of_extraction_statement_eq
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_homeomorphism_derivation_statement_of_extraction_statement
+      topologyStatement M extinction =
+      topology_homeomorphism_derivation_statement_of_derivation_statement
+        M extinction
+        (homeomorphism_of_topology_extraction_statement
+          topologyStatement M extinction)
+        (topology_derivation_statement_of_extraction_statement
+          topologyStatement M extinction) := by
+  apply Subsingleton.elim
+
+/--
 The theorem-shaped topology extraction statement supplies the existing
 finite-extinction-to-sphere interface.
 -/
@@ -8494,6 +8614,131 @@ theorem topology_classification_subobligations_of_topology_package_eq
         (homeomorphism_of_topology_package package M extinction)
         (extinction_topology_derivation_statement_of_topology_package
           package M extinction) := by
+  apply Subsingleton.elim
+
+/--
+A completed topology package directly exposes the fixed-extinction
+homeomorphism assembly statement.
+-/
+theorem topology_homeomorphism_assembly_statement_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ExtinctionTopologyHomeomorphismAssemblyStatement M extinction
+      (homeomorphism_of_topology_package package M extinction) :=
+  topology_homeomorphism_assembly_statement_of_derivation_statement
+    M extinction
+    (homeomorphism_of_topology_package package M extinction)
+    (extinction_topology_derivation_statement_of_topology_package
+      package M extinction)
+
+/--
+The package-level topology homeomorphism assembly statement is the
+derivation-statement bridge applied to the package projections.
+-/
+theorem topology_homeomorphism_assembly_statement_of_topology_package_eq
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_homeomorphism_assembly_statement_of_topology_package
+        package M extinction =
+      topology_homeomorphism_assembly_statement_of_derivation_statement
+        M extinction
+        (homeomorphism_of_topology_package package M extinction)
+        (extinction_topology_derivation_statement_of_topology_package
+          package M extinction) := by
+  apply Subsingleton.elim
+
+/--
+A completed topology package directly exposes the fixed-extinction
+homeomorphism derivation statement.
+-/
+theorem topology_homeomorphism_derivation_statement_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ExtinctionTopologyHomeomorphismDerivationStatement M extinction
+      (homeomorphism_of_topology_package package M extinction) :=
+  topology_homeomorphism_derivation_statement_of_derivation_statement
+    M extinction
+    (homeomorphism_of_topology_package package M extinction)
+    (extinction_topology_derivation_statement_of_topology_package
+      package M extinction)
+
+/--
+The package-level topology homeomorphism derivation statement is the
+derivation-statement bridge applied to the package projections.
+-/
+theorem topology_homeomorphism_derivation_statement_of_topology_package_eq
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_homeomorphism_derivation_statement_of_topology_package
+        package M extinction =
+      topology_homeomorphism_derivation_statement_of_derivation_statement
+        M extinction
+        (homeomorphism_of_topology_package package M extinction)
+        (extinction_topology_derivation_statement_of_topology_package
+          package M extinction) := by
+  apply Subsingleton.elim
+
+/--
+Projecting classification sub-obligations from a package-built theorem-shaped
+topology statement agrees with the direct package-level classification route.
+-/
+theorem topology_classification_subobligations_of_extinction_topology_extraction_statement_of_topology_package_eq
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_classification_subobligations_of_extraction_statement
+      (extinction_topology_extraction_statement_of_topology_package package)
+      M extinction =
+      topology_classification_subobligations_of_topology_package
+        package M extinction := by
+  apply Subsingleton.elim
+
+/--
+Projecting the homeomorphism assembly statement from a package-built
+theorem-shaped topology statement agrees with the direct package-level route.
+-/
+theorem topology_homeomorphism_assembly_statement_of_extinction_topology_extraction_statement_of_topology_package_eq
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_homeomorphism_assembly_statement_of_extraction_statement
+      (extinction_topology_extraction_statement_of_topology_package package)
+      M extinction =
+      topology_homeomorphism_assembly_statement_of_topology_package
+        package M extinction := by
+  apply Subsingleton.elim
+
+/--
+Projecting the homeomorphism derivation statement from a package-built
+theorem-shaped topology statement agrees with the direct package-level route.
+-/
+theorem topology_homeomorphism_derivation_statement_of_extinction_topology_extraction_statement_of_topology_package_eq
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_homeomorphism_derivation_statement_of_extraction_statement
+      (extinction_topology_extraction_statement_of_topology_package package)
+      M extinction =
+      topology_homeomorphism_derivation_statement_of_topology_package
+        package M extinction := by
   apply Subsingleton.elim
 
 /--

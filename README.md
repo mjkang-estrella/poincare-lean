@@ -564,7 +564,9 @@ The current artifact is intentionally conservative:
   extracted through
   `topology_derivation_statement_payload_of_extraction_statement`,
   `homeomorphism_of_topology_extraction_statement`, and
-  `topology_derivation_statement_of_extraction_statement`. Package-level topology
+  `topology_derivation_statement_of_extraction_statement`, with direct
+  extraction-statement projections also exposing the classification payload and
+  homeomorphism assembly/derivation statements. Package-level topology
   payloads `topology_extraction_payload_of_topology_package` and
   `topology_extraction_statement_payload_of_topology_package` centralize the
   theorem-shaped extraction interface, fixed derivation statement,
