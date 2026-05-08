@@ -379,6 +379,19 @@ theorem threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatem
   apply Subsingleton.elim
 
 /--
+The direct path-homotopy target self route agrees with the route that first
+converts path-homotopy to loop-nullhomotopy.
+-/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatement_loop_route_eq :
+    threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h) := by
+  funext hPath h
+  apply Subsingleton.elim
+
+/--
 The concrete path-homotopy obligation is enough to apply the smooth target
 statement to the standard sphere itself.
 -/
@@ -401,6 +414,19 @@ theorem threeSphere_self_diffeomorph_of_smooth_statement_and_pathHomotopyStateme
           letI : SimplyConnectedSpace ThreeSphere :=
             threeSphere_simplyConnectedSpace_of_pathHomotopyStatement hPath
           threeSphere_self_diffeomorph_of_smooth_statement h) := by
+  funext hPath h
+  apply Subsingleton.elim
+
+/--
+The direct path-homotopy smooth self route agrees with the route that first
+converts path-homotopy to loop-nullhomotopy.
+-/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_pathHomotopyStatement_loop_route_eq :
+    threeSphere_self_diffeomorph_of_smooth_statement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_diffeomorph_of_smooth_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h) := by
   funext hPath h
   apply Subsingleton.elim
 
@@ -428,6 +454,19 @@ theorem threeSphere_self_homeomorph_of_smooth_statement_and_pathHomotopyStatemen
           letI : SimplyConnectedSpace ThreeSphere :=
             threeSphere_simplyConnectedSpace_of_pathHomotopyStatement hPath
           threeSphere_self_homeomorph_of_smooth_statement h) := by
+  funext hPath h
+  apply Subsingleton.elim
+
+/--
+The direct path-homotopy smooth-to-topological self route agrees with the route
+that first converts path-homotopy to loop-nullhomotopy.
+-/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_pathHomotopyStatement_loop_route_eq :
+    threeSphere_self_homeomorph_of_smooth_statement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h) := by
   funext hPath h
   apply Subsingleton.elim
 
@@ -577,6 +616,19 @@ theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathHomoto
   apply Subsingleton.elim
 
 /--
+The direct path-homotopy target self payload agrees with the loop-nullhomotopy
+payload route after converting path-homotopy to loop-nullhomotopy.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathHomotopyStatement_loop_route_eq :
+    threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_payload_of_poincare_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h) := by
+  funext hPath h
+  apply Subsingleton.elim
+
+/--
 The concrete path-homotopy obligation exposes the smooth self route as a
 payload carrying both the homotopy-oriented prerequisite bundle and the
 self-diffeomorphism endpoint.
@@ -613,6 +665,19 @@ theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_pathHomotop
   apply Subsingleton.elim
 
 /--
+The direct path-homotopy smooth self payload agrees with the loop-nullhomotopy
+payload route after converting path-homotopy to loop-nullhomotopy.
+-/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_pathHomotopyStatement_loop_route_eq :
+    threeSphere_self_diffeomorph_payload_of_smooth_statement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_diffeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h) := by
+  funext hPath h
+  apply Subsingleton.elim
+
+/--
 The concrete path-homotopy obligation exposes the smooth-to-topological self
 route as a payload carrying both the homotopy-oriented prerequisite bundle and
 the self-homeomorphism endpoint.
@@ -645,6 +710,20 @@ theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_pathHomotopy
           ⟨threeSphere_homotopy_prerequisites_of_pathHomotopyStatement hPath,
             threeSphere_self_homeomorph_of_smooth_statement_and_pathHomotopyStatement
               hPath h⟩) := by
+  funext hPath h
+  apply Subsingleton.elim
+
+/--
+The direct path-homotopy smooth-to-topological self payload agrees with the
+loop-nullhomotopy payload route after converting path-homotopy to
+loop-nullhomotopy.
+-/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_pathHomotopyStatement_loop_route_eq :
+    threeSphere_self_homeomorph_payload_of_smooth_statement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h) := by
   funext hPath h
   apply Subsingleton.elim
 

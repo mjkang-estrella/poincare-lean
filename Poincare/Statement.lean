@@ -575,6 +575,18 @@ theorem threeSphere_target_prerequisites_of_pathHomotopyStatement_eq :
   apply Subsingleton.elim
 
 /--
+The direct path-homotopy target-prerequisite route agrees with the route that
+first converts path-homotopy to loop-nullhomotopy.
+-/
+theorem threeSphere_target_prerequisites_of_pathHomotopyStatement_loop_route_eq :
+    threeSphere_target_prerequisites_of_pathHomotopyStatement =
+      (fun h : ThreeSpherePathHomotopyStatement =>
+        threeSphere_target_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The concrete path-homotopy obligation supplies the full homotopy-oriented
 prerequisite payload by converting path-homotopy directly to
 simple-connectedness.
@@ -604,6 +616,18 @@ theorem threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_eq :
         letI : SimplyConnectedSpace ThreeSphere :=
           threeSphere_simplyConnectedSpace_of_pathHomotopyStatement h
         threeSphere_homotopy_prerequisites) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The direct path-homotopy homotopy-prerequisite route agrees with the route that
+first converts path-homotopy to loop-nullhomotopy.
+-/
+theorem threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_loop_route_eq :
+    threeSphere_homotopy_prerequisites_of_pathHomotopyStatement =
+      (fun h : ThreeSpherePathHomotopyStatement =>
+        threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement h)) := by
   funext h
   apply Subsingleton.elim
 

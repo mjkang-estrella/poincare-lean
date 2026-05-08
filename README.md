@@ -40,7 +40,8 @@ The current artifact is intentionally conservative:
   obligation that any two parallel paths in `S^3` are homotopic, with named
   routes to and from simple-connectedness, conversions to and from the
   loop-nullhomotopy obligation, and direct feeds into those standard-sphere
-  prerequisite payloads.
+  prerequisite payloads; compatibility contracts pin those direct feeds to the
+  corresponding loop-nullhomotopy-mediated routes.
 - `Poincare/Milestones.lean` and `DEPENDENCY_LEDGER.md` name the missing
   Ricci-flow and topology proof obligations as data, not as proved
   propositions.
@@ -60,6 +61,8 @@ The current artifact is intentionally conservative:
   packaging those self-case endpoints with the full homotopy-oriented
   standard-sphere prerequisites, and exposing the same self-case routes and
   payloads from the concrete loop-nullhomotopy and path-homotopy obligations,
+  with compatibility contracts between the direct path routes and the
+  loop-nullhomotopy-mediated routes,
   and reducing the topological target to the smooth Poincare statement plus a
   smoothability hypothesis. It also bridges both the
   canonical topological and smooth mathlib-shaped 3-sphere statements into the

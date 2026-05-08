@@ -657,6 +657,7 @@ set_option linter.unusedVariables false
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_target_prerequisites_of_pathHomotopyStatement_eq
+#check Poincare.threeSphere_target_prerequisites_of_pathHomotopyStatement_loop_route_eq
 
 #check (Poincare.threeSphere_homotopy_prerequisites_of_pathHomotopyStatement :
   Poincare.ThreeSpherePathHomotopyStatement →
@@ -670,6 +671,7 @@ set_option linter.unusedVariables false
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_loop_route_eq
 
 #check (Poincare.poincareConjectureStatement_eq :
   Poincare.PoincareConjectureStatement =
@@ -812,18 +814,21 @@ set_option linter.unusedVariables false
     Poincare.PoincareConjectureStatement.{0} →
       Nonempty (Poincare.ThreeSphere ≃ₜ Poincare.ThreeSphere))
 #check Poincare.threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatement_eq
+#check Poincare.threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatement_loop_route_eq
 
 #check (Poincare.threeSphere_self_diffeomorph_of_smooth_statement_and_pathHomotopyStatement :
   Poincare.ThreeSpherePathHomotopyStatement →
     Poincare.SmoothPoincareConjectureStatement.{0} →
       Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere))
 #check Poincare.threeSphere_self_diffeomorph_of_smooth_statement_and_pathHomotopyStatement_eq
+#check Poincare.threeSphere_self_diffeomorph_of_smooth_statement_and_pathHomotopyStatement_loop_route_eq
 
 #check (Poincare.threeSphere_self_homeomorph_of_smooth_statement_and_pathHomotopyStatement :
   Poincare.ThreeSpherePathHomotopyStatement →
     Poincare.SmoothPoincareConjectureStatement.{0} →
       Nonempty (Poincare.ThreeSphere ≃ₜ Poincare.ThreeSphere))
 #check Poincare.threeSphere_self_homeomorph_of_smooth_statement_and_pathHomotopyStatement_eq
+#check Poincare.threeSphere_self_homeomorph_of_smooth_statement_and_pathHomotopyStatement_loop_route_eq
 
 #check (Poincare.threeSphere_self_homeomorph_payload_of_poincare_statement_and_loopNullhomotopyStatement :
   Poincare.ThreeSphereLoopNullhomotopyStatement →
@@ -888,6 +893,7 @@ set_option linter.unusedVariables false
           Nonempty Poincare.ThreeSphere),
           Nonempty (Poincare.ThreeSphere ≃ₜ Poincare.ThreeSphere))
 #check Poincare.threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathHomotopyStatement_eq
+#check Poincare.threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathHomotopyStatement_loop_route_eq
 
 #check (Poincare.threeSphere_self_diffeomorph_payload_of_smooth_statement_and_pathHomotopyStatement :
   Poincare.ThreeSpherePathHomotopyStatement →
@@ -904,6 +910,7 @@ set_option linter.unusedVariables false
           Nonempty Poincare.ThreeSphere),
           Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere))
 #check Poincare.threeSphere_self_diffeomorph_payload_of_smooth_statement_and_pathHomotopyStatement_eq
+#check Poincare.threeSphere_self_diffeomorph_payload_of_smooth_statement_and_pathHomotopyStatement_loop_route_eq
 
 #check (Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement_and_pathHomotopyStatement :
   Poincare.ThreeSpherePathHomotopyStatement →
@@ -920,6 +927,7 @@ set_option linter.unusedVariables false
           Nonempty Poincare.ThreeSphere),
           Nonempty (Poincare.ThreeSphere ≃ₜ Poincare.ThreeSphere))
 #check Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement_and_pathHomotopyStatement_eq
+#check Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement_and_pathHomotopyStatement_loop_route_eq
 
 #check (Poincare.homeomorph_of_threeSphere_diffeomorph :
   ∀ {M : Type} [TopologicalSpace M]
