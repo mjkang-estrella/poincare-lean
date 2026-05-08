@@ -867,6 +867,51 @@ theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyS
   apply Subsingleton.elim
 
 /--
+The concrete path-homotopy obligation for `ThreeSphere` supplies the full
+compactification homotopy/manifold prerequisite payload.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathHomotopyStatement
+    (h : ThreeSpherePathHomotopyStatement) :
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_pathHomotopyStatement h
+  exact onePoint_threeSpace_homotopy_manifold_prerequisites
+
+/--
+The path-homotopy compactification prerequisite route is the full payload after
+converting path-homotopy to standard-sphere simple-connectedness.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathHomotopyStatement_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathHomotopyStatement =
+      (fun h : ThreeSpherePathHomotopyStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_pathHomotopyStatement h
+        onePoint_threeSpace_homotopy_manifold_prerequisites) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The direct path-homotopy compactification prerequisite route agrees with the
+loop-nullhomotopy-mediated route.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathHomotopyStatement_loop_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathHomotopyStatement =
+      (fun h : ThreeSpherePathHomotopyStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 Any space recognized as the one-point compactification model inherits the same
 basic `C^0` 3-manifold prerequisite payload.
 -/
@@ -1042,6 +1087,58 @@ theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_
         letI : SimplyConnectedSpace ThreeSphere :=
           threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
         exact homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h) := by
+  apply Subsingleton.elim
+
+/--
+The concrete path-homotopy obligation for `ThreeSphere` supplies the full source
+homotopy/manifold prerequisite payload for any source recognized as the one-point
+compactification model.
+-/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_pathHomotopyStatement hPath
+  exact homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h
+
+/--
+The path-homotopy source prerequisite route is the full source payload after
+converting path-homotopy to standard-sphere simple-connectedness.
+-/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement
+      hPath h =
+      (by
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_pathHomotopyStatement hPath
+        exact homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h) := by
+  apply Subsingleton.elim
+
+/--
+The direct path-homotopy source prerequisite route agrees with the
+loop-nullhomotopy-mediated route.
+-/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement
+      hPath h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h := by
   apply Subsingleton.elim
 
 /--
