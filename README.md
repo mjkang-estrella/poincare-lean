@@ -374,7 +374,10 @@ The current artifact is intentionally conservative:
   reconstruction routes. The same three certificate families now also
   reconstruct ordinary remaining-package and aggregate certificates directly
   from their projected canonical-statement and aggregate canonical-statement
-  payloads. Their noncanonical theorem-name and literal payload projections,
+  payloads. The base strengthened remaining-package full-assembly payload and
+  certified full-assembly payload now also have ordinary aggregate endpoints,
+  and the matching certificate projections recover those endpoints directly.
+  Their noncanonical theorem-name and literal payload projections,
   plus literal-payload reconstructions, now also expose the ordinary aggregate
   endpoints for the strengthened remaining-package routes. The completion-target
   canonical payload, project payload, target, canonical-target, and
@@ -1551,7 +1554,9 @@ The current artifact is intentionally conservative:
   and certified extraction-derivation theorem-name, literal,
   aggregate-dependency, project-statement, canonical/project payload, target,
   canonical-target, and completion-criterion projections now name the same
-  ordinary forgetful endpoints. The remaining-package theorem-name and literal
+  ordinary forgetful endpoints. The base remaining-package full-assembly and
+  certified full-assembly certificate projections now also name the ordinary
+  aggregate endpoints directly. The remaining-package theorem-name and literal
   payload projections, together with the matching literal-payload
   reconstructions, now also name the ordinary aggregate endpoints directly.
   The remaining-package raw and certified requirement-payload constructors now

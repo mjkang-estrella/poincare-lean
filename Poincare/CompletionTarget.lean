@@ -4063,6 +4063,43 @@ theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationB
 The strengthened remaining-package full-assembly route projects to the
 ordinary full-assembly payload after forgetting equation-boundary data.
 -/
+theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_to_forgetful_dependencies
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ∃ _smoothabilityPackage : SmoothabilityPackage.{u},
+    ∃ _surgeryPackages :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+    ∃ _topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ _extractSphere : ExtinctionImpliesSphereStatement.{u},
+      PoincareConjectureStatement.{u} :=
+  poincare_full_assembly_payload_of_equation_boundary_dependencies_to_forgetful_dependencies
+    dependencies
+
+/--
+The strengthened remaining-package forgetful full-assembly route is the
+ordinary full-assembly payload of the forgetful aggregate package.
+-/
+theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_to_forgetful_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_to_forgetful_dependencies
+        dependencies =
+      poincare_full_assembly_payload_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package full-assembly route projects to the
+ordinary remaining-package full-assembly payload after forgetting
+equation-boundary data.
+-/
 theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_to_remaining_dependency
     (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
     ∃ _smoothabilityPackage : SmoothabilityPackage.{u},
@@ -4100,6 +4137,47 @@ theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency
 The strengthened remaining-package certified full-assembly route projects to
 the ordinary certified full-assembly payload after forgetting equation-boundary
 data.
+-/
+theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation_to_forgetful_dependencies
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ∃ _smoothabilityPackage : SmoothabilityPackage.{u},
+    ∃ _surgeryPackages :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+    ∃ _topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+    ∃ _derivation :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere,
+      PoincareConjectureStatement.{u} :=
+  poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies
+    dependencies
+
+/--
+The strengthened remaining-package certified forgetful full-assembly route is
+the ordinary certified full-assembly payload of the forgetful aggregate
+package.
+-/
+theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation_to_forgetful_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation_to_forgetful_dependencies
+        dependencies =
+      poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package certified full-assembly route projects to
+the ordinary certified remaining-package full-assembly payload after forgetting
+equation-boundary data.
 -/
 theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation_to_remaining_dependency
     (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
@@ -17522,7 +17600,21 @@ theorem poincare_full_assembly_payload_of_completion_certificate_extraction_deri
 
 /--
 Projecting the full-assembly payload from a strengthened remaining-package
-certificate recovers the ordinary forgetful full-assembly payload.
+certificate recovers the ordinary aggregate full-assembly payload after
+forgetting equation-boundary data.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_forgetful_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies) =
+      poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_to_forgetful_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the full-assembly payload from a strengthened remaining-package
+certificate recovers the ordinary remaining-package full-assembly payload.
 -/
 theorem poincare_full_assembly_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq
     (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
@@ -17535,7 +17627,21 @@ theorem poincare_full_assembly_payload_of_completion_certificate_of_equation_bou
 
 /--
 Projecting the certified full-assembly payload from a strengthened
-remaining-package certificate recovers the ordinary forgetful certified
+remaining-package certificate recovers the ordinary aggregate certified
+full-assembly payload after forgetting equation-boundary data.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_equation_boundary_remaining_dependency_package_to_forgetful_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies) =
+      poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation_to_forgetful_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the certified full-assembly payload from a strengthened
+remaining-package certificate recovers the ordinary remaining-package certified
 full-assembly payload.
 -/
 theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq
