@@ -2220,6 +2220,39 @@ set_option linter.unusedVariables false
       Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
 #check Poincare.homeomorph_to_threeSphere_iff_homeomorph_to_onePoint_threeSpace_eq
 
+#check (Poincare.onePoint_threeSpace_t2Space :
+  T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))))
+#check Poincare.onePoint_threeSpace_t2Space_eq
+
+#check (Poincare.onePoint_threeSpace_compactSpace :
+  CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))))
+#check Poincare.onePoint_threeSpace_compactSpace_eq
+
+#check (Poincare.onePoint_threeSpace_pathConnectedSpace :
+  PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))))
+#check Poincare.onePoint_threeSpace_pathConnectedSpace_eq
+
+#check (Poincare.onePoint_threeSpace_locPathConnectedSpace :
+  LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))))
+#check Poincare.onePoint_threeSpace_locPathConnectedSpace_eq
+
+#check (Poincare.onePoint_threeSpace_connectedSpace :
+  ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))))
+#check Poincare.onePoint_threeSpace_connectedSpace_eq
+
+#check (Poincare.onePoint_threeSpace_nonempty :
+  Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))))
+#check Poincare.onePoint_threeSpace_nonempty_eq
+
+#check (Poincare.onePoint_threeSpace_topological_prerequisites :
+  ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+  ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+  ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+  ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+  ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))))
+#check Poincare.onePoint_threeSpace_topological_prerequisites_eq
+
 #check (Poincare.threeSphere_self_homeomorph :
   Nonempty (Poincare.ThreeSphere ≃ₜ Poincare.ThreeSphere))
 

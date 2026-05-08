@@ -132,6 +132,121 @@ theorem homeomorph_to_threeSphere_iff_homeomorph_to_onePoint_threeSpace_eq
         · exact homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace) := by
   apply Subsingleton.elim
 
+/-- The one-point compactification model is Hausdorff. -/
+theorem onePoint_threeSpace_t2Space :
+    T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  rcases threeSphere_homeomorph_onePoint_threeSpace with ⟨e⟩
+  exact e.t2Space
+
+/-- The compactification Hausdorff witness is transported from `ThreeSphere`. -/
+theorem onePoint_threeSpace_t2Space_eq :
+    onePoint_threeSpace_t2Space =
+      (by
+        rcases threeSphere_homeomorph_onePoint_threeSpace with ⟨e⟩
+        exact e.t2Space) := by
+  apply Subsingleton.elim
+
+/-- The one-point compactification model is compact. -/
+theorem onePoint_threeSpace_compactSpace :
+    CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  rcases threeSphere_homeomorph_onePoint_threeSpace with ⟨e⟩
+  exact e.compactSpace
+
+/-- The compactification compactness witness is transported from `ThreeSphere`. -/
+theorem onePoint_threeSpace_compactSpace_eq :
+    onePoint_threeSpace_compactSpace =
+      (by
+        rcases threeSphere_homeomorph_onePoint_threeSpace with ⟨e⟩
+        exact e.compactSpace) := by
+  apply Subsingleton.elim
+
+/-- The one-point compactification model is path-connected. -/
+theorem onePoint_threeSpace_pathConnectedSpace :
+    PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  letI : PathConnectedSpace ThreeSphere := threeSphere_pathConnectedSpace
+  rcases threeSphere_homeomorph_onePoint_threeSpace with ⟨e⟩
+  exact e.surjective.pathConnectedSpace e.continuous
+
+/-- Path-connectedness of the compactification model is transported from `ThreeSphere`. -/
+theorem onePoint_threeSpace_pathConnectedSpace_eq :
+    onePoint_threeSpace_pathConnectedSpace =
+      (by
+        letI : PathConnectedSpace ThreeSphere := threeSphere_pathConnectedSpace
+        rcases threeSphere_homeomorph_onePoint_threeSpace with ⟨e⟩
+        exact e.surjective.pathConnectedSpace e.continuous) := by
+  apply Subsingleton.elim
+
+/-- The one-point compactification model is locally path-connected. -/
+theorem onePoint_threeSpace_locPathConnectedSpace :
+    LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  letI : LocPathConnectedSpace ThreeSphere := threeSphere_locPathConnectedSpace
+  rcases threeSphere_homeomorph_onePoint_threeSpace with ⟨e⟩
+  exact e.symm.isOpenEmbedding.locPathConnectedSpace
+
+/-- Local path-connectedness is transported along the compactification homeomorphism. -/
+theorem onePoint_threeSpace_locPathConnectedSpace_eq :
+    onePoint_threeSpace_locPathConnectedSpace =
+      (by
+        letI : LocPathConnectedSpace ThreeSphere := threeSphere_locPathConnectedSpace
+        rcases threeSphere_homeomorph_onePoint_threeSpace with ⟨e⟩
+        exact e.symm.isOpenEmbedding.locPathConnectedSpace) := by
+  apply Subsingleton.elim
+
+/-- The one-point compactification model is connected. -/
+theorem onePoint_threeSpace_connectedSpace :
+    ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  letI : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_pathConnectedSpace
+  infer_instance
+
+/-- Connectedness follows from the named compactification path-connectedness proof. -/
+theorem onePoint_threeSpace_connectedSpace_eq :
+    onePoint_threeSpace_connectedSpace =
+      (by
+        letI : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_pathConnectedSpace
+        infer_instance) := by
+  apply Subsingleton.elim
+
+/-- The one-point compactification model is nonempty. -/
+theorem onePoint_threeSpace_nonempty :
+    Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  letI : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_pathConnectedSpace
+  infer_instance
+
+/-- Nonemptiness follows from the named compactification path-connectedness proof. -/
+theorem onePoint_threeSpace_nonempty_eq :
+    onePoint_threeSpace_nonempty =
+      (by
+        letI : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_pathConnectedSpace
+        infer_instance) := by
+  apply Subsingleton.elim
+
+/--
+The compactification model has the basic topological prerequisites supplied by
+its homeomorphism with `ThreeSphere`.
+-/
+theorem onePoint_threeSpace_topological_prerequisites :
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  exact ⟨onePoint_threeSpace_t2Space, onePoint_threeSpace_compactSpace,
+    onePoint_threeSpace_pathConnectedSpace, onePoint_threeSpace_locPathConnectedSpace,
+    onePoint_threeSpace_connectedSpace, onePoint_threeSpace_nonempty⟩
+
+/-- The compactification prerequisite payload is the tuple of named local witnesses. -/
+theorem onePoint_threeSpace_topological_prerequisites_eq :
+    onePoint_threeSpace_topological_prerequisites =
+      ⟨onePoint_threeSpace_t2Space, onePoint_threeSpace_compactSpace,
+        onePoint_threeSpace_pathConnectedSpace, onePoint_threeSpace_locPathConnectedSpace,
+        onePoint_threeSpace_connectedSpace, onePoint_threeSpace_nonempty⟩ := by
+  apply Subsingleton.elim
+
 /-- The standard target sphere is homeomorphic to itself. -/
 theorem threeSphere_self_homeomorph :
     Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=

@@ -592,8 +592,11 @@ The current artifact is intentionally conservative:
   `EuclideanSpace ℝ (Fin 3)`, a homeomorphism
   `OnePoint (EuclideanSpace ℝ (Fin 3)) ≃ₜ ThreeSphere`, its reverse route, and
   both directions of the recognition equivalence between the compactification
-  model and the project target sphere, with equality contracts and audit
-  coverage for those routes. The
+  model and the project target sphere. It also transports Hausdorff, compact,
+  path-connected, locally path-connected, connected, and nonempty prerequisites
+  to the compactification model through that homeomorphism and bundles them as
+  `onePoint_threeSpace_topological_prerequisites`, with equality contracts and
+  audit coverage for those routes. The
   concrete homeomorphism glue for the standard sphere's self-homeomorphism,
   intermediate-space composition, opposite-direction source transport, and both
   inverse-direction recognition maps now also has direct equality contracts.
