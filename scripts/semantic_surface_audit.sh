@@ -564,6 +564,27 @@ set_option linter.unusedVariables false
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_homotopy_prerequisites_eq
 
+#check (Poincare.ThreeSphereLoopNullhomotopyStatement : Prop)
+#check (Poincare.threeSphereLoopNullhomotopyStatement_eq :
+  Poincare.ThreeSphereLoopNullhomotopyStatement =
+    (∀ (x : Poincare.ThreeSphere) (γ : Path x x),
+      Path.Homotopic γ (Path.refl x)))
+
+#check (Poincare.threeSphere_simplyConnectedSpace_iff_loopNullhomotopyStatement :
+  SimplyConnectedSpace Poincare.ThreeSphere ↔
+    Poincare.ThreeSphereLoopNullhomotopyStatement)
+#check Poincare.threeSphere_simplyConnectedSpace_iff_loopNullhomotopyStatement_eq
+
+#check (Poincare.threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement :
+  Poincare.ThreeSphereLoopNullhomotopyStatement →
+    SimplyConnectedSpace Poincare.ThreeSphere)
+#check Poincare.threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement_eq
+
+#check (Poincare.threeSphere_loopNullhomotopyStatement_of_simplyConnectedSpace :
+  [SimplyConnectedSpace Poincare.ThreeSphere] →
+    Poincare.ThreeSphereLoopNullhomotopyStatement)
+#check Poincare.threeSphere_loopNullhomotopyStatement_of_simplyConnectedSpace_eq
+
 #check (Poincare.poincareConjectureStatement_eq :
   Poincare.PoincareConjectureStatement =
     (∀ (M : Type) [TopologicalSpace M] [T2Space M]

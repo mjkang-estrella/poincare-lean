@@ -31,7 +31,9 @@ The current artifact is intentionally conservative:
   It also names the full standard-sphere target and homotopy prerequisite
   payloads under the explicit `SimplyConnectedSpace ThreeSphere` assumption,
   extending the existing prerequisite payloads that deliberately leave that
-  input open.
+  input open.  The remaining simple-connectedness input is also reduced to the
+  concrete `ThreeSphereLoopNullhomotopyStatement` via mathlib's
+  loop-nullhomotopy criterion and the named path-connectedness proof for `S^3`.
 - `Poincare/Milestones.lean` and `DEPENDENCY_LEDGER.md` name the missing
   Ricci-flow and topology proof obligations as data, not as proved
   propositions.

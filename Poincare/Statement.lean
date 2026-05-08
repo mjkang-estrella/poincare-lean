@@ -289,6 +289,71 @@ theorem threeSphere_homotopy_prerequisites_eq
   apply Subsingleton.elim
 
 /--
+The concrete loop-nullhomotopy obligation whose proof would supply
+`SimplyConnectedSpace ThreeSphere`.
+-/
+def ThreeSphereLoopNullhomotopyStatement : Prop :=
+  ∀ (x : ThreeSphere) (γ : Path x x), Path.Homotopic γ (Path.refl x)
+
+/-- The loop-nullhomotopy obligation expands to nullhomotopy of every based loop. -/
+theorem threeSphereLoopNullhomotopyStatement_eq :
+    ThreeSphereLoopNullhomotopyStatement =
+      (∀ (x : ThreeSphere) (γ : Path x x), Path.Homotopic γ (Path.refl x)) :=
+  rfl
+
+/--
+For the standard sphere, simple-connectedness is equivalent to the concrete
+loop-nullhomotopy obligation because path-connectedness has already been proved.
+-/
+theorem threeSphere_simplyConnectedSpace_iff_loopNullhomotopyStatement :
+    SimplyConnectedSpace ThreeSphere ↔ ThreeSphereLoopNullhomotopyStatement := by
+  rw [threeSphereLoopNullhomotopyStatement_eq,
+    simply_connected_iff_loops_nullhomotopic]
+  exact ⟨fun h => h.2, fun h => ⟨threeSphere_pathConnectedSpace, h⟩⟩
+
+/--
+The simple-connectedness reduction is exactly mathlib's loop-nullhomotopy
+criterion specialized with the named path-connectedness proof for `S^3`.
+-/
+theorem threeSphere_simplyConnectedSpace_iff_loopNullhomotopyStatement_eq :
+    threeSphere_simplyConnectedSpace_iff_loopNullhomotopyStatement =
+      (by
+        rw [threeSphereLoopNullhomotopyStatement_eq,
+          simply_connected_iff_loops_nullhomotopic]
+        exact ⟨fun h => h.2,
+          fun h => ⟨threeSphere_pathConnectedSpace, h⟩⟩) := by
+  apply Subsingleton.elim
+
+/-- A proof of the loop-nullhomotopy obligation supplies simple-connectedness of `S^3`. -/
+theorem threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement
+    (h : ThreeSphereLoopNullhomotopyStatement) :
+    SimplyConnectedSpace ThreeSphere :=
+  threeSphere_simplyConnectedSpace_iff_loopNullhomotopyStatement.mpr h
+
+/-- The loop-nullhomotopy-to-simple-connectedness route is the forward reduction projection. -/
+theorem threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement_eq :
+    threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement =
+      threeSphere_simplyConnectedSpace_iff_loopNullhomotopyStatement.mpr := by
+  funext h
+  apply Subsingleton.elim
+
+/-- A supplied simple-connectedness instance gives the concrete loop-nullhomotopy obligation. -/
+theorem threeSphere_loopNullhomotopyStatement_of_simplyConnectedSpace
+    [SimplyConnectedSpace ThreeSphere] :
+    ThreeSphereLoopNullhomotopyStatement :=
+  threeSphere_simplyConnectedSpace_iff_loopNullhomotopyStatement.mp inferInstance
+
+/--
+The simple-connectedness-to-loop-nullhomotopy route is the reverse reduction
+projection.
+-/
+theorem threeSphere_loopNullhomotopyStatement_of_simplyConnectedSpace_eq
+    [SimplyConnectedSpace ThreeSphere] :
+    threeSphere_loopNullhomotopyStatement_of_simplyConnectedSpace =
+      threeSphere_simplyConnectedSpace_iff_loopNullhomotopyStatement.mp inferInstance := by
+  apply Subsingleton.elim
+
+/--
 The actual target statement of the Poincare Conjecture for this project.
 
 This is a proposition only. It is intentionally not declared as a theorem or
