@@ -1447,6 +1447,10 @@ The current artifact is intentionally conservative:
   finite-extinction, and extinction-to-sphere component-slot routes while the
   analytic, surgery-construction, and Perelman-control milestones remain
   recorded by the milestone ledger.
+  The base component-slot, package-layer, and milestone routes now also pin
+  their canonical target and criterion endpoints back to the corresponding
+  project statement and criterion wrappers for both raw and certified
+  extraction-derivation variants.
   The raw and certified `RemainingDependencyPackage` component, package-layer,
   and milestone wrapper canonical payload, target, criterion, and statement
   routes now carry equality contracts too, pinning them to the named
