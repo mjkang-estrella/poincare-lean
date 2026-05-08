@@ -371,7 +371,10 @@ The current artifact is intentionally conservative:
   ordinary remaining-package and aggregate endpoints for their canonical
   topological statements, canonical-statement payloads, aggregate
   canonical-statement payloads, and explicit canonical-statement payload
-  reconstruction routes.
+  reconstruction routes. The same three certificate families now also
+  reconstruct ordinary remaining-package and aggregate certificates directly
+  from their projected canonical-statement and aggregate canonical-statement
+  payloads.
   Separately, the completion-target
   wrapper layer now mirrors that
   finite-extinction route through the ordinary
