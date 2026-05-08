@@ -4165,6 +4165,18 @@ check_decl "one-point compactification nonempty theorem is declared" \
   '^theorem onePoint_threeSpace_nonempty\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification nonempty equality contract is declared" \
   '^theorem onePoint_threeSpace_nonempty_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification simple-connectedness transport from sphere is declared" \
+  '^theorem onePoint_threeSpace_simplyConnectedSpace_of_threeSphere\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification simple-connectedness transport from sphere equality contract is declared" \
+  '^theorem onePoint_threeSpace_simplyConnectedSpace_of_threeSphere_eq\b' Poincare/TopologyExtraction.lean
+check_decl "standard sphere simple-connectedness transport from compactification is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_of_onePoint_threeSpace\b' Poincare/TopologyExtraction.lean
+check_decl "standard sphere simple-connectedness transport from compactification equality contract is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_of_onePoint_threeSpace_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification simple-connectedness equivalence is declared" \
+  '^theorem onePoint_threeSpace_simplyConnectedSpace_iff_threeSphere\b' Poincare/TopologyExtraction.lean
+check_decl "compactification simple-connectedness equivalence equality contract is declared" \
+  '^theorem onePoint_threeSpace_simplyConnectedSpace_iff_threeSphere_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification charted-space structure is declared" \
   '^@\[reducible\] noncomputable def onePoint_threeSpace_chartedSpace\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification charted-space equality contract is declared" \
@@ -4181,6 +4193,10 @@ check_decl "one-point compactification topological manifold prerequisite payload
   '^theorem onePoint_threeSpace_topological_manifold_prerequisites\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification topological manifold prerequisite payload equality contract is declared" \
   '^theorem onePoint_threeSpace_topological_manifold_prerequisites_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification homotopy manifold prerequisite payload is declared" \
+  '^theorem onePoint_threeSpace_homotopy_manifold_prerequisites\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification homotopy manifold prerequisite payload equality contract is declared" \
+  '^theorem onePoint_threeSpace_homotopy_manifold_prerequisites_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification recognition prerequisite transport is declared" \
   '^theorem topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification recognition prerequisite transport equality contract is declared" \
@@ -12888,6 +12904,12 @@ open scoped Manifold ContDiff
 #check Poincare.onePoint_threeSpace_connectedSpace_eq
 #check Poincare.onePoint_threeSpace_nonempty
 #check Poincare.onePoint_threeSpace_nonempty_eq
+#check Poincare.onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+#check Poincare.onePoint_threeSpace_simplyConnectedSpace_of_threeSphere_eq
+#check Poincare.threeSphere_simplyConnectedSpace_of_onePoint_threeSpace
+#check Poincare.threeSphere_simplyConnectedSpace_of_onePoint_threeSpace_eq
+#check Poincare.onePoint_threeSpace_simplyConnectedSpace_iff_threeSphere
+#check Poincare.onePoint_threeSpace_simplyConnectedSpace_iff_threeSphere_eq
 #check Poincare.onePoint_threeSpace_chartedSpace
 #check Poincare.onePoint_threeSpace_chartedSpace_eq
 #check Poincare.onePoint_threeSpace_topologicalManifold
@@ -12896,6 +12918,8 @@ open scoped Manifold ContDiff
 #check Poincare.onePoint_threeSpace_topological_prerequisites_eq
 #check Poincare.onePoint_threeSpace_topological_manifold_prerequisites
 #check Poincare.onePoint_threeSpace_topological_manifold_prerequisites_eq
+#check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites
+#check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_eq
 #check Poincare.topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace
 #check Poincare.topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq
 #check Poincare.poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace

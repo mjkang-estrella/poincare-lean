@@ -2382,6 +2382,21 @@ universe u
   Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))))
 #check Poincare.onePoint_threeSpace_nonempty_eq
 
+#check (Poincare.onePoint_threeSpace_simplyConnectedSpace_of_threeSphere :
+  ∀ [SimplyConnectedSpace Poincare.ThreeSphere],
+    SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))))
+#check Poincare.onePoint_threeSpace_simplyConnectedSpace_of_threeSphere_eq
+
+#check (Poincare.threeSphere_simplyConnectedSpace_of_onePoint_threeSpace :
+  ∀ [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))],
+    SimplyConnectedSpace Poincare.ThreeSphere)
+#check Poincare.threeSphere_simplyConnectedSpace_of_onePoint_threeSpace_eq
+
+#check (Poincare.onePoint_threeSpace_simplyConnectedSpace_iff_threeSphere :
+  SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) ↔
+    SimplyConnectedSpace Poincare.ThreeSphere)
+#check Poincare.onePoint_threeSpace_simplyConnectedSpace_iff_threeSphere_eq
+
 #check (Poincare.onePoint_threeSpace_chartedSpace :
   ChartedSpace (EuclideanSpace ℝ (Fin 3)) (OnePoint (EuclideanSpace ℝ (Fin 3))))
 #check Poincare.onePoint_threeSpace_chartedSpace_eq
@@ -2412,6 +2427,20 @@ universe u
   ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
     Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))))
 #check Poincare.onePoint_threeSpace_topological_manifold_prerequisites_eq
+
+#check (Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites :
+  ∀ [SimplyConnectedSpace Poincare.ThreeSphere],
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))))
+#check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_eq
 
 #check (Poincare.topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace :
   ∀ {M : Type u} [TopologicalSpace M],

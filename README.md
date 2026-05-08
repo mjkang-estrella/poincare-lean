@@ -598,8 +598,14 @@ The current artifact is intentionally conservative:
   `ChartedSpace (EuclideanSpace ℝ (Fin 3))` structure from `ThreeSphere`, derives
   a `C^0` 3-manifold witness for those charts, and bundles the result as
   `onePoint_threeSpace_topological_prerequisites` and
-  `onePoint_threeSpace_topological_manifold_prerequisites`. The same layer now
-  transports that `C^0` prerequisite payload to any source space already
+  `onePoint_threeSpace_topological_manifold_prerequisites`. It also transports
+  simple-connectedness in both directions between `ThreeSphere` and the
+  compactification model, records
+  `onePoint_threeSpace_simplyConnectedSpace_iff_threeSphere`, and packages the
+  compactification model's full homotopy/manifold prerequisites as
+  `onePoint_threeSpace_homotopy_manifold_prerequisites` when the standard
+  sphere's simple-connectedness input is supplied. The same layer now
+  transports the `C^0` prerequisite payload to any source space already
   recognized as homeomorphic to the compactification model, and packages the
   transported payload with the source's `SimplyConnectedSpace` instance as
   `poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace`. It

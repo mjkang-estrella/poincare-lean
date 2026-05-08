@@ -645,6 +645,72 @@ theorem onePoint_threeSpace_nonempty_eq :
   apply Subsingleton.elim
 
 /--
+Simple-connectedness of the standard sphere transports to the one-point
+compactification model along the named homeomorphism.
+-/
+theorem onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+    [SimplyConnectedSpace ThreeSphere] :
+    SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  rcases threeSphere_homeomorph_onePoint_threeSpace with ⟨e⟩
+  exact e.symm.toHomotopyEquiv.simplyConnectedSpace
+
+/-- Compactification simple-connectedness is transported from `ThreeSphere`. -/
+theorem onePoint_threeSpace_simplyConnectedSpace_of_threeSphere_eq
+    [SimplyConnectedSpace ThreeSphere] :
+    onePoint_threeSpace_simplyConnectedSpace_of_threeSphere =
+      (by
+        rcases threeSphere_homeomorph_onePoint_threeSpace with ⟨e⟩
+        exact e.symm.toHomotopyEquiv.simplyConnectedSpace) := by
+  apply Subsingleton.elim
+
+/--
+Simple-connectedness of the compactification model transports back to the
+standard sphere along the named homeomorphism.
+-/
+theorem threeSphere_simplyConnectedSpace_of_onePoint_threeSpace
+    [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))] :
+    SimplyConnectedSpace ThreeSphere := by
+  rcases threeSphere_homeomorph_onePoint_threeSpace with ⟨e⟩
+  exact e.toHomotopyEquiv.simplyConnectedSpace
+
+/-- Standard-sphere simple-connectedness is transported back from the compactification model. -/
+theorem threeSphere_simplyConnectedSpace_of_onePoint_threeSpace_eq
+    [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))] :
+    threeSphere_simplyConnectedSpace_of_onePoint_threeSpace =
+      (by
+        rcases threeSphere_homeomorph_onePoint_threeSpace with ⟨e⟩
+        exact e.toHomotopyEquiv.simplyConnectedSpace) := by
+  apply Subsingleton.elim
+
+/--
+The standard sphere and the one-point compactification model have equivalent
+simple-connectedness obligations.
+-/
+theorem onePoint_threeSpace_simplyConnectedSpace_iff_threeSphere :
+    SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) ↔
+      SimplyConnectedSpace ThreeSphere := by
+  constructor
+  · intro h
+    letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) := h
+    exact threeSphere_simplyConnectedSpace_of_onePoint_threeSpace
+  · intro h
+    letI : SimplyConnectedSpace ThreeSphere := h
+    exact onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+
+/-- The simple-connectedness equivalence is the pair of named transport routes. -/
+theorem onePoint_threeSpace_simplyConnectedSpace_iff_threeSphere_eq :
+    onePoint_threeSpace_simplyConnectedSpace_iff_threeSphere =
+      (by
+        constructor
+        · intro h
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) := h
+          exact threeSphere_simplyConnectedSpace_of_onePoint_threeSpace
+        · intro h
+          letI : SimplyConnectedSpace ThreeSphere := h
+          exact onePoint_threeSpace_simplyConnectedSpace_of_threeSphere) := by
+  apply Subsingleton.elim
+
+/--
 The one-point compactification model carries a charted-space structure
 transported from the standard sphere.
 -/
@@ -728,6 +794,40 @@ theorem onePoint_threeSpace_topological_manifold_prerequisites :
 theorem onePoint_threeSpace_topological_manifold_prerequisites_eq :
     onePoint_threeSpace_topological_manifold_prerequisites =
       ⟨onePoint_threeSpace_t2Space, onePoint_threeSpace_chartedSpace,
+        onePoint_threeSpace_compactSpace, onePoint_threeSpace_topologicalManifold,
+        onePoint_threeSpace_pathConnectedSpace, onePoint_threeSpace_locPathConnectedSpace,
+        onePoint_threeSpace_connectedSpace, onePoint_threeSpace_nonempty⟩ := by
+  apply Subsingleton.elim
+
+/--
+With the standard sphere's simple-connectedness supplied, the compactification
+model has the full homotopy/manifold prerequisite payload used by the target
+recognition route.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites
+    [SimplyConnectedSpace ThreeSphere] :
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  exact ⟨onePoint_threeSpace_t2Space, onePoint_threeSpace_chartedSpace,
+    onePoint_threeSpace_simplyConnectedSpace_of_threeSphere,
+    onePoint_threeSpace_compactSpace, onePoint_threeSpace_topologicalManifold,
+    onePoint_threeSpace_pathConnectedSpace, onePoint_threeSpace_locPathConnectedSpace,
+    onePoint_threeSpace_connectedSpace, onePoint_threeSpace_nonempty⟩
+
+/-- The full compactification prerequisite payload is the tuple of named transported witnesses. -/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_eq
+    [SimplyConnectedSpace ThreeSphere] :
+    onePoint_threeSpace_homotopy_manifold_prerequisites =
+      ⟨onePoint_threeSpace_t2Space, onePoint_threeSpace_chartedSpace,
+        onePoint_threeSpace_simplyConnectedSpace_of_threeSphere,
         onePoint_threeSpace_compactSpace, onePoint_threeSpace_topologicalManifold,
         onePoint_threeSpace_pathConnectedSpace, onePoint_threeSpace_locPathConnectedSpace,
         onePoint_threeSpace_connectedSpace, onePoint_threeSpace_nonempty⟩ := by
