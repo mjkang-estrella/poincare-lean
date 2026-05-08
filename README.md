@@ -379,7 +379,11 @@ The current artifact is intentionally conservative:
   endpoints for the strengthened remaining-package routes. The completion-target
   canonical payload, project payload, target, canonical-target, and
   completion-criterion projections now have the same ordinary aggregate
-  endpoints for those strengthened remaining-package routes.
+  endpoints for those strengthened remaining-package routes. The raw and
+  certified component-slot, package-layer, and milestone requirement-payload
+  constructors now also recover those strengthened remaining-package boundary
+  target certificates from the ordinary aggregate payloads after forgetting
+  equation-boundary data.
   Separately, the completion-target
   wrapper layer now mirrors that
   finite-extinction route through the ordinary
@@ -1550,6 +1554,10 @@ The current artifact is intentionally conservative:
   ordinary forgetful endpoints. The remaining-package theorem-name and literal
   payload projections, together with the matching literal-payload
   reconstructions, now also name the ordinary aggregate endpoints directly.
+  The remaining-package raw and certified requirement-payload constructors now
+  do the same for component-slot, package-layer, and milestone payload routes at
+  both boundary-target and boundary-preserving extraction-derivation target
+  surfaces.
   The dependency-projection layer
   also names those endpoint contracts for the full assembly payload and explicit
   completion criterion.
