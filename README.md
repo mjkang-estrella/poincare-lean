@@ -366,6 +366,12 @@ The current artifact is intentionally conservative:
   certified boundary projection routes. The same certificate constructors are
   now also pinned to the strengthened aggregate certificate, the boundary-target
   payload certificate, and the ordinary aggregate projection certificate.
+  The strengthened boundary, boundary-target-payload, and boundary-preserving
+  extraction-derivation target-payload certificates now also expose both
+  ordinary remaining-package and aggregate endpoints for their canonical
+  topological statements, canonical-statement payloads, aggregate
+  canonical-statement payloads, and explicit canonical-statement payload
+  reconstruction routes.
   Separately, the completion-target
   wrapper layer now mirrors that
   finite-extinction route through the ordinary
