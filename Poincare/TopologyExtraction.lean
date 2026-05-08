@@ -2076,6 +2076,164 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognit
   apply Subsingleton.elim
 
 /--
+The compactification loop-nullhomotopy obligation supplies the
+simple-connectedness needed to apply universal compactification recognition to
+the model itself.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+    (hLoop : OnePointThreeSpaceLoopNullhomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ
+      (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+  exact onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement
+    recognize
+
+/-- The loop universal-recognition self route first turns loop-nullhomotopy into simple-connectedness. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement_eq :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement =
+      (fun hLoop : OnePointThreeSpaceLoopNullhomotopyStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement
+            recognize) := by
+  funext hLoop recognize
+  apply Subsingleton.elim
+
+/-- The loop universal-recognition self route agrees with reflexive recognition. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement_direct_route_eq
+    (hLoop : OnePointThreeSpaceLoopNullhomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+      hLoop recognize =
+      onePoint_threeSpace_self_homeomorph := by
+  apply Subsingleton.elim
+
+/--
+The compactification path-homotopy obligation supplies the
+simple-connectedness needed to apply universal compactification recognition to
+the model itself.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement
+    (hPath : OnePointThreeSpacePathHomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ
+      (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement hPath
+  exact onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement
+    recognize
+
+/-- The path universal-recognition self route first turns path-homotopy into simple-connectedness. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement_eq :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement =
+      (fun hPath : OnePointThreeSpacePathHomotopyStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement hPath
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement
+            recognize) := by
+  funext hPath recognize
+  apply Subsingleton.elim
+
+/-- The path universal-recognition self route agrees with the loop-mediated route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement_loop_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement =
+      (fun hPath : OnePointThreeSpacePathHomotopyStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement hPath)
+            recognize) := by
+  funext hPath recognize
+  apply Subsingleton.elim
+
+/-- The path universal-recognition self route agrees with reflexive recognition. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement_direct_route_eq
+    (hPath : OnePointThreeSpacePathHomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement
+      hPath recognize =
+      onePoint_threeSpace_self_homeomorph := by
+  apply Subsingleton.elim
+
+/--
+The loop-nullhomotopy universal-recognition self endpoint composes to the
+target `ThreeSphere` endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+    (hLoop : OnePointThreeSpaceLoopNullhomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
+    (onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+      hLoop recognize)
+
+/-- The loop universal-recognition target route is the loop self route followed by the model map. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement =
+      (fun hLoop : OnePointThreeSpaceLoopNullhomotopyStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
+            (onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+              hLoop recognize)) := by
+  funext hLoop recognize
+  apply Subsingleton.elim
+
+/-- The loop universal-recognition target route agrees with the direct model homeomorphism. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement_direct_route_eq
+    (hLoop : OnePointThreeSpaceLoopNullhomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+      hLoop recognize =
+      onePoint_threeSpace_homeomorph_threeSphere := by
+  apply Subsingleton.elim
+
+/--
+The path-homotopy universal-recognition self endpoint composes to the target
+`ThreeSphere` endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement
+    (hPath : OnePointThreeSpacePathHomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
+    (onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement
+      hPath recognize)
+
+/-- The path universal-recognition target route is the path self route followed by the model map. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement =
+      (fun hPath : OnePointThreeSpacePathHomotopyStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
+            (onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement
+              hPath recognize)) := by
+  funext hPath recognize
+  apply Subsingleton.elim
+
+/-- The path universal-recognition target route agrees with the loop-mediated target route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement_loop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement =
+      (fun hPath : OnePointThreeSpacePathHomotopyStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement hPath)
+            recognize) := by
+  funext hPath recognize
+  apply Subsingleton.elim
+
+/-- The path universal-recognition target route agrees with the direct model homeomorphism. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement_direct_route_eq
+    (hPath : OnePointThreeSpacePathHomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement
+      hPath recognize =
+      onePoint_threeSpace_homeomorph_threeSphere := by
+  apply Subsingleton.elim
+
+/--
 Applying the project target statement to the one-point compactification model
 uses the named compactification typeclass witnesses and only requires
 simple-connectedness as the remaining local input.

@@ -663,7 +663,11 @@ The current artifact is intentionally conservative:
   applies `OnePointThreeSpaceRecognitionStatement` to the compactification
   model itself, and
   `onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement`
-  composes that endpoint to the target sphere with direct-route contracts.
+  composes that endpoint to the target sphere with direct-route contracts.  The
+  loop/path variants replace the raw compactification `SimplyConnectedSpace`
+  input with `OnePointThreeSpaceLoopNullhomotopyStatement` and
+  `OnePointThreeSpacePathHomotopyStatement`, with path routes pinned back to
+  the loop-mediated routes.
   The same self-case now applies a supplied `PoincareConjectureStatement` to
   the compactification model through
   `onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement`, replaces
