@@ -1309,6 +1309,9 @@ The current artifact is intentionally conservative:
   The arbitrary, existential, named remaining-package, and named aggregate
   boundary-aware certificate constructors now recover those finite-extinction
   routes explicitly.
+  The strengthened and certified full-assembly witnesses built from a
+  boundary-aware certificate are now also pinned to that certificate-level
+  finite-extinction projection.
   The
   theorem
   `canonical_completion_payload_of_remaining_dependency_component_requirements`

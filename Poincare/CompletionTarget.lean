@@ -16281,6 +16281,38 @@ theorem poincare_full_assembly_payload_of_completion_certificate_with_equation_b
   apply Subsingleton.elim
 
 /--
+The boundary-aware certificate full-assembly payload can be rebuilt directly
+from the certificate-level finite-extinction projection and the projected
+forgetful topology statement.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      (by
+        let dependencies :=
+          remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+            payload
+        let finiteExtinction :=
+          finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+            payload
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies
+            (remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
+              payload)
+        let extractSphere :=
+          extinction_implies_sphere_of_topology_extraction_statement
+            topologyStatement
+        let target :=
+          poincare_statement_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement
+        exact
+          ⟨dependencies.smoothability, dependencies.surgery,
+            dependencies.topology, finiteExtinction, extractSphere, target⟩) := by
+  apply Subsingleton.elim
+
+/--
 The boundary-aware certificate payload exposes the strengthened certified
 full-assembly payload through its projected strengthened dependency package.
 -/
@@ -16321,6 +16353,41 @@ theorem poincare_full_assembly_payload_of_completion_certificate_with_equation_b
       poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
         (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
           payload) := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware certificate certified full-assembly payload can be rebuilt
+directly from the certificate-level finite-extinction projection and the
+certified extraction/derivation decomposition of the projected forgetful
+topology statement.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_with_equation_boundary_verification_payload_extraction_derivation_to_finite_extinction_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_with_equation_boundary_verification_payload_extraction_derivation
+        payload =
+      (by
+        let dependencies :=
+          remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+            payload
+        let finiteExtinction :=
+          finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+            payload
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies
+            (remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
+              payload)
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_derivation.mp
+              topologyStatement with
+          ⟨extractSphere, derivation⟩
+        let target :=
+          poincare_statement_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation
+        exact
+          ⟨dependencies.smoothability, dependencies.surgery,
+            dependencies.topology, finiteExtinction, extractSphere,
+            derivation, target⟩) := by
   apply Subsingleton.elim
 
 /--
