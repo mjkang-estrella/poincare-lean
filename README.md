@@ -1484,6 +1484,9 @@ The current artifact is intentionally conservative:
   canonical/project endpoint contracts, and its canonical criterion is pinned
   to the projected strengthened dependency, finite-extinction, boundary
   certificate, and forgetful remaining-dependency routes.
+  The boundary-aware certificate constructors now also recover the named
+  canonical criterion for arbitrary verification payloads, existential
+  verification payloads, and the named remaining-package and aggregate routes.
   `remainingDependencyPackage_eq`,
   `remainingDependencyPackage_iff_poincareProofDependencies`, and
   `remainingDependencyPackage_iff_components` identify the remaining-dependency
