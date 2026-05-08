@@ -7957,6 +7957,62 @@ theorem homeomorphism_of_topology_extraction_statement_eq
   apply Subsingleton.elim
 
 /--
+The theorem-shaped topology extraction statement also supplies the derivation
+statement for the homeomorphism selected by
+`homeomorphism_of_topology_extraction_statement`.
+-/
+theorem topology_derivation_statement_of_extraction_statement
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ExtinctionTopologyDerivationStatement M extinction
+      (homeomorphism_of_topology_extraction_statement
+        topologyStatement M extinction) := by
+  rcases topology_derivation_statement_payload_of_extraction_statement
+      topologyStatement M extinction with
+    ⟨_homeomorphism, derivationStatement⟩
+  exact derivationStatement
+
+/--
+The fixed-extinction derivation projection is the second field of the
+theorem-shaped topology payload after the homeomorphism projection chooses its
+first field.
+-/
+theorem topology_derivation_statement_of_extraction_statement_eq
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_derivation_statement_of_extraction_statement
+      topologyStatement M extinction =
+      (by
+        rcases topology_derivation_statement_payload_of_extraction_statement
+            topologyStatement M extinction with
+          ⟨_homeomorphism, derivationStatement⟩
+        exact derivationStatement) := by
+  apply Subsingleton.elim
+
+/--
+For a topology extraction statement built from a package, the direct derivation
+projection is the package derivation route.
+-/
+theorem topology_derivation_statement_of_extinction_topology_extraction_statement_of_topology_package_eq
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_derivation_statement_of_extraction_statement
+      (extinction_topology_extraction_statement_of_topology_package package)
+      M extinction =
+      extinction_topology_derivation_statement_of_topology_package
+        package M extinction := by
+  apply Subsingleton.elim
+
+/--
 The theorem-shaped topology extraction statement supplies the existing
 finite-extinction-to-sphere interface.
 -/
@@ -8049,6 +8105,27 @@ theorem homeomorphism_of_extinction_topology_extraction_statement_of_extraction_
         extractSphere derive)
       M extinction =
       extractSphere M extinction := by
+  apply Subsingleton.elim
+
+/--
+The fixed-extinction derivation projected from an extractor-plus-derivation
+statement is the supplied derivation evidence at that finite-extinction
+witness.
+-/
+theorem topology_derivation_statement_of_extinction_topology_extraction_statement_of_extraction_and_derivation_eq
+    (extractSphere : ExtinctionImpliesSphereStatement.{u})
+    (derive :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_derivation_statement_of_extraction_statement
+      (extinction_topology_extraction_statement_of_extraction_and_derivation
+        extractSphere derive)
+      M extinction =
+      derive M extinction := by
   apply Subsingleton.elim
 
 /--

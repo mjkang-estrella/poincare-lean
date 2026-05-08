@@ -560,8 +560,9 @@ The current artifact is intentionally conservative:
   package-to-extraction bridge now assembles the fixed derivation statement from
   the named components; the fixed-extinction payload and homeomorphism are
   extracted through
-  `topology_derivation_statement_payload_of_extraction_statement` and
-  `homeomorphism_of_topology_extraction_statement`. Package-level topology
+  `topology_derivation_statement_payload_of_extraction_statement`,
+  `homeomorphism_of_topology_extraction_statement`, and
+  `topology_derivation_statement_of_extraction_statement`. Package-level topology
   payloads `topology_extraction_payload_of_topology_package` and
   `topology_extraction_statement_payload_of_topology_package` centralize the
   theorem-shaped extraction interface, fixed derivation statement,
@@ -796,7 +797,7 @@ The current artifact is intentionally conservative:
   homeomorphism-recognition and extraction-with-derivation equivalences now
   have equality contracts pinning them to their named directional maps. The
   theorem-shaped package statement, fixed-extinction payload, homeomorphism
-  projection, statement-mediated extractor, extractor-plus-derivation
+  projection, derivation projection, statement-mediated extractor, extractor-plus-derivation
   constructor, projection-after-reconstruction contracts, and package
   fixed-extinction payload are also pinned to their named routes. The
   direct assembly bridges
