@@ -3376,6 +3376,7 @@ universe u
       ∃ _target : Poincare.PoincareConjectureStatement,
         ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
 #check Poincare.poincare_target_payload_of_surgery_and_topology_package_extraction_derivation_eq
+#check Poincare.poincare_target_payload_of_surgery_and_topology_package_extraction_derivation_to_extraction_derivation_eq
 
 #check (Poincare.poincare_full_assembly_payload_of_surgery_and_topology_packages :
   Poincare.SmoothabilityPackage →
@@ -3444,6 +3445,7 @@ universe u
       ∃ _target : Poincare.PoincareConjectureStatement,
         ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
 #check Poincare.poincare_completion_payload_of_surgery_and_topology_package_extraction_derivation_eq
+#check Poincare.poincare_completion_payload_of_surgery_and_topology_package_extraction_derivation_to_extraction_derivation_eq
 
 #check (Poincare.poincare_completion_payload_of_surgery_and_topology_extraction_statement :
   Poincare.SmoothabilityPackage →
@@ -3493,6 +3495,7 @@ universe u
     Poincare.ExtinctionTopologyExtractionPackage →
       Poincare.PoincareConjectureStatement)
 #check Poincare.poincare_statement_of_surgery_and_topology_package_extraction_derivation_eq
+#check Poincare.poincare_statement_of_surgery_and_topology_package_extraction_derivation_to_extraction_derivation_eq
 
 #check (Poincare.poincare_statement_of_surgery_and_topology_extraction_statement :
   Poincare.SmoothabilityPackage →
@@ -3577,6 +3580,7 @@ universe u
         [SimplyConnectedSpace M] [CompactSpace M],
           Nonempty (M ≃ₜ Poincare.ThreeSphere))
 #check Poincare.canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation_eq
+#check Poincare.canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation_to_extraction_derivation_eq
 
 #check (Poincare.poincare_statement_of_canonical_three_sphere_statement :
   (∀ (M : Type) [TopologicalSpace M] [T2Space M]

@@ -534,6 +534,29 @@ theorem poincare_target_payload_of_surgery_and_topology_package_extraction_deriv
   apply Subsingleton.elim
 
 /--
+The package-level certified extraction target payload agrees with the explicit
+extractor/derivation target route selected from the topology package.
+-/
+theorem poincare_target_payload_of_surgery_and_topology_package_extraction_derivation_to_extraction_derivation_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    poincare_target_payload_of_surgery_and_topology_package_extraction_derivation
+      smoothabilityPackage surgeryPackages topologyPackage =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            topologyPackage with
+          ⟨extractSphere, derivation⟩
+        exact poincare_target_payload_of_surgery_and_extraction_derivation
+          smoothabilityPackage surgeryPackages extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
 The explicit package route exposes the final finite-extinction input,
 post-extinction topology input, target statement, and universe-indexed
 completion criterion through one named payload.
@@ -929,6 +952,30 @@ theorem poincare_completion_payload_of_surgery_and_topology_package_extraction_d
   apply Subsingleton.elim
 
 /--
+The package-level certified extraction completion payload agrees with the
+explicit extractor/derivation completion route selected from the topology
+package.
+-/
+theorem poincare_completion_payload_of_surgery_and_topology_package_extraction_derivation_to_extraction_derivation_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    poincare_completion_payload_of_surgery_and_topology_package_extraction_derivation
+      smoothabilityPackage surgeryPackages topologyPackage =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            topologyPackage with
+          ⟨extractSphere, derivation⟩
+        exact poincare_completion_payload_of_surgery_and_extraction_derivation
+          smoothabilityPackage surgeryPackages extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
 If every compact simply connected topological 3-manifold carries the smooth
 regularity needed by the surgery interface, every such smooth 3-manifold has a
 completed surgery package, and the post-extinction topology extraction package
@@ -1126,6 +1173,30 @@ theorem poincare_statement_of_surgery_and_topology_package_extraction_derivation
   apply Subsingleton.elim
 
 /--
+The package-level certified extraction Poincare statement agrees with the
+explicit extractor/derivation statement route selected from the topology
+package.
+-/
+theorem poincare_statement_of_surgery_and_topology_package_extraction_derivation_to_extraction_derivation_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    poincare_statement_of_surgery_and_topology_package_extraction_derivation
+      smoothabilityPackage surgeryPackages topologyPackage =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            topologyPackage with
+          ⟨extractSphere, derivation⟩
+        exact poincare_statement_of_surgery_and_extraction_derivation
+          smoothabilityPackage surgeryPackages extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
 The explicit smoothability, surgery, and topology packages also expose the
 canonical mathlib-shaped topological 3-sphere statement.
 -/
@@ -1315,6 +1386,30 @@ theorem canonical_three_sphere_statement_of_surgery_and_topology_package_extract
       canonical_three_sphere_statement_of_poincare_statement
         (poincare_statement_of_surgery_and_topology_package_extraction_derivation
           smoothabilityPackage surgeryPackages topologyPackage) := by
+  apply Subsingleton.elim
+
+/--
+The package-level certified extraction canonical statement agrees with the
+explicit extractor/derivation canonical statement route selected from the
+topology package.
+-/
+theorem canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation_to_extraction_derivation_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation
+      smoothabilityPackage surgeryPackages topologyPackage =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            topologyPackage with
+          ⟨extractSphere, derivation⟩
+        exact canonical_three_sphere_statement_of_surgery_and_extraction_derivation
+          smoothabilityPackage surgeryPackages extractSphere derivation) := by
   apply Subsingleton.elim
 
 end Poincare

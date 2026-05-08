@@ -982,6 +982,9 @@ The current artifact is intentionally conservative:
   obtains that extractor-plus-derivation pair directly from the topology
   package before assembling the target; its canonical endpoint is
   `canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation`.
+  Direct equality contracts also pin its target, completion, statement, and
+  canonical-statement routes to the extractor/derivation routes selected from
+  the topology package.
 - `Poincare/Dependencies.lean` aggregates those future inputs into one
   `PoincareProofDependencies` package and proves that the package implies the
   target statement and the explicit completion criterion. The aggregate route
