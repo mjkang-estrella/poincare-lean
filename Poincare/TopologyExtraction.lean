@@ -157,6 +157,31 @@ theorem poincareConjectureStatement_of_onePoint_threeSpace_recognition_eq
         exact homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace (h M)) := by
   apply Subsingleton.elim
 
+/--
+Universal recognition by the one-point compactification model exposes the
+project completion payload.
+-/
+theorem poincare_payload_of_onePoint_threeSpace_recognition
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  exact poincare_completion_payload_of_poincareConjectureStatement
+    (poincareConjectureStatement_of_onePoint_threeSpace_recognition h)
+
+/-- The compactification-recognition payload is the statement-layer payload of the reduction. -/
+theorem poincare_payload_of_onePoint_threeSpace_recognition_eq
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_payload_of_onePoint_threeSpace_recognition h =
+      poincare_completion_payload_of_poincareConjectureStatement
+        (poincareConjectureStatement_of_onePoint_threeSpace_recognition h) := by
+  apply Subsingleton.elim
+
 /-- The one-point compactification model is Hausdorff. -/
 theorem onePoint_threeSpace_t2Space :
     T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) := by

@@ -603,7 +603,9 @@ The current artifact is intentionally conservative:
   recognized as homeomorphic to the compactification model, and records
   `poincareConjectureStatement_of_onePoint_threeSpace_recognition`, the
   reduction from universal compactification recognition to the project target
-  statement, with equality contracts and audit coverage for those routes. The
+  statement, plus `poincare_payload_of_onePoint_threeSpace_recognition`, the
+  corresponding completion payload, with equality contracts and audit coverage
+  for those routes. The
   concrete homeomorphism glue for the standard sphere's self-homeomorphism,
   intermediate-space composition, opposite-direction source transport, and both
   inverse-direction recognition maps now also has direct equality contracts.

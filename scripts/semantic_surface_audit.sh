@@ -2230,6 +2230,15 @@ universe u
     Poincare.PoincareConjectureStatement.{u})
 #check Poincare.poincareConjectureStatement_of_onePoint_threeSpace_recognition_eq
 
+#check (Poincare.poincare_payload_of_onePoint_threeSpace_recognition :
+  (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
+    ∃ _target : Poincare.PoincareConjectureStatement.{u},
+      ∀ witness : Type u, Poincare.CompletionCriterionAtUniverse witness)
+#check Poincare.poincare_payload_of_onePoint_threeSpace_recognition_eq
+
 #check (Poincare.onePoint_threeSpace_t2Space :
   T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))))
 #check Poincare.onePoint_threeSpace_t2Space_eq
