@@ -27,6 +27,9 @@ The current artifact is intentionally conservative:
   the target/criterion and the payload. The statement layer now also pins those
   canonical-statement, witness-transfer, target/criterion projection, and
   target/criterion payload routes with equality contracts.
+  It also names the full standard-sphere prerequisite payload under the explicit
+  `SimplyConnectedSpace ThreeSphere` assumption, extending the existing
+  prerequisite payload that deliberately leaves that input open.
 - `Poincare/Milestones.lean` and `DEPENDENCY_LEDGER.md` name the missing
   Ricci-flow and topology proof obligations as data, not as proved
   propositions.

@@ -57,6 +57,8 @@ open scoped Manifold ContDiff
 #check Poincare.threeSphere_nonempty_eq
 #check Poincare.threeSphere_target_prerequisites_except_simpleConnected
 #check Poincare.threeSphere_target_prerequisites_except_simpleConnected_eq
+#check Poincare.threeSphere_target_prerequisites
+#check Poincare.threeSphere_target_prerequisites_eq
 #check Poincare.poincareConjectureStatement_eq
 #check Poincare.extinctionImpliesSphereStatement_eq
 #check Poincare.poincareConjectureStatement_iff_canonical_three_sphere_statement
