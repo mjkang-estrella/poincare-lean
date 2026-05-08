@@ -8311,6 +8311,8 @@ check_decl "completion certificate target statement theorem is declared" \
   '^theorem target_statement_of_completion_certificate\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate criterion theorem is declared" \
   '^theorem completion_criterion_of_completion_certificate\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate canonical criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_completion_certificate\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate remaining dependency projection theorem is declared" \
   '^theorem remaining_dependency_package_of_completion_certificate\b' Poincare/CompletionTarget.lean
 check_decl "remaining dependency and project payload completion certificate theorem is declared" \
@@ -8419,12 +8421,22 @@ check_decl "completion certificate canonical payload equality contract is declar
   '^theorem canonical_completion_payload_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate project payload equality contract is declared" \
   '^theorem poincare_completion_payload_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate canonical payload project endpoint contract is declared" \
+  '^theorem canonical_completion_payload_of_completion_certificate_to_project_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate project payload canonical endpoint contract is declared" \
+  '^theorem poincare_completion_payload_of_completion_certificate_to_canonical_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate canonical target equality contract is declared" \
   '^theorem canonical_completion_target_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate target statement equality contract is declared" \
   '^theorem target_statement_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate canonical target project endpoint contract is declared" \
+  '^theorem canonical_completion_target_of_completion_certificate_to_target_statement_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate criterion equality contract is declared" \
   '^theorem completion_criterion_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate canonical criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate canonical criterion project endpoint contract is declared" \
+  '^theorem canonical_completion_criterion_of_completion_certificate_to_project_criterion_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate remaining dependency equality contract is declared" \
   '^theorem remaining_dependency_package_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate full-assembly projection is declared" \
@@ -15651,6 +15663,7 @@ open scoped Manifold ContDiff
 #check Poincare.canonical_completion_target_of_completion_certificate
 #check Poincare.target_statement_of_completion_certificate
 #check Poincare.completion_criterion_of_completion_certificate
+#check Poincare.canonical_completion_criterion_of_completion_certificate
 #check Poincare.remaining_dependency_package_of_completion_certificate
 #check Poincare.completion_certificate_of_remaining_dependency_and_poincare_payload
 #check Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_poincare_payload
@@ -15705,9 +15718,14 @@ open scoped Manifold ContDiff
 #check Poincare.poincareCompletionCertificate_iff_literal_payload_eq
 #check Poincare.canonical_completion_payload_of_completion_certificate_eq
 #check Poincare.poincare_completion_payload_of_completion_certificate_eq
+#check Poincare.canonical_completion_payload_of_completion_certificate_to_project_payload_eq
+#check Poincare.poincare_completion_payload_of_completion_certificate_to_canonical_payload_eq
 #check Poincare.canonical_completion_target_of_completion_certificate_eq
 #check Poincare.target_statement_of_completion_certificate_eq
+#check Poincare.canonical_completion_target_of_completion_certificate_to_target_statement_eq
 #check Poincare.completion_criterion_of_completion_certificate_eq
+#check Poincare.canonical_completion_criterion_of_completion_certificate_eq
+#check Poincare.canonical_completion_criterion_of_completion_certificate_to_project_criterion_eq
 #check Poincare.remaining_dependency_package_of_completion_certificate_eq
 #check Poincare.poincare_full_assembly_payload_of_completion_certificate
 #check Poincare.poincare_full_assembly_payload_of_completion_certificate_eq
@@ -21931,6 +21949,11 @@ open scoped Manifold ContDiff
     Poincare.PoincareCompletionCertificate →
       Poincare.CompletionCriterionAtUniverse witness)
 
+#check (Poincare.canonical_completion_criterion_of_completion_certificate :
+  ∀ witness : Type,
+    Poincare.PoincareCompletionCertificate →
+      Poincare.CompletionCriterionAtUniverse witness)
+
 #check (Poincare.remaining_dependency_package_of_completion_certificate :
   Poincare.PoincareCompletionCertificate →
     Poincare.RemainingDependencyPackage)
@@ -22122,9 +22145,14 @@ open scoped Manifold ContDiff
 #check Poincare.poincareCompletionCertificate_iff_literal_payload_eq
 #check Poincare.canonical_completion_payload_of_completion_certificate_eq
 #check Poincare.poincare_completion_payload_of_completion_certificate_eq
+#check Poincare.canonical_completion_payload_of_completion_certificate_to_project_payload_eq
+#check Poincare.poincare_completion_payload_of_completion_certificate_to_canonical_payload_eq
 #check Poincare.canonical_completion_target_of_completion_certificate_eq
 #check Poincare.target_statement_of_completion_certificate_eq
+#check Poincare.canonical_completion_target_of_completion_certificate_to_target_statement_eq
 #check Poincare.completion_criterion_of_completion_certificate_eq
+#check Poincare.canonical_completion_criterion_of_completion_certificate_eq
+#check Poincare.canonical_completion_criterion_of_completion_certificate_to_project_criterion_eq
 #check Poincare.remaining_dependency_package_of_completion_certificate_eq
 #check Poincare.poincare_full_assembly_payload_of_completion_certificate
 #check Poincare.poincare_full_assembly_payload_of_completion_certificate_eq
@@ -23244,9 +23272,14 @@ open scoped Manifold ContDiff
 #check Poincare.poincareCompletionCertificate_iff_literal_payload_eq
 #check Poincare.canonical_completion_payload_of_completion_certificate_eq
 #check Poincare.poincare_completion_payload_of_completion_certificate_eq
+#check Poincare.canonical_completion_payload_of_completion_certificate_to_project_payload_eq
+#check Poincare.poincare_completion_payload_of_completion_certificate_to_canonical_payload_eq
 #check Poincare.canonical_completion_target_of_completion_certificate_eq
 #check Poincare.target_statement_of_completion_certificate_eq
+#check Poincare.canonical_completion_target_of_completion_certificate_to_target_statement_eq
 #check Poincare.completion_criterion_of_completion_certificate_eq
+#check Poincare.canonical_completion_criterion_of_completion_certificate_eq
+#check Poincare.canonical_completion_criterion_of_completion_certificate_to_project_criterion_eq
 #check Poincare.remaining_dependency_package_of_completion_certificate_eq
 #check Poincare.poincare_full_assembly_payload_of_completion_certificate
 #check Poincare.poincare_full_assembly_payload_of_completion_certificate_eq

@@ -14065,6 +14065,26 @@ theorem poincare_completion_payload_of_completion_certificate_eq
         exact ⟨target, criterion⟩) := by
   apply Subsingleton.elim
 
+/--
+The canonical payload projected from a completion certificate is the same
+project payload viewed through the canonical/project target identification.
+-/
+theorem canonical_completion_payload_of_completion_certificate_to_project_payload_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    canonical_completion_payload_of_completion_certificate certificate =
+      poincare_completion_payload_of_completion_certificate certificate := by
+  apply Subsingleton.elim
+
+/--
+The project payload projected from a completion certificate is the same
+canonical payload viewed through the project/canonical target identification.
+-/
+theorem poincare_completion_payload_of_completion_certificate_to_canonical_payload_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    poincare_completion_payload_of_completion_certificate certificate =
+      canonical_completion_payload_of_completion_certificate certificate := by
+  apply Subsingleton.elim
+
 /-- A completion certificate proves the canonical completion target. -/
 theorem canonical_completion_target_of_completion_certificate
     (certificate : PoincareCompletionCertificate.{u}) :
@@ -14104,6 +14124,16 @@ theorem target_statement_of_completion_certificate_eq
   apply Subsingleton.elim
 
 /--
+The canonical target projected from a completion certificate is the same
+project target-statement endpoint.
+-/
+theorem canonical_completion_target_of_completion_certificate_to_target_statement_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    canonical_completion_target_of_completion_certificate certificate =
+      target_statement_of_completion_certificate certificate := by
+  apply Subsingleton.elim
+
+/--
 A completion certificate discharges the explicit universe-indexed completion
 criterion.
 -/
@@ -14126,6 +14156,43 @@ theorem completion_criterion_of_completion_certificate_eq
             certificate with
           ⟨_target, criterion⟩
         exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+A completion certificate exposes the canonical criterion selected from its
+canonical payload.
+-/
+theorem canonical_completion_criterion_of_completion_certificate
+    (witness : Type u) (certificate : PoincareCompletionCertificate.{u}) :
+    CompletionCriterionAtUniverse witness := by
+  rcases canonical_completion_payload_of_completion_certificate certificate with
+    ⟨_target, criterion⟩
+  exact criterion witness
+
+/--
+The canonical criterion projection is extracted from the named canonical
+payload carried by the certificate.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_eq
+    (witness : Type u) (certificate : PoincareCompletionCertificate.{u}) :
+    canonical_completion_criterion_of_completion_certificate
+        witness certificate =
+      (by
+        rcases canonical_completion_payload_of_completion_certificate
+            certificate with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The canonical criterion projected from a completion certificate is the same
+project completion-criterion endpoint.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_to_project_criterion_eq
+    (witness : Type u) (certificate : PoincareCompletionCertificate.{u}) :
+    canonical_completion_criterion_of_completion_certificate
+        witness certificate =
+      completion_criterion_of_completion_certificate witness certificate := by
   apply Subsingleton.elim
 
 /--
