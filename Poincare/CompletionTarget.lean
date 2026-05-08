@@ -10164,6 +10164,150 @@ theorem completion_criterion_of_remaining_dependency_milestone_extraction_deriva
   apply Subsingleton.elim
 
 /--
+The remaining-dependency component canonical target is the same project
+statement endpoint.
+-/
+theorem canonical_completion_target_of_remaining_dependency_component_requirements_to_project_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_remaining_dependency_component_requirements
+      dependencies =
+      poincare_statement_of_remaining_dependency_component_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency component canonical criterion is the same project
+criterion endpoint.
+-/
+theorem canonical_completion_criterion_of_remaining_dependency_component_requirements_to_project_criterion_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_remaining_dependency_component_requirements
+      witness dependencies =
+      completion_criterion_of_remaining_dependency_component_requirements
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency certified component canonical target is the same
+certified project statement endpoint.
+-/
+theorem canonical_completion_target_of_remaining_dependency_component_extraction_derivation_requirements_to_project_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_remaining_dependency_component_extraction_derivation_requirements
+      dependencies =
+      poincare_statement_of_remaining_dependency_component_extraction_derivation_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency certified component canonical criterion is the same
+certified project criterion endpoint.
+-/
+theorem canonical_completion_criterion_of_remaining_dependency_component_extraction_derivation_requirements_to_project_criterion_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_remaining_dependency_component_extraction_derivation_requirements
+      witness dependencies =
+      completion_criterion_of_remaining_dependency_component_extraction_derivation_requirements
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency package-layer canonical target is the same project
+statement endpoint.
+-/
+theorem canonical_completion_target_of_remaining_dependency_package_layer_requirements_to_project_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_remaining_dependency_package_layer_requirements
+      dependencies =
+      poincare_statement_of_remaining_dependency_package_layer_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency package-layer canonical criterion is the same project
+criterion endpoint.
+-/
+theorem canonical_completion_criterion_of_remaining_dependency_package_layer_requirements_to_project_criterion_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_remaining_dependency_package_layer_requirements
+      witness dependencies =
+      completion_criterion_of_remaining_dependency_package_layer_requirements
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency certified package-layer canonical target is the same
+certified project statement endpoint.
+-/
+theorem canonical_completion_target_of_remaining_dependency_package_layer_extraction_derivation_requirements_to_project_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_remaining_dependency_package_layer_extraction_derivation_requirements
+      dependencies =
+      poincare_statement_of_remaining_dependency_package_layer_extraction_derivation_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency certified package-layer canonical criterion is the
+same certified project criterion endpoint.
+-/
+theorem canonical_completion_criterion_of_remaining_dependency_package_layer_extraction_derivation_requirements_to_project_criterion_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_remaining_dependency_package_layer_extraction_derivation_requirements
+      witness dependencies =
+      completion_criterion_of_remaining_dependency_package_layer_extraction_derivation_requirements
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency milestone canonical target is the same project
+statement endpoint.
+-/
+theorem canonical_completion_target_of_remaining_dependency_milestone_requirements_to_project_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_remaining_dependency_milestone_requirements
+      dependencies =
+      poincare_statement_of_remaining_dependency_milestone_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency milestone canonical criterion is the same project
+criterion endpoint.
+-/
+theorem canonical_completion_criterion_of_remaining_dependency_milestone_requirements_to_project_criterion_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_remaining_dependency_milestone_requirements
+      witness dependencies =
+      completion_criterion_of_remaining_dependency_milestone_requirements
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency certified milestone canonical target is the same
+certified project statement endpoint.
+-/
+theorem canonical_completion_target_of_remaining_dependency_milestone_extraction_derivation_requirements_to_project_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_remaining_dependency_milestone_extraction_derivation_requirements
+      dependencies =
+      poincare_statement_of_remaining_dependency_milestone_extraction_derivation_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency certified milestone canonical criterion is the same
+certified project criterion endpoint.
+-/
+theorem canonical_completion_criterion_of_remaining_dependency_milestone_extraction_derivation_requirements_to_project_criterion_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_remaining_dependency_milestone_extraction_derivation_requirements
+      witness dependencies =
+      completion_criterion_of_remaining_dependency_milestone_extraction_derivation_requirements
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
 The remaining-dependency certified component project payload agrees directly
 with the package-level certified extraction project payload selected by the
 stored component requirements.

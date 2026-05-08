@@ -1456,6 +1456,9 @@ The current artifact is intentionally conservative:
   routes now carry equality contracts too, pinning them to the named
   remaining-dependency component, package-layer, and milestone payloads and to
   the crosswalk projections they destructure.
+  Those remaining-dependency wrappers now also pin their canonical target and
+  criterion endpoints back to the corresponding project statement and criterion
+  wrappers for both raw and certified extraction-derivation variants.
   The explicit package, package-level certified extraction, package-layer,
   aggregate dependency, aggregate certified extraction, projection-route, and
   extraction-derivation projection-route canonical payloads
