@@ -557,7 +557,8 @@ The current artifact is intentionally conservative:
   statement. Equality contracts also pin the dependency-level
   classification sub-obligations, derivation statement, homeomorphism
   assembly/derivation statements, concrete assembly/derivation certificates,
-  and statement aliases back to that theorem-shaped extraction route. The
+  and statement aliases back to that theorem-shaped extraction route and to the
+  stored topology package derivation route. The
   package-to-extraction bridge now assembles the fixed derivation statement from
   the named components; the fixed-extinction payload and homeomorphism are
   extracted through

@@ -8287,6 +8287,146 @@ theorem topology_homeomorphism_derivation_of_dependencies_to_statement_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level topology classification sub-obligation projection is also
+the classification projection of the stored topology package derivation route.
+-/
+theorem topology_classification_subobligations_of_dependencies_to_package_derivation_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_classification_subobligations_of_dependencies
+      dependencies M extinction =
+      topology_classification_subobligations_of_derivation_statement
+        M extinction
+        (homeomorphism_of_topology_package dependencies.topology M extinction)
+        (extinction_topology_derivation_statement_of_topology_package
+          dependencies.topology M extinction) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level topology derivation statement follows the derivation route
+of the stored topology package.
+-/
+theorem topology_derivation_statement_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_derivation_statement_of_dependencies dependencies M extinction =
+      (by
+        rw [homeomorphism_of_extinction_and_dependencies_to_package_eq
+          dependencies M extinction]
+        exact extinction_topology_derivation_statement_of_topology_package
+          dependencies.topology M extinction) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level homeomorphism assembly statement follows the stored
+topology package derivation route.
+-/
+theorem topology_homeomorphism_assembly_statement_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_homeomorphism_assembly_statement_of_dependencies
+      dependencies M extinction =
+      (by
+        rw [homeomorphism_of_extinction_and_dependencies_to_package_eq
+          dependencies M extinction]
+        exact topology_homeomorphism_assembly_statement_of_derivation_statement
+          M extinction
+          (homeomorphism_of_topology_package dependencies.topology M extinction)
+          (extinction_topology_derivation_statement_of_topology_package
+            dependencies.topology M extinction)) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level homeomorphism derivation statement follows the stored
+topology package derivation route.
+-/
+theorem topology_homeomorphism_derivation_statement_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_homeomorphism_derivation_statement_of_dependencies
+      dependencies M extinction =
+      (by
+        rw [homeomorphism_of_extinction_and_dependencies_to_package_eq
+          dependencies M extinction]
+        exact topology_homeomorphism_derivation_statement_of_derivation_statement
+          M extinction
+          (homeomorphism_of_topology_package dependencies.topology M extinction)
+          (extinction_topology_derivation_statement_of_topology_package
+            dependencies.topology M extinction)) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level homeomorphism assembly certificate follows the stored
+topology package derivation route.
+-/
+theorem topology_homeomorphism_assembly_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_homeomorphism_assembly_of_dependencies
+      dependencies M extinction =
+      (by
+        rw [homeomorphism_of_extinction_and_dependencies_to_package_eq
+          dependencies M extinction]
+        rcases topology_homeomorphism_assembly_statement_of_derivation_statement
+            M extinction
+            (homeomorphism_of_topology_package dependencies.topology
+              M extinction)
+            (extinction_topology_derivation_statement_of_topology_package
+              dependencies.topology M extinction) with
+          ⟨decomposition, primeDecomposition, irreducibility,
+            connectedSumCollapse, sphericalReduction, quotientModel,
+            fundamentalGroupComputation, deckGroupIdentification,
+            deckGroupTriviality, simplyConnectedRecognition, trivialQuotient,
+            homeomorphismAssembly⟩
+        convert homeomorphismAssembly) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level homeomorphism derivation certificate follows the stored
+topology package derivation route.
+-/
+theorem topology_homeomorphism_derivation_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_homeomorphism_derivation_of_dependencies
+      dependencies M extinction =
+      (by
+        rw [homeomorphism_of_extinction_and_dependencies_to_package_eq
+          dependencies M extinction]
+        rcases topology_homeomorphism_derivation_statement_of_derivation_statement
+            M extinction
+            (homeomorphism_of_topology_package dependencies.topology
+              M extinction)
+            (extinction_topology_derivation_statement_of_topology_package
+              dependencies.topology M extinction) with
+          ⟨decomposition, primeDecomposition, irreducibility,
+            connectedSumCollapse, sphericalReduction,
+            fundamentalGroupComputation, deckGroupTriviality,
+            simplyConnectedRecognition, quotientModel, deckGroupIdentification,
+            trivialQuotient, homeomorphismAssembly,
+            homeomorphismDerivation⟩
+        convert homeomorphismDerivation) := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies the theorem-shaped smoothability bridge
 used by the surgery layer.
 -/
