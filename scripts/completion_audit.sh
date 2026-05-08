@@ -6841,6 +6841,14 @@ check_decl "Poincare component-requirement completion payload theorem is declare
   '^theorem poincare_completion_payload_of_component_requirements\b' Poincare/CompletionTarget.lean
 check_decl "Poincare component-requirement completion payload equality contract is declared" \
   '^theorem poincare_completion_payload_of_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "Poincare component-requirement project target theorem is declared" \
+  '^theorem poincare_statement_of_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "Poincare component-requirement project target equality contract is declared" \
+  '^theorem poincare_statement_of_component_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "Poincare component-requirement project criterion theorem is declared" \
+  '^theorem completion_criterion_of_component_requirements\b' Poincare/CompletionTarget.lean
+check_decl "Poincare component-requirement project criterion equality contract is declared" \
+  '^theorem completion_criterion_of_component_requirements_eq\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion component-requirement payload theorem is declared" \
   '^theorem canonical_completion_payload_of_component_requirements\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion component-requirement payload equality contract is declared" \
@@ -6861,6 +6869,14 @@ check_decl "Poincare component-requirement extraction-derivation completion payl
   '^theorem poincare_completion_payload_of_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
 check_decl "Poincare component-requirement extraction-derivation completion payload equality contract is declared" \
   '^theorem poincare_completion_payload_of_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "Poincare component-requirement extraction-derivation project target theorem is declared" \
+  '^theorem poincare_statement_of_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "Poincare component-requirement extraction-derivation project target equality contract is declared" \
+  '^theorem poincare_statement_of_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "Poincare component-requirement extraction-derivation project criterion theorem is declared" \
+  '^theorem completion_criterion_of_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "Poincare component-requirement extraction-derivation project criterion equality contract is declared" \
+  '^theorem completion_criterion_of_component_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion component-requirement extraction-derivation payload theorem is declared" \
   '^theorem canonical_completion_payload_of_component_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion component-requirement extraction-derivation payload equality contract is declared" \
@@ -6889,6 +6905,14 @@ check_decl "Poincare package-layer completion payload theorem is declared" \
   '^theorem poincare_completion_payload_of_package_layer_requirements\b' Poincare/CompletionTarget.lean
 check_decl "Poincare package-layer completion payload equality contract is declared" \
   '^theorem poincare_completion_payload_of_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "Poincare package-layer project target theorem is declared" \
+  '^theorem poincare_statement_of_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "Poincare package-layer project target equality contract is declared" \
+  '^theorem poincare_statement_of_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "Poincare package-layer project criterion theorem is declared" \
+  '^theorem completion_criterion_of_package_layer_requirements\b' Poincare/CompletionTarget.lean
+check_decl "Poincare package-layer project criterion equality contract is declared" \
+  '^theorem completion_criterion_of_package_layer_requirements_eq\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion package-layer payload theorem is declared" \
   '^theorem canonical_completion_payload_of_package_layer_requirements\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion package-layer payload equality contract is declared" \
@@ -6909,6 +6933,14 @@ check_decl "Poincare package-layer extraction-derivation completion payload theo
   '^theorem poincare_completion_payload_of_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
 check_decl "Poincare package-layer extraction-derivation completion payload equality contract is declared" \
   '^theorem poincare_completion_payload_of_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "Poincare package-layer extraction-derivation project target theorem is declared" \
+  '^theorem poincare_statement_of_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "Poincare package-layer extraction-derivation project target equality contract is declared" \
+  '^theorem poincare_statement_of_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "Poincare package-layer extraction-derivation project criterion theorem is declared" \
+  '^theorem completion_criterion_of_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "Poincare package-layer extraction-derivation project criterion equality contract is declared" \
+  '^theorem completion_criterion_of_package_layer_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion package-layer extraction-derivation payload theorem is declared" \
   '^theorem canonical_completion_payload_of_package_layer_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion package-layer extraction-derivation payload equality contract is declared" \
@@ -6937,6 +6969,14 @@ check_decl "Poincare milestone-requirement completion payload theorem is declare
   '^theorem poincare_completion_payload_of_milestone_requirements\b' Poincare/CompletionTarget.lean
 check_decl "Poincare milestone-requirement completion payload equality contract is declared" \
   '^theorem poincare_completion_payload_of_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "Poincare milestone-requirement project target theorem is declared" \
+  '^theorem poincare_statement_of_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "Poincare milestone-requirement project target equality contract is declared" \
+  '^theorem poincare_statement_of_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "Poincare milestone-requirement project criterion theorem is declared" \
+  '^theorem completion_criterion_of_milestone_requirements\b' Poincare/CompletionTarget.lean
+check_decl "Poincare milestone-requirement project criterion equality contract is declared" \
+  '^theorem completion_criterion_of_milestone_requirements_eq\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion milestone-requirement payload theorem is declared" \
   '^theorem canonical_completion_payload_of_milestone_requirements\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion milestone-requirement payload equality contract is declared" \
@@ -6957,6 +6997,14 @@ check_decl "Poincare milestone-requirement extraction-derivation completion payl
   '^theorem poincare_completion_payload_of_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
 check_decl "Poincare milestone-requirement extraction-derivation completion payload equality contract is declared" \
   '^theorem poincare_completion_payload_of_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "Poincare milestone-requirement extraction-derivation project target theorem is declared" \
+  '^theorem poincare_statement_of_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "Poincare milestone-requirement extraction-derivation project target equality contract is declared" \
+  '^theorem poincare_statement_of_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
+check_decl "Poincare milestone-requirement extraction-derivation project criterion theorem is declared" \
+  '^theorem completion_criterion_of_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
+check_decl "Poincare milestone-requirement extraction-derivation project criterion equality contract is declared" \
+  '^theorem completion_criterion_of_milestone_extraction_derivation_requirements_eq\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion milestone-requirement extraction-derivation payload theorem is declared" \
   '^theorem canonical_completion_payload_of_milestone_extraction_derivation_requirements\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion milestone-requirement extraction-derivation payload equality contract is declared" \
@@ -14781,6 +14829,10 @@ open scoped Manifold ContDiff
 #check Poincare.canonical_completion_criterion_of_surgery_and_extraction_derivation_eq
 #check Poincare.poincare_completion_payload_of_component_requirements
 #check Poincare.poincare_completion_payload_of_component_requirements_eq
+#check Poincare.poincare_statement_of_component_requirements
+#check Poincare.poincare_statement_of_component_requirements_eq
+#check Poincare.completion_criterion_of_component_requirements
+#check Poincare.completion_criterion_of_component_requirements_eq
 #check Poincare.canonical_completion_payload_of_component_requirements
 #check Poincare.canonical_completion_payload_of_component_requirements_eq
 #check Poincare.canonical_completion_target_of_component_requirements
@@ -14791,6 +14843,10 @@ open scoped Manifold ContDiff
 #check Poincare.canonical_three_sphere_statement_of_component_requirements_eq
 #check Poincare.poincare_completion_payload_of_component_extraction_derivation_requirements
 #check Poincare.poincare_completion_payload_of_component_extraction_derivation_requirements_eq
+#check Poincare.poincare_statement_of_component_extraction_derivation_requirements
+#check Poincare.poincare_statement_of_component_extraction_derivation_requirements_eq
+#check Poincare.completion_criterion_of_component_extraction_derivation_requirements
+#check Poincare.completion_criterion_of_component_extraction_derivation_requirements_eq
 #check Poincare.canonical_completion_payload_of_component_extraction_derivation_requirements
 #check Poincare.canonical_completion_payload_of_component_extraction_derivation_requirements_eq
 #check Poincare.canonical_completion_target_of_component_extraction_derivation_requirements
@@ -14805,6 +14861,10 @@ open scoped Manifold ContDiff
 #check Poincare.canonical_three_sphere_statement_of_component_extraction_derivation_requirements_to_package_extraction_derivation_eq
 #check Poincare.poincare_completion_payload_of_package_layer_requirements
 #check Poincare.poincare_completion_payload_of_package_layer_requirements_eq
+#check Poincare.poincare_statement_of_package_layer_requirements
+#check Poincare.poincare_statement_of_package_layer_requirements_eq
+#check Poincare.completion_criterion_of_package_layer_requirements
+#check Poincare.completion_criterion_of_package_layer_requirements_eq
 #check Poincare.canonical_completion_payload_of_package_layer_requirements
 #check Poincare.canonical_completion_payload_of_package_layer_requirements_eq
 #check Poincare.canonical_completion_target_of_package_layer_requirements
@@ -14815,6 +14875,10 @@ open scoped Manifold ContDiff
 #check Poincare.canonical_three_sphere_statement_of_package_layer_requirements_eq
 #check Poincare.poincare_completion_payload_of_package_layer_extraction_derivation_requirements
 #check Poincare.poincare_completion_payload_of_package_layer_extraction_derivation_requirements_eq
+#check Poincare.poincare_statement_of_package_layer_extraction_derivation_requirements
+#check Poincare.poincare_statement_of_package_layer_extraction_derivation_requirements_eq
+#check Poincare.completion_criterion_of_package_layer_extraction_derivation_requirements
+#check Poincare.completion_criterion_of_package_layer_extraction_derivation_requirements_eq
 #check Poincare.canonical_completion_payload_of_package_layer_extraction_derivation_requirements
 #check Poincare.canonical_completion_payload_of_package_layer_extraction_derivation_requirements_eq
 #check Poincare.canonical_completion_target_of_package_layer_extraction_derivation_requirements
@@ -14829,6 +14893,10 @@ open scoped Manifold ContDiff
 #check Poincare.canonical_three_sphere_statement_of_package_layer_extraction_derivation_requirements_to_package_extraction_derivation_eq
 #check Poincare.poincare_completion_payload_of_milestone_requirements
 #check Poincare.poincare_completion_payload_of_milestone_requirements_eq
+#check Poincare.poincare_statement_of_milestone_requirements
+#check Poincare.poincare_statement_of_milestone_requirements_eq
+#check Poincare.completion_criterion_of_milestone_requirements
+#check Poincare.completion_criterion_of_milestone_requirements_eq
 #check Poincare.canonical_completion_payload_of_milestone_requirements
 #check Poincare.canonical_completion_payload_of_milestone_requirements_eq
 #check Poincare.canonical_completion_target_of_milestone_requirements
@@ -14837,6 +14905,10 @@ open scoped Manifold ContDiff
 #check Poincare.canonical_completion_criterion_of_milestone_requirements_eq
 #check Poincare.poincare_completion_payload_of_milestone_extraction_derivation_requirements
 #check Poincare.poincare_completion_payload_of_milestone_extraction_derivation_requirements_eq
+#check Poincare.poincare_statement_of_milestone_extraction_derivation_requirements
+#check Poincare.poincare_statement_of_milestone_extraction_derivation_requirements_eq
+#check Poincare.completion_criterion_of_milestone_extraction_derivation_requirements
+#check Poincare.completion_criterion_of_milestone_extraction_derivation_requirements_eq
 #check Poincare.canonical_completion_payload_of_milestone_extraction_derivation_requirements
 #check Poincare.canonical_completion_payload_of_milestone_extraction_derivation_requirements_eq
 #check Poincare.canonical_completion_target_of_milestone_extraction_derivation_requirements

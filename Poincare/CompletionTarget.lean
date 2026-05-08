@@ -1483,6 +1483,34 @@ theorem canonical_completion_criterion_of_component_requirements
     ⟨_target, criterion⟩
   exact criterion witness
 
+/-- The component-slot requirement route proves the project target. -/
+theorem poincare_statement_of_component_requirements
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    PoincareConjectureStatement.{u} :=
+  canonical_completion_target_of_component_requirements
+    smoothabilityRequirement surgeryRequirement topologyRequirement
+
+/--
+The component-slot requirement route discharges the project completion
+criterion.
+-/
+theorem completion_criterion_of_component_requirements
+    (witness : Type u)
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    CompletionCriterionAtUniverse witness :=
+  canonical_completion_criterion_of_component_requirements
+    witness smoothabilityRequirement surgeryRequirement topologyRequirement
+
 /--
 The component-slot requirement route exposes the canonical topological
 3-sphere statement.
@@ -1572,6 +1600,37 @@ theorem canonical_completion_criterion_of_component_extraction_derivation_requir
   exact criterion witness
 
 /--
+The component-slot requirement route proves the project target through the
+certified extraction route.
+-/
+theorem poincare_statement_of_component_extraction_derivation_requirements
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    PoincareConjectureStatement.{u} :=
+  canonical_completion_target_of_component_extraction_derivation_requirements
+    smoothabilityRequirement surgeryRequirement topologyRequirement
+
+/--
+The component-slot requirement route discharges the project completion criterion
+through the certified extraction route.
+-/
+theorem completion_criterion_of_component_extraction_derivation_requirements
+    (witness : Type u)
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    CompletionCriterionAtUniverse witness :=
+  canonical_completion_criterion_of_component_extraction_derivation_requirements
+    witness smoothabilityRequirement surgeryRequirement topologyRequirement
+
+/--
 The component-slot requirement route exposes the canonical topological
 3-sphere statement through the certified extraction route.
 -/
@@ -1605,6 +1664,35 @@ theorem poincare_completion_payload_of_component_requirements_eq
       smoothabilityRequirement surgeryRequirement topologyRequirement =
       poincare_completion_payload_of_surgery_and_topology_packages
         smoothabilityRequirement surgeryRequirement topologyRequirement := by
+  apply Subsingleton.elim
+
+/-- The component-slot project statement is the named canonical target. -/
+theorem poincare_statement_of_component_requirements_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincare_statement_of_component_requirements
+      smoothabilityRequirement surgeryRequirement topologyRequirement =
+      canonical_completion_target_of_component_requirements
+        smoothabilityRequirement surgeryRequirement topologyRequirement := by
+  apply Subsingleton.elim
+
+/-- The component-slot project criterion is the named canonical criterion. -/
+theorem completion_criterion_of_component_requirements_eq
+    (witness : Type u)
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    completion_criterion_of_component_requirements
+      witness smoothabilityRequirement surgeryRequirement topologyRequirement =
+      canonical_completion_criterion_of_component_requirements
+        witness smoothabilityRequirement surgeryRequirement topologyRequirement := by
   apply Subsingleton.elim
 
 /--
@@ -1695,6 +1783,41 @@ theorem poincare_completion_payload_of_component_extraction_derivation_requireme
       smoothabilityRequirement surgeryRequirement topologyRequirement =
       poincare_completion_payload_of_surgery_and_topology_package_extraction_derivation
         smoothabilityRequirement surgeryRequirement topologyRequirement := by
+  apply Subsingleton.elim
+
+/--
+The component-slot certified extraction project statement is the named
+canonical target.
+-/
+theorem poincare_statement_of_component_extraction_derivation_requirements_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincare_statement_of_component_extraction_derivation_requirements
+      smoothabilityRequirement surgeryRequirement topologyRequirement =
+      canonical_completion_target_of_component_extraction_derivation_requirements
+        smoothabilityRequirement surgeryRequirement topologyRequirement := by
+  apply Subsingleton.elim
+
+/--
+The component-slot certified extraction project criterion is the named
+canonical criterion.
+-/
+theorem completion_criterion_of_component_extraction_derivation_requirements_eq
+    (witness : Type u)
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    completion_criterion_of_component_extraction_derivation_requirements
+      witness smoothabilityRequirement surgeryRequirement topologyRequirement =
+      canonical_completion_criterion_of_component_extraction_derivation_requirements
+        witness smoothabilityRequirement surgeryRequirement topologyRequirement := by
   apply Subsingleton.elim
 
 /--
@@ -1945,6 +2068,50 @@ theorem canonical_completion_criterion_of_package_layer_requirements
     ⟨_target, criterion⟩
   exact criterion witness
 
+/-- The package-layer requirement route proves the project target. -/
+theorem poincare_statement_of_package_layer_requirements
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    PoincareConjectureStatement.{u} :=
+  canonical_completion_target_of_package_layer_requirements
+    smoothabilityRequirement analyticRequirement surgeryRequirement
+    finiteExtinctionRequirement topologyRequirement
+
+/--
+The package-layer requirement route discharges the project completion
+criterion.
+-/
+theorem completion_criterion_of_package_layer_requirements
+    (witness : Type u)
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    CompletionCriterionAtUniverse witness :=
+  canonical_completion_criterion_of_package_layer_requirements
+    witness smoothabilityRequirement analyticRequirement surgeryRequirement
+    finiteExtinctionRequirement topologyRequirement
+
 /--
 The package-layer requirement route exposes the canonical topological
 3-sphere statement.
@@ -2074,6 +2241,53 @@ theorem canonical_completion_criterion_of_package_layer_extraction_derivation_re
   exact criterion witness
 
 /--
+The package-layer requirement route proves the project target through the
+certified extraction route.
+-/
+theorem poincare_statement_of_package_layer_extraction_derivation_requirements
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    PoincareConjectureStatement.{u} :=
+  canonical_completion_target_of_package_layer_extraction_derivation_requirements
+    smoothabilityRequirement analyticRequirement surgeryRequirement
+    finiteExtinctionRequirement topologyRequirement
+
+/--
+The package-layer requirement route discharges the project completion criterion
+through the certified extraction route.
+-/
+theorem completion_criterion_of_package_layer_extraction_derivation_requirements
+    (witness : Type u)
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    CompletionCriterionAtUniverse witness :=
+  canonical_completion_criterion_of_package_layer_extraction_derivation_requirements
+    witness smoothabilityRequirement analyticRequirement surgeryRequirement
+    finiteExtinctionRequirement topologyRequirement
+
+/--
 The package-layer requirement route exposes the canonical topological
 3-sphere statement through the certified extraction route.
 -/
@@ -2124,6 +2338,53 @@ theorem poincare_completion_payload_of_package_layer_requirements_eq
       finiteExtinctionRequirement topologyRequirement =
       poincare_completion_payload_of_surgery_and_topology_packages
         smoothabilityRequirement finiteExtinctionRequirement topologyRequirement := by
+  apply Subsingleton.elim
+
+/-- The package-layer project statement is the named canonical target. -/
+theorem poincare_statement_of_package_layer_requirements_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    poincare_statement_of_package_layer_requirements
+      smoothabilityRequirement analyticRequirement surgeryRequirement
+      finiteExtinctionRequirement topologyRequirement =
+      canonical_completion_target_of_package_layer_requirements
+        smoothabilityRequirement analyticRequirement surgeryRequirement
+        finiteExtinctionRequirement topologyRequirement := by
+  apply Subsingleton.elim
+
+/-- The package-layer project criterion is the named canonical criterion. -/
+theorem completion_criterion_of_package_layer_requirements_eq
+    (witness : Type u)
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    completion_criterion_of_package_layer_requirements
+      witness smoothabilityRequirement analyticRequirement surgeryRequirement
+      finiteExtinctionRequirement topologyRequirement =
+      canonical_completion_criterion_of_package_layer_requirements
+        witness smoothabilityRequirement analyticRequirement surgeryRequirement
+        finiteExtinctionRequirement topologyRequirement := by
   apply Subsingleton.elim
 
 /--
@@ -2260,6 +2521,59 @@ theorem poincare_completion_payload_of_package_layer_extraction_derivation_requi
       finiteExtinctionRequirement topologyRequirement =
       poincare_completion_payload_of_surgery_and_topology_package_extraction_derivation
         smoothabilityRequirement finiteExtinctionRequirement topologyRequirement := by
+  apply Subsingleton.elim
+
+/--
+The package-layer certified extraction project statement is the named canonical
+target.
+-/
+theorem poincare_statement_of_package_layer_extraction_derivation_requirements_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    poincare_statement_of_package_layer_extraction_derivation_requirements
+      smoothabilityRequirement analyticRequirement surgeryRequirement
+      finiteExtinctionRequirement topologyRequirement =
+      canonical_completion_target_of_package_layer_extraction_derivation_requirements
+        smoothabilityRequirement analyticRequirement surgeryRequirement
+        finiteExtinctionRequirement topologyRequirement := by
+  apply Subsingleton.elim
+
+/--
+The package-layer certified extraction project criterion is the named canonical
+criterion.
+-/
+theorem completion_criterion_of_package_layer_extraction_derivation_requirements_eq
+    (witness : Type u)
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    completion_criterion_of_package_layer_extraction_derivation_requirements
+      witness smoothabilityRequirement analyticRequirement surgeryRequirement
+      finiteExtinctionRequirement topologyRequirement =
+      canonical_completion_criterion_of_package_layer_extraction_derivation_requirements
+        witness smoothabilityRequirement analyticRequirement surgeryRequirement
+        finiteExtinctionRequirement topologyRequirement := by
   apply Subsingleton.elim
 
 /--
@@ -2599,6 +2913,55 @@ theorem canonical_completion_criterion_of_milestone_requirements
     ⟨_target, criterion⟩
   exact criterion witness
 
+/-- The milestone-requirement route proves the project target. -/
+theorem poincare_statement_of_milestone_requirements
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (_ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (_perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (_finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    PoincareConjectureStatement.{u} :=
+  canonical_completion_target_of_milestone_requirements
+    smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+    _ricciFlowWithSurgeryRequirement _perelmanSingularityControlRequirement
+    _finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement
+
+/--
+The milestone-requirement route discharges the project completion criterion.
+-/
+theorem completion_criterion_of_milestone_requirements
+    (witness : Type u)
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (_ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (_perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (_finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    CompletionCriterionAtUniverse witness :=
+  canonical_completion_criterion_of_milestone_requirements
+    witness smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+    _ricciFlowWithSurgeryRequirement _perelmanSingularityControlRequirement
+    _finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement
+
 /--
 The milestone-requirement route exposes the canonical topological 3-sphere
 statement.
@@ -2751,6 +3114,59 @@ theorem canonical_completion_criterion_of_milestone_extraction_derivation_requir
   exact criterion witness
 
 /--
+The milestone-requirement route proves the project target through the certified
+extraction route.
+-/
+theorem poincare_statement_of_milestone_extraction_derivation_requirements
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (_ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (_perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (_finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    PoincareConjectureStatement.{u} :=
+  canonical_completion_target_of_milestone_extraction_derivation_requirements
+    smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+    _ricciFlowWithSurgeryRequirement _perelmanSingularityControlRequirement
+    _finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement
+
+/--
+The milestone-requirement route discharges the project completion criterion
+through the certified extraction route.
+-/
+theorem completion_criterion_of_milestone_extraction_derivation_requirements
+    (witness : Type u)
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (_ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (_perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (_finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    CompletionCriterionAtUniverse witness :=
+  canonical_completion_criterion_of_milestone_extraction_derivation_requirements
+    witness smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+    _ricciFlowWithSurgeryRequirement _perelmanSingularityControlRequirement
+    _finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement
+
+/--
 The milestone-requirement route exposes the canonical topological 3-sphere
 statement through the certified extraction route.
 -/
@@ -2808,6 +3224,61 @@ theorem poincare_completion_payload_of_milestone_requirements_eq
       poincare_completion_payload_of_component_requirements
         smoothabilityBridgeRequirement finiteExtinctionRequirement
         extinctionToSphereHomeomorphismRequirement := by
+  apply Subsingleton.elim
+
+/-- The milestone project statement is the named canonical target. -/
+theorem poincare_statement_of_milestone_requirements_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincare_statement_of_milestone_requirements
+      smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+      ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+      finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement =
+      canonical_completion_target_of_milestone_requirements
+        smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+        ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+        finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement := by
+  apply Subsingleton.elim
+
+/-- The milestone project criterion is the named canonical criterion. -/
+theorem completion_criterion_of_milestone_requirements_eq
+    (witness : Type u)
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    completion_criterion_of_milestone_requirements
+      witness smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+      ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+      finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement =
+      canonical_completion_criterion_of_milestone_requirements
+        witness smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+        ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+        finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement := by
   apply Subsingleton.elim
 
 /--
@@ -2960,6 +3431,67 @@ theorem poincare_completion_payload_of_milestone_extraction_derivation_requireme
       poincare_completion_payload_of_component_extraction_derivation_requirements
         smoothabilityBridgeRequirement finiteExtinctionRequirement
         extinctionToSphereHomeomorphismRequirement := by
+  apply Subsingleton.elim
+
+/--
+The milestone certified extraction project statement is the named canonical
+target.
+-/
+theorem poincare_statement_of_milestone_extraction_derivation_requirements_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincare_statement_of_milestone_extraction_derivation_requirements
+      smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+      ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+      finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement =
+      canonical_completion_target_of_milestone_extraction_derivation_requirements
+        smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+        ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+        finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement := by
+  apply Subsingleton.elim
+
+/--
+The milestone certified extraction project criterion is the named canonical
+criterion.
+-/
+theorem completion_criterion_of_milestone_extraction_derivation_requirements_eq
+    (witness : Type u)
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    completion_criterion_of_milestone_extraction_derivation_requirements
+      witness smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+      ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+      finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement =
+      canonical_completion_criterion_of_milestone_extraction_derivation_requirements
+        witness smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+        ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+        finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement := by
   apply Subsingleton.elim
 
 /--

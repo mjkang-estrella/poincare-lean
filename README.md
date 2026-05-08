@@ -1607,6 +1607,10 @@ The current artifact is intentionally conservative:
   Those remaining-dependency project projections now have equality contracts
   pinning each route to the canonical remaining-dependency payload, target, or
   criterion projection it uses.
+  The base component-slot, package-layer, and milestone crosswalk routes now
+  also expose named project statement and project criterion wrappers, including
+  certified extraction-derivation variants, with equality contracts pinning each
+  one to the canonical target or criterion projection it uses.
   The aggregate proof-dependency surface now exposes matching canonical
   topological statement projections for those raw and certified crosswalk
   routes:
