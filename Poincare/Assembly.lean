@@ -428,6 +428,223 @@ theorem threeSphere_self_homeomorph_of_smooth_statement_and_pathHomotopyStatemen
   apply Subsingleton.elim
 
 /--
+The concrete loop-nullhomotopy obligation exposes the target self route as a
+payload carrying both the homotopy-oriented prerequisite bundle and the
+self-homeomorphism endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_loopNullhomotopyStatement
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=
+  ⟨threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement hLoop,
+    threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopyStatement hLoop h⟩
+
+/--
+The loop-nullhomotopy target self payload is exactly the concrete prerequisite
+route paired with the loop-nullhomotopy target endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_loopNullhomotopyStatement_eq :
+    threeSphere_self_homeomorph_payload_of_poincare_statement_and_loopNullhomotopyStatement =
+      (fun hLoop : ThreeSphereLoopNullhomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          ⟨threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement hLoop,
+            threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopyStatement
+              hLoop h⟩) := by
+  funext hLoop h
+  apply Subsingleton.elim
+
+/--
+The concrete loop-nullhomotopy obligation exposes the smooth self route as a
+payload carrying both the homotopy-oriented prerequisite bundle and the
+self-diffeomorphism endpoint.
+-/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) :=
+  ⟨threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement hLoop,
+    threeSphere_self_diffeomorph_of_smooth_statement_and_loopNullhomotopyStatement hLoop h⟩
+
+/--
+The loop-nullhomotopy smooth self payload is exactly the concrete prerequisite
+route paired with the loop-nullhomotopy smooth endpoint.
+-/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement_eq :
+    threeSphere_self_diffeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement =
+      (fun hLoop : ThreeSphereLoopNullhomotopyStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          ⟨threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement hLoop,
+            threeSphere_self_diffeomorph_of_smooth_statement_and_loopNullhomotopyStatement
+              hLoop h⟩) := by
+  funext hLoop h
+  apply Subsingleton.elim
+
+/--
+The concrete loop-nullhomotopy obligation exposes the smooth-to-topological self
+route as a payload carrying both the homotopy-oriented prerequisite bundle and
+the self-homeomorphism endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=
+  ⟨threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement hLoop,
+    threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement hLoop h⟩
+
+/--
+The loop-nullhomotopy smooth-to-topological self payload is exactly the concrete
+prerequisite route paired with the loop-nullhomotopy smooth-to-topological
+endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement_eq :
+    threeSphere_self_homeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement =
+      (fun hLoop : ThreeSphereLoopNullhomotopyStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          ⟨threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement hLoop,
+            threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement
+              hLoop h⟩) := by
+  funext hLoop h
+  apply Subsingleton.elim
+
+/--
+The concrete path-homotopy obligation exposes the target self route as a
+payload carrying both the homotopy-oriented prerequisite bundle and the
+self-homeomorphism endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathHomotopyStatement
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=
+  ⟨threeSphere_homotopy_prerequisites_of_pathHomotopyStatement hPath,
+    threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatement hPath h⟩
+
+/--
+The path-homotopy target self payload is exactly the concrete prerequisite
+route paired with the path-homotopy target endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathHomotopyStatement_eq :
+    threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          ⟨threeSphere_homotopy_prerequisites_of_pathHomotopyStatement hPath,
+            threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatement
+              hPath h⟩) := by
+  funext hPath h
+  apply Subsingleton.elim
+
+/--
+The concrete path-homotopy obligation exposes the smooth self route as a
+payload carrying both the homotopy-oriented prerequisite bundle and the
+self-diffeomorphism endpoint.
+-/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_pathHomotopyStatement
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) :=
+  ⟨threeSphere_homotopy_prerequisites_of_pathHomotopyStatement hPath,
+    threeSphere_self_diffeomorph_of_smooth_statement_and_pathHomotopyStatement hPath h⟩
+
+/--
+The path-homotopy smooth self payload is exactly the concrete prerequisite
+route paired with the path-homotopy smooth endpoint.
+-/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_pathHomotopyStatement_eq :
+    threeSphere_self_diffeomorph_payload_of_smooth_statement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          ⟨threeSphere_homotopy_prerequisites_of_pathHomotopyStatement hPath,
+            threeSphere_self_diffeomorph_of_smooth_statement_and_pathHomotopyStatement
+              hPath h⟩) := by
+  funext hPath h
+  apply Subsingleton.elim
+
+/--
+The concrete path-homotopy obligation exposes the smooth-to-topological self
+route as a payload carrying both the homotopy-oriented prerequisite bundle and
+the self-homeomorphism endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_pathHomotopyStatement
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=
+  ⟨threeSphere_homotopy_prerequisites_of_pathHomotopyStatement hPath,
+    threeSphere_self_homeomorph_of_smooth_statement_and_pathHomotopyStatement hPath h⟩
+
+/--
+The path-homotopy smooth-to-topological self payload is exactly the concrete
+prerequisite route paired with the path-homotopy smooth-to-topological endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_pathHomotopyStatement_eq :
+    threeSphere_self_homeomorph_payload_of_smooth_statement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          ⟨threeSphere_homotopy_prerequisites_of_pathHomotopyStatement hPath,
+            threeSphere_self_homeomorph_of_smooth_statement_and_pathHomotopyStatement
+              hPath h⟩) := by
+  funext hPath h
+  apply Subsingleton.elim
+
+/--
 If the canonical 3-dimensional topological Poincare statement is available as a
 proof-bearing theorem, then it proves this project's target proposition.
 

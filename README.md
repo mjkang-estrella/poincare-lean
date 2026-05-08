@@ -57,8 +57,8 @@ The current artifact is intentionally conservative:
   exposing the standard-sphere self-case obtained by applying the topological
   or smooth target statement when `S^3` is supplied as simply connected,
   packaging those self-case endpoints with the full homotopy-oriented
-  standard-sphere prerequisites, and exposing the same self-case routes from the
-  concrete loop-nullhomotopy and path-homotopy obligations,
+  standard-sphere prerequisites, and exposing the same self-case routes and
+  payloads from the concrete loop-nullhomotopy and path-homotopy obligations,
   and reducing the topological target to the smooth Poincare statement plus a
   smoothability hypothesis. It also bridges both the
   canonical topological and smooth mathlib-shaped 3-sphere statements into the
