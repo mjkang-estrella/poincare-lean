@@ -2717,6 +2717,37 @@ universe u
         Nonempty M)
 #check Poincare.poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq
 
+#check (Poincare.poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement :
+  ∀ {M : Type u} [TopologicalSpace M],
+    Poincare.OnePointThreeSpaceLoopNullhomotopyStatement →
+    Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) →
+      ∃ _t2 : T2Space M,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+      ∃ _simple : SimplyConnectedSpace M,
+      ∃ _compact : CompactSpace M,
+      ∃ _topological : IsManifold (𝓡 3) 0 M,
+      ∃ _path : PathConnectedSpace M,
+      ∃ _locPath : LocPathConnectedSpace M,
+      ∃ _connected : ConnectedSpace M,
+        Nonempty M)
+#check Poincare.poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement_eq
+
+#check (Poincare.poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement :
+  ∀ {M : Type u} [TopologicalSpace M],
+    Poincare.OnePointThreeSpacePathHomotopyStatement →
+    Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) →
+      ∃ _t2 : T2Space M,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+      ∃ _simple : SimplyConnectedSpace M,
+      ∃ _compact : CompactSpace M,
+      ∃ _topological : IsManifold (𝓡 3) 0 M,
+      ∃ _path : PathConnectedSpace M,
+      ∃ _locPath : LocPathConnectedSpace M,
+      ∃ _connected : ConnectedSpace M,
+        Nonempty M)
+#check Poincare.poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement_eq
+#check Poincare.poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement_loop_route_eq
+
 #check (Poincare.threeSphere_self_homeomorph :
   Nonempty (Poincare.ThreeSphere ≃ₜ Poincare.ThreeSphere))
 

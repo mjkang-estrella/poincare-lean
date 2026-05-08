@@ -1793,6 +1793,79 @@ theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq
           connected, nonempty⟩) := by
   apply Subsingleton.elim
 
+/--
+The compactification model's own loop-nullhomotopy obligation packages any
+recognized source as a Poincare-candidate prerequisite payload.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+    {M : Type u} [TopologicalSpace M]
+    (hLoop : OnePointThreeSpaceLoopNullhomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M :=
+  homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+    hLoop h
+
+/-- The local loop candidate route is the local loop source-prerequisite route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hLoop : OnePointThreeSpaceLoopNullhomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+      hLoop h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+        hLoop h := by
+  apply Subsingleton.elim
+
+/--
+The compactification model's own path-homotopy obligation packages any
+recognized source as a Poincare-candidate prerequisite payload.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement
+    {M : Type u} [TopologicalSpace M]
+    (hPath : OnePointThreeSpacePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M :=
+  homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement
+    hPath h
+
+/-- The local path candidate route is the local path source-prerequisite route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : OnePointThreeSpacePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement
+      hPath h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement
+        hPath h := by
+  apply Subsingleton.elim
+
+/-- The local path candidate route agrees with the local loop candidate route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : OnePointThreeSpacePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement
+      hPath h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h := by
+  apply Subsingleton.elim
+
 /-- The standard target sphere is homeomorphic to itself. -/
 theorem threeSphere_self_homeomorph :
     Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=

@@ -4343,6 +4343,16 @@ check_decl "one-point compactification Poincare candidate prerequisite transport
   '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification Poincare candidate prerequisite equality contract is declared" \
   '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification local loop Poincare candidate prerequisite route is declared" \
+  '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification local loop Poincare candidate prerequisite route equality contract is declared" \
+  '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification local path Poincare candidate prerequisite route is declared" \
+  '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification local path Poincare candidate prerequisite route equality contract is declared" \
+  '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification local path Poincare candidate loop-route contract is declared" \
+  '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement_loop_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "smoothability package is declared" \
   '^structure SmoothabilityPackage\b' Poincare/Smoothability.lean
 check_decl "smoothability Moise triangulation interface is declared" \
@@ -13131,6 +13141,11 @@ open scoped Manifold ContDiff
 #check Poincare.homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement_onePoint_route_eq
 #check Poincare.poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace
 #check Poincare.poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq
+#check Poincare.poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+#check Poincare.poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement_eq
+#check Poincare.poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement
+#check Poincare.poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement_eq
+#check Poincare.poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement_loop_route_eq
 #check Poincare.threeSphere_self_homeomorph
 #check Poincare.threeSphere_self_homeomorph_eq
 #check Poincare.threeSphere_self_homeomorph_self_diffeomorph_route_eq

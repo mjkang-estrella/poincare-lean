@@ -643,7 +643,12 @@ The current artifact is intentionally conservative:
   tying the standard-sphere loop/path routes back to compactification-local
   loop/path obligations. It also packages the
   transported payload with an already supplied source `SimplyConnectedSpace` instance as
-  `poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace`. It
+  `poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace`, and
+  exposes local loop/path candidate routes
+  `poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement`
+  and
+  `poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement`.
+  It
   names universal compactification recognition as
   `OnePointThreeSpaceRecognitionStatement`, and
   records
