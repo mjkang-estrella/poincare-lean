@@ -9441,6 +9441,76 @@ theorem pointwise_equation_payload_of_surgery_package_with_equation_boundary
   apply Subsingleton.elim
 
 /--
+The direct scalar-pointwise equation shape carried by a boundary-carrying
+surgery package, before routing through the named metric-derivative projection.
+-/
+abbrev SurgeryPackageWithEquationBoundaryDirectPointwiseEquationPayload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) : Prop :=
+    ∀ (t : ℝ) (x : M)
+      (v w : TangentSpace ThreeManifoldModelWithCorners x),
+      metric_time_derivative_at_time_of_metric_derivative_field
+        (ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
+          package).metricDerivative.derivative t x v w =
+      ricci_flow_rhs_tensor
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package
+            (surgery_package_of_equation_boundary_surgery_package package)))
+        t x v w
+
+/--
+The direct scalar-pointwise surgery payload expands to the equation stored in
+the package's explicit Ricci-flow verification.
+-/
+theorem surgeryPackageWithEquationBoundaryDirectPointwiseEquationPayload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    SurgeryPackageWithEquationBoundaryDirectPointwiseEquationPayload package =
+      (∀ (t : ℝ) (x : M)
+        (v w : TangentSpace ThreeManifoldModelWithCorners x),
+        metric_time_derivative_at_time_of_metric_derivative_field
+          (ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
+            package).metricDerivative.derivative t x v w =
+        ricci_flow_rhs_tensor
+          (curvature_data_of_ricci_flow_data
+            (ricci_flow_data_of_surgery_package
+              (surgery_package_of_equation_boundary_surgery_package package)))
+          t x v w) :=
+  rfl
+
+/--
+A strengthened surgery package exposes the direct pointwise equation payload
+stored by its explicit Ricci-flow verification.
+-/
+theorem surgery_package_with_equation_boundary_direct_pointwise_equation_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    SurgeryPackageWithEquationBoundaryDirectPointwiseEquationPayload package :=
+  pointwise_equation_payload_of_surgery_package_with_equation_boundary package
+
+/-- The direct surgery payload is the stored-verification pointwise payload. -/
+@[simp] theorem surgery_package_with_equation_boundary_direct_pointwise_equation_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    surgery_package_with_equation_boundary_direct_pointwise_equation_payload
+        package =
+      pointwise_equation_payload_of_surgery_package_with_equation_boundary
+        package :=
+  rfl
+
+/--
 A strengthened surgery package supplies the analytic foundation together with
 the explicit equation boundary for its projected flow.
 -/
