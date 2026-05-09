@@ -13781,6 +13781,209 @@ theorem canonical_completion_criterion_of_extraction_derivation_dependency_proje
   apply Subsingleton.elim
 
 /--
+The lifted-homeomorphism projection route also proves the canonical completion
+target.
+-/
+theorem canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+    (dependencies : RemainingDependencyPackage.{u}) :
+    ∃ _target : canonicalCompletionTarget.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  exact canonical_completion_payload_of_poincare_completion_payload
+    (poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies)
+
+/--
+The lifted-homeomorphism projection canonical payload is obtained by applying
+the canonical payload bridge to the named lifted project payload.
+-/
+theorem canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      canonical_completion_payload_of_poincare_completion_payload
+        (poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism dependency projection canonical payload is the
+finite-extinction plus extractor/derivation route selected by the lifted
+decomposition of the topology statement.
+-/
+theorem canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies dependencies) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the lifted certificate in the lifted-homeomorphism canonical payload
+recovers the certified extraction-derivation projection canonical payload.
+-/
+theorem canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      canonical_completion_payload_of_extraction_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism projection route also proves the canonical completion
+target, extracted from its canonical-completion payload.
+-/
+theorem canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonicalCompletionTarget.{u} := by
+  rcases
+      canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies with
+    ⟨target, _criterion⟩
+  exact target
+
+/--
+The lifted-homeomorphism projection canonical target is selected from the named
+lifted projection canonical payload.
+-/
+theorem canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases
+            canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+              dependencies with
+          ⟨target, _criterion⟩
+        exact target) := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism projection canonical target is the target projection
+of the lifted decomposition of the topology statement.
+-/
+theorem canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies dependencies) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the lifted certificate in the lifted-homeomorphism canonical target
+recovers the certified extraction-derivation projection canonical target.
+-/
+theorem canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      canonical_completion_target_of_extraction_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism projection-route canonical target is the same lifted
+project statement endpoint exposed by the dependency-projection layer.
+-/
+theorem canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections_to_project_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism projection route also discharges the explicit
+universe-indexed completion criterion through its canonical-completion payload.
+-/
+theorem canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    CompletionCriterionAtUniverse witness := by
+  rcases
+      canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies with
+    ⟨_target, criterion⟩
+  exact criterion witness
+
+/--
+The lifted-homeomorphism projection completion criterion projection is
+extracted from the named lifted projection canonical payload.
+-/
+theorem canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections
+      witness dependencies =
+      (by
+        rcases
+            canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+              dependencies with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism projection canonical criterion is the criterion
+projection of the lifted decomposition of the topology statement.
+-/
+theorem canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections
+      witness dependencies =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies dependencies) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+            witness
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the lifted certificate in the lifted-homeomorphism canonical
+criterion recovers the certified extraction-derivation projection canonical
+criterion.
+-/
+theorem canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections
+      witness dependencies =
+      canonical_completion_criterion_of_extraction_derivation_dependency_projections
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism projection-route canonical criterion is the same
+lifted project criterion endpoint exposed by the dependency-projection layer.
+-/
+theorem canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections_to_project_criterion_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections
+      witness dependencies =
+      completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened equation-boundary projection route also proves the canonical
 completion target payload.
 -/
@@ -14327,6 +14530,311 @@ theorem canonical_completion_criterion_of_equation_boundary_extraction_derivatio
     canonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections
         witness dependencies =
       completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism projection route also proves the
+canonical completion target payload.
+-/
+theorem canonical_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _target : canonicalCompletionTarget.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  canonical_completion_payload_of_poincare_completion_payload
+    (poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+      dependencies)
+
+/--
+The strengthened lifted-homeomorphism projection canonical payload is obtained
+by applying the canonical payload bridge to the named boundary lifted project
+payload.
+-/
+theorem canonical_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      canonical_completion_payload_of_poincare_completion_payload
+        (poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism projection canonical payload is the
+finite-extinction plus extractor/derivation route selected by the lifted
+decomposition of the forgetful topology statement.
+-/
+theorem canonical_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies
+                (dependencies_of_equation_boundary_dependencies
+                  dependencies)) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data in the strengthened lifted-homeomorphism
+canonical payload recovers the ordinary lifted dependency projection canonical
+payload.
+-/
+theorem canonical_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data through the remaining-dependency wrapper in
+the strengthened lifted-homeomorphism canonical payload recovers the ordinary
+lifted dependency projection canonical payload.
+-/
+theorem canonical_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_remaining_dependency_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the lifted certificate in the strengthened lifted-homeomorphism
+canonical payload recovers the strengthened certified extraction-derivation
+projection canonical payload.
+-/
+theorem canonical_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      canonical_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism projection route also proves the
+canonical completion target.
+-/
+theorem canonical_completion_target_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonicalCompletionTarget.{u} := by
+  rcases
+      canonical_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies with
+    ⟨target, _criterion⟩
+  exact target
+
+/--
+The strengthened lifted-homeomorphism projection canonical target is selected
+from the named boundary lifted projection canonical payload.
+-/
+theorem canonical_completion_target_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_target_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            canonical_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+              dependencies with
+          ⟨target, _criterion⟩
+        exact target) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism projection canonical target is the target
+projection of the lifted decomposition of the forgetful topology statement.
+-/
+theorem canonical_completion_target_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_target_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies
+                (dependencies_of_equation_boundary_dependencies
+                  dependencies)) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data in the strengthened lifted-homeomorphism
+canonical target recovers the ordinary lifted dependency projection canonical
+target.
+-/
+theorem canonical_completion_target_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_target_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data through the remaining-dependency wrapper in
+the strengthened lifted-homeomorphism canonical target recovers the ordinary
+lifted dependency projection canonical target.
+-/
+theorem canonical_completion_target_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_remaining_dependency_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_target_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the lifted certificate in the strengthened lifted-homeomorphism
+canonical target recovers the strengthened certified extraction-derivation
+projection canonical target.
+-/
+theorem canonical_completion_target_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_target_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      canonical_completion_target_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism projection-route canonical target is the
+same strengthened lifted project statement endpoint exposed by the
+dependency-projection layer.
+-/
+theorem canonical_completion_target_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_project_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_target_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism projection route also discharges the
+canonical universe-indexed completion criterion.
+-/
+theorem canonical_completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    CompletionCriterionAtUniverse witness := by
+  rcases
+      canonical_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies with
+    ⟨_target, criterion⟩
+  exact criterion witness
+
+/--
+The strengthened lifted-homeomorphism projection canonical criterion is
+selected from the named boundary lifted projection canonical payload.
+-/
+theorem canonical_completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        witness dependencies =
+      (by
+        rcases
+            canonical_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+              dependencies with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism projection canonical criterion is the
+criterion projection of the lifted decomposition of the forgetful topology
+statement.
+-/
+theorem canonical_completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        witness dependencies =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies
+                (dependencies_of_equation_boundary_dependencies
+                  dependencies)) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+            witness
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data in the strengthened lifted-homeomorphism
+canonical criterion recovers the ordinary lifted dependency projection
+canonical criterion.
+-/
+theorem canonical_completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_forgetful_dependencies_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        witness dependencies =
+      canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections
+        witness
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data through the remaining-dependency wrapper in
+the strengthened lifted-homeomorphism canonical criterion recovers the ordinary
+lifted dependency projection canonical criterion.
+-/
+theorem canonical_completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_remaining_dependency_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        witness dependencies =
+      canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections
+        witness
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the lifted certificate in the strengthened lifted-homeomorphism
+canonical criterion recovers the strengthened certified extraction-derivation
+projection canonical criterion.
+-/
+theorem canonical_completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        witness dependencies =
+      canonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism projection-route canonical criterion is
+the same strengthened lifted project criterion endpoint exposed by the
+dependency-projection layer.
+-/
+theorem canonical_completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_project_criterion_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        witness dependencies =
+      completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
         witness dependencies := by
   apply Subsingleton.elim
 
@@ -37581,6 +38089,73 @@ theorem completion_certificate_of_extraction_derivation_dependency_projections
   exact ⟨canonicalCompletionTheoremName, rfl, dependencies, target, criterion⟩
 
 /--
+A completed remaining-dependency package produces a completion certificate
+through the lifted-homeomorphism projection route.
+-/
+theorem completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareCompletionCertificate.{u} := by
+  rcases
+      canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies with
+    ⟨target, criterion⟩
+  exact ⟨canonicalCompletionTheoremName, rfl, dependencies, target, criterion⟩
+
+/--
+The lifted-homeomorphism projection certificate constructor is exactly the
+record built from the named lifted projection canonical payload.
+-/
+theorem completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases
+          canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+            dependencies with
+          ⟨target, criterion⟩
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, dependencies, target,
+            criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism projection certificate factors through the lifted
+decomposition of the dependency-level topology statement.
+-/
+theorem completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies dependencies) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        rcases
+          canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation with
+          ⟨target, criterion⟩
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, dependencies, target,
+            criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the lifted certificate in the lifted-homeomorphism projection
+certificate recovers the certified extraction-derivation projection
+certificate.
+-/
+theorem completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      completion_certificate_of_extraction_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened equation-boundary dependency projection route also produces a
 checked completion certificate directly from its canonical payload.
 -/
@@ -37779,6 +38354,112 @@ theorem completion_certificate_of_equation_boundary_extraction_derivation_depend
       completion_certificate_of_extraction_derivation_dependency_projections
         (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
           dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism equation-boundary dependency projection
+route also produces a checked completion certificate directly from its
+canonical payload.
+-/
+theorem completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareCompletionCertificate.{u} := by
+  rcases
+      canonical_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies with
+    ⟨target, criterion⟩
+  exact
+    ⟨canonicalCompletionTheoremName, rfl,
+      remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+        dependencies,
+      target, criterion⟩
+
+/--
+The strengthened lifted-homeomorphism equation-boundary projection certificate
+constructor is the record built from the named boundary lifted projection
+canonical payload.
+-/
+theorem completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            canonical_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+              dependencies with
+          ⟨target, criterion⟩
+        exact
+          ⟨canonicalCompletionTheoremName, rfl,
+            remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies,
+            target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism projection certificate factors through
+the lifted decomposition of the forgetful theorem-shaped topology statement.
+-/
+theorem completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies
+                (dependencies_of_equation_boundary_dependencies
+                  dependencies)) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        rcases
+          canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation with
+          ⟨target, criterion⟩
+        exact
+          ⟨canonicalCompletionTheoremName, rfl,
+            remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies,
+            target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data in the strengthened lifted projection
+certificate recovers the ordinary lifted dependency-projection certificate.
+-/
+theorem completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data through the remaining-dependency wrapper in
+the strengthened lifted projection certificate recovers the ordinary lifted
+dependency-projection certificate.
+-/
+theorem completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_remaining_dependency_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the lifted certificate in the strengthened lifted projection
+certificate recovers the strengthened certified extraction-derivation
+projection certificate.
+-/
+theorem completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies := by
   apply Subsingleton.elim
 
 /--
@@ -37999,6 +38680,117 @@ theorem canonical_completion_criterion_of_completion_certificate_of_equation_bou
   apply Subsingleton.elim
 
 /--
+Projecting ordinary aggregate dependencies from the strengthened lifted
+boundary projection certificate recovers the forgetful aggregate package.
+-/
+theorem poincareProofDependencies_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareProofDependencies_of_completion_certificate
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      dependencies_of_equation_boundary_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the remaining package from the strengthened lifted boundary
+projection certificate recovers the forgetful remaining package.
+-/
+theorem remaining_dependency_package_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    remaining_dependency_package_of_completion_certificate
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical payload from the strengthened lifted boundary
+projection certificate recovers the strengthened lifted boundary projection
+canonical payload.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      canonical_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project payload from the strengthened lifted boundary
+projection certificate recovers the strengthened lifted boundary projection
+project payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the target statement from the strengthened lifted boundary
+projection certificate recovers the strengthened lifted boundary projection
+target route.
+-/
+theorem target_statement_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    target_statement_of_completion_certificate
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical target from the strengthened lifted boundary
+projection certificate recovers the strengthened lifted boundary projection
+canonical target.
+-/
+theorem canonical_completion_target_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      canonical_completion_target_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the completion criterion from the strengthened lifted boundary
+projection certificate recovers the strengthened lifted boundary projection
+canonical criterion.
+-/
+theorem completion_criterion_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      canonical_completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical completion criterion from the strengthened lifted
+boundary projection certificate recovers the strengthened lifted boundary
+projection canonical criterion.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      canonical_completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
 The completion certificate is equivalent to the remaining dependency package when
 the certificate is reconstructed through the certified extraction-derivation
 aggregate route.
@@ -38026,6 +38818,25 @@ theorem poincareCompletionCertificate_iff_extraction_derivation_dependency_proje
     PoincareCompletionCertificate.{u} ↔ RemainingDependencyPackage.{u} :=
   ⟨remaining_dependency_package_of_completion_certificate,
     completion_certificate_of_extraction_derivation_dependency_projections⟩
+
+/--
+The completion certificate is equivalent to the remaining dependency package
+when reconstructed through the lifted-homeomorphism projection route.
+-/
+theorem poincareCompletionCertificate_iff_lifted_homeomorphism_derivation_dependency_projections :
+    PoincareCompletionCertificate.{u} ↔ RemainingDependencyPackage.{u} :=
+  ⟨remaining_dependency_package_of_completion_certificate,
+    completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections⟩
+
+/--
+The lifted-homeomorphism projection equivalence is the remaining-dependency
+projection paired with the lifted projection certificate constructor.
+-/
+theorem poincareCompletionCertificate_iff_lifted_homeomorphism_derivation_dependency_projections_eq :
+    poincareCompletionCertificate_iff_lifted_homeomorphism_derivation_dependency_projections =
+      ⟨remaining_dependency_package_of_completion_certificate,
+        completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections⟩ := by
+  apply Subsingleton.elim
 
 /--
 The strengthened remaining-package certificate is propositionally the
@@ -38063,6 +38874,20 @@ theorem completion_certificate_of_equation_boundary_remaining_dependency_package
     completion_certificate_of_equation_boundary_remaining_dependency_package
         dependencies =
       completion_certificate_of_extraction_derivation_dependency_projections
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package certificate is propositionally the
+lifted-homeomorphism projection-route certificate for the forgetful ordinary
+package.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_to_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
         (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
           dependencies) := by
   apply Subsingleton.elim
@@ -38125,6 +38950,49 @@ theorem poincareCompletionCertificate_iff_poincareProofDependencies_extraction_d
     completion_certificate_of_poincareProofDependencies_extraction_derivation_projections⟩
 
 /--
+The aggregate proof dependency package produces the checked completion
+certificate through the lifted-homeomorphism projection route.
+-/
+theorem completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+    (remainingDependencyPackage_iff_poincareProofDependencies.mpr dependencies)
+
+/--
+The aggregate lifted-homeomorphism projection certificate is the
+remaining-dependency lifted projection certificate after converting aggregate
+dependencies.
+-/
+theorem completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+      dependencies =
+      completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The completion certificate is equivalent to the aggregate proof dependency
+package through the lifted-homeomorphism projection route.
+-/
+theorem poincareCompletionCertificate_iff_poincareProofDependencies_lifted_homeomorphism_derivation_projections :
+    PoincareCompletionCertificate.{u} ↔ PoincareProofDependencies.{u} :=
+  ⟨poincareProofDependencies_of_completion_certificate,
+    completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections⟩
+
+/--
+The aggregate lifted-homeomorphism projection equivalence is the aggregate
+dependency projection paired with its lifted certificate constructor.
+-/
+theorem poincareCompletionCertificate_iff_poincareProofDependencies_lifted_homeomorphism_derivation_projections_eq :
+    poincareCompletionCertificate_iff_poincareProofDependencies_lifted_homeomorphism_derivation_projections =
+      ⟨poincareProofDependencies_of_completion_certificate,
+        completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections⟩ := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate equation-boundary certificate is propositionally the
 aggregate extraction-derivation certificate for the forgetful ordinary
 aggregate package.
@@ -38159,6 +39027,19 @@ theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_
     completion_certificate_of_poincareProofDependenciesWithEquationBoundary
         dependencies =
       completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate equation-boundary certificate is propositionally the
+lifted-homeomorphism projection-route certificate for the forgetful ordinary
+aggregate package.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_lifted_homeomorphism_derivation_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
         (dependencies_of_equation_boundary_dependencies dependencies) := by
   apply Subsingleton.elim
 
