@@ -469,6 +469,147 @@ theorem threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStat
   apply Subsingleton.elim
 
 /--
+The based loop-nullhomotopy obligation is enough to apply the project target
+statement to the standard sphere itself.
+-/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_basedLoopNullhomotopyStatement
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : PoincareConjectureStatement.{0}) :
+    Nonempty (ThreeSphere ≃ₜ ThreeSphere) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+  exact threeSphere_self_homeomorph_of_poincare_statement h
+
+/--
+The target-statement self route from based loop-nullhomotopy is exactly the
+existing self route after converting based loop-nullhomotopy to
+simple-connectedness.
+-/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : PoincareConjectureStatement.{0} =>
+        threeSphere_self_homeomorph_of_poincare_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+          threeSphere_self_homeomorph_of_poincare_statement h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/-- The based-loop target-statement self route agrees with the full-loop route. -/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_basedLoopNullhomotopyStatement_loop_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : PoincareConjectureStatement.{0} =>
+        threeSphere_self_homeomorph_of_poincare_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : PoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased)
+            h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/--
+The based loop-nullhomotopy obligation is enough to apply the smooth target
+statement to the standard sphere itself.
+-/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+  exact threeSphere_self_diffeomorph_of_smooth_statement h
+
+/--
+The smooth self-diffeomorphism route from based loop-nullhomotopy is exactly
+the existing smooth self route after converting based loop-nullhomotopy to
+simple-connectedness.
+-/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : SmoothPoincareConjectureStatement.{0} =>
+        threeSphere_self_diffeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+          threeSphere_self_diffeomorph_of_smooth_statement h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/-- The based-loop smooth self-diffeomorphism route agrees with the full-loop route. -/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement_loop_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : SmoothPoincareConjectureStatement.{0} =>
+        threeSphere_self_diffeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_diffeomorph_of_smooth_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased)
+            h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/--
+The smooth target plus the based loop-nullhomotopy obligation gives the
+topological self-homeomorphism after forgetting smooth structure.
+-/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    Nonempty (ThreeSphere ≃ₜ ThreeSphere) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+  exact threeSphere_self_homeomorph_of_smooth_statement h
+
+/--
+The smooth-to-topological self route from based loop-nullhomotopy is exactly
+the existing smooth-to-topological self route after converting based
+loop-nullhomotopy to simple-connectedness.
+-/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : SmoothPoincareConjectureStatement.{0} =>
+        threeSphere_self_homeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+          threeSphere_self_homeomorph_of_smooth_statement h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/-- The based-loop smooth-to-topological self route agrees with the full-loop route. -/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement_loop_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : SmoothPoincareConjectureStatement.{0} =>
+        threeSphere_self_homeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased)
+            h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/--
 The concrete path-homotopy obligation is enough to apply the project target
 statement to the standard sphere itself.
 -/
