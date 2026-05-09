@@ -288,6 +288,162 @@ theorem threeSphere_homotopy_prerequisites_eq
         threeSphere_connectedSpace, threeSphere_nonempty⟩ := by
   apply Subsingleton.elim
 
+set_option backward.isDefEq.respectTransparency false in
+/--
+In a path-connected space, it is enough to null-homotope the loops at one
+basepoint.  This is the change-of-basepoint reduction used to turn a
+fundamental-group computation at a chosen point into the loop formulation of
+simple-connectedness.
+-/
+theorem simplyConnectedSpace_iff_pathConnectedSpace_and_basedLoopNullhomotopy
+    {Y : Type u} [TopologicalSpace Y] (basepoint : Y) :
+    SimplyConnectedSpace Y ↔
+      PathConnectedSpace Y ∧
+        ∀ γ : Path basepoint basepoint,
+          Path.Homotopic γ (Path.refl basepoint) := by
+  open Path.Homotopic.Quotient in
+  constructor
+  · intro h
+    haveI : SimplyConnectedSpace Y := h
+    exact ⟨inferInstance,
+      fun γ => SimplyConnectedSpace.paths_homotopic γ (Path.refl basepoint)⟩
+  · intro h
+    rw [simply_connected_iff_loops_nullhomotopic]
+    refine ⟨h.1, ?_⟩
+    intro x γ
+    rw [← Path.Homotopic.Quotient.eq]
+    replace hbase : ∀ γ : Path basepoint basepoint,
+        (⟦γ⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+          ⟦Path.refl basepoint⟧ :=
+      fun γ => Quotient.sound (h.2 γ)
+    letI : PathConnectedSpace Y := h.1
+    let p : Path basepoint x := PathConnectedSpace.somePath basepoint x
+    have hp :
+        Path.Homotopic.Quotient.trans
+            (Path.Homotopic.Quotient.trans ⟦p⟧ ⟦γ⟧)
+            (Path.Homotopic.Quotient.symm ⟦p⟧) =
+          Path.Homotopic.Quotient.refl basepoint := by
+      simpa using hbase ((p.trans γ).trans p.symm)
+    calc ⟦γ⟧
+      _ =
+          Path.Homotopic.Quotient.trans
+            (Path.Homotopic.Quotient.trans
+              (Path.Homotopic.Quotient.symm ⟦p⟧)
+              (Path.Homotopic.Quotient.trans
+                (Path.Homotopic.Quotient.trans ⟦p⟧ ⟦γ⟧)
+                (Path.Homotopic.Quotient.symm ⟦p⟧)))
+            ⟦p⟧ := by
+        grind
+      _ =
+          Path.Homotopic.Quotient.trans
+            (Path.Homotopic.Quotient.trans
+              (Path.Homotopic.Quotient.symm ⟦p⟧)
+              (Path.Homotopic.Quotient.refl basepoint))
+            ⟦p⟧ := by
+        rw [hp]
+      _ = ⟦Path.refl x⟧ := by
+        simp
+
+/--
+The based-loop change-of-basepoint criterion exposes simple-connectedness as the
+based loop-nullhomotopy payload and reconstructs it with the same named
+criterion.
+-/
+theorem simplyConnectedSpace_iff_pathConnectedSpace_and_basedLoopNullhomotopy_eq
+    {Y : Type u} [TopologicalSpace Y] (basepoint : Y) :
+    simplyConnectedSpace_iff_pathConnectedSpace_and_basedLoopNullhomotopy basepoint =
+      ⟨fun h =>
+          letI : SimplyConnectedSpace Y := h
+          ⟨inferInstance,
+            fun γ => SimplyConnectedSpace.paths_homotopic γ (Path.refl basepoint)⟩,
+        fun h =>
+          (simplyConnectedSpace_iff_pathConnectedSpace_and_basedLoopNullhomotopy
+            basepoint).mpr h⟩ := by
+  apply Subsingleton.elim
+
+/--
+The based loop-nullhomotopy obligation for the standard 3-sphere at a chosen
+basepoint.
+-/
+def ThreeSphereBasedLoopNullhomotopyStatement (basepoint : ThreeSphere) : Prop :=
+  ∀ γ : Path basepoint basepoint, Path.Homotopic γ (Path.refl basepoint)
+
+/-- The based loop-nullhomotopy obligation expands to nullhomotopy at the chosen basepoint. -/
+theorem threeSphereBasedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    ThreeSphereBasedLoopNullhomotopyStatement basepoint =
+      (∀ γ : Path basepoint basepoint, Path.Homotopic γ (Path.refl basepoint)) :=
+  rfl
+
+/--
+For the standard sphere, simple-connectedness is equivalent to nullhomotopy of
+all loops at any chosen basepoint, because path-connectedness has already been
+proved.
+-/
+theorem threeSphere_simplyConnectedSpace_iff_basedLoopNullhomotopyStatement
+    (basepoint : ThreeSphere) :
+    SimplyConnectedSpace ThreeSphere ↔
+      ThreeSphereBasedLoopNullhomotopyStatement basepoint := by
+  rw [threeSphereBasedLoopNullhomotopyStatement_eq]
+  exact
+    ⟨fun h =>
+        ((simplyConnectedSpace_iff_pathConnectedSpace_and_basedLoopNullhomotopy
+          basepoint).mp h).2,
+      fun h =>
+        (simplyConnectedSpace_iff_pathConnectedSpace_and_basedLoopNullhomotopy
+          basepoint).mpr ⟨threeSphere_pathConnectedSpace, h⟩⟩
+
+/--
+The based-loop simple-connectedness reduction is the general change-of-basepoint
+criterion specialized with the named path-connectedness proof for `S^3`.
+-/
+theorem threeSphere_simplyConnectedSpace_iff_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    threeSphere_simplyConnectedSpace_iff_basedLoopNullhomotopyStatement basepoint =
+      ⟨fun h =>
+          ((simplyConnectedSpace_iff_pathConnectedSpace_and_basedLoopNullhomotopy
+            basepoint).mp h).2,
+        fun h =>
+          (simplyConnectedSpace_iff_pathConnectedSpace_and_basedLoopNullhomotopy
+            basepoint).mpr ⟨threeSphere_pathConnectedSpace, h⟩⟩ := by
+  apply Subsingleton.elim
+
+/-- A based loop-nullhomotopy proof supplies simple-connectedness of `S^3`. -/
+theorem threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement
+    {basepoint : ThreeSphere}
+    (h : ThreeSphereBasedLoopNullhomotopyStatement basepoint) :
+    SimplyConnectedSpace ThreeSphere :=
+  (threeSphere_simplyConnectedSpace_iff_basedLoopNullhomotopyStatement
+    basepoint).mpr h
+
+/-- The based-loop-to-simple-connectedness route is the reverse reduction projection. -/
+theorem threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement h) =
+      (threeSphere_simplyConnectedSpace_iff_basedLoopNullhomotopyStatement
+        basepoint).mpr := by
+  funext h
+  apply Subsingleton.elim
+
+/-- A supplied simple-connectedness instance gives based loop-nullhomotopy at any basepoint. -/
+theorem threeSphere_basedLoopNullhomotopyStatement_of_simplyConnectedSpace
+    (basepoint : ThreeSphere) [SimplyConnectedSpace ThreeSphere] :
+    ThreeSphereBasedLoopNullhomotopyStatement basepoint :=
+  (threeSphere_simplyConnectedSpace_iff_basedLoopNullhomotopyStatement
+    basepoint).mp inferInstance
+
+/--
+The simple-connectedness-to-based-loop route is the forward projection of the
+named based-loop criterion.
+-/
+theorem threeSphere_basedLoopNullhomotopyStatement_of_simplyConnectedSpace_eq
+    (basepoint : ThreeSphere) [SimplyConnectedSpace ThreeSphere] :
+    threeSphere_basedLoopNullhomotopyStatement_of_simplyConnectedSpace basepoint =
+      (threeSphere_simplyConnectedSpace_iff_basedLoopNullhomotopyStatement
+        basepoint).mp inferInstance := by
+  apply Subsingleton.elim
+
 /--
 The concrete loop-nullhomotopy obligation whose proof would supply
 `SimplyConnectedSpace ThreeSphere`.
@@ -351,6 +507,33 @@ theorem threeSphere_loopNullhomotopyStatement_of_simplyConnectedSpace_eq
     [SimplyConnectedSpace ThreeSphere] :
     threeSphere_loopNullhomotopyStatement_of_simplyConnectedSpace =
       threeSphere_simplyConnectedSpace_iff_loopNullhomotopyStatement.mp inferInstance := by
+  apply Subsingleton.elim
+
+/--
+Based loop-nullhomotopy at one chosen point supplies the full loop-nullhomotopy
+obligation for `S^3`.
+-/
+theorem threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement
+    {basepoint : ThreeSphere}
+    (h : ThreeSphereBasedLoopNullhomotopyStatement basepoint) :
+    ThreeSphereLoopNullhomotopyStatement := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement h
+  exact threeSphere_loopNullhomotopyStatement_of_simplyConnectedSpace
+
+/--
+The based-loop-to-full-loop route is simple-connectedness from the based loop
+criterion followed by the full loop criterion.
+-/
+theorem threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement h
+        threeSphere_loopNullhomotopyStatement_of_simplyConnectedSpace) := by
+  funext h
   apply Subsingleton.elim
 
 /--
