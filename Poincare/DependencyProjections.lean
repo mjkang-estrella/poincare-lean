@@ -10050,6 +10050,138 @@ theorem topology_extraction_derivation_payload_of_equation_boundary_dependencies
   apply Subsingleton.elim
 
 /--
+The strengthened dependency package supplies the simply-connected recognition
+substatement after forgetting equation-boundary data.
+-/
+theorem topology_simply_connected_recognition_statement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ExtinctionTopologySimplyConnectedRecognitionStatement M extinction :=
+  topology_simply_connected_recognition_statement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies) M extinction
+
+/--
+The strengthened simply-connected recognition statement is the ordinary
+dependency recognition statement of the forgetful package.
+-/
+theorem topology_simply_connected_recognition_statement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_simply_connected_recognition_statement_of_equation_boundary_dependencies
+        dependencies M extinction =
+      topology_simply_connected_recognition_statement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies)
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
+The strengthened simply-connected recognition statement agrees directly with
+the forgetful ordinary dependency route.
+-/
+theorem topology_simply_connected_recognition_statement_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_simply_connected_recognition_statement_of_equation_boundary_dependencies
+        dependencies M extinction =
+      topology_simply_connected_recognition_statement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies)
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
+The strengthened simply-connected recognition statement is projected from the
+forgetful theorem-shaped topology extraction statement.
+-/
+theorem topology_simply_connected_recognition_statement_of_equation_boundary_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_simply_connected_recognition_statement_of_equation_boundary_dependencies
+        dependencies M extinction =
+      topology_simply_connected_recognition_statement_of_extraction_statement
+        (topology_extraction_statement_of_dependencies
+          (dependencies_of_equation_boundary_dependencies dependencies))
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency package supplies the spherical trivial-quotient
+substatement after forgetting equation-boundary data.
+-/
+theorem topology_spherical_trivial_quotient_statement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ExtinctionTopologySphericalTrivialQuotientStatement M extinction :=
+  topology_spherical_trivial_quotient_statement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies) M extinction
+
+/--
+The strengthened spherical trivial-quotient statement is the ordinary
+dependency trivial-quotient statement of the forgetful package.
+-/
+theorem topology_spherical_trivial_quotient_statement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_trivial_quotient_statement_of_equation_boundary_dependencies
+        dependencies M extinction =
+      topology_spherical_trivial_quotient_statement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies)
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
+The strengthened spherical trivial-quotient statement agrees directly with the
+forgetful ordinary dependency route.
+-/
+theorem topology_spherical_trivial_quotient_statement_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_trivial_quotient_statement_of_equation_boundary_dependencies
+        dependencies M extinction =
+      topology_spherical_trivial_quotient_statement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies)
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
+The strengthened spherical trivial-quotient statement is projected from the
+forgetful theorem-shaped topology extraction statement.
+-/
+theorem topology_spherical_trivial_quotient_statement_of_equation_boundary_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_trivial_quotient_statement_of_equation_boundary_dependencies
+        dependencies M extinction =
+      topology_spherical_trivial_quotient_statement_of_extraction_statement
+        (topology_extraction_statement_of_dependencies
+          (dependencies_of_equation_boundary_dependencies dependencies))
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies the two theorem-shaped inputs consumed
 by the final finite-extinction/topology-extraction assembly theorem through the
 projection route.
