@@ -675,7 +675,7 @@ The current artifact is intentionally conservative:
   and
   `onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathQuotientSubsingletonStatement`,
   with compatibility contracts back to the standard-sphere loop/path/quotient
-  routes.
+  routes and to the compactification-local path/loop routes.
   The same layer now
   transports the `C^0` prerequisite payload to any source space already
   recognized as homeomorphic to the compactification model, transports
@@ -697,7 +697,8 @@ The current artifact is intentionally conservative:
   and
   `homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement`,
   tying the standard-sphere loop/path/quotient routes back to
-  compactification-local obligations. It also packages the
+  compactification-local obligations and pinning local quotient routes through
+  local path/loop contracts. It also packages the
   transported payload with an already supplied source `SimplyConnectedSpace` instance as
   `poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace`, and
   exposes local loop/path/quotient candidate routes
@@ -705,6 +706,8 @@ The current artifact is intentionally conservative:
   `poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement`,
   and
   `poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement`.
+  The local quotient candidate route is also tied back to the corresponding
+  local path and loop routes.
   For the compactification model itself,
   `onePoint_threeSpace_self_homeomorph` records the reflexive recognition
   endpoint, `onePoint_threeSpace_self_homeomorph_payload` pairs it with the

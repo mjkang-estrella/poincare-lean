@@ -120,7 +120,8 @@ obligations, and the standard-sphere/local path-quotient routes
 and
 `onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathQuotientSubsingletonStatement`
 do the same for quotient uniqueness, with compatibility contracts back to the
-standard-sphere loop/path/quotient routes.  The route
+standard-sphere loop/path/quotient routes and compactification-local path/loop
+routes.  The route
 `topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace`
 transports that payload to any source already recognized as homeomorphic to the
 compactification model, while
@@ -237,7 +238,8 @@ obligation through its direct simple-connectedness route, with compatibility
 contracts tying those direct routes back to the loop-nullhomotopy routes; they
 also accept the concrete path-quotient obligation through its direct
 simple-connectedness route, with compatibility contracts tying those quotient
-routes back to both the path-homotopy and loop-nullhomotopy routes.
+routes back to both the path-homotopy and loop-nullhomotopy routes, including
+the compactification-local source and candidate routes.
 
 The statement layer also now names `threeSphere_t2Space`,
 `threeSphere_compactSpace`, `threeSphere_chartedSpace`,
