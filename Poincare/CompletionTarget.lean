@@ -46702,6 +46702,167 @@ theorem completion_certificate_of_project_statement_payload_of_extraction_deriva
         dependencies := by
   apply Subsingleton.elim
 
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_project_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        PoincareConjectureStatement.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_project_statement_payload payload)) =
+      completion_certificate_of_project_statement_payload payload :=
+  completion_certificate_of_project_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_project_statement_payload payload)
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_remaining_dependency_component_requirements_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_remaining_dependency_component_requirements
+          dependencies)) =
+      completion_certificate_of_remaining_dependency_component_requirements
+        dependencies :=
+  completion_certificate_of_project_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_remaining_dependency_component_requirements
+      dependencies)
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_remaining_dependency_package_layer_requirements_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_remaining_dependency_package_layer_requirements
+          dependencies)) =
+      completion_certificate_of_remaining_dependency_package_layer_requirements
+        dependencies :=
+  completion_certificate_of_project_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_remaining_dependency_package_layer_requirements
+      dependencies)
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_remaining_dependency_milestone_requirements_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_remaining_dependency_milestone_requirements
+          dependencies)) =
+      completion_certificate_of_remaining_dependency_milestone_requirements
+        dependencies :=
+  completion_certificate_of_project_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_remaining_dependency_milestone_requirements
+      dependencies)
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements
+          dependencies)) =
+      completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements
+        dependencies :=
+  completion_certificate_of_project_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements
+      dependencies)
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements
+          dependencies)) =
+      completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements
+        dependencies :=
+  completion_certificate_of_project_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements
+      dependencies)
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements
+          dependencies)) =
+      completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements
+        dependencies :=
+  completion_certificate_of_project_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements
+      dependencies)
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_aggregate_extraction_derivation_dependencies_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_aggregate_extraction_derivation_dependencies
+          dependencies)) =
+      completion_certificate_of_aggregate_extraction_derivation_dependencies
+        dependencies :=
+  completion_certificate_of_project_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_aggregate_extraction_derivation_dependencies
+      dependencies)
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_dependency_projections dependencies)) =
+      completion_certificate_of_dependency_projections dependencies :=
+  completion_certificate_of_project_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_dependency_projections dependencies)
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_dependency_projections_to_topology_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_dependency_projections dependencies)) =
+      completion_certificate_of_dependency_projections dependencies :=
+  completion_certificate_of_project_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_dependency_projections dependencies)
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_dependency_projections_to_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_dependency_projections dependencies)) =
+      completion_certificate_of_dependency_projections dependencies :=
+  completion_certificate_of_project_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_dependency_projections dependencies)
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_extraction_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_extraction_derivation_dependency_projections
+          dependencies)) =
+      completion_certificate_of_extraction_derivation_dependency_projections
+        dependencies :=
+  completion_certificate_of_project_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_extraction_derivation_dependency_projections
+      dependencies)
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_extraction_derivation_dependency_projections
+          dependencies)) =
+      completion_certificate_of_extraction_derivation_dependency_projections
+        dependencies :=
+  completion_certificate_of_project_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_extraction_derivation_dependency_projections
+      dependencies)
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_extraction_derivation_dependency_projections_to_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_extraction_derivation_dependency_projections
+          dependencies)) =
+      completion_certificate_of_extraction_derivation_dependency_projections
+        dependencies :=
+  completion_certificate_of_project_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_extraction_derivation_dependency_projections
+      dependencies)
+
 theorem completion_certificate_of_project_statement_payload_of_poincareProofDependencies_component_requirements_eq
     (dependencies : PoincareProofDependencies.{u}) :
     completion_certificate_of_project_statement_payload
