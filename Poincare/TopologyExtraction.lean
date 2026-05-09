@@ -1907,6 +1907,59 @@ theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_
   apply Subsingleton.elim
 
 /--
+The concrete path-quotient obligation for `ThreeSphere` supplies the full
+source homotopy/manifold prerequisite payload for any source recognized as the
+one-point compactification model.
+-/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement hQuot
+  exact homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h
+
+/--
+The standard-sphere quotient source prerequisite route is the full source
+payload after converting quotient uniqueness to standard-sphere
+simple-connectedness.
+-/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      (by
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement hQuot
+        exact homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h) := by
+  apply Subsingleton.elim
+
+/--
+The direct standard-sphere quotient source route agrees with the
+standard-sphere path-homotopy-mediated route.
+-/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement_path_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement
+        (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot) h := by
+  apply Subsingleton.elim
+
+/--
 The compactification model's own loop-nullhomotopy obligation supplies
 simple-connectedness for any source recognized as the compactification model.
 -/
@@ -1971,6 +2024,45 @@ theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPat
       hPath h =
       simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
         (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h := by
+  apply Subsingleton.elim
+
+/--
+The compactification model's own path-quotient obligation supplies
+simple-connectedness for any source recognized as the compactification model.
+-/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    SimplyConnectedSpace M := by
+  rcases h with ⟨e⟩
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_pathQuotientSubsingletonStatement hQuot
+  exact e.toHomotopyEquiv.simplyConnectedSpace
+
+/-- Source simple-connectedness follows by compactification recognition and local quotient uniqueness. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement
+      hQuot h =
+      (by
+        rcases h with ⟨e⟩
+        letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_simplyConnectedSpace_of_pathQuotientSubsingletonStatement hQuot
+        exact e.toHomotopyEquiv.simplyConnectedSpace) := by
+  apply Subsingleton.elim
+
+/-- The local quotient route to source simple-connectedness agrees with the local path route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement_path_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement
+      hQuot h =
+      simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement
+        (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot) h := by
   apply Subsingleton.elim
 
 /--
@@ -2090,6 +2182,70 @@ theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_
   apply Subsingleton.elim
 
 /--
+The compactification model's own path-quotient obligation supplies the full
+source homotopy/manifold prerequisite payload for any source recognized as the
+one-point compactification model.
+-/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  rcases topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h with
+    ⟨t2, charted, compact, topological, path, locPath, connected, nonempty⟩
+  exact ⟨t2, charted,
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement
+      hQuot h,
+    compact, topological, path, locPath, connected, nonempty⟩
+
+/-- The local quotient source prerequisite route is compactification transport plus local simple-connectedness. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement
+      hQuot h =
+      (by
+        rcases topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h with
+          ⟨t2, charted, compact, topological, path, locPath, connected, nonempty⟩
+        exact ⟨t2, charted,
+          simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement
+            hQuot h,
+          compact, topological, path, locPath, connected, nonempty⟩) := by
+  apply Subsingleton.elim
+
+/-- The local compactification quotient source route agrees with the local path source route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement_path_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement
+      hQuot h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement
+        (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot) h := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere quotient source route agrees with the local compactification-quotient route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement_onePoint_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement
+        (onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement
+          hQuot) h := by
+  apply Subsingleton.elim
+
+/--
 A simply connected space recognized as the one-point compactification model
 inherits the transported compactification prerequisite payload together with
 the given simple-connectedness instance.
@@ -2194,6 +2350,48 @@ theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of
       hPath h =
       poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
         (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h := by
+  apply Subsingleton.elim
+
+/--
+The compactification model's own path-quotient obligation packages any
+recognized source as a Poincare-candidate prerequisite payload.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M :=
+  homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement
+    hQuot h
+
+/-- The local quotient candidate route is the local quotient source-prerequisite route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement
+      hQuot h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement
+        hQuot h := by
+  apply Subsingleton.elim
+
+/-- The local quotient candidate route agrees with the local path candidate route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement_path_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement
+      hQuot h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement
+        (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot) h := by
   apply Subsingleton.elim
 
 /-- The one-point compactification model is homeomorphic to itself. -/
@@ -2328,6 +2526,43 @@ theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotop
     poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement hPath =
       poincare_candidate_prerequisites_of_onePoint_threeSpace_self_loopNullhomotopyStatement
         (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) := by
+  apply Subsingleton.elim
+
+/--
+The compactification model becomes a local Poincare-candidate payload from its
+own path-quotient obligation and reflexive self-recognition.
+-/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathQuotientSubsingletonStatement
+    (hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement) :
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+  poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement
+    hQuot onePoint_threeSpace_self_homeomorph
+
+/-- The compactification self quotient-candidate route is the general local-quotient route at reflexivity. -/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathQuotientSubsingletonStatement_eq
+    (hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement) :
+    poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathQuotientSubsingletonStatement
+      hQuot =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement
+        hQuot onePoint_threeSpace_self_homeomorph := by
+  apply Subsingleton.elim
+
+/-- The compactification self quotient-candidate route agrees with the self path-candidate route. -/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathQuotientSubsingletonStatement_path_route_eq
+    (hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement) :
+    poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathQuotientSubsingletonStatement
+      hQuot =
+      poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement
+        (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot) := by
   apply Subsingleton.elim
 
 /--

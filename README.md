@@ -683,30 +683,35 @@ The current artifact is intentionally conservative:
   `homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace` under
   the standard-sphere simple-connectedness input; the loop-nullhomotopy variant
   `homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement`
-  uses the concrete homotopy obligation instead, and the path-homotopy source
-  route is tied back to that loop route. It also adds local compactification
+  uses the concrete homotopy obligation instead, while the path-homotopy and
+  path-quotient source routes are tied back to mediated path/loop routes. It
+  also adds local compactification
   source routes
   `simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement`,
   `simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement`,
+  `simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement`,
   `homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement`,
-  and
   `homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement`,
-  tying the standard-sphere loop/path routes back to compactification-local
-  loop/path obligations. It also packages the
+  and
+  `homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement`,
+  tying the standard-sphere loop/path/quotient routes back to
+  compactification-local obligations. It also packages the
   transported payload with an already supplied source `SimplyConnectedSpace` instance as
   `poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace`, and
-  exposes local loop/path candidate routes
-  `poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement`
+  exposes local loop/path/quotient candidate routes
+  `poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement`,
+  `poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement`,
   and
-  `poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement`.
+  `poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement`.
   For the compactification model itself,
   `onePoint_threeSpace_self_homeomorph` records the reflexive recognition
   endpoint, `onePoint_threeSpace_self_homeomorph_payload` pairs it with the
   named compactification `C^0` manifold prerequisite payload, and the self
-  loop/path routes
-  `poincare_candidate_prerequisites_of_onePoint_threeSpace_self_loopNullhomotopyStatement`
+  loop/path/quotient routes
+  `poincare_candidate_prerequisites_of_onePoint_threeSpace_self_loopNullhomotopyStatement`,
+  `poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement`,
   and
-  `poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement`
+  `poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathQuotientSubsingletonStatement`
   package the model as a local Poincare candidate from compactification-local
   homotopy obligations.
   Universal compactification recognition now has an explicit model self-case:
