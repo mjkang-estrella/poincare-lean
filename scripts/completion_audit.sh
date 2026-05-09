@@ -161,7 +161,7 @@ check_decl() {
   fi
 }
 
-check_theorem_name_payload_route_parity() {
+check_payload_route_parity() {
   route_parity_dir=$(mktemp -d)
   awk '/^theorem / {print $2}' \
     Poincare/CompletionTarget.lean Poincare/CanonicalBridges.lean \
@@ -171,18 +171,43 @@ check_theorem_name_payload_route_parity() {
   for family in literal canonical_statement aggregate_canonical_statement aggregate_dependency project_statement; do
     sed -n "s/^poincareCompletionCertificate_${family}_payload_of_completion_certificate_of_\\(.*\\)_eq$/\\1/p" \
       "$route_parity_dir/theorems" | sort -u > "$route_parity_dir/${family}.routes"
-    missing=$(comm -13 "$route_parity_dir/theoremName.routes" "$route_parity_dir/${family}.routes")
-    if [ -n "$missing" ]; then
+    missing_theorem_name=$(comm -13 "$route_parity_dir/theoremName.routes" "$route_parity_dir/${family}.routes")
+    missing_family=$(comm -23 "$route_parity_dir/theoremName.routes" "$route_parity_dir/${family}.routes")
+    {
+      sed -n "s/^completion_certificate_of_${family}_payload_of_\\(.*\\)_eq$/\\1/p" \
+        "$route_parity_dir/theorems"
+      sed -n "s/^completion_certificate_of_${family}_payload_of_completion_certificate_of_\\(.*\\)_eq$/\\1/p" \
+        "$route_parity_dir/theorems"
+    } | sort -u > "$route_parity_dir/${family}.constructor.routes"
+    missing_constructor=$(comm -23 "$route_parity_dir/${family}.routes" "$route_parity_dir/${family}.constructor.routes")
+
+    if [ -n "$missing_theorem_name" ]; then
       echo "FAIL: $family payload routes without theorem-name payload counterparts"
-      printf '%s\n' "$missing"
+      printf '%s\n' "$missing_theorem_name"
       status=1
     else
       echo "PASS: $family payload routes have theorem-name payload counterparts"
     fi
+
+    if [ -n "$missing_family" ]; then
+      echo "FAIL: theorem-name payload routes without $family payload counterparts"
+      printf '%s\n' "$missing_family"
+      status=1
+    else
+      echo "PASS: theorem-name payload routes have $family payload counterparts"
+    fi
+
+    if [ -n "$missing_constructor" ]; then
+      echo "FAIL: $family payload projection routes without constructor counterparts"
+      printf '%s\n' "$missing_constructor"
+      status=1
+    else
+      echo "PASS: $family payload projection routes have constructor counterparts"
+    fi
   done
 }
 
-check_theorem_name_payload_route_parity
+check_payload_route_parity
 
 check_decl "Ricci tensor interface is declared" \
   '^inductive IsRicciTensorOf\b' Poincare/RicciFlow.lean
