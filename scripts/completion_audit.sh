@@ -8966,6 +8966,8 @@ check_decl "boundary-aware verification certificate dependent verification proje
   '^theorem equation_boundary_verification_payload_for_completion_certificate_with_equation_boundary_verification_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate dependent verification projected dependency route is declared" \
   '^theorem equation_boundary_verification_payload_for_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "boundary-aware verification certificate dependent verification remaining-dependency route is declared" \
+  '^theorem equation_boundary_verification_payload_for_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate dependent verification boundary-certificate route is declared" \
   '^theorem equation_boundary_verification_payload_for_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate existential verification projected dependency payload route is declared" \
@@ -8976,12 +8978,16 @@ check_decl "boundary-aware verification certificate equation-boundary package di
   '^theorem ricci_flow_equation_boundary_packages_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate equation-boundary package projected dependency route is declared" \
   '^theorem ricci_flow_equation_boundary_packages_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "boundary-aware verification certificate equation-boundary package remaining-dependency route is declared" \
+  '^theorem ricci_flow_equation_boundary_packages_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate equation-boundary package boundary-certificate route is declared" \
   '^theorem ricci_flow_equation_boundary_packages_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate derivative payload direct verification route is declared" \
   '^theorem equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate derivative payload projected dependency route is declared" \
   '^theorem equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "boundary-aware verification certificate derivative payload remaining-dependency route is declared" \
+  '^theorem equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate derivative payload boundary-certificate route is declared" \
   '^theorem equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate derivative payload surgery-derivative route is declared" \
@@ -8990,6 +8996,8 @@ check_decl "boundary-aware verification certificate pointwise equation direct ve
   '^theorem equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate pointwise equation projected dependency route is declared" \
   '^theorem equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "boundary-aware verification certificate pointwise equation remaining-dependency route is declared" \
+  '^theorem equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate pointwise equation boundary-certificate route is declared" \
   '^theorem equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate pointwise equation surgery-derivative route is declared" \
@@ -9002,6 +9010,8 @@ check_decl "boundary-aware verification certificate direct pointwise direct veri
   '^theorem equation_boundary_direct_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate direct pointwise projected dependency route is declared" \
   '^theorem equation_boundary_direct_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "boundary-aware verification certificate direct pointwise remaining-dependency route is declared" \
+  '^theorem equation_boundary_direct_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate direct pointwise boundary-certificate route is declared" \
   '^theorem equation_boundary_direct_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate direct pointwise surgery pointwise route is declared" \
@@ -9014,6 +9024,8 @@ check_decl "boundary-aware verification certificate surgery derivative payload d
   '^theorem surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate surgery derivative payload projected dependency route is declared" \
   '^theorem surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "boundary-aware verification certificate surgery derivative payload remaining-dependency route is declared" \
+  '^theorem surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate surgery derivative payload boundary-certificate route is declared" \
   '^theorem surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate surgery package boundary payload theorem is declared" \
@@ -9024,6 +9036,8 @@ check_decl "boundary-aware verification certificate surgery package boundary pay
   '^theorem surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate surgery package boundary payload projected dependency route is declared" \
   '^theorem surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "boundary-aware verification certificate surgery package boundary payload remaining-dependency route is declared" \
+  '^theorem surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate surgery package boundary payload boundary-certificate route is declared" \
   '^theorem surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate surgery package boundary payload surgery-derivative route is declared" \
@@ -9036,6 +9050,8 @@ check_decl "boundary-aware verification certificate analytic equation-boundary d
   '^theorem analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate analytic equation-boundary projected dependency route is declared" \
   '^theorem analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "boundary-aware verification certificate analytic equation-boundary remaining-dependency route is declared" \
+  '^theorem analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate analytic equation-boundary boundary-certificate route is declared" \
   '^theorem analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate analytic equation-boundary surgery-derivative route is declared" \
@@ -9052,6 +9068,8 @@ check_decl "boundary-aware verification certificate finite-extinction direct ver
   '^theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate finite-extinction projected dependency route is declared" \
   '^theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "boundary-aware verification certificate finite-extinction remaining-dependency route is declared" \
+  '^theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate finite-extinction boundary-certificate route is declared" \
   '^theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate finite-extinction pointwise route is declared" \
@@ -9114,6 +9132,8 @@ check_decl "boundary-aware verification certificate surgery pointwise payload di
   '^theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate surgery pointwise payload projected dependency route is declared" \
   '^theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "boundary-aware verification certificate surgery pointwise payload remaining-dependency route is declared" \
+  '^theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate surgery pointwise payload boundary certificate route is declared" \
   '^theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate surgery pointwise payload direct-pointwise route is declared" \
