@@ -681,6 +681,28 @@ theorem completion_certificate_of_canonical_statement_payload_of_completion_cert
   apply Subsingleton.elim
 
 /--
+The canonical-statement payload constructor also recovers the certificate built
+from any canonical-statement payload after projecting that payload back out.
+-/
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_canonical_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        RemainingDependencyPackage.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_canonical_statement_payload payload)) =
+      completion_certificate_of_canonical_statement_payload payload :=
+  completion_certificate_of_canonical_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_canonical_statement_payload payload)
+
+/--
 Projecting the aggregate canonical-statement payload from a certificate
 reconstructed from that payload returns the original payload.
 -/
@@ -712,6 +734,32 @@ theorem completion_certificate_of_aggregate_canonical_statement_payload_of_compl
         certificate) =
       certificate := by
   apply Subsingleton.elim
+
+/--
+The aggregate canonical-statement payload constructor also recovers the
+certificate built from any aggregate canonical-statement payload after
+projecting that payload back out.
+-/
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_aggregate_canonical_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_aggregate_canonical_statement_payload
+          payload)) =
+      completion_certificate_of_aggregate_canonical_statement_payload
+        payload :=
+  completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_aggregate_canonical_statement_payload
+      payload)
 
 /--
 Projecting the dependency package from a remaining-dependency canonical
@@ -16551,6 +16599,86 @@ theorem completion_certificate_of_aggregate_canonical_statement_payload_of_poinc
         (poincare_target_payload_of_equation_boundary_dependencies
           dependencies) := by
   apply Subsingleton.elim
+
+/--
+The named canonical-statement payload reconstruction route also records the
+boundary-preserving extraction-derivation target-payload remaining-package
+certificate as the boundary-target-payload certificate.
+-/
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_boundary_target_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+          dependencies
+          (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+            dependencies))) =
+      completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies) :=
+  completion_certificate_of_canonical_statement_payload_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_boundary_target_payload_eq
+    dependencies
+
+/--
+The named canonical-statement payload reconstruction route also records the
+aggregate boundary-preserving extraction-derivation target-payload certificate
+as the aggregate boundary-target-payload certificate.
+-/
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_boundary_target_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+          dependencies
+          (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+            dependencies))) =
+      completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies) :=
+  completion_certificate_of_canonical_statement_payload_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_boundary_target_payload_eq
+    dependencies
+
+/--
+The named aggregate canonical-statement payload reconstruction route also
+records the boundary-preserving extraction-derivation target-payload
+remaining-package certificate as the boundary-target-payload certificate.
+-/
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_boundary_target_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+          dependencies
+          (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+            dependencies))) =
+      completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies) :=
+  completion_certificate_of_aggregate_canonical_statement_payload_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_boundary_target_payload_eq
+    dependencies
+
+/--
+The named aggregate canonical-statement payload reconstruction route also
+records the aggregate boundary-preserving extraction-derivation target-payload
+certificate as the aggregate boundary-target-payload certificate.
+-/
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_boundary_target_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+          dependencies
+          (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+            dependencies))) =
+      completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies) :=
+  completion_certificate_of_aggregate_canonical_statement_payload_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_boundary_target_payload_eq
+    dependencies
 
 /--
 A boundary-aware verification-payload certificate exposes the canonical

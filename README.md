@@ -182,6 +182,8 @@ The current artifact is intentionally conservative:
   payloads projected out of the aggregate proof-dependency route certificates.
   The same round-trip contracts are now pinned for remaining-dependency and
   generic dependency-projection route certificates.
+  The final self-payload and boundary target-payload reconstruction aliases are
+  also named and audited.
 - `Poincare/RicciFlow.lean` defines a minimal typed API for time-dependent
   Riemannian metrics, candidate Ricci tensor fields, Ricci-identification
   evidence, and the Ricci-flow equation interface. It also exposes checked
