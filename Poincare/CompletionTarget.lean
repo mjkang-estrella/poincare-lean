@@ -49133,6 +49133,24 @@ theorem canonical_completion_criterion_of_completion_certificate_of_poincareProo
             extractSphere derivation) := by
   apply Subsingleton.elim
 
+theorem canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target
+        dependencies) =
+      canonical_completion_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem poincare_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target
+        dependencies) =
+      poincare_completion_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
+        dependencies := by
+  apply Subsingleton.elim
+
 theorem target_statement_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_eq
     (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
     target_statement_of_completion_certificate
@@ -49199,6 +49217,24 @@ theorem completion_criterion_of_completion_certificate_of_equation_boundary_rema
         witness dependencies := by
   apply Subsingleton.elim
 
+theorem canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement
+        dependencies) =
+      canonical_completion_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem poincare_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement
+        dependencies) =
+      poincare_completion_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
+        dependencies := by
+  apply Subsingleton.elim
+
 theorem canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_eq
     (witness : Type u)
     (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
@@ -49237,6 +49273,26 @@ theorem completion_criterion_of_completion_certificate_of_equation_boundary_rema
         sourceWitness dependencies) =
       completion_criterion_of_equation_boundary_remaining_dependency_package_extraction_derivation
         witness dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_eq
+    (sourceWitness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion
+        sourceWitness dependencies) =
+      canonical_completion_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem poincare_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_eq
+    (sourceWitness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion
+        sourceWitness dependencies) =
+      poincare_completion_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation
+        dependencies := by
   apply Subsingleton.elim
 
 theorem canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_eq
@@ -49439,6 +49495,24 @@ theorem canonical_completion_criterion_of_completion_certificate_of_equation_bou
           dependencies) := by
   apply Subsingleton.elim
 
+theorem canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target
+        dependencies) =
+      canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target
+        dependencies) =
+      poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        dependencies := by
+  apply Subsingleton.elim
+
 theorem target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_eq
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     target_statement_of_completion_certificate
@@ -49505,6 +49579,24 @@ theorem completion_criterion_of_completion_certificate_of_poincareProofDependenc
         witness dependencies := by
   apply Subsingleton.elim
 
+theorem canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement
+        dependencies) =
+      canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement
+        dependencies) =
+      poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        dependencies := by
+  apply Subsingleton.elim
+
 theorem canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_eq
     (witness : Type u)
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
@@ -49543,6 +49635,26 @@ theorem completion_criterion_of_completion_certificate_of_poincareProofDependenc
         sourceWitness dependencies) =
       completion_criterion_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
         witness dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_eq
+    (sourceWitness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion
+        sourceWitness dependencies) =
+      canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_eq
+    (sourceWitness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion
+        sourceWitness dependencies) =
+      poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        dependencies := by
   apply Subsingleton.elim
 
 theorem canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_eq
