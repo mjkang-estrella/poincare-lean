@@ -1567,6 +1567,56 @@ theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyS
   apply Subsingleton.elim
 
 /--
+The standard sphere's based loop-nullhomotopy obligation supplies the full
+compactification homotopy/manifold prerequisite payload.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement
+    {basepoint : ThreeSphere}
+    (h : ThreeSphereBasedLoopNullhomotopyStatement basepoint) :
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement h
+  exact onePoint_threeSpace_homotopy_manifold_prerequisites
+
+/--
+The standard based-loop compactification prerequisite route is the full payload
+after converting based loop-nullhomotopy to standard-sphere simple-connectedness.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement h) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement h
+        onePoint_threeSpace_homotopy_manifold_prerequisites) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The standard based-loop compactification prerequisite route agrees with the
+route that first expands based loop-nullhomotopy to the full loop obligation.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement_loop_route_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement h) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The concrete path-homotopy obligation for `ThreeSphere` supplies the full
 compactification homotopy/manifold prerequisite payload.
 -/
@@ -1642,6 +1692,57 @@ theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointLoopNullh
           onePoint_threeSpace_compactSpace, onePoint_threeSpace_topologicalManifold,
           onePoint_threeSpace_pathConnectedSpace, onePoint_threeSpace_locPathConnectedSpace,
           onePoint_threeSpace_connectedSpace, onePoint_threeSpace_nonempty⟩) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The compactification model's own based loop-nullhomotopy obligation directly
+supplies the full compactification homotopy/manifold prerequisite payload.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointBasedLoopNullhomotopyStatement
+    {basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))}
+    (h : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint) :
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  exact ⟨onePoint_threeSpace_t2Space, onePoint_threeSpace_chartedSpace,
+    onePoint_threeSpace_simplyConnectedSpace_of_basedLoopNullhomotopyStatement h,
+    onePoint_threeSpace_compactSpace, onePoint_threeSpace_topologicalManifold,
+    onePoint_threeSpace_pathConnectedSpace, onePoint_threeSpace_locPathConnectedSpace,
+    onePoint_threeSpace_connectedSpace, onePoint_threeSpace_nonempty⟩
+
+/-- The compactification based-loop payload route uses the local based-loop criterion. -/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointBasedLoopNullhomotopyStatement_eq
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    (fun h : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+      onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointBasedLoopNullhomotopyStatement h) =
+      (fun h : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+        ⟨onePoint_threeSpace_t2Space, onePoint_threeSpace_chartedSpace,
+          onePoint_threeSpace_simplyConnectedSpace_of_basedLoopNullhomotopyStatement h,
+          onePoint_threeSpace_compactSpace, onePoint_threeSpace_topologicalManifold,
+          onePoint_threeSpace_pathConnectedSpace, onePoint_threeSpace_locPathConnectedSpace,
+          onePoint_threeSpace_connectedSpace, onePoint_threeSpace_nonempty⟩) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The compactification based-loop payload route agrees with the route that first
+expands to the full compactification loop obligation.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointBasedLoopNullhomotopyStatement_loop_route_eq
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    (fun h : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+      onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointBasedLoopNullhomotopyStatement h) =
+      (fun h : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointLoopNullhomotopyStatement
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h)) := by
   funext h
   apply Subsingleton.elim
 

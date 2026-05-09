@@ -875,6 +875,103 @@ theorem threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement_eq :
   apply Subsingleton.elim
 
 /--
+The based loop-nullhomotopy obligation supplies the full target prerequisite
+payload for applying the project statement to the standard sphere.
+-/
+theorem threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement
+    {basepoint : ThreeSphere}
+    (h : ThreeSphereBasedLoopNullhomotopyStatement basepoint) :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement h
+  exact threeSphere_target_prerequisites
+
+/--
+The based-loop target-prerequisite route is exactly the full target payload
+after converting based loop-nullhomotopy to simple-connectedness.
+-/
+theorem threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement h) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement h
+        threeSphere_target_prerequisites) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The based loop-nullhomotopy obligation also supplies the full homotopy-oriented
+prerequisite payload for the standard sphere.
+-/
+theorem threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement
+    {basepoint : ThreeSphere}
+    (h : ThreeSphereBasedLoopNullhomotopyStatement basepoint) :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement h
+  exact threeSphere_homotopy_prerequisites
+
+/--
+The based-loop homotopy-prerequisite route is exactly the full homotopy payload
+after converting based loop-nullhomotopy to simple-connectedness.
+-/
+theorem threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement h) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement h
+        threeSphere_homotopy_prerequisites) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The direct based-loop target-prerequisite route agrees with the route that
+first expands based loop-nullhomotopy to the full loop obligation.
+-/
+theorem threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_loop_route_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement h) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        threeSphere_target_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The direct based-loop homotopy-prerequisite route agrees with the route that
+first expands based loop-nullhomotopy to the full loop obligation.
+-/
+theorem threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_loop_route_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement h) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The concrete path-homotopy obligation supplies the full target prerequisite
 payload by converting path-homotopy directly to simple-connectedness.
 -/
