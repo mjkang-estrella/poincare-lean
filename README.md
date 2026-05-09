@@ -42,6 +42,10 @@ The current artifact is intentionally conservative:
   loop-nullhomotopy obligation, and direct feeds into those standard-sphere
   prerequisite payloads; compatibility contracts pin those direct feeds to the
   corresponding loop-nullhomotopy-mediated routes.
+  The `ThreeSpherePathQuotientSubsingletonStatement` variant packages the same
+  gap as subsingleton path-homotopy quotients between every pair of points and
+  pins its equivalence with path-homotopy uniqueness plus its prerequisite
+  payload routes.
 - `Poincare/Milestones.lean` and `DEPENDENCY_LEDGER.md` name the missing
   Ricci-flow and topology proof obligations as data, not as proved
   propositions.

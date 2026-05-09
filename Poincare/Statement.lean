@@ -481,6 +481,154 @@ theorem threeSphere_pathHomotopyStatement_iff_loopNullhomotopyStatement_eq :
   apply Subsingleton.elim
 
 /--
+The fundamental-groupoid quotient uniqueness obligation whose proof would also
+supply `SimplyConnectedSpace ThreeSphere`.
+-/
+def ThreeSpherePathQuotientSubsingletonStatement : Prop :=
+  ∀ x y : ThreeSphere, Subsingleton (Path.Homotopic.Quotient x y)
+
+/--
+The quotient uniqueness obligation expands to subsingleton path-homotopy
+quotients between every pair of points in the standard sphere.
+-/
+theorem threeSpherePathQuotientSubsingletonStatement_eq :
+    ThreeSpherePathQuotientSubsingletonStatement =
+      (∀ x y : ThreeSphere, Subsingleton (Path.Homotopic.Quotient x y)) :=
+  rfl
+
+/--
+For the standard sphere, simple-connectedness is equivalent to uniqueness of
+path-homotopy quotients because path-connectedness has already been proved.
+-/
+theorem threeSphere_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement :
+    SimplyConnectedSpace ThreeSphere ↔
+      ThreeSpherePathQuotientSubsingletonStatement := by
+  rw [threeSpherePathQuotientSubsingletonStatement_eq,
+    simply_connected_iff_paths_homotopic]
+  exact ⟨fun h => h.2, fun h => ⟨threeSphere_pathConnectedSpace, h⟩⟩
+
+/--
+The simple-connectedness/path-quotient reduction is exactly mathlib's
+path-homotopy quotient criterion specialized with the named path-connectedness
+proof.
+-/
+theorem threeSphere_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement_eq :
+    threeSphere_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement =
+      (by
+        rw [threeSpherePathQuotientSubsingletonStatement_eq,
+          simply_connected_iff_paths_homotopic]
+        exact ⟨fun h => h.2,
+          fun h => ⟨threeSphere_pathConnectedSpace, h⟩⟩) := by
+  apply Subsingleton.elim
+
+/--
+The quotient uniqueness obligation directly supplies simple-connectedness for
+the standard sphere.
+-/
+theorem threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement
+    (h : ThreeSpherePathQuotientSubsingletonStatement) :
+    SimplyConnectedSpace ThreeSphere :=
+  threeSphere_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement.mpr h
+
+/--
+The quotient-uniqueness-to-simple-connectedness route is exactly the reverse
+direction of the named quotient criterion.
+-/
+theorem threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement_eq :
+    threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement =
+      threeSphere_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement.mpr := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+Simple-connectedness directly supplies quotient uniqueness for every
+path-homotopy quotient on the standard sphere.
+-/
+theorem threeSphere_pathQuotientSubsingletonStatement_of_simplyConnectedSpace
+    [SimplyConnectedSpace ThreeSphere] :
+    ThreeSpherePathQuotientSubsingletonStatement :=
+  threeSphere_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement.mp
+    inferInstance
+
+/--
+The simple-connectedness-to-quotient-uniqueness route is exactly the forward
+direction of the named quotient criterion.
+-/
+theorem threeSphere_pathQuotientSubsingletonStatement_of_simplyConnectedSpace_eq
+    [SimplyConnectedSpace ThreeSphere] :
+    (threeSphere_pathQuotientSubsingletonStatement_of_simplyConnectedSpace :
+      ThreeSpherePathQuotientSubsingletonStatement) =
+      (threeSphere_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement.mp
+        inferInstance : ThreeSpherePathQuotientSubsingletonStatement) := by
+  apply Subsingleton.elim
+
+/--
+Path-homotopy uniqueness gives quotient uniqueness through the named
+simple-connectedness criterion.
+-/
+theorem threeSphere_pathQuotientSubsingletonStatement_of_pathHomotopyStatement
+    (h : ThreeSpherePathHomotopyStatement) :
+    ThreeSpherePathQuotientSubsingletonStatement :=
+  threeSphere_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement.mp
+    (threeSphere_simplyConnectedSpace_of_pathHomotopyStatement h)
+
+/--
+The path-homotopy-to-quotient route is simple-connectedness from path-homotopy
+followed by the quotient criterion.
+-/
+theorem threeSphere_pathQuotientSubsingletonStatement_of_pathHomotopyStatement_eq :
+    threeSphere_pathQuotientSubsingletonStatement_of_pathHomotopyStatement =
+      (fun h : ThreeSpherePathHomotopyStatement =>
+        (threeSphere_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement.mp
+          (threeSphere_simplyConnectedSpace_of_pathHomotopyStatement h) :
+            ThreeSpherePathQuotientSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+Quotient uniqueness gives path-homotopy uniqueness through the named
+simple-connectedness criterion.
+-/
+theorem threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+    (h : ThreeSpherePathQuotientSubsingletonStatement) :
+    ThreeSpherePathHomotopyStatement :=
+  threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement.mp
+    (threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement h)
+
+/--
+The quotient-to-path route is simple-connectedness from quotient uniqueness
+followed by the path-homotopy criterion.
+-/
+theorem threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement_eq :
+    threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement =
+      (fun h : ThreeSpherePathQuotientSubsingletonStatement =>
+        (threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement.mp
+          (threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement h) :
+            ThreeSpherePathHomotopyStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The path-homotopy and path-quotient formulations of the standard-sphere
+simple-connectedness obligation are equivalent.
+-/
+theorem threeSphere_pathHomotopyStatement_iff_pathQuotientSubsingletonStatement :
+    ThreeSpherePathHomotopyStatement ↔
+      ThreeSpherePathQuotientSubsingletonStatement :=
+  ⟨threeSphere_pathQuotientSubsingletonStatement_of_pathHomotopyStatement,
+    threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement⟩
+
+/--
+The path-homotopy/path-quotient equivalence is exactly the pair of named
+conversion routes.
+-/
+theorem threeSphere_pathHomotopyStatement_iff_pathQuotientSubsingletonStatement_eq :
+    threeSphere_pathHomotopyStatement_iff_pathQuotientSubsingletonStatement =
+      ⟨threeSphere_pathQuotientSubsingletonStatement_of_pathHomotopyStatement,
+        threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement⟩ := by
+  apply Subsingleton.elim
+
+/--
 The concrete loop-nullhomotopy obligation supplies the full target prerequisite
 payload for applying the project statement to the standard sphere.
 -/
@@ -628,6 +776,93 @@ theorem threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_loop_route_e
       (fun h : ThreeSpherePathHomotopyStatement =>
         threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement
           (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The path-quotient uniqueness obligation supplies the full target prerequisite
+payload by converting quotient uniqueness to simple-connectedness.
+-/
+theorem threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement
+    (h : ThreeSpherePathQuotientSubsingletonStatement) :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement h
+  exact threeSphere_target_prerequisites
+
+/--
+The quotient-uniqueness target-prerequisite route is exactly the full target
+payload after converting quotient uniqueness to simple-connectedness.
+-/
+theorem threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_eq :
+    threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement =
+      (fun h : ThreeSpherePathQuotientSubsingletonStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement h
+        threeSphere_target_prerequisites) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The quotient-uniqueness target-prerequisite route agrees with the route that
+first converts quotient uniqueness to path-homotopy uniqueness.
+-/
+theorem threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_path_route_eq :
+    threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement =
+      (fun h : ThreeSpherePathQuotientSubsingletonStatement =>
+        threeSphere_target_prerequisites_of_pathHomotopyStatement
+          (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The path-quotient uniqueness obligation supplies the full homotopy-oriented
+prerequisite payload by converting quotient uniqueness to simple-connectedness.
+-/
+theorem threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement
+    (h : ThreeSpherePathQuotientSubsingletonStatement) :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement h
+  exact threeSphere_homotopy_prerequisites
+
+/--
+The quotient-uniqueness homotopy-prerequisite route is exactly the full
+homotopy payload after converting quotient uniqueness to simple-connectedness.
+-/
+theorem threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_eq :
+    threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement =
+      (fun h : ThreeSpherePathQuotientSubsingletonStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement h
+        threeSphere_homotopy_prerequisites) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The quotient-uniqueness homotopy-prerequisite route agrees with the route that
+first converts quotient uniqueness to path-homotopy uniqueness.
+-/
+theorem threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_path_route_eq :
+    threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement =
+      (fun h : ThreeSpherePathQuotientSubsingletonStatement =>
+        threeSphere_homotopy_prerequisites_of_pathHomotopyStatement
+          (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement h)) := by
   funext h
   apply Subsingleton.elim
 

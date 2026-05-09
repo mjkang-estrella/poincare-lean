@@ -288,6 +288,34 @@ check_decl "target sphere path-homotopy loop-nullhomotopy equivalence is declare
   '^theorem threeSphere_pathHomotopyStatement_iff_loopNullhomotopyStatement\b' Poincare/Statement.lean
 check_decl "target sphere path-homotopy loop-nullhomotopy equivalence equality contract is declared" \
   '^theorem threeSphere_pathHomotopyStatement_iff_loopNullhomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere path-quotient subsingleton statement is declared" \
+  '^def ThreeSpherePathQuotientSubsingletonStatement\b' Poincare/Statement.lean
+check_decl "target sphere path-quotient subsingleton statement equality contract is declared" \
+  '^theorem threeSpherePathQuotientSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere simple-connectedness path-quotient equivalence is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement\b' Poincare/Statement.lean
+check_decl "target sphere simple-connectedness path-quotient equivalence equality contract is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere simple-connectedness from path-quotient theorem is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement\b' Poincare/Statement.lean
+check_decl "target sphere simple-connectedness from path-quotient equality contract is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere path-quotient from simple-connectedness theorem is declared" \
+  '^theorem threeSphere_pathQuotientSubsingletonStatement_of_simplyConnectedSpace\b' Poincare/Statement.lean
+check_decl "target sphere path-quotient from simple-connectedness equality contract is declared" \
+  '^theorem threeSphere_pathQuotientSubsingletonStatement_of_simplyConnectedSpace_eq\b' Poincare/Statement.lean
+check_decl "target sphere path-quotient from path-homotopy theorem is declared" \
+  '^theorem threeSphere_pathQuotientSubsingletonStatement_of_pathHomotopyStatement\b' Poincare/Statement.lean
+check_decl "target sphere path-quotient from path-homotopy equality contract is declared" \
+  '^theorem threeSphere_pathQuotientSubsingletonStatement_of_pathHomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere path-homotopy from path-quotient theorem is declared" \
+  '^theorem threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement\b' Poincare/Statement.lean
+check_decl "target sphere path-homotopy from path-quotient equality contract is declared" \
+  '^theorem threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere path-homotopy path-quotient equivalence is declared" \
+  '^theorem threeSphere_pathHomotopyStatement_iff_pathQuotientSubsingletonStatement\b' Poincare/Statement.lean
+check_decl "target sphere path-homotopy path-quotient equivalence equality contract is declared" \
+  '^theorem threeSphere_pathHomotopyStatement_iff_pathQuotientSubsingletonStatement_eq\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites from loop-nullhomotopy theorem is declared" \
   '^theorem threeSphere_target_prerequisites_of_loopNullhomotopyStatement\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites from loop-nullhomotopy equality contract is declared" \
@@ -308,6 +336,18 @@ check_decl "target sphere homotopy prerequisites from path-homotopy equality con
   '^theorem threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_eq\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites path-homotopy loop-route compatibility is declared" \
   '^theorem threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_loop_route_eq\b' Poincare/Statement.lean
+check_decl "target sphere target prerequisites from path-quotient theorem is declared" \
+  '^theorem threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement\b' Poincare/Statement.lean
+check_decl "target sphere target prerequisites from path-quotient equality contract is declared" \
+  '^theorem threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere target prerequisites path-quotient path-route compatibility is declared" \
+  '^theorem threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_path_route_eq\b' Poincare/Statement.lean
+check_decl "target sphere homotopy prerequisites from path-quotient theorem is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement\b' Poincare/Statement.lean
+check_decl "target sphere homotopy prerequisites from path-quotient equality contract is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere homotopy prerequisites path-quotient path-route compatibility is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_path_route_eq\b' Poincare/Statement.lean
 check_decl "topological statement shape contract is declared" \
   '^theorem poincareConjectureStatement_eq\b' Poincare/Statement.lean
 check_decl "topological statement iff contract is declared" \
@@ -14116,6 +14156,20 @@ open scoped Manifold ContDiff
 #check Poincare.threeSphere_pathHomotopyStatement_of_loopNullhomotopyStatement_eq
 #check Poincare.threeSphere_pathHomotopyStatement_iff_loopNullhomotopyStatement
 #check Poincare.threeSphere_pathHomotopyStatement_iff_loopNullhomotopyStatement_eq
+#check Poincare.ThreeSpherePathQuotientSubsingletonStatement
+#check Poincare.threeSpherePathQuotientSubsingletonStatement_eq
+#check Poincare.threeSphere_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement
+#check Poincare.threeSphere_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement_eq
+#check Poincare.threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement
+#check Poincare.threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement_eq
+#check Poincare.threeSphere_pathQuotientSubsingletonStatement_of_simplyConnectedSpace
+#check Poincare.threeSphere_pathQuotientSubsingletonStatement_of_simplyConnectedSpace_eq
+#check Poincare.threeSphere_pathQuotientSubsingletonStatement_of_pathHomotopyStatement
+#check Poincare.threeSphere_pathQuotientSubsingletonStatement_of_pathHomotopyStatement_eq
+#check Poincare.threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+#check Poincare.threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement_eq
+#check Poincare.threeSphere_pathHomotopyStatement_iff_pathQuotientSubsingletonStatement
+#check Poincare.threeSphere_pathHomotopyStatement_iff_pathQuotientSubsingletonStatement_eq
 #check Poincare.threeSphere_target_prerequisites_of_loopNullhomotopyStatement
 #check Poincare.threeSphere_target_prerequisites_of_loopNullhomotopyStatement_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement
@@ -14126,6 +14180,12 @@ open scoped Manifold ContDiff
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathHomotopyStatement
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_loop_route_eq
+#check Poincare.threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement
+#check Poincare.threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_eq
+#check Poincare.threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_path_route_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement
+#check Poincare.threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_path_route_eq
 #check Poincare.poincareConjectureStatement_eq
 #check Poincare.poincareConjectureStatement_iff_canonical_three_sphere_statement
 #check Poincare.poincareConjectureStatement_iff_canonical_three_sphere_statement_eq
@@ -19708,6 +19768,42 @@ open scoped Manifold ContDiff
     Poincare.ThreeSphereLoopNullhomotopyStatement)
 #check Poincare.threeSphere_pathHomotopyStatement_iff_loopNullhomotopyStatement_eq
 
+#check (Poincare.ThreeSpherePathQuotientSubsingletonStatement : Prop)
+#check (Poincare.threeSpherePathQuotientSubsingletonStatement_eq :
+  Poincare.ThreeSpherePathQuotientSubsingletonStatement =
+    (∀ x y : Poincare.ThreeSphere,
+      Subsingleton (Path.Homotopic.Quotient x y)))
+
+#check (Poincare.threeSphere_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement :
+  SimplyConnectedSpace Poincare.ThreeSphere ↔
+    Poincare.ThreeSpherePathQuotientSubsingletonStatement)
+#check Poincare.threeSphere_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement_eq
+
+#check (Poincare.threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement :
+  Poincare.ThreeSpherePathQuotientSubsingletonStatement →
+    SimplyConnectedSpace Poincare.ThreeSphere)
+#check Poincare.threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement_eq
+
+#check (Poincare.threeSphere_pathQuotientSubsingletonStatement_of_simplyConnectedSpace :
+  ∀ [SimplyConnectedSpace Poincare.ThreeSphere],
+    Poincare.ThreeSpherePathQuotientSubsingletonStatement)
+#check Poincare.threeSphere_pathQuotientSubsingletonStatement_of_simplyConnectedSpace_eq
+
+#check (Poincare.threeSphere_pathQuotientSubsingletonStatement_of_pathHomotopyStatement :
+  Poincare.ThreeSpherePathHomotopyStatement →
+    Poincare.ThreeSpherePathQuotientSubsingletonStatement)
+#check Poincare.threeSphere_pathQuotientSubsingletonStatement_of_pathHomotopyStatement_eq
+
+#check (Poincare.threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement :
+  Poincare.ThreeSpherePathQuotientSubsingletonStatement →
+    Poincare.ThreeSpherePathHomotopyStatement)
+#check Poincare.threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement_eq
+
+#check (Poincare.threeSphere_pathHomotopyStatement_iff_pathQuotientSubsingletonStatement :
+  Poincare.ThreeSpherePathHomotopyStatement ↔
+    Poincare.ThreeSpherePathQuotientSubsingletonStatement)
+#check Poincare.threeSphere_pathHomotopyStatement_iff_pathQuotientSubsingletonStatement_eq
+
 #check (Poincare.threeSphere_target_prerequisites_of_loopNullhomotopyStatement :
   Poincare.ThreeSphereLoopNullhomotopyStatement →
   ∃ _t2 : T2Space Poincare.ThreeSphere,
@@ -19759,6 +19855,33 @@ open scoped Manifold ContDiff
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_loop_route_eq
+
+#check (Poincare.threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement :
+  Poincare.ThreeSpherePathQuotientSubsingletonStatement →
+  ∃ _t2 : T2Space Poincare.ThreeSphere,
+  ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) Poincare.ThreeSphere,
+  ∃ _simplyConnected : SimplyConnectedSpace Poincare.ThreeSphere,
+  ∃ _compact : CompactSpace Poincare.ThreeSphere,
+  ∃ _smooth : IsManifold (𝓡 3) ∞ Poincare.ThreeSphere,
+  ∃ _path : PathConnectedSpace Poincare.ThreeSphere,
+  ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
+    Nonempty Poincare.ThreeSphere)
+#check Poincare.threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_eq
+#check Poincare.threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_path_route_eq
+
+#check (Poincare.threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement :
+  Poincare.ThreeSpherePathQuotientSubsingletonStatement →
+  ∃ _t2 : T2Space Poincare.ThreeSphere,
+  ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) Poincare.ThreeSphere,
+  ∃ _simplyConnected : SimplyConnectedSpace Poincare.ThreeSphere,
+  ∃ _compact : CompactSpace Poincare.ThreeSphere,
+  ∃ _smooth : IsManifold (𝓡 3) ∞ Poincare.ThreeSphere,
+  ∃ _path : PathConnectedSpace Poincare.ThreeSphere,
+  ∃ _locPath : LocPathConnectedSpace Poincare.ThreeSphere,
+  ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
+    Nonempty Poincare.ThreeSphere)
+#check Poincare.threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_path_route_eq
 
 #check (Poincare.poincareConjectureStatement_eq :
   Poincare.PoincareConjectureStatement =
