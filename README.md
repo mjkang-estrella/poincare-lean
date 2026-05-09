@@ -731,10 +731,12 @@ The current artifact is intentionally conservative:
   The same self-case now applies a supplied `PoincareConjectureStatement` to
   the compactification model through
   `onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement`, replaces
-  the simple-connectedness input with compactification-local loop/path
-  obligations through the corresponding `...onePointLoopNullhomotopyStatement`
-  and `...onePointPathHomotopyStatement` routes, and packages the target
-  endpoint with the local homotopy/manifold prerequisite payloads.  Direct-route
+  the simple-connectedness input with compactification-local loop/path/quotient
+  obligations through the corresponding `...onePointLoopNullhomotopyStatement`,
+  `...onePointPathHomotopyStatement`, and
+  `...onePointPathQuotientSubsingletonStatement` routes, and packages the
+  target endpoint with the local homotopy/manifold prerequisite payloads.
+  Direct-route
   contracts pin those target-statement endpoints back to the explicit
   `onePoint_threeSpace_homeomorph_threeSphere` model homeomorphism.
   The pointwise finite-extinction compactification-recognition route
