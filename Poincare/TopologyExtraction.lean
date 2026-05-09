@@ -727,6 +727,94 @@ theorem onePointThreeSpaceLoopNullhomotopyStatement_eq :
   rfl
 
 /--
+The based loop-nullhomotopy obligation for the one-point compactification
+model at a chosen basepoint.
+-/
+def OnePointThreeSpaceBasedLoopNullhomotopyStatement
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) : Prop :=
+  ∀ γ : Path basepoint basepoint, Path.Homotopic γ (Path.refl basepoint)
+
+/-- The compactification based-loop obligation expands at the chosen basepoint. -/
+theorem onePointThreeSpaceBasedLoopNullhomotopyStatement_eq
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =
+      (∀ γ : Path basepoint basepoint,
+        Path.Homotopic γ (Path.refl basepoint)) :=
+  rfl
+
+/--
+For the compactification model, simple-connectedness is equivalent to
+nullhomotopy of all loops at any chosen basepoint because path-connectedness
+has already been transported from `ThreeSphere`.
+-/
+theorem onePoint_threeSpace_simplyConnectedSpace_iff_basedLoopNullhomotopyStatement
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) ↔
+      OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint := by
+  rw [onePointThreeSpaceBasedLoopNullhomotopyStatement_eq]
+  exact
+    ⟨fun h =>
+        ((simplyConnectedSpace_iff_pathConnectedSpace_and_basedLoopNullhomotopy
+          basepoint).mp h).2,
+      fun h =>
+        (simplyConnectedSpace_iff_pathConnectedSpace_and_basedLoopNullhomotopy
+          basepoint).mpr ⟨onePoint_threeSpace_pathConnectedSpace, h⟩⟩
+
+/--
+The compactification based-loop simple-connectedness reduction is the general
+change-of-basepoint criterion specialized with the named path-connectedness
+proof.
+-/
+theorem onePoint_threeSpace_simplyConnectedSpace_iff_basedLoopNullhomotopyStatement_eq
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    onePoint_threeSpace_simplyConnectedSpace_iff_basedLoopNullhomotopyStatement basepoint =
+      ⟨fun h =>
+          ((simplyConnectedSpace_iff_pathConnectedSpace_and_basedLoopNullhomotopy
+            basepoint).mp h).2,
+        fun h =>
+          (simplyConnectedSpace_iff_pathConnectedSpace_and_basedLoopNullhomotopy
+            basepoint).mpr ⟨onePoint_threeSpace_pathConnectedSpace, h⟩⟩ := by
+  apply Subsingleton.elim
+
+/-- A based loop-nullhomotopy proof supplies compactification simple-connectedness. -/
+theorem onePoint_threeSpace_simplyConnectedSpace_of_basedLoopNullhomotopyStatement
+    {basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))}
+    (h : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint) :
+    SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+  (onePoint_threeSpace_simplyConnectedSpace_iff_basedLoopNullhomotopyStatement
+    basepoint).mpr h
+
+/-- The based-loop-to-simple-connectedness route is the reverse reduction projection. -/
+theorem onePoint_threeSpace_simplyConnectedSpace_of_basedLoopNullhomotopyStatement_eq
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    (fun h : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+      onePoint_threeSpace_simplyConnectedSpace_of_basedLoopNullhomotopyStatement h) =
+      (onePoint_threeSpace_simplyConnectedSpace_iff_basedLoopNullhomotopyStatement
+        basepoint).mpr := by
+  funext h
+  apply Subsingleton.elim
+
+/-- A supplied compactification simple-connectedness instance gives based loops at any basepoint. -/
+theorem onePoint_threeSpace_basedLoopNullhomotopyStatement_of_simplyConnectedSpace
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))] :
+    OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint :=
+  (onePoint_threeSpace_simplyConnectedSpace_iff_basedLoopNullhomotopyStatement
+    basepoint).mp inferInstance
+
+/--
+The compactification simple-connectedness-to-based-loop route is the forward
+projection of the named based-loop criterion.
+-/
+theorem onePoint_threeSpace_basedLoopNullhomotopyStatement_of_simplyConnectedSpace_eq
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))] :
+    onePoint_threeSpace_basedLoopNullhomotopyStatement_of_simplyConnectedSpace basepoint =
+      (onePoint_threeSpace_simplyConnectedSpace_iff_basedLoopNullhomotopyStatement
+        basepoint).mp inferInstance := by
+  apply Subsingleton.elim
+
+/--
 For the compactification model, simple-connectedness is equivalent to the
 concrete loop-nullhomotopy obligation because path-connectedness has already
 been transported from `ThreeSphere`.
@@ -773,6 +861,33 @@ theorem onePoint_threeSpace_loopNullhomotopyStatement_of_simplyConnectedSpace_eq
     [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))] :
     onePoint_threeSpace_loopNullhomotopyStatement_of_simplyConnectedSpace =
       onePoint_threeSpace_simplyConnectedSpace_iff_loopNullhomotopyStatement.mp inferInstance := by
+  apply Subsingleton.elim
+
+/--
+Based loop-nullhomotopy at one chosen point supplies the full compactification
+loop-nullhomotopy obligation.
+-/
+theorem onePoint_threeSpace_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement
+    {basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))}
+    (h : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint) :
+    OnePointThreeSpaceLoopNullhomotopyStatement := by
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_basedLoopNullhomotopyStatement h
+  exact onePoint_threeSpace_loopNullhomotopyStatement_of_simplyConnectedSpace
+
+/--
+The compactification based-loop-to-full-loop route is simple-connectedness from
+the based-loop criterion followed by the full-loop criterion.
+-/
+theorem onePoint_threeSpace_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement_eq
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    (fun h : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+      onePoint_threeSpace_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h) =
+      (fun h : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+        letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_simplyConnectedSpace_of_basedLoopNullhomotopyStatement h
+        onePoint_threeSpace_loopNullhomotopyStatement_of_simplyConnectedSpace) := by
+  funext h
   apply Subsingleton.elim
 
 /-- Loop-nullhomotopy of `ThreeSphere` transports to loop-nullhomotopy of the compactification model. -/
