@@ -1161,6 +1161,437 @@ theorem completion_certificate_of_aggregate_canonical_statement_payload_of_compl
   apply Subsingleton.elim
 
 /--
+The base artifact payload projections agree across literal, aggregate,
+project, and canonical statement payload constructors.
+-/
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_aggregate_dependency_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_aggregate_dependency_payload payload) =
+      (by
+        rcases payload with
+          ⟨theoremName, theoremName_eq, dependencies, target, criterion⟩
+        exact
+          ⟨theoremName, theoremName_eq,
+            remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies,
+            target, criterion⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_project_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        PoincareConjectureStatement.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_project_statement_payload payload) =
+      (by
+        rcases payload with
+          ⟨theoremName, theoremName_eq, dependencies, target, criterion⟩
+        exact
+          ⟨theoremName, theoremName_eq,
+            remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies,
+            target, criterion⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_canonical_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        RemainingDependencyPackage.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_canonical_statement_payload payload) =
+      (by
+        rcases payload with
+          ⟨theoremName, theoremName_eq, dependencies, target,
+            _canonicalStatement, criterion⟩
+        exact ⟨theoremName, theoremName_eq, dependencies, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_aggregate_canonical_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_aggregate_canonical_statement_payload
+        payload) =
+      (by
+        rcases payload with
+          ⟨theoremName, theoremName_eq, dependencies, target,
+            _canonicalStatement, criterion⟩
+        exact
+          ⟨theoremName, theoremName_eq,
+            remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies,
+            target, criterion⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_literal_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        RemainingDependencyPackage.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_literal_payload payload) =
+      (by
+        rcases payload with
+          ⟨theoremName, theoremName_eq, dependencies, target, criterion⟩
+        exact
+          ⟨theoremName, theoremName_eq,
+            remainingDependencyPackage_iff_poincareProofDependencies.mp
+              dependencies,
+            target, criterion⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_project_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        PoincareConjectureStatement.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_project_statement_payload payload) =
+      (by
+        rcases payload with
+          ⟨theoremName, theoremName_eq, dependencies, target, criterion⟩
+        exact ⟨theoremName, theoremName_eq, dependencies, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_canonical_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        RemainingDependencyPackage.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_canonical_statement_payload payload) =
+      (by
+        rcases payload with
+          ⟨theoremName, theoremName_eq, dependencies, target,
+            _canonicalStatement, criterion⟩
+        exact
+          ⟨theoremName, theoremName_eq,
+            remainingDependencyPackage_iff_poincareProofDependencies.mp
+              dependencies,
+            target, criterion⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_aggregate_canonical_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_aggregate_canonical_statement_payload
+        payload) =
+      (by
+        rcases payload with
+          ⟨theoremName, theoremName_eq, dependencies, target,
+            _canonicalStatement, criterion⟩
+        exact ⟨theoremName, theoremName_eq, dependencies, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_literal_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        RemainingDependencyPackage.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_literal_payload payload) =
+      (by
+        rcases payload with
+          ⟨theoremName, theoremName_eq, dependencies, target, criterion⟩
+        exact
+          ⟨theoremName, theoremName_eq,
+            remainingDependencyPackage_iff_poincareProofDependencies.mp
+              dependencies,
+            target, criterion⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_aggregate_dependency_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_aggregate_dependency_payload payload) =
+      (by
+        rcases payload with
+          ⟨theoremName, theoremName_eq, dependencies, target, criterion⟩
+        exact ⟨theoremName, theoremName_eq, dependencies, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_canonical_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        RemainingDependencyPackage.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_canonical_statement_payload payload) =
+      (by
+        rcases payload with
+          ⟨theoremName, theoremName_eq, dependencies, target,
+            _canonicalStatement, criterion⟩
+        exact
+          ⟨theoremName, theoremName_eq,
+            remainingDependencyPackage_iff_poincareProofDependencies.mp
+              dependencies,
+            target, criterion⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_aggregate_canonical_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_aggregate_canonical_statement_payload
+        payload) =
+      (by
+        rcases payload with
+          ⟨theoremName, theoremName_eq, dependencies, target,
+            _canonicalStatement, criterion⟩
+        exact ⟨theoremName, theoremName_eq, dependencies, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_aggregate_dependency_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_aggregate_dependency_payload payload)) =
+      completion_certificate_of_aggregate_dependency_payload payload := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_project_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        PoincareConjectureStatement.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_project_statement_payload payload)) =
+      completion_certificate_of_project_statement_payload payload := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_canonical_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        RemainingDependencyPackage.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_canonical_statement_payload payload)) =
+      completion_certificate_of_canonical_statement_payload payload := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_aggregate_canonical_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_aggregate_canonical_statement_payload
+          payload)) =
+      completion_certificate_of_aggregate_canonical_statement_payload
+        payload := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_literal_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        RemainingDependencyPackage.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_literal_payload payload)) =
+      completion_certificate_of_literal_payload payload := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_project_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        PoincareConjectureStatement.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_project_statement_payload payload)) =
+      completion_certificate_of_project_statement_payload payload := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_canonical_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        RemainingDependencyPackage.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_canonical_statement_payload payload)) =
+      completion_certificate_of_canonical_statement_payload payload := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_aggregate_canonical_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_aggregate_canonical_statement_payload
+          payload)) =
+      completion_certificate_of_aggregate_canonical_statement_payload
+        payload := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_literal_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        RemainingDependencyPackage.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_literal_payload payload)) =
+      completion_certificate_of_literal_payload payload := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_aggregate_dependency_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_aggregate_dependency_payload payload)) =
+      completion_certificate_of_aggregate_dependency_payload payload := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_canonical_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        RemainingDependencyPackage.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_canonical_statement_payload payload)) =
+      completion_certificate_of_canonical_statement_payload payload := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_aggregate_canonical_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_aggregate_canonical_statement_payload
+          payload)) =
+      completion_certificate_of_aggregate_canonical_statement_payload
+        payload := by
+  apply Subsingleton.elim
+
+/--
 Projecting the dependency package from a remaining-dependency canonical
 statement certificate returns the input package.
 -/
