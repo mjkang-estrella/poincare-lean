@@ -415,6 +415,30 @@ theorem poincare_assembly_inputs_payload_of_surgery_and_extraction_derivation_eq
   apply Subsingleton.elim
 
 /--
+The package-level certified extraction assembly-input payload agrees with the
+explicit extractor/derivation assembly-input route selected from the topology
+package.
+-/
+theorem poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation_to_extraction_derivation_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation
+      smoothabilityPackage surgeryPackages topologyPackage =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            topologyPackage with
+          ⟨extractSphere, derivation⟩
+        exact poincare_assembly_inputs_payload_of_surgery_and_extraction_derivation
+          smoothabilityPackage surgeryPackages extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
 The smoothability and surgery package route, together with a final extractor
 and its topology derivation certificate, exposes the finite-extinction input,
 certified extraction input, target statement, and completion criterion.
