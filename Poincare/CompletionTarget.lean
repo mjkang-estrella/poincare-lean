@@ -43944,6 +43944,31 @@ theorem remaining_dependency_package_of_completion_certificate_of_extraction_der
   apply Subsingleton.elim
 
 /--
+Projecting dependencies from the remaining-dependency lifted-homeomorphism
+projection route returns the input remaining-dependency package.
+-/
+theorem remaining_dependency_package_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    remaining_dependency_package_of_completion_certificate
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) = dependencies := by
+  apply Subsingleton.elim
+
+theorem remaining_dependency_package_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    remaining_dependency_package_of_completion_certificate
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) = dependencies := by
+  apply Subsingleton.elim
+
+theorem remaining_dependency_package_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    remaining_dependency_package_of_completion_certificate
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) = dependencies := by
+  apply Subsingleton.elim
+
+/--
 Projecting aggregate dependencies from the aggregate raw component route
 returns the input aggregate dependency package.
 -/
@@ -44067,6 +44092,31 @@ theorem poincareProofDependencies_of_completion_certificate_of_poincareProofDepe
     (dependencies : PoincareProofDependencies.{u}) :
     poincareProofDependencies_of_completion_certificate
       (completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+        dependencies) = dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting aggregate dependencies from the aggregate lifted-homeomorphism
+projection route returns the input aggregate dependency package.
+-/
+theorem poincareProofDependencies_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareProofDependencies_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) = dependencies := by
+  apply Subsingleton.elim
+
+theorem poincareProofDependencies_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareProofDependencies_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) = dependencies := by
+  apply Subsingleton.elim
+
+theorem poincareProofDependencies_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareProofDependencies_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
         dependencies) = dependencies := by
   apply Subsingleton.elim
 
@@ -44233,6 +44283,38 @@ theorem remaining_dependency_package_of_completion_certificate_of_poincareProofD
   apply Subsingleton.elim
 
 /--
+Projecting the stored remaining-dependency package from the aggregate
+lifted-homeomorphism projection route returns the aggregate package converted
+back to the remaining dependency package.
+-/
+theorem remaining_dependency_package_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    remaining_dependency_package_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      remainingDependencyPackage_iff_poincareProofDependencies.mpr
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem remaining_dependency_package_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    remaining_dependency_package_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      remainingDependencyPackage_iff_poincareProofDependencies.mpr
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem remaining_dependency_package_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    remaining_dependency_package_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      remainingDependencyPackage_iff_poincareProofDependencies.mpr
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The raw component-route constructor recovers any checked completion certificate
 from its projected remaining-dependency package.
 -/
@@ -44327,6 +44409,17 @@ completion certificate from its projected remaining-dependency package.
 theorem completion_certificate_of_extraction_derivation_dependency_projections_of_completion_certificate_eq
     (certificate : PoincareCompletionCertificate.{u}) :
     completion_certificate_of_extraction_derivation_dependency_projections
+      (remaining_dependency_package_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism projection constructor recovers any checked completion
+certificate from its projected remaining-dependency package.
+-/
+theorem completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
       (remaining_dependency_package_of_completion_certificate certificate) =
       certificate := by
   apply Subsingleton.elim
@@ -44427,6 +44520,17 @@ package.
 theorem completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_of_completion_certificate_eq
     (certificate : PoincareCompletionCertificate.{u}) :
     completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+      (poincareProofDependencies_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+/--
+The aggregate lifted-homeomorphism projection constructor recovers any checked
+completion certificate from its projected aggregate dependency package.
+-/
+theorem completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
       (poincareProofDependencies_of_completion_certificate certificate) =
       certificate := by
   apply Subsingleton.elim
@@ -44611,6 +44715,49 @@ theorem canonical_completion_payload_of_completion_certificate_of_extraction_der
           canonical_completion_payload_of_finite_extinction_and_extraction_derivation
             (finite_extinction_of_dependencies dependencies)
             extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical completion payload from the remaining-dependency
+lifted-homeomorphism projection route returns the route payload.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency lifted-homeomorphism projection certificate's
+canonical payload is the finite-extinction plus certified extractor/derivation
+payload selected by the lifted decomposition of the topology statement.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies dependencies) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      canonical_completion_payload_of_extraction_derivation_dependency_projections
+        dependencies := by
   apply Subsingleton.elim
 
 /--
@@ -44820,6 +44967,55 @@ theorem canonical_completion_payload_of_completion_certificate_of_poincareProofD
   apply Subsingleton.elim
 
 /--
+Projecting the canonical completion payload from the aggregate
+lifted-homeomorphism projection route returns the converted lifted route
+payload.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate lifted-homeomorphism projection certificate's canonical payload
+is the finite-extinction plus certified extractor/derivation payload selected
+by the lifted decomposition after converting aggregate dependencies.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      (by
+        let remaining : RemainingDependencyPackage.{u} :=
+          remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies remaining) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies remaining)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      canonical_completion_payload_of_extraction_derivation_dependency_projections
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 Projecting the project completion payload from the remaining-dependency raw
 component route returns the route payload.
 -/
@@ -45000,6 +45196,49 @@ theorem poincare_completion_payload_of_completion_certificate_of_extraction_deri
           poincare_payload_of_finite_extinction_and_extraction_derivation
             (finite_extinction_of_dependencies dependencies)
             extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from the remaining-dependency
+lifted-homeomorphism projection route returns the route payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency lifted-homeomorphism projection certificate's project
+payload is the finite-extinction plus certified extractor/derivation payload
+selected by the lifted decomposition of the topology statement.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies dependencies) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+theorem poincare_completion_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      poincare_completion_payload_of_extraction_derivation_dependency_projections
+        dependencies := by
   apply Subsingleton.elim
 
 /--
@@ -45207,6 +45446,55 @@ theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDe
           poincare_payload_of_finite_extinction_and_extraction_derivation
             (finite_extinction_of_dependencies remaining)
             extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from the aggregate
+lifted-homeomorphism projection route returns the converted lifted route
+payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate lifted-homeomorphism projection certificate's project payload is
+the finite-extinction plus certified extractor/derivation payload selected by
+the lifted decomposition after converting aggregate dependencies.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      (by
+        let remaining : RemainingDependencyPackage.{u} :=
+          remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies remaining) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies remaining)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      poincare_completion_payload_of_extraction_derivation_dependency_projections
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
   apply Subsingleton.elim
 
 /--
@@ -50313,6 +50601,144 @@ theorem canonical_completion_criterion_of_completion_certificate_of_extraction_d
             extractSphere derivation) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    target_statement_of_completion_certificate
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    target_statement_of_completion_certificate
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies dependencies) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          poincare_statement_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    target_statement_of_completion_certificate
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      poincare_statement_of_extraction_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_target_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_target_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies dependencies) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_target_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      canonical_completion_target_of_extraction_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_criterion_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections
+        witness dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_criterion_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies dependencies) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+            witness
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+theorem completion_criterion_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      canonical_completion_criterion_of_extraction_derivation_dependency_projections
+        witness dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_criterion_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections
+        witness dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_criterion_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies dependencies) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+            witness
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_criterion_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      canonical_completion_criterion_of_extraction_derivation_dependency_projections
+        witness dependencies := by
+  apply Subsingleton.elim
+
 theorem target_statement_of_completion_certificate_of_poincareProofDependencies_component_requirements_eq
     (dependencies : PoincareProofDependencies.{u}) :
     target_statement_of_completion_certificate
@@ -50915,6 +51341,164 @@ theorem canonical_completion_criterion_of_completion_certificate_of_poincareProo
             witness
             (finite_extinction_of_dependencies remaining)
             extractSphere derivation) := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    target_statement_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    target_statement_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      (by
+        let remaining : RemainingDependencyPackage.{u} :=
+          remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies remaining) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          poincare_statement_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies remaining)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    target_statement_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      poincare_statement_of_extraction_derivation_dependency_projections
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      (by
+        let remaining : RemainingDependencyPackage.{u} :=
+          remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies remaining) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies remaining)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      canonical_completion_target_of_extraction_derivation_dependency_projections
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_eq
+    (witness : Type u) (dependencies : PoincareProofDependencies.{u}) :
+    completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections
+        witness (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_statement_eq
+    (witness : Type u) (dependencies : PoincareProofDependencies.{u}) :
+    completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      (by
+        let remaining : RemainingDependencyPackage.{u} :=
+          remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies remaining) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+            witness
+            (finite_extinction_of_dependencies remaining)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_extraction_derivation_eq
+    (witness : Type u) (dependencies : PoincareProofDependencies.{u}) :
+    completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      canonical_completion_criterion_of_extraction_derivation_dependency_projections
+        witness (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_eq
+    (witness : Type u) (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections
+        witness (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_statement_eq
+    (witness : Type u) (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      (by
+        let remaining : RemainingDependencyPackage.{u} :=
+          remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies remaining) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+            witness
+            (finite_extinction_of_dependencies remaining)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_extraction_derivation_eq
+    (witness : Type u) (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      canonical_completion_criterion_of_extraction_derivation_dependency_projections
+        witness (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
   apply Subsingleton.elim
 
 theorem canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_eq
