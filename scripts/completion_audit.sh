@@ -43,8 +43,12 @@ dependency_contract_check=
 dependency_contract_check_dir=
 root_contract_check=
 root_contract_check_dir=
+route_parity_dir=
 
 cleanup() {
+  if [ -n "$route_parity_dir" ]; then
+    rm -rf "$route_parity_dir"
+  fi
   if [ -n "$root_contract_check_dir" ]; then
     rm -rf "$root_contract_check_dir"
   fi
@@ -156,6 +160,29 @@ check_decl() {
     status=1
   fi
 }
+
+check_theorem_name_payload_route_parity() {
+  route_parity_dir=$(mktemp -d)
+  awk '/^theorem / {print $2}' \
+    Poincare/CompletionTarget.lean Poincare/CanonicalBridges.lean \
+    > "$route_parity_dir/theorems"
+  sed -n 's/^poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_\(.*\)_eq$/\1/p' \
+    "$route_parity_dir/theorems" | sort -u > "$route_parity_dir/theoremName.routes"
+  for family in literal canonical_statement aggregate_canonical_statement aggregate_dependency project_statement; do
+    sed -n "s/^poincareCompletionCertificate_${family}_payload_of_completion_certificate_of_\\(.*\\)_eq$/\\1/p" \
+      "$route_parity_dir/theorems" | sort -u > "$route_parity_dir/${family}.routes"
+    missing=$(comm -13 "$route_parity_dir/theoremName.routes" "$route_parity_dir/${family}.routes")
+    if [ -n "$missing" ]; then
+      echo "FAIL: $family payload routes without theorem-name payload counterparts"
+      printf '%s\n' "$missing"
+      status=1
+    else
+      echo "PASS: $family payload routes have theorem-name payload counterparts"
+    fi
+  done
+}
+
+check_theorem_name_payload_route_parity
 
 check_decl "Ricci tensor interface is declared" \
   '^inductive IsRicciTensorOf\b' Poincare/RicciFlow.lean
@@ -1440,8 +1467,12 @@ check_decl "aggregate dependencies plus canonical statement certificate equivale
   '^theorem poincareCompletionCertificate_iff_poincareProofDependencies_and_canonical_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
 check_decl "canonical statement payload constructor roundtrip contract is declared" \
   '^theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_canonical_statement_payload_eq\b' Poincare/CanonicalBridges.lean
+check_decl "canonical statement payload constructor theorem-name projection contract is declared" \
+  '^theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_canonical_statement_payload_eq\b' Poincare/CanonicalBridges.lean
 check_decl "aggregate canonical statement payload constructor roundtrip contract is declared" \
   '^theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_aggregate_canonical_statement_payload_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate canonical statement payload constructor theorem-name projection contract is declared" \
+  '^theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_aggregate_canonical_statement_payload_eq\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency plus canonical statement dependency roundtrip contract is declared" \
   '^theorem remaining_dependency_package_of_completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency plus canonical statement statement roundtrip contract is declared" \
@@ -8459,6 +8490,8 @@ check_decl "literal payload certificate equality contract is declared" \
   '^theorem completion_certificate_of_literal_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "literal payload roundtrip contract is declared" \
   '^theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_literal_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "literal payload constructor theorem-name projection contract is declared" \
+  '^theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_literal_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "literal payload iff equality contract is declared" \
   '^theorem poincareCompletionCertificate_iff_literal_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate canonical payload equality contract is declared" \
@@ -11098,6 +11131,8 @@ check_decl "aggregate dependency payload certificate equality contract is declar
   '^theorem completion_certificate_of_aggregate_dependency_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "aggregate dependency full-payload roundtrip contract is declared" \
   '^theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_aggregate_dependency_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency payload constructor theorem-name projection contract is declared" \
+  '^theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_aggregate_dependency_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "aggregate dependency payload iff equality contract is declared" \
   '^theorem poincareCompletionCertificate_iff_aggregate_dependency_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "project statement payload projection equality contract is declared" \
@@ -11106,6 +11141,8 @@ check_decl "project statement payload certificate equality contract is declared"
   '^theorem completion_certificate_of_project_statement_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "project statement full-payload roundtrip contract is declared" \
   '^theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_project_statement_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "project statement payload constructor theorem-name projection contract is declared" \
+  '^theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_project_statement_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "project statement payload iff equality contract is declared" \
   '^theorem poincareCompletionCertificate_iff_project_statement_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate component iff theorem is declared" \

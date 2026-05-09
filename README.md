@@ -1162,7 +1162,11 @@ The current artifact is intentionally conservative:
   directly. The matching literal, aggregate-dependency, and project-statement
   full payload reconstruction routes now also fill the remaining
   remaining-package-to-ordinary aggregate and ordinary remaining-dependency
-  endpoints for the certified extraction-derivation certificates.
+  endpoints for the certified extraction-derivation certificates. The
+  theorem-name payload projection surface now covers the same constructor route
+  matrix as the literal, canonical-statement, aggregate canonical-statement,
+  aggregate-dependency, and project-statement payload projections, and the
+  completion audit checks that parity directly.
   It also exposes the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/

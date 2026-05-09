@@ -669,6 +669,26 @@ theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_
   apply Subsingleton.elim
 
 /--
+Projecting the reserved theorem-name payload from the canonical-statement
+payload certificate constructor recovers the canonical reserved name.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_canonical_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        RemainingDependencyPackage.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_canonical_statement_payload payload) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+/--
 The canonical-statement payload constructor recovers any checked completion
 certificate from its projected canonical-statement payload.
 -/
@@ -720,6 +740,28 @@ theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_c
     poincareCompletionCertificate_aggregate_canonical_statement_payload
       (completion_certificate_of_aggregate_canonical_statement_payload
         payload) = payload := by
+  apply Subsingleton.elim
+
+/--
+Projecting the reserved theorem-name payload from the aggregate
+canonical-statement payload certificate constructor recovers the canonical
+reserved name.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_aggregate_canonical_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_aggregate_canonical_statement_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl⟩ := by
   apply Subsingleton.elim
 
 /--
