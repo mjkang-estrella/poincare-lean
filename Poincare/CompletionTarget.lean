@@ -48735,6 +48735,42 @@ theorem completion_certificate_of_aggregate_dependency_payload_of_completion_cer
     (completion_certificate_of_extraction_derivation_dependency_projections
       dependencies)
 
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+          dependencies)) =
+      completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies :=
+  completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_eq
+    (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies)
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+          dependencies)) =
+      completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies :=
+  completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_eq
+    (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies)
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+          dependencies)) =
+      completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies :=
+  completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_eq
+    (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies)
+
 theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_poincareProofDependencies_component_requirements_eq
     (dependencies : PoincareProofDependencies.{u}) :
     completion_certificate_of_aggregate_dependency_payload
@@ -48889,6 +48925,42 @@ theorem completion_certificate_of_aggregate_dependency_payload_of_completion_cer
         dependencies :=
   completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_eq
     (completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+      dependencies)
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+          dependencies)) =
+      completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies :=
+  completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_eq
+    (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+      dependencies)
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+          dependencies)) =
+      completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies :=
+  completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_eq
+    (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+      dependencies)
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+          dependencies)) =
+      completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies :=
+  completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_eq
+    (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
       dependencies)
 
 theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq
@@ -49637,6 +49709,42 @@ theorem completion_certificate_of_project_statement_payload_of_completion_certif
     (completion_certificate_of_extraction_derivation_dependency_projections
       dependencies)
 
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+          dependencies)) =
+      completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies :=
+  completion_certificate_of_project_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies)
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+          dependencies)) =
+      completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies :=
+  completion_certificate_of_project_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies)
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+          dependencies)) =
+      completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies :=
+  completion_certificate_of_project_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies)
+
 theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_poincareProofDependencies_component_requirements_eq
     (dependencies : PoincareProofDependencies.{u}) :
     completion_certificate_of_project_statement_payload
@@ -49791,6 +49899,42 @@ theorem completion_certificate_of_project_statement_payload_of_completion_certif
         dependencies :=
   completion_certificate_of_project_statement_payload_of_completion_certificate_eq
     (completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+      dependencies)
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+          dependencies)) =
+      completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies :=
+  completion_certificate_of_project_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+      dependencies)
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+          dependencies)) =
+      completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies :=
+  completion_certificate_of_project_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+      dependencies)
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+          dependencies)) =
+      completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies :=
+  completion_certificate_of_project_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
       dependencies)
 
 theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq
