@@ -187,6 +187,8 @@ The current artifact is intentionally conservative:
   Literal-payload reconstruction aliases now cover the self route and ordinary
   remaining-dependency, aggregate proof-dependency, and boundary projection
   routes.
+  Aggregate-dependency payload reconstruction aliases now cover the self route
+  and ordinary remaining-dependency projection routes.
 - `Poincare/RicciFlow.lean` defines a minimal typed API for time-dependent
   Riemannian metrics, candidate Ricci tensor fields, Ricci-identification
   evidence, and the Ricci-flow equation interface. It also exposes checked
