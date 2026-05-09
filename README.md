@@ -172,6 +172,9 @@ The current artifact is intentionally conservative:
   The base canonical target/payload layer and the generic dependency
   projection certificates now also expose named canonical criterion projections
   alongside the older completion-criterion projections.
+  The remaining-dependency certificate wrappers now expose the same canonical
+  criterion projections for direct criterion certificates and for component,
+  package-layer, and milestone requirement routes.
 - `Poincare/RicciFlow.lean` defines a minimal typed API for time-dependent
   Riemannian metrics, candidate Ricci tensor fields, Ricci-identification
   evidence, and the Ricci-flow equation interface. It also exposes checked

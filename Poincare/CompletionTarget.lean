@@ -15070,6 +15070,19 @@ theorem completion_criterion_of_completion_certificate_of_remaining_dependency_a
   apply Subsingleton.elim
 
 /--
+Projecting the canonical completion criterion from the criterion certificate
+constructor recovers the supplied criterion at the same witness.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_and_completion_criterion_eq
+    (dependencies : RemainingDependencyPackage.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_remaining_dependency_and_completion_criterion
+        dependencies witness criterion) =
+      criterion := by
+  apply Subsingleton.elim
+
+/--
 Projecting the remaining-dependency package from the aggregate remaining-package
 certificate constructor recovers the supplied package.
 -/
@@ -45922,6 +45935,15 @@ theorem completion_criterion_of_completion_certificate_of_remaining_dependency_c
         witness dependencies := by
   apply Subsingleton.elim
 
+theorem canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_component_requirements_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_remaining_dependency_component_requirements
+        dependencies) =
+      canonical_completion_criterion_of_remaining_dependency_component_requirements
+        witness dependencies := by
+  apply Subsingleton.elim
+
 theorem target_statement_of_completion_certificate_of_remaining_dependency_package_layer_requirements_eq
     (dependencies : RemainingDependencyPackage.{u}) :
     target_statement_of_completion_certificate
@@ -45946,6 +45968,15 @@ theorem completion_criterion_of_completion_certificate_of_remaining_dependency_p
       (completion_certificate_of_remaining_dependency_package_layer_requirements
         dependencies) =
       completion_criterion_of_remaining_dependency_package_layer_requirements
+        witness dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_package_layer_requirements_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_remaining_dependency_package_layer_requirements
+        dependencies) =
+      canonical_completion_criterion_of_remaining_dependency_package_layer_requirements
         witness dependencies := by
   apply Subsingleton.elim
 
@@ -45976,6 +46007,15 @@ theorem completion_criterion_of_completion_certificate_of_remaining_dependency_m
         witness dependencies := by
   apply Subsingleton.elim
 
+theorem canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_milestone_requirements_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_remaining_dependency_milestone_requirements
+        dependencies) =
+      canonical_completion_criterion_of_remaining_dependency_milestone_requirements
+        witness dependencies := by
+  apply Subsingleton.elim
+
 theorem target_statement_of_completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements_eq
     (dependencies : RemainingDependencyPackage.{u}) :
     target_statement_of_completion_certificate
@@ -46000,6 +46040,15 @@ theorem completion_criterion_of_completion_certificate_of_remaining_dependency_c
       (completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements
         dependencies) =
       completion_criterion_of_remaining_dependency_component_extraction_derivation_requirements
+        witness dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements
+        dependencies) =
+      canonical_completion_criterion_of_remaining_dependency_component_extraction_derivation_requirements
         witness dependencies := by
   apply Subsingleton.elim
 
@@ -46030,6 +46079,15 @@ theorem completion_criterion_of_completion_certificate_of_remaining_dependency_p
         witness dependencies := by
   apply Subsingleton.elim
 
+theorem canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements
+        dependencies) =
+      canonical_completion_criterion_of_remaining_dependency_package_layer_extraction_derivation_requirements
+        witness dependencies := by
+  apply Subsingleton.elim
+
 theorem target_statement_of_completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements_eq
     (dependencies : RemainingDependencyPackage.{u}) :
     target_statement_of_completion_certificate
@@ -46054,6 +46112,15 @@ theorem completion_criterion_of_completion_certificate_of_remaining_dependency_m
       (completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements
         dependencies) =
       completion_criterion_of_remaining_dependency_milestone_extraction_derivation_requirements
+        witness dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements
+        dependencies) =
+      canonical_completion_criterion_of_remaining_dependency_milestone_extraction_derivation_requirements
         witness dependencies := by
   apply Subsingleton.elim
 
