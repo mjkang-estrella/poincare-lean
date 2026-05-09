@@ -1486,6 +1486,10 @@ The current artifact is intentionally conservative:
   constructors now pin their canonical criterion projections through the
   strengthened certified route, the checked boundary certificate, and the
   ordinary remaining-dependency endpoint.
+  The aggregate certified extraction-derivation certificate constructors mirror
+  those canonical-criterion projections through the strengthened aggregate
+  route, the checked strengthened aggregate certificate, the forgetful
+  aggregate endpoint, and the converted remaining-dependency endpoint.
   The boundary-target-payload strengthened certificate constructors expose the
   same canonical-criterion endpoints and forgetful route pins.
   The certified boundary-extraction target-payload certificate constructors add
