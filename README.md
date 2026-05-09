@@ -169,6 +169,9 @@ The current artifact is intentionally conservative:
   target assembly, reverse extraction, payload, canonical endpoint, and
   endpoint equivalence routes now have equality contracts.
   pinning them to their named projection/constructor pairs.
+  The base canonical target/payload layer and the generic dependency
+  projection certificates now also expose named canonical criterion projections
+  alongside the older completion-criterion projections.
 - `Poincare/RicciFlow.lean` defines a minimal typed API for time-dependent
   Riemannian metrics, candidate Ricci tensor fields, Ricci-identification
   evidence, and the Ricci-flow equation interface. It also exposes checked

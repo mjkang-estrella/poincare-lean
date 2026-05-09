@@ -110,6 +110,12 @@ theorem completion_criterion_of_canonical_completion_target
     CompletionCriterionAtUniverse witness :=
   target
 
+/-- A proof of the canonical target discharges the named canonical criterion. -/
+theorem canonical_completion_criterion_of_canonical_completion_target
+    (witness : Type u) (target : canonicalCompletionTarget.{u}) :
+    CompletionCriterionAtUniverse witness :=
+  completion_criterion_of_canonical_completion_target witness target
+
 /--
 A proof of the canonical completion target exposes the canonical target and the
 explicit universe-indexed completion criterion as one payload.
@@ -181,6 +187,18 @@ theorem completion_criterion_of_canonical_completion_payload
     CompletionCriterionAtUniverse witness := by
   rcases payload with ⟨_target, criterion⟩
   exact criterion witness
+
+/--
+The canonical completion payload also exposes the named canonical criterion
+projection.
+-/
+theorem canonical_completion_criterion_of_canonical_completion_payload
+    (witness : Type u)
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    CompletionCriterionAtUniverse witness :=
+  completion_criterion_of_canonical_completion_payload witness payload
 
 /--
 The canonical completion target is equivalent to the canonical completion
@@ -311,6 +329,16 @@ theorem completion_criterion_of_canonical_completion_target_eq
   apply Subsingleton.elim
 
 /--
+The canonical criterion selected from a canonical target proof is the same
+identity projection.
+-/
+theorem canonical_completion_criterion_of_canonical_completion_target_eq
+    (witness : Type u) (target : canonicalCompletionTarget.{u}) :
+    canonical_completion_criterion_of_canonical_completion_target witness target =
+      target := by
+  apply Subsingleton.elim
+
+/--
 The canonical target completion payload pairs the target proof with the named
 criterion projection.
 -/
@@ -384,6 +412,22 @@ theorem completion_criterion_of_canonical_completion_payload_eq
       ∃ _target : canonicalCompletionTarget.{u},
         ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
     completion_criterion_of_canonical_completion_payload witness payload =
+      (by
+        rcases payload with ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The canonical criterion selected from a canonical payload is the payload's
+stored criterion projection.
+-/
+theorem canonical_completion_criterion_of_canonical_completion_payload_eq
+    (witness : Type u)
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    canonical_completion_criterion_of_canonical_completion_payload witness
+        payload =
       (by
         rcases payload with ⟨_target, criterion⟩
         exact criterion witness) := by
@@ -36762,6 +36806,21 @@ theorem completion_criterion_of_completion_certificate_of_equation_boundary_depe
   apply Subsingleton.elim
 
 /--
+Projecting the canonical completion criterion from the strengthened boundary
+projection certificate recovers the strengthened boundary projection canonical
+criterion.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_of_equation_boundary_dependency_projections_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_equation_boundary_dependency_projections
+        dependencies) =
+      canonical_completion_criterion_of_equation_boundary_dependency_projections
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
 Projecting ordinary aggregate dependencies from the strengthened certified
 boundary projection certificate recovers the forgetful aggregate package.
 -/
@@ -36851,6 +36910,21 @@ theorem completion_criterion_of_completion_certificate_of_equation_boundary_extr
     (witness : Type u)
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies) =
+      canonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical completion criterion from the strengthened certified
+boundary projection certificate recovers the strengthened certified boundary
+projection canonical criterion.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
       (completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
         dependencies) =
       canonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections
@@ -46344,6 +46418,15 @@ theorem completion_criterion_of_completion_certificate_of_aggregate_extraction_d
         witness dependencies := by
   apply Subsingleton.elim
 
+theorem canonical_completion_criterion_of_completion_certificate_of_aggregate_extraction_derivation_dependencies_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_aggregate_extraction_derivation_dependencies
+        dependencies) =
+      canonical_completion_criterion_of_aggregate_extraction_derivation_dependencies
+        witness dependencies := by
+  apply Subsingleton.elim
+
 theorem target_statement_of_completion_certificate_of_dependency_projections_eq
     (dependencies : RemainingDependencyPackage.{u}) :
     target_statement_of_completion_certificate
@@ -46404,6 +46487,14 @@ theorem completion_criterion_of_completion_certificate_of_dependency_projections
         witness dependencies := by
   apply Subsingleton.elim
 
+theorem canonical_completion_criterion_of_completion_certificate_of_dependency_projections_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_dependency_projections dependencies) =
+      canonical_completion_criterion_of_dependency_projections
+        witness dependencies := by
+  apply Subsingleton.elim
+
 theorem completion_criterion_of_completion_certificate_of_dependency_projections_to_topology_statement_eq
     (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
     completion_criterion_of_completion_certificate witness
@@ -46414,9 +46505,30 @@ theorem completion_criterion_of_completion_certificate_of_dependency_projections
         (topology_extraction_statement_of_dependencies dependencies) := by
   apply Subsingleton.elim
 
+theorem canonical_completion_criterion_of_completion_certificate_of_dependency_projections_to_topology_statement_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_dependency_projections dependencies) =
+      canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+        witness
+        (finite_extinction_of_dependencies dependencies)
+        (topology_extraction_statement_of_dependencies dependencies) := by
+  apply Subsingleton.elim
+
 theorem completion_criterion_of_completion_certificate_of_dependency_projections_to_package_eq
     (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
     completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_dependency_projections dependencies) =
+      canonical_completion_criterion_of_extinction_and_extraction
+        witness
+        (finite_extinction_of_dependencies dependencies)
+        (extinction_implies_sphere_of_topology_package
+          dependencies.topology) := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_criterion_of_completion_certificate_of_dependency_projections_to_package_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
       (completion_certificate_of_dependency_projections dependencies) =
       canonical_completion_criterion_of_extinction_and_extraction
         witness
@@ -46512,6 +46624,15 @@ theorem completion_criterion_of_completion_certificate_of_extraction_derivation_
         witness dependencies := by
   apply Subsingleton.elim
 
+theorem canonical_completion_criterion_of_completion_certificate_of_extraction_derivation_dependency_projections_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_extraction_derivation_dependency_projections
+        dependencies) =
+      canonical_completion_criterion_of_extraction_derivation_dependency_projections
+        witness dependencies := by
+  apply Subsingleton.elim
+
 theorem completion_criterion_of_completion_certificate_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
     (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
     completion_criterion_of_completion_certificate witness
@@ -46528,9 +46649,41 @@ theorem completion_criterion_of_completion_certificate_of_extraction_derivation_
             extractSphere derivation) := by
   apply Subsingleton.elim
 
+theorem canonical_completion_criterion_of_completion_certificate_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_extraction_derivation_dependency_projections
+        dependencies) =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+            witness
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
 theorem completion_criterion_of_completion_certificate_of_extraction_derivation_dependency_projections_to_package_eq
     (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
     completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_extraction_derivation_dependency_projections
+        dependencies) =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+            witness
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_criterion_of_completion_certificate_of_extraction_derivation_dependency_projections_to_package_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
       (completion_certificate_of_extraction_derivation_dependency_projections
         dependencies) =
       (by
