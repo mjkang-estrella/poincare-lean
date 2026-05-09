@@ -1480,6 +1480,9 @@ The current artifact is intentionally conservative:
   endpoint layer: its canonical/project payloads, canonical target/project
   statement, and canonical/project criterion projections are now pinned directly
   before routing through the projected strengthened dependency package.
+  Its canonical criterion is also pinned to the projected strengthened
+  dependency, checked boundary certificate, forgetful remaining-dependency, and
+  finite-extinction/topology routes.
   The checked certificate projected out of that wrapper now has the same direct
   canonical/project endpoint contracts, and its canonical criterion is pinned
   to the projected strengthened dependency, finite-extinction, boundary
