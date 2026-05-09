@@ -1484,6 +1484,9 @@ The current artifact is intentionally conservative:
   to the forgetful aggregate and remaining-dependency routes.
   The boundary-target-payload strengthened certificate constructors expose the
   same canonical-criterion endpoints and forgetful route pins.
+  The certified boundary-extraction target-payload certificate constructors add
+  the same canonical-criterion pins, including the direct route back to the
+  boundary-target certificate.
   The boundary-aware equation-verification certificate wrapper mirrors that
   endpoint layer: its canonical/project payloads, canonical target/project
   statement, and canonical/project criterion projections are now pinned directly
