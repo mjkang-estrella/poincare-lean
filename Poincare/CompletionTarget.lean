@@ -13825,6 +13825,34 @@ theorem canonical_completion_payload_of_lifted_homeomorphism_derivation_dependen
             extractSphere derivation) := by
   apply Subsingleton.elim
 
+theorem canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
 /--
 Forgetting the lifted certificate in the lifted-homeomorphism canonical payload
 recovers the certified extraction-derivation projection canonical payload.
@@ -13879,6 +13907,34 @@ theorem canonical_completion_target_of_lifted_homeomorphism_derivation_dependenc
             extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
               (topology_extraction_statement_of_dependencies dependencies) with
           ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation⟩
         exact
           canonical_completion_target_of_finite_extinction_and_extraction_derivation
             (finite_extinction_of_dependencies dependencies)
@@ -13951,6 +14007,36 @@ theorem canonical_completion_criterion_of_lifted_homeomorphism_derivation_depend
             extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
               (topology_extraction_statement_of_dependencies dependencies) with
           ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+            witness
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections
+      witness dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+            witness
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections
+      witness dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation⟩
         exact
           canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
             witness
@@ -38142,6 +38228,42 @@ theorem completion_certificate_of_lifted_homeomorphism_derivation_dependency_pro
             criterion⟩) := by
   apply Subsingleton.elim
 
+theorem completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        rcases
+          canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation with
+          ⟨target, criterion⟩
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, dependencies, target,
+            criterion⟩) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation⟩
+        rcases
+          canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation with
+          ⟨target, criterion⟩
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, dependencies, target,
+            criterion⟩) := by
+  apply Subsingleton.elim
+
 /--
 Forgetting the lifted certificate in the lifted-homeomorphism projection
 certificate recovers the certified extraction-derivation projection
@@ -38836,6 +38958,42 @@ theorem poincareCompletionCertificate_iff_lifted_homeomorphism_derivation_depend
     poincareCompletionCertificate_iff_lifted_homeomorphism_derivation_dependency_projections =
       ⟨remaining_dependency_package_of_completion_certificate,
         completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_iff_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq :
+    poincareCompletionCertificate_iff_lifted_homeomorphism_derivation_dependency_projections =
+      ⟨remaining_dependency_package_of_completion_certificate,
+        fun dependencies =>
+          (by
+            rcases topology_extraction_derivation_payload_of_dependencies
+                dependencies with
+              ⟨extractSphere, derivation⟩
+            rcases
+              canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+                (finite_extinction_of_dependencies dependencies)
+                extractSphere derivation with
+              ⟨target, criterion⟩
+            exact
+              ⟨canonicalCompletionTheoremName, rfl, dependencies, target,
+                criterion⟩)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_iff_lifted_homeomorphism_derivation_dependency_projections_to_package_eq :
+    poincareCompletionCertificate_iff_lifted_homeomorphism_derivation_dependency_projections =
+      ⟨remaining_dependency_package_of_completion_certificate,
+        fun dependencies =>
+          (by
+            rcases topology_extraction_derivation_payload_of_topology_package
+                dependencies.topology with
+              ⟨extractSphere, derivation⟩
+            rcases
+              canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+                (finite_extinction_of_dependencies dependencies)
+                extractSphere derivation with
+              ⟨target, criterion⟩
+            exact
+              ⟨canonicalCompletionTheoremName, rfl, dependencies, target,
+                criterion⟩)⟩ := by
   apply Subsingleton.elim
 
 /--
