@@ -8483,6 +8483,86 @@ theorem homeomorphism_of_extinction_and_dependencies_to_statement_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level theorem-shaped topology statement supplies the lifted
+homeomorphism derivation statement for the projected dependency-level
+homeomorphism.
+-/
+theorem topology_lifted_homeomorphism_derivation_statement_of_dependencies
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ExtinctionTopologyLiftedHomeomorphismDerivationStatement M extinction
+      (homeomorphism_of_extinction_and_dependencies
+        dependencies M extinction) := by
+  rw [homeomorphism_of_extinction_and_dependencies_to_statement_eq
+    dependencies M extinction]
+  exact topology_lifted_homeomorphism_derivation_statement_of_extraction_statement
+    (topology_extraction_statement_of_dependencies dependencies) M extinction
+
+/--
+The dependency-level lifted homeomorphism derivation statement follows the
+dependency-level theorem-shaped topology statement.
+-/
+theorem topology_lifted_homeomorphism_derivation_statement_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_lifted_homeomorphism_derivation_statement_of_dependencies
+      dependencies M extinction =
+      (by
+        rw [homeomorphism_of_extinction_and_dependencies_to_statement_eq
+          dependencies M extinction]
+        exact
+          topology_lifted_homeomorphism_derivation_statement_of_extraction_statement
+            (topology_extraction_statement_of_dependencies dependencies)
+            M extinction) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level lifted homeomorphism derivation statement agrees with the
+direct extraction-statement route.
+-/
+theorem topology_lifted_homeomorphism_derivation_statement_of_dependencies_to_extraction_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_lifted_homeomorphism_derivation_statement_of_dependencies
+      dependencies M extinction =
+      (by
+        rw [homeomorphism_of_extinction_and_dependencies_to_statement_eq
+          dependencies M extinction]
+        exact
+          topology_lifted_homeomorphism_derivation_statement_of_extraction_statement
+            (topology_extraction_statement_of_dependencies dependencies)
+            M extinction) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level lifted homeomorphism derivation statement agrees with the
+stored topology package route.
+-/
+theorem topology_lifted_homeomorphism_derivation_statement_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_lifted_homeomorphism_derivation_statement_of_dependencies
+      dependencies M extinction =
+      (by
+        rw [homeomorphism_of_extinction_and_dependencies_to_package_eq
+          dependencies M extinction]
+        exact topology_lifted_homeomorphism_derivation_statement_of_topology_package
+          dependencies.topology M extinction) := by
+  apply Subsingleton.elim
+
+/--
 The dependency-level topology derivation statement selected through the
 extraction payload follows the dependency-level theorem-shaped topology
 statement.
@@ -10435,6 +10515,80 @@ theorem topology_spherical_homeomorphism_lift_statement_of_equation_boundary_dep
         (topology_extraction_statement_of_dependencies
           (dependencies_of_equation_boundary_dependencies dependencies))
         M extinction := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency package supplies the lifted homeomorphism
+derivation statement after forgetting equation-boundary data.
+-/
+theorem topology_lifted_homeomorphism_derivation_statement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ExtinctionTopologyLiftedHomeomorphismDerivationStatement M extinction
+      (homeomorphism_of_extinction_and_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies)
+        M extinction) :=
+  topology_lifted_homeomorphism_derivation_statement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies) M extinction
+
+/--
+The strengthened lifted homeomorphism derivation statement is the ordinary
+dependency lifted derivation statement of the forgetful package.
+-/
+theorem topology_lifted_homeomorphism_derivation_statement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_lifted_homeomorphism_derivation_statement_of_equation_boundary_dependencies
+        dependencies M extinction =
+      topology_lifted_homeomorphism_derivation_statement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies)
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted homeomorphism derivation statement agrees directly
+with the forgetful ordinary dependency route.
+-/
+theorem topology_lifted_homeomorphism_derivation_statement_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_lifted_homeomorphism_derivation_statement_of_equation_boundary_dependencies
+        dependencies M extinction =
+      topology_lifted_homeomorphism_derivation_statement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies)
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted homeomorphism derivation statement is projected from
+the forgetful theorem-shaped topology extraction statement.
+-/
+theorem topology_lifted_homeomorphism_derivation_statement_of_equation_boundary_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_lifted_homeomorphism_derivation_statement_of_equation_boundary_dependencies
+        dependencies M extinction =
+      (by
+        rw [homeomorphism_of_extinction_and_dependencies_to_statement_eq
+          (dependencies_of_equation_boundary_dependencies dependencies)
+          M extinction]
+        exact
+          topology_lifted_homeomorphism_derivation_statement_of_extraction_statement
+            (topology_extraction_statement_of_dependencies
+              (dependencies_of_equation_boundary_dependencies dependencies))
+            M extinction) := by
   apply Subsingleton.elim
 
 /--
