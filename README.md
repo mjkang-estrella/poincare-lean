@@ -745,13 +745,14 @@ The current artifact is intentionally conservative:
   witness, and
   `onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement`
   composes that endpoint to the target sphere, again pinned to the direct model
-  homeomorphisms.  Its loop/path variants replace the raw compactification
-  `SimplyConnectedSpace` input with
-  `OnePointThreeSpaceLoopNullhomotopyStatement` and
-  `OnePointThreeSpacePathHomotopyStatement`, with the path extinction route
-  pinned back through the loop-mediated route, and the loop/path extinction
-  payloads pair those endpoints with the corresponding compactification-local
-  homotopy/manifold prerequisite packages.
+  homeomorphisms.  Its loop/path/quotient variants replace the raw
+  compactification `SimplyConnectedSpace` input with
+  `OnePointThreeSpaceLoopNullhomotopyStatement`,
+  `OnePointThreeSpacePathHomotopyStatement`, and
+  `OnePointThreeSpacePathQuotientSubsingletonStatement`, with the path and
+  quotient extinction routes pinned back through their mediated routes, and the
+  loop/path/quotient extinction payloads pair those endpoints with the
+  corresponding compactification-local homotopy/manifold prerequisite packages.
   It
   names universal compactification recognition as
   `OnePointThreeSpaceRecognitionStatement`, and
