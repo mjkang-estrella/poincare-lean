@@ -23204,6 +23204,23 @@ theorem completion_criterion_of_completion_certificate_of_equation_boundary_rema
   apply Subsingleton.elim
 
 /--
+Projecting the canonical completion criterion from the named
+boundary-target-payload remaining-package certificate recovers the strengthened
+remaining-package canonical criterion route.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_eq
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      canonical_completion_criterion_of_equation_boundary_remaining_dependency_package
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
 Projecting aggregate dependencies from the named boundary-target-payload
 aggregate certificate recovers the forgetful aggregate package.
 -/
@@ -23306,6 +23323,23 @@ theorem completion_criterion_of_completion_certificate_of_poincareProofDependenc
         (poincare_target_payload_of_equation_boundary_dependencies
           dependencies)) =
       completion_criterion_of_poincareProofDependenciesWithEquationBoundary
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical completion criterion from the named
+boundary-target-payload aggregate certificate recovers the strengthened
+aggregate canonical criterion route.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      canonical_completion_criterion_of_poincareProofDependenciesWithEquationBoundary
         witness dependencies := by
   apply Subsingleton.elim
 
@@ -24473,6 +24507,24 @@ theorem completion_criterion_of_completion_certificate_of_equation_boundary_rema
   apply Subsingleton.elim
 
 /--
+Projecting the canonical completion criterion from the boundary-target-payload
+remaining-package certificate also recovers the ordinary remaining-package
+criterion after forgetting equation-boundary data.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_remaining_dependency_eq
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      canonical_completion_criterion_of_dependencies witness
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 Projecting the completion criterion from the boundary-target-payload
 remaining-package certificate also recovers the ordinary aggregate criterion
 after forgetting equation-boundary data.
@@ -24481,6 +24533,23 @@ theorem completion_criterion_of_completion_certificate_of_equation_boundary_rema
     (witness : Type u)
     (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
     completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      canonical_completion_criterion_of_dependencies witness
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical completion criterion from the boundary-target-payload
+remaining-package certificate also recovers the ordinary aggregate criterion
+after forgetting equation-boundary data.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_forgetful_dependencies_eq
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
       (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
         dependencies
         (poincare_target_payload_of_equation_boundary_dependencies
@@ -24641,6 +24710,23 @@ theorem completion_criterion_of_completion_certificate_of_poincareProofDependenc
   apply Subsingleton.elim
 
 /--
+Projecting the canonical completion criterion from the aggregate
+boundary-target-payload certificate also recovers the ordinary aggregate
+criterion after forgetting equation-boundary data.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_forgetful_dependencies_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      canonical_completion_criterion_of_dependencies witness
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
 Projecting the completion criterion from the aggregate boundary-target-payload
 certificate also recovers the ordinary remaining-package criterion after
 forgetting equation-boundary data through the remaining-dependency wrapper.
@@ -24649,6 +24735,25 @@ theorem completion_criterion_of_completion_certificate_of_poincareProofDependenc
     (witness : Type u)
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      canonical_completion_criterion_of_dependencies witness
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical completion criterion from the aggregate
+boundary-target-payload certificate also recovers the ordinary remaining-package
+criterion after forgetting equation-boundary data through the
+remaining-dependency wrapper.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_remaining_dependency_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
       (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
         dependencies
         (poincare_target_payload_of_equation_boundary_dependencies
