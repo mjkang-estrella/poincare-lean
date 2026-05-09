@@ -10167,6 +10167,18 @@ theorem poincare_target_payload_of_equation_boundary_dependency_projections_to_t
   apply Subsingleton.elim
 
 /--
+The strengthened dependency projection target payload factors through the
+ordinary stored-topology-package route after forgetting equation-boundary data.
+-/
+theorem poincare_target_payload_of_equation_boundary_dependency_projections_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_target_payload_of_equation_boundary_dependency_projections
+        dependencies =
+      poincare_target_payload_of_dependency_projections
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
 Forgetting equation-boundary data in the strengthened projection target payload
 recovers the ordinary dependency projection target payload.
 -/
@@ -10638,6 +10650,18 @@ theorem poincare_completion_payload_of_equation_boundary_dependency_projections_
   apply Subsingleton.elim
 
 /--
+The strengthened dependency projection completion payload factors through the
+ordinary stored-topology-package route after forgetting equation-boundary data.
+-/
+theorem poincare_completion_payload_of_equation_boundary_dependency_projections_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_dependency_projections
+        dependencies =
+      poincare_completion_payload_of_dependency_projections
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
 Forgetting equation-boundary data in the strengthened projection completion
 payload recovers the ordinary dependency projection completion payload.
 -/
@@ -10876,6 +10900,20 @@ theorem poincare_statement_of_equation_boundary_dependency_projections_to_topolo
   apply Subsingleton.elim
 
 /--
+The strengthened dependency projection Poincare statement is the target of the
+final extractor selected by the stored topology package.
+-/
+theorem poincare_statement_of_equation_boundary_dependency_projections_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_dependency_projections
+        dependencies =
+      poincare_statement_of_extinction_and_extraction
+        (finite_extinction_of_equation_boundary_dependencies dependencies)
+        (extinction_implies_sphere_of_topology_package
+          dependencies.topology) := by
+  apply Subsingleton.elim
+
+/--
 Forgetting equation-boundary data in the strengthened projection Poincare
 statement recovers the ordinary dependency projection Poincare statement.
 -/
@@ -11110,6 +11148,21 @@ theorem canonical_three_sphere_statement_of_equation_boundary_dependency_project
           (topology_extraction_statement_of_dependencies
             (dependencies_of_equation_boundary_dependencies
               dependencies))) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened equation-boundary canonical statement factors through the
+final extractor selected by the stored topology package.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_dependency_projections_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_equation_boundary_dependency_projections
+        dependencies =
+      canonical_three_sphere_statement_of_poincare_statement
+        (poincare_statement_of_extinction_and_extraction
+          (finite_extinction_of_equation_boundary_dependencies dependencies)
+          (extinction_implies_sphere_of_topology_package
+            dependencies.topology)) := by
   apply Subsingleton.elim
 
 /--
@@ -11360,6 +11413,19 @@ theorem completion_criterion_of_equation_boundary_dependency_projections_to_topo
                   dependencies)) with
           ⟨_target, criterion⟩
         exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened equation-boundary completion criterion factors through the
+ordinary stored-topology-package route after forgetting equation-boundary data.
+-/
+theorem completion_criterion_of_equation_boundary_dependency_projections_to_package_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_equation_boundary_dependency_projections
+        witness dependencies =
+      completion_criterion_of_dependency_projections witness
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
   apply Subsingleton.elim
 
 /--
