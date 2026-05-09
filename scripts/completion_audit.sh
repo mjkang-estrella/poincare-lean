@@ -6163,6 +6163,12 @@ check_decl "dependency topology classification sub-obligations equality contract
   '^theorem topology_classification_subobligations_of_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency topology classification sub-obligations package route equality contract is declared" \
   '^theorem topology_classification_subobligations_of_dependencies_to_package_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology spherical trivial quotient theorem is declared" \
+  '^theorem topology_spherical_trivial_quotient_statement_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology spherical trivial quotient equality contract is declared" \
+  '^theorem topology_spherical_trivial_quotient_statement_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology spherical trivial quotient package route equality contract is declared" \
+  '^theorem topology_spherical_trivial_quotient_statement_of_dependencies_to_package_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency topology extraction statement payload theorem is declared" \
   '^theorem topology_extraction_statement_payload_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency topology extraction statement payload equality contract is declared" \
@@ -6193,6 +6199,12 @@ check_decl "dependency topology extraction homeomorphism assembly statement equa
   '^theorem topology_homeomorphism_assembly_statement_via_extraction_of_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency topology extraction homeomorphism assembly statement route equality contract is declared" \
   '^theorem topology_homeomorphism_assembly_statement_via_extraction_of_dependencies_to_statement_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology extraction spherical trivial quotient statement theorem is declared" \
+  '^theorem topology_spherical_trivial_quotient_statement_via_extraction_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology extraction spherical trivial quotient statement equality contract is declared" \
+  '^theorem topology_spherical_trivial_quotient_statement_via_extraction_of_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology extraction spherical trivial quotient statement route equality contract is declared" \
+  '^theorem topology_spherical_trivial_quotient_statement_via_extraction_of_dependencies_to_statement_eq\b' Poincare/DependencyProjections.lean
 check_decl "dependency topology extraction homeomorphism derivation statement theorem is declared" \
   '^theorem topology_homeomorphism_derivation_statement_via_extraction_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency topology extraction homeomorphism derivation statement equality contract is declared" \
@@ -6248,6 +6260,7 @@ for dependency_topology_statement_route_contract in \
   topology_derivation_statement_via_extraction_of_dependencies_to_statement_eq \
   topology_derivation_statement_of_dependencies_to_statement_eq \
   topology_homeomorphism_assembly_statement_via_extraction_of_dependencies_to_statement_eq \
+  topology_spherical_trivial_quotient_statement_via_extraction_of_dependencies_to_statement_eq \
   topology_homeomorphism_assembly_statement_of_dependencies_to_statement_eq \
   topology_homeomorphism_derivation_statement_via_extraction_of_dependencies_to_statement_eq \
   topology_homeomorphism_derivation_statement_of_dependencies_to_statement_eq \
@@ -19520,6 +19533,9 @@ open scoped Manifold ContDiff
 #check Poincare.topology_spherical_homeomorphism_lift_of_dependencies_eq
 #check Poincare.topology_classification_subobligations_of_dependencies
 #check Poincare.topology_classification_subobligations_of_dependencies_eq
+#check Poincare.topology_spherical_trivial_quotient_statement_of_dependencies
+#check Poincare.topology_spherical_trivial_quotient_statement_of_dependencies_eq
+#check Poincare.topology_spherical_trivial_quotient_statement_of_dependencies_to_package_eq
 #check Poincare.topology_extraction_statement_payload_of_dependencies
 #check Poincare.topology_extraction_statement_payload_of_dependencies_eq
 #check Poincare.topology_extraction_statement_payload_of_dependencies_to_package_eq
@@ -19535,6 +19551,9 @@ open scoped Manifold ContDiff
 #check Poincare.topology_homeomorphism_assembly_statement_via_extraction_of_dependencies
 #check Poincare.topology_homeomorphism_assembly_statement_via_extraction_of_dependencies_eq
 #check Poincare.topology_homeomorphism_assembly_statement_via_extraction_of_dependencies_to_statement_eq
+#check Poincare.topology_spherical_trivial_quotient_statement_via_extraction_of_dependencies
+#check Poincare.topology_spherical_trivial_quotient_statement_via_extraction_of_dependencies_eq
+#check Poincare.topology_spherical_trivial_quotient_statement_via_extraction_of_dependencies_to_statement_eq
 #check Poincare.topology_homeomorphism_derivation_statement_via_extraction_of_dependencies
 #check Poincare.topology_homeomorphism_derivation_statement_via_extraction_of_dependencies_eq
 #check Poincare.topology_homeomorphism_derivation_statement_via_extraction_of_dependencies_to_statement_eq

@@ -9786,8 +9786,8 @@ theorem topology_spherical_trivial_quotient_statement_of_extraction_statement_eq
 /--
 The theorem-shaped topology extraction statement exposes the fixed-extinction
 payload consisting of the statement itself, its projected homeomorphism, its
-derivation statement, and the statement-level classification and
-homeomorphism-statement projections.
+derivation statement, and the statement-level classification, trivial quotient,
+and homeomorphism-statement projections.
 -/
 theorem topology_extraction_statement_payload_of_extraction_statement
     (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
@@ -9801,6 +9801,8 @@ theorem topology_extraction_statement_payload_of_extraction_statement
       ExtinctionTopologyDerivationStatement M extinction homeomorphism,
     ∃ _classificationSubobligations :
       ExtinctionTopologyClassificationSubobligationsPayload M extinction,
+    ∃ _sphericalTrivialQuotient :
+      ExtinctionTopologySphericalTrivialQuotientStatement M extinction,
     ∃ _assemblyStatement :
       ExtinctionTopologyHomeomorphismAssemblyStatement M extinction
         homeomorphism,
@@ -9812,6 +9814,8 @@ theorem topology_extraction_statement_payload_of_extraction_statement
     topology_derivation_statement_of_extraction_statement
       topologyStatement M extinction,
     topology_classification_subobligations_of_extraction_statement
+      topologyStatement M extinction,
+    topology_spherical_trivial_quotient_statement_of_extraction_statement
       topologyStatement M extinction,
     topology_homeomorphism_assembly_statement_of_extraction_statement
       topologyStatement M extinction,
@@ -9836,6 +9840,8 @@ theorem topology_extraction_statement_payload_of_extraction_statement_eq
         topology_derivation_statement_of_extraction_statement
           topologyStatement M extinction,
         topology_classification_subobligations_of_extraction_statement
+          topologyStatement M extinction,
+        topology_spherical_trivial_quotient_statement_of_extraction_statement
           topologyStatement M extinction,
         topology_homeomorphism_assembly_statement_of_extraction_statement
           topologyStatement M extinction,
@@ -10226,8 +10232,8 @@ theorem topology_extraction_derivation_payload_of_topology_package_eq
 /--
 A completed topology package extracts the theorem-shaped topology statement,
 its fixed-extinction homeomorphism, the full classification sub-obligation
-stack, and the homeomorphism assembly/derivation statements from any
-finite-extinction input.
+stack, the spherical trivial-quotient statement, and the homeomorphism
+assembly/derivation statements from any finite-extinction input.
 -/
 theorem topology_extraction_statement_payload_of_topology_package
     (package : ExtinctionTopologyExtractionPackage.{u})
@@ -10241,6 +10247,8 @@ theorem topology_extraction_statement_payload_of_topology_package
       ExtinctionTopologyDerivationStatement M extinction homeomorphism,
     ∃ _classificationSubobligations :
       ExtinctionTopologyClassificationSubobligationsPayload M extinction,
+    ∃ _sphericalTrivialQuotient :
+      ExtinctionTopologySphericalTrivialQuotientStatement M extinction,
     ∃ _assemblyStatement :
       ExtinctionTopologyHomeomorphismAssemblyStatement M extinction
         homeomorphism,
@@ -10254,8 +10262,11 @@ theorem topology_extraction_statement_payload_of_topology_package
   let classificationSubobligations :=
     topology_classification_subobligations_of_derivation_statement M
       extinction homeomorphism derivationStatement
+  let sphericalTrivialQuotient :=
+    topology_spherical_trivial_quotient_statement_of_derivation_statement M
+      extinction homeomorphism derivationStatement
   exact ⟨topologyStatement, homeomorphism, derivationStatement,
-    classificationSubobligations,
+    classificationSubobligations, sphericalTrivialQuotient,
     topology_homeomorphism_assembly_statement_of_derivation_statement M
       extinction homeomorphism derivationStatement,
     topology_homeomorphism_derivation_statement_of_derivation_statement M
@@ -10283,8 +10294,11 @@ theorem topology_extraction_statement_payload_of_topology_package_eq
         let classificationSubobligations :=
           topology_classification_subobligations_of_derivation_statement M
             extinction homeomorphism derivationStatement
+        let sphericalTrivialQuotient :=
+          topology_spherical_trivial_quotient_statement_of_derivation_statement
+            M extinction homeomorphism derivationStatement
         exact ⟨topologyStatement, homeomorphism, derivationStatement,
-          classificationSubobligations,
+          classificationSubobligations, sphericalTrivialQuotient,
           topology_homeomorphism_assembly_statement_of_derivation_statement M
             extinction homeomorphism derivationStatement,
           topology_homeomorphism_derivation_statement_of_derivation_statement M
@@ -10313,6 +10327,8 @@ theorem topology_extraction_statement_payload_of_topology_package_to_extraction_
           topology_derivation_statement_of_extraction_statement
             topologyStatement M extinction,
           topology_classification_subobligations_of_extraction_statement
+            topologyStatement M extinction,
+          topology_spherical_trivial_quotient_statement_of_extraction_statement
             topologyStatement M extinction,
           topology_homeomorphism_assembly_statement_of_extraction_statement
             topologyStatement M extinction,
