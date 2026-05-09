@@ -6619,6 +6619,10 @@ check_decl "equation-boundary lifted-homeomorphism projection assembly-input pay
   '^theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary lifted-homeomorphism projection assembly-input payload equality contract is declared" \
   '^theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary lifted-homeomorphism projection assembly-input finite-extinction route contract is declared" \
+  '^theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies_to_finite_extinction_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary lifted-homeomorphism projection assembly-input package route contract is declared" \
+  '^theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies_to_package_eq\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary projection target payload theorem is declared" \
   '^theorem poincare_target_payload_of_equation_boundary_dependency_projections\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary projection target payload equality contract is declared" \
@@ -6641,6 +6645,10 @@ check_decl "equation-boundary lifted-homeomorphism projection target payload the
   '^theorem poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary lifted-homeomorphism projection target payload equality contract is declared" \
   '^theorem poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary lifted-homeomorphism projection target payload finite-extinction route contract is declared" \
+  '^theorem poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary lifted-homeomorphism projection target payload package route contract is declared" \
+  '^theorem poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary projection completion payload theorem is declared" \
   '^theorem poincare_completion_payload_of_equation_boundary_dependency_projections\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary projection completion payload equality contract is declared" \
@@ -6663,6 +6671,10 @@ check_decl "equation-boundary lifted-homeomorphism projection completion payload
   '^theorem poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary lifted-homeomorphism projection completion payload equality contract is declared" \
   '^theorem poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary lifted-homeomorphism projection completion payload finite-extinction route contract is declared" \
+  '^theorem poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary lifted-homeomorphism projection completion payload package route contract is declared" \
+  '^theorem poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary projection Poincare statement theorem is declared" \
   '^theorem poincare_statement_of_equation_boundary_dependency_projections\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary projection Poincare statement equality contract is declared" \
@@ -6685,6 +6697,10 @@ check_decl "equation-boundary lifted-homeomorphism projection Poincare statement
   '^theorem poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary lifted-homeomorphism projection Poincare statement equality contract is declared" \
   '^theorem poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary lifted-homeomorphism projection Poincare statement finite-extinction route contract is declared" \
+  '^theorem poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary lifted-homeomorphism projection Poincare statement package route contract is declared" \
+  '^theorem poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary projection canonical statement theorem is declared" \
   '^theorem canonical_three_sphere_statement_of_equation_boundary_dependency_projections\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary projection canonical statement equality contract is declared" \
@@ -6721,6 +6737,10 @@ check_decl "equation-boundary certified projection completion criterion statemen
   '^theorem completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary certified projection completion criterion forgetful route contract is declared" \
   '^theorem completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_to_forgetful_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary lifted-homeomorphism projection completion criterion finite-extinction route contract is declared" \
+  '^theorem completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary lifted-homeomorphism projection completion criterion package route contract is declared" \
+  '^theorem completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq\b' Poincare/DependencyProjections.lean
 check_decl "remaining-package finite-extinction projection theorem is declared" \
   '^theorem finite_extinction_of_remaining_dependency_package\b' Poincare/CompletionTarget.lean
 check_decl "remaining-package finite-extinction equality contract is declared" \

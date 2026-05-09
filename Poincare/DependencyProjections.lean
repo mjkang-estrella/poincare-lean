@@ -11155,6 +11155,34 @@ theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_
             extractSphere, derivation, liftedDerivation⟩) := by
   apply Subsingleton.elim
 
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies
+        dependencies =
+      (by
+        rcases
+            topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_boundary_dependencies
+              dependencies with
+          ⟨extractSphere, derivation, liftedDerivation⟩
+        exact
+          ⟨finite_extinction_of_equation_boundary_dependencies dependencies,
+            extractSphere, derivation, liftedDerivation⟩) := by
+  apply Subsingleton.elim
+
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies
+        dependencies =
+      (by
+        rcases
+            topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+              (dependencies_of_equation_boundary_dependencies dependencies).topology with
+          ⟨extractSphere, derivation, liftedDerivation⟩
+        exact
+          ⟨finite_extinction_of_equation_boundary_dependencies dependencies,
+            extractSphere, derivation, liftedDerivation⟩) := by
+  apply Subsingleton.elim
+
 /--
 Forgetting equation-boundary data in the strengthened lifted-homeomorphism
 projection assembly-input payload recovers the ordinary lifted-homeomorphism
@@ -11711,6 +11739,44 @@ theorem poincare_target_payload_of_equation_boundary_lifted_homeomorphism_deriva
               (topology_extraction_statement_of_dependencies
                 (dependencies_of_equation_boundary_dependencies
                   dependencies)) with
+          ⟨extractSphere, derivation, liftedDerivation⟩
+        rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation with
+          ⟨target, criterion⟩
+        exact
+          ⟨finiteExtinction, extractSphere, derivation,
+            liftedDerivation, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+theorem poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        rcases
+            topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_boundary_dependencies
+              dependencies with
+          ⟨extractSphere, derivation, liftedDerivation⟩
+        rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation with
+          ⟨target, criterion⟩
+        exact
+          ⟨finiteExtinction, extractSphere, derivation,
+            liftedDerivation, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+theorem poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        rcases
+            topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+              (dependencies_of_equation_boundary_dependencies dependencies).topology with
           ⟨extractSphere, derivation, liftedDerivation⟩
         rcases poincare_payload_of_finite_extinction_and_extraction_derivation
             finiteExtinction extractSphere derivation with
@@ -12334,6 +12400,35 @@ theorem poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_de
             extractSphere derivation) := by
   apply Subsingleton.elim
 
+theorem poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            topology_extraction_derivation_payload_of_equation_boundary_dependencies
+              dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+theorem poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            (dependencies_of_equation_boundary_dependencies dependencies).topology with
+          ⟨extractSphere, derivation⟩
+        exact
+          poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
 /--
 Forgetting equation-boundary data in the strengthened lifted-homeomorphism
 completion payload recovers the ordinary lifted-homeomorphism dependency
@@ -12716,6 +12811,35 @@ theorem poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_
                 (dependencies_of_equation_boundary_dependencies
                   dependencies)) with
           ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          poincare_statement_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+theorem poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            topology_extraction_derivation_payload_of_equation_boundary_dependencies
+              dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          poincare_statement_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+theorem poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            (dependencies_of_equation_boundary_dependencies dependencies).topology with
+          ⟨extractSphere, derivation⟩
         exact
           poincare_statement_of_finite_extinction_and_extraction_derivation
             (finite_extinction_of_equation_boundary_dependencies dependencies)
@@ -13377,6 +13501,39 @@ theorem completion_criterion_of_equation_boundary_lifted_homeomorphism_derivatio
                 (dependencies_of_equation_boundary_dependencies
                   dependencies)) with
           ⟨extractSphere, derivation, _liftedDerivation⟩
+        rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+theorem completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        witness dependencies =
+      (by
+        rcases
+            topology_extraction_derivation_payload_of_equation_boundary_dependencies
+              dependencies with
+          ⟨extractSphere, derivation⟩
+        rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+theorem completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        witness dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            (dependencies_of_equation_boundary_dependencies dependencies).topology with
+          ⟨extractSphere, derivation⟩
         rcases poincare_payload_of_finite_extinction_and_extraction_derivation
             (finite_extinction_of_equation_boundary_dependencies dependencies)
             extractSphere derivation with
