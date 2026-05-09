@@ -2055,6 +2055,70 @@ theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_eq
   apply Subsingleton.elim
 
 /--
+The standard sphere's loop-nullhomotopy obligation supplies
+simple-connectedness for any source recognized as the compactification model.
+-/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+    {M : Type u} [TopologicalSpace M]
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    SimplyConnectedSpace M := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+  exact simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace h
+
+/-- Source simple-connectedness follows by compactification recognition and standard-sphere loops. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+      hLoop h =
+      (by
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+        exact simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace h) := by
+  apply Subsingleton.elim
+
+/--
+The standard sphere's based loop-nullhomotopy obligation supplies
+simple-connectedness for any source recognized as the compactification model.
+-/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    SimplyConnectedSpace M := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+  exact simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace h
+
+/-- Source simple-connectedness follows by compactification recognition and standard-sphere based loops. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (basepoint : ThreeSphere)
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement
+      hBased h =
+      (by
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+        exact simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace h) := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop source simple-connectedness route agrees with the loop route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement
+      hBased h =
+      simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased) h := by
+  apply Subsingleton.elim
+
+/--
 Recognizing a source as the one-point compactification model supplies the full
 homotopy/manifold prerequisite payload once the standard sphere's
 simple-connectedness is available.
@@ -2125,6 +2189,56 @@ theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_
         letI : SimplyConnectedSpace ThreeSphere :=
           threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
         exact homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h) := by
+  apply Subsingleton.elim
+
+/--
+The concrete based loop-nullhomotopy obligation for `ThreeSphere` supplies the
+full source homotopy/manifold prerequisite payload for any source recognized as
+the one-point compactification model.
+-/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+  exact homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h
+
+/--
+The based-loop source prerequisite route is the full source payload after
+converting based loop-nullhomotopy to standard-sphere simple-connectedness.
+-/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (basepoint : ThreeSphere)
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement
+      hBased h =
+      (by
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+        exact homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h) := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop source prerequisite route agrees with the loop route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement
+      hBased h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased) h := by
   apply Subsingleton.elim
 
 /--
@@ -2764,6 +2878,104 @@ theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of
       hBased h =
       poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
         (onePoint_threeSpace_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased) h := by
+  apply Subsingleton.elim
+
+/--
+The standard sphere's loop-nullhomotopy obligation packages any recognized
+source as a Poincare-candidate prerequisite payload.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+    {M : Type u} [TopologicalSpace M]
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M :=
+  homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+    hLoop h
+
+/-- The standard-sphere loop candidate route is the standard-sphere loop source-prerequisite route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+      hLoop h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        hLoop h := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere loop candidate route agrees with the local compactification-loop route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement_onePoint_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+      hLoop h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+          hLoop) h := by
+  apply Subsingleton.elim
+
+/--
+The standard sphere's based loop-nullhomotopy obligation packages any
+recognized source as a Poincare-candidate prerequisite payload.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M :=
+  homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement
+    hBased h
+
+/-- The standard-sphere based-loop candidate route is the based-loop source-prerequisite route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (basepoint : ThreeSphere)
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement
+      hBased h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement
+        hBased h := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop candidate route agrees with the standard-sphere loop route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement
+      hBased h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased) h := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop candidate route agrees with the local compactification-loop route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement_onePoint_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement
+      hBased h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased)) h := by
   apply Subsingleton.elim
 
 /--
