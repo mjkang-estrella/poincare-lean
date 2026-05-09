@@ -4036,6 +4036,10 @@ check_decl "topology homeomorphism derivation statement is declared" \
   '^def ExtinctionTopologyHomeomorphismDerivationStatement\b' Poincare/TopologyExtraction.lean
 check_decl "topology homeomorphism derivation statement equality contract is declared" \
   '^theorem extinctionTopologyHomeomorphismDerivationStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology spherical trivial quotient statement is declared" \
+  '^def ExtinctionTopologySphericalTrivialQuotientStatement\b' Poincare/TopologyExtraction.lean
+check_decl "topology spherical trivial quotient statement equality contract is declared" \
+  '^theorem extinctionTopologySphericalTrivialQuotientStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "topology extraction statement is declared" \
   '^def ExtinctionTopologyExtractionStatement\b' Poincare/TopologyExtraction.lean
 check_decl "topology extraction statement equality contract is declared" \
@@ -4068,6 +4072,22 @@ check_decl "topology derivation statement homeomorphism-derivation bridge is dec
   '^theorem topology_homeomorphism_derivation_statement_of_derivation_statement\b' Poincare/TopologyExtraction.lean
 check_decl "topology derivation statement homeomorphism-derivation bridge equality contract is declared" \
   '^theorem topology_homeomorphism_derivation_statement_of_derivation_statement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology derivation statement spherical trivial quotient bridge is declared" \
+  '^theorem topology_spherical_trivial_quotient_statement_of_derivation_statement\b' Poincare/TopologyExtraction.lean
+check_decl "topology derivation statement spherical trivial quotient bridge equality contract is declared" \
+  '^theorem topology_spherical_trivial_quotient_statement_of_derivation_statement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology homeomorphism assembly spherical trivial quotient bridge is declared" \
+  '^theorem topology_spherical_trivial_quotient_statement_of_homeomorphism_assembly_statement\b' Poincare/TopologyExtraction.lean
+check_decl "topology homeomorphism assembly spherical trivial quotient bridge equality contract is declared" \
+  '^theorem topology_spherical_trivial_quotient_statement_of_homeomorphism_assembly_statement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology derivation statement spherical trivial quotient assembly route equality contract is declared" \
+  '^theorem topology_spherical_trivial_quotient_statement_of_derivation_statement_assembly_route_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology homeomorphism derivation spherical trivial quotient bridge is declared" \
+  '^theorem topology_spherical_trivial_quotient_statement_of_homeomorphism_derivation_statement\b' Poincare/TopologyExtraction.lean
+check_decl "topology homeomorphism derivation spherical trivial quotient bridge equality contract is declared" \
+  '^theorem topology_spherical_trivial_quotient_statement_of_homeomorphism_derivation_statement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology derivation statement spherical trivial quotient derivation route equality contract is declared" \
+  '^theorem topology_spherical_trivial_quotient_statement_of_derivation_statement_derivation_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "topology package extraction statement projection is declared" \
   '^theorem extinction_topology_extraction_statement_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology extraction statement payload bridge is declared" \
@@ -4082,6 +4102,8 @@ check_decl "topology extraction statement assembly projection is declared" \
   '^theorem topology_homeomorphism_assembly_statement_of_extraction_statement\b' Poincare/TopologyExtraction.lean
 check_decl "topology extraction statement homeomorphism-derivation projection is declared" \
   '^theorem topology_homeomorphism_derivation_statement_of_extraction_statement\b' Poincare/TopologyExtraction.lean
+check_decl "topology extraction statement spherical trivial quotient projection is declared" \
+  '^theorem topology_spherical_trivial_quotient_statement_of_extraction_statement\b' Poincare/TopologyExtraction.lean
 check_decl "topology extraction statement fixed-extinction payload is declared" \
   '^theorem topology_extraction_statement_payload_of_extraction_statement\b' Poincare/TopologyExtraction.lean
 check_decl "topology extraction statement bridge is declared" \
@@ -4122,6 +4144,10 @@ check_decl "topology package homeomorphism derivation statement theorem is decla
   '^theorem topology_homeomorphism_derivation_statement_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology package homeomorphism derivation statement equality contract is declared" \
   '^theorem topology_homeomorphism_derivation_statement_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology package spherical trivial quotient statement theorem is declared" \
+  '^theorem topology_spherical_trivial_quotient_statement_of_topology_package\b' Poincare/TopologyExtraction.lean
+check_decl "topology package spherical trivial quotient statement equality contract is declared" \
+  '^theorem topology_spherical_trivial_quotient_statement_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
 for topology_statement_route_contract in \
   extinction_topology_extraction_statement_of_topology_package_eq \
   topology_derivation_statement_payload_of_extraction_statement_eq \
@@ -4133,10 +4159,12 @@ for topology_statement_route_contract in \
   topology_classification_subobligations_of_extraction_statement_eq \
   topology_homeomorphism_assembly_statement_of_extraction_statement_eq \
   topology_homeomorphism_derivation_statement_of_extraction_statement_eq \
+  topology_spherical_trivial_quotient_statement_of_extraction_statement_eq \
   topology_extraction_statement_payload_of_extraction_statement_eq \
   topology_classification_subobligations_of_extinction_topology_extraction_statement_of_topology_package_eq \
   topology_homeomorphism_assembly_statement_of_extinction_topology_extraction_statement_of_topology_package_eq \
   topology_homeomorphism_derivation_statement_of_extinction_topology_extraction_statement_of_topology_package_eq \
+  topology_spherical_trivial_quotient_statement_of_extinction_topology_extraction_statement_of_topology_package_eq \
   topology_extraction_statement_payload_of_topology_package_to_extraction_statement_projections_eq \
   topology_extraction_statement_payload_of_topology_package_to_extraction_statement_payload_eq \
   extinction_implies_sphere_of_topology_extraction_statement_eq \
@@ -4150,6 +4178,7 @@ for topology_statement_route_contract in \
   poincare_statement_of_finite_extinction_and_extraction_derivation_eq \
   poincare_payload_of_finite_extinction_and_extraction_derivation_eq \
   topology_extraction_statement_payload_of_topology_package_eq \
+  topology_spherical_trivial_quotient_statement_of_topology_package_eq \
   extinction_implies_sphere_of_topology_package_to_statement_eq
 do
   check_decl "topology statement route equality/roundtrip contract ${topology_statement_route_contract} is declared" \
@@ -15054,6 +15083,8 @@ open scoped Manifold ContDiff
 #check Poincare.extinctionTopologyHomeomorphismAssemblyStatement_eq
 #check Poincare.ExtinctionTopologyHomeomorphismDerivationStatement
 #check Poincare.extinctionTopologyHomeomorphismDerivationStatement_eq
+#check Poincare.ExtinctionTopologySphericalTrivialQuotientStatement
+#check Poincare.extinctionTopologySphericalTrivialQuotientStatement_eq
 #check Poincare.ExtinctionTopologyExtractionStatement
 #check Poincare.ExtinctionTopologyDerivationForExtractionStatement
 #check Poincare.extinction_topology_derivation_statement_of_components
@@ -15068,6 +15099,14 @@ open scoped Manifold ContDiff
 #check Poincare.topology_homeomorphism_assembly_statement_of_derivation_statement_eq
 #check Poincare.topology_homeomorphism_derivation_statement_of_derivation_statement
 #check Poincare.topology_homeomorphism_derivation_statement_of_derivation_statement_eq
+#check Poincare.topology_spherical_trivial_quotient_statement_of_derivation_statement
+#check Poincare.topology_spherical_trivial_quotient_statement_of_derivation_statement_eq
+#check Poincare.topology_spherical_trivial_quotient_statement_of_homeomorphism_assembly_statement
+#check Poincare.topology_spherical_trivial_quotient_statement_of_homeomorphism_assembly_statement_eq
+#check Poincare.topology_spherical_trivial_quotient_statement_of_derivation_statement_assembly_route_eq
+#check Poincare.topology_spherical_trivial_quotient_statement_of_homeomorphism_derivation_statement
+#check Poincare.topology_spherical_trivial_quotient_statement_of_homeomorphism_derivation_statement_eq
+#check Poincare.topology_spherical_trivial_quotient_statement_of_derivation_statement_derivation_route_eq
 #check Poincare.extinction_topology_extraction_statement_of_topology_package
 #check Poincare.topology_derivation_statement_payload_of_extraction_statement
 #check Poincare.homeomorphism_of_topology_extraction_statement
@@ -15075,6 +15114,7 @@ open scoped Manifold ContDiff
 #check Poincare.topology_classification_subobligations_of_extraction_statement
 #check Poincare.topology_homeomorphism_assembly_statement_of_extraction_statement
 #check Poincare.topology_homeomorphism_derivation_statement_of_extraction_statement
+#check Poincare.topology_spherical_trivial_quotient_statement_of_extraction_statement
 #check Poincare.topology_extraction_statement_payload_of_extraction_statement
 #check Poincare.extinction_implies_sphere_of_topology_extraction_statement
 #check Poincare.extinction_topology_extraction_statement_of_extraction_and_derivation
@@ -15091,6 +15131,7 @@ open scoped Manifold ContDiff
 #check Poincare.topology_extraction_statement_payload_of_topology_package
 #check Poincare.topology_homeomorphism_assembly_statement_of_topology_package
 #check Poincare.topology_homeomorphism_derivation_statement_of_topology_package
+#check Poincare.topology_spherical_trivial_quotient_statement_of_topology_package
 #check Poincare.extinction_topology_extraction_statement_of_topology_package_eq
 #check Poincare.topology_derivation_statement_payload_of_extraction_statement_eq
 #check Poincare.homeomorphism_of_topology_extraction_statement_eq
@@ -15101,12 +15142,15 @@ open scoped Manifold ContDiff
 #check Poincare.topology_classification_subobligations_of_extraction_statement_eq
 #check Poincare.topology_homeomorphism_assembly_statement_of_extraction_statement_eq
 #check Poincare.topology_homeomorphism_derivation_statement_of_extraction_statement_eq
+#check Poincare.topology_spherical_trivial_quotient_statement_of_extraction_statement_eq
 #check Poincare.topology_extraction_statement_payload_of_extraction_statement_eq
 #check Poincare.topology_homeomorphism_assembly_statement_of_topology_package_eq
 #check Poincare.topology_homeomorphism_derivation_statement_of_topology_package_eq
+#check Poincare.topology_spherical_trivial_quotient_statement_of_topology_package_eq
 #check Poincare.topology_classification_subobligations_of_extinction_topology_extraction_statement_of_topology_package_eq
 #check Poincare.topology_homeomorphism_assembly_statement_of_extinction_topology_extraction_statement_of_topology_package_eq
 #check Poincare.topology_homeomorphism_derivation_statement_of_extinction_topology_extraction_statement_of_topology_package_eq
+#check Poincare.topology_spherical_trivial_quotient_statement_of_extinction_topology_extraction_statement_of_topology_package_eq
 #check Poincare.topology_extraction_statement_payload_of_topology_package_to_extraction_statement_projections_eq
 #check Poincare.topology_extraction_statement_payload_of_topology_package_to_extraction_statement_payload_eq
 #check Poincare.extinction_implies_sphere_of_topology_extraction_statement_eq
