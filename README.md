@@ -45,7 +45,7 @@ The current artifact is intentionally conservative:
   The `ThreeSpherePathQuotientSubsingletonStatement` variant packages the same
   gap as subsingleton path-homotopy quotients between every pair of points and
   pins its equivalence with path-homotopy uniqueness plus its prerequisite
-  payload routes.
+  payload routes through both path-homotopy and loop-nullhomotopy routes.
 - `Poincare/Milestones.lean` and `DEPENDENCY_LEDGER.md` name the missing
   Ricci-flow and topology proof obligations as data, not as proved
   propositions.

@@ -823,6 +823,20 @@ theorem threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_pa
   apply Subsingleton.elim
 
 /--
+The quotient-uniqueness target-prerequisite route also agrees with the route
+that first converts quotient uniqueness through path-homotopy uniqueness and
+then to loop-nullhomotopy.
+-/
+theorem threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_loop_route_eq :
+    threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement =
+      (fun h : ThreeSpherePathQuotientSubsingletonStatement =>
+        threeSphere_target_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
+            (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement h))) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The path-quotient uniqueness obligation supplies the full homotopy-oriented
 prerequisite payload by converting quotient uniqueness to simple-connectedness.
 -/
@@ -863,6 +877,20 @@ theorem threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_
       (fun h : ThreeSpherePathQuotientSubsingletonStatement =>
         threeSphere_homotopy_prerequisites_of_pathHomotopyStatement
           (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The quotient-uniqueness homotopy-prerequisite route also agrees with the route
+that first converts quotient uniqueness through path-homotopy uniqueness and
+then to loop-nullhomotopy.
+-/
+theorem threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_loop_route_eq :
+    threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement =
+      (fun h : ThreeSpherePathQuotientSubsingletonStatement =>
+        threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
+            (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement h))) := by
   funext h
   apply Subsingleton.elim
 

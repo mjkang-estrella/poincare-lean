@@ -922,6 +922,7 @@ set_option linter.unusedVariables false
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_eq
 #check Poincare.threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_path_route_eq
+#check Poincare.threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_loop_route_eq
 
 #check (Poincare.threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement :
   Poincare.ThreeSpherePathQuotientSubsingletonStatement →
@@ -936,6 +937,7 @@ set_option linter.unusedVariables false
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_path_route_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_loop_route_eq
 
 #check (Poincare.poincareConjectureStatement_eq :
   Poincare.PoincareConjectureStatement =
