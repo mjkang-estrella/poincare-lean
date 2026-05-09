@@ -9125,6 +9125,140 @@ theorem extinctionTopologySphericalTrivialQuotientStatement_eq
   rfl
 
 /--
+The narrow spherical homeomorphism-lift statement: after reducing to a trivial
+spherical space-form quotient, the universal-cover model and trivial quotient
+homeomorphism supply the final lift used by the extraction assembly.
+-/
+def ExtinctionTopologySphericalHomeomorphismLiftStatement
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) : Prop :=
+  ∃ decomposition : HasExtinctionTopologyDecomposition M extinction,
+  ∃ primeDecomposition :
+    HasExtinctionPrimeDecomposition M extinction decomposition,
+  ∃ irreducibility :
+    HasExtinctionIrreducibility
+      M extinction decomposition primeDecomposition,
+  ∃ connectedSumCollapse :
+    HasExtinctionConnectedSumCollapse
+      M extinction decomposition primeDecomposition irreducibility,
+  ∃ sphericalReduction :
+    HasExtinctionSphericalSpaceFormReduction
+      M extinction decomposition primeDecomposition irreducibility
+      connectedSumCollapse,
+  ∃ quotientModel :
+    HasSphericalSpaceFormQuotientModel
+      M extinction decomposition primeDecomposition irreducibility
+      connectedSumCollapse sphericalReduction,
+  ∃ universalCover :
+    HasSphericalSpaceFormUniversalCover
+      M extinction decomposition primeDecomposition irreducibility
+      connectedSumCollapse sphericalReduction quotientModel,
+  ∃ fundamentalGroupComputation :
+    HasSphericalSpaceFormFundamentalGroupComputation
+      M extinction decomposition primeDecomposition irreducibility
+      connectedSumCollapse sphericalReduction,
+  ∃ deckGroupIdentification :
+    HasSphericalSpaceFormDeckGroupIdentification
+      M extinction decomposition primeDecomposition irreducibility
+      connectedSumCollapse sphericalReduction quotientModel
+      fundamentalGroupComputation,
+  ∃ deckGroupTriviality :
+    HasSphericalSpaceFormDeckGroupTriviality
+      M extinction decomposition primeDecomposition irreducibility
+      connectedSumCollapse sphericalReduction fundamentalGroupComputation,
+  ∃ _simplyConnectedRecognition :
+    HasSimplyConnectedExtinctionRecognition
+      M extinction decomposition primeDecomposition irreducibility
+      connectedSumCollapse sphericalReduction fundamentalGroupComputation
+      deckGroupTriviality,
+  ∃ trivialQuotient :
+    HasTrivialSphericalSpaceFormQuotient
+      M extinction decomposition primeDecomposition irreducibility
+      connectedSumCollapse sphericalReduction quotientModel
+      fundamentalGroupComputation deckGroupIdentification deckGroupTriviality,
+  ∃ trivialQuotientHomeomorphism :
+    HasSphericalSpaceFormTrivialQuotientHomeomorphism
+      M extinction decomposition primeDecomposition irreducibility
+      connectedSumCollapse sphericalReduction quotientModel universalCover
+      fundamentalGroupComputation deckGroupIdentification deckGroupTriviality
+      trivialQuotient,
+    HasSphericalSpaceFormHomeomorphismLift
+      M extinction decomposition primeDecomposition irreducibility
+      connectedSumCollapse sphericalReduction quotientModel universalCover
+      fundamentalGroupComputation deckGroupIdentification deckGroupTriviality
+      trivialQuotient trivialQuotientHomeomorphism
+
+/--
+The spherical homeomorphism-lift statement is definitionally the universal
+cover, trivial quotient, trivial quotient homeomorphism, and lift witness stack.
+-/
+theorem extinctionTopologySphericalHomeomorphismLiftStatement_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ExtinctionTopologySphericalHomeomorphismLiftStatement M extinction =
+      (∃ decomposition : HasExtinctionTopologyDecomposition M extinction,
+      ∃ primeDecomposition :
+        HasExtinctionPrimeDecomposition M extinction decomposition,
+      ∃ irreducibility :
+        HasExtinctionIrreducibility
+          M extinction decomposition primeDecomposition,
+      ∃ connectedSumCollapse :
+        HasExtinctionConnectedSumCollapse
+          M extinction decomposition primeDecomposition irreducibility,
+      ∃ sphericalReduction :
+        HasExtinctionSphericalSpaceFormReduction
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse,
+      ∃ quotientModel :
+        HasSphericalSpaceFormQuotientModel
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction,
+      ∃ universalCover :
+        HasSphericalSpaceFormUniversalCover
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction quotientModel,
+      ∃ fundamentalGroupComputation :
+        HasSphericalSpaceFormFundamentalGroupComputation
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction,
+      ∃ deckGroupIdentification :
+        HasSphericalSpaceFormDeckGroupIdentification
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction quotientModel
+          fundamentalGroupComputation,
+      ∃ deckGroupTriviality :
+        HasSphericalSpaceFormDeckGroupTriviality
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction fundamentalGroupComputation,
+      ∃ _simplyConnectedRecognition :
+        HasSimplyConnectedExtinctionRecognition
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction fundamentalGroupComputation
+          deckGroupTriviality,
+      ∃ trivialQuotient :
+        HasTrivialSphericalSpaceFormQuotient
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction quotientModel
+          fundamentalGroupComputation deckGroupIdentification
+          deckGroupTriviality,
+      ∃ trivialQuotientHomeomorphism :
+        HasSphericalSpaceFormTrivialQuotientHomeomorphism
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction quotientModel universalCover
+          fundamentalGroupComputation deckGroupIdentification
+          deckGroupTriviality trivialQuotient,
+        HasSphericalSpaceFormHomeomorphismLift
+          M extinction decomposition primeDecomposition irreducibility
+          connectedSumCollapse sphericalReduction quotientModel universalCover
+          fundamentalGroupComputation deckGroupIdentification
+          deckGroupTriviality trivialQuotient trivialQuotientHomeomorphism) :=
+  rfl
+
+/--
 The full topology derivation statement contains the narrower
 simply-connected recognition statement.
 -/
@@ -9362,6 +9496,87 @@ theorem topology_spherical_trivial_quotient_statement_of_derivation_statement_eq
   apply Subsingleton.elim
 
 /--
+The full topology derivation statement contains the narrower spherical
+homeomorphism-lift statement.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_of_derivation_statement
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (derivationStatement :
+      ExtinctionTopologyDerivationStatement M extinction homeomorphism) :
+    ExtinctionTopologySphericalHomeomorphismLiftStatement M extinction := by
+  rcases derivationStatement with
+    ⟨decomposition, _surgeryTraceReconstruction,
+      _surgeryTraceHandleCancellation, _componentClassification,
+      _discardedComponentHomeomorphismClassification, _componentInventory,
+      _componentBoundarySphereControl, primeDecomposition,
+      _primeDecompositionExistence, _sphereTheoremApplication,
+      _embeddedSphereProduction, _loopTheoremApplication,
+      _primeDecompositionCompatibility, _primeFactorUniqueness, irreducibility,
+      _irreducibleFactorRecognition, connectedSumCollapse,
+      _connectedSumFundamentalGroupControl, _connectedSumVanKampen,
+      _simplyConnectedPrimeFactorControl, sphericalReduction,
+      _sphericalClassification, quotientModel, _sphericalFreeAction,
+      universalCover, _sphericalCoveringModel, _sphericalCoveringProjection,
+      fundamentalGroupComputation, deckGroupIdentification,
+      _deckActionProperness, deckGroupTriviality, _deckActionTrivialization,
+      _trivialDeckQuotientIdentification, trivialQuotient,
+      trivialQuotientHomeomorphism, sphericalHomeomorphismLift,
+      simplyConnectedRecognition, _homeomorphismAssembly,
+      _homeomorphismDerivation⟩
+  exact ⟨decomposition, primeDecomposition, irreducibility,
+    connectedSumCollapse, sphericalReduction, quotientModel, universalCover,
+    fundamentalGroupComputation, deckGroupIdentification, deckGroupTriviality,
+    simplyConnectedRecognition, trivialQuotient, trivialQuotientHomeomorphism,
+    sphericalHomeomorphismLift⟩
+
+/--
+The spherical homeomorphism-lift bridge from a full topology derivation
+statement exposes exactly the universal-cover, trivial-quotient homeomorphism,
+and lift components stored in it.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_of_derivation_statement_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (derivationStatement :
+      ExtinctionTopologyDerivationStatement M extinction homeomorphism) :
+    topology_spherical_homeomorphism_lift_statement_of_derivation_statement
+        M extinction homeomorphism derivationStatement =
+      (by
+        rcases derivationStatement with
+          ⟨decomposition, _surgeryTraceReconstruction,
+            _surgeryTraceHandleCancellation, _componentClassification,
+            _discardedComponentHomeomorphismClassification, _componentInventory,
+            _componentBoundarySphereControl, primeDecomposition,
+            _primeDecompositionExistence, _sphereTheoremApplication,
+            _embeddedSphereProduction, _loopTheoremApplication,
+            _primeDecompositionCompatibility, _primeFactorUniqueness,
+            irreducibility, _irreducibleFactorRecognition,
+            connectedSumCollapse, _connectedSumFundamentalGroupControl,
+            _connectedSumVanKampen, _simplyConnectedPrimeFactorControl,
+            sphericalReduction, _sphericalClassification, quotientModel,
+            _sphericalFreeAction, universalCover, _sphericalCoveringModel,
+            _sphericalCoveringProjection, fundamentalGroupComputation,
+            deckGroupIdentification, _deckActionProperness,
+            deckGroupTriviality, _deckActionTrivialization,
+            _trivialDeckQuotientIdentification, trivialQuotient,
+            trivialQuotientHomeomorphism, sphericalHomeomorphismLift,
+            simplyConnectedRecognition, _homeomorphismAssembly,
+            _homeomorphismDerivation⟩
+        exact ⟨decomposition, primeDecomposition, irreducibility,
+          connectedSumCollapse, sphericalReduction, quotientModel,
+          universalCover, fundamentalGroupComputation, deckGroupIdentification,
+          deckGroupTriviality, simplyConnectedRecognition, trivialQuotient,
+          trivialQuotientHomeomorphism, sphericalHomeomorphismLift⟩) := by
+  apply Subsingleton.elim
+
+/--
 The spherical trivial-quotient statement contains the narrower
 simply-connected recognition statement.
 -/
@@ -9426,6 +9641,148 @@ theorem topology_simply_connected_recognition_statement_of_derivation_statement_
       topology_simply_connected_recognition_statement_of_spherical_trivial_quotient_statement
         M extinction
         (topology_spherical_trivial_quotient_statement_of_derivation_statement
+          M extinction homeomorphism derivationStatement) := by
+  apply Subsingleton.elim
+
+/--
+The spherical homeomorphism-lift statement contains the narrower
+simply-connected recognition statement.
+-/
+theorem topology_simply_connected_recognition_statement_of_spherical_homeomorphism_lift_statement
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (liftStatement :
+      ExtinctionTopologySphericalHomeomorphismLiftStatement M extinction) :
+    ExtinctionTopologySimplyConnectedRecognitionStatement M extinction := by
+  rcases liftStatement with
+    ⟨decomposition, primeDecomposition, irreducibility, connectedSumCollapse,
+      sphericalReduction, _quotientModel, _universalCover,
+      fundamentalGroupComputation, _deckGroupIdentification,
+      deckGroupTriviality, simplyConnectedRecognition, _trivialQuotient,
+      _trivialQuotientHomeomorphism, _sphericalHomeomorphismLift⟩
+  exact ⟨decomposition, primeDecomposition, irreducibility,
+    connectedSumCollapse, sphericalReduction, fundamentalGroupComputation,
+    deckGroupTriviality, simplyConnectedRecognition⟩
+
+/--
+The recognition bridge from the spherical homeomorphism-lift statement exposes
+exactly its stored fundamental-group, deck-triviality, and recognition
+witnesses.
+-/
+theorem topology_simply_connected_recognition_statement_of_spherical_homeomorphism_lift_statement_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (liftStatement :
+      ExtinctionTopologySphericalHomeomorphismLiftStatement M extinction) :
+    topology_simply_connected_recognition_statement_of_spherical_homeomorphism_lift_statement
+        M extinction liftStatement =
+      (by
+        rcases liftStatement with
+          ⟨decomposition, primeDecomposition, irreducibility,
+            connectedSumCollapse, sphericalReduction, _quotientModel,
+            _universalCover, fundamentalGroupComputation,
+            _deckGroupIdentification, deckGroupTriviality,
+            simplyConnectedRecognition, _trivialQuotient,
+            _trivialQuotientHomeomorphism, _sphericalHomeomorphismLift⟩
+        exact ⟨decomposition, primeDecomposition, irreducibility,
+          connectedSumCollapse, sphericalReduction,
+          fundamentalGroupComputation, deckGroupTriviality,
+          simplyConnectedRecognition⟩) := by
+  apply Subsingleton.elim
+
+/--
+The spherical homeomorphism-lift statement contains the narrower trivial
+spherical quotient statement.
+-/
+theorem topology_spherical_trivial_quotient_statement_of_spherical_homeomorphism_lift_statement
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (liftStatement :
+      ExtinctionTopologySphericalHomeomorphismLiftStatement M extinction) :
+    ExtinctionTopologySphericalTrivialQuotientStatement M extinction := by
+  rcases liftStatement with
+    ⟨decomposition, primeDecomposition, irreducibility, connectedSumCollapse,
+      sphericalReduction, quotientModel, _universalCover,
+      fundamentalGroupComputation, deckGroupIdentification,
+      deckGroupTriviality, simplyConnectedRecognition, trivialQuotient,
+      _trivialQuotientHomeomorphism, _sphericalHomeomorphismLift⟩
+  exact ⟨decomposition, primeDecomposition, irreducibility,
+    connectedSumCollapse, sphericalReduction, quotientModel,
+    fundamentalGroupComputation, deckGroupIdentification, deckGroupTriviality,
+    simplyConnectedRecognition, trivialQuotient⟩
+
+/--
+The trivial-quotient bridge from the spherical homeomorphism-lift statement
+exposes exactly its stored quotient-model, deck-triviality, recognition, and
+trivial quotient witnesses.
+-/
+theorem topology_spherical_trivial_quotient_statement_of_spherical_homeomorphism_lift_statement_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (liftStatement :
+      ExtinctionTopologySphericalHomeomorphismLiftStatement M extinction) :
+    topology_spherical_trivial_quotient_statement_of_spherical_homeomorphism_lift_statement
+        M extinction liftStatement =
+      (by
+        rcases liftStatement with
+          ⟨decomposition, primeDecomposition, irreducibility,
+            connectedSumCollapse, sphericalReduction, quotientModel,
+            _universalCover, fundamentalGroupComputation,
+            deckGroupIdentification, deckGroupTriviality,
+            simplyConnectedRecognition, trivialQuotient,
+            _trivialQuotientHomeomorphism, _sphericalHomeomorphismLift⟩
+        exact ⟨decomposition, primeDecomposition, irreducibility,
+          connectedSumCollapse, sphericalReduction, quotientModel,
+          fundamentalGroupComputation, deckGroupIdentification,
+          deckGroupTriviality, simplyConnectedRecognition,
+          trivialQuotient⟩) := by
+  apply Subsingleton.elim
+
+/--
+The full-derivation route to simply-connected recognition agrees with the
+route through the narrower spherical homeomorphism-lift statement.
+-/
+theorem topology_simply_connected_recognition_statement_of_derivation_statement_lift_route_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (derivationStatement :
+      ExtinctionTopologyDerivationStatement M extinction homeomorphism) :
+    topology_simply_connected_recognition_statement_of_derivation_statement
+        M extinction homeomorphism derivationStatement =
+      topology_simply_connected_recognition_statement_of_spherical_homeomorphism_lift_statement
+        M extinction
+        (topology_spherical_homeomorphism_lift_statement_of_derivation_statement
+          M extinction homeomorphism derivationStatement) := by
+  apply Subsingleton.elim
+
+/--
+The full-derivation route to the trivial quotient agrees with the route through
+the narrower spherical homeomorphism-lift statement.
+-/
+theorem topology_spherical_trivial_quotient_statement_of_derivation_statement_lift_route_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (derivationStatement :
+      ExtinctionTopologyDerivationStatement M extinction homeomorphism) :
+    topology_spherical_trivial_quotient_statement_of_derivation_statement
+        M extinction homeomorphism derivationStatement =
+      topology_spherical_trivial_quotient_statement_of_spherical_homeomorphism_lift_statement
+        M extinction
+        (topology_spherical_homeomorphism_lift_statement_of_derivation_statement
           M extinction homeomorphism derivationStatement) := by
   apply Subsingleton.elim
 
@@ -10043,11 +10400,50 @@ theorem topology_spherical_trivial_quotient_statement_of_extraction_statement_eq
   apply Subsingleton.elim
 
 /--
+The theorem-shaped topology extraction statement directly exposes the
+spherical homeomorphism-lift statement through its projected derivation
+statement.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_of_extraction_statement
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ExtinctionTopologySphericalHomeomorphismLiftStatement M extinction :=
+  topology_spherical_homeomorphism_lift_statement_of_derivation_statement
+    M extinction
+    (homeomorphism_of_topology_extraction_statement
+      topologyStatement M extinction)
+    (topology_derivation_statement_of_extraction_statement
+      topologyStatement M extinction)
+
+/--
+The spherical homeomorphism-lift statement projected from a theorem-shaped
+topology extraction statement is the corresponding derivation-statement bridge.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_of_extraction_statement_eq
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_homeomorphism_lift_statement_of_extraction_statement
+      topologyStatement M extinction =
+      topology_spherical_homeomorphism_lift_statement_of_derivation_statement
+        M extinction
+        (homeomorphism_of_topology_extraction_statement
+          topologyStatement M extinction)
+        (topology_derivation_statement_of_extraction_statement
+          topologyStatement M extinction) := by
+  apply Subsingleton.elim
+
+/--
 The theorem-shaped topology extraction statement exposes the fixed-extinction
 payload consisting of the statement itself, its projected homeomorphism, its
 derivation statement, and the statement-level classification,
-simply-connected recognition, trivial quotient, and homeomorphism-statement
-projections.
+simply-connected recognition, trivial quotient, spherical homeomorphism lift,
+and homeomorphism-statement projections.
 -/
 theorem topology_extraction_statement_payload_of_extraction_statement
     (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
@@ -10065,6 +10461,8 @@ theorem topology_extraction_statement_payload_of_extraction_statement
       ExtinctionTopologySimplyConnectedRecognitionStatement M extinction,
     ∃ _sphericalTrivialQuotient :
       ExtinctionTopologySphericalTrivialQuotientStatement M extinction,
+    ∃ _sphericalHomeomorphismLift :
+      ExtinctionTopologySphericalHomeomorphismLiftStatement M extinction,
     ∃ _assemblyStatement :
       ExtinctionTopologyHomeomorphismAssemblyStatement M extinction
         homeomorphism,
@@ -10080,6 +10478,8 @@ theorem topology_extraction_statement_payload_of_extraction_statement
     topology_simply_connected_recognition_statement_of_extraction_statement
       topologyStatement M extinction,
     topology_spherical_trivial_quotient_statement_of_extraction_statement
+      topologyStatement M extinction,
+    topology_spherical_homeomorphism_lift_statement_of_extraction_statement
       topologyStatement M extinction,
     topology_homeomorphism_assembly_statement_of_extraction_statement
       topologyStatement M extinction,
@@ -10108,6 +10508,8 @@ theorem topology_extraction_statement_payload_of_extraction_statement_eq
         topology_simply_connected_recognition_statement_of_extraction_statement
           topologyStatement M extinction,
         topology_spherical_trivial_quotient_statement_of_extraction_statement
+          topologyStatement M extinction,
+        topology_spherical_homeomorphism_lift_statement_of_extraction_statement
           topologyStatement M extinction,
         topology_homeomorphism_assembly_statement_of_extraction_statement
           topologyStatement M extinction,
@@ -10499,8 +10901,9 @@ theorem topology_extraction_derivation_payload_of_topology_package_eq
 A completed topology package extracts the theorem-shaped topology statement,
 its fixed-extinction homeomorphism, the full classification sub-obligation
 stack, the simply-connected recognition statement, the spherical
-trivial-quotient statement, and the homeomorphism assembly/derivation
-statements from any finite-extinction input.
+trivial-quotient statement, the spherical homeomorphism-lift statement, and
+the homeomorphism assembly/derivation statements from any finite-extinction
+input.
 -/
 theorem topology_extraction_statement_payload_of_topology_package
     (package : ExtinctionTopologyExtractionPackage.{u})
@@ -10518,6 +10921,8 @@ theorem topology_extraction_statement_payload_of_topology_package
       ExtinctionTopologySimplyConnectedRecognitionStatement M extinction,
     ∃ _sphericalTrivialQuotient :
       ExtinctionTopologySphericalTrivialQuotientStatement M extinction,
+    ∃ _sphericalHomeomorphismLift :
+      ExtinctionTopologySphericalHomeomorphismLiftStatement M extinction,
     ∃ _assemblyStatement :
       ExtinctionTopologyHomeomorphismAssemblyStatement M extinction
         homeomorphism,
@@ -10537,9 +10942,12 @@ theorem topology_extraction_statement_payload_of_topology_package
   let sphericalTrivialQuotient :=
     topology_spherical_trivial_quotient_statement_of_derivation_statement M
       extinction homeomorphism derivationStatement
+  let sphericalHomeomorphismLift :=
+    topology_spherical_homeomorphism_lift_statement_of_derivation_statement M
+      extinction homeomorphism derivationStatement
   exact ⟨topologyStatement, homeomorphism, derivationStatement,
     classificationSubobligations, simplyConnectedRecognition,
-    sphericalTrivialQuotient,
+    sphericalTrivialQuotient, sphericalHomeomorphismLift,
     topology_homeomorphism_assembly_statement_of_derivation_statement M
       extinction homeomorphism derivationStatement,
     topology_homeomorphism_derivation_statement_of_derivation_statement M
@@ -10573,9 +10981,12 @@ theorem topology_extraction_statement_payload_of_topology_package_eq
         let sphericalTrivialQuotient :=
           topology_spherical_trivial_quotient_statement_of_derivation_statement
             M extinction homeomorphism derivationStatement
+        let sphericalHomeomorphismLift :=
+          topology_spherical_homeomorphism_lift_statement_of_derivation_statement
+            M extinction homeomorphism derivationStatement
         exact ⟨topologyStatement, homeomorphism, derivationStatement,
           classificationSubobligations, simplyConnectedRecognition,
-          sphericalTrivialQuotient,
+          sphericalTrivialQuotient, sphericalHomeomorphismLift,
           topology_homeomorphism_assembly_statement_of_derivation_statement M
             extinction homeomorphism derivationStatement,
           topology_homeomorphism_derivation_statement_of_derivation_statement M
@@ -10608,6 +11019,8 @@ theorem topology_extraction_statement_payload_of_topology_package_to_extraction_
           topology_simply_connected_recognition_statement_of_extraction_statement
             topologyStatement M extinction,
           topology_spherical_trivial_quotient_statement_of_extraction_statement
+            topologyStatement M extinction,
+          topology_spherical_homeomorphism_lift_statement_of_extraction_statement
             topologyStatement M extinction,
           topology_homeomorphism_assembly_statement_of_extraction_statement
             topologyStatement M extinction,
@@ -10815,6 +11228,42 @@ theorem topology_spherical_trivial_quotient_statement_of_topology_package_eq
   apply Subsingleton.elim
 
 /--
+A completed topology package directly exposes the fixed-extinction spherical
+homeomorphism-lift statement.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ExtinctionTopologySphericalHomeomorphismLiftStatement M extinction :=
+  topology_spherical_homeomorphism_lift_statement_of_derivation_statement
+    M extinction
+    (homeomorphism_of_topology_package package M extinction)
+    (extinction_topology_derivation_statement_of_topology_package
+      package M extinction)
+
+/--
+The package-level spherical homeomorphism-lift statement is the
+derivation-statement bridge applied to the package projections.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_of_topology_package_eq
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_homeomorphism_lift_statement_of_topology_package
+        package M extinction =
+      topology_spherical_homeomorphism_lift_statement_of_derivation_statement
+        M extinction
+        (homeomorphism_of_topology_package package M extinction)
+        (extinction_topology_derivation_statement_of_topology_package
+          package M extinction) := by
+  apply Subsingleton.elim
+
+/--
 Projecting classification sub-obligations from a package-built theorem-shaped
 topology statement agrees with the direct package-level classification route.
 -/
@@ -10896,6 +11345,23 @@ theorem topology_spherical_trivial_quotient_statement_of_extinction_topology_ext
       (extinction_topology_extraction_statement_of_topology_package package)
       M extinction =
       topology_spherical_trivial_quotient_statement_of_topology_package
+        package M extinction := by
+  apply Subsingleton.elim
+
+/--
+Projecting the spherical homeomorphism-lift statement from a package-built
+theorem-shaped topology statement agrees with the direct package-level route.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_of_extinction_topology_extraction_statement_of_topology_package_eq
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_homeomorphism_lift_statement_of_extraction_statement
+      (extinction_topology_extraction_statement_of_topology_package package)
+      M extinction =
+      topology_spherical_homeomorphism_lift_statement_of_topology_package
         package M extinction := by
   apply Subsingleton.elim
 

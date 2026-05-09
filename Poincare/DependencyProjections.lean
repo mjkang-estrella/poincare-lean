@@ -4997,7 +4997,8 @@ theorem topology_classification_payload_of_dependencies
       (topology_package_of_dependencies dependencies) M extinction with
     ⟨_topologyStatement, _homeomorphism, _derivationStatement,
       classificationSubobligations, _simplyConnectedRecognition,
-      _sphericalTrivialQuotient, _assemblyStatement,
+      _sphericalTrivialQuotient, _sphericalHomeomorphismLift,
+      _assemblyStatement,
       _homeomorphismDerivationStatement⟩
   exact classificationSubobligations
 
@@ -7327,8 +7328,8 @@ theorem topology_extraction_payload_of_dependencies_to_package_eq
 A completed dependency package extracts the theorem-shaped topology statement,
 its final homeomorphism, the full classification sub-obligation stack, the
 simply-connected recognition statement, the spherical trivial-quotient
-statement, and the fixed-homeomorphism derivation statements from any
-finite-extinction input.
+statement, the spherical homeomorphism-lift statement, and the
+fixed-homeomorphism derivation statements from any finite-extinction input.
 -/
 theorem topology_extraction_statement_payload_of_dependencies
     (dependencies : PoincareProofDependencies.{u})
@@ -7346,6 +7347,8 @@ theorem topology_extraction_statement_payload_of_dependencies
       ExtinctionTopologySimplyConnectedRecognitionStatement M extinction,
     ∃ _sphericalTrivialQuotient :
       ExtinctionTopologySphericalTrivialQuotientStatement M extinction,
+    ∃ _sphericalHomeomorphismLift :
+      ExtinctionTopologySphericalHomeomorphismLiftStatement M extinction,
     ∃ _assemblyStatement :
       ExtinctionTopologyHomeomorphismAssemblyStatement M extinction
         homeomorphism,
@@ -7355,11 +7358,12 @@ theorem topology_extraction_statement_payload_of_dependencies
       (topology_package_of_dependencies dependencies) M extinction with
     ⟨topologyStatement, homeomorphism, derivationStatement,
       classificationSubobligations, simplyConnectedRecognition,
-      sphericalTrivialQuotient, assemblyStatement,
+      sphericalTrivialQuotient, sphericalHomeomorphismLift, assemblyStatement,
       homeomorphismDerivationStatement⟩
   exact ⟨topologyStatement, homeomorphism, derivationStatement,
     classificationSubobligations, simplyConnectedRecognition,
-    sphericalTrivialQuotient, assemblyStatement, homeomorphismDerivationStatement⟩
+    sphericalTrivialQuotient, sphericalHomeomorphismLift, assemblyStatement,
+    homeomorphismDerivationStatement⟩
 
 /--
 The dependency-level topology statement payload is the corresponding payload of
@@ -7672,6 +7676,52 @@ theorem topology_spherical_trivial_quotient_statement_of_dependencies_to_package
   apply Subsingleton.elim
 
 /--
+A completed dependency package supplies the spherical homeomorphism-lift
+substatement through the stored topology package.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_of_dependencies
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ExtinctionTopologySphericalHomeomorphismLiftStatement M extinction :=
+  topology_spherical_homeomorphism_lift_statement_of_topology_package
+    dependencies.topology M extinction
+
+/--
+The dependency-level spherical homeomorphism-lift substatement is the direct
+projection from the stored topology package.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_homeomorphism_lift_statement_of_dependencies
+      dependencies M extinction =
+      topology_spherical_homeomorphism_lift_statement_of_topology_package
+        dependencies.topology M extinction := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level spherical homeomorphism-lift substatement agrees with the
+direct topology-package route.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_homeomorphism_lift_statement_of_dependencies
+        dependencies M extinction =
+      topology_spherical_homeomorphism_lift_statement_of_topology_package
+        dependencies.topology M extinction := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package extracts the final homeomorphism from any
 finite-extinction input.
 -/
@@ -7688,7 +7738,8 @@ theorem topology_derivation_statement_payload_of_dependencies
         dependencies M extinction with
       ⟨_topologyStatement, homeomorphism, derivationStatement,
         _classificationSubobligations, _simplyConnectedRecognition,
-        _sphericalTrivialQuotient, _assemblyStatement,
+        _sphericalTrivialQuotient, _sphericalHomeomorphismLift,
+        _assemblyStatement,
         _homeomorphismDerivationStatement⟩
     exact ⟨homeomorphism, derivationStatement⟩
 
@@ -7829,7 +7880,7 @@ theorem topology_homeomorphism_assembly_statement_via_extraction_of_dependencies
         dependencies M extinction with
       ⟨_topologyStatement, homeomorphism, _derivationStatement,
         _classificationSubobligations, _simplyConnectedRecognition,
-        _sphericalTrivialQuotient,
+        _sphericalTrivialQuotient, _sphericalHomeomorphismLift,
         assemblyStatement,
         _homeomorphismDerivationStatement⟩
     convert assemblyStatement
@@ -7851,7 +7902,7 @@ theorem topology_homeomorphism_assembly_statement_via_extraction_of_dependencies
             dependencies M extinction with
           ⟨_topologyStatement, _homeomorphism, _derivationStatement,
             _classificationSubobligations, _simplyConnectedRecognition,
-            _sphericalTrivialQuotient,
+            _sphericalTrivialQuotient, _sphericalHomeomorphismLift,
             assemblyStatement,
             _homeomorphismDerivationStatement⟩
         convert assemblyStatement) := by
@@ -7873,7 +7924,8 @@ theorem topology_simply_connected_recognition_statement_via_extraction_of_depend
         dependencies M extinction with
       ⟨_topologyStatement, _homeomorphism, _derivationStatement,
         _classificationSubobligations, simplyConnectedRecognition,
-        _sphericalTrivialQuotient, _assemblyStatement,
+        _sphericalTrivialQuotient, _sphericalHomeomorphismLift,
+        _assemblyStatement,
         _homeomorphismDerivationStatement⟩
     exact simplyConnectedRecognition
 
@@ -7894,7 +7946,8 @@ theorem topology_simply_connected_recognition_statement_via_extraction_of_depend
             dependencies M extinction with
           ⟨_topologyStatement, _homeomorphism, _derivationStatement,
             _classificationSubobligations, simplyConnectedRecognition,
-            _sphericalTrivialQuotient, _assemblyStatement,
+            _sphericalTrivialQuotient, _sphericalHomeomorphismLift,
+            _assemblyStatement,
             _homeomorphismDerivationStatement⟩
         exact simplyConnectedRecognition) := by
   apply Subsingleton.elim
@@ -7916,7 +7969,8 @@ theorem topology_spherical_trivial_quotient_statement_via_extraction_of_dependen
       ⟨_topologyStatement, _homeomorphism, _derivationStatement,
         _classificationSubobligations, _simplyConnectedRecognition,
         sphericalTrivialQuotient,
-        _assemblyStatement, _homeomorphismDerivationStatement⟩
+        _sphericalHomeomorphismLift, _assemblyStatement,
+        _homeomorphismDerivationStatement⟩
     exact sphericalTrivialQuotient
 
 /--
@@ -7937,8 +7991,51 @@ theorem topology_spherical_trivial_quotient_statement_via_extraction_of_dependen
           ⟨_topologyStatement, _homeomorphism, _derivationStatement,
             _classificationSubobligations, _simplyConnectedRecognition,
             sphericalTrivialQuotient,
-            _assemblyStatement, _homeomorphismDerivationStatement⟩
+            _sphericalHomeomorphismLift, _assemblyStatement,
+            _homeomorphismDerivationStatement⟩
         exact sphericalTrivialQuotient) := by
+  apply Subsingleton.elim
+
+/--
+The theorem-shaped dependency extraction route supplies the spherical
+homeomorphism-lift statement from the topology extraction payload.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_via_extraction_of_dependencies
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ExtinctionTopologySphericalHomeomorphismLiftStatement M extinction :=
+  by
+    rcases topology_extraction_statement_payload_of_dependencies
+        dependencies M extinction with
+      ⟨_topologyStatement, _homeomorphism, _derivationStatement,
+        _classificationSubobligations, _simplyConnectedRecognition,
+        _sphericalTrivialQuotient, sphericalHomeomorphismLift,
+        _assemblyStatement, _homeomorphismDerivationStatement⟩
+    exact sphericalHomeomorphismLift
+
+/--
+The dependency-level spherical homeomorphism-lift statement is selected from
+the named topology extraction statement payload.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_via_extraction_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_homeomorphism_lift_statement_via_extraction_of_dependencies
+      dependencies M extinction =
+      (by
+        rcases topology_extraction_statement_payload_of_dependencies
+            dependencies M extinction with
+          ⟨_topologyStatement, _homeomorphism, _derivationStatement,
+            _classificationSubobligations, _simplyConnectedRecognition,
+            _sphericalTrivialQuotient, sphericalHomeomorphismLift,
+            _assemblyStatement, _homeomorphismDerivationStatement⟩
+        exact sphericalHomeomorphismLift) := by
   apply Subsingleton.elim
 
 /--
@@ -7959,7 +8056,7 @@ theorem topology_homeomorphism_derivation_statement_via_extraction_of_dependenci
         dependencies M extinction with
       ⟨_topologyStatement, homeomorphism, _derivationStatement,
         _classificationSubobligations, _simplyConnectedRecognition,
-        _sphericalTrivialQuotient,
+        _sphericalTrivialQuotient, _sphericalHomeomorphismLift,
         _assemblyStatement,
         homeomorphismDerivationStatement⟩
     convert homeomorphismDerivationStatement
@@ -7981,7 +8078,7 @@ theorem topology_homeomorphism_derivation_statement_via_extraction_of_dependenci
             dependencies M extinction with
           ⟨_topologyStatement, _homeomorphism, _derivationStatement,
             _classificationSubobligations, _simplyConnectedRecognition,
-            _sphericalTrivialQuotient,
+            _sphericalTrivialQuotient, _sphericalHomeomorphismLift,
             _assemblyStatement,
             homeomorphismDerivationStatement⟩
         convert homeomorphismDerivationStatement) := by
@@ -8288,9 +8385,12 @@ theorem topology_extraction_statement_payload_of_dependencies_to_statement_eq
         let sphericalTrivialQuotient :=
           topology_spherical_trivial_quotient_statement_of_derivation_statement
             M extinction homeomorphism derivationStatement
+        let sphericalHomeomorphismLift :=
+          topology_spherical_homeomorphism_lift_statement_of_derivation_statement
+            M extinction homeomorphism derivationStatement
         exact ⟨topologyStatement, homeomorphism, derivationStatement,
           classificationSubobligations, simplyConnectedRecognition,
-          sphericalTrivialQuotient,
+          sphericalTrivialQuotient, sphericalHomeomorphismLift,
           topology_homeomorphism_assembly_statement_of_derivation_statement M
             extinction homeomorphism derivationStatement,
           topology_homeomorphism_derivation_statement_of_derivation_statement M
@@ -8323,6 +8423,8 @@ theorem topology_extraction_statement_payload_of_dependencies_to_extraction_stat
           topology_simply_connected_recognition_statement_of_extraction_statement
             topologyStatement M extinction,
           topology_spherical_trivial_quotient_statement_of_extraction_statement
+            topologyStatement M extinction,
+          topology_spherical_homeomorphism_lift_statement_of_extraction_statement
             topologyStatement M extinction,
           topology_homeomorphism_assembly_statement_of_extraction_statement
             topologyStatement M extinction,
@@ -8459,6 +8561,24 @@ theorem topology_spherical_trivial_quotient_statement_via_extraction_of_dependen
   apply Subsingleton.elim
 
 /--
+The dependency-level spherical homeomorphism-lift statement selected through
+the extraction payload follows the dependency-level theorem-shaped topology
+statement.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_via_extraction_of_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_homeomorphism_lift_statement_via_extraction_of_dependencies
+      dependencies M extinction =
+      topology_spherical_homeomorphism_lift_statement_of_extraction_statement
+        (topology_extraction_statement_of_dependencies dependencies)
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
 The dependency-level homeomorphism derivation statement selected through the
 extraction payload follows the dependency-level theorem-shaped topology
 statement.
@@ -8534,6 +8654,23 @@ theorem topology_spherical_trivial_quotient_statement_of_dependencies_to_stateme
     topology_spherical_trivial_quotient_statement_of_dependencies
       dependencies M extinction =
       topology_spherical_trivial_quotient_statement_of_extraction_statement
+        (topology_extraction_statement_of_dependencies dependencies)
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level spherical homeomorphism-lift substatement is the lift
+projection of the dependency-level theorem-shaped topology statement.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_of_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_homeomorphism_lift_statement_of_dependencies
+      dependencies M extinction =
+      topology_spherical_homeomorphism_lift_statement_of_extraction_statement
         (topology_extraction_statement_of_dependencies dependencies)
         M extinction := by
   apply Subsingleton.elim
@@ -8729,6 +8866,25 @@ theorem topology_spherical_trivial_quotient_statement_of_dependencies_to_package
   apply Subsingleton.elim
 
 /--
+The dependency-level spherical homeomorphism-lift substatement is also the
+lift projection of the stored topology package derivation route.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_of_dependencies_to_package_derivation_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_homeomorphism_lift_statement_of_dependencies
+      dependencies M extinction =
+      topology_spherical_homeomorphism_lift_statement_of_derivation_statement
+        M extinction
+        (homeomorphism_of_topology_package dependencies.topology M extinction)
+        (extinction_topology_derivation_statement_of_topology_package
+          dependencies.topology M extinction) := by
+  apply Subsingleton.elim
+
+/--
 The dependency-level topology derivation statement follows the derivation route
 of the stored topology package.
 -/
@@ -8903,6 +9059,24 @@ theorem topology_spherical_trivial_quotient_statement_of_dependencies_to_extract
   apply Subsingleton.elim
 
 /--
+The dependency-level spherical homeomorphism-lift substatement follows the
+direct projection from the dependency-level theorem-shaped topology extraction
+statement.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_of_dependencies_to_extraction_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_homeomorphism_lift_statement_of_dependencies
+      dependencies M extinction =
+      topology_spherical_homeomorphism_lift_statement_of_extraction_statement
+        (topology_extraction_statement_of_dependencies dependencies)
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
 The dependency-level homeomorphism assembly statement follows the direct
 projection from the dependency-level theorem-shaped topology extraction
 statement.
@@ -9028,6 +9202,22 @@ theorem topology_spherical_trivial_quotient_statement_of_dependencies_to_package
     topology_spherical_trivial_quotient_statement_of_dependencies
       dependencies M extinction =
       topology_spherical_trivial_quotient_statement_of_topology_package
+        dependencies.topology M extinction := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level spherical homeomorphism-lift substatement follows the
+direct statement projection of the stored topology package.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_of_dependencies_to_package_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_homeomorphism_lift_statement_of_dependencies
+      dependencies M extinction =
+      topology_spherical_homeomorphism_lift_statement_of_topology_package
         dependencies.topology M extinction := by
   apply Subsingleton.elim
 
@@ -10176,6 +10366,72 @@ theorem topology_spherical_trivial_quotient_statement_of_equation_boundary_depen
     topology_spherical_trivial_quotient_statement_of_equation_boundary_dependencies
         dependencies M extinction =
       topology_spherical_trivial_quotient_statement_of_extraction_statement
+        (topology_extraction_statement_of_dependencies
+          (dependencies_of_equation_boundary_dependencies dependencies))
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency package supplies the spherical homeomorphism-lift
+substatement after forgetting equation-boundary data.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ExtinctionTopologySphericalHomeomorphismLiftStatement M extinction :=
+  topology_spherical_homeomorphism_lift_statement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies) M extinction
+
+/--
+The strengthened spherical homeomorphism-lift statement is the ordinary
+dependency lift statement of the forgetful package.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_homeomorphism_lift_statement_of_equation_boundary_dependencies
+        dependencies M extinction =
+      topology_spherical_homeomorphism_lift_statement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies)
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
+The strengthened spherical homeomorphism-lift statement agrees directly with
+the forgetful ordinary dependency route.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_homeomorphism_lift_statement_of_equation_boundary_dependencies
+        dependencies M extinction =
+      topology_spherical_homeomorphism_lift_statement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies)
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
+The strengthened spherical homeomorphism-lift statement is projected from the
+forgetful theorem-shaped topology extraction statement.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_of_equation_boundary_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_homeomorphism_lift_statement_of_equation_boundary_dependencies
+        dependencies M extinction =
+      topology_spherical_homeomorphism_lift_statement_of_extraction_statement
         (topology_extraction_statement_of_dependencies
           (dependencies_of_equation_boundary_dependencies dependencies))
         M extinction := by
