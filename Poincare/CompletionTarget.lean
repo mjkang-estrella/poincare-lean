@@ -20157,6 +20157,21 @@ theorem canonical_completion_target_of_completion_certificate_of_equation_bounda
 
 /--
 The checked certificate projected from a boundary-aware payload has the same
+project target-statement and canonical-target endpoints.
+-/
+theorem target_statement_of_completion_certificate_of_equation_boundary_verification_payload_to_target_statement_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    target_statement_of_completion_certificate
+      (completion_certificate_of_equation_boundary_verification_payload
+        payload) =
+      canonical_completion_target_of_completion_certificate
+        (completion_certificate_of_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The checked certificate projected from a boundary-aware payload has the same
 canonical and project completion-criterion endpoints.
 -/
 theorem canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_to_project_criterion_eq
@@ -20167,6 +20182,22 @@ theorem canonical_completion_criterion_of_completion_certificate_of_equation_bou
       (completion_certificate_of_equation_boundary_verification_payload
         payload) =
       completion_criterion_of_completion_certificate witness
+        (completion_certificate_of_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The checked certificate projected from a boundary-aware payload has the same
+project and canonical completion-criterion endpoints.
+-/
+theorem completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_to_project_criterion_eq
+    (witness : Type u)
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_equation_boundary_verification_payload
+        payload) =
+      canonical_completion_criterion_of_completion_certificate witness
         (completion_certificate_of_equation_boundary_verification_payload
           payload) := by
   apply Subsingleton.elim
