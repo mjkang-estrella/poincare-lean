@@ -20612,6 +20612,34 @@ theorem canonical_completion_target_of_completion_certificate_with_equation_boun
   apply Subsingleton.elim
 
 /--
+The boundary-aware certificate canonical payload can be routed through its
+project target-statement endpoint.
+-/
+theorem canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_target_statement_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      canonical_completion_payload_of_canonical_completion_target
+        (target_statement_of_completion_certificate_with_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware certificate project payload can be routed through its
+project target-statement endpoint.
+-/
+theorem poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_target_statement_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      poincare_completion_payload_of_canonical_completion_target
+        (target_statement_of_completion_certificate_with_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
 Project the canonical completion criterion from a boundary-aware certificate
 payload through its stored checked certificate.
 -/
@@ -20650,6 +20678,36 @@ theorem canonical_completion_criterion_of_completion_certificate_with_equation_b
         witness payload =
       completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload
         witness payload := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware certificate project criterion can be routed through its
+project target-statement endpoint.
+-/
+theorem completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_target_statement_eq
+    (witness : Type u)
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload
+        witness payload =
+      completion_criterion_of_canonical_completion_target witness
+        (target_statement_of_completion_certificate_with_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware certificate canonical criterion can be routed through its
+project target-statement endpoint.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_target_statement_eq
+    (witness : Type u)
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload
+        witness payload =
+      canonical_completion_criterion_of_canonical_completion_target witness
+        (target_statement_of_completion_certificate_with_equation_boundary_verification_payload
+          payload) := by
   apply Subsingleton.elim
 
 /--
@@ -21411,6 +21469,72 @@ theorem completion_criterion_of_completion_certificate_of_equation_boundary_veri
       canonical_completion_criterion_of_completion_certificate witness
         (completion_certificate_of_equation_boundary_verification_payload
           payload) := by
+  apply Subsingleton.elim
+
+/--
+The checked certificate projected from a boundary-aware payload has its
+canonical payload routed through the projected target-statement endpoint.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_target_statement_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_equation_boundary_verification_payload
+        payload) =
+      canonical_completion_payload_of_canonical_completion_target
+        (target_statement_of_completion_certificate
+          (completion_certificate_of_equation_boundary_verification_payload
+            payload)) := by
+  apply Subsingleton.elim
+
+/--
+The checked certificate projected from a boundary-aware payload has its project
+payload routed through the projected target-statement endpoint.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_target_statement_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_equation_boundary_verification_payload
+        payload) =
+      poincare_completion_payload_of_canonical_completion_target
+        (target_statement_of_completion_certificate
+          (completion_certificate_of_equation_boundary_verification_payload
+            payload)) := by
+  apply Subsingleton.elim
+
+/--
+The checked certificate projected from a boundary-aware payload has its project
+criterion routed through the projected target-statement endpoint.
+-/
+theorem completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_to_target_statement_eq
+    (witness : Type u)
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_equation_boundary_verification_payload
+        payload) =
+      completion_criterion_of_canonical_completion_target witness
+        (target_statement_of_completion_certificate
+          (completion_certificate_of_equation_boundary_verification_payload
+            payload)) := by
+  apply Subsingleton.elim
+
+/--
+The checked certificate projected from a boundary-aware payload has its
+canonical criterion routed through the projected target-statement endpoint.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_to_target_statement_eq
+    (witness : Type u)
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_equation_boundary_verification_payload
+        payload) =
+      canonical_completion_criterion_of_canonical_completion_target witness
+        (target_statement_of_completion_certificate
+          (completion_certificate_of_equation_boundary_verification_payload
+            payload)) := by
   apply Subsingleton.elim
 
 /--
