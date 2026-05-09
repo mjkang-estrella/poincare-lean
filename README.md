@@ -1473,8 +1473,9 @@ The current artifact is intentionally conservative:
   The strengthened equation-boundary aggregate and remaining-package routes now
   expose the same canonical criterion endpoint layer and pin raw/certified
   canonical target and criterion endpoints to their project wrappers.
-  The raw strengthened canonical criteria are also pinned to dependency-level,
-  forgetful aggregate, and forgetful remaining-dependency routes.
+  The raw and certified strengthened canonical criteria are also pinned to
+  dependency-level, forgetful aggregate, and forgetful remaining-dependency
+  routes.
   The generic checked completion certificate projection layer now also pins its
   canonical/project payload, target, and criterion endpoints in both audited
   directions.

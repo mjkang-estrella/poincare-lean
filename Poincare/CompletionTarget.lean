@@ -7636,6 +7636,19 @@ theorem completion_criterion_of_equation_boundary_remaining_dependency_package_e
   apply Subsingleton.elim
 
 /--
+The strengthened remaining-package certified canonical criterion agrees with
+the dependency-level boundary-preserving certified completion criterion.
+-/
+theorem canonical_completion_criterion_of_equation_boundary_remaining_dependency_package_extraction_derivation_to_dependencies_eq
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_equation_boundary_remaining_dependency_package_extraction_derivation
+        witness dependencies =
+      completion_criterion_of_equation_boundary_extraction_derivation_dependencies
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining-package certified completion criterion agrees with
 the ordinary certified aggregate canonical criterion after forgetting
 equation-boundary data.
@@ -7644,6 +7657,22 @@ theorem completion_criterion_of_equation_boundary_remaining_dependency_package_e
     (witness : Type u)
     (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
     completion_criterion_of_equation_boundary_remaining_dependency_package_extraction_derivation
+        witness dependencies =
+      completion_criterion_of_aggregate_extraction_derivation_dependencies
+        witness
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package certified canonical criterion agrees with
+the ordinary certified aggregate canonical criterion after forgetting
+equation-boundary data.
+-/
+theorem canonical_completion_criterion_of_equation_boundary_remaining_dependency_package_extraction_derivation_to_remaining_dependency_eq
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_equation_boundary_remaining_dependency_package_extraction_derivation
         witness dependencies =
       completion_criterion_of_aggregate_extraction_derivation_dependencies
         witness
@@ -7945,6 +7974,19 @@ theorem completion_criterion_of_poincareProofDependenciesWithEquationBoundary_ex
   apply Subsingleton.elim
 
 /--
+The strengthened aggregate certified canonical criterion agrees with the
+strengthened remaining-package certified canonical criterion.
+-/
+theorem canonical_completion_criterion_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_remaining_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        witness dependencies =
+      canonical_completion_criterion_of_equation_boundary_remaining_dependency_package_extraction_derivation
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate certified completion criterion agrees with the
 dependency-level boundary-preserving certified completion criterion.
 -/
@@ -7952,6 +7994,19 @@ theorem completion_criterion_of_poincareProofDependenciesWithEquationBoundary_ex
     (witness : Type u)
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     completion_criterion_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        witness dependencies =
+      completion_criterion_of_equation_boundary_extraction_derivation_dependencies
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate certified canonical criterion agrees with the
+dependency-level boundary-preserving certified completion criterion.
+-/
+theorem canonical_completion_criterion_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_dependencies_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
         witness dependencies =
       completion_criterion_of_equation_boundary_extraction_derivation_dependencies
         witness dependencies := by
@@ -7972,6 +8027,20 @@ theorem completion_criterion_of_poincareProofDependenciesWithEquationBoundary_ex
   apply Subsingleton.elim
 
 /--
+The strengthened aggregate certified canonical criterion agrees with the
+ordinary certified aggregate canonical criterion after forgetting
+equation-boundary data.
+-/
+theorem canonical_completion_criterion_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_forgetful_dependencies_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        witness dependencies =
+      completion_criterion_of_aggregate_extraction_derivation_dependencies
+        witness (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate certified completion criterion agrees with the
 ordinary certified aggregate canonical criterion after forgetting
 equation-boundary data through the remaining-dependency wrapper.
@@ -7980,6 +8049,22 @@ theorem completion_criterion_of_poincareProofDependenciesWithEquationBoundary_ex
     (witness : Type u)
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     completion_criterion_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        witness dependencies =
+      completion_criterion_of_aggregate_extraction_derivation_dependencies
+        witness
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate certified canonical criterion agrees with the
+ordinary certified aggregate canonical criterion after forgetting
+equation-boundary data through the remaining-dependency wrapper.
+-/
+theorem canonical_completion_criterion_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_remaining_dependency_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
         witness dependencies =
       completion_criterion_of_aggregate_extraction_derivation_dependencies
         witness
