@@ -16362,6 +16362,451 @@ theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_c
   apply Subsingleton.elim
 
 /--
+The boundary-target and boundary-preserving extraction-derivation certificates
+also expose direct finite-extinction and topology-package routes through their
+canonical-statement payload projections.
+-/
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      (by
+        rcases topology_extraction_derivation_payload_of_equation_boundary_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation
+        exact
+          ⟨"poincare_conjecture", rfl,
+            remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies,
+            target,
+            canonical_three_sphere_statement_of_canonical_completion_target
+              target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness finiteExtinction extractSphere derivation⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            (dependencies_of_equation_boundary_dependencies dependencies).topology with
+          ⟨extractSphere, derivation⟩
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation
+        exact
+          ⟨"poincare_conjecture", rfl,
+            remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies,
+            target,
+            canonical_three_sphere_statement_of_canonical_completion_target
+              target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness finiteExtinction extractSphere derivation⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      (by
+        rcases topology_extraction_derivation_payload_of_equation_boundary_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation
+        exact
+          ⟨"poincare_conjecture", rfl,
+            remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies,
+            target,
+            canonical_three_sphere_statement_of_canonical_completion_target
+              target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness finiteExtinction extractSphere derivation⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            (dependencies_of_equation_boundary_dependencies dependencies).topology with
+          ⟨extractSphere, derivation⟩
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation
+        exact
+          ⟨"poincare_conjecture", rfl,
+            remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies,
+            target,
+            canonical_three_sphere_statement_of_canonical_completion_target
+              target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness finiteExtinction extractSphere derivation⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      (by
+        rcases topology_extraction_derivation_payload_of_equation_boundary_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation
+        exact
+          ⟨"poincare_conjecture", rfl,
+            dependencies_of_equation_boundary_dependencies dependencies,
+            target,
+            canonical_three_sphere_statement_of_canonical_completion_target
+              target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness finiteExtinction extractSphere derivation⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            (dependencies_of_equation_boundary_dependencies dependencies).topology with
+          ⟨extractSphere, derivation⟩
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation
+        exact
+          ⟨"poincare_conjecture", rfl,
+            dependencies_of_equation_boundary_dependencies dependencies,
+            target,
+            canonical_three_sphere_statement_of_canonical_completion_target
+              target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness finiteExtinction extractSphere derivation⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      (by
+        rcases topology_extraction_derivation_payload_of_equation_boundary_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation
+        exact
+          ⟨"poincare_conjecture", rfl,
+            dependencies_of_equation_boundary_dependencies dependencies,
+            target,
+            canonical_three_sphere_statement_of_canonical_completion_target
+              target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness finiteExtinction extractSphere derivation⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            (dependencies_of_equation_boundary_dependencies dependencies).topology with
+          ⟨extractSphere, derivation⟩
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation
+        exact
+          ⟨"poincare_conjecture", rfl,
+            dependencies_of_equation_boundary_dependencies dependencies,
+            target,
+            canonical_three_sphere_statement_of_canonical_completion_target
+              target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness finiteExtinction extractSphere derivation⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      (by
+        rcases topology_extraction_derivation_payload_of_equation_boundary_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation
+        exact
+          ⟨"poincare_conjecture", rfl,
+            remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies,
+            target,
+            canonical_three_sphere_statement_of_canonical_completion_target
+              target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness finiteExtinction extractSphere derivation⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            (dependencies_of_equation_boundary_dependencies dependencies).topology with
+          ⟨extractSphere, derivation⟩
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation
+        exact
+          ⟨"poincare_conjecture", rfl,
+            remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies,
+            target,
+            canonical_three_sphere_statement_of_canonical_completion_target
+              target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness finiteExtinction extractSphere derivation⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      (by
+        rcases topology_extraction_derivation_payload_of_equation_boundary_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation
+        exact
+          ⟨"poincare_conjecture", rfl,
+            remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies,
+            target,
+            canonical_three_sphere_statement_of_canonical_completion_target
+              target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness finiteExtinction extractSphere derivation⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            (dependencies_of_equation_boundary_dependencies dependencies).topology with
+          ⟨extractSphere, derivation⟩
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation
+        exact
+          ⟨"poincare_conjecture", rfl,
+            remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies,
+            target,
+            canonical_three_sphere_statement_of_canonical_completion_target
+              target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness finiteExtinction extractSphere derivation⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      (by
+        rcases topology_extraction_derivation_payload_of_equation_boundary_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation
+        exact
+          ⟨"poincare_conjecture", rfl,
+            dependencies_of_equation_boundary_dependencies dependencies,
+            target,
+            canonical_three_sphere_statement_of_canonical_completion_target
+              target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness finiteExtinction extractSphere derivation⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            (dependencies_of_equation_boundary_dependencies dependencies).topology with
+          ⟨extractSphere, derivation⟩
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation
+        exact
+          ⟨"poincare_conjecture", rfl,
+            dependencies_of_equation_boundary_dependencies dependencies,
+            target,
+            canonical_three_sphere_statement_of_canonical_completion_target
+              target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness finiteExtinction extractSphere derivation⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      (by
+        rcases topology_extraction_derivation_payload_of_equation_boundary_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation
+        exact
+          ⟨"poincare_conjecture", rfl,
+            dependencies_of_equation_boundary_dependencies dependencies,
+            target,
+            canonical_three_sphere_statement_of_canonical_completion_target
+              target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness finiteExtinction extractSphere derivation⟩) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            (dependencies_of_equation_boundary_dependencies dependencies).topology with
+          ⟨extractSphere, derivation⟩
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation
+        exact
+          ⟨"poincare_conjecture", rfl,
+            dependencies_of_equation_boundary_dependencies dependencies,
+            target,
+            canonical_three_sphere_statement_of_canonical_completion_target
+              target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness finiteExtinction extractSphere derivation⟩) := by
+  apply Subsingleton.elim
+
+/--
 The canonical-statement payload constructor recovers the
 boundary-target-payload remaining-package certificate from the ordinary
 forgetful payload assembled from that strengthened package.
