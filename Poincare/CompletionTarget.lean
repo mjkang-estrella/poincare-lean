@@ -15065,6 +15065,22 @@ theorem poincare_completion_payload_of_completion_certificate_of_remaining_depen
   apply Subsingleton.elim
 
 /--
+Projecting the canonical completion payload from the project-payload
+certificate constructor recovers the supplied payload through the
+project/canonical target identification.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_poincare_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_and_poincare_payload
+        dependencies payload) =
+      payload := by
+  apply Subsingleton.elim
+
+/--
 Projecting the remaining-dependency package from the canonical-payload
 certificate constructor recovers the supplied package.
 -/
@@ -15089,6 +15105,22 @@ theorem canonical_completion_payload_of_completion_certificate_of_remaining_depe
       ∃ _target : canonicalCompletionTarget.{u},
         ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
     canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_and_canonical_payload
+        dependencies payload) =
+      payload := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from the canonical-payload
+certificate constructor recovers the supplied payload through the
+canonical/project target identification.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_remaining_dependency_and_canonical_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincare_completion_payload_of_completion_certificate
       (completion_certificate_of_remaining_dependency_and_canonical_payload
         dependencies payload) =
       payload := by
@@ -15121,6 +15153,20 @@ theorem target_statement_of_completion_certificate_of_remaining_dependency_and_t
   apply Subsingleton.elim
 
 /--
+Projecting the canonical target from the target-statement certificate
+constructor recovers the supplied target through the project/canonical target
+identification.
+-/
+theorem canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_target_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_and_target_statement
+        dependencies target) =
+      target := by
+  apply Subsingleton.elim
+
+/--
 Projecting the remaining-dependency package from the canonical-target
 certificate constructor recovers the supplied package.
 -/
@@ -15141,6 +15187,20 @@ theorem canonical_completion_target_of_completion_certificate_of_remaining_depen
     (dependencies : RemainingDependencyPackage.{u})
     (target : canonicalCompletionTarget.{u}) :
     canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_remaining_dependency_and_canonical_target
+        dependencies target) =
+      target := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project target from the canonical-target certificate constructor
+recovers the supplied target through the canonical/project target
+identification.
+-/
+theorem target_statement_of_completion_certificate_of_remaining_dependency_and_canonical_target_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    target_statement_of_completion_certificate
       (completion_certificate_of_remaining_dependency_and_canonical_target
         dependencies target) =
       target := by
@@ -25963,6 +26023,22 @@ theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDe
   apply Subsingleton.elim
 
 /--
+Projecting the canonical completion payload from the aggregate project-payload
+certificate constructor recovers the supplied payload through the
+project/canonical target identification.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+        dependencies payload) =
+      payload := by
+  apply Subsingleton.elim
+
+/--
 Projecting aggregate dependencies from the aggregate canonical-payload
 certificate constructor recovers the supplied aggregate package.
 -/
@@ -25987,6 +26063,22 @@ theorem canonical_completion_payload_of_completion_certificate_of_poincareProofD
       ∃ _target : canonicalCompletionTarget.{u},
         ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
     canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+        dependencies payload) =
+      payload := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from the aggregate canonical-payload
+certificate constructor recovers the supplied payload through the
+canonical/project target identification.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincare_completion_payload_of_completion_certificate
       (completion_certificate_of_poincareProofDependencies_and_canonical_payload
         dependencies payload) =
       payload := by
@@ -26019,6 +26111,20 @@ theorem target_statement_of_completion_certificate_of_poincareProofDependencies_
   apply Subsingleton.elim
 
 /--
+Projecting the canonical target from the aggregate target-statement
+certificate constructor recovers the supplied target through the
+project/canonical target identification.
+-/
+theorem canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_target_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_and_target_statement
+        dependencies target) =
+      target := by
+  apply Subsingleton.elim
+
+/--
 Projecting aggregate dependencies from the aggregate canonical-target certificate
 constructor recovers the supplied aggregate package.
 -/
@@ -26039,6 +26145,20 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     (dependencies : PoincareProofDependencies.{u})
     (target : canonicalCompletionTarget.{u}) :
     canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_and_canonical_target
+        dependencies target) =
+      target := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project target from the aggregate canonical-target certificate
+constructor recovers the supplied target through the canonical/project target
+identification.
+-/
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_and_canonical_target_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    target_statement_of_completion_certificate
       (completion_certificate_of_poincareProofDependencies_and_canonical_target
         dependencies target) =
       target := by

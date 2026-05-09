@@ -8542,18 +8542,26 @@ check_decl "remaining dependency project-payload package roundtrip contract is d
   '^theorem remaining_dependency_package_of_completion_certificate_of_remaining_dependency_and_poincare_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "remaining dependency project-payload payload roundtrip contract is declared" \
   '^theorem poincare_completion_payload_of_completion_certificate_of_remaining_dependency_and_poincare_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency project-payload canonical endpoint contract is declared" \
+  '^theorem canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_poincare_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "remaining dependency canonical-payload package roundtrip contract is declared" \
   '^theorem remaining_dependency_package_of_completion_certificate_of_remaining_dependency_and_canonical_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "remaining dependency canonical-payload payload roundtrip contract is declared" \
   '^theorem canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_canonical_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency canonical-payload project endpoint contract is declared" \
+  '^theorem poincare_completion_payload_of_completion_certificate_of_remaining_dependency_and_canonical_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "remaining dependency target-statement package roundtrip contract is declared" \
   '^theorem remaining_dependency_package_of_completion_certificate_of_remaining_dependency_and_target_statement_eq\b' Poincare/CompletionTarget.lean
 check_decl "remaining dependency target-statement roundtrip contract is declared" \
   '^theorem target_statement_of_completion_certificate_of_remaining_dependency_and_target_statement_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency target-statement canonical endpoint contract is declared" \
+  '^theorem canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_target_statement_eq\b' Poincare/CompletionTarget.lean
 check_decl "remaining dependency canonical-target package roundtrip contract is declared" \
   '^theorem remaining_dependency_package_of_completion_certificate_of_remaining_dependency_and_canonical_target_eq\b' Poincare/CompletionTarget.lean
 check_decl "remaining dependency canonical-target roundtrip contract is declared" \
   '^theorem canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_canonical_target_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency canonical-target project endpoint contract is declared" \
+  '^theorem target_statement_of_completion_certificate_of_remaining_dependency_and_canonical_target_eq\b' Poincare/CompletionTarget.lean
 check_decl "remaining dependency criterion package roundtrip contract is declared" \
   '^theorem remaining_dependency_package_of_completion_certificate_of_remaining_dependency_and_completion_criterion_eq\b' Poincare/CompletionTarget.lean
 check_decl "remaining dependency criterion roundtrip contract is declared" \
@@ -11097,18 +11105,26 @@ check_decl "aggregate dependency project-payload package roundtrip contract is d
   '^theorem poincareProofDependencies_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "aggregate dependency project-payload roundtrip contract is declared" \
   '^theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency project-payload canonical endpoint contract is declared" \
+  '^theorem canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "aggregate dependency canonical-payload package roundtrip contract is declared" \
   '^theorem poincareProofDependencies_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "aggregate dependency canonical-payload roundtrip contract is declared" \
   '^theorem canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency canonical-payload project endpoint contract is declared" \
+  '^theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "aggregate dependency target-statement package roundtrip contract is declared" \
   '^theorem poincareProofDependencies_of_completion_certificate_of_poincareProofDependencies_and_target_statement_eq\b' Poincare/CompletionTarget.lean
 check_decl "aggregate dependency target-statement roundtrip contract is declared" \
   '^theorem target_statement_of_completion_certificate_of_poincareProofDependencies_and_target_statement_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency target-statement canonical endpoint contract is declared" \
+  '^theorem canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_target_statement_eq\b' Poincare/CompletionTarget.lean
 check_decl "aggregate dependency canonical-target package roundtrip contract is declared" \
   '^theorem poincareProofDependencies_of_completion_certificate_of_poincareProofDependencies_and_canonical_target_eq\b' Poincare/CompletionTarget.lean
 check_decl "aggregate dependency canonical-target roundtrip contract is declared" \
   '^theorem canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_canonical_target_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency canonical-target project endpoint contract is declared" \
+  '^theorem target_statement_of_completion_certificate_of_poincareProofDependencies_and_canonical_target_eq\b' Poincare/CompletionTarget.lean
 check_decl "aggregate dependency criterion package roundtrip contract is declared" \
   '^theorem poincareProofDependencies_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion_eq\b' Poincare/CompletionTarget.lean
 check_decl "aggregate dependency criterion roundtrip contract is declared" \

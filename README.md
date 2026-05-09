@@ -1166,7 +1166,10 @@ The current artifact is intentionally conservative:
   theorem-name payload projection surface now covers the same constructor route
   matrix as the literal, canonical-statement, aggregate canonical-statement,
   aggregate-dependency, and project-statement payload projections, and the
-  completion audit checks that parity directly.
+  completion audit checks that parity directly. The remaining-dependency and
+  aggregate project/canonical payload and target-statement/canonical-target
+  constructors now also project to both project and canonical endpoints, pinning
+  those definitional target identifications on both package surfaces.
   It also exposes the
   expanded smoothability Moise cover-refinement/chart-compatibility/
   simplicial-approximation/subdivision/regular-neighborhood/local-finiteness/
