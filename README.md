@@ -651,6 +651,11 @@ The current artifact is intentionally conservative:
   equivalence with compactification simple-connectedness and
   `ThreeSpherePathHomotopyStatement`, and pins the compactification path/loop
   conversions to the named loop-nullhomotopy route. It packages the
+  compactification model's path-quotient uniqueness obligation as
+  `OnePointThreeSpacePathQuotientSubsingletonStatement`, proves its equivalence
+  with compactification simple-connectedness and
+  `ThreeSpherePathQuotientSubsingletonStatement`, and pins those quotient
+  transports to the existing path-homotopy routes. It packages the
   compactification model's full homotopy/manifold prerequisites as
   `onePoint_threeSpace_homotopy_manifold_prerequisites` when the standard
   sphere's simple-connectedness input is supplied, with
@@ -663,7 +668,12 @@ The current artifact is intentionally conservative:
   `onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointLoopNullhomotopyStatement`
   and
   `onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathHomotopyStatement`,
-  with compatibility contracts back to the standard-sphere loop/path routes.
+  plus the standard-sphere and compactification-local path-quotient routes
+  `onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathQuotientSubsingletonStatement`
+  and
+  `onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathQuotientSubsingletonStatement`,
+  with compatibility contracts back to the standard-sphere loop/path/quotient
+  routes.
   The same layer now
   transports the `C^0` prerequisite payload to any source space already
   recognized as homeomorphic to the compactification model, transports

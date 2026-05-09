@@ -2794,6 +2794,59 @@ universe u
     Poincare.ThreeSpherePathHomotopyStatement)
 #check Poincare.onePoint_threeSpace_pathHomotopyStatement_iff_threeSpherePathHomotopyStatement_eq
 
+#check (Poincare.OnePointThreeSpacePathQuotientSubsingletonStatement : Prop)
+#check (Poincare.onePointThreeSpacePathQuotientSubsingletonStatement_eq :
+  Poincare.OnePointThreeSpacePathQuotientSubsingletonStatement =
+    (∀ x y : OnePoint (EuclideanSpace ℝ (Fin 3)),
+      Subsingleton (Path.Homotopic.Quotient x y)))
+
+#check (Poincare.onePoint_threeSpace_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement :
+  SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) ↔
+    Poincare.OnePointThreeSpacePathQuotientSubsingletonStatement)
+#check Poincare.onePoint_threeSpace_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement_eq
+
+#check (Poincare.onePoint_threeSpace_simplyConnectedSpace_of_pathQuotientSubsingletonStatement :
+  Poincare.OnePointThreeSpacePathQuotientSubsingletonStatement →
+    SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))))
+#check Poincare.onePoint_threeSpace_simplyConnectedSpace_of_pathQuotientSubsingletonStatement_eq
+
+#check (Poincare.onePoint_threeSpace_pathQuotientSubsingletonStatement_of_simplyConnectedSpace :
+  ∀ [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))],
+    Poincare.OnePointThreeSpacePathQuotientSubsingletonStatement)
+#check Poincare.onePoint_threeSpace_pathQuotientSubsingletonStatement_of_simplyConnectedSpace_eq
+
+#check (Poincare.onePoint_threeSpace_pathQuotientSubsingletonStatement_of_pathHomotopyStatement :
+  Poincare.OnePointThreeSpacePathHomotopyStatement →
+    Poincare.OnePointThreeSpacePathQuotientSubsingletonStatement)
+#check Poincare.onePoint_threeSpace_pathQuotientSubsingletonStatement_of_pathHomotopyStatement_eq
+
+#check (Poincare.onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement :
+  Poincare.OnePointThreeSpacePathQuotientSubsingletonStatement →
+    Poincare.OnePointThreeSpacePathHomotopyStatement)
+#check Poincare.onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement_eq
+
+#check (Poincare.onePoint_threeSpace_pathHomotopyStatement_iff_pathQuotientSubsingletonStatement :
+  Poincare.OnePointThreeSpacePathHomotopyStatement ↔
+    Poincare.OnePointThreeSpacePathQuotientSubsingletonStatement)
+#check Poincare.onePoint_threeSpace_pathHomotopyStatement_iff_pathQuotientSubsingletonStatement_eq
+
+#check (Poincare.onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement :
+  Poincare.ThreeSpherePathQuotientSubsingletonStatement →
+    Poincare.OnePointThreeSpacePathQuotientSubsingletonStatement)
+#check Poincare.onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement_eq
+#check Poincare.onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement_path_route_eq
+
+#check (Poincare.threeSpherePathQuotientSubsingletonStatement_of_onePoint_threeSpace_pathQuotientSubsingletonStatement :
+  Poincare.OnePointThreeSpacePathQuotientSubsingletonStatement →
+    Poincare.ThreeSpherePathQuotientSubsingletonStatement)
+#check Poincare.threeSpherePathQuotientSubsingletonStatement_of_onePoint_threeSpace_pathQuotientSubsingletonStatement_eq
+#check Poincare.threeSpherePathQuotientSubsingletonStatement_of_onePoint_threeSpace_pathQuotientSubsingletonStatement_path_route_eq
+
+#check (Poincare.onePoint_threeSpace_pathQuotientSubsingletonStatement_iff_threeSpherePathQuotientSubsingletonStatement :
+  Poincare.OnePointThreeSpacePathQuotientSubsingletonStatement ↔
+    Poincare.ThreeSpherePathQuotientSubsingletonStatement)
+#check Poincare.onePoint_threeSpace_pathQuotientSubsingletonStatement_iff_threeSpherePathQuotientSubsingletonStatement_eq
+
 #check (Poincare.onePoint_threeSpace_chartedSpace :
   ChartedSpace (EuclideanSpace ℝ (Fin 3)) (OnePoint (EuclideanSpace ℝ (Fin 3))))
 #check Poincare.onePoint_threeSpace_chartedSpace_eq
@@ -2898,6 +2951,37 @@ universe u
 #check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathHomotopyStatement_eq
 #check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathHomotopyStatement_loop_route_eq
 #check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathHomotopyStatement_onePoint_route_eq
+
+#check (Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathQuotientSubsingletonStatement :
+  Poincare.ThreeSpherePathQuotientSubsingletonStatement →
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))))
+#check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathQuotientSubsingletonStatement_eq
+#check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathQuotientSubsingletonStatement_path_route_eq
+
+#check (Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathQuotientSubsingletonStatement :
+  Poincare.OnePointThreeSpacePathQuotientSubsingletonStatement →
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))))
+#check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathQuotientSubsingletonStatement_eq
+#check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathQuotientSubsingletonStatement_path_route_eq
+#check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathQuotientSubsingletonStatement_onePoint_route_eq
 
 #check (Poincare.topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace :
   ∀ {M : Type u} [TopologicalSpace M],

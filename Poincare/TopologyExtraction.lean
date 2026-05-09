@@ -1041,6 +1041,230 @@ theorem onePoint_threeSpace_pathHomotopyStatement_iff_threeSpherePathHomotopySta
   apply Subsingleton.elim
 
 /--
+The fundamental-groupoid quotient uniqueness obligation for the one-point
+compactification model. This is the compactification-side analogue of
+`ThreeSpherePathQuotientSubsingletonStatement`.
+-/
+def OnePointThreeSpacePathQuotientSubsingletonStatement : Prop :=
+  ∀ x y : OnePoint (EuclideanSpace ℝ (Fin 3)),
+    Subsingleton (Path.Homotopic.Quotient x y)
+
+/--
+The compactification quotient uniqueness obligation expands to subsingleton
+path-homotopy quotients between every pair of compactification points.
+-/
+theorem onePointThreeSpacePathQuotientSubsingletonStatement_eq :
+    OnePointThreeSpacePathQuotientSubsingletonStatement =
+      (∀ x y : OnePoint (EuclideanSpace ℝ (Fin 3)),
+        Subsingleton (Path.Homotopic.Quotient x y)) :=
+  rfl
+
+/--
+For the compactification model, simple-connectedness is equivalent to
+path-homotopy quotient uniqueness because path-connectedness has already been
+transported from `ThreeSphere`.
+-/
+theorem onePoint_threeSpace_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement :
+    SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) ↔
+      OnePointThreeSpacePathQuotientSubsingletonStatement := by
+  rw [onePointThreeSpacePathQuotientSubsingletonStatement_eq,
+    simply_connected_iff_paths_homotopic]
+  exact ⟨fun h => h.2,
+    fun h => ⟨onePoint_threeSpace_pathConnectedSpace, h⟩⟩
+
+/--
+The compactification simple-connectedness/path-quotient reduction is mathlib's
+path-homotopy quotient criterion with the named compactification
+path-connectedness witness.
+-/
+theorem onePoint_threeSpace_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement_eq :
+    onePoint_threeSpace_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement =
+      (by
+        rw [onePointThreeSpacePathQuotientSubsingletonStatement_eq,
+          simply_connected_iff_paths_homotopic]
+        exact ⟨fun h => h.2,
+          fun h => ⟨onePoint_threeSpace_pathConnectedSpace, h⟩⟩) := by
+  apply Subsingleton.elim
+
+/-- A proof of compactification quotient uniqueness supplies simple-connectedness. -/
+theorem onePoint_threeSpace_simplyConnectedSpace_of_pathQuotientSubsingletonStatement
+    (h : OnePointThreeSpacePathQuotientSubsingletonStatement) :
+    SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+  onePoint_threeSpace_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement.mpr h
+
+/--
+The compactification quotient-to-simple-connectedness route is the reverse
+projection of the named quotient criterion.
+-/
+theorem onePoint_threeSpace_simplyConnectedSpace_of_pathQuotientSubsingletonStatement_eq :
+    onePoint_threeSpace_simplyConnectedSpace_of_pathQuotientSubsingletonStatement =
+      onePoint_threeSpace_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement.mpr := by
+  funext h
+  apply Subsingleton.elim
+
+/-- A supplied compactification simple-connectedness instance gives quotient uniqueness. -/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_simplyConnectedSpace
+    [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))] :
+    OnePointThreeSpacePathQuotientSubsingletonStatement :=
+  onePoint_threeSpace_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement.mp
+    inferInstance
+
+/--
+The compactification simple-connectedness-to-quotient route is the forward
+projection of the named quotient criterion.
+-/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_simplyConnectedSpace_eq
+    [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))] :
+    (onePoint_threeSpace_pathQuotientSubsingletonStatement_of_simplyConnectedSpace :
+      OnePointThreeSpacePathQuotientSubsingletonStatement) =
+      (onePoint_threeSpace_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement.mp
+        inferInstance : OnePointThreeSpacePathQuotientSubsingletonStatement) := by
+  apply Subsingleton.elim
+
+/-- Path-homotopy uniqueness gives quotient uniqueness through the local criterion. -/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_pathHomotopyStatement
+    (h : OnePointThreeSpacePathHomotopyStatement) :
+    OnePointThreeSpacePathQuotientSubsingletonStatement :=
+  onePoint_threeSpace_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement.mp
+    (onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement h)
+
+/--
+The compactification path-to-quotient route factors through local
+simple-connectedness.
+-/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_pathHomotopyStatement_eq :
+    onePoint_threeSpace_pathQuotientSubsingletonStatement_of_pathHomotopyStatement =
+      (fun h : OnePointThreeSpacePathHomotopyStatement =>
+        (onePoint_threeSpace_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement.mp
+          (onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement h) :
+            OnePointThreeSpacePathQuotientSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- Quotient uniqueness gives path-homotopy uniqueness through the local criterion. -/
+theorem onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+    (h : OnePointThreeSpacePathQuotientSubsingletonStatement) :
+    OnePointThreeSpacePathHomotopyStatement :=
+  onePoint_threeSpace_simplyConnectedSpace_iff_pathHomotopyStatement.mp
+    (onePoint_threeSpace_simplyConnectedSpace_of_pathQuotientSubsingletonStatement h)
+
+/--
+The compactification quotient-to-path route factors through local
+simple-connectedness.
+-/
+theorem onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement_eq :
+    onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement =
+      (fun h : OnePointThreeSpacePathQuotientSubsingletonStatement =>
+        (onePoint_threeSpace_simplyConnectedSpace_iff_pathHomotopyStatement.mp
+          (onePoint_threeSpace_simplyConnectedSpace_of_pathQuotientSubsingletonStatement h) :
+            OnePointThreeSpacePathHomotopyStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The compactification path-homotopy and path-quotient obligations are equivalent. -/
+theorem onePoint_threeSpace_pathHomotopyStatement_iff_pathQuotientSubsingletonStatement :
+    OnePointThreeSpacePathHomotopyStatement ↔
+      OnePointThreeSpacePathQuotientSubsingletonStatement :=
+  ⟨onePoint_threeSpace_pathQuotientSubsingletonStatement_of_pathHomotopyStatement,
+    onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement⟩
+
+/-- The compactification path/quotient equivalence is the pair of named routes. -/
+theorem onePoint_threeSpace_pathHomotopyStatement_iff_pathQuotientSubsingletonStatement_eq :
+    onePoint_threeSpace_pathHomotopyStatement_iff_pathQuotientSubsingletonStatement =
+      ⟨onePoint_threeSpace_pathQuotientSubsingletonStatement_of_pathHomotopyStatement,
+        onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement⟩ := by
+  apply Subsingleton.elim
+
+/-- Quotient uniqueness of `ThreeSphere` transports to the compactification model. -/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement
+    (h : ThreeSpherePathQuotientSubsingletonStatement) :
+    OnePointThreeSpacePathQuotientSubsingletonStatement := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement h
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+  exact (onePoint_threeSpace_pathQuotientSubsingletonStatement_of_simplyConnectedSpace :
+    OnePointThreeSpacePathQuotientSubsingletonStatement)
+
+/-- The transported compactification quotient route factors through simple-connectedness. -/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement_eq :
+    onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement =
+      (fun h : ThreeSpherePathQuotientSubsingletonStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement h
+        letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+        (onePoint_threeSpace_pathQuotientSubsingletonStatement_of_simplyConnectedSpace :
+          OnePointThreeSpacePathQuotientSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The transported compactification quotient route agrees with the named path route. -/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement_path_route_eq :
+    onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement =
+      (fun h : ThreeSpherePathQuotientSubsingletonStatement =>
+        onePoint_threeSpace_pathQuotientSubsingletonStatement_of_pathHomotopyStatement
+          (onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePathHomotopyStatement
+            (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement h))) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- Compactification quotient uniqueness transports back to `ThreeSphere`. -/
+theorem threeSpherePathQuotientSubsingletonStatement_of_onePoint_threeSpace_pathQuotientSubsingletonStatement
+    (h : OnePointThreeSpacePathQuotientSubsingletonStatement) :
+    ThreeSpherePathQuotientSubsingletonStatement := by
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_pathQuotientSubsingletonStatement h
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_onePoint_threeSpace
+  exact (threeSphere_pathQuotientSubsingletonStatement_of_simplyConnectedSpace :
+    ThreeSpherePathQuotientSubsingletonStatement)
+
+/-- The reverse compactification quotient route factors through simple-connectedness. -/
+theorem threeSpherePathQuotientSubsingletonStatement_of_onePoint_threeSpace_pathQuotientSubsingletonStatement_eq :
+    threeSpherePathQuotientSubsingletonStatement_of_onePoint_threeSpace_pathQuotientSubsingletonStatement =
+      (fun h : OnePointThreeSpacePathQuotientSubsingletonStatement =>
+        letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_simplyConnectedSpace_of_pathQuotientSubsingletonStatement h
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_onePoint_threeSpace
+        (threeSphere_pathQuotientSubsingletonStatement_of_simplyConnectedSpace :
+          ThreeSpherePathQuotientSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The reverse compactification quotient route agrees with the named path route. -/
+theorem threeSpherePathQuotientSubsingletonStatement_of_onePoint_threeSpace_pathQuotientSubsingletonStatement_path_route_eq :
+    threeSpherePathQuotientSubsingletonStatement_of_onePoint_threeSpace_pathQuotientSubsingletonStatement =
+      (fun h : OnePointThreeSpacePathQuotientSubsingletonStatement =>
+        threeSphere_pathQuotientSubsingletonStatement_of_pathHomotopyStatement
+          (threeSpherePathHomotopyStatement_of_onePoint_threeSpace_pathHomotopyStatement
+            (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement h))) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The compactification and standard-sphere path-quotient obligations are equivalent. -/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_iff_threeSpherePathQuotientSubsingletonStatement :
+    OnePointThreeSpacePathQuotientSubsingletonStatement ↔
+      ThreeSpherePathQuotientSubsingletonStatement := by
+  constructor
+  · exact
+      threeSpherePathQuotientSubsingletonStatement_of_onePoint_threeSpace_pathQuotientSubsingletonStatement
+  · exact
+      onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement
+
+/-- The compactification quotient equivalence is the pair of named transports. -/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_iff_threeSpherePathQuotientSubsingletonStatement_eq :
+    onePoint_threeSpace_pathQuotientSubsingletonStatement_iff_threeSpherePathQuotientSubsingletonStatement =
+      (by
+        constructor
+        · exact
+            threeSpherePathQuotientSubsingletonStatement_of_onePoint_threeSpace_pathQuotientSubsingletonStatement
+        · exact
+            onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement) := by
+  apply Subsingleton.elim
+
+/--
 The one-point compactification model carries a charted-space structure
 transported from the standard sphere.
 -/
@@ -1343,6 +1567,112 @@ theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathHomotopyState
       (fun h : ThreeSpherePathHomotopyStatement =>
         onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathHomotopyStatement
           (onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePathHomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The standard-sphere path-quotient obligation supplies the full compactification
+homotopy/manifold prerequisite payload.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathQuotientSubsingletonStatement
+    (h : ThreeSpherePathQuotientSubsingletonStatement) :
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement h
+  exact onePoint_threeSpace_homotopy_manifold_prerequisites
+
+/--
+The standard-sphere quotient compactification prerequisite route is the full
+payload after converting quotient uniqueness to standard-sphere
+simple-connectedness.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathQuotientSubsingletonStatement_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathQuotientSubsingletonStatement =
+      (fun h : ThreeSpherePathQuotientSubsingletonStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement h
+        onePoint_threeSpace_homotopy_manifold_prerequisites) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The direct standard-sphere quotient prerequisite route agrees with the
+standard-sphere path-homotopy-mediated route.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathQuotientSubsingletonStatement_path_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathQuotientSubsingletonStatement =
+      (fun h : ThreeSpherePathQuotientSubsingletonStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathHomotopyStatement
+          (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The compactification model's own path-quotient obligation directly supplies
+the full compactification homotopy/manifold prerequisite payload.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathQuotientSubsingletonStatement
+    (h : OnePointThreeSpacePathQuotientSubsingletonStatement) :
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  exact ⟨onePoint_threeSpace_t2Space, onePoint_threeSpace_chartedSpace,
+    onePoint_threeSpace_simplyConnectedSpace_of_pathQuotientSubsingletonStatement h,
+    onePoint_threeSpace_compactSpace, onePoint_threeSpace_topologicalManifold,
+    onePoint_threeSpace_pathConnectedSpace, onePoint_threeSpace_locPathConnectedSpace,
+    onePoint_threeSpace_connectedSpace, onePoint_threeSpace_nonempty⟩
+
+/-- The compactification quotient payload route uses the local quotient criterion. -/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathQuotientSubsingletonStatement_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathQuotientSubsingletonStatement =
+      (fun h : OnePointThreeSpacePathQuotientSubsingletonStatement =>
+        ⟨onePoint_threeSpace_t2Space, onePoint_threeSpace_chartedSpace,
+          onePoint_threeSpace_simplyConnectedSpace_of_pathQuotientSubsingletonStatement h,
+          onePoint_threeSpace_compactSpace, onePoint_threeSpace_topologicalManifold,
+          onePoint_threeSpace_pathConnectedSpace, onePoint_threeSpace_locPathConnectedSpace,
+          onePoint_threeSpace_connectedSpace, onePoint_threeSpace_nonempty⟩) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The compactification quotient route to prerequisites agrees with the direct
+compactification-path route.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathQuotientSubsingletonStatement_path_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathQuotientSubsingletonStatement =
+      (fun h : OnePointThreeSpacePathQuotientSubsingletonStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathHomotopyStatement
+          (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The standard-sphere quotient route to compactification prerequisites agrees
+with the direct compactification-quotient route after transporting the
+quotient obligation.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathQuotientSubsingletonStatement_onePoint_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathQuotientSubsingletonStatement =
+      (fun h : ThreeSpherePathQuotientSubsingletonStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathQuotientSubsingletonStatement
+          (onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement
+            h)) := by
   funext h
   apply Subsingleton.elim
 
