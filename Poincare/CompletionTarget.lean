@@ -39604,6 +39604,53 @@ theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_
   apply Subsingleton.elim
 
 /--
+The strengthened aggregate equation-boundary certificate also factors through
+the boundary finite-extinction theorem and the topology-extraction statement
+selected after forgetting to the ordinary aggregate package.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_projections_to_topology_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      (by
+        let remaining : RemainingDependencyPackage.{u} :=
+          remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            (dependencies_of_equation_boundary_dependencies dependencies)
+        rcases
+          canonical_completion_payload_of_finite_extinction_and_topology_extraction_statement
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            (topology_extraction_statement_of_dependencies remaining) with
+          ⟨target, criterion⟩
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, remaining, target,
+            criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate equation-boundary certificate also factors through
+the boundary finite-extinction theorem and the package-selected final extractor
+after forgetting to the ordinary aggregate package.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_projections_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      (by
+        let remaining : RemainingDependencyPackage.{u} :=
+          remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            (dependencies_of_equation_boundary_dependencies dependencies)
+        rcases
+          canonical_completion_payload_of_extinction_and_extraction
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            (extinction_implies_sphere_of_topology_package
+              remaining.topology) with
+          ⟨target, criterion⟩
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, remaining, target,
+            criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate equation-boundary certificate is propositionally the
 certified extraction-derivation projection-route certificate for the forgetful
 ordinary aggregate package.
