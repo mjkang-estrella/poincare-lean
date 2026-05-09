@@ -998,6 +998,177 @@ theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_loopNullhomo
   apply Subsingleton.elim
 
 /--
+The based loop-nullhomotopy obligation exposes the target self route as a
+payload carrying both the homotopy-oriented prerequisite bundle and the
+self-homeomorphism endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : PoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=
+  ⟨threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement hBased,
+    threeSphere_self_homeomorph_of_poincare_statement_and_basedLoopNullhomotopyStatement
+      hBased h⟩
+
+/--
+The based-loop target self payload is exactly the based-loop prerequisite route
+paired with the based-loop target endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : PoincareConjectureStatement.{0} =>
+        threeSphere_self_homeomorph_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : PoincareConjectureStatement.{0} =>
+          ⟨threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement hBased,
+            threeSphere_self_homeomorph_of_poincare_statement_and_basedLoopNullhomotopyStatement
+              hBased h⟩) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/-- The based-loop target self payload agrees with the full-loop payload route. -/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement_loop_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : PoincareConjectureStatement.{0} =>
+        threeSphere_self_homeomorph_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : PoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_payload_of_poincare_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased)
+            h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/--
+The based loop-nullhomotopy obligation exposes the smooth self route as a
+payload carrying both the homotopy-oriented prerequisite bundle and the
+self-diffeomorphism endpoint.
+-/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) :=
+  ⟨threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement hBased,
+    threeSphere_self_diffeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement
+      hBased h⟩
+
+/--
+The based-loop smooth self payload is exactly the based-loop prerequisite route
+paired with the based-loop smooth endpoint.
+-/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : SmoothPoincareConjectureStatement.{0} =>
+        threeSphere_self_diffeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          ⟨threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement hBased,
+            threeSphere_self_diffeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement
+              hBased h⟩) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/-- The based-loop smooth self payload agrees with the full-loop payload route. -/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement_loop_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : SmoothPoincareConjectureStatement.{0} =>
+        threeSphere_self_diffeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_diffeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased)
+            h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/--
+The based loop-nullhomotopy obligation exposes the smooth-to-topological self
+route as a payload carrying both the homotopy-oriented prerequisite bundle and
+the self-homeomorphism endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=
+  ⟨threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement hBased,
+    threeSphere_self_homeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement
+      hBased h⟩
+
+/--
+The based-loop smooth-to-topological self payload is exactly the based-loop
+prerequisite route paired with the based-loop smooth-to-topological endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : SmoothPoincareConjectureStatement.{0} =>
+        threeSphere_self_homeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          ⟨threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement hBased,
+            threeSphere_self_homeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement
+              hBased h⟩) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/-- The based-loop smooth-to-topological self payload agrees with the full-loop payload route. -/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement_loop_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : SmoothPoincareConjectureStatement.{0} =>
+        threeSphere_self_homeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased)
+            h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/--
 The concrete path-homotopy obligation exposes the target self route as a
 payload carrying both the homotopy-oriented prerequisite bundle and the
 self-homeomorphism endpoint.
