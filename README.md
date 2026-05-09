@@ -178,6 +178,8 @@ The current artifact is intentionally conservative:
   The aggregate proof-dependency certificate wrappers and their
   aggregate-to-remaining criterion routes now expose the matching canonical
   criterion projections.
+  Their canonical-statement payload constructors now also round-trip from the
+  payloads projected out of the aggregate proof-dependency route certificates.
 - `Poincare/RicciFlow.lean` defines a minimal typed API for time-dependent
   Riemannian metrics, candidate Ricci tensor fields, Ricci-identification
   evidence, and the Ricci-flow equation interface. It also exposes checked
