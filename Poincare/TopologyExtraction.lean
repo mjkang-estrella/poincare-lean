@@ -2886,6 +2886,19 @@ theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStat
   funext hQuot recognize
   apply Subsingleton.elim
 
+/-- The quotient universal-recognition self route agrees with the loop-mediated route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement =
+      (fun hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement
+              (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+                hQuot))
+            recognize) := by
+  funext hQuot recognize
+  apply Subsingleton.elim
+
 /-- The quotient universal-recognition self route agrees with reflexive recognition. -/
 theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement_direct_route_eq
     (hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement)
@@ -3001,6 +3014,19 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognit
           onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement
             (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
               hQuot)
+            recognize) := by
+  funext hQuot recognize
+  apply Subsingleton.elim
+
+/-- The quotient universal-recognition target route agrees with the loop-mediated target route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement =
+      (fun hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement
+              (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+                hQuot))
             recognize) := by
   funext hQuot recognize
   apply Subsingleton.elim
@@ -3144,6 +3170,19 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpace
           onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement
             (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
               hQuot)
+            recognize) := by
+  funext hQuot recognize
+  apply Subsingleton.elim
+
+/-- The quotient universal-recognition payload agrees with the loop-mediated payload route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement =
+      (fun hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement
+              (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+                hQuot))
             recognize) := by
   funext hQuot recognize
   apply Subsingleton.elim
@@ -3304,6 +3343,19 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_one
   funext hQuot h
   apply Subsingleton.elim
 
+/-- The quotient compactification target route agrees with the loop-mediated route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathQuotientSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathQuotientSubsingletonStatement =
+      (fun hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointLoopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement
+              (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+                hQuot))
+            h) := by
+  funext hQuot h
+  apply Subsingleton.elim
+
 /-- The quotient compactification target route agrees with the direct model homeomorphism. -/
 theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathQuotientSubsingletonStatement_direct_route_eq
     (hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement)
@@ -3439,6 +3491,19 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement
           onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointPathHomotopyStatement
             (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
               hQuot)
+            h) := by
+  funext hQuot h
+  apply Subsingleton.elim
+
+/-- The quotient target payload agrees with the loop-mediated target payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointPathQuotientSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointPathQuotientSubsingletonStatement =
+      (fun hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointLoopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement
+              (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+                hQuot))
             h) := by
   funext hQuot h
   apply Subsingleton.elim
@@ -3767,6 +3832,20 @@ theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecog
   funext hQuot extinction recognize
   apply Subsingleton.elim
 
+/-- The quotient extinction-recognition self route agrees with the loop-mediated route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement =
+      (fun hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement
+                (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+                  hQuot))
+              extinction recognize) := by
+  funext hQuot extinction recognize
+  apply Subsingleton.elim
+
 /-- The quotient extinction-recognition self route agrees with reflexive recognition. -/
 theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement_direct_route_eq
     (hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement)
@@ -3965,6 +4044,20 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpa
   funext hQuot extinction recognize
   apply Subsingleton.elim
 
+/-- The quotient extinction-recognition target route agrees with the loop-mediated target route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement =
+      (fun hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement
+                (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+                  hQuot))
+              extinction recognize) := by
+  funext hQuot extinction recognize
+  apply Subsingleton.elim
+
 /-- The quotient extinction-recognition target route agrees with the direct model homeomorphism. -/
 theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement_direct_route_eq
     (hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement)
@@ -4159,6 +4252,20 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePoint
             onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement
               (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
                 hQuot)
+              extinction recognize) := by
+  funext hQuot extinction recognize
+  apply Subsingleton.elim
+
+/-- The quotient extinction-recognition payload agrees with the loop-mediated payload route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement =
+      (fun hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement
+                (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+                  hQuot))
               extinction recognize) := by
   funext hQuot extinction recognize
   apply Subsingleton.elim

@@ -730,8 +730,8 @@ The current artifact is intentionally conservative:
   `OnePointThreeSpaceLoopNullhomotopyStatement`,
   `OnePointThreeSpacePathHomotopyStatement`, and
   `OnePointThreeSpacePathQuotientSubsingletonStatement`, with path and quotient
-  routes pinned back to their mediated routes, and the loop/path/quotient
-  recognition payloads pair those endpoints with the corresponding
+  routes pinned back to their mediated path and loop routes, and the
+  loop/path/quotient recognition payloads pair those endpoints with the corresponding
   compactification-local homotopy/manifold prerequisite packages.
   The same self-case now applies a supplied `PoincareConjectureStatement` to
   the compactification model through
@@ -741,6 +741,8 @@ The current artifact is intentionally conservative:
   `...onePointPathHomotopyStatement`, and
   `...onePointPathQuotientSubsingletonStatement` routes, and packages the
   target endpoint with the local homotopy/manifold prerequisite payloads.
+  The quotient target and payload routes are pinned to both the local path and
+  loop-mediated target routes.
   Direct-route
   contracts pin those target-statement endpoints back to the explicit
   `onePoint_threeSpace_homeomorph_threeSphere` model homeomorphism.
@@ -755,7 +757,8 @@ The current artifact is intentionally conservative:
   `OnePointThreeSpaceLoopNullhomotopyStatement`,
   `OnePointThreeSpacePathHomotopyStatement`, and
   `OnePointThreeSpacePathQuotientSubsingletonStatement`, with the path and
-  quotient extinction routes pinned back through their mediated routes, and the
+  quotient extinction routes pinned back through their mediated path and loop
+  routes, and the
   loop/path/quotient extinction payloads pair those endpoints with the
   corresponding compactification-local homotopy/manifold prerequisite packages.
   It
