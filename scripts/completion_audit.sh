@@ -1625,6 +1625,20 @@ check_decl "remaining dependency canonical projection extraction-derivation stat
   '^theorem canonical_three_sphere_statement_of_remaining_dependency_extraction_derivation_projections_to_finite_extinction_eq\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency canonical projection extraction-derivation statement package route contract is declared" \
   '^theorem canonical_three_sphere_statement_of_remaining_dependency_extraction_derivation_projections_to_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency canonical lifted-homeomorphism statement endpoint is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_lifted_homeomorphism_derivation_projections\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency canonical lifted-homeomorphism statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_lifted_homeomorphism_derivation_projections_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency canonical lifted-homeomorphism statement route contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_lifted_homeomorphism_derivation_projections_to_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency canonical lifted-homeomorphism statement finite-extinction route contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_lifted_homeomorphism_derivation_projections_to_finite_extinction_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency canonical lifted-homeomorphism statement package route contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_lifted_homeomorphism_derivation_projections_to_package_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency canonical lifted-homeomorphism statement extraction-derivation route contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_lifted_homeomorphism_derivation_projections_to_extraction_derivation_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency canonical lifted-homeomorphism statement project-statement route contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_remaining_dependency_lifted_homeomorphism_derivation_projections_to_project_statement_eq\b' Poincare/CanonicalBridges.lean
 check_decl "canonical payload bridge from smooth statement is declared" \
   '^theorem canonical_completion_payload_of_canonical_smooth_three_sphere_statement\b' Poincare/CanonicalBridges.lean
 check_decl "canonical target bridge from smooth statement is declared" \

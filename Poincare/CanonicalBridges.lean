@@ -1198,6 +1198,118 @@ theorem canonical_three_sphere_statement_of_remaining_dependency_extraction_deri
   apply Subsingleton.elim
 
 /--
+The remaining-dependency package exposes the canonical topological 3-sphere
+statement through the lifted-homeomorphism derivation projection route.
+-/
+theorem canonical_three_sphere_statement_of_remaining_dependency_lifted_homeomorphism_derivation_projections
+    (dependencies : RemainingDependencyPackage.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) :=
+  canonical_three_sphere_statement_of_canonical_completion_target
+    (canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies)
+
+/--
+The lifted-homeomorphism projection-route canonical topological statement is
+selected from the named lifted projection-route canonical target.
+-/
+theorem canonical_three_sphere_statement_of_remaining_dependency_lifted_homeomorphism_derivation_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_remaining_dependency_lifted_homeomorphism_derivation_projections
+      dependencies =
+      canonical_three_sphere_statement_of_canonical_completion_target
+        (canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism projection-route canonical topological statement
+factors through the lifted decomposition of the theorem-shaped topology
+statement.
+-/
+theorem canonical_three_sphere_statement_of_remaining_dependency_lifted_homeomorphism_derivation_projections_to_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_remaining_dependency_lifted_homeomorphism_derivation_projections
+      dependencies =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies dependencies) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          canonical_three_sphere_statement_of_canonical_completion_target
+            (canonical_completion_target_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_of_dependencies dependencies)
+              extractSphere derivation)) := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism projection-route canonical topological statement
+factors through the certified finite-extinction/extraction-derivation payload.
+-/
+theorem canonical_three_sphere_statement_of_remaining_dependency_lifted_homeomorphism_derivation_projections_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_remaining_dependency_lifted_homeomorphism_derivation_projections
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_three_sphere_statement_of_canonical_completion_target
+            (canonical_completion_target_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_of_dependencies dependencies)
+              extractSphere derivation)) := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism projection-route canonical topological statement
+factors through the certified extraction-derivation payload selected from the
+topology package.
+-/
+theorem canonical_three_sphere_statement_of_remaining_dependency_lifted_homeomorphism_derivation_projections_to_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_remaining_dependency_lifted_homeomorphism_derivation_projections
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_three_sphere_statement_of_canonical_completion_target
+            (canonical_completion_target_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_of_dependencies dependencies)
+              extractSphere derivation)) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the lifted homeomorphism derivation in the canonical topological
+statement recovers the certified extraction-derivation projection route.
+-/
+theorem canonical_three_sphere_statement_of_remaining_dependency_lifted_homeomorphism_derivation_projections_to_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_remaining_dependency_lifted_homeomorphism_derivation_projections
+      dependencies =
+      canonical_three_sphere_statement_of_remaining_dependency_extraction_derivation_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism projection-route canonical topological statement is
+the canonical-statement view of the lifted project-statement endpoint.
+-/
+theorem canonical_three_sphere_statement_of_remaining_dependency_lifted_homeomorphism_derivation_projections_to_project_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_remaining_dependency_lifted_homeomorphism_derivation_projections
+      dependencies =
+      canonical_three_sphere_statement_of_canonical_completion_target
+        (poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The canonical smooth 3D Poincare statement, together with smoothability, proves
 the project's canonical completion target and explicit completion criterion
 payload.
