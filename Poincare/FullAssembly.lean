@@ -439,6 +439,29 @@ theorem poincare_assembly_inputs_payload_of_surgery_and_topology_package_extract
   apply Subsingleton.elim
 
 /--
+The plain package assembly-input payload is the forgetful projection of the
+certified topology-package extraction-derivation assembly-input payload.
+-/
+theorem poincare_assembly_inputs_payload_of_surgery_and_topology_packages_to_topology_package_extraction_derivation_forgetful_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    poincare_assembly_inputs_payload_of_surgery_and_topology_packages
+      smoothabilityPackage surgeryPackages topologyPackage =
+      (by
+        rcases
+            poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation
+              smoothabilityPackage surgeryPackages topologyPackage with
+          ⟨finiteExtinction, extractSphere, _derivation⟩
+        exact ⟨finiteExtinction, extractSphere⟩) := by
+  apply Subsingleton.elim
+
+/--
 The smoothability and surgery package route, together with a final extractor
 and its topology derivation certificate, exposes the finite-extinction input,
 certified extraction input, target statement, and completion criterion.
@@ -664,6 +687,29 @@ theorem poincare_target_payload_of_surgery_and_topology_packages_to_extraction_s
   apply Subsingleton.elim
 
 /--
+The plain package target payload is the forgetful projection of the certified
+topology-package extraction-derivation target payload.
+-/
+theorem poincare_target_payload_of_surgery_and_topology_packages_to_topology_package_extraction_derivation_forgetful_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    poincare_target_payload_of_surgery_and_topology_packages
+      smoothabilityPackage surgeryPackages topologyPackage =
+      (by
+        rcases
+            poincare_target_payload_of_surgery_and_topology_package_extraction_derivation
+              smoothabilityPackage surgeryPackages topologyPackage with
+          ⟨finiteExtinction, extractSphere, _derivation, target, criterion⟩
+        exact ⟨finiteExtinction, extractSphere, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
 If every compact simply connected topological 3-manifold carries the smooth
 regularity needed by the surgery interface, every such smooth 3-manifold has a
 completed surgery package, and the post-extinction topology extraction package
@@ -724,6 +770,31 @@ theorem poincare_full_assembly_payload_of_surgery_and_topology_packages_eq
   apply Subsingleton.elim
 
 /--
+The explicit full assembly payload is the forgetful projection of the certified
+topology-package extraction-derivation target payload, with the original
+packages retained.
+-/
+theorem poincare_full_assembly_payload_of_surgery_and_topology_packages_to_topology_package_extraction_derivation_forgetful_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    poincare_full_assembly_payload_of_surgery_and_topology_packages
+      smoothabilityPackage surgeryPackages topologyPackage =
+      (by
+        rcases
+            poincare_target_payload_of_surgery_and_topology_package_extraction_derivation
+              smoothabilityPackage surgeryPackages topologyPackage with
+          ⟨finiteExtinction, extractSphere, _derivation, target, _criterion⟩
+        exact ⟨smoothabilityPackage, surgeryPackages, topologyPackage,
+          finiteExtinction, extractSphere, target⟩) := by
+  apply Subsingleton.elim
+
+/--
 If every compact simply connected topological 3-manifold carries the smooth
 regularity needed by the surgery interface, every such smooth 3-manifold has a
 completed surgery package, and the post-extinction topology extraction package
@@ -771,6 +842,29 @@ theorem poincare_assembly_payload_of_surgery_and_topology_packages_eq
             smoothabilityPackage surgeryPackages topologyPackage with
           ⟨_smoothabilityPackage, _surgeryPackages, _topologyPackage,
             finiteExtinction, extractSphere, target⟩
+        exact ⟨finiteExtinction, extractSphere, target⟩) := by
+  apply Subsingleton.elim
+
+/--
+The explicit assembly payload is the forgetful projection of the certified
+topology-package extraction-derivation target payload.
+-/
+theorem poincare_assembly_payload_of_surgery_and_topology_packages_to_topology_package_extraction_derivation_forgetful_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    poincare_assembly_payload_of_surgery_and_topology_packages
+      smoothabilityPackage surgeryPackages topologyPackage =
+      (by
+        rcases
+            poincare_target_payload_of_surgery_and_topology_package_extraction_derivation
+              smoothabilityPackage surgeryPackages topologyPackage with
+          ⟨finiteExtinction, extractSphere, _derivation, target, _criterion⟩
         exact ⟨finiteExtinction, extractSphere, target⟩) := by
   apply Subsingleton.elim
 

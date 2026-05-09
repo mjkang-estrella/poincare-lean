@@ -3787,6 +3787,7 @@ universe u
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation_eq
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation_to_extraction_derivation_eq
+#check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages_to_topology_package_extraction_derivation_forgetful_eq
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_extraction_statement
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_extraction_statement_eq
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_extraction_derivation
@@ -3893,6 +3894,7 @@ universe u
         ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
 #check Poincare.poincare_target_payload_of_surgery_and_topology_package_extraction_derivation_eq
 #check Poincare.poincare_target_payload_of_surgery_and_topology_package_extraction_derivation_to_extraction_derivation_eq
+#check Poincare.poincare_target_payload_of_surgery_and_topology_packages_to_topology_package_extraction_derivation_forgetful_eq
 
 #check (Poincare.poincare_full_assembly_payload_of_surgery_and_topology_packages :
   Poincare.SmoothabilityPackage →
@@ -3919,6 +3921,7 @@ universe u
       ∃ _extractSphere : Poincare.ExtinctionImpliesSphereStatement,
         Poincare.PoincareConjectureStatement)
 #check Poincare.poincare_full_assembly_payload_of_surgery_and_topology_packages_eq
+#check Poincare.poincare_full_assembly_payload_of_surgery_and_topology_packages_to_topology_package_extraction_derivation_forgetful_eq
 
 #check (Poincare.poincare_assembly_payload_of_surgery_and_topology_packages :
   Poincare.SmoothabilityPackage →
@@ -3936,6 +3939,7 @@ universe u
       ∃ _extractSphere : Poincare.ExtinctionImpliesSphereStatement,
         Poincare.PoincareConjectureStatement)
 #check Poincare.poincare_assembly_payload_of_surgery_and_topology_packages_eq
+#check Poincare.poincare_assembly_payload_of_surgery_and_topology_packages_to_topology_package_extraction_derivation_forgetful_eq
 
 #check (Poincare.poincare_completion_payload_of_surgery_and_topology_packages :
   Poincare.SmoothabilityPackage →
@@ -12339,7 +12343,7 @@ explicit_target_payload_count=$(
   rg -c '\bpoincare_target_payload_of_surgery_and_topology_packages\b' \
     Poincare/FullAssembly.lean || true
 )
-if [ "$explicit_target_payload_count" != "7" ]; then
+if [ "$explicit_target_payload_count" != "8" ]; then
   echo "FAIL: explicit package full/completion and statement-route contracts should consume the explicit target payload"
   rg -n '\bpoincare_target_payload_of_surgery_and_topology_packages\b' \
     Poincare/FullAssembly.lean || true
