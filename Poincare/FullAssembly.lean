@@ -1000,6 +1000,25 @@ theorem poincare_completion_payload_of_surgery_and_topology_package_extraction_d
   apply Subsingleton.elim
 
 /--
+The explicit package completion payload agrees with the certified
+topology-package extraction-derivation completion payload.
+-/
+theorem poincare_completion_payload_of_surgery_and_topology_packages_to_topology_package_extraction_derivation_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    poincare_completion_payload_of_surgery_and_topology_packages
+      smoothabilityPackage surgeryPackages topologyPackage =
+      poincare_completion_payload_of_surgery_and_topology_package_extraction_derivation
+        smoothabilityPackage surgeryPackages topologyPackage := by
+  apply Subsingleton.elim
+
+/--
 If every compact simply connected topological 3-manifold carries the smooth
 regularity needed by the surgery interface, every such smooth 3-manifold has a
 completed surgery package, and the post-extinction topology extraction package
@@ -1221,6 +1240,25 @@ theorem poincare_statement_of_surgery_and_topology_package_extraction_derivation
   apply Subsingleton.elim
 
 /--
+The explicit package Poincare statement agrees with the certified
+topology-package extraction-derivation statement route.
+-/
+theorem poincare_statement_of_surgery_and_topology_packages_to_topology_package_extraction_derivation_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    poincare_statement_of_surgery_and_topology_packages
+      smoothabilityPackage surgeryPackages topologyPackage =
+      poincare_statement_of_surgery_and_topology_package_extraction_derivation
+        smoothabilityPackage surgeryPackages topologyPackage := by
+  apply Subsingleton.elim
+
+/--
 The explicit smoothability, surgery, and topology packages also expose the
 canonical mathlib-shaped topological 3-sphere statement.
 -/
@@ -1434,6 +1472,25 @@ theorem canonical_three_sphere_statement_of_surgery_and_topology_package_extract
           ⟨extractSphere, derivation⟩
         exact canonical_three_sphere_statement_of_surgery_and_extraction_derivation
           smoothabilityPackage surgeryPackages extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+The explicit package canonical topological statement agrees with the certified
+topology-package extraction-derivation canonical route.
+-/
+theorem canonical_three_sphere_statement_of_surgery_and_topology_packages_to_topology_package_extraction_derivation_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    canonical_three_sphere_statement_of_surgery_and_topology_packages
+      smoothabilityPackage surgeryPackages topologyPackage =
+      canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation
+        smoothabilityPackage surgeryPackages topologyPackage := by
   apply Subsingleton.elim
 
 end Poincare
