@@ -1487,6 +1487,8 @@ The current artifact is intentionally conservative:
   The boundary-aware certificate constructors now also recover the named
   canonical criterion for arbitrary verification payloads, existential
   verification payloads, and the named remaining-package and aggregate routes.
+  Those constructor canonical criteria are also pinned directly to the checked
+  boundary certificates carried by each route.
   `remainingDependencyPackage_eq`,
   `remainingDependencyPackage_iff_poincareProofDependencies`, and
   `remainingDependencyPackage_iff_components` identify the remaining-dependency
