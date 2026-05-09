@@ -44843,6 +44843,34 @@ theorem completion_certificate_of_poincareProofDependencies_lifted_homeomorphism
       certificate := by
   apply Subsingleton.elim
 
+theorem completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_of_completion_certificate_to_statement_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+      (poincareProofDependencies_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_of_completion_certificate_to_finite_extinction_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+      (poincareProofDependencies_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_of_completion_certificate_to_package_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+      (poincareProofDependencies_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_of_completion_certificate_to_extraction_derivation_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+      (poincareProofDependencies_of_completion_certificate certificate) =
+      certificate := by
+  apply Subsingleton.elim
+
 /--
 Projecting the canonical completion payload from the remaining-dependency raw
 component route returns the route payload.
