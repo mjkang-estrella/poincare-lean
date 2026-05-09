@@ -1209,6 +1209,21 @@ theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePath
   funext h
   apply Subsingleton.elim
 
+/--
+The transported compactification quotient route also agrees with the loop route
+obtained by converting quotient uniqueness through path-homotopy uniqueness.
+-/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement =
+      (fun h : ThreeSpherePathQuotientSubsingletonStatement =>
+        onePoint_threeSpace_pathQuotientSubsingletonStatement_of_pathHomotopyStatement
+          (onePoint_threeSpace_pathHomotopyStatement_of_loopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+              (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
+                (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement h))))) := by
+  funext h
+  apply Subsingleton.elim
+
 /-- Compactification quotient uniqueness transports back to `ThreeSphere`. -/
 theorem threeSpherePathQuotientSubsingletonStatement_of_onePoint_threeSpace_pathQuotientSubsingletonStatement
     (h : OnePointThreeSpacePathQuotientSubsingletonStatement) :
@@ -1240,6 +1255,22 @@ theorem threeSpherePathQuotientSubsingletonStatement_of_onePoint_threeSpace_path
         threeSphere_pathQuotientSubsingletonStatement_of_pathHomotopyStatement
           (threeSpherePathHomotopyStatement_of_onePoint_threeSpace_pathHomotopyStatement
             (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement h))) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The reverse compactification quotient route also agrees with the loop route
+obtained by converting compactification quotient uniqueness through
+path-homotopy uniqueness.
+-/
+theorem threeSpherePathQuotientSubsingletonStatement_of_onePoint_threeSpace_pathQuotientSubsingletonStatement_loop_route_eq :
+    threeSpherePathQuotientSubsingletonStatement_of_onePoint_threeSpace_pathQuotientSubsingletonStatement =
+      (fun h : OnePointThreeSpacePathQuotientSubsingletonStatement =>
+        threeSphere_pathQuotientSubsingletonStatement_of_pathHomotopyStatement
+          (threeSphere_pathHomotopyStatement_of_loopNullhomotopyStatement
+            (threeSphereLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement
+                (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement h))))) := by
   funext h
   apply Subsingleton.elim
 
@@ -1617,6 +1648,19 @@ theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathQuotientSubsi
   apply Subsingleton.elim
 
 /--
+The direct standard-sphere quotient prerequisite route also agrees with the
+loop-nullhomotopy-mediated compactification prerequisite route.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathQuotientSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathQuotientSubsingletonStatement =
+      (fun h : ThreeSpherePathQuotientSubsingletonStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
+            (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement h))) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The compactification model's own path-quotient obligation directly supplies
 the full compactification homotopy/manifold prerequisite payload.
 -/
@@ -1957,6 +2001,21 @@ theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_
       hQuot h =
       homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement
         (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot) h := by
+  apply Subsingleton.elim
+
+/--
+The direct standard-sphere quotient source route also agrees with the
+loop-nullhomotopy-mediated source route.
+-/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
+          (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot)) h := by
   apply Subsingleton.elim
 
 /--
@@ -2563,6 +2622,19 @@ theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathQuotien
       hQuot =
       poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement
         (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot) := by
+  apply Subsingleton.elim
+
+/--
+The compactification self quotient-candidate route also agrees with the
+loop-nullhomotopy-mediated self-candidate route.
+-/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathQuotientSubsingletonStatement_loop_route_eq
+    (hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement) :
+    poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathQuotientSubsingletonStatement
+      hQuot =
+      poincare_candidate_prerequisites_of_onePoint_threeSpace_self_loopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement
+          (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot)) := by
   apply Subsingleton.elim
 
 /--

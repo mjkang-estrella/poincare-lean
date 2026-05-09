@@ -102,7 +102,7 @@ route.  It now also names the compactification model's path-quotient uniqueness
 obligation as `OnePointThreeSpacePathQuotientSubsingletonStatement`, proves
 equivalences with compactification simple-connectedness and
 `ThreeSpherePathQuotientSubsingletonStatement`, and pins those quotient
-transports to the existing path-homotopy routes.  It packages the
+transports to the existing path-homotopy and loop-nullhomotopy routes.  It packages the
 compactification model's full homotopy/manifold prerequisites as
 `onePoint_threeSpace_homotopy_manifold_prerequisites` when the standard
 sphere's simple-connectedness input is supplied; the loop-nullhomotopy route
