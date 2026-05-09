@@ -44389,6 +44389,20 @@ theorem poincareProofDependencies_of_completion_certificate_of_poincareProofDepe
         dependencies) = dependencies := by
   apply Subsingleton.elim
 
+theorem poincareProofDependencies_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareProofDependencies_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) = dependencies := by
+  apply Subsingleton.elim
+
+theorem poincareProofDependencies_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareProofDependencies_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) = dependencies := by
+  apply Subsingleton.elim
+
 theorem poincareProofDependencies_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_extraction_derivation_eq
     (dependencies : PoincareProofDependencies.{u}) :
     poincareProofDependencies_of_completion_certificate
@@ -44573,6 +44587,24 @@ theorem remaining_dependency_package_of_completion_certificate_of_poincareProofD
   apply Subsingleton.elim
 
 theorem remaining_dependency_package_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    remaining_dependency_package_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      remainingDependencyPackage_iff_poincareProofDependencies.mpr
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem remaining_dependency_package_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    remaining_dependency_package_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      remainingDependencyPackage_iff_poincareProofDependencies.mpr
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem remaining_dependency_package_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_package_eq
     (dependencies : PoincareProofDependencies.{u}) :
     remaining_dependency_package_of_completion_certificate
       (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
