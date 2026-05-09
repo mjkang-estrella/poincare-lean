@@ -7175,6 +7175,19 @@ theorem completion_criterion_of_equation_boundary_remaining_dependency_package_t
   apply Subsingleton.elim
 
 /--
+The strengthened remaining-package canonical criterion agrees with the
+dependency-level strengthened aggregate completion criterion.
+-/
+theorem canonical_completion_criterion_of_equation_boundary_remaining_dependency_package_to_dependencies_eq
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_equation_boundary_remaining_dependency_package
+        witness dependencies =
+      completion_criterion_of_equation_boundary_dependencies
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate dependency package discharges the explicit
 universe-indexed completion criterion through its named canonical payload.
 -/
@@ -7263,6 +7276,19 @@ theorem completion_criterion_of_poincareProofDependenciesWithEquationBoundary_to
   apply Subsingleton.elim
 
 /--
+The strengthened aggregate canonical criterion agrees with the strengthened
+remaining-package canonical criterion.
+-/
+theorem canonical_completion_criterion_of_poincareProofDependenciesWithEquationBoundary_to_remaining_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_poincareProofDependenciesWithEquationBoundary
+        witness dependencies =
+      canonical_completion_criterion_of_equation_boundary_remaining_dependency_package
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate completion criterion agrees with the dependency-level
 strengthened aggregate completion criterion.
 -/
@@ -7270,6 +7296,19 @@ theorem completion_criterion_of_poincareProofDependenciesWithEquationBoundary_to
     (witness : Type u)
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     completion_criterion_of_poincareProofDependenciesWithEquationBoundary
+        witness dependencies =
+      completion_criterion_of_equation_boundary_dependencies
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate canonical criterion agrees with the dependency-level
+strengthened aggregate completion criterion.
+-/
+theorem canonical_completion_criterion_of_poincareProofDependenciesWithEquationBoundary_to_dependencies_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_poincareProofDependenciesWithEquationBoundary
         witness dependencies =
       completion_criterion_of_equation_boundary_dependencies
         witness dependencies := by
@@ -12666,6 +12705,21 @@ theorem completion_criterion_of_equation_boundary_remaining_dependency_package_t
   apply Subsingleton.elim
 
 /--
+The strengthened remaining-package canonical criterion agrees with the ordinary
+remaining-package canonical criterion after forgetting equation-boundary data.
+-/
+theorem canonical_completion_criterion_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_equation_boundary_remaining_dependency_package
+        witness dependencies =
+      canonical_completion_criterion_of_dependencies
+        witness
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate canonical payload is the strengthened
 remaining-package canonical payload.
 -/
@@ -12820,6 +12874,20 @@ theorem completion_criterion_of_poincareProofDependenciesWithEquationBoundary_to
   apply Subsingleton.elim
 
 /--
+The strengthened aggregate canonical criterion agrees with the ordinary
+aggregate canonical criterion after forgetting equation-boundary data.
+-/
+theorem canonical_completion_criterion_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_poincareProofDependenciesWithEquationBoundary
+        witness dependencies =
+      canonical_completion_criterion_of_dependencies
+        witness
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate completion criterion agrees with the ordinary
 remaining-package canonical criterion after forgetting equation-boundary data
 through the remaining-dependency wrapper.
@@ -12828,6 +12896,22 @@ theorem completion_criterion_of_poincareProofDependenciesWithEquationBoundary_to
     (witness : Type u)
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     completion_criterion_of_poincareProofDependenciesWithEquationBoundary
+        witness dependencies =
+      canonical_completion_criterion_of_dependencies
+        witness
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate canonical criterion agrees with the ordinary
+remaining-package canonical criterion after forgetting equation-boundary data
+through the remaining-dependency wrapper.
+-/
+theorem canonical_completion_criterion_of_poincareProofDependenciesWithEquationBoundary_to_remaining_dependency_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_poincareProofDependenciesWithEquationBoundary
         witness dependencies =
       canonical_completion_criterion_of_dependencies
         witness
