@@ -626,6 +626,20 @@ theorem threeSphere_self_homeomorph_of_poincare_statement_and_pathQuotientSubsin
   apply Subsingleton.elim
 
 /--
+The direct path-quotient target self route also agrees with the
+loop-nullhomotopy route obtained through path-homotopy uniqueness.
+-/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_pathQuotientSubsingletonStatement_loop_route_eq :
+    threeSphere_self_homeomorph_of_poincare_statement_and_pathQuotientSubsingletonStatement =
+      (fun hQuot : ThreeSpherePathQuotientSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
+              (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot)) h) := by
+  funext hQuot h
+  apply Subsingleton.elim
+
+/--
 The concrete path-quotient uniqueness obligation is enough to apply the smooth
 target statement to the standard sphere itself.
 -/
@@ -666,6 +680,20 @@ theorem threeSphere_self_diffeomorph_of_smooth_statement_and_pathQuotientSubsing
   apply Subsingleton.elim
 
 /--
+The direct path-quotient smooth self route also agrees with the
+loop-nullhomotopy route obtained through path-homotopy uniqueness.
+-/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_pathQuotientSubsingletonStatement_loop_route_eq :
+    threeSphere_self_diffeomorph_of_smooth_statement_and_pathQuotientSubsingletonStatement =
+      (fun hQuot : ThreeSpherePathQuotientSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_diffeomorph_of_smooth_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
+              (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot)) h) := by
+  funext hQuot h
+  apply Subsingleton.elim
+
+/--
 The smooth target plus the concrete path-quotient uniqueness obligation gives
 the topological self-homeomorphism after forgetting smooth structure.
 -/
@@ -702,6 +730,20 @@ theorem threeSphere_self_homeomorph_of_smooth_statement_and_pathQuotientSubsingl
         fun h : SmoothPoincareConjectureStatement.{0} =>
           threeSphere_self_homeomorph_of_smooth_statement_and_pathHomotopyStatement
             (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot) h) := by
+  funext hQuot h
+  apply Subsingleton.elim
+
+/--
+The direct path-quotient smooth-to-topological self route also agrees with the
+loop-nullhomotopy route obtained through path-homotopy uniqueness.
+-/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_pathQuotientSubsingletonStatement_loop_route_eq :
+    threeSphere_self_homeomorph_of_smooth_statement_and_pathQuotientSubsingletonStatement =
+      (fun hQuot : ThreeSpherePathQuotientSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
+              (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot)) h) := by
   funext hQuot h
   apply Subsingleton.elim
 
@@ -1013,6 +1055,20 @@ theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathQuotie
   apply Subsingleton.elim
 
 /--
+The direct path-quotient target self payload also agrees with the
+loop-nullhomotopy payload obtained through path-homotopy uniqueness.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathQuotientSubsingletonStatement_loop_route_eq :
+    threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathQuotientSubsingletonStatement =
+      (fun hQuot : ThreeSpherePathQuotientSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_payload_of_poincare_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
+              (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot)) h) := by
+  funext hQuot h
+  apply Subsingleton.elim
+
+/--
 The concrete path-quotient uniqueness obligation exposes the smooth self route
 as a payload carrying both the homotopy-oriented prerequisite bundle and the
 self-diffeomorphism endpoint.
@@ -1059,6 +1115,20 @@ theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_pathQuotien
         fun h : SmoothPoincareConjectureStatement.{0} =>
           threeSphere_self_diffeomorph_payload_of_smooth_statement_and_pathHomotopyStatement
             (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot) h) := by
+  funext hQuot h
+  apply Subsingleton.elim
+
+/--
+The direct path-quotient smooth self payload also agrees with the
+loop-nullhomotopy payload obtained through path-homotopy uniqueness.
+-/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_pathQuotientSubsingletonStatement_loop_route_eq :
+    threeSphere_self_diffeomorph_payload_of_smooth_statement_and_pathQuotientSubsingletonStatement =
+      (fun hQuot : ThreeSpherePathQuotientSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_diffeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
+              (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot)) h) := by
   funext hQuot h
   apply Subsingleton.elim
 
@@ -1110,6 +1180,20 @@ theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_pathQuotient
         fun h : SmoothPoincareConjectureStatement.{0} =>
           threeSphere_self_homeomorph_payload_of_smooth_statement_and_pathHomotopyStatement
             (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot) h) := by
+  funext hQuot h
+  apply Subsingleton.elim
+
+/--
+The direct path-quotient smooth-to-topological self payload also agrees with the
+loop-nullhomotopy payload obtained through path-homotopy uniqueness.
+-/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_pathQuotientSubsingletonStatement_loop_route_eq :
+    threeSphere_self_homeomorph_payload_of_smooth_statement_and_pathQuotientSubsingletonStatement =
+      (fun hQuot : ThreeSpherePathQuotientSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
+              (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot)) h) := by
   funext hQuot h
   apply Subsingleton.elim
 

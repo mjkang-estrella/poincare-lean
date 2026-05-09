@@ -69,7 +69,8 @@ The current artifact is intentionally conservative:
   standard-sphere prerequisites, and exposing the same self-case routes and
   payloads from the concrete loop-nullhomotopy, path-homotopy, and
   path-quotient obligations, with compatibility contracts between the direct
-  path routes, direct path-quotient routes, and their mediated routes,
+  path routes, direct path-quotient routes, and both their path-homotopy- and
+  loop-nullhomotopy-mediated routes,
   and reducing the topological target to the smooth Poincare statement plus a
   smoothability hypothesis. It also bridges both the
   canonical topological and smooth mathlib-shaped 3-sphere statements into the

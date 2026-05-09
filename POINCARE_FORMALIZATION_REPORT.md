@@ -237,7 +237,7 @@ obligation through its direct simple-connectedness route, with compatibility
 contracts tying those direct routes back to the loop-nullhomotopy routes; they
 also accept the concrete path-quotient obligation through its direct
 simple-connectedness route, with compatibility contracts tying those quotient
-routes back to the path-homotopy routes.
+routes back to both the path-homotopy and loop-nullhomotopy routes.
 
 The statement layer also now names `threeSphere_t2Space`,
 `threeSphere_compactSpace`, `threeSphere_chartedSpace`,
