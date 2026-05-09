@@ -4052,6 +4052,10 @@ check_decl "topology lifted homeomorphism derivation statement is declared" \
   '^def ExtinctionTopologyLiftedHomeomorphismDerivationStatement\b' Poincare/TopologyExtraction.lean
 check_decl "topology lifted homeomorphism derivation statement equality contract is declared" \
   '^theorem extinctionTopologyLiftedHomeomorphismDerivationStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology lifted homeomorphism derivation-for-extraction statement is declared" \
+  '^def ExtinctionTopologyLiftedHomeomorphismDerivationForExtractionStatement\b' Poincare/TopologyExtraction.lean
+check_decl "topology lifted homeomorphism derivation-for-extraction equality contract is declared" \
+  '^theorem extinctionTopologyLiftedHomeomorphismDerivationForExtractionStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "topology extraction statement is declared" \
   '^def ExtinctionTopologyExtractionStatement\b' Poincare/TopologyExtraction.lean
 check_decl "topology extraction statement equality contract is declared" \
@@ -4060,6 +4064,10 @@ check_decl "topology derivation-for-extraction statement is declared" \
   '^def ExtinctionTopologyDerivationForExtractionStatement\b' Poincare/TopologyExtraction.lean
 check_decl "topology derivation-for-extraction statement equality contract is declared" \
   '^theorem extinctionTopologyDerivationForExtractionStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology extraction with lifted homeomorphism derivation statement is declared" \
+  '^def ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement\b' Poincare/TopologyExtraction.lean
+check_decl "topology extraction with lifted homeomorphism derivation equality contract is declared" \
+  '^theorem extinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "topology component assembly theorem for derivation statement is declared" \
   '^theorem extinction_topology_derivation_statement_of_components\b' Poincare/TopologyExtraction.lean
 check_decl "topology component assembly theorem equality contract is declared" \
@@ -4100,6 +4108,10 @@ check_decl "topology derivation statement lifted homeomorphism derivation bridge
   '^theorem topology_lifted_homeomorphism_derivation_statement_of_derivation_statement\b' Poincare/TopologyExtraction.lean
 check_decl "topology derivation statement lifted homeomorphism derivation bridge equality contract is declared" \
   '^theorem topology_lifted_homeomorphism_derivation_statement_of_derivation_statement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "topology lifted derivation-for-extraction bridge is declared" \
+  '^theorem topology_lifted_homeomorphism_derivation_for_extraction_statement_of_derivation_for_extraction_statement\b' Poincare/TopologyExtraction.lean
+check_decl "topology lifted derivation-for-extraction bridge equality contract is declared" \
+  '^theorem topology_lifted_homeomorphism_derivation_for_extraction_statement_of_derivation_for_extraction_statement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "topology lifted homeomorphism derivation spherical lift bridge is declared" \
   '^theorem topology_spherical_homeomorphism_lift_statement_of_lifted_homeomorphism_derivation_statement\b' Poincare/TopologyExtraction.lean
 check_decl "topology lifted homeomorphism derivation spherical lift equality contract is declared" \
@@ -4257,10 +4269,13 @@ for topology_statement_route_contract in \
   homeomorphism_of_extinction_topology_extraction_statement_of_extraction_and_derivation_eq \
   topology_derivation_statement_of_extinction_topology_extraction_statement_of_extraction_and_derivation_eq \
   extinction_implies_sphere_of_extinction_topology_extraction_statement_of_extraction_and_derivation_eq \
+  extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation_eq \
   poincare_statement_of_finite_extinction_and_topology_extraction_statement_eq \
   poincare_payload_of_finite_extinction_and_topology_extraction_statement_eq \
   poincare_statement_of_finite_extinction_and_extraction_derivation_eq \
   poincare_payload_of_finite_extinction_and_extraction_derivation_eq \
+  topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package_eq \
+  topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package_to_derivation_payload_eq \
   topology_extraction_statement_payload_of_topology_package_eq \
   topology_spherical_trivial_quotient_statement_of_topology_package_eq \
   topology_spherical_homeomorphism_lift_statement_of_topology_package_eq \
@@ -6546,6 +6561,10 @@ check_decl "equation-boundary dependency extraction-derivation payload equality 
   '^theorem topology_extraction_derivation_payload_of_equation_boundary_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary dependency extraction-derivation forgetful route contract is declared" \
   '^theorem topology_extraction_derivation_payload_of_equation_boundary_dependencies_to_forgetful_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary dependency lifted-homeomorphism extraction payload theorem is declared" \
+  '^theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_boundary_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary dependency lifted-homeomorphism extraction payload equality contract is declared" \
+  '^theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_boundary_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary dependency simply connected recognition statement theorem is declared" \
   '^theorem topology_simply_connected_recognition_statement_of_equation_boundary_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary dependency simply connected recognition statement equality contract is declared" \
@@ -6596,6 +6615,10 @@ check_decl "equation-boundary certified projection assembly-input statement rout
   '^theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies_to_statement_eq\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary certified projection assembly-input forgetful route contract is declared" \
   '^theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary lifted-homeomorphism projection assembly-input payload theorem is declared" \
+  '^theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary lifted-homeomorphism projection assembly-input payload equality contract is declared" \
+  '^theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary projection target payload theorem is declared" \
   '^theorem poincare_target_payload_of_equation_boundary_dependency_projections\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary projection target payload equality contract is declared" \
@@ -6614,6 +6637,10 @@ check_decl "equation-boundary certified projection target payload statement rout
   '^theorem poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary certified projection target payload forgetful route contract is declared" \
   '^theorem poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_forgetful_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary lifted-homeomorphism projection target payload theorem is declared" \
+  '^theorem poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary lifted-homeomorphism projection target payload equality contract is declared" \
+  '^theorem poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary projection completion payload theorem is declared" \
   '^theorem poincare_completion_payload_of_equation_boundary_dependency_projections\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary projection completion payload equality contract is declared" \
@@ -6632,6 +6659,10 @@ check_decl "equation-boundary certified projection completion payload statement 
   '^theorem poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary certified projection completion payload forgetful route contract is declared" \
   '^theorem poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_forgetful_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary lifted-homeomorphism projection completion payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary lifted-homeomorphism projection completion payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary projection Poincare statement theorem is declared" \
   '^theorem poincare_statement_of_equation_boundary_dependency_projections\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary projection Poincare statement equality contract is declared" \
@@ -6650,6 +6681,10 @@ check_decl "equation-boundary certified projection Poincare statement statement 
   '^theorem poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary certified projection Poincare statement forgetful route contract is declared" \
   '^theorem poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_forgetful_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary lifted-homeomorphism projection Poincare statement theorem is declared" \
+  '^theorem poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections\b' Poincare/DependencyProjections.lean
+check_decl "equation-boundary lifted-homeomorphism projection Poincare statement equality contract is declared" \
+  '^theorem poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary projection canonical statement theorem is declared" \
   '^theorem canonical_three_sphere_statement_of_equation_boundary_dependency_projections\b' Poincare/DependencyProjections.lean
 check_decl "equation-boundary projection canonical statement equality contract is declared" \
@@ -6726,6 +6761,10 @@ check_decl "extinction extraction dependency projection theorem is declared" \
   '^theorem extinction_extraction_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "dependency topology extraction derivation payload theorem is declared" \
   '^theorem topology_extraction_derivation_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology lifted-homeomorphism extraction payload theorem is declared" \
+  '^theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "dependency topology lifted-homeomorphism extraction payload equality contract is declared" \
+  '^theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "projected dependency assembly input source payload theorem is declared" \
   '^theorem poincare_projection_assembly_inputs_payload_of_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "projected dependency assembly input source payload equality contract is declared" \
@@ -6734,6 +6773,10 @@ check_decl "projected extraction-derivation assembly input payload theorem is de
   '^theorem poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies\b' Poincare/DependencyProjections.lean
 check_decl "projected extraction-derivation assembly input payload equality contract is declared" \
   '^theorem poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies_eq\b' Poincare/DependencyProjections.lean
+check_decl "projected lifted-homeomorphism assembly input payload theorem is declared" \
+  '^theorem poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies\b' Poincare/DependencyProjections.lean
+check_decl "projected lifted-homeomorphism assembly input payload equality contract is declared" \
+  '^theorem poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies_eq\b' Poincare/DependencyProjections.lean
 check_decl "projected dependency target payload theorem is declared" \
   '^theorem poincare_target_payload_of_dependency_projections\b' Poincare/DependencyProjections.lean
 check_decl "projected dependency target payload equality contract is declared" \
@@ -6742,6 +6785,10 @@ check_decl "projected extraction-derivation target payload theorem is declared" 
   '^theorem poincare_target_payload_of_extraction_derivation_dependency_projections\b' Poincare/DependencyProjections.lean
 check_decl "projected extraction-derivation target payload equality contract is declared" \
   '^theorem poincare_target_payload_of_extraction_derivation_dependency_projections_eq\b' Poincare/DependencyProjections.lean
+check_decl "projected lifted-homeomorphism target payload theorem is declared" \
+  '^theorem poincare_target_payload_of_lifted_homeomorphism_derivation_dependency_projections\b' Poincare/DependencyProjections.lean
+check_decl "projected lifted-homeomorphism target payload equality contract is declared" \
+  '^theorem poincare_target_payload_of_lifted_homeomorphism_derivation_dependency_projections_eq\b' Poincare/DependencyProjections.lean
 check_decl "projected dependency full assembly payload theorem is declared" \
   '^theorem poincare_full_assembly_payload_of_dependency_projections\b' Poincare/DependencyProjections.lean
 check_decl "projected dependency full assembly payload equality contract is declared" \
@@ -6762,6 +6809,10 @@ check_decl "projected extraction-derivation completion payload theorem is declar
   '^theorem poincare_completion_payload_of_extraction_derivation_dependency_projections\b' Poincare/DependencyProjections.lean
 check_decl "projected extraction-derivation completion payload equality contract is declared" \
   '^theorem poincare_completion_payload_of_extraction_derivation_dependency_projections_eq\b' Poincare/DependencyProjections.lean
+check_decl "projected lifted-homeomorphism completion payload theorem is declared" \
+  '^theorem poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections\b' Poincare/DependencyProjections.lean
+check_decl "projected lifted-homeomorphism completion payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections_eq\b' Poincare/DependencyProjections.lean
 check_decl "projected dependency assembly theorem is declared" \
   '^theorem poincare_statement_of_dependency_projections\b' Poincare/DependencyProjections.lean
 check_decl "projected dependency assembly theorem equality contract is declared" \
@@ -6770,6 +6821,10 @@ check_decl "projected extraction-derivation assembly theorem is declared" \
   '^theorem poincare_statement_of_extraction_derivation_dependency_projections\b' Poincare/DependencyProjections.lean
 check_decl "projected extraction-derivation assembly theorem equality contract is declared" \
   '^theorem poincare_statement_of_extraction_derivation_dependency_projections_eq\b' Poincare/DependencyProjections.lean
+check_decl "projected lifted-homeomorphism assembly theorem is declared" \
+  '^theorem poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections\b' Poincare/DependencyProjections.lean
+check_decl "projected lifted-homeomorphism assembly theorem equality contract is declared" \
+  '^theorem poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections_eq\b' Poincare/DependencyProjections.lean
 check_decl "projected dependency canonical statement theorem is declared" \
   '^theorem canonical_three_sphere_statement_of_dependency_projections\b' Poincare/DependencyProjections.lean
 check_decl "projected dependency canonical statement equality contract is declared" \

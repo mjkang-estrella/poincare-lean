@@ -2440,8 +2440,12 @@ set_option linter.unusedVariables false
 #check Poincare.extinctionTopologySphericalHomeomorphismLiftStatement_eq
 #check Poincare.ExtinctionTopologyLiftedHomeomorphismDerivationStatement
 #check Poincare.extinctionTopologyLiftedHomeomorphismDerivationStatement_eq
+#check Poincare.ExtinctionTopologyLiftedHomeomorphismDerivationForExtractionStatement
+#check Poincare.extinctionTopologyLiftedHomeomorphismDerivationForExtractionStatement_eq
 #check Poincare.ExtinctionTopologyExtractionStatement
 #check Poincare.ExtinctionTopologyDerivationForExtractionStatement
+#check Poincare.ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement
+#check Poincare.extinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement_eq
 #check Poincare.extinction_topology_derivation_statement_of_components
 #check Poincare.extinction_topology_derivation_statement_of_components_eq
 #check Poincare.extinction_topology_derivation_statement_of_topology_package
@@ -2462,6 +2466,8 @@ set_option linter.unusedVariables false
 #check Poincare.topology_spherical_homeomorphism_lift_statement_of_derivation_statement_eq
 #check Poincare.topology_lifted_homeomorphism_derivation_statement_of_derivation_statement
 #check Poincare.topology_lifted_homeomorphism_derivation_statement_of_derivation_statement_eq
+#check Poincare.topology_lifted_homeomorphism_derivation_for_extraction_statement_of_derivation_for_extraction_statement
+#check Poincare.topology_lifted_homeomorphism_derivation_for_extraction_statement_of_derivation_for_extraction_statement_eq
 #check Poincare.topology_spherical_homeomorphism_lift_statement_of_lifted_homeomorphism_derivation_statement
 #check Poincare.topology_spherical_homeomorphism_lift_statement_of_lifted_homeomorphism_derivation_statement_eq
 #check Poincare.topology_homeomorphism_assembly_statement_of_lifted_homeomorphism_derivation_statement
@@ -2516,6 +2522,11 @@ set_option linter.unusedVariables false
 #check Poincare.topology_spherical_trivial_quotient_statement_of_topology_package
 #check Poincare.topology_spherical_homeomorphism_lift_statement_of_topology_package
 #check Poincare.topology_lifted_homeomorphism_derivation_statement_of_topology_package
+#check Poincare.extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation
+#check Poincare.extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation_eq
+#check Poincare.topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+#check Poincare.topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package_eq
+#check Poincare.topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package_to_derivation_payload_eq
 #check Poincare.extinction_topology_extraction_statement_of_topology_package_eq
 #check Poincare.topology_derivation_statement_payload_of_extraction_statement_eq
 #check Poincare.homeomorphism_of_topology_extraction_statement_eq
@@ -5195,6 +5206,19 @@ universe u
 #check Poincare.topology_lifted_homeomorphism_derivation_statement_of_dependencies_eq
 #check Poincare.topology_lifted_homeomorphism_derivation_statement_of_dependencies_to_extraction_statement_eq
 #check Poincare.topology_lifted_homeomorphism_derivation_statement_of_dependencies_to_package_eq
+#check Poincare.topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies
+#check Poincare.topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_eq
+#check Poincare.topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_to_package_eq
+#check Poincare.topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_to_statement_eq
+#check Poincare.topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_to_derivation_payload_eq
+#check Poincare.poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies
+#check Poincare.poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies_eq
+#check Poincare.poincare_target_payload_of_lifted_homeomorphism_derivation_dependency_projections
+#check Poincare.poincare_target_payload_of_lifted_homeomorphism_derivation_dependency_projections_eq
+#check Poincare.poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+#check Poincare.poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections_eq
+#check Poincare.poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections
+#check Poincare.poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections_eq
 #check Poincare.topology_extraction_statement_payload_of_dependencies
 #check Poincare.topology_extraction_statement_payload_of_dependencies_eq
 #check Poincare.topology_extraction_statement_payload_of_dependencies_to_package_eq
@@ -5435,6 +5459,16 @@ universe u
 #check Poincare.topology_lifted_homeomorphism_derivation_statement_of_equation_boundary_dependencies_eq
 #check Poincare.topology_lifted_homeomorphism_derivation_statement_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
 #check Poincare.topology_lifted_homeomorphism_derivation_statement_of_equation_boundary_dependencies_to_statement_eq
+#check Poincare.topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_boundary_dependencies
+#check Poincare.topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_boundary_dependencies_eq
+#check Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies
+#check Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies_eq
+#check Poincare.poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+#check Poincare.poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+#check Poincare.poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+#check Poincare.poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+#check Poincare.poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+#check Poincare.poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
 #check Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies
 #check Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies_eq
 #check Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies_to_verification_payload_eq
@@ -12249,7 +12283,7 @@ projection_direct_finite_extinction_count=$(
   rg -c '\bfinite_extinction_of_dependencies dependencies\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_direct_finite_extinction_count" != "36" ]; then
+if [ "$projection_direct_finite_extinction_count" != "44" ]; then
   echo "FAIL: finite-extinction projection input should be centralized in projection payloads or explicit route contracts"
   rg -n '\bfinite_extinction_of_dependencies dependencies\b' \
     Poincare/DependencyProjections.lean || true
@@ -12260,7 +12294,7 @@ projection_extraction_derivation_inputs_count=$(
   rg -c '\bpoincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_extraction_derivation_inputs_count" != "7" ]; then
+if [ "$projection_extraction_derivation_inputs_count" != "8" ]; then
   echo "FAIL: extraction-derivation target route should consume the extraction-derivation assembly-input payload"
   rg -n '\bpoincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies\b' \
     Poincare/DependencyProjections.lean || true
@@ -12271,7 +12305,7 @@ topology_extraction_derivation_payload_count=$(
   rg -c '\btopology_extraction_derivation_payload_of_dependencies\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$topology_extraction_derivation_payload_count" != "15" ]; then
+if [ "$topology_extraction_derivation_payload_count" != "16" ]; then
   echo "FAIL: extraction-derivation assembly-input payload and statement-route contracts should consume the topology extraction-derivation payload"
   rg -n '\btopology_extraction_derivation_payload_of_dependencies\b' \
     Poincare/DependencyProjections.lean || true
@@ -12304,7 +12338,7 @@ projection_extraction_derivation_target_payload_count=$(
   rg -c '\bpoincare_target_payload_of_extraction_derivation_dependency_projections\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_extraction_derivation_target_payload_count" != "9" ]; then
+if [ "$projection_extraction_derivation_target_payload_count" != "10" ]; then
   echo "FAIL: extraction-derivation full/completion routes should consume the extraction-derivation target payload"
   rg -n '\bpoincare_target_payload_of_extraction_derivation_dependency_projections\b' \
     Poincare/DependencyProjections.lean || true
@@ -12345,7 +12379,7 @@ projection_equation_boundary_extraction_derivation_target_payload_count=$(
   rg -c '\bpoincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_equation_boundary_extraction_derivation_target_payload_count" != "6" ]; then
+if [ "$projection_equation_boundary_extraction_derivation_target_payload_count" != "7" ]; then
   echo "FAIL: equation-boundary certified projection completion routes should consume the boundary certified target payload"
   rg -n '\bpoincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/DependencyProjections.lean || true
@@ -12367,7 +12401,7 @@ projection_equation_boundary_extraction_derivation_completion_payload_count=$(
   rg -c '\bpoincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_equation_boundary_extraction_derivation_completion_payload_count" != "8" ]; then
+if [ "$projection_equation_boundary_extraction_derivation_completion_payload_count" != "9" ]; then
   echo "FAIL: equation-boundary certified projection statement and criterion routes should consume the boundary certified completion payload"
   rg -n '\bpoincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/DependencyProjections.lean || true

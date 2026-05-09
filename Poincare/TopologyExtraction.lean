@@ -9420,6 +9420,38 @@ theorem extinctionTopologyLiftedHomeomorphismDerivationStatement_eq
   rfl
 
 /--
+The extractor-level lifted homeomorphism derivation certificate records that
+the extractor's chosen homeomorphism is accompanied, at every finite-extinction
+witness, by the spherical lift together with the final assembly and derivation
+stack.
+-/
+def ExtinctionTopologyLiftedHomeomorphismDerivationForExtractionStatement
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) : Prop :=
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M),
+      ExtinctionTopologyLiftedHomeomorphismDerivationStatement
+        M extinction (extractSphere M extinction)
+
+/--
+The extractor-level lifted homeomorphism derivation certificate is
+definitionally the universal fixed-extinction lifted derivation statement for
+the extractor's chosen output.
+-/
+theorem extinctionTopologyLiftedHomeomorphismDerivationForExtractionStatement_eq
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    ExtinctionTopologyLiftedHomeomorphismDerivationForExtractionStatement
+      extractSphere =
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        (extinction : FiniteExtinctionByRicciFlowWithSurgery M),
+          ExtinctionTopologyLiftedHomeomorphismDerivationStatement
+            M extinction (extractSphere M extinction)) :=
+  rfl
+
+/--
 The full topology derivation statement contains the narrower
 simply-connected recognition statement.
 -/
@@ -9818,6 +9850,41 @@ theorem topology_lifted_homeomorphism_derivation_statement_of_derivation_stateme
           deckGroupTriviality, simplyConnectedRecognition, trivialQuotient,
           trivialQuotientHomeomorphism, sphericalHomeomorphismLift,
           homeomorphismAssembly, homeomorphismDerivation⟩) := by
+  apply Subsingleton.elim
+
+/--
+Full extractor-level derivation evidence supplies the extractor-level lifted
+homeomorphism derivation certificate by projecting the lifted statement at each
+finite-extinction witness.
+-/
+theorem topology_lifted_homeomorphism_derivation_for_extraction_statement_of_derivation_for_extraction_statement
+    (extractSphere : ExtinctionImpliesSphereStatement.{u})
+    (derivation :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere) :
+    ExtinctionTopologyLiftedHomeomorphismDerivationForExtractionStatement.{u}
+      extractSphere := by
+  intro M _ _ _ _ _ extinction
+  exact topology_lifted_homeomorphism_derivation_statement_of_derivation_statement
+    M extinction (extractSphere M extinction) (derivation M extinction)
+
+/--
+The extractor-level lifted derivation certificate is obtained pointwise from
+the extractor-level full derivation certificate.
+-/
+theorem topology_lifted_homeomorphism_derivation_for_extraction_statement_of_derivation_for_extraction_statement_eq
+    (extractSphere : ExtinctionImpliesSphereStatement.{u})
+    (derivation :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere) :
+    topology_lifted_homeomorphism_derivation_for_extraction_statement_of_derivation_for_extraction_statement
+        extractSphere derivation =
+      (by
+        intro M _ _ _ _ _ extinction
+        exact
+          topology_lifted_homeomorphism_derivation_statement_of_derivation_statement
+            M extinction (extractSphere M extinction)
+            (derivation M extinction)) := by
   apply Subsingleton.elim
 
 /--
@@ -11211,6 +11278,80 @@ theorem extinction_topology_extraction_statement_iff_extraction_with_derivation_
   apply Subsingleton.elim
 
 /--
+The stronger extracted payload keeps the final extractor, its full topology
+derivation certificate, and the lifted homeomorphism derivation certificate
+together.
+-/
+def ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement :
+    Prop :=
+  ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+  ∃ _derivation :
+    ExtinctionTopologyDerivationForExtractionStatement.{u}
+      extractSphere,
+    ExtinctionTopologyLiftedHomeomorphismDerivationForExtractionStatement.{u}
+      extractSphere
+
+/--
+The stronger extracted payload is definitionally an extractor, its full
+derivation certificate, and the corresponding lifted homeomorphism derivation
+certificate.
+-/
+theorem extinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement_eq :
+    ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u} =
+      (∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+      ∃ _derivation :
+        ExtinctionTopologyDerivationForExtractionStatement.{u}
+          extractSphere,
+        ExtinctionTopologyLiftedHomeomorphismDerivationForExtractionStatement.{u}
+          extractSphere) :=
+  rfl
+
+/--
+The theorem-shaped topology extraction statement is equivalent to the
+extractor/derivation payload that also keeps the lifted homeomorphism derivation
+certificate.  The lifted certificate is a projection of the full derivation
+certificate, so this does not introduce an additional assumption.
+-/
+theorem extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation :
+    ExtinctionTopologyExtractionStatement.{u} ↔
+      ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u} := by
+  constructor
+  · intro topologyStatement
+    rcases
+        extinction_topology_extraction_statement_iff_extraction_with_derivation.mp
+          topologyStatement with
+      ⟨extractSphere, derivation⟩
+    exact ⟨extractSphere, derivation,
+      topology_lifted_homeomorphism_derivation_for_extraction_statement_of_derivation_for_extraction_statement
+        extractSphere derivation⟩
+  · rintro ⟨extractSphere, derivation, _liftedDerivation⟩
+    exact extinction_topology_extraction_statement_of_extraction_and_derivation
+      extractSphere derivation
+
+/--
+The lifted-homeomorphism extraction equivalence is the full
+extraction/derivation equivalence with the lifted derivation projection
+attached in the forward direction.
+-/
+theorem extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation_eq :
+    extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation =
+      (by
+        constructor
+        · intro topologyStatement
+          rcases
+              extinction_topology_extraction_statement_iff_extraction_with_derivation.mp
+                topologyStatement with
+            ⟨extractSphere, derivation⟩
+          exact ⟨extractSphere, derivation,
+            topology_lifted_homeomorphism_derivation_for_extraction_statement_of_derivation_for_extraction_statement
+              extractSphere derivation⟩
+        · rintro ⟨extractSphere, derivation, _liftedDerivation⟩
+          exact
+            extinction_topology_extraction_statement_of_extraction_and_derivation
+              extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
 Universal finite extinction plus the stronger topology extraction statement is
 enough to discharge the project target.
 -/
@@ -11414,6 +11555,49 @@ theorem topology_extraction_derivation_payload_of_topology_package_eq
       extinction_topology_extraction_statement_iff_extraction_with_derivation.mp
         (extinction_topology_extraction_statement_of_topology_package
           package) := by
+  apply Subsingleton.elim
+
+/--
+A completed topology package supplies a final extractor, its full
+post-extinction topology derivation certificate, and the lifted homeomorphism
+derivation certificate projected from it.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u} :=
+  extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+    (extinction_topology_extraction_statement_of_topology_package package)
+
+/--
+The package lifted-homeomorphism extraction payload is the forward direction of
+the lifted extraction/derivation equivalence for the package-built topology
+statement.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package_eq
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+        package =
+      extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+        (extinction_topology_extraction_statement_of_topology_package
+          package) := by
+  apply Subsingleton.elim
+
+/--
+The package lifted-homeomorphism extraction payload is obtained from the
+ordinary extraction/derivation package payload by attaching the lifted
+derivation projection.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package_to_derivation_payload_eq
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+        package =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            package with
+          ⟨extractSphere, derivation⟩
+        exact ⟨extractSphere, derivation,
+          topology_lifted_homeomorphism_derivation_for_extraction_statement_of_derivation_for_extraction_statement
+            extractSphere derivation⟩) := by
   apply Subsingleton.elim
 
 /--

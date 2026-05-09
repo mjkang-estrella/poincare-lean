@@ -10240,6 +10240,72 @@ theorem topology_extraction_derivation_payload_of_dependencies_to_statement_eq
   apply Subsingleton.elim
 
 /--
+A completed dependency package supplies a final extractor, its full topology
+derivation certificate, and the lifted homeomorphism derivation certificate
+for the extractor's chosen homeomorphism.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies
+    (dependencies : PoincareProofDependencies.{u}) :
+    ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u} :=
+  topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+    (topology_package_of_dependencies dependencies)
+
+/--
+The dependency-level lifted-homeomorphism extraction payload is the
+corresponding payload of the stored topology package.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies
+        dependencies =
+      topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+        dependencies.topology := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level lifted-homeomorphism extraction payload follows the stored
+topology package route.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies
+        dependencies =
+      topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+        dependencies.topology := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level lifted-homeomorphism extraction payload is the forward
+direction of the lifted extraction/derivation equivalence for the
+dependency-level topology statement.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies
+        dependencies =
+      extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+        (topology_extraction_statement_of_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level lifted-homeomorphism extraction payload is obtained from
+the ordinary dependency extraction/derivation payload by attaching the lifted
+derivation projection.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_to_derivation_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies
+        dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact ⟨extractSphere, derivation,
+          topology_lifted_homeomorphism_derivation_for_extraction_statement_of_derivation_for_extraction_statement
+            extractSphere derivation⟩) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened dependency package supplies the post-extinction topological
 extraction theorem after forgetting equation-boundary data.
 -/
@@ -10317,6 +10383,73 @@ theorem topology_extraction_derivation_payload_of_equation_boundary_dependencies
         dependencies =
       topology_extraction_derivation_payload_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency package supplies the lifted-homeomorphism
+extraction payload after forgetting equation-boundary data.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u} :=
+  topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+
+/--
+The strengthened lifted-homeomorphism extraction payload is the ordinary
+dependency lifted-homeomorphism extraction payload of the forgetful package.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_boundary_dependencies
+        dependencies =
+      topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism extraction payload agrees directly with
+the forgetful ordinary dependency route.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_boundary_dependencies
+        dependencies =
+      topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism extraction payload is the forward
+direction of the lifted extraction/derivation equivalence for the forgetful
+theorem-shaped topology statement.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_boundary_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_boundary_dependencies
+        dependencies =
+      extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+        (topology_extraction_statement_of_dependencies
+          (dependencies_of_equation_boundary_dependencies dependencies)) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism extraction payload is obtained from the
+ordinary strengthened extraction/derivation payload by attaching the lifted
+derivation projection.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_boundary_dependencies_to_derivation_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_boundary_dependencies
+        dependencies =
+      (by
+        rcases
+            topology_extraction_derivation_payload_of_equation_boundary_dependencies
+              dependencies with
+          ⟨extractSphere, derivation⟩
+        exact ⟨extractSphere, derivation,
+          topology_lifted_homeomorphism_derivation_for_extraction_statement_of_derivation_for_extraction_statement
+            extractSphere derivation⟩) := by
   apply Subsingleton.elim
 
 /--
@@ -10786,6 +10919,102 @@ theorem poincare_projection_assembly_inputs_payload_of_extraction_derivation_dep
   apply Subsingleton.elim
 
 /--
+The projection route also exposes finite extinction together with the final
+extractor, its full topology derivation certificate, and the lifted
+homeomorphism derivation certificate.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies
+    (dependencies : PoincareProofDependencies.{u}) :
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+    ∃ _derivation :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere,
+      ExtinctionTopologyLiftedHomeomorphismDerivationForExtractionStatement.{u}
+        extractSphere := by
+  rcases
+      topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies
+        dependencies with
+    ⟨extractSphere, derivation, liftedDerivation⟩
+  exact ⟨finite_extinction_of_dependencies dependencies, extractSphere,
+    derivation, liftedDerivation⟩
+
+/--
+The lifted-homeomorphism projection assembly-input payload is selected from
+the named lifted extraction payload and paired with finite extinction.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies
+      dependencies =
+      (by
+        rcases
+            topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies
+              dependencies with
+          ⟨extractSphere, derivation, liftedDerivation⟩
+        exact ⟨finite_extinction_of_dependencies dependencies, extractSphere,
+          derivation, liftedDerivation⟩) := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism dependency projection assembly-input payload is
+selected from the lifted extraction/derivation decomposition of the
+dependency-level topology statement.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies
+      dependencies =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies dependencies) with
+          ⟨extractSphere, derivation, liftedDerivation⟩
+        exact ⟨finite_extinction_of_dependencies dependencies, extractSphere,
+          derivation, liftedDerivation⟩) := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism dependency projection assembly-input payload is
+selected from the lifted extraction/derivation payload of the stored topology
+package.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies
+      dependencies =
+      (by
+        rcases
+            topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+              dependencies.topology with
+          ⟨extractSphere, derivation, liftedDerivation⟩
+        exact ⟨finite_extinction_of_dependencies dependencies, extractSphere,
+          derivation, liftedDerivation⟩) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the lifted certificate in the lifted-homeomorphism projection
+assembly-input payload recovers the ordinary certified extraction-derivation
+assembly-input payload.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    (by
+      rcases
+          poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies
+            dependencies with
+        ⟨finiteExtinction, extractSphere, derivation,
+          _liftedDerivation⟩
+      exact ⟨finiteExtinction, extractSphere, derivation⟩) =
+      poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened projection route also exposes the boundary finite-extinction
 input together with a certified final extractor and its derivation certificate.
 -/
@@ -10858,6 +11087,103 @@ theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_extract
         dependencies =
       poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened projection route also exposes boundary finite extinction
+together with the final extractor, its full topology derivation certificate,
+and the lifted homeomorphism derivation certificate.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+    ∃ _derivation :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere,
+      ExtinctionTopologyLiftedHomeomorphismDerivationForExtractionStatement.{u}
+        extractSphere := by
+  rcases
+      topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_boundary_dependencies
+        dependencies with
+    ⟨extractSphere, derivation, liftedDerivation⟩
+  exact
+    ⟨finite_extinction_of_equation_boundary_dependencies dependencies,
+      extractSphere, derivation, liftedDerivation⟩
+
+/--
+The strengthened lifted-homeomorphism projection assembly-input payload is
+selected from the strengthened lifted extraction payload and paired with
+boundary finite extinction.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies
+        dependencies =
+      (by
+        rcases
+            topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_boundary_dependencies
+              dependencies with
+          ⟨extractSphere, derivation, liftedDerivation⟩
+        exact
+          ⟨finite_extinction_of_equation_boundary_dependencies dependencies,
+            extractSphere, derivation, liftedDerivation⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism projection assembly-input payload is
+selected from the lifted extraction/derivation decomposition of the forgetful
+theorem-shaped topology statement.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies
+        dependencies =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies
+                (dependencies_of_equation_boundary_dependencies
+                  dependencies)) with
+          ⟨extractSphere, derivation, liftedDerivation⟩
+        exact
+          ⟨finite_extinction_of_equation_boundary_dependencies dependencies,
+            extractSphere, derivation, liftedDerivation⟩) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data in the strengthened lifted-homeomorphism
+projection assembly-input payload recovers the ordinary lifted-homeomorphism
+dependency projection assembly-input payload.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies
+        dependencies =
+      poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the lifted certificate in the strengthened lifted-homeomorphism
+projection assembly-input payload recovers the strengthened certified
+extraction-derivation assembly-input payload.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    (by
+      rcases
+          poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies
+            dependencies with
+        ⟨finiteExtinction, extractSphere, derivation,
+          _liftedDerivation⟩
+      exact ⟨finiteExtinction, extractSphere, derivation⟩) =
+      poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies := by
   apply Subsingleton.elim
 
 /--
@@ -11021,6 +11347,119 @@ theorem poincare_target_payload_of_extraction_derivation_dependency_projections_
           ⟨target, criterion⟩
         exact ⟨finite_extinction_of_dependencies dependencies,
           extractSphere, derivation, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism projection route exposes finite extinction, a
+certified final extractor, its lifted homeomorphism derivation certificate, the
+target statement, and the completion criterion.
+-/
+theorem poincare_target_payload_of_lifted_homeomorphism_derivation_dependency_projections
+    (dependencies : PoincareProofDependencies.{u}) :
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+    ∃ _derivation :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere,
+    ∃ _liftedDerivation :
+      ExtinctionTopologyLiftedHomeomorphismDerivationForExtractionStatement.{u}
+        extractSphere,
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases
+      poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies
+        dependencies with
+    ⟨finiteExtinction, extractSphere, derivation, liftedDerivation⟩
+  rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+      finiteExtinction extractSphere derivation with
+    ⟨target, criterion⟩
+  exact ⟨finiteExtinction, extractSphere, derivation, liftedDerivation,
+    target, criterion⟩
+
+/--
+The lifted-homeomorphism target payload is selected from the named lifted
+projection assembly-input payload and the certified extraction assembly bridge.
+-/
+theorem poincare_target_payload_of_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_target_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies
+              dependencies with
+          ⟨finiteExtinction, extractSphere, derivation,
+            liftedDerivation⟩
+        rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation with
+          ⟨target, criterion⟩
+        exact ⟨finiteExtinction, extractSphere, derivation,
+          liftedDerivation, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism dependency projection target payload factors through
+the lifted extraction/derivation decomposition of the dependency-level topology
+statement.
+-/
+theorem poincare_target_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_target_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        let finiteExtinction := finite_extinction_of_dependencies dependencies
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies dependencies) with
+          ⟨extractSphere, derivation, liftedDerivation⟩
+        rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation with
+          ⟨target, criterion⟩
+        exact ⟨finiteExtinction, extractSphere, derivation,
+          liftedDerivation, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism dependency projection target payload factors through
+the lifted extraction/derivation payload of the stored topology package.
+-/
+theorem poincare_target_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_target_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        let finiteExtinction := finite_extinction_of_dependencies dependencies
+        rcases
+            topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+              dependencies.topology with
+          ⟨extractSphere, derivation, liftedDerivation⟩
+        rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation with
+          ⟨target, criterion⟩
+        exact ⟨finiteExtinction, extractSphere, derivation,
+          liftedDerivation, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the lifted certificate in the lifted-homeomorphism target payload
+recovers the ordinary certified extraction-derivation target payload.
+-/
+theorem poincare_target_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    (by
+      rcases
+          poincare_target_payload_of_lifted_homeomorphism_derivation_dependency_projections
+            dependencies with
+        ⟨finiteExtinction, extractSphere, derivation, _liftedDerivation,
+          target, criterion⟩
+      exact ⟨finiteExtinction, extractSphere, derivation, target,
+        criterion⟩) =
+      poincare_target_payload_of_extraction_derivation_dependency_projections
+        dependencies := by
   apply Subsingleton.elim
 
 /--
@@ -11200,6 +11639,117 @@ theorem poincare_target_payload_of_equation_boundary_extraction_derivation_depen
         dependencies =
       poincare_target_payload_of_extraction_derivation_dependency_projections
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism projection route exposes boundary finite
+extinction, a certified final extractor, its lifted homeomorphism derivation
+certificate, the target statement, and the completion criterion.
+-/
+theorem poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+    ∃ _derivation :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere,
+    ∃ _liftedDerivation :
+      ExtinctionTopologyLiftedHomeomorphismDerivationForExtractionStatement.{u}
+        extractSphere,
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases
+      poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies
+        dependencies with
+    ⟨finiteExtinction, extractSphere, derivation, liftedDerivation⟩
+  rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+      finiteExtinction extractSphere derivation with
+    ⟨target, criterion⟩
+  exact ⟨finiteExtinction, extractSphere, derivation, liftedDerivation,
+    target, criterion⟩
+
+/--
+The strengthened lifted-homeomorphism target payload is selected from the
+boundary lifted projection assembly-input payload and the certified extraction
+assembly bridge.
+-/
+theorem poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies
+              dependencies with
+          ⟨finiteExtinction, extractSphere, derivation,
+            liftedDerivation⟩
+        rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation with
+          ⟨target, criterion⟩
+        exact ⟨finiteExtinction, extractSphere, derivation,
+          liftedDerivation, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism target payload factors through the
+lifted extraction/derivation decomposition of the forgetful theorem-shaped
+topology statement.
+-/
+theorem poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies
+                (dependencies_of_equation_boundary_dependencies
+                  dependencies)) with
+          ⟨extractSphere, derivation, liftedDerivation⟩
+        rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation with
+          ⟨target, criterion⟩
+        exact
+          ⟨finiteExtinction, extractSphere, derivation,
+            liftedDerivation, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data in the strengthened lifted-homeomorphism
+target payload recovers the ordinary lifted-homeomorphism dependency projection
+target payload.
+-/
+theorem poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      poincare_target_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the lifted certificate in the strengthened lifted-homeomorphism
+target payload recovers the strengthened certified extraction-derivation target
+payload.
+-/
+theorem poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    (by
+      rcases
+          poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+            dependencies with
+        ⟨finiteExtinction, extractSphere, derivation, _liftedDerivation,
+          target, criterion⟩
+      exact ⟨finiteExtinction, extractSphere, derivation, target,
+        criterion⟩) =
+      poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies := by
   apply Subsingleton.elim
 
 /--
@@ -11530,6 +12080,71 @@ theorem poincare_completion_payload_of_extraction_derivation_dependency_projecti
   apply Subsingleton.elim
 
 /--
+The lifted-homeomorphism projection route exposes the local target and
+universe-indexed completion criterion as one payload.
+-/
+theorem poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+    (dependencies : PoincareProofDependencies.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases
+      poincare_target_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies with
+    ⟨_finiteExtinction, _extractSphere, _derivation, _liftedDerivation,
+      target, criterion⟩
+  exact ⟨target, criterion⟩
+
+/--
+The lifted-homeomorphism completion payload is selected from the named lifted
+target payload.
+-/
+theorem poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            poincare_target_payload_of_lifted_homeomorphism_derivation_dependency_projections
+              dependencies with
+          ⟨_finiteExtinction, _extractSphere, _derivation,
+            _liftedDerivation, target, criterion⟩
+        exact ⟨target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism dependency projection completion payload is the
+payload carried by the lifted extraction/derivation decomposition of the
+dependency-level topology statement.
+-/
+theorem poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies dependencies) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the lifted certificate in the lifted-homeomorphism completion
+payload recovers the ordinary certified extraction-derivation completion
+payload.
+-/
+theorem poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      poincare_completion_payload_of_extraction_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened dependency projection route exposes the local target and
 universe-indexed completion criterion through the boundary target payload.
 -/
@@ -11665,6 +12280,87 @@ theorem poincare_completion_payload_of_equation_boundary_extraction_derivation_d
   apply Subsingleton.elim
 
 /--
+The strengthened lifted-homeomorphism projection route exposes the local
+target and universe-indexed completion criterion through the boundary lifted
+target payload.
+-/
+theorem poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases
+      poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies with
+    ⟨_finiteExtinction, _extractSphere, _derivation, _liftedDerivation,
+      target, criterion⟩
+  exact ⟨target, criterion⟩
+
+/--
+The strengthened lifted-homeomorphism completion payload is selected from the
+named boundary lifted target payload.
+-/
+theorem poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+              dependencies with
+          ⟨_finiteExtinction, _extractSphere, _derivation,
+            _liftedDerivation, target, criterion⟩
+        exact ⟨target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism completion payload is the payload carried
+by the lifted extraction/derivation decomposition of the forgetful
+theorem-shaped topology statement.
+-/
+theorem poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies
+                (dependencies_of_equation_boundary_dependencies
+                  dependencies)) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data in the strengthened lifted-homeomorphism
+completion payload recovers the ordinary lifted-homeomorphism dependency
+projection completion payload.
+-/
+theorem poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the lifted certificate in the strengthened lifted-homeomorphism
+completion payload recovers the strengthened certified extraction-derivation
+completion payload.
+-/
+theorem poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency package also proves the Poincare target through the
 full finite-extinction and post-extinction extraction projection payload.
 -/
@@ -11777,6 +12473,68 @@ theorem poincare_statement_of_extraction_derivation_dependency_projections_to_pa
           poincare_statement_of_finite_extinction_and_extraction_derivation
             (finite_extinction_of_dependencies dependencies)
             extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency package also proves the Poincare target through the
+lifted-homeomorphism certified projection payload.
+-/
+theorem poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} := by
+  rcases
+      poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies with
+    ⟨target, _criterion⟩
+  exact target
+
+/--
+The lifted-homeomorphism projection Poincare statement is selected from the
+named lifted completion payload.
+-/
+theorem poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+              dependencies with
+          ⟨target, _criterion⟩
+        exact target) := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism dependency projection Poincare statement is the target
+carried by the lifted extraction/derivation decomposition of the
+dependency-level topology statement.
+-/
+theorem poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies dependencies) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          poincare_statement_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the lifted certificate in the lifted-homeomorphism Poincare
+statement route recovers the ordinary certified extraction-derivation Poincare
+statement route.
+-/
+theorem poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      poincare_statement_of_extraction_derivation_dependency_projections
+        dependencies := by
   apply Subsingleton.elim
 
 /--
@@ -11911,6 +12669,83 @@ theorem poincare_statement_of_equation_boundary_extraction_derivation_dependency
         dependencies =
       poincare_statement_of_extraction_derivation_dependency_projections
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism projection route proves the Poincare
+target through the boundary lifted completion payload.
+-/
+theorem poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} := by
+  rcases
+      poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies with
+    ⟨target, _criterion⟩
+  exact target
+
+/--
+The strengthened lifted-homeomorphism Poincare statement is selected from the
+named boundary lifted completion payload.
+-/
+theorem poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+              dependencies with
+          ⟨target, _criterion⟩
+        exact target) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism Poincare statement is the target carried
+by the lifted extraction/derivation decomposition of the forgetful
+theorem-shaped topology statement.
+-/
+theorem poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies
+                (dependencies_of_equation_boundary_dependencies
+                  dependencies)) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          poincare_statement_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting equation-boundary data in the strengthened lifted-homeomorphism
+Poincare statement recovers the ordinary lifted-homeomorphism dependency
+projection Poincare statement.
+-/
+theorem poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the lifted certificate in the strengthened lifted-homeomorphism
+Poincare statement recovers the strengthened certified extraction-derivation
+Poincare statement.
+-/
+theorem poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies := by
   apply Subsingleton.elim
 
 /--
