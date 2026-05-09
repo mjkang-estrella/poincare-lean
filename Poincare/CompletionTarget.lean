@@ -47572,6 +47572,51 @@ theorem completion_certificate_of_literal_payload_of_extraction_derivation_depen
         dependencies := by
   apply Subsingleton.elim
 
+theorem completion_certificate_of_literal_payload_of_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_literal_payload
+      ⟨ "poincare_conjecture", rfl, dependencies,
+        canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections
+          dependencies,
+        fun witness =>
+          canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections
+            witness dependencies ⟩ =
+      completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_literal_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_literal_payload
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies dependencies) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          ⟨ "poincare_conjecture", rfl, dependencies,
+            canonical_completion_target_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_of_dependencies dependencies)
+              extractSphere derivation,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness
+                (finite_extinction_of_dependencies dependencies)
+                extractSphere derivation ⟩) =
+      completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_literal_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_extraction_derivation_dependency_projections
+          dependencies)) =
+      completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
 theorem completion_certificate_of_literal_payload_of_poincareProofDependencies_component_requirements_eq
     (dependencies : PoincareProofDependencies.{u}) :
     completion_certificate_of_literal_payload
@@ -47818,6 +47863,59 @@ theorem completion_certificate_of_literal_payload_of_poincareProofDependencies_e
                 (finite_extinction_of_dependencies remaining)
                 extractSphere derivation ⟩) =
       completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_literal_payload_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_literal_payload
+      ⟨ "poincare_conjecture", rfl,
+        remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies,
+        canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections
+          (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies),
+        fun witness =>
+          canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections
+            witness
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies) ⟩ =
+      completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_literal_payload_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_literal_payload
+      (by
+        let remaining : RemainingDependencyPackage.{u} :=
+          remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies remaining) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          ⟨ "poincare_conjecture", rfl, remaining,
+            canonical_completion_target_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_of_dependencies remaining)
+              extractSphere derivation,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness
+                (finite_extinction_of_dependencies remaining)
+                extractSphere derivation ⟩) =
+      completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_literal_payload_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+          dependencies)) =
+      completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
         dependencies := by
   apply Subsingleton.elim
 
@@ -48571,6 +48669,55 @@ theorem completion_certificate_of_aggregate_dependency_payload_of_extraction_der
                 (finite_extinction_of_dependencies dependencies)
                 extractSphere derivation ⟩) =
       completion_certificate_of_extraction_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      ⟨ "poincare_conjecture", rfl,
+        remainingDependencyPackage_iff_poincareProofDependencies.mp
+          dependencies,
+        canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections
+          dependencies,
+        fun witness =>
+          canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections
+            witness dependencies ⟩ =
+      completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies dependencies) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          ⟨ "poincare_conjecture", rfl,
+            remainingDependencyPackage_iff_poincareProofDependencies.mp
+              dependencies,
+            canonical_completion_target_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_of_dependencies dependencies)
+              extractSphere derivation,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness
+                (finite_extinction_of_dependencies dependencies)
+                extractSphere derivation ⟩) =
+      completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_extraction_derivation_dependency_projections
+          dependencies)) =
+      completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
         dependencies := by
   apply Subsingleton.elim
 
@@ -49330,6 +49477,57 @@ theorem completion_certificate_of_aggregate_dependency_payload_of_poincareProofD
         dependencies := by
   apply Subsingleton.elim
 
+theorem completion_certificate_of_aggregate_dependency_payload_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      ⟨ "poincare_conjecture", rfl, dependencies,
+        canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections
+          (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies),
+        fun witness =>
+          canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections
+            witness
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies) ⟩ =
+      completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      (by
+        let remaining : RemainingDependencyPackage.{u} :=
+          remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies remaining) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          ⟨ "poincare_conjecture", rfl, dependencies,
+            canonical_completion_target_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_of_dependencies remaining)
+              extractSphere derivation,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness
+                (finite_extinction_of_dependencies remaining)
+                extractSphere derivation ⟩) =
+      completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+          dependencies)) =
+      completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies := by
+  apply Subsingleton.elim
+
 /--
 The project-statement payload constructor recovers each route completion
 certificate from the route's project-statement payload.
@@ -49545,6 +49743,55 @@ theorem completion_certificate_of_project_statement_payload_of_extraction_deriva
                 (finite_extinction_of_dependencies dependencies)
                 extractSphere derivation ⟩) =
       completion_certificate_of_extraction_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_project_statement_payload
+      ⟨ "poincare_conjecture", rfl,
+        remainingDependencyPackage_iff_poincareProofDependencies.mp
+          dependencies,
+        canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections
+          dependencies,
+        fun witness =>
+          canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections
+            witness dependencies ⟩ =
+      completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_project_statement_payload
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies dependencies) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          ⟨ "poincare_conjecture", rfl,
+            remainingDependencyPackage_iff_poincareProofDependencies.mp
+              dependencies,
+            poincare_statement_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_of_dependencies dependencies)
+              extractSphere derivation,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness
+                (finite_extinction_of_dependencies dependencies)
+                extractSphere derivation ⟩) =
+      completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_extraction_derivation_dependency_projections
+          dependencies)) =
+      completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
         dependencies := by
   apply Subsingleton.elim
 
@@ -50301,6 +50548,57 @@ theorem completion_certificate_of_project_statement_payload_of_poincareProofDepe
                 (finite_extinction_of_dependencies remaining)
                 extractSphere derivation ⟩) =
       completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_project_statement_payload
+      ⟨ "poincare_conjecture", rfl, dependencies,
+        canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections
+          (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies),
+        fun witness =>
+          canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections
+            witness
+            (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+              dependencies) ⟩ =
+      completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_project_statement_payload
+      (by
+        let remaining : RemainingDependencyPackage.{u} :=
+          remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies remaining) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          ⟨ "poincare_conjecture", rfl, dependencies,
+            poincare_statement_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_of_dependencies remaining)
+              extractSphere derivation,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness
+                (finite_extinction_of_dependencies remaining)
+                extractSphere derivation ⟩) =
+      completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+          dependencies)) =
+      completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
         dependencies := by
   apply Subsingleton.elim
 
