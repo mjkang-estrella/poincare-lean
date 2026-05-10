@@ -4528,6 +4528,13 @@ universe u
       Nonempty (M ≃ₜ Poincare.ThreeSphere)) →
     Poincare.PoincareConjectureStatement)
 
+#check (Poincare.poincare_conjecture_of_canonical_three_sphere_statement :
+  (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₜ Poincare.ThreeSphere)) →
+    Poincare.PoincareConjectureStatement.{u})
+
 #check (Poincare.poincare_payload_of_canonical_three_sphere_statement :
   (∀ (M : Type) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
@@ -4599,6 +4606,14 @@ universe u
     Poincare.SmoothPoincareConjectureStatement →
       Poincare.PoincareConjectureStatement)
 
+#check (Poincare.poincare_conjecture_of_smooth_statement :
+  (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      IsManifold (𝓡 3) ∞ M) →
+    Poincare.SmoothPoincareConjectureStatement.{u} →
+      Poincare.PoincareConjectureStatement.{u})
+
 #check (Poincare.canonical_three_sphere_statement_of_smooth_statement :
   (∀ (M : Type) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
@@ -4639,6 +4654,18 @@ universe u
     [SimplyConnectedSpace M] [CompactSpace M],
       Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
     Poincare.PoincareConjectureStatement)
+
+#check (Poincare.poincare_conjecture_of_canonical_smooth_three_sphere_statement :
+  (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      IsManifold (𝓡 3) ∞ M) →
+  (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere)) →
+    Poincare.PoincareConjectureStatement.{u})
 
 #check (Poincare.canonical_three_sphere_statement_of_canonical_smooth_three_sphere_statement :
   (∀ (M : Type) [TopologicalSpace M] [T2Space M]
@@ -4692,6 +4719,18 @@ universe u
     [SimplyConnectedSpace M] [CompactSpace M],
       Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) →
     Poincare.PoincareConjectureStatement)
+
+#check (Poincare.poincare_conjecture_of_reverse_smooth_statement :
+  (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      IsManifold (𝓡 3) ∞ M) →
+  (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) →
+    Poincare.PoincareConjectureStatement.{u})
 
 #check (Poincare.canonical_three_sphere_statement_of_reverse_smooth_statement :
   (∀ (M : Type) [TopologicalSpace M] [T2Space M]
@@ -4798,6 +4837,7 @@ universe u
       [SimplyConnectedSpace M] [CompactSpace M],
         Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M))
 #check Poincare.poincare_statement_of_canonical_three_sphere_statement_eq
+#check Poincare.poincare_conjecture_of_canonical_three_sphere_statement_eq
 #check Poincare.poincare_payload_of_canonical_three_sphere_statement_eq
 #check Poincare.completion_criterion_of_canonical_three_sphere_statement_eq
 #check Poincare.canonical_three_sphere_statement_of_poincare_statement_eq
@@ -4814,14 +4854,17 @@ universe u
 #check Poincare.reverse_canonical_smooth_three_sphere_statement_iff_smooth_statement_eq
 #check Poincare.canonical_smooth_three_sphere_statement_iff_reverse_canonical_smooth_three_sphere_statement_eq
 #check Poincare.poincare_statement_of_smooth_statement_eq
+#check Poincare.poincare_conjecture_of_smooth_statement_eq
 #check Poincare.canonical_three_sphere_statement_of_smooth_statement_eq
 #check Poincare.poincare_payload_of_smooth_statement_eq
 #check Poincare.completion_criterion_of_smooth_statement_eq
 #check Poincare.poincare_statement_of_canonical_smooth_three_sphere_statement_eq
+#check Poincare.poincare_conjecture_of_canonical_smooth_three_sphere_statement_eq
 #check Poincare.canonical_three_sphere_statement_of_canonical_smooth_three_sphere_statement_eq
 #check Poincare.poincare_payload_of_canonical_smooth_three_sphere_statement_eq
 #check Poincare.completion_criterion_of_canonical_smooth_three_sphere_statement_eq
 #check Poincare.poincare_statement_of_reverse_smooth_statement_eq
+#check Poincare.poincare_conjecture_of_reverse_smooth_statement_eq
 #check Poincare.canonical_three_sphere_statement_of_reverse_smooth_statement_eq
 #check Poincare.poincare_payload_of_reverse_smooth_statement_eq
 #check Poincare.completion_criterion_of_reverse_smooth_statement_eq

@@ -2559,4 +2559,140 @@ theorem completion_criterion_of_reverse_smooth_statement_eq
         exact criterion witness) := by
   apply Subsingleton.elim
 
+/--
+The canonical topological statement is a direct conditional gate for the
+reserved final theorem name.
+-/
+theorem poincare_conjecture_of_canonical_three_sphere_statement
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_canonical_three_sphere_statement h
+
+/--
+The canonical topological reserved-name route is the existing project statement
+projection.
+-/
+theorem poincare_conjecture_of_canonical_three_sphere_statement_eq
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_conjecture_of_canonical_three_sphere_statement h =
+      poincare_statement_of_canonical_three_sphere_statement h := by
+  apply Subsingleton.elim
+
+/--
+The smooth statement plus smoothability is a direct conditional gate for the
+reserved final theorem name.
+-/
+theorem poincare_conjecture_of_smooth_statement
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_smooth_statement smoothable smoothStatement
+
+/--
+The smooth reserved-name route is the existing smooth-to-topological project
+statement projection.
+-/
+theorem poincare_conjecture_of_smooth_statement_eq
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    poincare_conjecture_of_smooth_statement smoothable smoothStatement =
+      poincare_statement_of_smooth_statement smoothable smoothStatement := by
+  apply Subsingleton.elim
+
+/--
+The canonical smooth statement plus smoothability is a direct conditional gate
+for the reserved final theorem name.
+-/
+theorem poincare_conjecture_of_canonical_smooth_three_sphere_statement
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_canonical_smooth_three_sphere_statement
+    smoothable h
+
+/--
+The canonical smooth reserved-name route is the existing canonical smooth
+project statement projection.
+-/
+theorem poincare_conjecture_of_canonical_smooth_three_sphere_statement_eq
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    poincare_conjecture_of_canonical_smooth_three_sphere_statement
+        smoothable h =
+      poincare_statement_of_canonical_smooth_three_sphere_statement
+        smoothable h := by
+  apply Subsingleton.elim
+
+/--
+The reverse smooth statement plus smoothability is a direct conditional gate for
+the reserved final theorem name.
+-/
+theorem poincare_conjecture_of_reverse_smooth_statement
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (reverseSmoothStatement :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [IsManifold (𝓡 3) ∞ M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_reverse_smooth_statement
+    smoothable reverseSmoothStatement
+
+/--
+The reverse smooth reserved-name route is the existing reverse smooth project
+statement projection.
+-/
+theorem poincare_conjecture_of_reverse_smooth_statement_eq
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (reverseSmoothStatement :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [IsManifold (𝓡 3) ∞ M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    poincare_conjecture_of_reverse_smooth_statement
+        smoothable reverseSmoothStatement =
+      poincare_statement_of_reverse_smooth_statement
+        smoothable reverseSmoothStatement := by
+  apply Subsingleton.elim
+
 end Poincare
