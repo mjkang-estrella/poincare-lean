@@ -7911,6 +7911,74 @@ theorem canonical_three_sphere_statement_of_poincareProofDependenciesWithEquatio
   apply Subsingleton.elim
 
 /--
+Ordinary aggregate dependencies plus explicit equation verifications for their
+surgery packages expose the canonical mathlib-shaped topological 3-sphere
+statement through the verification-family target route.
+-/
+theorem canonical_three_sphere_statement_of_poincareProofDependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) :=
+  canonical_three_sphere_statement_of_poincare_statement
+    (poincare_statement_of_poincareProofDependencies_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The ordinary-dependencies-plus-verification-family canonical topological
+statement is the canonical bridge applied to the named project statement.
+-/
+theorem canonical_three_sphere_statement_of_poincareProofDependencies_and_verification_family_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    canonical_three_sphere_statement_of_poincareProofDependencies_and_verification_family
+      dependencies verificationFamily =
+      canonical_three_sphere_statement_of_poincare_statement
+        (poincare_statement_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+The ordinary-dependencies-plus-verification-family topological statement agrees
+with the strengthened aggregate topological statement after applying the lift.
+-/
+theorem canonical_three_sphere_statement_of_poincareProofDependencies_and_verification_family_to_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    canonical_three_sphere_statement_of_poincareProofDependencies_and_verification_family
+      dependencies verificationFamily =
+      canonical_three_sphere_statement_of_poincareProofDependenciesWithEquationBoundary
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining dependency package proves the canonical completion
 target through the certified extraction-derivation payload.
 -/
