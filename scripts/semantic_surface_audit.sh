@@ -4771,6 +4771,8 @@ universe u
       ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
 
 #check Poincare.poincare_target_payload_of_equation_boundary_dependencies_eq
+#check Poincare.poincare_target_payload_of_dependencies_and_verification_family
+#check Poincare.poincare_target_payload_of_dependencies_and_verification_family_eq
 #check Poincare.poincare_target_payload_of_equation_boundary_dependencies_to_forgetful_dependencies
 #check Poincare.poincare_target_payload_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
 
@@ -4914,6 +4916,8 @@ universe u
 #check Poincare.PoincareProofDependenciesWithEquationBoundary
 #check Poincare.dependencies_of_equation_boundary_dependencies
 #check Poincare.dependencies_of_equation_boundary_dependencies_eq
+#check Poincare.equation_boundary_dependencies_of_dependencies_and_verification_family
+#check Poincare.equation_boundary_dependencies_of_dependencies_and_verification_family_eq
 #check Poincare.poincareProofDependenciesWithEquationBoundary_components_payload
 #check Poincare.poincareProofDependenciesWithEquationBoundary_components_payload_eq
 #check Poincare.poincareProofDependenciesWithEquationBoundary_iff_components
@@ -13622,8 +13626,8 @@ equation_boundary_target_payload_count=$(
   rg -c '\bpoincare_target_payload_of_equation_boundary_dependencies\b' \
     Poincare/Dependencies.lean || true
 )
-if [ "$equation_boundary_target_payload_count" != "5" ]; then
-  echo "FAIL: equation-boundary full assembly routes should consume the boundary-preserving target payload"
+if [ "$equation_boundary_target_payload_count" != "7" ]; then
+  echo "FAIL: equation-boundary full assembly and verification-family routes should consume the boundary-preserving target payload"
   rg -n '\bpoincare_target_payload_of_equation_boundary_dependencies\b' \
     Poincare/Dependencies.lean || true
   exit 1

@@ -85,6 +85,61 @@ theorem dependencies_of_equation_boundary_dependencies_eq
   rfl
 
 /--
+Lift ordinary aggregate dependencies to the strengthened equation-boundary
+dependency package when every ordinary surgery package in the family is
+equipped with an explicit Ricci-flow equation verification.
+-/
+noncomputable def equation_boundary_dependencies_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    PoincareProofDependenciesWithEquationBoundary.{u} where
+  smoothability := dependencies.smoothability
+  surgery := fun M => (dependencies.surgery M).map
+    (fun payload =>
+      ⟨payload.1,
+        surgery_package_with_equation_boundary_of_ricci_flow_equation_verification
+          payload.2
+          (verificationFamily M payload)⟩)
+  topology := dependencies.topology
+
+/--
+The verification-family lift keeps smoothability and topology fixed while
+mapping each ordinary surgery package through the surgery-level
+verification-to-boundary constructor.
+-/
+theorem equation_boundary_dependencies_of_dependencies_and_verification_family_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    equation_boundary_dependencies_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      ({ smoothability := dependencies.smoothability
+         surgery := fun M => (dependencies.surgery M).map
+           (fun payload =>
+             ⟨payload.1,
+               surgery_package_with_equation_boundary_of_ricci_flow_equation_verification
+                 payload.2
+                 (verificationFamily M payload)⟩)
+         topology := dependencies.topology } :
+        PoincareProofDependenciesWithEquationBoundary.{u}) :=
+  rfl
+
+/--
 The aggregate package exposes exactly its three outstanding component inputs:
 smoothability, the target-family surgery package, and topology extraction.
 -/
@@ -517,6 +572,62 @@ theorem poincare_target_payload_of_equation_boundary_dependencies_eq
         exact
           ⟨dependencies.surgery, finiteExtinction, extractSphere, target,
             criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications for their
+surgery packages expose the strengthened boundary-carrying target payload.
+-/
+theorem poincare_target_payload_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    ∃ _surgeryPackages :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ _extractSphere : ExtinctionImpliesSphereStatement.{u},
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_target_payload_of_equation_boundary_dependencies
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The ordinary-dependencies-plus-verification-family target route delegates
+through the strengthened aggregate dependency lift.
+-/
+theorem poincare_target_payload_of_dependencies_and_verification_family_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    poincare_target_payload_of_dependencies_and_verification_family
+      dependencies verificationFamily =
+      poincare_target_payload_of_equation_boundary_dependencies
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
   apply Subsingleton.elim
 
 /--
