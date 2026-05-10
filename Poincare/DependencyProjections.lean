@@ -2934,6 +2934,142 @@ theorem analytic_foundation_with_equation_boundary_statements_of_equation_bounda
   apply Subsingleton.elim
 
 /--
+A verification payload's analytic-boundary statement family exposes the
+concrete equation-boundary package, derivative identification, tensor equation,
+and scalar-pointwise equation for each target manifold.
+-/
+theorem equation_boundary_payload_statements_of_equation_boundary_verification_payload
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        ∃ boundary : RicciFlowEquationBoundaryPackage flow,
+          RicciFlowEquationBoundaryStatement flow ∧
+          IsMetricTimeDerivativeOf
+            (metric_of_ricci_flow_data flow)
+            (metric_time_derivative_field_of_metric_derivative_data
+              (metric_derivative_data_of_equation_boundary_package boundary)) ∧
+          (∀ t : ℝ,
+            metric_time_derivative_at_time_of_metric_derivative_field
+              (metric_time_derivative_field_of_metric_derivative_data
+                (metric_derivative_data_of_equation_boundary_package
+                  boundary)) t =
+              ricci_flow_rhs_tensor
+                (curvature_data_of_ricci_flow_data flow) t) ∧
+          ∀ (t : ℝ) (x : M)
+            (v w : TangentSpace ThreeManifoldModelWithCorners x),
+            metric_time_derivative_at_time_of_metric_derivative_field
+              (metric_time_derivative_field_of_metric_derivative_data
+                (metric_derivative_data_of_equation_boundary_package
+                  boundary)) t x v w =
+              ricci_flow_rhs_tensor
+                (curvature_data_of_ricci_flow_data flow) t x v w := by
+  intro M _ _ _ _ _ _
+  rcases
+      analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload
+        payload M with
+    ⟨n, flow, analyticBoundary⟩
+  exact
+    ⟨n, flow,
+      equation_boundary_payload_of_analytic_foundation_with_equation_boundary
+        analyticBoundary⟩
+
+/--
+The verification-payload equation-boundary payload family is obtained by
+applying the generic analytic-boundary payload projection to each projected
+analytic-boundary statement.
+-/
+theorem equation_boundary_payload_statements_of_equation_boundary_verification_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    equation_boundary_payload_statements_of_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload
+              payload M with
+          ⟨n, flow, analyticBoundary⟩
+        exact
+          ⟨n, flow,
+            equation_boundary_payload_of_analytic_foundation_with_equation_boundary
+              analyticBoundary⟩) := by
+  apply Subsingleton.elim
+
+/--
+A verification payload's analytic-boundary statement family exposes both the
+analytic derivation stack and the concrete equation-boundary payload for each
+target manifold.
+-/
+theorem analytic_derivation_and_boundary_payload_statements_of_equation_boundary_verification_payload
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          AnalyticFoundationDerivationStatement flow ∧
+          ∃ boundary : RicciFlowEquationBoundaryPackage flow,
+            RicciFlowEquationBoundaryStatement flow ∧
+            IsMetricTimeDerivativeOf
+              (metric_of_ricci_flow_data flow)
+              (metric_time_derivative_field_of_metric_derivative_data
+                (metric_derivative_data_of_equation_boundary_package
+                  boundary)) ∧
+            (∀ t : ℝ,
+              metric_time_derivative_at_time_of_metric_derivative_field
+                (metric_time_derivative_field_of_metric_derivative_data
+                  (metric_derivative_data_of_equation_boundary_package
+                    boundary)) t =
+                ricci_flow_rhs_tensor
+                  (curvature_data_of_ricci_flow_data flow) t) ∧
+            ∀ (t : ℝ) (x : M)
+              (v w : TangentSpace ThreeManifoldModelWithCorners x),
+              metric_time_derivative_at_time_of_metric_derivative_field
+                (metric_time_derivative_field_of_metric_derivative_data
+                  (metric_derivative_data_of_equation_boundary_package
+                    boundary)) t x v w =
+                ricci_flow_rhs_tensor
+                  (curvature_data_of_ricci_flow_data flow) t x v w := by
+  intro M _ _ _ _ _ _
+  rcases
+      analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload
+        payload M with
+    ⟨n, flow, analyticBoundary⟩
+  exact
+    ⟨n, flow,
+      analytic_foundation_derivation_and_boundary_payload_of_with_equation_boundary
+        analyticBoundary⟩
+
+/--
+The verification-payload derivation-and-boundary family is obtained by applying
+the generic analytic derivation/boundary projection to each analytic-boundary
+statement.
+-/
+theorem analytic_derivation_and_boundary_payload_statements_of_equation_boundary_verification_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    analytic_derivation_and_boundary_payload_statements_of_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload
+              payload M with
+          ⟨n, flow, analyticBoundary⟩
+        exact
+          ⟨n, flow,
+            analytic_foundation_derivation_and_boundary_payload_of_with_equation_boundary
+              analyticBoundary⟩) := by
+  apply Subsingleton.elim
+
+/--
 The named dependency equation-boundary package family is the projection of the
 named verification payload.
 -/
@@ -3132,6 +3268,161 @@ theorem analytic_foundation_with_equation_boundary_statements_of_dependencies_to
               (surgery_package_of_equation_boundary_surgery_package package),
             analytic_foundation_with_equation_boundary_of_direct_pointwise_equation_payload
               directPayload⟩) := by
+  apply Subsingleton.elim
+
+/--
+Strengthened dependencies expose the concrete equation-boundary payload behind
+their analytic-boundary statement family for every target manifold.
+-/
+theorem equation_boundary_payload_statements_of_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        ∃ boundary : RicciFlowEquationBoundaryPackage flow,
+          RicciFlowEquationBoundaryStatement flow ∧
+          IsMetricTimeDerivativeOf
+            (metric_of_ricci_flow_data flow)
+            (metric_time_derivative_field_of_metric_derivative_data
+              (metric_derivative_data_of_equation_boundary_package boundary)) ∧
+          (∀ t : ℝ,
+            metric_time_derivative_at_time_of_metric_derivative_field
+              (metric_time_derivative_field_of_metric_derivative_data
+                (metric_derivative_data_of_equation_boundary_package
+                  boundary)) t =
+              ricci_flow_rhs_tensor
+                (curvature_data_of_ricci_flow_data flow) t) ∧
+          ∀ (t : ℝ) (x : M)
+            (v w : TangentSpace ThreeManifoldModelWithCorners x),
+            metric_time_derivative_at_time_of_metric_derivative_field
+              (metric_time_derivative_field_of_metric_derivative_data
+                (metric_derivative_data_of_equation_boundary_package
+                  boundary)) t x v w =
+              ricci_flow_rhs_tensor
+                (curvature_data_of_ricci_flow_data flow) t x v w := by
+  intro M _ _ _ _ _ _
+  rcases
+      analytic_foundation_with_equation_boundary_statements_of_dependencies
+        dependencies M with
+    ⟨n, flow, analyticBoundary⟩
+  exact
+    ⟨n, flow,
+      equation_boundary_payload_of_analytic_foundation_with_equation_boundary
+        analyticBoundary⟩
+
+/--
+The named dependency equation-boundary payload family is the generic
+analytic-boundary payload projection applied to each named analytic-boundary
+statement.
+-/
+theorem equation_boundary_payload_statements_of_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_payload_statements_of_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            analytic_foundation_with_equation_boundary_statements_of_dependencies
+              dependencies M with
+          ⟨n, flow, analyticBoundary⟩
+        exact
+          ⟨n, flow,
+            equation_boundary_payload_of_analytic_foundation_with_equation_boundary
+              analyticBoundary⟩) := by
+  apply Subsingleton.elim
+
+/--
+The named dependency equation-boundary payload family is reconstructed from the
+named verification payload.
+-/
+theorem equation_boundary_payload_statements_of_dependencies_to_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_payload_statements_of_dependencies dependencies =
+      equation_boundary_payload_statements_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Strengthened dependencies expose the analytic derivation stack together with
+the concrete equation-boundary payload behind their analytic-boundary statement
+family for every target manifold.
+-/
+theorem analytic_derivation_and_boundary_payload_statements_of_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          AnalyticFoundationDerivationStatement flow ∧
+          ∃ boundary : RicciFlowEquationBoundaryPackage flow,
+            RicciFlowEquationBoundaryStatement flow ∧
+            IsMetricTimeDerivativeOf
+              (metric_of_ricci_flow_data flow)
+              (metric_time_derivative_field_of_metric_derivative_data
+                (metric_derivative_data_of_equation_boundary_package
+                  boundary)) ∧
+            (∀ t : ℝ,
+              metric_time_derivative_at_time_of_metric_derivative_field
+                (metric_time_derivative_field_of_metric_derivative_data
+                  (metric_derivative_data_of_equation_boundary_package
+                    boundary)) t =
+                ricci_flow_rhs_tensor
+                  (curvature_data_of_ricci_flow_data flow) t) ∧
+            ∀ (t : ℝ) (x : M)
+              (v w : TangentSpace ThreeManifoldModelWithCorners x),
+              metric_time_derivative_at_time_of_metric_derivative_field
+                (metric_time_derivative_field_of_metric_derivative_data
+                  (metric_derivative_data_of_equation_boundary_package
+                    boundary)) t x v w =
+                ricci_flow_rhs_tensor
+                  (curvature_data_of_ricci_flow_data flow) t x v w := by
+  intro M _ _ _ _ _ _
+  rcases
+      analytic_foundation_with_equation_boundary_statements_of_dependencies
+        dependencies M with
+    ⟨n, flow, analyticBoundary⟩
+  exact
+    ⟨n, flow,
+      analytic_foundation_derivation_and_boundary_payload_of_with_equation_boundary
+        analyticBoundary⟩
+
+/--
+The named dependency derivation-and-boundary family is the generic
+analytic-foundation derivation/boundary projection applied to each named
+analytic-boundary statement.
+-/
+theorem analytic_derivation_and_boundary_payload_statements_of_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    analytic_derivation_and_boundary_payload_statements_of_dependencies
+        dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            analytic_foundation_with_equation_boundary_statements_of_dependencies
+              dependencies M with
+          ⟨n, flow, analyticBoundary⟩
+        exact
+          ⟨n, flow,
+            analytic_foundation_derivation_and_boundary_payload_of_with_equation_boundary
+              analyticBoundary⟩) := by
+  apply Subsingleton.elim
+
+/--
+The named dependency derivation-and-boundary family is reconstructed from the
+named verification payload.
+-/
+theorem analytic_derivation_and_boundary_payload_statements_of_dependencies_to_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    analytic_derivation_and_boundary_payload_statements_of_dependencies
+        dependencies =
+      analytic_derivation_and_boundary_payload_statements_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_dependencies
+          dependencies) := by
   apply Subsingleton.elim
 
 /--

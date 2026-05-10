@@ -9728,6 +9728,138 @@ theorem analytic_foundation_with_equation_boundary_of_surgery_package_with_equat
   apply Subsingleton.elim
 
 /--
+The analytic-boundary statement of a strengthened surgery package exposes the
+same concrete equation-boundary package, derivative identification, tensor
+equation, and scalar-pointwise equation as the surgery package itself.
+-/
+theorem equation_boundary_payload_of_surgery_package_with_equation_boundary_analytic_statement
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    ∃ boundary :
+      RicciFlowEquationBoundaryPackage
+        (ricci_flow_data_of_surgery_package
+          (surgery_package_of_equation_boundary_surgery_package package)),
+      RicciFlowEquationBoundaryStatement
+        (ricci_flow_data_of_surgery_package
+          (surgery_package_of_equation_boundary_surgery_package package)) ∧
+      IsMetricTimeDerivativeOf
+        (metric_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package
+            (surgery_package_of_equation_boundary_surgery_package package)))
+        (metric_time_derivative_field_of_metric_derivative_data
+          (metric_derivative_data_of_equation_boundary_package boundary)) ∧
+      (∀ t : ℝ,
+        metric_time_derivative_at_time_of_metric_derivative_field
+          (metric_time_derivative_field_of_metric_derivative_data
+            (metric_derivative_data_of_equation_boundary_package boundary)) t =
+          ricci_flow_rhs_tensor
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package
+                (surgery_package_of_equation_boundary_surgery_package
+                  package))) t) ∧
+      ∀ (t : ℝ) (x : M)
+        (v w : TangentSpace ThreeManifoldModelWithCorners x),
+        metric_time_derivative_at_time_of_metric_derivative_field
+          (metric_time_derivative_field_of_metric_derivative_data
+            (metric_derivative_data_of_equation_boundary_package boundary)) t x v w =
+          ricci_flow_rhs_tensor
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package
+                (surgery_package_of_equation_boundary_surgery_package
+                  package))) t x v w :=
+  equation_boundary_payload_of_analytic_foundation_with_equation_boundary
+    (analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+      package)
+
+/--
+The surgery-level analytic-boundary payload delegates exactly to the generic
+analytic-foundation boundary-payload projection applied to the strengthened
+surgery package's analytic-boundary statement.
+-/
+@[simp] theorem equation_boundary_payload_of_surgery_package_with_equation_boundary_analytic_statement_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    equation_boundary_payload_of_surgery_package_with_equation_boundary_analytic_statement
+        package =
+      equation_boundary_payload_of_analytic_foundation_with_equation_boundary
+        (analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+          package) :=
+  rfl
+
+/--
+The strengthened surgery package's analytic-boundary statement carries both
+the analytic derivation stack and the concrete equation-boundary payload.
+-/
+theorem analytic_derivation_and_boundary_payload_of_surgery_package_with_equation_boundary
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    AnalyticFoundationDerivationStatement
+      (ricci_flow_data_of_surgery_package
+        (surgery_package_of_equation_boundary_surgery_package package)) ∧
+    ∃ boundary :
+      RicciFlowEquationBoundaryPackage
+        (ricci_flow_data_of_surgery_package
+          (surgery_package_of_equation_boundary_surgery_package package)),
+      RicciFlowEquationBoundaryStatement
+        (ricci_flow_data_of_surgery_package
+          (surgery_package_of_equation_boundary_surgery_package package)) ∧
+      IsMetricTimeDerivativeOf
+        (metric_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package
+            (surgery_package_of_equation_boundary_surgery_package package)))
+        (metric_time_derivative_field_of_metric_derivative_data
+          (metric_derivative_data_of_equation_boundary_package boundary)) ∧
+      (∀ t : ℝ,
+        metric_time_derivative_at_time_of_metric_derivative_field
+          (metric_time_derivative_field_of_metric_derivative_data
+            (metric_derivative_data_of_equation_boundary_package boundary)) t =
+          ricci_flow_rhs_tensor
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package
+                (surgery_package_of_equation_boundary_surgery_package
+                  package))) t) ∧
+      ∀ (t : ℝ) (x : M)
+        (v w : TangentSpace ThreeManifoldModelWithCorners x),
+        metric_time_derivative_at_time_of_metric_derivative_field
+          (metric_time_derivative_field_of_metric_derivative_data
+            (metric_derivative_data_of_equation_boundary_package boundary)) t x v w =
+          ricci_flow_rhs_tensor
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package
+                (surgery_package_of_equation_boundary_surgery_package
+                  package))) t x v w :=
+  analytic_foundation_derivation_and_boundary_payload_of_with_equation_boundary
+    (analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+      package)
+
+/--
+The surgery-level derivation-and-boundary payload is the generic
+analytic-foundation derivation/boundary projection applied to the strengthened
+surgery package's analytic-boundary statement.
+-/
+@[simp] theorem analytic_derivation_and_boundary_payload_of_surgery_package_with_equation_boundary_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    analytic_derivation_and_boundary_payload_of_surgery_package_with_equation_boundary
+        package =
+      analytic_foundation_derivation_and_boundary_payload_of_with_equation_boundary
+        (analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+          package) :=
+  rfl
+
+/--
 An ordinary surgery package plus an explicit Ricci-flow equation verification
 supplies the strengthened analytic-boundary statement for the package's
 projected Ricci-flow data.
