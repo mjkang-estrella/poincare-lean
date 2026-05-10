@@ -1595,6 +1595,55 @@ theorem equation_at_time_apply_of_zero_ricci_flow_equation_verification
   rfl
 
 /--
+The zero equation verification exposes both sides of the pointwise equation as
+scalar zero.
+-/
+theorem pointwise_zero_payload_of_zero_ricci_flow_equation_verification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g)) :
+    ∀ t x (v w : TangentSpace I x),
+      metric_time_derivative_at_time_of_metric_derivative_field
+        (metric_time_derivative_field_of_metric_derivative_data
+          (metric_derivative_data_of_ricci_flow_equation_verification
+            (zero_ricci_flow_equation_verification
+              identifiesDerivative identifiesRicci))) t x v w = 0 ∧
+      ricci_flow_rhs_tensor (zero_ricci_curvature_data identifiesRicci) t x v w = 0 := by
+  intro t x v w
+  exact
+    ⟨rfl,
+      ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data
+        identifiesRicci t x v w⟩
+
+/--
+The zero pointwise-zero payload is exactly the direct pair of the definitional
+zero derivative and the zero-curvature right-hand-side theorem.
+-/
+@[simp] theorem pointwise_zero_payload_of_zero_ricci_flow_equation_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g)) :
+    pointwise_zero_payload_of_zero_ricci_flow_equation_verification
+      identifiesDerivative identifiesRicci =
+      (fun t x v w => by
+        exact
+          ⟨rfl,
+            ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data
+              identifiesRicci t x v w⟩) := by
+  funext t x v w
+  apply Subsingleton.elim
+
+/--
 The stationary zero equation verification proves the same tensor equation at
 each time after specializing the metric family to a fixed metric.
 -/

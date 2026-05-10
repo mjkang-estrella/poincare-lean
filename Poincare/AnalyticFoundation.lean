@@ -789,6 +789,28 @@ theorem equation_at_time_apply_of_zero_ricci_flow_equation_boundary_package_proj
   rfl
 
 /--
+The zero boundary-package pointwise equation agrees with the direct zero
+verification route.
+-/
+@[simp] theorem equation_at_time_apply_of_zero_ricci_flow_equation_boundary_package_projection_to_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    equation_at_time_apply_of_zero_ricci_flow_equation_boundary_package_projection
+      identifiesDerivative identifiesRicci equationEvidence t x v w =
+      equation_at_time_apply_of_zero_ricci_flow_equation_verification
+        identifiesDerivative identifiesRicci t x v w := by
+  apply Subsingleton.elim
+
+/--
 The stationary zero equation-boundary package proves the projection-routed
 equation pointwise.
 -/
@@ -857,6 +879,38 @@ theorem equation_at_time_apply_of_stationary_zero_ricci_flow_equation_boundary_p
         (stationary_zero_ricci_flow_equation_boundary_package
           metric identifiesDerivative identifiesRicci equationEvidence) t x v w :=
   rfl
+
+/--
+The stationary zero boundary-package pointwise equation agrees with the direct
+stationary zero verification route.
+-/
+@[simp] theorem equation_at_time_apply_of_stationary_zero_ricci_flow_equation_boundary_package_projection_to_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    equation_at_time_apply_of_stationary_zero_ricci_flow_equation_boundary_package_projection
+      metric identifiesDerivative identifiesRicci equationEvidence t x v w =
+      equation_at_time_apply_of_stationary_zero_ricci_flow_equation_verification
+        metric identifiesDerivative identifiesRicci t x v w := by
+  apply Subsingleton.elim
 
 /-- The derivative side of the zero boundary package is pointwise scalar zero. -/
 @[simp] theorem metric_time_derivative_at_time_apply_of_zero_ricci_flow_equation_boundary_package
@@ -1003,6 +1057,28 @@ theorem pointwise_zero_pair_of_zero_ricci_flow_equation_boundary_package
   apply Subsingleton.elim
 
 /--
+The zero boundary paired-zero proof agrees with the direct zero verification
+pointwise-zero payload.
+-/
+@[simp] theorem pointwise_zero_pair_of_zero_ricci_flow_equation_boundary_package_to_verification_payload_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    pointwise_zero_pair_of_zero_ricci_flow_equation_boundary_package
+      identifiesDerivative identifiesRicci equationEvidence t x v w =
+      pointwise_zero_payload_of_zero_ricci_flow_equation_verification
+        identifiesDerivative identifiesRicci t x v w := by
+  apply Subsingleton.elim
+
+/--
 The stationary zero boundary package exposes both pointwise sides as scalar
 zero.
 -/
@@ -1075,6 +1151,38 @@ theorem pointwise_zero_pair_of_stationary_zero_ricci_flow_equation_boundary_pack
   apply Subsingleton.elim
 
 /--
+The stationary zero boundary paired-zero proof agrees with the direct stationary
+zero verification pointwise-zero payload.
+-/
+@[simp] theorem pointwise_zero_pair_of_stationary_zero_ricci_flow_equation_boundary_package_to_verification_payload_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    pointwise_zero_pair_of_stationary_zero_ricci_flow_equation_boundary_package
+      metric identifiesDerivative identifiesRicci equationEvidence t x v w =
+      pointwise_zero_payload_of_stationary_zero_ricci_flow_equation_verification
+        metric identifiesDerivative identifiesRicci t x v w := by
+  apply Subsingleton.elim
+
+/--
 The zero boundary package can be bundled with a uniform pointwise scalar-zero
 witness for both sides of its equation.
 -/
@@ -1133,6 +1241,32 @@ package with its existing pointwise zero-pair projection.
             rfl, fun t x v w =>
               pointwise_zero_pair_of_zero_ricci_flow_equation_boundary_package
                 identifiesDerivative identifiesRicci equationEvidence t x v w⟩) := by
+  apply Subsingleton.elim
+
+/--
+The zero boundary package pointwise-zero payload can be represented using the
+direct zero verification pointwise-zero payload.
+-/
+@[simp] theorem zero_ricci_flow_equation_boundary_package_pointwise_zero_payload_to_verification_payload_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci)) :
+    zero_ricci_flow_equation_boundary_package_pointwise_zero_payload
+      identifiesDerivative identifiesRicci equationEvidence =
+      (by
+        exact
+          ⟨zero_ricci_flow_equation_boundary_package
+              identifiesDerivative identifiesRicci equationEvidence,
+            rfl, fun t x v w =>
+              pointwise_zero_payload_of_zero_ricci_flow_equation_verification
+                identifiesDerivative identifiesRicci t x v w⟩) := by
   apply Subsingleton.elim
 
 /--
@@ -1218,6 +1352,42 @@ stationary boundary package with its existing pointwise zero-pair projection.
             rfl, fun t x v w =>
               pointwise_zero_pair_of_stationary_zero_ricci_flow_equation_boundary_package
                 metric identifiesDerivative identifiesRicci equationEvidence t x v w⟩) := by
+  apply Subsingleton.elim
+
+/--
+The stationary zero boundary package pointwise-zero payload can be represented
+using the direct stationary zero verification pointwise-zero payload.
+-/
+@[simp] theorem stationary_zero_ricci_flow_equation_boundary_package_pointwise_zero_payload_to_verification_payload_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci)) :
+    stationary_zero_ricci_flow_equation_boundary_package_pointwise_zero_payload
+      metric identifiesDerivative identifiesRicci equationEvidence =
+      (by
+        exact
+          ⟨stationary_zero_ricci_flow_equation_boundary_package
+              metric identifiesDerivative identifiesRicci equationEvidence,
+            rfl, fun t x v w =>
+              pointwise_zero_payload_of_stationary_zero_ricci_flow_equation_verification
+                metric identifiesDerivative identifiesRicci t x v w⟩) := by
   apply Subsingleton.elim
 
 /-- Zero Ricci-flow data with explicit zero verification exposes the boundary statement. -/
