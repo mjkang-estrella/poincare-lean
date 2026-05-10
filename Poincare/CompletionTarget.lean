@@ -42884,6 +42884,95 @@ theorem completion_certificate_of_milestone_requirements_payload_of_poincareProo
         dependencies := by
   apply Subsingleton.elim
 
+section VerificationFamilyDependencyRequirementPayloadCertificates
+
+variable (dependencies : PoincareProofDependencies.{u})
+variable (verificationFamily :
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package payload.2)))
+
+include dependencies verificationFamily
+
+/--
+The component-slot payload constructor applied to the verification-family
+crosswalk payload recovers the verification-family certificate.
+-/
+theorem completion_certificate_of_component_requirements_payload_of_poincareProofDependencies_and_verification_family_eq :
+    completion_certificate_of_component_requirements_payload
+      (dependency_component_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily) =
+      completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The package-layer payload constructor applied to the verification-family
+crosswalk payload recovers the verification-family certificate.
+-/
+theorem completion_certificate_of_package_layer_requirements_payload_of_poincareProofDependencies_and_verification_family_eq :
+    completion_certificate_of_package_layer_requirements_payload
+      (dependency_package_layer_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily) =
+      completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The milestone payload constructor applied to the verification-family crosswalk
+payload recovers the verification-family certificate.
+-/
+theorem completion_certificate_of_milestone_requirements_payload_of_poincareProofDependencies_and_verification_family_eq :
+    completion_certificate_of_milestone_requirements_payload
+      (dependency_milestone_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily) =
+      completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family component-slot payload route recovers the
+ordinary aggregate component-requirement certificate.
+-/
+theorem completion_certificate_of_component_requirements_payload_of_poincareProofDependencies_and_verification_family_to_component_requirements_eq :
+    completion_certificate_of_component_requirements_payload
+      (dependency_component_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily) =
+      completion_certificate_of_poincareProofDependencies_component_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family package-layer payload route recovers the
+ordinary aggregate package-layer-requirement certificate.
+-/
+theorem completion_certificate_of_package_layer_requirements_payload_of_poincareProofDependencies_and_verification_family_to_package_layer_requirements_eq :
+    completion_certificate_of_package_layer_requirements_payload
+      (dependency_package_layer_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily) =
+      completion_certificate_of_poincareProofDependencies_package_layer_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family milestone payload route recovers the
+ordinary aggregate milestone-requirement certificate.
+-/
+theorem completion_certificate_of_milestone_requirements_payload_of_poincareProofDependencies_and_verification_family_to_milestone_requirements_eq :
+    completion_certificate_of_milestone_requirements_payload
+      (dependency_milestone_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily) =
+      completion_certificate_of_poincareProofDependencies_milestone_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+end VerificationFamilyDependencyRequirementPayloadCertificates
+
 /--
 The remaining dependency package produces a checked completion certificate
 through the certified component-slot route.
@@ -43348,6 +43437,97 @@ theorem completion_certificate_of_milestone_extraction_derivation_requirements_p
       completion_certificate_of_poincareProofDependenciesWithEquationBoundary
         dependencies := by
   apply Subsingleton.elim
+
+section VerificationFamilyDependencyExtractionPayloadCertificates
+
+variable (dependencies : PoincareProofDependencies.{u})
+variable (verificationFamily :
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package payload.2)))
+
+include dependencies verificationFamily
+
+/--
+The certified component-slot payload constructor applied to the
+verification-family crosswalk payload recovers the verification-family
+certificate.
+-/
+theorem completion_certificate_of_component_extraction_derivation_requirements_payload_of_poincareProofDependencies_and_verification_family_eq :
+    completion_certificate_of_component_extraction_derivation_requirements_payload
+      (dependency_component_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily) =
+      completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The certified package-layer payload constructor applied to the
+verification-family crosswalk payload recovers the verification-family
+certificate.
+-/
+theorem completion_certificate_of_package_layer_extraction_derivation_requirements_payload_of_poincareProofDependencies_and_verification_family_eq :
+    completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+      (dependency_package_layer_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily) =
+      completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The certified milestone payload constructor applied to the verification-family
+crosswalk payload recovers the verification-family certificate.
+-/
+theorem completion_certificate_of_milestone_extraction_derivation_requirements_payload_of_poincareProofDependencies_and_verification_family_eq :
+    completion_certificate_of_milestone_extraction_derivation_requirements_payload
+      (dependency_milestone_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily) =
+      completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family certified component-slot payload route
+recovers the ordinary aggregate certified component-requirement certificate.
+-/
+theorem completion_certificate_of_component_extraction_derivation_requirements_payload_of_poincareProofDependencies_and_verification_family_to_component_extraction_derivation_requirements_eq :
+    completion_certificate_of_component_extraction_derivation_requirements_payload
+      (dependency_component_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily) =
+      completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family certified package-layer payload route
+recovers the ordinary aggregate certified package-layer-requirement certificate.
+-/
+theorem completion_certificate_of_package_layer_extraction_derivation_requirements_payload_of_poincareProofDependencies_and_verification_family_to_package_layer_extraction_derivation_requirements_eq :
+    completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+      (dependency_package_layer_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily) =
+      completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family certified milestone payload route recovers
+the ordinary aggregate certified milestone-requirement certificate.
+-/
+theorem completion_certificate_of_milestone_extraction_derivation_requirements_payload_of_poincareProofDependencies_and_verification_family_to_milestone_extraction_derivation_requirements_eq :
+    completion_certificate_of_milestone_extraction_derivation_requirements_payload
+      (dependency_milestone_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily) =
+      completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+end VerificationFamilyDependencyExtractionPayloadCertificates
 
 /--
 A completed remaining-dependency package also produces a completion certificate
