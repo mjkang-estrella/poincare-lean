@@ -9049,6 +9049,8 @@ check_decl "completion certificate canonical payload theorem is declared" \
   '^theorem canonical_completion_payload_of_completion_certificate\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate project completion payload theorem is declared" \
   '^theorem poincare_completion_payload_of_completion_certificate\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate reserved-name completion payload theorem is declared" \
+  '^theorem poincare_conjecture_payload_of_completion_certificate\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate canonical target theorem is declared" \
   '^theorem canonical_completion_target_of_completion_certificate\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate target statement theorem is declared" \
@@ -9169,10 +9171,16 @@ check_decl "completion certificate canonical payload equality contract is declar
   '^theorem canonical_completion_payload_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate project payload equality contract is declared" \
   '^theorem poincare_completion_payload_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate reserved-name completion payload equality contract is declared" \
+  '^theorem poincare_conjecture_payload_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate canonical payload project endpoint contract is declared" \
   '^theorem canonical_completion_payload_of_completion_certificate_to_project_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate project payload canonical endpoint contract is declared" \
   '^theorem poincare_completion_payload_of_completion_certificate_to_canonical_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate reserved-name payload project endpoint contract is declared" \
+  '^theorem poincare_conjecture_payload_of_completion_certificate_to_project_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate project payload reserved-name endpoint contract is declared" \
+  '^theorem poincare_completion_payload_of_completion_certificate_to_poincare_conjecture_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate canonical target equality contract is declared" \
   '^theorem canonical_completion_target_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate target statement equality contract is declared" \

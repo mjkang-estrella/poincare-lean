@@ -17134,6 +17134,54 @@ theorem target_statement_of_completion_certificate_to_poincare_conjecture_eq
   apply Subsingleton.elim
 
 /--
+The completion certificate also exposes a payload whose target component is
+the reserved-name bridge endpoint.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate
+    (certificate : PoincareCompletionCertificate.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases canonical_completion_payload_of_completion_certificate certificate with
+    ⟨_target, criterion⟩
+  exact ⟨poincare_conjecture_of_completion_certificate certificate, criterion⟩
+
+/--
+The reserved-name payload projection is the explicit bridge target together
+with the certificate's completion-criterion projection.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    poincare_conjecture_payload_of_completion_certificate certificate =
+      (by
+        rcases canonical_completion_payload_of_completion_certificate
+            certificate with
+          ⟨_target, criterion⟩
+        exact
+          ⟨poincare_conjecture_of_completion_certificate certificate,
+            criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The reserved-name payload is the same completion payload viewed with the named
+reserved endpoint.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_to_project_payload_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    poincare_conjecture_payload_of_completion_certificate certificate =
+      poincare_completion_payload_of_completion_certificate certificate := by
+  apply Subsingleton.elim
+
+/--
+The project completion payload is the same payload viewed through the
+reserved-name bridge endpoint.
+-/
+theorem poincare_completion_payload_of_completion_certificate_to_poincare_conjecture_payload_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    poincare_completion_payload_of_completion_certificate certificate =
+      poincare_conjecture_payload_of_completion_certificate certificate := by
+  apply Subsingleton.elim
+
+/--
 The project target-statement projection is the canonical target projection
 viewed at the project target proposition.
 -/
