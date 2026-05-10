@@ -55223,6 +55223,178 @@ theorem completion_certificate_of_milestone_requirements_payload_of_completion_c
   apply Subsingleton.elim
 
 /--
+The component requirement payload projected from the strengthened
+remaining-package certificate reconstructs the finite-extinction rebuilt
+checked certificate.
+-/
+theorem completion_certificate_of_component_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_component_requirements_payload
+      (poincareCompletionCertificate_component_requirements_payload
+        (completion_certificate_of_equation_boundary_remaining_dependency_package
+          dependencies)) =
+      (by
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependencies
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, remainingDependencies, target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+                witness finiteExtinction topologyStatement⟩) := by
+  apply Subsingleton.elim
+
+/--
+The package-layer requirement payload projected from the strengthened
+remaining-package certificate reconstructs the finite-extinction rebuilt
+checked certificate.
+-/
+theorem completion_certificate_of_package_layer_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_package_layer_requirements_payload
+      (poincareCompletionCertificate_package_layer_requirements_payload
+        (completion_certificate_of_equation_boundary_remaining_dependency_package
+          dependencies)) =
+      (by
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependencies
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, remainingDependencies, target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+                witness finiteExtinction topologyStatement⟩) := by
+  apply Subsingleton.elim
+
+/--
+The milestone requirement payload projected from the strengthened
+remaining-package certificate reconstructs the finite-extinction rebuilt
+checked certificate.
+-/
+theorem completion_certificate_of_milestone_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_milestone_requirements_payload
+      (poincareCompletionCertificate_milestone_requirements_payload
+        (completion_certificate_of_equation_boundary_remaining_dependency_package
+          dependencies)) =
+      (by
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependencies
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, remainingDependencies, target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+                witness finiteExtinction topologyStatement⟩) := by
+  apply Subsingleton.elim
+
+/--
+The component requirement payload projected from the strengthened aggregate
+certificate reconstructs the finite-extinction rebuilt checked certificate.
+-/
+theorem completion_certificate_of_component_requirements_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_component_requirements_payload
+      (poincareCompletionCertificate_component_requirements_payload
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies)) =
+      (by
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependencies
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, remainingDependencies, target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+                witness finiteExtinction topologyStatement⟩) := by
+  apply Subsingleton.elim
+
+/--
+The package-layer requirement payload projected from the strengthened
+aggregate certificate reconstructs the finite-extinction rebuilt checked
+certificate.
+-/
+theorem completion_certificate_of_package_layer_requirements_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_package_layer_requirements_payload
+      (poincareCompletionCertificate_package_layer_requirements_payload
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies)) =
+      (by
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependencies
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, remainingDependencies, target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+                witness finiteExtinction topologyStatement⟩) := by
+  apply Subsingleton.elim
+
+/--
+The milestone requirement payload projected from the strengthened aggregate
+certificate reconstructs the finite-extinction rebuilt checked certificate.
+-/
+theorem completion_certificate_of_milestone_requirements_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_milestone_requirements_payload
+      (poincareCompletionCertificate_milestone_requirements_payload
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies)) =
+      (by
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependencies
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, remainingDependencies, target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+                witness finiteExtinction topologyStatement⟩) := by
+  apply Subsingleton.elim
+
+/--
 The certified component-slot payload constructor recovers the strengthened
 remaining-package certificate from its projected component-slot payload.
 -/
@@ -55496,6 +55668,180 @@ theorem completion_certificate_of_milestone_extraction_derivation_requirements_p
           dependencies)) =
       completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The certified component requirement payload projected from the strengthened
+remaining-package certificate reconstructs the finite-extinction rebuilt
+checked certificate.
+-/
+theorem completion_certificate_of_component_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_component_extraction_derivation_requirements_payload
+      (poincareCompletionCertificate_component_requirements_payload
+        (completion_certificate_of_equation_boundary_remaining_dependency_package
+          dependencies)) =
+      (by
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependencies
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, remainingDependencies, target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+                witness finiteExtinction topologyStatement⟩) := by
+  apply Subsingleton.elim
+
+/--
+The certified package-layer requirement payload projected from the
+strengthened remaining-package certificate reconstructs the finite-extinction
+rebuilt checked certificate.
+-/
+theorem completion_certificate_of_package_layer_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+      (poincareCompletionCertificate_package_layer_requirements_payload
+        (completion_certificate_of_equation_boundary_remaining_dependency_package
+          dependencies)) =
+      (by
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependencies
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, remainingDependencies, target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+                witness finiteExtinction topologyStatement⟩) := by
+  apply Subsingleton.elim
+
+/--
+The certified milestone requirement payload projected from the strengthened
+remaining-package certificate reconstructs the finite-extinction rebuilt
+checked certificate.
+-/
+theorem completion_certificate_of_milestone_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_milestone_extraction_derivation_requirements_payload
+      (poincareCompletionCertificate_milestone_requirements_payload
+        (completion_certificate_of_equation_boundary_remaining_dependency_package
+          dependencies)) =
+      (by
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependencies
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, remainingDependencies, target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+                witness finiteExtinction topologyStatement⟩) := by
+  apply Subsingleton.elim
+
+/--
+The certified component requirement payload projected from the strengthened
+aggregate certificate reconstructs the finite-extinction rebuilt checked
+certificate.
+-/
+theorem completion_certificate_of_component_extraction_derivation_requirements_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_component_extraction_derivation_requirements_payload
+      (poincareCompletionCertificate_component_requirements_payload
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies)) =
+      (by
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependencies
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, remainingDependencies, target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+                witness finiteExtinction topologyStatement⟩) := by
+  apply Subsingleton.elim
+
+/--
+The certified package-layer requirement payload projected from the
+strengthened aggregate certificate reconstructs the finite-extinction rebuilt
+checked certificate.
+-/
+theorem completion_certificate_of_package_layer_extraction_derivation_requirements_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+      (poincareCompletionCertificate_package_layer_requirements_payload
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies)) =
+      (by
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependencies
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, remainingDependencies, target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+                witness finiteExtinction topologyStatement⟩) := by
+  apply Subsingleton.elim
+
+/--
+The certified milestone requirement payload projected from the strengthened
+aggregate certificate reconstructs the finite-extinction rebuilt checked
+certificate.
+-/
+theorem completion_certificate_of_milestone_extraction_derivation_requirements_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_milestone_extraction_derivation_requirements_payload
+      (poincareCompletionCertificate_milestone_requirements_payload
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies)) =
+      (by
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependencies
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, remainingDependencies, target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+                witness finiteExtinction topologyStatement⟩) := by
   apply Subsingleton.elim
 
 /--
