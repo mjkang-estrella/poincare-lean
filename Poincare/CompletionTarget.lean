@@ -18568,6 +18568,17 @@ theorem completion_certificate_of_poincareProofDependencies_and_verification_fam
   apply Subsingleton.elim
 
 /--
+The verification-family certified canonical-target certificate agrees with the
+direct dependency-projection verification-family certificate.
+-/
+theorem completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_to_dependency_projections_eq :
+    completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target
+        dependencies verificationFamily =
+      completion_certificate_of_dependency_projections_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
 Forgetting the verification-family lift from the certified canonical-target
 certificate recovers the ordinary aggregate certificate.
 -/
@@ -18614,6 +18625,17 @@ theorem completion_certificate_of_poincareProofDependencies_and_verification_fam
     completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement
         dependencies verificationFamily =
       completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The verification-family certified project-statement certificate agrees with
+the direct dependency-projection verification-family certificate.
+-/
+theorem completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_to_dependency_projections_eq :
+    completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement
+        dependencies verificationFamily =
+      completion_certificate_of_dependency_projections_and_verification_family
         dependencies verificationFamily := by
   apply Subsingleton.elim
 
@@ -18671,6 +18693,18 @@ theorem completion_certificate_of_poincareProofDependencies_and_verification_fam
     completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion
         dependencies verificationFamily witness =
       completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The verification-family certified completion-criterion certificate agrees with
+the direct dependency-projection verification-family certificate.
+-/
+theorem completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_to_dependency_projections_eq
+    (witness : Type u) :
+    completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion
+        dependencies verificationFamily witness =
+      completion_certificate_of_dependency_projections_and_verification_family
         dependencies verificationFamily := by
   apply Subsingleton.elim
 
