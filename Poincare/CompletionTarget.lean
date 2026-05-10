@@ -47908,6 +47908,54 @@ theorem poincareCompletionCertificate_theoremName_payload_of_completion_certific
       ⟨"poincare_conjecture", rfl⟩ := by
   apply Subsingleton.elim
 
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_aggregate_certificate_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
 theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_eq
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     poincareCompletionCertificate_literal_payload
