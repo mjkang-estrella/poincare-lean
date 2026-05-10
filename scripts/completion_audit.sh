@@ -9053,6 +9053,8 @@ check_decl "completion certificate canonical target theorem is declared" \
   '^theorem canonical_completion_target_of_completion_certificate\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate target statement theorem is declared" \
   '^theorem target_statement_of_completion_certificate\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate reserved-name target bridge is declared" \
+  '^theorem poincare_conjecture_of_completion_certificate\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate criterion theorem is declared" \
   '^theorem completion_criterion_of_completion_certificate\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate canonical criterion theorem is declared" \
@@ -9175,6 +9177,8 @@ check_decl "completion certificate canonical target equality contract is declare
   '^theorem canonical_completion_target_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate target statement equality contract is declared" \
   '^theorem target_statement_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate reserved-name target bridge equality contract is declared" \
+  '^theorem poincare_conjecture_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate canonical target project endpoint contract is declared" \
   '^theorem canonical_completion_target_of_completion_certificate_to_target_statement_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate criterion equality contract is declared" \
