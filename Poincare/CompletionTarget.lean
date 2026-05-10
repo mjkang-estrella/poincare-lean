@@ -14452,6 +14452,192 @@ theorem canonical_completion_criterion_of_dependency_projections_to_project_crit
       completion_criterion_of_dependency_projections witness dependencies := by
   apply Subsingleton.elim
 
+section VerificationFamilyCanonicalDependencyProjections
+
+variable (dependencies : RemainingDependencyPackage.{u})
+variable (verificationFamily :
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package payload.2)))
+
+include dependencies verificationFamily
+
+/--
+The verification-family dependency-projection route also proves the canonical
+completion payload by applying the shared canonical/project payload bridge to
+the verification-family project completion payload.
+-/
+theorem canonical_completion_payload_of_dependency_projections_and_verification_family :
+    ∃ _target : canonicalCompletionTarget.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  canonical_completion_payload_of_poincare_completion_payload
+    (poincare_completion_payload_of_dependency_projections_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The verification-family dependency-projection canonical payload is obtained by
+applying the shared canonical/project payload bridge to the named
+verification-family project completion payload.
+-/
+theorem canonical_completion_payload_of_dependency_projections_and_verification_family_eq :
+    canonical_completion_payload_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      canonical_completion_payload_of_poincare_completion_payload
+        (poincare_completion_payload_of_dependency_projections_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family dependency-projection canonical payload forgets to the
+ordinary dependency-projection canonical payload.
+-/
+theorem canonical_completion_payload_of_dependency_projections_and_verification_family_to_dependencies_eq :
+    canonical_completion_payload_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      canonical_completion_payload_of_dependency_projections dependencies := by
+  apply Subsingleton.elim
+
+/--
+The verification-family dependency-projection canonical payload agrees with
+the aggregate verification-family canonical payload.
+-/
+theorem canonical_completion_payload_of_dependency_projections_and_verification_family_to_aggregate_eq :
+    canonical_completion_payload_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      canonical_completion_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The verification-family dependency-projection route also proves the canonical
+completion target, extracted from its canonical completion payload.
+-/
+theorem canonical_completion_target_of_dependency_projections_and_verification_family :
+    canonicalCompletionTarget.{u} := by
+  rcases
+      canonical_completion_payload_of_dependency_projections_and_verification_family
+        dependencies verificationFamily with
+    ⟨target, _criterion⟩
+  exact target
+
+/--
+The verification-family dependency-projection canonical target is selected from
+the named verification-family canonical completion payload.
+-/
+theorem canonical_completion_target_of_dependency_projections_and_verification_family_eq :
+    canonical_completion_target_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      (by
+        rcases
+            canonical_completion_payload_of_dependency_projections_and_verification_family
+              dependencies verificationFamily with
+          ⟨target, _criterion⟩
+        exact target) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family dependency-projection canonical target is the same
+project statement endpoint exposed by the verification-family projection layer.
+-/
+theorem canonical_completion_target_of_dependency_projections_and_verification_family_to_project_statement_eq :
+    canonical_completion_target_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      poincare_statement_of_dependency_projections_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The verification-family dependency-projection canonical target forgets to the
+ordinary dependency-projection canonical target.
+-/
+theorem canonical_completion_target_of_dependency_projections_and_verification_family_to_dependencies_eq :
+    canonical_completion_target_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      canonical_completion_target_of_dependency_projections dependencies := by
+  apply Subsingleton.elim
+
+/--
+The verification-family dependency-projection canonical target agrees with the
+aggregate verification-family canonical target.
+-/
+theorem canonical_completion_target_of_dependency_projections_and_verification_family_to_aggregate_eq :
+    canonical_completion_target_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      canonical_completion_target_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+variable (witness : Type u)
+
+include witness
+
+/--
+The verification-family dependency-projection route also discharges the
+canonical completion criterion through its canonical completion payload.
+-/
+theorem canonical_completion_criterion_of_dependency_projections_and_verification_family :
+    CompletionCriterionAtUniverse witness := by
+  rcases
+      canonical_completion_payload_of_dependency_projections_and_verification_family
+        dependencies verificationFamily with
+    ⟨_target, criterion⟩
+  exact criterion witness
+
+/--
+The verification-family dependency-projection canonical criterion is selected
+from the named verification-family canonical completion payload.
+-/
+theorem canonical_completion_criterion_of_dependency_projections_and_verification_family_eq :
+    canonical_completion_criterion_of_dependency_projections_and_verification_family
+        dependencies verificationFamily witness =
+      (by
+        rcases
+            canonical_completion_payload_of_dependency_projections_and_verification_family
+              dependencies verificationFamily with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family dependency-projection canonical criterion is the same
+project criterion endpoint exposed by the verification-family projection layer.
+-/
+theorem canonical_completion_criterion_of_dependency_projections_and_verification_family_to_project_criterion_eq :
+    canonical_completion_criterion_of_dependency_projections_and_verification_family
+        dependencies verificationFamily witness =
+      completion_criterion_of_dependency_projections_and_verification_family
+        witness dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The verification-family dependency-projection canonical criterion forgets to
+the ordinary dependency-projection canonical criterion.
+-/
+theorem canonical_completion_criterion_of_dependency_projections_and_verification_family_to_dependencies_eq :
+    canonical_completion_criterion_of_dependency_projections_and_verification_family
+        dependencies verificationFamily witness =
+      canonical_completion_criterion_of_dependency_projections
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
+The verification-family dependency-projection canonical criterion agrees with
+the aggregate verification-family canonical criterion.
+-/
+theorem canonical_completion_criterion_of_dependency_projections_and_verification_family_to_aggregate_eq :
+    canonical_completion_criterion_of_dependency_projections_and_verification_family
+        dependencies verificationFamily witness =
+      canonical_completion_criterion_of_poincareProofDependencies_and_verification_family
+        witness dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+end VerificationFamilyCanonicalDependencyProjections
+
 /--
 The certified extraction-derivation projection route also proves the canonical
 completion target.
