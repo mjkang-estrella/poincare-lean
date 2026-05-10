@@ -23214,6 +23214,23 @@ theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_
   apply Subsingleton.elim
 
 /--
+The boundary-aware verification-payload canonical statement payload can be
+routed through the ordinary aggregate dependency package after forgetting
+equation-boundary data.
+-/
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_forgetful_dependencies_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_poincareProofDependencies
+          (dependencies_of_equation_boundary_dependencies
+            (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+              payload))) := by
+  apply Subsingleton.elim
+
+/--
 The boundary-aware verification-payload aggregate canonical statement payload
 can be routed through the projected strengthened dependency package.
 -/
@@ -24179,6 +24196,23 @@ theorem completion_certificate_of_canonical_statement_payload_of_completion_cert
       completion_certificate_of_remaining_dependency_package
         (remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
           payload) := by
+  apply Subsingleton.elim
+
+/--
+The canonical-statement payload constructor for a boundary-aware verification
+payload recovers the ordinary aggregate certificate after forgetting
+equation-boundary data.
+-/
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_forgetful_dependencies_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload) =
+      completion_certificate_of_poincareProofDependencies
+        (dependencies_of_equation_boundary_dependencies
+          (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+            payload)) := by
   apply Subsingleton.elim
 
 /--
@@ -25334,6 +25368,21 @@ theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_
   apply Subsingleton.elim
 
 /--
+The canonical-statement payload from the named remaining-package
+boundary-aware verification certificate agrees with the ordinary aggregate
+canonical-statement payload after forgetting equation-boundary data.
+-/
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_to_forgetful_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package
+        dependencies) =
+      poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_poincareProofDependencies
+          (dependencies_of_equation_boundary_dependencies dependencies)) := by
+  apply Subsingleton.elim
+
+/--
 The canonical-statement payload from the named aggregate boundary-aware
 verification certificate agrees with the ordinary aggregate canonical-statement
 payload after forgetting equation-boundary data.
@@ -25442,6 +25491,21 @@ theorem completion_certificate_of_canonical_statement_payload_of_completion_cert
       completion_certificate_of_remaining_dependency_package
         (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
           dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The canonical-statement payload constructor for the named remaining-package
+boundary-aware verification certificate recovers the ordinary aggregate
+certificate after forgetting equation-boundary data.
+-/
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_to_forgetful_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package
+          dependencies)) =
+      completion_certificate_of_poincareProofDependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
   apply Subsingleton.elim
 
 /--
@@ -25555,6 +25619,22 @@ theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_
   apply Subsingleton.elim
 
 /--
+The canonical-statement payload from an arbitrary-verification remaining-
+package certificate agrees with the ordinary aggregate canonical-statement
+payload after forgetting equation-boundary data.
+-/
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_forgetful_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u})
+    (verificationPayload : EquationBoundaryVerificationPayload dependencies) :
+    poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+        dependencies verificationPayload) =
+      poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_poincareProofDependencies
+          (dependencies_of_equation_boundary_dependencies dependencies)) := by
+  apply Subsingleton.elim
+
+/--
 The canonical-statement payload from an arbitrary-verification aggregate
 certificate agrees with the ordinary aggregate canonical-statement payload after
 forgetting equation-boundary data.
@@ -25605,6 +25685,27 @@ theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_
           poincareCompletionCertificate_canonical_statement_payload
             (completion_certificate_of_remaining_dependency_package
               (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+                dependencies))) := by
+  apply Subsingleton.elim
+
+/--
+The canonical-statement payload from an existential verification payload agrees
+with the ordinary aggregate canonical-statement payload after unpacking and
+forgetting equation-boundary data.
+-/
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_forgetful_dependencies_eq
+    (payload :
+      ∃ dependencies : RemainingDependencyPackageWithEquationBoundary.{u},
+        EquationBoundaryVerificationPayload dependencies) :
+    poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload
+        payload) =
+      (by
+        rcases payload with ⟨dependencies, _verificationPayload⟩
+        exact
+          poincareCompletionCertificate_canonical_statement_payload
+            (completion_certificate_of_poincareProofDependencies
+              (dependencies_of_equation_boundary_dependencies
                 dependencies))) := by
   apply Subsingleton.elim
 
@@ -25736,6 +25837,22 @@ theorem completion_certificate_of_canonical_statement_payload_of_completion_cert
 
 /--
 The canonical-statement payload constructor for an arbitrary-verification
+remaining-package certificate recovers the ordinary aggregate certificate
+after forgetting equation-boundary data.
+-/
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_forgetful_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u})
+    (verificationPayload : EquationBoundaryVerificationPayload dependencies) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+          dependencies verificationPayload)) =
+      completion_certificate_of_poincareProofDependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The canonical-statement payload constructor for an arbitrary-verification
 aggregate certificate recovers the ordinary aggregate certificate after
 forgetting equation-boundary data.
 -/
@@ -25786,6 +25903,26 @@ theorem completion_certificate_of_canonical_statement_payload_of_completion_cert
           completion_certificate_of_remaining_dependency_package
             (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
               dependencies)) := by
+  apply Subsingleton.elim
+
+/--
+The canonical-statement payload constructor for an existential verification
+payload recovers the ordinary aggregate certificate after unpacking and
+forgetting equation-boundary data.
+-/
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_forgetful_dependencies_eq
+    (payload :
+      ∃ dependencies : RemainingDependencyPackageWithEquationBoundary.{u},
+        EquationBoundaryVerificationPayload dependencies) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        (completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload
+          payload)) =
+      (by
+        rcases payload with ⟨dependencies, _verificationPayload⟩
+        exact
+          completion_certificate_of_poincareProofDependencies
+            (dependencies_of_equation_boundary_dependencies dependencies)) := by
   apply Subsingleton.elim
 
 /--
