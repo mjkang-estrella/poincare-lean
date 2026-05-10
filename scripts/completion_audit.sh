@@ -9189,6 +9189,22 @@ check_decl "completion certificate reserved-name target bridge equality contract
   '^theorem poincare_conjecture_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate target statement reserved-name endpoint contract is declared" \
   '^theorem target_statement_of_completion_certificate_to_poincare_conjecture_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency reserved-name theorem equality contract is declared" \
+  '^theorem poincare_conjecture_of_remainingDependencyPackage_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency reserved-name theorem equality contract is declared" \
+  '^theorem poincare_conjecture_of_poincareProofDependencies_eq\b' Poincare/CompletionTarget.lean
+check_decl "aggregate dependency reserved-name theorem statement route contract is declared" \
+  '^theorem poincare_conjecture_of_poincareProofDependencies_to_statement_eq\b' Poincare/CompletionTarget.lean
+check_decl "remaining dependency reserved-name aggregate route contract is declared" \
+  '^theorem poincare_conjecture_of_remainingDependencyPackage_to_aggregate_dependencies_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened remaining dependency reserved-name theorem equality contract is declared" \
+  '^theorem poincare_conjecture_of_equation_boundary_remaining_dependency_package_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened aggregate dependency reserved-name theorem equality contract is declared" \
+  '^theorem poincare_conjecture_of_poincareProofDependenciesWithEquationBoundary_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened aggregate dependency reserved-name forgetful route contract is declared" \
+  '^theorem poincare_conjecture_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened remaining dependency reserved-name forgetful route contract is declared" \
+  '^theorem poincare_conjecture_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate canonical target project endpoint contract is declared" \
   '^theorem canonical_completion_target_of_completion_certificate_to_target_statement_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate canonical target reserved-name endpoint contract is declared" \

@@ -18503,6 +18503,72 @@ theorem completion_certificate_of_poincareProofDependencies_eq
   apply Subsingleton.elim
 
 /--
+The remaining dependency package is an explicit conditional gate for the
+reserved final theorem name.
+-/
+theorem poincare_conjecture_of_remainingDependencyPackage
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_package dependencies)
+
+/--
+The remaining-package reserved-name theorem is the checked-certificate target
+route for the package-built completion certificate.
+-/
+theorem poincare_conjecture_of_remainingDependencyPackage_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_conjecture_of_remainingDependencyPackage dependencies =
+      poincare_conjecture_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency package is an explicit conditional gate for the
+reserved final theorem name.
+-/
+theorem poincare_conjecture_of_poincareProofDependencies
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies dependencies)
+
+/--
+The aggregate reserved-name theorem is the checked-certificate target route for
+the aggregate dependency certificate.
+-/
+theorem poincare_conjecture_of_poincareProofDependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_of_poincareProofDependencies dependencies =
+      poincare_conjecture_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate reserved-name theorem agrees with the existing aggregate
+statement route.
+-/
+theorem poincare_conjecture_of_poincareProofDependencies_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_of_poincareProofDependencies dependencies =
+      poincare_statement_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The remaining-package reserved-name theorem agrees with the aggregate
+dependency route after the remaining/aggregate dependency equivalence.
+-/
+theorem poincare_conjecture_of_remainingDependencyPackage_to_aggregate_dependencies_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_conjecture_of_remainingDependencyPackage dependencies =
+      poincare_conjecture_of_poincareProofDependencies
+        (remainingDependencyPackage_iff_poincareProofDependencies.mp
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining dependency package produces the checked completion
 certificate after forgetting to the ordinary remaining dependency package.
 -/
@@ -18882,6 +18948,80 @@ theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_
         dependencies =
       completion_certificate_of_equation_boundary_remaining_dependency_package
         dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining dependency package is an explicit equation-boundary
+conditional gate for the reserved final theorem name.
+-/
+theorem poincare_conjecture_of_equation_boundary_remaining_dependency_package
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_equation_boundary_remaining_dependency_package
+      dependencies)
+
+/--
+The strengthened remaining-package reserved-name theorem is the
+checked-certificate target route for the strengthened package-built completion
+certificate.
+-/
+theorem poincare_conjecture_of_equation_boundary_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_conjecture_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      poincare_conjecture_of_completion_certificate
+        (completion_certificate_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package is an explicit equation-boundary
+conditional gate for the reserved final theorem name.
+-/
+theorem poincare_conjecture_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+      dependencies)
+
+/--
+The strengthened aggregate reserved-name theorem is the checked-certificate
+target route for the strengthened aggregate dependency certificate.
+-/
+theorem poincare_conjecture_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_conjecture_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      poincare_conjecture_of_completion_certificate
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate reserved-name theorem agrees with the forgetful
+ordinary aggregate dependency route.
+-/
+theorem poincare_conjecture_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_conjecture_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      poincare_conjecture_of_poincareProofDependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package reserved-name theorem agrees with the
+forgetful ordinary remaining-package route.
+-/
+theorem poincare_conjecture_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_conjecture_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      poincare_conjecture_of_remainingDependencyPackage
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
   apply Subsingleton.elim
 
 /--
