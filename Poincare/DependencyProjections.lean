@@ -12198,6 +12198,25 @@ theorem poincare_completion_payload_of_lifted_homeomorphism_derivation_dependenc
   apply Subsingleton.elim
 
 /--
+The lifted-homeomorphism dependency projection completion payload is the payload
+carried by the lifted extraction/derivation route selected from the stored
+topology package.
+-/
+theorem poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
 Forgetting the lifted certificate in the lifted-homeomorphism completion
 payload recovers the ordinary certified extraction-derivation completion
 payload.
@@ -12620,6 +12639,25 @@ theorem poincare_statement_of_lifted_homeomorphism_derivation_dependency_project
   apply Subsingleton.elim
 
 /--
+The lifted-homeomorphism dependency projection Poincare statement is the target
+carried by the extraction/derivation route selected from the stored topology
+package.
+-/
+theorem poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          poincare_statement_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
 Forgetting the lifted certificate in the lifted-homeomorphism Poincare
 statement route recovers the ordinary certified extraction-derivation Poincare
 statement route.
@@ -12991,6 +13029,85 @@ theorem canonical_three_sphere_statement_of_extraction_derivation_dependency_pro
   apply Subsingleton.elim
 
 /--
+The lifted-homeomorphism projection route exposes the canonical mathlib-shaped
+topological 3-sphere statement.
+-/
+theorem canonical_three_sphere_statement_of_lifted_homeomorphism_derivation_dependency_projections
+    (dependencies : PoincareProofDependencies.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) :=
+  canonical_three_sphere_statement_of_poincare_statement
+    (poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies)
+
+/--
+The lifted-homeomorphism canonical topological sphere statement is the canonical
+bridge applied to the named lifted Poincare statement.
+-/
+theorem canonical_three_sphere_statement_of_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_three_sphere_statement_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      canonical_three_sphere_statement_of_poincare_statement
+        (poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism canonical topological statement factors through the
+lifted extraction/derivation decomposition of the dependency-level topology
+statement.
+-/
+theorem canonical_three_sphere_statement_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_three_sphere_statement_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies dependencies) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          canonical_three_sphere_statement_of_poincare_statement
+            (poincare_statement_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_of_dependencies dependencies)
+              extractSphere derivation)) := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism canonical topological statement factors through the
+extraction/derivation payload selected from the stored topology package.
+-/
+theorem canonical_three_sphere_statement_of_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_three_sphere_statement_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          canonical_three_sphere_statement_of_poincare_statement
+            (poincare_statement_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_of_dependencies dependencies)
+              extractSphere derivation)) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the lifted certificate in the lifted-homeomorphism canonical route
+recovers the ordinary certified extraction-derivation canonical route.
+-/
+theorem canonical_three_sphere_statement_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_three_sphere_statement_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      canonical_three_sphere_statement_of_extraction_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened equation-boundary projection route exposes the canonical
 mathlib-shaped topological 3-sphere statement.
 -/
@@ -13288,6 +13405,25 @@ theorem completion_criterion_of_lifted_homeomorphism_derivation_dependency_proje
         rcases
             extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
               (topology_extraction_statement_of_dependencies dependencies) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism dependency projection completion criterion is carried by
+the extraction/derivation payload selected from the stored topology package.
+-/
+theorem completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+    (witness : Type u) (dependencies : PoincareProofDependencies.{u}) :
+    completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections
+      witness dependencies =
+      (by
+        rcases topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+            dependencies.topology with
           ⟨extractSphere, derivation, _liftedDerivation⟩
         rcases poincare_payload_of_finite_extinction_and_extraction_derivation
             (finite_extinction_of_dependencies dependencies)
