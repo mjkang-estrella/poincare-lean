@@ -8683,6 +8683,298 @@ theorem canonical_three_sphere_statement_of_poincareProofDependenciesWithEquatio
           dependencies) := by
   apply Subsingleton.elim
 
+section VerificationFamilyExtractionDerivationTargets
+
+variable (dependencies : PoincareProofDependencies.{u})
+variable (verificationFamily :
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package payload.2)))
+
+include dependencies verificationFamily
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications prove the
+certified extraction-derivation canonical target after applying the strengthened
+dependency lift.
+-/
+theorem canonical_completion_target_of_poincareProofDependencies_and_verification_family_extraction_derivation :
+    canonicalCompletionTarget.{u} :=
+  canonical_completion_target_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The ordinary-dependencies-plus-verification-family certified canonical target
+delegates to the strengthened aggregate certified canonical target after
+applying the verification-family lift.
+-/
+theorem canonical_completion_target_of_poincareProofDependencies_and_verification_family_extraction_derivation_eq :
+    canonical_completion_target_of_poincareProofDependencies_and_verification_family_extraction_derivation
+        dependencies verificationFamily =
+      canonical_completion_target_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+The certified extraction-derivation canonical target agrees with the standard
+verification-family canonical target.
+-/
+theorem canonical_completion_target_of_poincareProofDependencies_and_verification_family_extraction_derivation_to_verification_family_target_eq :
+    canonical_completion_target_of_poincareProofDependencies_and_verification_family_extraction_derivation
+        dependencies verificationFamily =
+      canonical_completion_target_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift recovers the ordinary certified
+aggregate extraction-derivation target.
+-/
+theorem canonical_completion_target_of_poincareProofDependencies_and_verification_family_extraction_derivation_to_forgetful_dependencies_eq :
+    canonical_completion_target_of_poincareProofDependencies_and_verification_family_extraction_derivation
+        dependencies verificationFamily =
+      poincare_statement_of_aggregate_extraction_derivation_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications prove the
+certified extraction-derivation project statement after applying the
+strengthened dependency lift.
+-/
+theorem poincare_statement_of_poincareProofDependencies_and_verification_family_extraction_derivation :
+    PoincareConjectureStatement.{u} :=
+  canonical_completion_target_of_poincareProofDependencies_and_verification_family_extraction_derivation
+    dependencies verificationFamily
+
+/--
+The verification-family certified project statement is the certified canonical
+target viewed as the project proposition.
+-/
+theorem poincare_statement_of_poincareProofDependencies_and_verification_family_extraction_derivation_eq :
+    poincare_statement_of_poincareProofDependencies_and_verification_family_extraction_derivation
+        dependencies verificationFamily =
+      canonical_completion_target_of_poincareProofDependencies_and_verification_family_extraction_derivation
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The verification-family certified canonical target is the same certified
+project statement endpoint.
+-/
+theorem canonical_completion_target_of_poincareProofDependencies_and_verification_family_extraction_derivation_to_project_statement_eq :
+    canonical_completion_target_of_poincareProofDependencies_and_verification_family_extraction_derivation
+        dependencies verificationFamily =
+      poincare_statement_of_poincareProofDependencies_and_verification_family_extraction_derivation
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The verification-family certified project statement agrees with the lifted
+strengthened aggregate certified project statement.
+-/
+theorem poincare_statement_of_poincareProofDependencies_and_verification_family_extraction_derivation_to_equation_boundary_dependencies_eq :
+    poincare_statement_of_poincareProofDependencies_and_verification_family_extraction_derivation
+        dependencies verificationFamily =
+      poincare_statement_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift recovers the ordinary certified
+aggregate extraction-derivation project statement.
+-/
+theorem poincare_statement_of_poincareProofDependencies_and_verification_family_extraction_derivation_to_forgetful_dependencies_eq :
+    poincare_statement_of_poincareProofDependencies_and_verification_family_extraction_derivation
+        dependencies verificationFamily =
+      poincare_statement_of_aggregate_extraction_derivation_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications discharge
+the certified extraction-derivation completion criterion after applying the
+strengthened dependency lift.
+-/
+theorem completion_criterion_of_poincareProofDependencies_and_verification_family_extraction_derivation
+    (witness : Type u) :
+    CompletionCriterionAtUniverse witness :=
+  completion_criterion_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+    witness
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The verification-family certified completion criterion delegates to the lifted
+strengthened aggregate certified completion criterion.
+-/
+theorem completion_criterion_of_poincareProofDependencies_and_verification_family_extraction_derivation_eq
+    (witness : Type u) :
+    completion_criterion_of_poincareProofDependencies_and_verification_family_extraction_derivation
+        dependencies verificationFamily witness =
+      completion_criterion_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        witness
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+The certified extraction-derivation completion criterion agrees with the
+standard verification-family completion criterion.
+-/
+theorem completion_criterion_of_poincareProofDependencies_and_verification_family_extraction_derivation_to_verification_family_criterion_eq
+    (witness : Type u) :
+    completion_criterion_of_poincareProofDependencies_and_verification_family_extraction_derivation
+        dependencies verificationFamily witness =
+      completion_criterion_of_poincareProofDependencies_and_verification_family
+        witness dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift recovers the ordinary certified
+aggregate extraction-derivation completion criterion.
+-/
+theorem completion_criterion_of_poincareProofDependencies_and_verification_family_extraction_derivation_to_forgetful_dependencies_eq
+    (witness : Type u) :
+    completion_criterion_of_poincareProofDependencies_and_verification_family_extraction_derivation
+        dependencies verificationFamily witness =
+      completion_criterion_of_aggregate_extraction_derivation_dependencies
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications expose the
+certified extraction-derivation canonical completion criterion after applying
+the strengthened dependency lift.
+-/
+theorem canonical_completion_criterion_of_poincareProofDependencies_and_verification_family_extraction_derivation
+    (witness : Type u) :
+    CompletionCriterionAtUniverse witness :=
+  canonical_completion_criterion_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+    witness
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The verification-family certified canonical criterion delegates to the lifted
+strengthened aggregate certified canonical criterion.
+-/
+theorem canonical_completion_criterion_of_poincareProofDependencies_and_verification_family_extraction_derivation_eq
+    (witness : Type u) :
+    canonical_completion_criterion_of_poincareProofDependencies_and_verification_family_extraction_derivation
+        dependencies verificationFamily witness =
+      canonical_completion_criterion_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        witness
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+The certified extraction-derivation canonical criterion agrees with the
+standard verification-family canonical criterion.
+-/
+theorem canonical_completion_criterion_of_poincareProofDependencies_and_verification_family_extraction_derivation_to_verification_family_criterion_eq
+    (witness : Type u) :
+    canonical_completion_criterion_of_poincareProofDependencies_and_verification_family_extraction_derivation
+        dependencies verificationFamily witness =
+      canonical_completion_criterion_of_poincareProofDependencies_and_verification_family
+        witness dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The certified extraction-derivation canonical criterion is the same certified
+project criterion endpoint.
+-/
+theorem canonical_completion_criterion_of_poincareProofDependencies_and_verification_family_extraction_derivation_to_project_criterion_eq
+    (witness : Type u) :
+    canonical_completion_criterion_of_poincareProofDependencies_and_verification_family_extraction_derivation
+        dependencies verificationFamily witness =
+      completion_criterion_of_poincareProofDependencies_and_verification_family_extraction_derivation
+        dependencies verificationFamily witness := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift recovers the ordinary certified
+aggregate extraction-derivation canonical criterion.
+-/
+theorem canonical_completion_criterion_of_poincareProofDependencies_and_verification_family_extraction_derivation_to_forgetful_dependencies_eq
+    (witness : Type u) :
+    canonical_completion_criterion_of_poincareProofDependencies_and_verification_family_extraction_derivation
+        dependencies verificationFamily witness =
+      completion_criterion_of_aggregate_extraction_derivation_dependencies
+        witness dependencies := by
+  apply Subsingleton.elim
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications expose the
+canonical topological 3-sphere statement through the certified
+extraction-derivation route.
+-/
+theorem canonical_three_sphere_statement_of_poincareProofDependencies_and_verification_family_extraction_derivation :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) :=
+  canonical_three_sphere_statement_of_poincare_statement
+    (poincare_statement_of_poincareProofDependencies_and_verification_family_extraction_derivation
+      dependencies verificationFamily)
+
+/--
+The verification-family certified canonical topological statement is the
+canonical bridge applied to the named certified project statement.
+-/
+theorem canonical_three_sphere_statement_of_poincareProofDependencies_and_verification_family_extraction_derivation_eq :
+    canonical_three_sphere_statement_of_poincareProofDependencies_and_verification_family_extraction_derivation
+        dependencies verificationFamily =
+      canonical_three_sphere_statement_of_poincare_statement
+        (poincare_statement_of_poincareProofDependencies_and_verification_family_extraction_derivation
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+The certified extraction-derivation topological statement agrees with the
+standard verification-family topological statement.
+-/
+theorem canonical_three_sphere_statement_of_poincareProofDependencies_and_verification_family_extraction_derivation_to_verification_family_statement_eq :
+    canonical_three_sphere_statement_of_poincareProofDependencies_and_verification_family_extraction_derivation
+        dependencies verificationFamily =
+      canonical_three_sphere_statement_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The verification-family certified topological statement agrees with the lifted
+strengthened aggregate certified topological statement.
+-/
+theorem canonical_three_sphere_statement_of_poincareProofDependencies_and_verification_family_extraction_derivation_to_equation_boundary_dependencies_eq :
+    canonical_three_sphere_statement_of_poincareProofDependencies_and_verification_family_extraction_derivation
+        dependencies verificationFamily =
+      canonical_three_sphere_statement_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift recovers the ordinary certified
+aggregate extraction-derivation topological statement.
+-/
+theorem canonical_three_sphere_statement_of_poincareProofDependencies_and_verification_family_extraction_derivation_to_forgetful_dependencies_eq :
+    canonical_three_sphere_statement_of_poincareProofDependencies_and_verification_family_extraction_derivation
+        dependencies verificationFamily =
+      canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+end VerificationFamilyExtractionDerivationTargets
+
 /-- The remaining dependency package supplies the smoothability package. -/
 theorem smoothability_package_of_remaining_dependency_package
     (dependencies : RemainingDependencyPackage.{u}) :
