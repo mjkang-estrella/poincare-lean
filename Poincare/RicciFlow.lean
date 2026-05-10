@@ -1595,6 +1595,195 @@ theorem equation_at_time_apply_of_zero_ricci_flow_equation_verification
   rfl
 
 /--
+The stationary zero equation verification proves the same tensor equation at
+each time after specializing the metric family to a fixed metric.
+-/
+theorem equation_at_time_of_stationary_zero_ricci_flow_equation_verification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (t : ℝ) :
+    metric_time_derivative_at_time_of_metric_derivative_field
+      (metric_time_derivative_field_of_metric_derivative_data
+        (metric_derivative_data_of_ricci_flow_equation_verification
+          (zero_ricci_flow_equation_verification
+            identifiesDerivative identifiesRicci))) t =
+        ricci_flow_rhs_tensor (zero_ricci_curvature_data identifiesRicci) t :=
+  equation_at_time_of_zero_ricci_flow_equation_verification
+    (g := stationary_time_dependent_riemannian_metric metric)
+    identifiesDerivative identifiesRicci t
+
+/--
+The stationary zero tensor-equation route is exactly the generic zero equation
+verification theorem specialized to the stationary metric family.
+-/
+@[simp] theorem equation_at_time_of_stationary_zero_ricci_flow_equation_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (t : ℝ) :
+    equation_at_time_of_stationary_zero_ricci_flow_equation_verification
+      metric identifiesDerivative identifiesRicci t =
+      equation_at_time_of_zero_ricci_flow_equation_verification
+        (g := stationary_time_dependent_riemannian_metric metric)
+        identifiesDerivative identifiesRicci t :=
+  rfl
+
+/--
+The stationary zero equation verification proves the Ricci-flow equation
+pointwise at every time, point, and pair of tangent vectors.
+-/
+theorem equation_at_time_apply_of_stationary_zero_ricci_flow_equation_verification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    metric_time_derivative_at_time_of_metric_derivative_field
+      (metric_time_derivative_field_of_metric_derivative_data
+        (metric_derivative_data_of_ricci_flow_equation_verification
+          (zero_ricci_flow_equation_verification
+            identifiesDerivative identifiesRicci))) t x v w =
+        ricci_flow_rhs_tensor (zero_ricci_curvature_data identifiesRicci) t x v w :=
+  equation_at_time_apply_of_zero_ricci_flow_equation_verification
+    (g := stationary_time_dependent_riemannian_metric metric)
+    identifiesDerivative identifiesRicci t x v w
+
+/--
+The stationary pointwise equation route is exactly the generic zero equation
+verification pointwise theorem specialized to the stationary metric family.
+-/
+@[simp] theorem equation_at_time_apply_of_stationary_zero_ricci_flow_equation_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (t : ℝ) (x : M) (v w : TangentSpace I x) :
+    equation_at_time_apply_of_stationary_zero_ricci_flow_equation_verification
+      metric identifiesDerivative identifiesRicci t x v w =
+      equation_at_time_apply_of_zero_ricci_flow_equation_verification
+        (g := stationary_time_dependent_riemannian_metric metric)
+        identifiesDerivative identifiesRicci t x v w :=
+  rfl
+
+/--
+The stationary zero equation verification exposes both sides of the pointwise
+equation as scalar zero.
+-/
+theorem pointwise_zero_payload_of_stationary_zero_ricci_flow_equation_verification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric))) :
+    ∀ t x (v w : TangentSpace I x),
+      metric_time_derivative_at_time_of_metric_derivative_field
+        (metric_time_derivative_field_of_metric_derivative_data
+          (metric_derivative_data_of_ricci_flow_equation_verification
+            (zero_ricci_flow_equation_verification
+              identifiesDerivative identifiesRicci))) t x v w = 0 ∧
+      ricci_flow_rhs_tensor (zero_ricci_curvature_data identifiesRicci) t x v w = 0 := by
+  intro t x v w
+  exact
+    ⟨rfl,
+      ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data
+        (g := stationary_time_dependent_riemannian_metric metric)
+        identifiesRicci t x v w⟩
+
+/--
+The stationary pointwise-zero payload is exactly the direct pair of the
+definitional zero derivative and the zero-curvature right-hand-side theorem.
+-/
+@[simp] theorem pointwise_zero_payload_of_stationary_zero_ricci_flow_equation_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric))) :
+    pointwise_zero_payload_of_stationary_zero_ricci_flow_equation_verification
+      metric identifiesDerivative identifiesRicci =
+      (fun t x v w => by
+        exact
+          ⟨rfl,
+            ricci_flow_rhs_tensor_apply_of_zero_ricci_curvature_data
+              (g := stationary_time_dependent_riemannian_metric metric)
+              identifiesRicci t x v w⟩) := by
+  funext t x v w
+  apply Subsingleton.elim
+
+/--
 Ricci-flow data with zero Ricci/scalar candidates.
 
 The abstract equation-interface evidence is still an explicit input; this does
