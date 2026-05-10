@@ -47900,6 +47900,29 @@ theorem poincare_full_assembly_payload_of_completion_certificate_extraction_deri
         dependencies := by
   apply Subsingleton.elim
 
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      ⟨ "poincare_conjecture", rfl,
+        remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies,
+        canonical_completion_target_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+          dependencies,
+        fun witness =>
+          canonical_completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+            witness dependencies ⟩ := by
+  apply Subsingleton.elim
+
 /--
 Projecting the canonical payload from the named strengthened aggregate
 lifted-homeomorphism certificate recovers the boundary lifted projection
