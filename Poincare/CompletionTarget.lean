@@ -25768,6 +25768,20 @@ theorem poincare_completion_payload_of_completion_certificate_with_equation_boun
   apply Subsingleton.elim
 
 /--
+The arbitrary-verification remaining-package constructor exposes the same
+project payload through the boundary-aware reserved-name payload projection.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u})
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+        dependencies payload) =
+      poincare_completion_payload_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The arbitrary-verification remaining-package constructor exposes the named
 strengthened remaining-package target statement route.
 -/
@@ -25863,6 +25877,20 @@ theorem poincare_completion_payload_of_completion_certificate_with_equation_boun
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
     (payload : EquationBoundaryVerificationPayload dependencies) :
     poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload
+        dependencies payload) =
+      poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The arbitrary-verification aggregate constructor exposes the same project
+payload through the boundary-aware reserved-name payload projection.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload
       (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload
         dependencies payload) =
       poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary
@@ -25970,6 +25998,24 @@ theorem poincare_completion_payload_of_completion_certificate_with_equation_boun
       ∃ dependencies : RemainingDependencyPackageWithEquationBoundary.{u},
         EquationBoundaryVerificationPayload dependencies) :
     poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload
+        payload) =
+      (by
+        rcases payload with ⟨dependencies, _verificationPayload⟩
+        exact
+          poincare_completion_payload_of_equation_boundary_remaining_dependency_package
+            dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The existential verification-payload constructor exposes the unpacked project
+payload through the boundary-aware reserved-name payload projection.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload_eq
+    (payload :
+      ∃ dependencies : RemainingDependencyPackageWithEquationBoundary.{u},
+        EquationBoundaryVerificationPayload dependencies) :
+    poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload
       (completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload
         payload) =
       (by
@@ -26100,6 +26146,19 @@ theorem poincare_completion_payload_of_completion_certificate_with_equation_boun
   apply Subsingleton.elim
 
 /--
+The boundary-aware remaining-package constructor exposes the same project
+payload through the reserved-name payload projection.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package
+        dependencies) =
+      poincare_completion_payload_of_equation_boundary_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The boundary-aware certificate target-statement projection recovers the named
 strengthened remaining-package target statement.
 -/
@@ -26188,6 +26247,19 @@ strengthened aggregate project payload.
 theorem poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_eq
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies) =
+      poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware aggregate constructor exposes the same project payload through
+the reserved-name payload projection.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload
       (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
         dependencies) =
       poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary
@@ -26652,6 +26724,18 @@ project completion payload.
 -/
 theorem poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_eq :
     poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      poincare_completion_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The verification-family boundary-aware payload exposes the verification-family
+project payload through the reserved-name payload projection.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_eq :
+    poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload
       (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
         dependencies verificationFamily) =
       poincare_completion_payload_of_poincareProofDependencies_and_verification_family
