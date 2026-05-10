@@ -10985,6 +10985,142 @@ theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_depende
         (dependencies_of_equation_boundary_dependencies dependencies) := by
   apply Subsingleton.elim
 
+section VerificationFamilyProjectionAssemblyInputs
+
+variable (dependencies : PoincareProofDependencies.{u})
+variable (verificationFamily :
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package payload.2)))
+
+include dependencies verificationFamily
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications supply
+finite extinction through the strengthened dependency lift.
+-/
+theorem finite_extinction_of_dependencies_and_verification_family :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        FiniteExtinctionByRicciFlowWithSurgery M :=
+  finite_extinction_of_equation_boundary_dependencies
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The verification-family finite-extinction route delegates to the strengthened
+dependency finite-extinction route after applying the verification-family lift.
+-/
+theorem finite_extinction_of_dependencies_and_verification_family_eq :
+    finite_extinction_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      finite_extinction_of_equation_boundary_dependencies
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift recovers the ordinary dependency
+finite-extinction route.
+-/
+theorem finite_extinction_of_dependencies_and_verification_family_to_dependencies_eq :
+    finite_extinction_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      finite_extinction_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications supply the
+post-extinction topology extractor through the strengthened dependency lift.
+-/
+theorem extinction_extraction_of_dependencies_and_verification_family :
+    ExtinctionImpliesSphereStatement.{u} :=
+  extinction_extraction_of_equation_boundary_dependencies
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The verification-family topology-extraction route delegates to the strengthened
+dependency topology-extraction route after applying the verification-family
+lift.
+-/
+theorem extinction_extraction_of_dependencies_and_verification_family_eq :
+    extinction_extraction_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      extinction_extraction_of_equation_boundary_dependencies
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift recovers the ordinary dependency
+topology-extraction route.
+-/
+theorem extinction_extraction_of_dependencies_and_verification_family_to_dependencies_eq :
+    extinction_extraction_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      extinction_extraction_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications expose the
+two theorem-shaped inputs consumed by the projection assembly route.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_dependencies_and_verification_family :
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+      ExtinctionImpliesSphereStatement.{u} :=
+  poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The verification-family projection assembly-input payload delegates to the
+strengthened dependency payload after applying the verification-family lift.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_dependencies_and_verification_family_eq :
+    poincare_projection_assembly_inputs_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family projection assembly-input payload is the pair of the
+verification-family finite-extinction route and topology extractor.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_dependencies_and_verification_family_to_projections_eq :
+    poincare_projection_assembly_inputs_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      ⟨finite_extinction_of_dependencies_and_verification_family
+          dependencies verificationFamily,
+        extinction_extraction_of_dependencies_and_verification_family
+          dependencies verificationFamily⟩ := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift recovers the ordinary dependency
+projection assembly-input payload.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_dependencies_and_verification_family_to_dependencies_eq :
+    poincare_projection_assembly_inputs_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      poincare_projection_assembly_inputs_payload_of_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+end VerificationFamilyProjectionAssemblyInputs
+
 /--
 The projection route also exposes the finite-extinction input together with a
 certified final extractor and its topology derivation certificate.

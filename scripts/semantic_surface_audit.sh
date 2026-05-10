@@ -5982,6 +5982,12 @@ universe u
 #check Poincare.extinction_extraction_of_equation_boundary_dependencies_eq
 #check Poincare.extinction_extraction_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
 #check Poincare.extinction_extraction_of_equation_boundary_dependencies_to_statement_eq
+#check Poincare.finite_extinction_of_dependencies_and_verification_family
+#check Poincare.finite_extinction_of_dependencies_and_verification_family_eq
+#check Poincare.finite_extinction_of_dependencies_and_verification_family_to_dependencies_eq
+#check Poincare.extinction_extraction_of_dependencies_and_verification_family
+#check Poincare.extinction_extraction_of_dependencies_and_verification_family_eq
+#check Poincare.extinction_extraction_of_dependencies_and_verification_family_to_dependencies_eq
 #check Poincare.topology_extraction_derivation_payload_of_equation_boundary_dependencies
 #check Poincare.topology_extraction_derivation_payload_of_equation_boundary_dependencies_eq
 #check Poincare.topology_extraction_derivation_payload_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
@@ -6103,6 +6109,10 @@ universe u
 #check Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies_to_verification_payload_eq
 #check Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies_to_statement_eq
 #check Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
+#check Poincare.poincare_projection_assembly_inputs_payload_of_dependencies_and_verification_family
+#check Poincare.poincare_projection_assembly_inputs_payload_of_dependencies_and_verification_family_eq
+#check Poincare.poincare_projection_assembly_inputs_payload_of_dependencies_and_verification_family_to_projections_eq
+#check Poincare.poincare_projection_assembly_inputs_payload_of_dependencies_and_verification_family_to_dependencies_eq
 #check Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies
 #check Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies_eq
 #check Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies_to_statement_eq
@@ -13541,7 +13551,7 @@ projection_assembly_inputs_count=$(
   rg -c '\bpoincare_projection_assembly_inputs_payload_of_dependencies\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_assembly_inputs_count" != "13" ]; then
+if [ "$projection_assembly_inputs_count" != "14" ]; then
   echo "FAIL: projection target/alias routes should consume the named projection assembly-input payload"
   rg -n '\bpoincare_projection_assembly_inputs_payload_of_dependencies\b' \
     Poincare/DependencyProjections.lean || true
@@ -13552,7 +13562,7 @@ projection_direct_finite_extinction_count=$(
   rg -c '\bfinite_extinction_of_dependencies dependencies\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_direct_finite_extinction_count" != "73" ]; then
+if [ "$projection_direct_finite_extinction_count" != "74" ]; then
   echo "FAIL: finite-extinction projection input should be centralized in projection payloads or explicit route contracts"
   rg -n '\bfinite_extinction_of_dependencies dependencies\b' \
     Poincare/DependencyProjections.lean || true
@@ -13585,7 +13595,7 @@ projection_direct_extraction_count=$(
   rg -c '\bextinction_extraction_of_dependencies dependencies\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_direct_extraction_count" != "8" ]; then
+if [ "$projection_direct_extraction_count" != "9" ]; then
   echo "FAIL: topology extraction projection input should be centralized in the projection assembly-input payload or explicit statement-route contract"
   rg -n '\bextinction_extraction_of_dependencies dependencies\b' \
     Poincare/DependencyProjections.lean || true
