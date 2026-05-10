@@ -47788,6 +47788,52 @@ theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_
   apply Subsingleton.elim
 
 /--
+The strengthened aggregate equation-boundary dependencies expose a named
+lifted-homeomorphism projection-route completion certificate.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+    dependencies
+
+/--
+The named strengthened aggregate lifted-homeomorphism certificate is the
+boundary lifted dependency-projection certificate.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
+        dependencies =
+      completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The named strengthened aggregate lifted-homeomorphism certificate factors
+through the boundary lifted dependency-projection certificate.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
+        dependencies =
+      completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The named strengthened aggregate lifted-homeomorphism certificate is
+propositionally the aggregate equation-boundary completion certificate.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_aggregate_certificate_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
+        dependencies =
+      completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate equation-boundary certificate is propositionally the
 lifted-homeomorphism projection-route certificate for the forgetful ordinary
 aggregate package.
