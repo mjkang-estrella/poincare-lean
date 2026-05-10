@@ -15002,6 +15002,128 @@ theorem canonical_three_sphere_statement_of_poincareProofDependencies_and_verifi
         dependencies verificationFamily := by
   apply Subsingleton.elim
 
+/--
+The aggregate verification-family canonical payload can also be rebuilt from
+the finite-extinction endpoint of the lifted equation-boundary package.
+-/
+theorem canonical_completion_payload_of_poincareProofDependencies_and_verification_family_to_finite_extinction_eq :
+    canonical_completion_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily =
+      (by
+        let dependenciesWithBoundary :=
+          equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependenciesWithBoundary
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies
+            dependenciesWithBoundary
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        exact
+          canonical_completion_payload_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate verification-family project payload can also be rebuilt from the
+finite-extinction endpoint of the lifted equation-boundary package.
+-/
+theorem poincare_completion_payload_of_poincareProofDependencies_and_verification_family_to_finite_extinction_eq :
+    poincare_completion_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily =
+      (by
+        let dependenciesWithBoundary :=
+          equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependenciesWithBoundary
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies
+            dependenciesWithBoundary
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        exact
+          poincare_payload_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate verification-family canonical target can also be rebuilt from
+the finite-extinction endpoint of the lifted equation-boundary package.
+-/
+theorem canonical_completion_target_of_poincareProofDependencies_and_verification_family_to_finite_extinction_eq :
+    canonical_completion_target_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily =
+      (by
+        let dependenciesWithBoundary :=
+          equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependenciesWithBoundary
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies
+            dependenciesWithBoundary
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        exact
+          canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate verification-family Poincare statement can also be rebuilt from
+the finite-extinction endpoint of the lifted equation-boundary package.
+-/
+theorem poincare_statement_of_poincareProofDependencies_and_verification_family_to_finite_extinction_eq :
+    poincare_statement_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily =
+      (by
+        let dependenciesWithBoundary :=
+          equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependenciesWithBoundary
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies
+            dependenciesWithBoundary
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        exact
+          poincare_statement_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate verification-family canonical topological statement can also be
+rebuilt from the finite-extinction endpoint of the lifted equation-boundary
+package.
+-/
+theorem canonical_three_sphere_statement_of_poincareProofDependencies_and_verification_family_to_finite_extinction_eq :
+    canonical_three_sphere_statement_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily =
+      (by
+        let dependenciesWithBoundary :=
+          equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependenciesWithBoundary
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies
+            dependenciesWithBoundary
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        exact
+          canonical_three_sphere_statement_of_poincare_statement
+            (poincare_statement_of_finite_extinction_and_topology_extraction_statement
+              finiteExtinction topologyStatement)) := by
+  apply Subsingleton.elim
+
 variable (witness : Type u)
 
 include witness
@@ -15026,6 +15148,54 @@ theorem canonical_completion_criterion_of_poincareProofDependencies_and_verifica
         witness dependencies verificationFamily =
       canonical_completion_criterion_of_dependency_projections_and_verification_family
         dependencies verificationFamily witness := by
+  apply Subsingleton.elim
+
+/--
+The aggregate verification-family completion criterion can also be rebuilt from
+the finite-extinction endpoint of the lifted equation-boundary package.
+-/
+theorem completion_criterion_of_poincareProofDependencies_and_verification_family_to_finite_extinction_eq :
+    completion_criterion_of_poincareProofDependencies_and_verification_family
+        witness dependencies verificationFamily =
+      (by
+        let dependenciesWithBoundary :=
+          equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependenciesWithBoundary
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies
+            dependenciesWithBoundary
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        exact
+          canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+            witness finiteExtinction topologyStatement) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate verification-family canonical criterion can also be rebuilt from
+the finite-extinction endpoint of the lifted equation-boundary package.
+-/
+theorem canonical_completion_criterion_of_poincareProofDependencies_and_verification_family_to_finite_extinction_eq :
+    canonical_completion_criterion_of_poincareProofDependencies_and_verification_family
+        witness dependencies verificationFamily =
+      (by
+        let dependenciesWithBoundary :=
+          equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependenciesWithBoundary
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies
+            dependenciesWithBoundary
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        exact
+          canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+            witness finiteExtinction topologyStatement) := by
   apply Subsingleton.elim
 
 end VerificationFamilyAggregateToProjectionRoutes
@@ -18946,6 +19116,224 @@ theorem canonical_completion_criterion_of_completion_certificate_of_poincareProo
         dependencies verificationFamily) =
       canonical_completion_criterion_of_dependency_projections_and_verification_family
         dependencies verificationFamily witness := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical completion payload from the verification-family
+certificate can also be rebuilt from the finite-extinction endpoint of the
+lifted equation-boundary package.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      (by
+        let dependenciesWithBoundary :=
+          equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependenciesWithBoundary
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies
+            dependenciesWithBoundary
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        exact
+          canonical_completion_payload_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement) := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from the verification-family
+certificate can also be rebuilt from the finite-extinction endpoint of the
+lifted equation-boundary package.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      (by
+        let dependenciesWithBoundary :=
+          equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependenciesWithBoundary
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies
+            dependenciesWithBoundary
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        exact
+          poincare_payload_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement) := by
+  apply Subsingleton.elim
+
+/--
+Projecting the target statement from the verification-family certificate can
+also be rebuilt from the finite-extinction endpoint of the lifted
+equation-boundary package.
+-/
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    target_statement_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      (by
+        let dependenciesWithBoundary :=
+          equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependenciesWithBoundary
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies
+            dependenciesWithBoundary
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        exact
+          poincare_statement_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement) := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical target from the verification-family certificate can
+also be rebuilt from the finite-extinction endpoint of the lifted
+equation-boundary package.
+-/
+theorem canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      (by
+        let dependenciesWithBoundary :=
+          equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependenciesWithBoundary
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies
+            dependenciesWithBoundary
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        exact
+          canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction topologyStatement) := by
+  apply Subsingleton.elim
+
+/--
+Projecting the explicit completion criterion from the verification-family
+certificate can also be rebuilt from the finite-extinction endpoint of the
+lifted equation-boundary package.
+-/
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_finite_extinction_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      (by
+        let dependenciesWithBoundary :=
+          equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependenciesWithBoundary
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies
+            dependenciesWithBoundary
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        exact
+          canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+            witness finiteExtinction topologyStatement) := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical completion criterion from the verification-family
+certificate can also be rebuilt from the finite-extinction endpoint of the
+lifted equation-boundary package.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_finite_extinction_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      (by
+        let dependenciesWithBoundary :=
+          equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily
+        let remainingDependencies :=
+          remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependenciesWithBoundary
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies
+            dependenciesWithBoundary
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies remainingDependencies
+        exact
+          canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+            witness finiteExtinction topologyStatement) := by
   apply Subsingleton.elim
 
 /--
