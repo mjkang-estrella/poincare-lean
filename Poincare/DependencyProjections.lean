@@ -10919,6 +10919,128 @@ theorem poincare_projection_assembly_inputs_payload_of_extraction_derivation_dep
   apply Subsingleton.elim
 
 /--
+The dependency-level final extractor is the extractor component carried by the
+ordinary finite-extinction projection assembly-input payload.
+-/
+theorem extinction_extraction_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    extinction_extraction_of_dependencies dependencies =
+      (by
+        rcases poincare_projection_assembly_inputs_payload_of_dependencies
+            dependencies with
+          ⟨_finiteExtinction, extractSphere⟩
+        exact extractSphere) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level final extractor is also the extractor component carried
+by the certified extraction/derivation projection assembly-input payload.
+-/
+theorem extinction_extraction_of_dependencies_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    extinction_extraction_of_dependencies dependencies =
+      (by
+        rcases
+            poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies
+              dependencies with
+          ⟨_finiteExtinction, extractSphere, _derivation⟩
+        exact extractSphere) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level extraction/derivation payload is recovered from the
+certified projection assembly-input payload after forgetting finite
+extinction.
+-/
+theorem topology_extraction_derivation_payload_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topology_extraction_derivation_payload_of_dependencies dependencies =
+      (by
+        rcases
+            poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies
+              dependencies with
+          ⟨_finiteExtinction, extractSphere, derivation⟩
+        exact ⟨extractSphere, derivation⟩) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level extraction/derivation payload is the certified payload
+component of the dependency-level projection assembly inputs.
+-/
+theorem topology_extraction_derivation_payload_of_dependencies_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topology_extraction_derivation_payload_of_dependencies dependencies =
+      (by
+        rcases
+            poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies
+              dependencies with
+          ⟨_finiteExtinction, extractSphere, derivation⟩
+        exact ⟨extractSphere, derivation⟩) := by
+  apply Subsingleton.elim
+
+/--
+The ordinary dependency projection assembly-input payload follows the explicit
+finite-extinction route.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_projection_assembly_inputs_payload_of_dependencies dependencies =
+      (by
+        let finiteExtinction := finite_extinction_of_dependencies dependencies
+        let extraction := extinction_extraction_of_dependencies dependencies
+        exact ⟨finiteExtinction, extraction⟩) := by
+  apply Subsingleton.elim
+
+/--
+The ordinary dependency projection assembly-input payload is the certified
+projection assembly-input payload with the derivation certificate forgotten.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_dependencies_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_projection_assembly_inputs_payload_of_dependencies dependencies =
+      (by
+        rcases
+            poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies
+              dependencies with
+          ⟨finiteExtinction, extractSphere, _derivation⟩
+        exact ⟨finiteExtinction, extractSphere⟩) := by
+  apply Subsingleton.elim
+
+/--
+The certified dependency projection assembly-input payload follows the
+explicit finite-extinction route together with the named
+extraction/derivation payload.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact ⟨finite_extinction_of_dependencies dependencies, extractSphere,
+          derivation⟩) := by
+  apply Subsingleton.elim
+
+/--
+The certified dependency projection assembly-input payload is the named
+finite-extinction input paired with the dependency-level
+extraction/derivation payload.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact ⟨finite_extinction_of_dependencies dependencies, extractSphere,
+          derivation⟩) := by
+  apply Subsingleton.elim
+
+/--
 The projection route also exposes finite extinction together with the final
 extractor, its full topology derivation certificate, and the lifted
 homeomorphism derivation certificate.
