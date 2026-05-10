@@ -17221,6 +17221,271 @@ theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_
   apply Subsingleton.elim
 
 /--
+Ordinary aggregate dependencies plus explicit equation verifications for their
+surgery packages produce the checked completion certificate by first lifting to
+the strengthened equation-boundary dependency package.
+-/
+theorem completion_certificate_of_poincareProofDependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The ordinary-dependencies-plus-verification-family certificate constructor is
+the strengthened boundary certificate after applying the verification-family
+lift.
+-/
+theorem completion_certificate_of_poincareProofDependencies_and_verification_family_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily =
+      completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift from the checked certificate recovers
+the ordinary aggregate dependency certificate.
+-/
+theorem completion_certificate_of_poincareProofDependencies_and_verification_family_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily =
+      completion_certificate_of_poincareProofDependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting aggregate dependencies from the verification-family certificate
+recovers the ordinary aggregate dependency package.
+-/
+theorem poincareProofDependencies_of_completion_certificate_of_poincareProofDependencies_and_verification_family_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    poincareProofDependencies_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the remaining dependency package from the verification-family
+certificate recovers the ordinary aggregate package viewed as remaining
+dependencies.
+-/
+theorem remaining_dependency_package_of_completion_certificate_of_poincareProofDependencies_and_verification_family_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    remaining_dependency_package_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      remainingDependencyPackage_iff_poincareProofDependencies.mpr
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical completion payload from the verification-family
+certificate recovers the verification-family canonical completion payload.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      canonical_completion_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from the verification-family
+certificate recovers the verification-family project completion payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      poincare_completion_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project target statement from the verification-family
+certificate recovers the verification-family Poincare statement.
+-/
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_and_verification_family_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    target_statement_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      poincare_statement_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical target from the verification-family certificate
+recovers the verification-family canonical completion target.
+-/
+theorem canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      canonical_completion_target_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+Projecting the explicit completion criterion from the verification-family
+certificate recovers the verification-family completion criterion.
+-/
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      completion_criterion_of_poincareProofDependencies_and_verification_family
+        witness dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical completion criterion from the verification-family
+certificate recovers the verification-family canonical completion criterion.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      canonical_completion_criterion_of_poincareProofDependencies_and_verification_family
+        witness dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+Projecting the certificate target to the canonical topological 3-sphere
+statement recovers the verification-family statement.
+-/
+theorem canonical_three_sphere_statement_of_target_statement_of_completion_certificate_of_poincareProofDependencies_and_verification_family_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    canonical_three_sphere_statement_of_poincare_statement
+      (target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily)) =
+      canonical_three_sphere_statement_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining dependency package produces the checked completion
 certificate from the certified extraction-derivation canonical target.
 -/
