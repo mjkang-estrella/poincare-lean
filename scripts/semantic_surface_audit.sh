@@ -5299,6 +5299,8 @@ universe u
 #check Poincare.topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_to_package_eq
 #check Poincare.topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_to_statement_eq
 #check Poincare.topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_to_derivation_payload_eq
+#check Poincare.topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_to_finite_extinction_eq
+#check Poincare.topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_to_extraction_derivation_eq
 #check Poincare.poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies
 #check Poincare.poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies_eq
 #check Poincare.poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies_to_finite_extinction_eq
@@ -13194,7 +13196,7 @@ topology_extraction_derivation_payload_count=$(
   rg -c '\btopology_extraction_derivation_payload_of_dependencies\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$topology_extraction_derivation_payload_count" != "36" ]; then
+if [ "$topology_extraction_derivation_payload_count" != "37" ]; then
   echo "FAIL: extraction-derivation assembly-input payload and statement-route contracts should consume the topology extraction-derivation payload"
   rg -n '\btopology_extraction_derivation_payload_of_dependencies\b' \
     Poincare/DependencyProjections.lean || true

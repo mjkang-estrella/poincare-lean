@@ -11595,6 +11595,42 @@ theorem poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_deri
   apply Subsingleton.elim
 
 /--
+The dependency-level lifted extraction/derivation payload is recovered from
+the lifted projection assembly-input payload after forgetting finite
+extinction.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies
+        dependencies =
+      (by
+        rcases
+            poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies
+              dependencies with
+          ⟨_finiteExtinction, extractSphere, derivation,
+            liftedDerivation⟩
+        exact ⟨extractSphere, derivation, liftedDerivation⟩) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level lifted extraction/derivation payload is the ordinary
+certified extraction/derivation payload with the canonical lifted derivation
+attached.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies
+        dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact ⟨extractSphere, derivation,
+          topology_lifted_homeomorphism_derivation_for_extraction_statement_of_derivation_for_extraction_statement
+            extractSphere derivation⟩) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened projection route also exposes the boundary finite-extinction
 input together with a certified final extractor and its derivation certificate.
 -/
