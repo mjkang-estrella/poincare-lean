@@ -2324,6 +2324,183 @@ theorem poincareProofDependencies_of_milestone_requirements_payload_of_equation_
       dependencies_of_equation_boundary_dependencies dependencies := by
   apply Subsingleton.elim
 
+section VerificationFamilyDependencyRequirementPayloads
+
+variable (dependencies : PoincareProofDependencies.{u})
+variable (verificationFamily :
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package payload.2)))
+
+include dependencies verificationFamily
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications expose the
+component-slot payload through the strengthened dependency lift.
+-/
+theorem dependency_component_requirements_payload_of_dependencies_and_verification_family :
+    ∃ _smoothability :
+      dependencyComponentRequirement.{u}
+        DependencyComponentSlot.smoothabilityComponent,
+    ∃ _surgery :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+      dependencyComponentRequirement.{u}
+        DependencyComponentSlot.topologyComponent :=
+  dependency_component_requirements_payload_of_equation_boundary_dependencies
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The verification-family component-slot payload delegates to the strengthened
+component-slot payload after applying the verification-family lift.
+-/
+theorem dependency_component_requirements_payload_of_dependencies_and_verification_family_eq :
+    dependency_component_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      dependency_component_requirements_payload_of_equation_boundary_dependencies
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift recovers the ordinary component-slot
+payload of the aggregate dependencies.
+-/
+theorem dependency_component_requirements_payload_of_dependencies_and_verification_family_to_dependencies_eq :
+    dependency_component_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      dependency_component_requirements_payload_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The component-slot constructor reconstructs the ordinary aggregate dependencies
+from the verification-family component-slot payload.
+-/
+theorem poincareProofDependencies_of_component_requirements_payload_of_dependencies_and_verification_family_eq :
+    poincareProofDependencies_of_component_requirements_payload
+      (dependency_component_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily) =
+      dependencies := by
+  apply Subsingleton.elim
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications expose the
+package-layer payload through the strengthened dependency lift.
+-/
+theorem dependency_package_layer_requirements_payload_of_dependencies_and_verification_family :
+    ∃ _smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage,
+    ∃ _analytic :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage,
+    ∃ _surgery :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+    ∃ _finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage :=
+  dependency_package_layer_requirements_payload_of_equation_boundary_dependencies
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The verification-family package-layer payload delegates to the strengthened
+package-layer payload after applying the verification-family lift.
+-/
+theorem dependency_package_layer_requirements_payload_of_dependencies_and_verification_family_eq :
+    dependency_package_layer_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      dependency_package_layer_requirements_payload_of_equation_boundary_dependencies
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift recovers the ordinary package-layer
+payload of the aggregate dependencies.
+-/
+theorem dependency_package_layer_requirements_payload_of_dependencies_and_verification_family_to_dependencies_eq :
+    dependency_package_layer_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      dependency_package_layer_requirements_payload_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The package-layer constructor reconstructs the ordinary aggregate dependencies
+from the verification-family package-layer payload.
+-/
+theorem poincareProofDependencies_of_package_layer_requirements_payload_of_dependencies_and_verification_family_eq :
+    poincareProofDependencies_of_package_layer_requirements_payload
+      (dependency_package_layer_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily) =
+      dependencies := by
+  apply Subsingleton.elim
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications expose the
+milestone payload through the strengthened dependency lift.
+-/
+theorem dependency_milestone_requirements_payload_of_dependencies_and_verification_family :
+    ∃ _smoothabilityBridge :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+    ∃ _ricciFlowAnalyticFoundation :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation,
+    ∃ _ricciFlowWithSurgery :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery,
+    ∃ _perelmanSingularityControl :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl,
+    ∃ _finiteExtinction :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism :=
+  dependency_milestone_requirements_payload_of_equation_boundary_dependencies
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The verification-family milestone payload delegates to the strengthened
+milestone payload after applying the verification-family lift.
+-/
+theorem dependency_milestone_requirements_payload_of_dependencies_and_verification_family_eq :
+    dependency_milestone_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      dependency_milestone_requirements_payload_of_equation_boundary_dependencies
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift recovers the ordinary milestone payload
+of the aggregate dependencies.
+-/
+theorem dependency_milestone_requirements_payload_of_dependencies_and_verification_family_to_dependencies_eq :
+    dependency_milestone_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      dependency_milestone_requirements_payload_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The milestone constructor reconstructs the ordinary aggregate dependencies from
+the verification-family milestone payload.
+-/
+theorem poincareProofDependencies_of_milestone_requirements_payload_of_dependencies_and_verification_family_eq :
+    poincareProofDependencies_of_milestone_requirements_payload
+      (dependency_milestone_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily) =
+      dependencies := by
+  apply Subsingleton.elim
+
+end VerificationFamilyDependencyRequirementPayloads
+
 /--
 The milestone equivalence is exactly the named forward payload projection
 paired with the named reverse constructor.
