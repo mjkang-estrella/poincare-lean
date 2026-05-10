@@ -22771,6 +22771,22 @@ theorem canonical_three_sphere_statement_of_completion_certificate_with_equation
   apply Subsingleton.elim
 
 /--
+The boundary-aware verification-payload canonical statement also agrees with
+the ordinary aggregate canonical statement after forgetting equation-boundary
+data.
+-/
+theorem canonical_three_sphere_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_forgetful_dependencies_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      canonical_three_sphere_statement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies
+          (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+            payload)) := by
+  apply Subsingleton.elim
+
+/--
 The checked certificate projected from a boundary-aware verification payload
 exposes the projected strengthened dependency package's canonical statement.
 -/
@@ -23009,6 +23025,20 @@ theorem canonical_three_sphere_statement_of_completion_certificate_with_equation
   apply Subsingleton.elim
 
 /--
+The named remaining-package boundary-aware verification certificate also
+exposes the ordinary aggregate canonical statement after forgetting
+equation-boundary data.
+-/
+theorem canonical_three_sphere_statement_of_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_to_forgetful_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package
+        dependencies) =
+      canonical_three_sphere_statement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The named aggregate boundary-aware verification certificate also exposes the
 ordinary aggregate canonical statement after forgetting equation-boundary data.
 -/
@@ -23050,6 +23080,20 @@ theorem canonical_three_sphere_statement_of_completion_certificate_with_equation
       canonical_three_sphere_statement_of_remaining_dependency_package
         (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
           dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The arbitrary-verification remaining-package constructor also exposes the
+ordinary aggregate canonical statement after forgetting equation-boundary data.
+-/
+theorem canonical_three_sphere_statement_of_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_forgetful_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u})
+    (verificationPayload : EquationBoundaryVerificationPayload dependencies) :
+    canonical_three_sphere_statement_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+        dependencies verificationPayload) =
+      canonical_three_sphere_statement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
   apply Subsingleton.elim
 
 /--
@@ -23100,6 +23144,25 @@ theorem canonical_three_sphere_statement_of_completion_certificate_with_equation
           canonical_three_sphere_statement_of_remaining_dependency_package
             (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
               dependencies)) := by
+  apply Subsingleton.elim
+
+/--
+The existential verification-payload constructor also exposes the ordinary
+aggregate canonical statement after unpacking and forgetting equation-boundary
+data.
+-/
+theorem canonical_three_sphere_statement_of_completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_forgetful_dependencies_eq
+    (payload :
+      ∃ dependencies : RemainingDependencyPackageWithEquationBoundary.{u},
+        EquationBoundaryVerificationPayload dependencies) :
+    canonical_three_sphere_statement_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload
+        payload) =
+      (by
+        rcases payload with ⟨dependencies, _verificationPayload⟩
+        exact
+          canonical_three_sphere_statement_of_dependencies
+            (dependencies_of_equation_boundary_dependencies dependencies)) := by
   apply Subsingleton.elim
 
 /--
