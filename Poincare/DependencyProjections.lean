@@ -10979,6 +10979,24 @@ theorem poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_deri
   apply Subsingleton.elim
 
 /--
+The lifted-homeomorphism dependency projection assembly-input payload also
+factors through the explicit finite-extinction input and named lifted
+extraction payload.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies
+      dependencies =
+      (by
+        rcases
+            topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies
+              dependencies with
+          ⟨extractSphere, derivation, liftedDerivation⟩
+        exact ⟨finite_extinction_of_dependencies dependencies, extractSphere,
+          derivation, liftedDerivation⟩) := by
+  apply Subsingleton.elim
+
+/--
 The lifted-homeomorphism dependency projection assembly-input payload is
 selected from the lifted extraction/derivation payload of the stored topology
 package.
@@ -11443,6 +11461,27 @@ theorem poincare_target_payload_of_lifted_homeomorphism_derivation_dependency_pr
         rcases
             extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
               (topology_extraction_statement_of_dependencies dependencies) with
+          ⟨extractSphere, derivation, liftedDerivation⟩
+        rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation with
+          ⟨target, criterion⟩
+        exact ⟨finiteExtinction, extractSphere, derivation,
+            liftedDerivation, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism dependency projection target payload factors through
+the explicit finite-extinction input and named lifted extraction payload.
+-/
+theorem poincare_target_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_target_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        let finiteExtinction := finite_extinction_of_dependencies dependencies
+        rcases
+            topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies
+              dependencies with
           ⟨extractSphere, derivation, liftedDerivation⟩
         rcases poincare_payload_of_finite_extinction_and_extraction_derivation
             finiteExtinction extractSphere derivation with
@@ -12198,6 +12237,25 @@ theorem poincare_completion_payload_of_lifted_homeomorphism_derivation_dependenc
   apply Subsingleton.elim
 
 /--
+The lifted-homeomorphism dependency projection completion payload is carried by
+the explicit finite-extinction input and named lifted extraction payload.
+-/
+theorem poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies
+              dependencies with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
 The lifted-homeomorphism dependency projection completion payload is the payload
 carried by the lifted extraction/derivation route selected from the stored
 topology package.
@@ -12631,6 +12689,26 @@ theorem poincare_statement_of_lifted_homeomorphism_derivation_dependency_project
         rcases
             extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
               (topology_extraction_statement_of_dependencies dependencies) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          poincare_statement_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism dependency projection Poincare statement is the target
+carried by the explicit finite-extinction input and named lifted extraction
+payload.
+-/
+theorem poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies
+              dependencies with
           ⟨extractSphere, derivation, _liftedDerivation⟩
         exact
           poincare_statement_of_finite_extinction_and_extraction_derivation
@@ -13078,6 +13156,26 @@ theorem canonical_three_sphere_statement_of_lifted_homeomorphism_derivation_depe
 
 /--
 The lifted-homeomorphism canonical topological statement factors through the
+explicit finite-extinction input and named lifted extraction payload.
+-/
+theorem canonical_three_sphere_statement_of_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_three_sphere_statement_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases
+            topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies
+              dependencies with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        exact
+          canonical_three_sphere_statement_of_poincare_statement
+            (poincare_statement_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_of_dependencies dependencies)
+              extractSphere derivation)) := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism canonical topological statement factors through the
 extraction/derivation payload selected from the stored topology package.
 -/
 theorem canonical_three_sphere_statement_of_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
@@ -13405,6 +13503,26 @@ theorem completion_criterion_of_lifted_homeomorphism_derivation_dependency_proje
         rcases
             extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
               (topology_extraction_statement_of_dependencies dependencies) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism dependency projection completion criterion is carried
+by the explicit finite-extinction input and named lifted extraction payload.
+-/
+theorem completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+    (witness : Type u) (dependencies : PoincareProofDependencies.{u}) :
+    completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections
+      witness dependencies =
+      (by
+        rcases
+            topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies
+              dependencies with
           ⟨extractSphere, derivation, _liftedDerivation⟩
         rcases poincare_payload_of_finite_extinction_and_extraction_derivation
             (finite_extinction_of_dependencies dependencies)
