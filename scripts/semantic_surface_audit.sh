@@ -7031,6 +7031,15 @@ universe u
         Poincare.completion_criterion_of_canonical_completion_target
           witness target⟩)
 
+#check (Poincare.poincare_conjecture_of_canonical_completion_target :
+  Poincare.canonicalCompletionTarget →
+    Poincare.PoincareConjectureStatement)
+
+#check (Poincare.poincare_conjecture_of_canonical_completion_target_eq :
+  ∀ target : Poincare.canonicalCompletionTarget,
+    Poincare.poincare_conjecture_of_canonical_completion_target target =
+      target)
+
 #check (Poincare.canonical_completion_payload_of_poincare_completion_payload :
   (∃ _target : Poincare.PoincareConjectureStatement,
       ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
@@ -7072,6 +7081,33 @@ universe u
     Poincare.canonicalCompletionTarget_of_poincare_completion_payload payload =
       Poincare.canonical_completion_target_of_canonical_completion_payload
         (Poincare.canonical_completion_payload_of_poincare_completion_payload
+          payload))
+
+#check (Poincare.poincare_conjecture_of_poincare_completion_payload :
+  (∃ _target : Poincare.PoincareConjectureStatement,
+    ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    Poincare.PoincareConjectureStatement)
+
+#check (Poincare.poincare_conjecture_of_poincare_completion_payload_eq :
+  ∀ payload :
+      (∃ _target : Poincare.PoincareConjectureStatement,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness),
+    Poincare.poincare_conjecture_of_poincare_completion_payload payload =
+      Poincare.poincareConjectureStatement_of_poincare_completion_payload
+        payload)
+
+#check (Poincare.poincare_conjecture_of_canonical_completion_payload :
+  (∃ _target : Poincare.canonicalCompletionTarget,
+    ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    Poincare.PoincareConjectureStatement)
+
+#check (Poincare.poincare_conjecture_of_canonical_completion_payload_eq :
+  ∀ payload :
+      (∃ _target : Poincare.canonicalCompletionTarget,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness),
+    Poincare.poincare_conjecture_of_canonical_completion_payload payload =
+      Poincare.poincare_conjecture_of_canonical_completion_target
+        (Poincare.canonical_completion_target_of_canonical_completion_payload
           payload))
 
 #check (Poincare.completion_criterion_of_canonical_completion_payload :
@@ -7130,6 +7166,19 @@ universe u
         witness criterion =
         (Poincare.completionCriterionAtUniverse_iff_canonical_completion_payload
           witness).mp criterion)
+
+#check (Poincare.poincare_conjecture_of_completion_criterion :
+  ∀ witness : Type,
+    Poincare.CompletionCriterionAtUniverse witness →
+      Poincare.PoincareConjectureStatement)
+
+#check (Poincare.poincare_conjecture_of_completion_criterion_eq :
+  ∀ witness : Type,
+    ∀ criterion : Poincare.CompletionCriterionAtUniverse witness,
+      Poincare.poincare_conjecture_of_completion_criterion
+        witness criterion =
+        Poincare.poincareConjectureStatement_of_completionCriterionAtUniverse
+          witness criterion)
 
 #check (Poincare.poincare_completion_payload_of_canonical_completion_payload :
   (∃ _target : Poincare.canonicalCompletionTarget,

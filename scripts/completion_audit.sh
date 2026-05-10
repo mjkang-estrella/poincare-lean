@@ -7392,6 +7392,10 @@ check_decl "canonical target to Poincare completion payload theorem is declared"
   '^theorem poincare_completion_payload_of_canonical_completion_target\b' Poincare/CompletionTarget.lean
 check_decl "canonical target to Poincare completion payload equality contract is declared" \
   '^theorem poincare_completion_payload_of_canonical_completion_target_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical target reserved final theorem gate is declared" \
+  '^theorem poincare_conjecture_of_canonical_completion_target\b' Poincare/CompletionTarget.lean
+check_decl "canonical target reserved final theorem gate equality contract is declared" \
+  '^theorem poincare_conjecture_of_canonical_completion_target_eq\b' Poincare/CompletionTarget.lean
 check_decl "Poincare completion payload to canonical completion payload theorem is declared" \
   '^theorem canonical_completion_payload_of_poincare_completion_payload\b' Poincare/CompletionTarget.lean
 check_decl "Poincare completion payload to canonical completion payload equality contract is declared" \
@@ -7404,6 +7408,14 @@ check_decl "Poincare completion payload to canonical target projection theorem i
   '^theorem canonicalCompletionTarget_of_poincare_completion_payload\b' Poincare/CompletionTarget.lean
 check_decl "Poincare completion payload to canonical target projection equality contract is declared" \
   '^theorem canonicalCompletionTarget_of_poincare_completion_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "Poincare completion payload reserved final theorem gate is declared" \
+  '^theorem poincare_conjecture_of_poincare_completion_payload\b' Poincare/CompletionTarget.lean
+check_decl "Poincare completion payload reserved final theorem gate equality contract is declared" \
+  '^theorem poincare_conjecture_of_poincare_completion_payload_eq\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion payload reserved final theorem gate is declared" \
+  '^theorem poincare_conjecture_of_canonical_completion_payload\b' Poincare/CompletionTarget.lean
+check_decl "canonical completion payload reserved final theorem gate equality contract is declared" \
+  '^theorem poincare_conjecture_of_canonical_completion_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion payload criterion projection theorem is declared" \
   '^theorem completion_criterion_of_canonical_completion_payload\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion payload criterion projection equality contract is declared" \
@@ -7424,6 +7436,10 @@ check_decl "completion criterion to canonical payload theorem is declared" \
   '^theorem canonical_completion_payload_of_completion_criterion\b' Poincare/CompletionTarget.lean
 check_decl "completion criterion to canonical payload equality contract is declared" \
   '^theorem canonical_completion_payload_of_completion_criterion_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion criterion reserved final theorem gate is declared" \
+  '^theorem poincare_conjecture_of_completion_criterion\b' Poincare/CompletionTarget.lean
+check_decl "completion criterion reserved final theorem gate equality contract is declared" \
+  '^theorem poincare_conjecture_of_completion_criterion_eq\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion payload to Poincare completion payload theorem is declared" \
   '^theorem poincare_completion_payload_of_canonical_completion_payload\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion payload to Poincare completion payload equality contract is declared" \
@@ -16187,12 +16203,16 @@ open scoped Manifold ContDiff
 #check Poincare.poincareConjectureStatement_iff_poincare_completion_payload_eq
 #check Poincare.poincareConjectureStatement_of_completionCriterionAtUniverse
 #check Poincare.poincareConjectureStatement_of_completionCriterionAtUniverse_eq
+#check Poincare.poincare_conjecture_of_completion_criterion
+#check Poincare.poincare_conjecture_of_completion_criterion_eq
 #check Poincare.poincare_completion_payload_of_completionCriterionAtUniverse
 #check Poincare.poincare_completion_payload_of_completionCriterionAtUniverse_eq
 #check Poincare.completionCriterionAtUniverse_iff_poincare_completion_payload
 #check Poincare.completionCriterionAtUniverse_iff_poincare_completion_payload_eq
 #check Poincare.canonical_completion_target_of_canonical_completion_payload
 #check Poincare.canonical_completion_target_of_canonical_completion_payload_eq
+#check Poincare.poincare_conjecture_of_canonical_completion_payload
+#check Poincare.poincare_conjecture_of_canonical_completion_payload_eq
 #check Poincare.completion_criterion_of_canonical_completion_payload
 #check Poincare.completion_criterion_of_canonical_completion_payload_eq
 #check Poincare.canonical_completion_criterion_of_canonical_completion_payload
@@ -16203,6 +16223,8 @@ open scoped Manifold ContDiff
 #check Poincare.completionCriterionAtUniverse_iff_canonical_completion_payload_eq
 #check Poincare.poincare_completion_payload_of_canonical_completion_payload
 #check Poincare.poincare_completion_payload_of_canonical_completion_payload_eq
+#check Poincare.poincare_conjecture_of_poincare_completion_payload
+#check Poincare.poincare_conjecture_of_poincare_completion_payload_eq
 #check Poincare.canonical_completion_payload_iff_poincare_completion_payload
 #check Poincare.canonical_completion_payload_iff_poincare_completion_payload_eq
 #check Poincare.smoothPoincareConjectureStatement_eq
@@ -17721,6 +17743,8 @@ open scoped Manifold ContDiff
 #check Poincare.canonical_completion_payload_of_canonical_completion_target_eq
 #check Poincare.poincare_completion_payload_of_canonical_completion_target
 #check Poincare.poincare_completion_payload_of_canonical_completion_target_eq
+#check Poincare.poincare_conjecture_of_canonical_completion_target
+#check Poincare.poincare_conjecture_of_canonical_completion_target_eq
 #check Poincare.canonical_completion_payload_of_poincare_completion_payload
 #check Poincare.canonical_completion_payload_of_poincare_completion_payload_eq
 #check Poincare.canonicalCompletionTarget_of_poincare_completion_payload
@@ -17737,8 +17761,14 @@ open scoped Manifold ContDiff
 #check Poincare.completionCriterionAtUniverse_iff_canonical_completion_payload_eq
 #check Poincare.canonical_completion_payload_of_completion_criterion
 #check Poincare.canonical_completion_payload_of_completion_criterion_eq
+#check Poincare.poincare_conjecture_of_completion_criterion
+#check Poincare.poincare_conjecture_of_completion_criterion_eq
 #check Poincare.poincare_completion_payload_of_canonical_completion_payload
 #check Poincare.poincare_completion_payload_of_canonical_completion_payload_eq
+#check Poincare.poincare_conjecture_of_canonical_completion_payload
+#check Poincare.poincare_conjecture_of_canonical_completion_payload_eq
+#check Poincare.poincare_conjecture_of_poincare_completion_payload
+#check Poincare.poincare_conjecture_of_poincare_completion_payload_eq
 #check Poincare.canonical_completion_payload_iff_poincare_completion_payload
 #check Poincare.canonical_completion_payload_iff_poincare_completion_payload_eq
 #check Poincare.canonical_completion_payload_of_extinction_and_extraction
@@ -28945,6 +28975,15 @@ open scoped Manifold ContDiff
         Poincare.completion_criterion_of_canonical_completion_target
           witness target⟩)
 
+#check (Poincare.poincare_conjecture_of_canonical_completion_target :
+  Poincare.canonicalCompletionTarget →
+    Poincare.PoincareConjectureStatement)
+
+#check (Poincare.poincare_conjecture_of_canonical_completion_target_eq :
+  ∀ target : Poincare.canonicalCompletionTarget,
+    Poincare.poincare_conjecture_of_canonical_completion_target target =
+      target)
+
 #check (Poincare.canonical_completion_payload_of_poincare_completion_payload :
   (∃ _target : Poincare.PoincareConjectureStatement,
       ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
@@ -28986,6 +29025,33 @@ open scoped Manifold ContDiff
     Poincare.canonicalCompletionTarget_of_poincare_completion_payload payload =
       Poincare.canonical_completion_target_of_canonical_completion_payload
         (Poincare.canonical_completion_payload_of_poincare_completion_payload
+          payload))
+
+#check (Poincare.poincare_conjecture_of_poincare_completion_payload :
+  (∃ _target : Poincare.PoincareConjectureStatement,
+    ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    Poincare.PoincareConjectureStatement)
+
+#check (Poincare.poincare_conjecture_of_poincare_completion_payload_eq :
+  ∀ payload :
+      (∃ _target : Poincare.PoincareConjectureStatement,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness),
+    Poincare.poincare_conjecture_of_poincare_completion_payload payload =
+      Poincare.poincareConjectureStatement_of_poincare_completion_payload
+        payload)
+
+#check (Poincare.poincare_conjecture_of_canonical_completion_payload :
+  (∃ _target : Poincare.canonicalCompletionTarget,
+    ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    Poincare.PoincareConjectureStatement)
+
+#check (Poincare.poincare_conjecture_of_canonical_completion_payload_eq :
+  ∀ payload :
+      (∃ _target : Poincare.canonicalCompletionTarget,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness),
+    Poincare.poincare_conjecture_of_canonical_completion_payload payload =
+      Poincare.poincare_conjecture_of_canonical_completion_target
+        (Poincare.canonical_completion_target_of_canonical_completion_payload
           payload))
 
 #check (Poincare.completion_criterion_of_canonical_completion_payload :
@@ -29041,6 +29107,19 @@ open scoped Manifold ContDiff
         witness criterion =
         (Poincare.completionCriterionAtUniverse_iff_canonical_completion_payload
           witness).mp criterion)
+
+#check (Poincare.poincare_conjecture_of_completion_criterion :
+  ∀ witness : Type,
+    Poincare.CompletionCriterionAtUniverse witness →
+      Poincare.PoincareConjectureStatement)
+
+#check (Poincare.poincare_conjecture_of_completion_criterion_eq :
+  ∀ witness : Type,
+    ∀ criterion : Poincare.CompletionCriterionAtUniverse witness,
+      Poincare.poincare_conjecture_of_completion_criterion
+        witness criterion =
+        Poincare.poincareConjectureStatement_of_completionCriterionAtUniverse
+          witness criterion)
 
 #check (Poincare.poincare_completion_payload_of_canonical_completion_payload :
   (∃ _target : Poincare.canonicalCompletionTarget,
@@ -29796,6 +29875,16 @@ open scoped Manifold ContDiff
     ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
     Poincare.canonicalCompletionTarget)
 
+#check (Poincare.poincare_conjecture_of_poincare_completion_payload :
+  (∃ _target : Poincare.PoincareConjectureStatement,
+    ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    Poincare.PoincareConjectureStatement)
+
+#check (Poincare.poincare_conjecture_of_canonical_completion_payload :
+  (∃ _target : Poincare.canonicalCompletionTarget,
+    ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    Poincare.PoincareConjectureStatement)
+
 #check (Poincare.completion_criterion_of_canonical_completion_payload :
   ∀ witness : Type,
     (∃ _target : Poincare.canonicalCompletionTarget,
@@ -29818,6 +29907,11 @@ open scoped Manifold ContDiff
     Poincare.CompletionCriterionAtUniverse witness →
       ∃ _target : Poincare.canonicalCompletionTarget,
         ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincare_conjecture_of_completion_criterion :
+  ∀ witness : Type,
+    Poincare.CompletionCriterionAtUniverse witness →
+      Poincare.PoincareConjectureStatement)
 
 #check (Poincare.poincare_completion_payload_of_canonical_completion_payload :
   (∃ _target : Poincare.canonicalCompletionTarget,

@@ -139,6 +139,15 @@ theorem poincare_completion_payload_of_canonical_completion_target
     completion_criterion_of_canonical_completion_target witness target⟩
 
 /--
+A canonical completion target is already the project Poincare target; this
+exposes it under the reserved final theorem route name.
+-/
+theorem poincare_conjecture_of_canonical_completion_target
+    (target : canonicalCompletionTarget.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target
+
+/--
 A Poincare completion payload is already a canonical completion payload, since
 the canonical target is definitionally the project Poincare statement.
 -/
@@ -174,6 +183,27 @@ theorem canonicalCompletionTarget_of_poincare_completion_payload
     canonicalCompletionTarget.{u} :=
   canonical_completion_target_of_canonical_completion_payload
     (canonical_completion_payload_of_poincare_completion_payload payload)
+
+/--
+A project completion payload exposes the reserved final theorem route target.
+-/
+theorem poincare_conjecture_of_poincare_completion_payload
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    PoincareConjectureStatement.{u} :=
+  poincareConjectureStatement_of_poincare_completion_payload payload
+
+/--
+A canonical completion payload exposes the reserved final theorem route target.
+-/
+theorem poincare_conjecture_of_canonical_completion_payload
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_canonical_completion_target
+    (canonical_completion_target_of_canonical_completion_payload payload)
 
 /--
 The canonical completion payload discharges the explicit universe-indexed
@@ -233,6 +263,16 @@ theorem canonical_completion_payload_of_completion_criterion
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
   (completionCriterionAtUniverse_iff_canonical_completion_payload witness).mp
     criterion
+
+/--
+A witness-indexed completion criterion exposes the reserved final theorem route
+target.
+-/
+theorem poincare_conjecture_of_completion_criterion
+    (witness : Type u) (criterion : CompletionCriterionAtUniverse witness) :
+    PoincareConjectureStatement.{u} :=
+  poincareConjectureStatement_of_completionCriterionAtUniverse
+    witness criterion
 
 /--
 A canonical completion payload is also a project Poincare completion payload,
@@ -363,6 +403,16 @@ theorem poincare_completion_payload_of_canonical_completion_target_eq
   apply Subsingleton.elim
 
 /--
+The canonical target reserved-name route is the identity projection from the
+canonical target to the project target.
+-/
+theorem poincare_conjecture_of_canonical_completion_target_eq
+    (target : canonicalCompletionTarget.{u}) :
+    poincare_conjecture_of_canonical_completion_target target =
+      target := by
+  apply Subsingleton.elim
+
+/--
 The canonical completion payload bridge destructures the project completion
 payload and rebuilds the same pair.
 -/
@@ -400,6 +450,32 @@ theorem canonicalCompletionTarget_of_poincare_completion_payload_eq
     canonicalCompletionTarget_of_poincare_completion_payload payload =
       canonical_completion_target_of_canonical_completion_payload
         (canonical_completion_payload_of_poincare_completion_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The project-payload reserved-name route is the existing project payload target
+projection.
+-/
+theorem poincare_conjecture_of_poincare_completion_payload_eq
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincare_conjecture_of_poincare_completion_payload payload =
+      poincareConjectureStatement_of_poincare_completion_payload payload := by
+  apply Subsingleton.elim
+
+/--
+The canonical-payload reserved-name route first projects the canonical target
+from the payload.
+-/
+theorem poincare_conjecture_of_canonical_completion_payload_eq
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincare_conjecture_of_canonical_completion_payload payload =
+      poincare_conjecture_of_canonical_completion_target
+        (canonical_completion_target_of_canonical_completion_payload
           payload) := by
   apply Subsingleton.elim
 
@@ -464,6 +540,17 @@ theorem canonical_completion_payload_of_completion_criterion_eq
     canonical_completion_payload_of_completion_criterion witness criterion =
       (completionCriterionAtUniverse_iff_canonical_completion_payload
         witness).mp criterion := by
+  apply Subsingleton.elim
+
+/--
+The completion-criterion reserved-name route is the existing criterion-to-target
+projection.
+-/
+theorem poincare_conjecture_of_completion_criterion_eq
+    (witness : Type u) (criterion : CompletionCriterionAtUniverse witness) :
+    poincare_conjecture_of_completion_criterion witness criterion =
+      poincareConjectureStatement_of_completionCriterionAtUniverse
+        witness criterion := by
   apply Subsingleton.elim
 
 /--
