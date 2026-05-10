@@ -30100,6 +30100,35 @@ theorem completion_certificate_of_equation_boundary_remaining_dependency_package
   apply Subsingleton.elim
 
 /--
+The named boundary-target-payload remaining-package certificate reconstructs
+the finite-extinction rebuilt checked certificate.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies) =
+      (by
+        rcases topology_extraction_derivation_payload_of_equation_boundary_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation
+        exact
+          ⟨canonicalCompletionTheoremName, rfl,
+            remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies,
+            target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness finiteExtinction extractSphere derivation⟩) := by
+  apply Subsingleton.elim
+
+/--
 A strengthened aggregate dependency package and its boundary-preserving target
 payload reconstruct the checked completion certificate through the
 strengthened remaining-package route.
@@ -30139,6 +30168,35 @@ theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_
           dependencies) =
       completion_certificate_of_poincareProofDependenciesWithEquationBoundary
         dependencies := by
+  apply Subsingleton.elim
+
+/--
+The named boundary-target-payload aggregate certificate reconstructs the
+finite-extinction rebuilt checked certificate.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies) =
+      (by
+        rcases topology_extraction_derivation_payload_of_equation_boundary_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation
+        exact
+          ⟨canonicalCompletionTheoremName, rfl,
+            remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies,
+            target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness finiteExtinction extractSphere derivation⟩) := by
   apply Subsingleton.elim
 
 /--
@@ -30878,6 +30936,36 @@ theorem completion_certificate_of_equation_boundary_remaining_dependency_package
   apply Subsingleton.elim
 
 /--
+The named boundary-preserving extraction-derivation target-payload
+remaining-package certificate reconstructs the finite-extinction rebuilt
+checked certificate.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies) =
+      (by
+        rcases topology_extraction_derivation_payload_of_equation_boundary_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation
+        exact
+          ⟨canonicalCompletionTheoremName, rfl,
+            remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies,
+            target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness finiteExtinction extractSphere derivation⟩) := by
+  apply Subsingleton.elim
+
+/--
 A strengthened aggregate dependency package and its boundary-preserving
 extraction-derivation target payload reconstruct the checked completion
 certificate through the strengthened remaining-package route.
@@ -30921,6 +31009,35 @@ theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_
           dependencies) =
       completion_certificate_of_poincareProofDependenciesWithEquationBoundary
         dependencies := by
+  apply Subsingleton.elim
+
+/--
+The named boundary-preserving extraction-derivation target-payload aggregate
+certificate reconstructs the finite-extinction rebuilt checked certificate.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies) =
+      (by
+        rcases topology_extraction_derivation_payload_of_equation_boundary_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation
+        exact
+          ⟨canonicalCompletionTheoremName, rfl,
+            remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies,
+            target,
+            fun witness =>
+              canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+                witness finiteExtinction extractSphere derivation⟩) := by
   apply Subsingleton.elim
 
 /--
