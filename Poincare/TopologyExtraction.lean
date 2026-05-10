@@ -3468,6 +3468,121 @@ theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStat
   apply Subsingleton.elim
 
 /--
+The standard sphere loop-nullhomotopy obligation supplies the simple-connectedness
+needed to apply universal compactification recognition to the model itself.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ
+      (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+  onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+    (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+      hLoop)
+    recognize
+
+/-- The standard-sphere loop universal-recognition self route first transports loops to the model. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement_eq :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement =
+      (fun hLoop : ThreeSphereLoopNullhomotopyStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+              hLoop)
+            recognize) := by
+  funext hLoop recognize
+  apply Subsingleton.elim
+
+/-- The standard-sphere loop universal-recognition self route agrees with the local loop route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement_onePoint_route_eq
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+      hLoop recognize =
+      onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+          hLoop)
+        recognize := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere loop universal-recognition self route agrees with reflexive recognition. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement_direct_route_eq
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+      hLoop recognize =
+      onePoint_threeSpace_self_homeomorph := by
+  apply Subsingleton.elim
+
+/--
+The standard sphere based loop-nullhomotopy obligation supplies the
+simple-connectedness needed to apply universal compactification recognition to
+the model itself.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ
+      (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+  onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+    (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased)
+    recognize
+
+/-- The standard-sphere based-loop universal-recognition self route first reduces to loops. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+        onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+          hBased recognize) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased)
+            recognize) := by
+  funext hBased recognize
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop universal-recognition self route agrees with the loop route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_loop_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+        onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+          hBased recognize) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased)
+            recognize) := by
+  funext hBased recognize
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop universal-recognition self route agrees with the local loop route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_onePoint_route_eq
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+      hBased recognize =
+      onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased))
+        recognize := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop universal-recognition self route agrees with reflexive recognition. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_direct_route_eq
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+      hBased recognize =
+      onePoint_threeSpace_self_homeomorph := by
+  apply Subsingleton.elim
+
+/--
 The compactification path-homotopy obligation supplies the
 simple-connectedness needed to apply universal compactification recognition to
 the model itself.
@@ -3656,6 +3771,116 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognit
     (hBased : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint)
     (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
     onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointBasedLoopNullhomotopyStatement
+      hBased recognize =
+      onePoint_threeSpace_homeomorph_threeSphere := by
+  apply Subsingleton.elim
+
+/--
+The standard-sphere loop-nullhomotopy universal-recognition self endpoint
+composes to the target `ThreeSphere` endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
+    (onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+      hLoop recognize)
+
+/-- The standard-sphere loop universal-recognition target route is the self route followed by the model map. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement =
+      (fun hLoop : ThreeSphereLoopNullhomotopyStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
+            (onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+              hLoop recognize)) := by
+  funext hLoop recognize
+  apply Subsingleton.elim
+
+/-- The standard-sphere loop universal-recognition target route agrees with the local loop route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement_onePoint_route_eq
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+      hLoop recognize =
+      onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+          hLoop)
+        recognize := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere loop universal-recognition target route agrees with the direct model homeomorphism. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement_direct_route_eq
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+      hLoop recognize =
+      onePoint_threeSpace_homeomorph_threeSphere := by
+  apply Subsingleton.elim
+
+/--
+The standard-sphere based-loop universal-recognition self endpoint composes to
+the target `ThreeSphere` endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
+    (onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+      hBased recognize)
+
+/-- The standard-sphere based-loop universal-recognition target route is the self route followed by the model map. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+        onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+          hBased recognize) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
+            (onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+              hBased recognize)) := by
+  funext hBased recognize
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop universal-recognition target route agrees with the loop route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_loop_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+        onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+          hBased recognize) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased)
+            recognize) := by
+  funext hBased recognize
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop universal-recognition target route agrees with the local loop route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_onePoint_route_eq
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+      hBased recognize =
+      onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased))
+        recognize := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop universal-recognition target route agrees with the direct model homeomorphism. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_direct_route_eq
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
       hBased recognize =
       onePoint_threeSpace_homeomorph_threeSphere := by
   apply Subsingleton.elim
@@ -3852,6 +4077,123 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpace
             (onePoint_threeSpace_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased)
             recognize) := by
   funext hBased recognize
+  apply Subsingleton.elim
+
+/--
+The standard-sphere loop-nullhomotopy universal-recognition endpoint also
+packages the standard-loop compactification prerequisites.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
+      hLoop,
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+      hLoop recognize⟩
+
+/-- The standard-sphere loop universal-recognition payload pairs standard-loop prerequisites with the endpoint. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement =
+      (fun hLoop : ThreeSphereLoopNullhomotopyStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
+              hLoop,
+            onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+              hLoop recognize⟩) := by
+  funext hLoop recognize
+  apply Subsingleton.elim
+
+/-- The standard-sphere loop universal-recognition payload agrees with the local loop payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement_onePoint_route_eq
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+      hLoop recognize =
+      onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+          hLoop)
+        recognize := by
+  apply Subsingleton.elim
+
+/--
+The standard-sphere based-loop universal-recognition endpoint also packages the
+standard based-loop compactification prerequisites.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement
+      hBased,
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+      hBased recognize⟩
+
+/-- The standard-sphere based-loop universal-recognition payload pairs based-loop prerequisites with the endpoint. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+        onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+          hBased recognize) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement
+              hBased,
+            onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+              hBased recognize⟩) := by
+  funext hBased recognize
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop universal-recognition payload agrees with the loop payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_loop_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+        onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+          hBased recognize) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased)
+            recognize) := by
+  funext hBased recognize
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop universal-recognition payload agrees with the local loop payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_onePoint_route_eq
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+      hBased recognize =
+      onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased))
+        recognize := by
   apply Subsingleton.elim
 
 /--
