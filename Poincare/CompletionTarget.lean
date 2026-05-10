@@ -17485,6 +17485,181 @@ theorem canonical_three_sphere_statement_of_target_statement_of_completion_certi
         dependencies verificationFamily := by
   apply Subsingleton.elim
 
+section VerificationFamilyExtractionDerivationCertificate
+
+variable (dependencies : PoincareProofDependencies.{u})
+variable (verificationFamily :
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package payload.2)))
+
+include dependencies verificationFamily
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications produce
+the checked certificate through the certified extraction-derivation canonical
+target route after applying the strengthened dependency lift.
+-/
+theorem completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_remaining_dependency_and_canonical_target
+    (remainingDependencyPackage_iff_poincareProofDependencies.mpr dependencies)
+    (canonical_completion_target_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+      (equation_boundary_dependencies_of_dependencies_and_verification_family
+        dependencies verificationFamily))
+
+/--
+The verification-family certified canonical-target certificate uses the generic
+remaining-dependency canonical-target constructor with the lifted certified
+canonical target.
+-/
+theorem completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_eq :
+    completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target
+        dependencies verificationFamily =
+      completion_certificate_of_remaining_dependency_and_canonical_target
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies)
+        (canonical_completion_target_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+          (equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily)) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family certified canonical-target certificate agrees with the
+standard verification-family certificate.
+-/
+theorem completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_to_verification_family_certificate_eq :
+    completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target
+        dependencies verificationFamily =
+      completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift from the certified canonical-target
+certificate recovers the ordinary aggregate certificate.
+-/
+theorem completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_to_forgetful_dependencies_eq :
+    completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target
+        dependencies verificationFamily =
+      completion_certificate_of_poincareProofDependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications produce
+the checked certificate through the certified extraction-derivation project
+statement route after applying the strengthened dependency lift.
+-/
+theorem completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_remaining_dependency_and_target_statement
+    (remainingDependencyPackage_iff_poincareProofDependencies.mpr dependencies)
+    (poincare_statement_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+      (equation_boundary_dependencies_of_dependencies_and_verification_family
+        dependencies verificationFamily))
+
+/--
+The verification-family certified project-statement certificate uses the
+generic remaining-dependency target-statement constructor with the lifted
+certified project statement.
+-/
+theorem completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_eq :
+    completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement
+        dependencies verificationFamily =
+      completion_certificate_of_remaining_dependency_and_target_statement
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies)
+        (poincare_statement_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+          (equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily)) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family certified project-statement certificate agrees with the
+standard verification-family certificate.
+-/
+theorem completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_to_verification_family_certificate_eq :
+    completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement
+        dependencies verificationFamily =
+      completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift from the certified project-statement
+certificate recovers the ordinary aggregate certificate.
+-/
+theorem completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_to_forgetful_dependencies_eq :
+    completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement
+        dependencies verificationFamily =
+      completion_certificate_of_poincareProofDependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications produce
+the checked certificate through the certified extraction-derivation completion
+criterion route after applying the strengthened dependency lift.
+-/
+theorem completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion
+    (witness : Type u) :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_remaining_dependency_and_completion_criterion
+    (remainingDependencyPackage_iff_poincareProofDependencies.mpr dependencies)
+    witness
+    (completion_criterion_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+      witness
+      (equation_boundary_dependencies_of_dependencies_and_verification_family
+        dependencies verificationFamily))
+
+/--
+The verification-family certified completion-criterion certificate uses the
+generic remaining-dependency criterion constructor with the lifted certified
+completion criterion.
+-/
+theorem completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_eq
+    (witness : Type u) :
+    completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion
+        dependencies verificationFamily witness =
+      completion_certificate_of_remaining_dependency_and_completion_criterion
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies)
+        witness
+        (completion_criterion_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+          witness
+          (equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily)) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family certified completion-criterion certificate agrees with
+the standard verification-family certificate.
+-/
+theorem completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_to_verification_family_certificate_eq
+    (witness : Type u) :
+    completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion
+        dependencies verificationFamily witness =
+      completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift from the certified completion-criterion
+certificate recovers the ordinary aggregate certificate.
+-/
+theorem completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_to_forgetful_dependencies_eq
+    (witness : Type u) :
+    completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion
+        dependencies verificationFamily witness =
+      completion_certificate_of_poincareProofDependencies dependencies := by
+  apply Subsingleton.elim
+
+end VerificationFamilyExtractionDerivationCertificate
+
 /--
 The strengthened remaining dependency package produces the checked completion
 certificate from the certified extraction-derivation canonical target.
