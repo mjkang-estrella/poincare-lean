@@ -16371,6 +16371,192 @@ theorem completion_certificate_of_aggregate_canonical_statement_payload_of_compl
         dependencies := by
   apply Subsingleton.elim
 
+section VerificationFamilyCertificateCanonicalBridge
+
+variable (dependencies : PoincareProofDependencies.{u})
+variable (verificationFamily :
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package payload.2)))
+
+/--
+Projecting the canonical topological statement from the verification-family
+certificate recovers the verification-family canonical topological statement.
+-/
+theorem canonical_three_sphere_statement_of_completion_certificate_of_poincareProofDependencies_and_verification_family_eq :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      canonical_three_sphere_statement_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical-statement payload from the verification-family
+certificate records the ordinary remaining dependency package and the
+verification-family target endpoints.
+-/
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_eq :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      ⟨ "poincare_conjecture", rfl,
+        remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies,
+        canonical_completion_target_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily,
+        canonical_three_sphere_statement_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily,
+        fun witness =>
+          completion_criterion_of_poincareProofDependencies_and_verification_family
+            witness dependencies verificationFamily ⟩ := by
+  apply Subsingleton.elim
+
+/--
+Projecting the aggregate canonical-statement payload from the
+verification-family certificate records the ordinary aggregate dependency
+package and the verification-family target endpoints.
+-/
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_eq :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      ⟨ "poincare_conjecture", rfl,
+        dependencies,
+        canonical_completion_target_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily,
+        canonical_three_sphere_statement_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily,
+        fun witness =>
+          completion_criterion_of_poincareProofDependencies_and_verification_family
+            witness dependencies verificationFamily ⟩ := by
+  apply Subsingleton.elim
+
+/--
+The canonical-statement payload constructor recovers the verification-family
+certificate from its projected canonical-statement payload.
+-/
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_eq :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily)) =
+      completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The aggregate canonical-statement payload constructor recovers the
+verification-family certificate from its projected aggregate canonical-statement
+payload.
+-/
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_eq :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily)) =
+      completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The canonical-statement payload assembled directly from verification-family
+endpoints reconstructs the verification-family certificate.
+-/
+theorem completion_certificate_of_canonical_statement_payload_of_poincareProofDependencies_and_verification_family_eq :
+    completion_certificate_of_canonical_statement_payload
+      ⟨ "poincare_conjecture", rfl,
+        remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies,
+        canonical_completion_target_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily,
+        canonical_three_sphere_statement_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily,
+        fun witness =>
+          completion_criterion_of_poincareProofDependencies_and_verification_family
+            witness dependencies verificationFamily ⟩ =
+      completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The aggregate canonical-statement payload assembled directly from
+verification-family endpoints reconstructs the verification-family certificate.
+-/
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_poincareProofDependencies_and_verification_family_eq :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      ⟨ "poincare_conjecture", rfl,
+        dependencies,
+        canonical_completion_target_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily,
+        canonical_three_sphere_statement_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily,
+        fun witness =>
+          completion_criterion_of_poincareProofDependencies_and_verification_family
+            witness dependencies verificationFamily ⟩ =
+      completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The projected canonical-statement payload from the verification-family
+certificate agrees with the payload of the ordinary aggregate certificate after
+forgetting the verification-family lift.
+-/
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_forgetful_dependencies_eq :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_poincareProofDependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The projected aggregate canonical-statement payload from the verification-family
+certificate agrees with the payload of the ordinary aggregate certificate after
+forgetting the verification-family lift.
+-/
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_forgetful_dependencies_eq :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_poincareProofDependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Reconstructing from the projected canonical-statement payload of the
+verification-family certificate agrees with the ordinary aggregate certificate
+after forgetting the verification-family lift.
+-/
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_forgetful_dependencies_eq :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily)) =
+      completion_certificate_of_poincareProofDependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+Reconstructing from the projected aggregate canonical-statement payload of the
+verification-family certificate agrees with the ordinary aggregate certificate
+after forgetting the verification-family lift.
+-/
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_forgetful_dependencies_eq :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily)) =
+      completion_certificate_of_poincareProofDependencies dependencies := by
+  apply Subsingleton.elim
+
+end VerificationFamilyCertificateCanonicalBridge
+
 /--
 Projecting the canonical-statement payload from the strengthened boundary
 projection certificate returns the payload assembled from the boundary
