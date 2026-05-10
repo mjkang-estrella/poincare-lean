@@ -40085,6 +40085,224 @@ theorem completion_certificate_of_project_statement_payload_of_completion_certif
               dependencies)) := by
   apply Subsingleton.elim
 
+section VerificationFamilyReservedPayloads
+
+variable (dependencies : PoincareProofDependencies.{u})
+variable (verificationFamily :
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package payload.2)))
+
+include dependencies verificationFamily
+
+/--
+The verification-family boundary-aware payload exposes the reserved theorem
+name payload of its checked certificate.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_boundary_certificate_eq :
+    poincareCompletionCertificate_theoremName_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      poincareCompletionCertificate_theoremName_payload
+        (completion_certificate_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_forgetful_dependencies_eq :
+    poincareCompletionCertificate_theoremName_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      poincareCompletionCertificate_theoremName_payload
+        (completion_certificate_of_poincareProofDependencies dependencies) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_remaining_dependency_eq :
+    poincareCompletionCertificate_theoremName_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      poincareCompletionCertificate_theoremName_payload
+        (completion_certificate_of_remaining_dependency_package
+          (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies)) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family boundary-aware payload exposes the literal
+reserved-name payload of its checked certificate and its forgetful certificates.
+-/
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_boundary_certificate_eq :
+    poincareCompletionCertificate_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_forgetful_dependencies_eq :
+    poincareCompletionCertificate_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_poincareProofDependencies dependencies) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_remaining_dependency_eq :
+    poincareCompletionCertificate_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_remaining_dependency_package
+          (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies)) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_boundary_certificate_eq :
+    poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_forgetful_dependencies_eq :
+    poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_poincareProofDependencies dependencies) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_remaining_dependency_eq :
+    poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_remaining_dependency_package
+          (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies)) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_boundary_certificate_eq :
+    poincareCompletionCertificate_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_forgetful_dependencies_eq :
+    poincareCompletionCertificate_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_poincareProofDependencies dependencies) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_remaining_dependency_eq :
+    poincareCompletionCertificate_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_remaining_dependency_package
+          (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies)) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family literal and dependency payload reconstruction routes
+recover the verification-family certificate and its forgetful certificates.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_boundary_certificate_eq :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily)) =
+      completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_forgetful_dependencies_eq :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily)) =
+      completion_certificate_of_poincareProofDependencies dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_remaining_dependency_eq :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily)) =
+      completion_certificate_of_remaining_dependency_package
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_boundary_certificate_eq :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily)) =
+      completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_forgetful_dependencies_eq :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily)) =
+      completion_certificate_of_poincareProofDependencies dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_remaining_dependency_eq :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily)) =
+      completion_certificate_of_remaining_dependency_package
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_boundary_certificate_eq :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily)) =
+      completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_forgetful_dependencies_eq :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily)) =
+      completion_certificate_of_poincareProofDependencies dependencies := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_remaining_dependency_eq :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily)) =
+      completion_certificate_of_remaining_dependency_package
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+end VerificationFamilyReservedPayloads
+
 /--
 The completion certificate is equivalent to the three component inputs in the
 aggregate dependency package.
