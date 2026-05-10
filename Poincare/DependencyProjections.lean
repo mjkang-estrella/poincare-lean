@@ -13738,6 +13738,75 @@ theorem poincare_statement_of_dependency_projections_to_package_eq
           dependencies.topology) := by
   apply Subsingleton.elim
 
+section VerificationFamilyProjectionStatements
+
+variable (dependencies : PoincareProofDependencies.{u})
+variable (verificationFamily :
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package payload.2)))
+
+include dependencies verificationFamily
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications expose the
+Poincare target statement through the verification-family completion payload.
+-/
+theorem poincare_statement_of_dependency_projections_and_verification_family :
+    PoincareConjectureStatement.{u} := by
+  rcases
+      poincare_completion_payload_of_dependency_projections_and_verification_family
+        dependencies verificationFamily with
+    ⟨target, _criterion⟩
+  exact target
+
+/--
+The verification-family Poincare statement is selected from the named
+verification-family completion payload.
+-/
+theorem poincare_statement_of_dependency_projections_and_verification_family_eq :
+    poincare_statement_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      (by
+        rcases
+            poincare_completion_payload_of_dependency_projections_and_verification_family
+              dependencies verificationFamily with
+          ⟨target, _criterion⟩
+        exact target) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family Poincare statement factors through the named
+verification-family completion payload.
+-/
+theorem poincare_statement_of_dependency_projections_and_verification_family_to_completion_payload_eq :
+    poincare_statement_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      (by
+        rcases
+            poincare_completion_payload_of_dependency_projections_and_verification_family
+              dependencies verificationFamily with
+          ⟨target, _criterion⟩
+        exact target) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift recovers the ordinary dependency
+projection Poincare statement.
+-/
+theorem poincare_statement_of_dependency_projections_and_verification_family_to_dependencies_eq :
+    poincare_statement_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      poincare_statement_of_dependency_projections dependencies := by
+  apply Subsingleton.elim
+
+end VerificationFamilyProjectionStatements
+
 /--
 The aggregate dependency package also proves the Poincare target through the
 certified extraction-derivation projection payload.
@@ -14233,6 +14302,72 @@ theorem canonical_three_sphere_statement_of_dependency_projections_to_package_eq
             dependencies.topology)) := by
   apply Subsingleton.elim
 
+section VerificationFamilyProjectionCanonicalStatements
+
+variable (dependencies : PoincareProofDependencies.{u})
+variable (verificationFamily :
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package payload.2)))
+
+include dependencies verificationFamily
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications expose the
+canonical mathlib-shaped topological 3-sphere statement through the
+verification-family Poincare statement.
+-/
+theorem canonical_three_sphere_statement_of_dependency_projections_and_verification_family :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) :=
+  canonical_three_sphere_statement_of_poincare_statement
+    (poincare_statement_of_dependency_projections_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The verification-family canonical topological statement is the canonical bridge
+applied to the named verification-family Poincare statement.
+-/
+theorem canonical_three_sphere_statement_of_dependency_projections_and_verification_family_eq :
+    canonical_three_sphere_statement_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      canonical_three_sphere_statement_of_poincare_statement
+        (poincare_statement_of_dependency_projections_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family canonical topological statement factors through the
+named verification-family Poincare statement.
+-/
+theorem canonical_three_sphere_statement_of_dependency_projections_and_verification_family_to_statement_eq :
+    canonical_three_sphere_statement_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      canonical_three_sphere_statement_of_poincare_statement
+        (poincare_statement_of_dependency_projections_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift recovers the ordinary dependency
+projection canonical statement.
+-/
+theorem canonical_three_sphere_statement_of_dependency_projections_and_verification_family_to_dependencies_eq :
+    canonical_three_sphere_statement_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      canonical_three_sphere_statement_of_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+end VerificationFamilyProjectionCanonicalStatements
+
 /--
 The certified extraction-derivation projection route exposes the canonical
 mathlib-shaped topological 3-sphere statement.
@@ -14628,6 +14763,77 @@ theorem completion_criterion_of_dependency_projections_to_package_eq
           ⟨_target, criterion⟩
         exact criterion witness) := by
   apply Subsingleton.elim
+
+section VerificationFamilyProjectionCriteria
+
+variable (witness : Type u)
+variable (dependencies : PoincareProofDependencies.{u})
+variable (verificationFamily :
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package payload.2)))
+
+include witness dependencies verificationFamily
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications discharge
+the universe-indexed completion criterion through the verification-family
+completion payload.
+-/
+theorem completion_criterion_of_dependency_projections_and_verification_family :
+    CompletionCriterionAtUniverse witness := by
+  rcases
+      poincare_completion_payload_of_dependency_projections_and_verification_family
+        dependencies verificationFamily with
+    ⟨_target, criterion⟩
+  exact criterion witness
+
+/--
+The verification-family completion criterion is selected from the named
+verification-family completion payload.
+-/
+theorem completion_criterion_of_dependency_projections_and_verification_family_eq :
+    completion_criterion_of_dependency_projections_and_verification_family
+        witness dependencies verificationFamily =
+      (by
+        rcases
+            poincare_completion_payload_of_dependency_projections_and_verification_family
+              dependencies verificationFamily with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family completion criterion factors through the named
+verification-family completion payload.
+-/
+theorem completion_criterion_of_dependency_projections_and_verification_family_to_completion_payload_eq :
+    completion_criterion_of_dependency_projections_and_verification_family
+        witness dependencies verificationFamily =
+      (by
+        rcases
+            poincare_completion_payload_of_dependency_projections_and_verification_family
+              dependencies verificationFamily with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift recovers the ordinary dependency
+projection completion criterion.
+-/
+theorem completion_criterion_of_dependency_projections_and_verification_family_to_dependencies_eq :
+    completion_criterion_of_dependency_projections_and_verification_family
+        witness dependencies verificationFamily =
+      completion_criterion_of_dependency_projections witness dependencies := by
+  apply Subsingleton.elim
+
+end VerificationFamilyProjectionCriteria
 
 /--
 The certified extraction-derivation projection route also discharges the
