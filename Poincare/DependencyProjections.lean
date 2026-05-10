@@ -11041,6 +11041,153 @@ theorem poincare_projection_assembly_inputs_payload_of_extraction_derivation_dep
   apply Subsingleton.elim
 
 /--
+The dependency-level topology extraction payload can be rebuilt from the
+finite-extinction assembly inputs and the dependency-level topology statement.
+-/
+theorem topology_extraction_payload_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topology_extraction_payload_of_dependencies dependencies =
+      (by
+        rcases poincare_projection_assembly_inputs_payload_of_dependencies
+            dependencies with
+          ⟨_finiteExtinction, extractSphere⟩
+        exact ⟨topology_extraction_statement_of_dependencies dependencies,
+          extractSphere⟩) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level topology extraction payload can be rebuilt from the
+certified extraction/derivation payload after forgetting derivation evidence.
+-/
+theorem topology_extraction_payload_of_dependencies_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topology_extraction_payload_of_dependencies dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, _derivation⟩
+        exact ⟨topology_extraction_statement_of_dependencies dependencies,
+          extractSphere⟩) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level fixed-extinction topology payload follows the explicit
+finite-extinction input together with the dependency-level topology statement.
+-/
+theorem topology_extraction_statement_payload_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_dependencies
+      dependencies M extinction =
+      topology_extraction_statement_payload_of_extraction_statement
+        (topology_extraction_statement_of_dependencies dependencies)
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level fixed-extinction topology payload can be rebuilt from the
+dependency-level certified extractor and its derivation statement.
+-/
+theorem topology_extraction_statement_payload_of_dependencies_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_dependencies
+      dependencies M extinction =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          topology_extraction_statement_payload_of_extraction_statement
+            (extinction_topology_extraction_statement_of_extraction_and_derivation
+              extractSphere derivation)
+            M extinction) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level fixed-extinction derivation payload is the derivation
+payload component of the fixed-extinction topology payload.
+-/
+theorem topology_derivation_statement_payload_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_derivation_statement_payload_of_dependencies
+      dependencies M extinction =
+      (by
+        rcases topology_extraction_statement_payload_of_dependencies
+            dependencies M extinction with
+          ⟨_topologyStatement, homeomorphism, derivationStatement,
+            _classificationSubobligations, _simplyConnectedRecognition,
+            _sphericalTrivialQuotient, _sphericalHomeomorphismLift,
+            _assemblyStatement, _homeomorphismDerivationStatement⟩
+        exact ⟨homeomorphism, derivationStatement⟩) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level fixed-extinction derivation payload is carried by the
+dependency-level certified extractor and its derivation statement.
+-/
+theorem topology_derivation_statement_payload_of_dependencies_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_derivation_statement_payload_of_dependencies
+      dependencies M extinction =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact ⟨extractSphere M extinction, derivation M extinction⟩) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level fixed-extinction homeomorphism is the homeomorphism
+component of the fixed-extinction derivation payload.
+-/
+theorem homeomorphism_of_extinction_and_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    homeomorphism_of_extinction_and_dependencies dependencies M extinction =
+      (by
+        rcases topology_derivation_statement_payload_of_dependencies
+            dependencies M extinction with
+          ⟨homeomorphism, _derivationStatement⟩
+        exact homeomorphism) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level fixed-extinction homeomorphism is the homeomorphism
+selected by the certified dependency-level extractor.
+-/
+theorem homeomorphism_of_extinction_and_dependencies_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    homeomorphism_of_extinction_and_dependencies dependencies M extinction =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, _derivation⟩
+        exact extractSphere M extinction) := by
+  apply Subsingleton.elim
+
+/--
 The projection route also exposes finite extinction together with the final
 extractor, its full topology derivation certificate, and the lifted
 homeomorphism derivation certificate.

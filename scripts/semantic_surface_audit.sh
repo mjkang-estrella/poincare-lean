@@ -5564,12 +5564,18 @@ universe u
 #check Poincare.topology_extraction_statement_payload_of_dependencies
 #check Poincare.topology_extraction_statement_payload_of_dependencies_eq
 #check Poincare.topology_extraction_statement_payload_of_dependencies_to_package_eq
+#check Poincare.topology_extraction_statement_payload_of_dependencies_to_finite_extinction_eq
+#check Poincare.topology_extraction_statement_payload_of_dependencies_to_extraction_derivation_eq
 #check Poincare.topology_derivation_statement_payload_of_dependencies
 #check Poincare.topology_derivation_statement_payload_of_dependencies_eq
 #check Poincare.topology_derivation_statement_payload_of_dependencies_to_package_eq
+#check Poincare.topology_derivation_statement_payload_of_dependencies_to_finite_extinction_eq
+#check Poincare.topology_derivation_statement_payload_of_dependencies_to_extraction_derivation_eq
 #check Poincare.homeomorphism_of_extinction_and_dependencies
 #check Poincare.homeomorphism_of_extinction_and_dependencies_eq
 #check Poincare.homeomorphism_of_extinction_and_dependencies_to_package_eq
+#check Poincare.homeomorphism_of_extinction_and_dependencies_to_finite_extinction_eq
+#check Poincare.homeomorphism_of_extinction_and_dependencies_to_extraction_derivation_eq
 #check Poincare.topology_derivation_statement_via_extraction_of_dependencies
 #check Poincare.topology_derivation_statement_via_extraction_of_dependencies_eq
 #check Poincare.topology_derivation_statement_via_extraction_of_dependencies_to_statement_eq
@@ -5601,6 +5607,8 @@ universe u
 #check Poincare.topology_extraction_payload_of_dependencies
 #check Poincare.topology_extraction_payload_of_dependencies_eq
 #check Poincare.topology_extraction_payload_of_dependencies_to_package_eq
+#check Poincare.topology_extraction_payload_of_dependencies_to_finite_extinction_eq
+#check Poincare.topology_extraction_payload_of_dependencies_to_extraction_derivation_eq
 #check Poincare.topology_extraction_statement_of_dependencies
 #check Poincare.topology_extraction_statement_of_dependencies_eq
 #check Poincare.topology_extraction_statement_of_dependencies_to_package_eq
@@ -13141,7 +13149,7 @@ projection_assembly_inputs_count=$(
   rg -c '\bpoincare_projection_assembly_inputs_payload_of_dependencies\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_assembly_inputs_count" != "12" ]; then
+if [ "$projection_assembly_inputs_count" != "13" ]; then
   echo "FAIL: projection target/alias routes should consume the named projection assembly-input payload"
   rg -n '\bpoincare_projection_assembly_inputs_payload_of_dependencies\b' \
     Poincare/DependencyProjections.lean || true
@@ -13174,7 +13182,7 @@ topology_extraction_derivation_payload_count=$(
   rg -c '\btopology_extraction_derivation_payload_of_dependencies\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$topology_extraction_derivation_payload_count" != "26" ]; then
+if [ "$topology_extraction_derivation_payload_count" != "30" ]; then
   echo "FAIL: extraction-derivation assembly-input payload and statement-route contracts should consume the topology extraction-derivation payload"
   rg -n '\btopology_extraction_derivation_payload_of_dependencies\b' \
     Poincare/DependencyProjections.lean || true
