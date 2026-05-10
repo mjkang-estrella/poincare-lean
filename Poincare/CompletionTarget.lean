@@ -56042,7 +56042,75 @@ theorem poincare_full_assembly_payload_of_completion_certificate_of_lifted_homeo
       poincare_full_assembly_payload_of_dependencies dependencies := by
   apply Subsingleton.elim
 
+theorem poincare_full_assembly_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      poincare_full_assembly_payload_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+theorem poincare_full_assembly_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      poincare_full_assembly_payload_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+theorem poincare_full_assembly_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      poincare_full_assembly_payload_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+theorem poincare_full_assembly_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      poincare_full_assembly_payload_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
 theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
     (dependencies : RemainingDependencyPackage.{u}) :
     poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
       (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
