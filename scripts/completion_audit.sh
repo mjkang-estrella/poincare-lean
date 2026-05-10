@@ -9179,8 +9179,14 @@ check_decl "completion certificate target statement equality contract is declare
   '^theorem target_statement_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate reserved-name target bridge equality contract is declared" \
   '^theorem poincare_conjecture_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate target statement reserved-name endpoint contract is declared" \
+  '^theorem target_statement_of_completion_certificate_to_poincare_conjecture_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate canonical target project endpoint contract is declared" \
   '^theorem canonical_completion_target_of_completion_certificate_to_target_statement_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate canonical target reserved-name endpoint contract is declared" \
+  '^theorem canonical_completion_target_of_completion_certificate_to_poincare_conjecture_eq\b' Poincare/CompletionTarget.lean
+check_decl "completion certificate reserved-name canonical target endpoint contract is declared" \
+  '^theorem poincare_conjecture_of_completion_certificate_to_canonical_target_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate criterion equality contract is declared" \
   '^theorem completion_criterion_of_completion_certificate_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate canonical criterion equality contract is declared" \

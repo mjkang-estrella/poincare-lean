@@ -17124,6 +17124,16 @@ theorem poincare_conjecture_of_completion_certificate_eq
   apply Subsingleton.elim
 
 /--
+The existing target-statement projection and the reserved-name bridge are the
+same proof endpoint in the opposite direction.
+-/
+theorem target_statement_of_completion_certificate_to_poincare_conjecture_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    target_statement_of_completion_certificate certificate =
+      poincare_conjecture_of_completion_certificate certificate := by
+  apply Subsingleton.elim
+
+/--
 The project target-statement projection is the canonical target projection
 viewed at the project target proposition.
 -/
@@ -17141,6 +17151,26 @@ theorem canonical_completion_target_of_completion_certificate_to_target_statemen
     (certificate : PoincareCompletionCertificate.{u}) :
     canonical_completion_target_of_completion_certificate certificate =
       target_statement_of_completion_certificate certificate := by
+  apply Subsingleton.elim
+
+/--
+The canonical target projected from a completion certificate is the same
+reserved-name bridge endpoint.
+-/
+theorem canonical_completion_target_of_completion_certificate_to_poincare_conjecture_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    canonical_completion_target_of_completion_certificate certificate =
+      poincare_conjecture_of_completion_certificate certificate := by
+  apply Subsingleton.elim
+
+/--
+The reserved-name bridge endpoint is the same as the canonical completion
+target projection.
+-/
+theorem poincare_conjecture_of_completion_certificate_to_canonical_target_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    poincare_conjecture_of_completion_certificate certificate =
+      canonical_completion_target_of_completion_certificate certificate := by
   apply Subsingleton.elim
 
 /--
