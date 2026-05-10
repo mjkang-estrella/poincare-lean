@@ -4095,6 +4095,118 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_one
   apply Subsingleton.elim
 
 /--
+The standard sphere loop-nullhomotopy obligation is enough to apply the project
+target statement to the compactification model.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_loopNullhomotopyStatement
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointLoopNullhomotopyStatement
+    (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+      hLoop)
+    h
+
+/-- The standard-sphere loop compactification target route first transports loops to the model. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_loopNullhomotopyStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_loopNullhomotopyStatement =
+      (fun hLoop : ThreeSphereLoopNullhomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointLoopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+              hLoop)
+            h) := by
+  funext hLoop h
+  apply Subsingleton.elim
+
+/-- The standard-sphere loop compactification target route agrees with the local loop route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_loopNullhomotopyStatement_onePoint_route_eq
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_loopNullhomotopyStatement
+      hLoop h =
+      onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+          hLoop)
+        h := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere loop compactification target route agrees with the direct model homeomorphism. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_loopNullhomotopyStatement_direct_route_eq
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_loopNullhomotopyStatement
+      hLoop h =
+      onePoint_threeSpace_homeomorph_threeSphere := by
+  apply Subsingleton.elim
+
+/--
+The standard sphere based loop-nullhomotopy obligation is enough to apply the
+project target statement to the compactification model.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_basedLoopNullhomotopyStatement
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : PoincareConjectureStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_loopNullhomotopyStatement
+    (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased)
+    h
+
+/-- The standard-sphere based-loop target route first reduces to the standard-sphere loop route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : PoincareConjectureStatement.{0} =>
+        onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : PoincareConjectureStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased)
+            h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop compactification target route agrees with the loop route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_basedLoopNullhomotopyStatement_loop_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : PoincareConjectureStatement.{0} =>
+        onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : PoincareConjectureStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased)
+            h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop compactification target route agrees with the local loop route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_basedLoopNullhomotopyStatement_onePoint_route_eq
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : PoincareConjectureStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_basedLoopNullhomotopyStatement
+      hBased h =
+      onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased))
+        h := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop compactification target route agrees with the direct model homeomorphism. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_basedLoopNullhomotopyStatement_direct_route_eq
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : PoincareConjectureStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_basedLoopNullhomotopyStatement
+      hBased h =
+      onePoint_threeSpace_homeomorph_threeSphere := by
+  apply Subsingleton.elim
+
+/--
 The compactification path-homotopy obligation is enough to apply the project
 target statement to the compactification model.
 -/
@@ -4285,6 +4397,123 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement
             (onePoint_threeSpace_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased)
             h) := by
   funext hBased h
+  apply Subsingleton.elim
+
+/--
+The standard-sphere loop-nullhomotopy target self-case exposes both the
+standard-loop compactification prerequisites and the target endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_loopNullhomotopyStatement
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
+      hLoop,
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_loopNullhomotopyStatement
+      hLoop h⟩
+
+/-- The standard-sphere loop target payload pairs the standard-loop prerequisites with the endpoint. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_loopNullhomotopyStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_loopNullhomotopyStatement =
+      (fun hLoop : ThreeSphereLoopNullhomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
+              hLoop,
+            onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_loopNullhomotopyStatement
+              hLoop h⟩) := by
+  funext hLoop h
+  apply Subsingleton.elim
+
+/-- The standard-sphere loop target payload agrees with the local loop target payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_loopNullhomotopyStatement_onePoint_route_eq
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_loopNullhomotopyStatement
+      hLoop h =
+      onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+          hLoop)
+        h := by
+  apply Subsingleton.elim
+
+/--
+The standard-sphere based-loop target self-case exposes both the based-loop
+compactification prerequisites and the target endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : PoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement
+      hBased,
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_basedLoopNullhomotopyStatement
+      hBased h⟩
+
+/-- The standard-sphere based-loop target payload pairs based-loop prerequisites with the endpoint. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : PoincareConjectureStatement.{0} =>
+        onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : PoincareConjectureStatement.{0} =>
+          ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement
+              hBased,
+            onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_basedLoopNullhomotopyStatement
+              hBased h⟩) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop target payload agrees with the standard-sphere loop payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement_loop_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : PoincareConjectureStatement.{0} =>
+        onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : PoincareConjectureStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased)
+            h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop target payload agrees with the local loop target payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement_onePoint_route_eq
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : PoincareConjectureStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement
+      hBased h =
+      onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased))
+        h := by
   apply Subsingleton.elim
 
 /--
