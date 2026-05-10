@@ -6155,6 +6155,7 @@ universe u
 #check Poincare.canonical_completion_target_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_remaining_dependency_eq
 #check Poincare.canonical_completion_target_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
 #check Poincare.canonical_completion_target_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_project_statement_eq
+#check Poincare.canonical_completion_target_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_canonical_statement_eq
 #check Poincare.canonical_completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
 #check Poincare.canonical_completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
 #check Poincare.canonical_completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
@@ -8516,6 +8517,9 @@ universe u
 
 #check Poincare.canonical_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections_eq
 #check Poincare.canonical_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
+#check Poincare.canonical_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_finite_extinction_eq
+#check Poincare.canonical_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_package_eq
+#check Poincare.canonical_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_extraction_derivation_eq
 #check Poincare.canonical_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_forgetful_dependencies_eq
 #check Poincare.canonical_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_remaining_dependency_eq
 
@@ -8525,9 +8529,13 @@ universe u
 
 #check Poincare.canonical_completion_target_of_equation_boundary_extraction_derivation_dependency_projections_eq
 #check Poincare.canonical_completion_target_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
+#check Poincare.canonical_completion_target_of_equation_boundary_extraction_derivation_dependency_projections_to_finite_extinction_eq
+#check Poincare.canonical_completion_target_of_equation_boundary_extraction_derivation_dependency_projections_to_package_eq
+#check Poincare.canonical_completion_target_of_equation_boundary_extraction_derivation_dependency_projections_to_extraction_derivation_eq
 #check Poincare.canonical_completion_target_of_equation_boundary_extraction_derivation_dependency_projections_to_forgetful_dependencies_eq
 #check Poincare.canonical_completion_target_of_equation_boundary_extraction_derivation_dependency_projections_to_remaining_dependency_eq
 #check Poincare.canonical_completion_target_of_equation_boundary_extraction_derivation_dependency_projections_to_project_statement_eq
+#check Poincare.canonical_completion_target_of_equation_boundary_extraction_derivation_dependency_projections_to_canonical_statement_eq
 
 #check (Poincare.canonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections :
   ∀ witness : Type,
@@ -8536,6 +8544,9 @@ universe u
 
 #check Poincare.canonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_eq
 #check Poincare.canonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
+#check Poincare.canonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_to_finite_extinction_eq
+#check Poincare.canonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_to_package_eq
+#check Poincare.canonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_to_extraction_derivation_eq
 #check Poincare.canonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_to_forgetful_dependencies_eq
 #check Poincare.canonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_to_remaining_dependency_eq
 #check Poincare.canonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_to_project_criterion_eq
@@ -14560,8 +14571,8 @@ canonical_completion_equation_boundary_extraction_derivation_payload_count=$(
   rg -c '\bcanonical_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/CompletionTarget.lean || true
 )
-if [ "$canonical_completion_equation_boundary_extraction_derivation_payload_count" != "14" ]; then
-  echo "FAIL: equation-boundary certified projection canonical completion payload endpoints should expose theorem, equality, statement, forgetful, and remaining-dependency routes"
+if [ "$canonical_completion_equation_boundary_extraction_derivation_payload_count" != "17" ]; then
+  echo "FAIL: equation-boundary certified projection canonical completion payload endpoints should expose theorem, equality, statement, finite-extinction, package, extraction-derivation, forgetful, and remaining-dependency routes"
   rg -n '\bcanonical_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/CompletionTarget.lean || true
   exit 1
@@ -14571,8 +14582,8 @@ canonical_completion_equation_boundary_extraction_derivation_target_count=$(
   rg -c '\bcanonical_completion_target_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/CompletionTarget.lean || true
 )
-if [ "$canonical_completion_equation_boundary_extraction_derivation_target_count" != "12" ]; then
-  echo "FAIL: equation-boundary certified projection canonical completion target endpoints should expose theorem, equality, statement, forgetful, remaining-dependency, and project-statement routes"
+if [ "$canonical_completion_equation_boundary_extraction_derivation_target_count" != "16" ]; then
+  echo "FAIL: equation-boundary certified projection canonical completion target endpoints should expose theorem, equality, statement, finite-extinction, package, extraction-derivation, forgetful, remaining-dependency, project-statement, and canonical-statement routes"
   rg -n '\bcanonical_completion_target_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/CompletionTarget.lean || true
   exit 1
@@ -14582,8 +14593,8 @@ canonical_completion_equation_boundary_extraction_derivation_criterion_count=$(
   rg -c '\bcanonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/CompletionTarget.lean || true
 )
-if [ "$canonical_completion_equation_boundary_extraction_derivation_criterion_count" != "14" ]; then
-  echo "FAIL: equation-boundary certified projection canonical completion criterion endpoints should expose theorem, equality, statement, forgetful, remaining-dependency, project-criterion, and certificate routes"
+if [ "$canonical_completion_equation_boundary_extraction_derivation_criterion_count" != "17" ]; then
+  echo "FAIL: equation-boundary certified projection canonical completion criterion endpoints should expose theorem, equality, statement, finite-extinction, package, extraction-derivation, forgetful, remaining-dependency, project-criterion, and certificate routes"
   rg -n '\bcanonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/CompletionTarget.lean || true
   exit 1
