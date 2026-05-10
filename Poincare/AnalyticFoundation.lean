@@ -4236,6 +4236,83 @@ payload-plus-boundary-package assembler for the zero Ricci-flow data.
   apply Subsingleton.elim
 
 /--
+Zero Ricci-flow sub-obligation payload plus the direct zero equation
+verification supplies the strengthened analytic equation-boundary statement.
+-/
+theorem analytic_foundation_with_equation_boundary_of_zero_ricci_flow_subobligations_payload_and_ricci_flow_equation_verification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci))
+    (subobligations :
+      AnalyticFoundationSubobligationsPayload
+        (zero_ricci_flow_data g identifiesRicci equationEvidence)) :
+    AnalyticFoundationWithEquationBoundaryStatement
+      (zero_ricci_flow_data g identifiesRicci equationEvidence) :=
+  analytic_foundation_with_equation_boundary_of_subobligations_payload_and_ricci_flow_equation_verification
+    (zero_ricci_flow_data g identifiesRicci equationEvidence)
+    subobligations
+    (zero_ricci_flow_equation_verification
+      identifiesDerivative identifiesRicci)
+
+/--
+The zero sub-obligation payload direct-verification route delegates to the
+generic payload-plus-verification assembler.
+-/
+@[simp] theorem analytic_foundation_with_equation_boundary_of_zero_ricci_flow_subobligations_payload_and_ricci_flow_equation_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci))
+    (subobligations :
+      AnalyticFoundationSubobligationsPayload
+        (zero_ricci_flow_data g identifiesRicci equationEvidence)) :
+    analytic_foundation_with_equation_boundary_of_zero_ricci_flow_subobligations_payload_and_ricci_flow_equation_verification
+      identifiesDerivative identifiesRicci equationEvidence subobligations =
+      analytic_foundation_with_equation_boundary_of_subobligations_payload_and_ricci_flow_equation_verification
+        (zero_ricci_flow_data g identifiesRicci equationEvidence)
+        subobligations
+        (zero_ricci_flow_equation_verification
+          identifiesDerivative identifiesRicci) := by
+  apply Subsingleton.elim
+
+/--
+The zero sub-obligation payload boundary-package route agrees with the direct
+zero verification route.
+-/
+@[simp] theorem analytic_foundation_with_equation_boundary_of_zero_ricci_flow_subobligations_payload_and_boundary_package_to_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci))
+    (subobligations :
+      AnalyticFoundationSubobligationsPayload
+        (zero_ricci_flow_data g identifiesRicci equationEvidence)) :
+    analytic_foundation_with_equation_boundary_of_zero_ricci_flow_subobligations_payload_and_boundary_package
+      identifiesDerivative identifiesRicci equationEvidence subobligations =
+      analytic_foundation_with_equation_boundary_of_zero_ricci_flow_subobligations_payload_and_ricci_flow_equation_verification
+        identifiesDerivative identifiesRicci equationEvidence subobligations := by
+  apply Subsingleton.elim
+
+/--
 Stationary zero Ricci-flow sub-obligation payload plus its equation-boundary
 package supplies the strengthened analytic equation-boundary statement.
 -/
@@ -4322,6 +4399,125 @@ payload-plus-boundary-package assembler.
   apply Subsingleton.elim
 
 /--
+Stationary zero Ricci-flow sub-obligation payload plus the direct stationary
+zero equation verification supplies the strengthened analytic statement.
+-/
+theorem analytic_foundation_with_equation_boundary_of_stationary_zero_ricci_flow_subobligations_payload_and_ricci_flow_equation_verification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci))
+    (subobligations :
+      AnalyticFoundationSubobligationsPayload
+        (zero_ricci_flow_data
+          (stationary_time_dependent_riemannian_metric metric)
+          identifiesRicci equationEvidence)) :
+    AnalyticFoundationWithEquationBoundaryStatement
+      (zero_ricci_flow_data
+        (stationary_time_dependent_riemannian_metric metric)
+        identifiesRicci equationEvidence) :=
+  analytic_foundation_with_equation_boundary_of_subobligations_payload_and_ricci_flow_equation_verification
+    (zero_ricci_flow_data
+      (stationary_time_dependent_riemannian_metric metric)
+      identifiesRicci equationEvidence)
+    subobligations
+    (zero_ricci_flow_equation_verification
+      identifiesDerivative identifiesRicci)
+
+/--
+The stationary zero sub-obligation payload direct-verification route delegates
+to the generic payload-plus-verification assembler.
+-/
+@[simp] theorem analytic_foundation_with_equation_boundary_of_stationary_zero_ricci_flow_subobligations_payload_and_ricci_flow_equation_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci))
+    (subobligations :
+      AnalyticFoundationSubobligationsPayload
+        (zero_ricci_flow_data
+          (stationary_time_dependent_riemannian_metric metric)
+          identifiesRicci equationEvidence)) :
+    analytic_foundation_with_equation_boundary_of_stationary_zero_ricci_flow_subobligations_payload_and_ricci_flow_equation_verification
+      metric identifiesDerivative identifiesRicci equationEvidence subobligations =
+      analytic_foundation_with_equation_boundary_of_subobligations_payload_and_ricci_flow_equation_verification
+        (zero_ricci_flow_data
+          (stationary_time_dependent_riemannian_metric metric)
+          identifiesRicci equationEvidence)
+        subobligations
+        (zero_ricci_flow_equation_verification
+          identifiesDerivative identifiesRicci) := by
+  apply Subsingleton.elim
+
+/--
+The stationary zero sub-obligation payload boundary-package route agrees with
+the direct stationary zero verification route.
+-/
+@[simp] theorem analytic_foundation_with_equation_boundary_of_stationary_zero_ricci_flow_subobligations_payload_and_boundary_package_to_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci))
+    (subobligations :
+      AnalyticFoundationSubobligationsPayload
+        (zero_ricci_flow_data
+          (stationary_time_dependent_riemannian_metric metric)
+          identifiesRicci equationEvidence)) :
+    analytic_foundation_with_equation_boundary_of_stationary_zero_ricci_flow_subobligations_payload_and_boundary_package
+      metric identifiesDerivative identifiesRicci equationEvidence subobligations =
+      analytic_foundation_with_equation_boundary_of_stationary_zero_ricci_flow_subobligations_payload_and_ricci_flow_equation_verification
+        metric identifiesDerivative identifiesRicci equationEvidence subobligations := by
+  apply Subsingleton.elim
+
+/--
 Zero Ricci-flow analytic package data plus the explicit zero equation-boundary
 package supplies the strengthened analytic equation-boundary statement.
 -/
@@ -4370,6 +4566,29 @@ sub-obligation-payload plus boundary-package route.
           analytic_foundation_with_equation_boundary_of_zero_ricci_flow_subobligations_payload_and_boundary_package
             identifiesDerivative identifiesRicci equationEvidence
             subobligations) := by
+  apply Subsingleton.elim
+
+/--
+The zero analytic package route agrees with the direct zero verification route.
+-/
+@[simp] theorem analytic_foundation_with_equation_boundary_of_zero_ricci_flow_analytic_foundation_package_to_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation g (zero_ricci_curvature_data identifiesRicci))
+    (subobligations :
+      AnalyticFoundationSubobligationsPayload
+        (zero_ricci_flow_data g identifiesRicci equationEvidence)) :
+    analytic_foundation_with_equation_boundary_of_zero_ricci_flow_analytic_foundation_package
+      identifiesDerivative identifiesRicci equationEvidence subobligations =
+      analytic_foundation_with_equation_boundary_of_zero_ricci_flow_subobligations_payload_and_ricci_flow_equation_verification
+        identifiesDerivative identifiesRicci equationEvidence subobligations := by
   apply Subsingleton.elim
 
 /--
@@ -4447,6 +4666,42 @@ payload plus boundary-package route.
           analytic_foundation_with_equation_boundary_of_stationary_zero_ricci_flow_subobligations_payload_and_boundary_package
             metric identifiesDerivative identifiesRicci equationEvidence
             subobligations) := by
+  apply Subsingleton.elim
+
+/--
+The stationary zero analytic package route agrees with the direct stationary
+zero verification route.
+-/
+@[simp] theorem analytic_foundation_with_equation_boundary_of_stationary_zero_ricci_flow_analytic_foundation_package_to_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (equationEvidence :
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_curvature_data identifiesRicci))
+    (subobligations :
+      AnalyticFoundationSubobligationsPayload
+        (zero_ricci_flow_data
+          (stationary_time_dependent_riemannian_metric metric)
+          identifiesRicci equationEvidence)) :
+    analytic_foundation_with_equation_boundary_of_stationary_zero_ricci_flow_analytic_foundation_package
+      metric identifiesDerivative identifiesRicci equationEvidence subobligations =
+      analytic_foundation_with_equation_boundary_of_stationary_zero_ricci_flow_subobligations_payload_and_ricci_flow_equation_verification
+        metric identifiesDerivative identifiesRicci equationEvidence subobligations := by
   apply Subsingleton.elim
 
 /--
