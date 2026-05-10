@@ -10,7 +10,7 @@ interfaces.
 import Mathlib.Geometry.Manifold.Riemannian.Basic
 import Poincare.RicciFlowInterface
 
-universe u v
+universe u v w
 
 open Bundle
 open scoped Manifold ContDiff
@@ -895,6 +895,73 @@ structure RicciFlowEquationVerification
   equationAtTime : ∀ t,
     metric_time_derivative_at_time_of_metric_derivative_field
       metricDerivative.derivative t = ricci_flow_rhs_tensor curvature t
+
+/--
+The missing bridge from the concrete equation-verification package to the
+abstract Ricci-flow equation interface.
+
+This is a named theorem target, not an assumption installed globally: downstream
+constructions that use it must receive an explicit proof of this statement.
+-/
+def RicciFlowEquationInterfaceBridgeStatement : Prop :=
+  ∀ {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (curvature : RicciCurvatureData g),
+      RicciFlowEquationVerification curvature →
+      SatisfiesRicciFlowEquation g curvature
+
+/--
+The equation-interface bridge statement expands to the universal implication
+from concrete verification data to the abstract equation interface.
+-/
+theorem ricciFlowEquationInterfaceBridgeStatement_eq :
+    RicciFlowEquationInterfaceBridgeStatement.{u, v, w} =
+      (∀ {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+        {H : Type v} [TopologicalSpace H]
+        {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+        {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+        [IsManifold I 1 M]
+        {g : TimeDependentRiemannianMetric I n M}
+        (curvature : RicciCurvatureData g),
+          RicciFlowEquationVerification curvature →
+          SatisfiesRicciFlowEquation g curvature) :=
+  rfl
+
+/--
+An explicit proof of the bridge statement converts any concrete equation
+verification into the abstract Ricci-flow equation interface.
+-/
+theorem satisfies_ricci_flow_equation_of_verification
+    (bridge : RicciFlowEquationInterfaceBridgeStatement.{u, v, w})
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (verification : RicciFlowEquationVerification curvature) :
+    SatisfiesRicciFlowEquation g curvature :=
+  bridge curvature verification
+
+/--
+The verification-to-interface route is direct application of the supplied
+bridge theorem.
+-/
+@[simp] theorem satisfies_ricci_flow_equation_of_verification_eq
+    (bridge : RicciFlowEquationInterfaceBridgeStatement.{u, v, w})
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (verification : RicciFlowEquationVerification curvature) :
+    satisfies_ricci_flow_equation_of_verification bridge verification =
+      bridge curvature verification :=
+  rfl
 
 /-- Project metric-derivative data from a Ricci-flow equation verification. -/
 def metric_derivative_data_of_ricci_flow_equation_verification
@@ -1866,6 +1933,161 @@ noncomputable def zero_ricci_flow_data
       ({ metric := g
          curvature := zero_ricci_curvature_data identifiesRicci
          equation := equationEvidence } : RicciFlowData I n M) :=
+  rfl
+
+/--
+Zero Ricci-flow data built from the explicit zero verification and a supplied
+bridge from concrete verifications to the abstract equation interface.
+-/
+noncomputable def zero_ricci_flow_data_of_equation_verification_bridge
+    (bridge : RicciFlowEquationInterfaceBridgeStatement.{u, v, w})
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M)
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g)) :
+    RicciFlowData I n M :=
+  zero_ricci_flow_data g identifiesRicci
+    (satisfies_ricci_flow_equation_of_verification bridge
+      (zero_ricci_flow_equation_verification
+        identifiesDerivative identifiesRicci))
+
+/--
+The bridge-built zero flow data is the existing zero flow data whose equation
+evidence is obtained from the explicit zero verification.
+-/
+@[simp] theorem zero_ricci_flow_data_of_equation_verification_bridge_eq
+    (bridge : RicciFlowEquationInterfaceBridgeStatement.{u, v, w})
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M)
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g)) :
+    zero_ricci_flow_data_of_equation_verification_bridge
+      bridge g identifiesDerivative identifiesRicci =
+      zero_ricci_flow_data g identifiesRicci
+        (satisfies_ricci_flow_equation_of_verification bridge
+          (zero_ricci_flow_equation_verification
+            identifiesDerivative identifiesRicci)) :=
+  rfl
+
+/-- The bridge-built zero Ricci-flow data has the supplied metric family. -/
+@[simp] theorem metric_of_zero_ricci_flow_data_of_equation_verification_bridge_eq
+    (bridge : RicciFlowEquationInterfaceBridgeStatement.{u, v, w})
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M)
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g)) :
+    metric_of_ricci_flow_data
+      (zero_ricci_flow_data_of_equation_verification_bridge
+        bridge g identifiesDerivative identifiesRicci) = g :=
+  rfl
+
+/-- The bridge-built zero Ricci-flow data has zero Ricci curvature data. -/
+@[simp] theorem curvature_data_of_zero_ricci_flow_data_of_equation_verification_bridge_eq
+    (bridge : RicciFlowEquationInterfaceBridgeStatement.{u, v, w})
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M)
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g)) :
+    curvature_data_of_ricci_flow_data
+      (zero_ricci_flow_data_of_equation_verification_bridge
+        bridge g identifiesDerivative identifiesRicci) =
+        zero_ricci_curvature_data identifiesRicci :=
+  rfl
+
+/--
+The bridge-built zero Ricci-flow data stores the equation evidence obtained by
+applying the bridge to the explicit zero verification.
+-/
+@[simp] theorem equation_evidence_of_zero_ricci_flow_data_of_equation_verification_bridge_eq
+    (bridge : RicciFlowEquationInterfaceBridgeStatement.{u, v, w})
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M)
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g)) :
+    equation_evidence_of_ricci_flow_data
+      (zero_ricci_flow_data_of_equation_verification_bridge
+        bridge g identifiesDerivative identifiesRicci) =
+      satisfies_ricci_flow_equation_of_verification bridge
+        (zero_ricci_flow_equation_verification
+          identifiesDerivative identifiesRicci) :=
+  rfl
+
+/--
+Stationary zero Ricci-flow data built from the explicit zero verification and a
+supplied verification-to-interface bridge.
+-/
+noncomputable def stationary_zero_ricci_flow_data_of_equation_verification_bridge
+    (bridge : RicciFlowEquationInterfaceBridgeStatement.{u, v, w})
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric))) :
+    RicciFlowData I n M :=
+  zero_ricci_flow_data_of_equation_verification_bridge
+    bridge
+    (stationary_time_dependent_riemannian_metric metric)
+    identifiesDerivative identifiesRicci
+
+/--
+The bridge-built stationary zero flow data delegates to the generic bridge-built
+zero flow data for the stationary metric family.
+-/
+@[simp] theorem stationary_zero_ricci_flow_data_of_equation_verification_bridge_eq
+    (bridge : RicciFlowEquationInterfaceBridgeStatement.{u, v, w})
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric))) :
+    stationary_zero_ricci_flow_data_of_equation_verification_bridge
+      bridge metric identifiesDerivative identifiesRicci =
+      zero_ricci_flow_data_of_equation_verification_bridge
+        bridge
+        (stationary_time_dependent_riemannian_metric metric)
+        identifiesDerivative identifiesRicci :=
   rfl
 
 /-- The metric projection of zero Ricci-flow data is the supplied metric. -/
