@@ -69799,6 +69799,156 @@ theorem poincareCompletionCertificate_milestone_requirements_payload_of_completi
           (dependencies_of_equation_boundary_dependencies dependencies)) := by
   apply Subsingleton.elim
 
+theorem poincareCompletionCertificate_component_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_extraction_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_component_requirements_payload
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      poincareCompletionCertificate_component_requirements_payload
+        (completion_certificate_of_extraction_derivation_dependency_projections
+          (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependencies)) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_package_layer_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_extraction_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_package_layer_requirements_payload
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      poincareCompletionCertificate_package_layer_requirements_payload
+        (completion_certificate_of_extraction_derivation_dependency_projections
+          (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependencies)) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_milestone_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_extraction_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_milestone_requirements_payload
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      poincareCompletionCertificate_milestone_requirements_payload
+        (completion_certificate_of_extraction_derivation_dependency_projections
+          (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependencies)) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_component_requirements_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_extraction_derivation_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_component_requirements_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      poincareCompletionCertificate_component_requirements_payload
+        (completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+          (dependencies_of_equation_boundary_dependencies dependencies)) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_package_layer_requirements_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_extraction_derivation_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_package_layer_requirements_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      poincareCompletionCertificate_package_layer_requirements_payload
+        (completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+          (dependencies_of_equation_boundary_dependencies dependencies)) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_milestone_requirements_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_extraction_derivation_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_milestone_requirements_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_dependencies
+          dependencies)) =
+      poincareCompletionCertificate_milestone_requirements_payload
+        (completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+          (dependencies_of_equation_boundary_dependencies dependencies)) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_component_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_dependency_projections_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_component_requirements_payload
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      poincareCompletionCertificate_component_requirements_payload
+        (completion_certificate_of_dependency_projections
+          (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependencies)) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_package_layer_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_dependency_projections_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_package_layer_requirements_payload
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      poincareCompletionCertificate_package_layer_requirements_payload
+        (completion_certificate_of_dependency_projections
+          (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependencies)) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_milestone_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_dependency_projections_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_milestone_requirements_payload
+      (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      poincareCompletionCertificate_milestone_requirements_payload
+        (completion_certificate_of_dependency_projections
+          (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+            dependencies)) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_component_requirements_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_component_requirements_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      poincareCompletionCertificate_component_requirements_payload
+        (completion_certificate_of_poincareProofDependencies_projections
+          (dependencies_of_equation_boundary_dependencies dependencies)) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_package_layer_requirements_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_package_layer_requirements_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      poincareCompletionCertificate_package_layer_requirements_payload
+        (completion_certificate_of_poincareProofDependencies_projections
+          (dependencies_of_equation_boundary_dependencies dependencies)) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_milestone_requirements_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_milestone_requirements_payload
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+        dependencies
+        (poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+          dependencies)) =
+      poincareCompletionCertificate_milestone_requirements_payload
+        (completion_certificate_of_poincareProofDependencies_projections
+          (dependencies_of_equation_boundary_dependencies dependencies)) := by
+  apply Subsingleton.elim
+
 /--
 The component-slot requirement projection for the strengthened
 remaining-package certificate agrees with the projection-route certificate for
