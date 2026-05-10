@@ -47860,6 +47860,47 @@ theorem remaining_dependency_package_of_completion_certificate_of_poincareProofD
   apply Subsingleton.elim
 
 /--
+Projecting the full-assembly payload from the named strengthened aggregate
+lifted certificate recovers the ordinary aggregate full-assembly payload after
+forgetting equation-boundary data.
+-/
+theorem poincare_full_assembly_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem poincare_full_assembly_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_remaining_dependency_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_to_remaining_dependency
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_forgetful_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_remaining_dependency_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+      (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
+        dependencies) =
+      poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_remaining_dependency
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 Projecting the canonical payload from the named strengthened aggregate
 lifted-homeomorphism certificate recovers the boundary lifted projection
 payload.
