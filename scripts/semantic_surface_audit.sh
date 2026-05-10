@@ -6278,7 +6278,17 @@ universe u
 #check Poincare.canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependency_projections
 #check Poincare.canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependency_projections_eq
 #check Poincare.canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_finite_extinction_eq
+#check Poincare.canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_extraction_derivation_eq
+#check Poincare.canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_package_eq
 #check Poincare.canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_forgetful_dependencies_eq
+#check Poincare.canonical_three_sphere_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+#check Poincare.canonical_three_sphere_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+#check Poincare.canonical_three_sphere_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+#check Poincare.canonical_three_sphere_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+#check Poincare.canonical_three_sphere_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_forgetful_dependencies_eq
+#check Poincare.canonical_three_sphere_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
 #check Poincare.completion_criterion_of_equation_boundary_dependency_projections
 #check Poincare.completion_criterion_of_equation_boundary_dependency_projections_eq
 #check Poincare.completion_criterion_of_equation_boundary_dependency_projections_to_topology_statement_eq
@@ -6466,6 +6476,13 @@ universe u
         Nonempty (M ≃ₜ Poincare.ThreeSphere))
 
 #check (Poincare.canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependency_projections :
+  Poincare.PoincareProofDependenciesWithEquationBoundary →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.canonical_three_sphere_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections :
   Poincare.PoincareProofDependenciesWithEquationBoundary →
     ∀ (M : Type) [TopologicalSpace M] [T2Space M]
       [ChartedSpace Poincare.ThreeManifoldModel M]
@@ -14026,8 +14043,8 @@ topology_package_derivation_payload_count=$(
   rg -c 'topology_extraction_derivation_payload_of_topology_package' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$topology_package_derivation_payload_count" != "13" ]; then
-  echo "FAIL: dependency topology extraction-derivation projection should consume the package derivation payload"
+if [ "$topology_package_derivation_payload_count" != "15" ]; then
+  echo "FAIL: dependency topology extraction-derivation projection should consume the package derivation payload across ordinary, boundary, and lifted canonical routes"
   rg -n 'topology_extraction_derivation_payload_of_topology_package' \
     Poincare/DependencyProjections.lean || true
   exit 1
@@ -14466,9 +14483,20 @@ projection_equation_boundary_extraction_derivation_canonical_statement_count=$(
   rg -c '\bcanonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_equation_boundary_extraction_derivation_canonical_statement_count" != "4" ]; then
-  echo "FAIL: equation-boundary certified projection canonical endpoints should expose theorem, equality, statement, and forgetful routes"
+if [ "$projection_equation_boundary_extraction_derivation_canonical_statement_count" != "8" ]; then
+  echo "FAIL: equation-boundary certified projection canonical endpoints should expose theorem, equality, statement, finite-extinction, extraction-derivation, package, forgetful, and lifted-certificate routes"
   rg -n '\bcanonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependency_projections\b' \
+    Poincare/DependencyProjections.lean || true
+  exit 1
+fi
+
+projection_equation_boundary_lifted_homeomorphism_canonical_statement_count=$(
+  rg -c '\bcanonical_three_sphere_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections\b' \
+    Poincare/DependencyProjections.lean || true
+)
+if [ "$projection_equation_boundary_lifted_homeomorphism_canonical_statement_count" != "7" ]; then
+  echo "FAIL: equation-boundary lifted-homeomorphism projection canonical endpoints should expose theorem, equality, statement, finite-extinction, package, forgetful, and certified routes"
+  rg -n '\bcanonical_three_sphere_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections\b' \
     Poincare/DependencyProjections.lean || true
   exit 1
 fi
