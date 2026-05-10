@@ -43735,6 +43735,42 @@ theorem completion_certificate_of_milestone_requirements_payload_of_poincareProo
         dependencies := by
   apply Subsingleton.elim
 
+/--
+The verification-family component-slot requirement payload also reconstructs
+the direct dependency-projection certificate.
+-/
+theorem completion_certificate_of_component_requirements_payload_of_poincareProofDependencies_and_verification_family_to_dependency_projections_eq :
+    completion_certificate_of_component_requirements_payload
+      (dependency_component_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily) =
+      completion_certificate_of_dependency_projections_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The verification-family package-layer requirement payload also reconstructs
+the direct dependency-projection certificate.
+-/
+theorem completion_certificate_of_package_layer_requirements_payload_of_poincareProofDependencies_and_verification_family_to_dependency_projections_eq :
+    completion_certificate_of_package_layer_requirements_payload
+      (dependency_package_layer_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily) =
+      completion_certificate_of_dependency_projections_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The verification-family milestone requirement payload also reconstructs the
+direct dependency-projection certificate.
+-/
+theorem completion_certificate_of_milestone_requirements_payload_of_poincareProofDependencies_and_verification_family_to_dependency_projections_eq :
+    completion_certificate_of_milestone_requirements_payload
+      (dependency_milestone_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily) =
+      completion_certificate_of_dependency_projections_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
 end VerificationFamilyDependencyRequirementPayloadCertificates
 
 /--
@@ -44289,6 +44325,42 @@ theorem completion_certificate_of_milestone_extraction_derivation_requirements_p
         dependencies verificationFamily) =
       completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements
         dependencies := by
+  apply Subsingleton.elim
+
+/--
+The verification-family certified component-slot requirement payload also
+reconstructs the direct dependency-projection certificate.
+-/
+theorem completion_certificate_of_component_extraction_derivation_requirements_payload_of_poincareProofDependencies_and_verification_family_to_dependency_projections_eq :
+    completion_certificate_of_component_extraction_derivation_requirements_payload
+      (dependency_component_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily) =
+      completion_certificate_of_dependency_projections_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The verification-family certified package-layer requirement payload also
+reconstructs the direct dependency-projection certificate.
+-/
+theorem completion_certificate_of_package_layer_extraction_derivation_requirements_payload_of_poincareProofDependencies_and_verification_family_to_dependency_projections_eq :
+    completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+      (dependency_package_layer_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily) =
+      completion_certificate_of_dependency_projections_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The verification-family certified milestone requirement payload also
+reconstructs the direct dependency-projection certificate.
+-/
+theorem completion_certificate_of_milestone_extraction_derivation_requirements_payload_of_poincareProofDependencies_and_verification_family_to_dependency_projections_eq :
+    completion_certificate_of_milestone_extraction_derivation_requirements_payload
+      (dependency_milestone_requirements_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily) =
+      completion_certificate_of_dependency_projections_and_verification_family
+        dependencies verificationFamily := by
   apply Subsingleton.elim
 
 end VerificationFamilyDependencyExtractionPayloadCertificates
