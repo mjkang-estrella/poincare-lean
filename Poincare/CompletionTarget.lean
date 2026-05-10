@@ -5721,6 +5721,178 @@ theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationB
         dependencies := by
   apply Subsingleton.elim
 
+section VerificationFamilyFullAssemblyPayloads
+
+variable (dependencies : PoincareProofDependencies.{u})
+variable (verificationFamily :
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package payload.2)))
+
+include dependencies verificationFamily
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications expose the
+boundary-preserving full assembly payload after applying the strengthened
+dependency lift.
+-/
+theorem poincare_full_assembly_payload_of_poincareProofDependencies_and_verification_family :
+    ∃ _smoothabilityPackage : SmoothabilityPackage.{u},
+    ∃ _surgeryPackages :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+    ∃ _topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ _extractSphere : ExtinctionImpliesSphereStatement.{u},
+      PoincareConjectureStatement.{u} :=
+  poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The verification-family full assembly payload delegates through the strengthened
+aggregate full assembly route after applying the verification-family lift.
+-/
+theorem poincare_full_assembly_payload_of_poincareProofDependencies_and_verification_family_eq :
+    poincare_full_assembly_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily =
+      poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift recovers the ordinary aggregate
+full-assembly payload.
+-/
+theorem poincare_full_assembly_payload_of_poincareProofDependencies_and_verification_family_to_forgetful_dependencies :
+    ∃ _smoothabilityPackage : SmoothabilityPackage.{u},
+    ∃ _surgeryPackages :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+    ∃ _topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ _extractSphere : ExtinctionImpliesSphereStatement.{u},
+      PoincareConjectureStatement.{u} :=
+  (fun _lift : PoincareProofDependenciesWithEquationBoundary.{u} =>
+    poincare_full_assembly_payload_of_dependencies dependencies)
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The forgetful verification-family full assembly payload is the ordinary
+aggregate full assembly payload.
+-/
+theorem poincare_full_assembly_payload_of_poincareProofDependencies_and_verification_family_to_forgetful_dependencies_eq :
+    poincare_full_assembly_payload_of_poincareProofDependencies_and_verification_family_to_forgetful_dependencies
+        dependencies verificationFamily =
+      poincare_full_assembly_payload_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications expose the
+certified boundary-preserving extraction-derivation full assembly payload after
+applying the strengthened dependency lift.
+-/
+theorem poincare_full_assembly_payload_of_poincareProofDependencies_and_verification_family_extraction_derivation :
+    ∃ _smoothabilityPackage : SmoothabilityPackage.{u},
+    ∃ _surgeryPackages :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+    ∃ _topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+    ∃ _derivation :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere,
+      PoincareConjectureStatement.{u} :=
+  poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The certified verification-family full assembly payload delegates through the
+strengthened aggregate certified full assembly route after applying the
+verification-family lift.
+-/
+theorem poincare_full_assembly_payload_of_poincareProofDependencies_and_verification_family_extraction_derivation_eq :
+    poincare_full_assembly_payload_of_poincareProofDependencies_and_verification_family_extraction_derivation
+        dependencies verificationFamily =
+      poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift recovers the ordinary aggregate
+certified extraction-derivation full-assembly payload.
+-/
+theorem poincare_full_assembly_payload_of_poincareProofDependencies_and_verification_family_extraction_derivation_to_forgetful_dependencies :
+    ∃ _smoothabilityPackage : SmoothabilityPackage.{u},
+    ∃ _surgeryPackages :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+    ∃ _topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+    ∃ _derivation :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere,
+      PoincareConjectureStatement.{u} :=
+  (fun _lift : PoincareProofDependenciesWithEquationBoundary.{u} =>
+    poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
+      dependencies)
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The forgetful certified verification-family full assembly payload is the
+ordinary aggregate certified extraction-derivation full assembly payload.
+-/
+theorem poincare_full_assembly_payload_of_poincareProofDependencies_and_verification_family_extraction_derivation_to_forgetful_dependencies_eq :
+    poincare_full_assembly_payload_of_poincareProofDependencies_and_verification_family_extraction_derivation_to_forgetful_dependencies
+        dependencies verificationFamily =
+      poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+end VerificationFamilyFullAssemblyPayloads
+
 /--
 The strengthened remaining-package full-assembly route projects to the
 ordinary full-assembly payload after forgetting equation-boundary data.
