@@ -18371,6 +18371,147 @@ theorem canonical_three_sphere_statement_of_target_statement_of_completion_certi
         dependencies verificationFamily := by
   apply Subsingleton.elim
 
+section VerificationFamilyDependencyProjectionCertificate
+
+variable (dependencies : RemainingDependencyPackage.{u})
+variable (verificationFamily :
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package payload.2)))
+
+include dependencies verificationFamily
+
+/--
+The verification-family dependency-projection route produces the checked
+completion certificate through the named dependency-projection canonical target.
+-/
+theorem completion_certificate_of_dependency_projections_and_verification_family :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_remaining_dependency_and_canonical_target
+    dependencies
+    (canonical_completion_target_of_dependency_projections_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The verification-family dependency-projection certificate uses the generic
+remaining-dependency canonical-target constructor with the named projection
+target.
+-/
+theorem completion_certificate_of_dependency_projections_and_verification_family_eq :
+    completion_certificate_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      completion_certificate_of_remaining_dependency_and_canonical_target
+        dependencies
+        (canonical_completion_target_of_dependency_projections_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family dependency-projection certificate agrees with the
+aggregate verification-family certificate.
+-/
+theorem completion_certificate_of_dependency_projections_and_verification_family_to_aggregate_eq :
+    completion_certificate_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      completion_certificate_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift from the dependency-projection
+certificate recovers the ordinary aggregate certificate.
+-/
+theorem completion_certificate_of_dependency_projections_and_verification_family_to_dependencies_eq :
+    completion_certificate_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      completion_certificate_of_poincareProofDependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical completion payload from the dependency-projection
+certificate recovers the verification-family dependency-projection canonical
+payload.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_dependency_projections_and_verification_family_eq :
+    canonical_completion_payload_of_completion_certificate
+      (completion_certificate_of_dependency_projections_and_verification_family
+        dependencies verificationFamily) =
+      canonical_completion_payload_of_dependency_projections_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+Projecting the project completion payload from the dependency-projection
+certificate recovers the verification-family dependency-projection project
+payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_dependency_projections_and_verification_family_eq :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_dependency_projections_and_verification_family
+        dependencies verificationFamily) =
+      poincare_completion_payload_of_dependency_projections_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+Projecting the target statement from the dependency-projection certificate
+recovers the verification-family dependency-projection Poincare statement.
+-/
+theorem target_statement_of_completion_certificate_of_dependency_projections_and_verification_family_eq :
+    target_statement_of_completion_certificate
+      (completion_certificate_of_dependency_projections_and_verification_family
+        dependencies verificationFamily) =
+      poincare_statement_of_dependency_projections_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical target from the dependency-projection certificate
+recovers the verification-family dependency-projection canonical target.
+-/
+theorem canonical_completion_target_of_completion_certificate_of_dependency_projections_and_verification_family_eq :
+    canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_dependency_projections_and_verification_family
+        dependencies verificationFamily) =
+      canonical_completion_target_of_dependency_projections_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+variable (witness : Type u)
+
+include witness
+
+/--
+Projecting the completion criterion from the dependency-projection certificate
+recovers the verification-family dependency-projection completion criterion.
+-/
+theorem completion_criterion_of_completion_certificate_of_dependency_projections_and_verification_family_eq :
+    completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_dependency_projections_and_verification_family
+        dependencies verificationFamily) =
+      completion_criterion_of_dependency_projections_and_verification_family
+        witness dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+Projecting the canonical criterion from the dependency-projection certificate
+recovers the verification-family dependency-projection canonical criterion.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_of_dependency_projections_and_verification_family_eq :
+    canonical_completion_criterion_of_completion_certificate witness
+      (completion_certificate_of_dependency_projections_and_verification_family
+        dependencies verificationFamily) =
+      canonical_completion_criterion_of_dependency_projections_and_verification_family
+        dependencies verificationFamily witness := by
+  apply Subsingleton.elim
+
+end VerificationFamilyDependencyProjectionCertificate
+
 section VerificationFamilyExtractionDerivationCertificate
 
 variable (dependencies : PoincareProofDependencies.{u})
