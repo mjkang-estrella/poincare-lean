@@ -6113,6 +6113,14 @@ universe u
 #check Poincare.poincare_projection_assembly_inputs_payload_of_dependencies_and_verification_family_eq
 #check Poincare.poincare_projection_assembly_inputs_payload_of_dependencies_and_verification_family_to_projections_eq
 #check Poincare.poincare_projection_assembly_inputs_payload_of_dependencies_and_verification_family_to_dependencies_eq
+#check Poincare.poincare_target_payload_of_dependency_projections_and_verification_family
+#check Poincare.poincare_target_payload_of_dependency_projections_and_verification_family_eq
+#check Poincare.poincare_target_payload_of_dependency_projections_and_verification_family_to_projection_inputs_eq
+#check Poincare.poincare_target_payload_of_dependency_projections_and_verification_family_to_dependencies_eq
+#check Poincare.poincare_completion_payload_of_dependency_projections_and_verification_family
+#check Poincare.poincare_completion_payload_of_dependency_projections_and_verification_family_eq
+#check Poincare.poincare_completion_payload_of_dependency_projections_and_verification_family_to_target_payload_eq
+#check Poincare.poincare_completion_payload_of_dependency_projections_and_verification_family_to_dependencies_eq
 #check Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies
 #check Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies_eq
 #check Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies_to_statement_eq
@@ -13606,7 +13614,7 @@ projection_target_payload_count=$(
   rg -c '\bpoincare_target_payload_of_dependency_projections\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_target_payload_count" != "10" ]; then
+if [ "$projection_target_payload_count" != "11" ]; then
   echo "FAIL: projection full/completion routes should consume the projection target payload"
   rg -n '\bpoincare_target_payload_of_dependency_projections\b' \
     Poincare/DependencyProjections.lean || true
@@ -13628,7 +13636,7 @@ projection_direct_extinction_payload_count=$(
   rg -c '\bpoincare_payload_of_extinction_and_extraction\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_direct_extinction_payload_count" != "7" ]; then
+if [ "$projection_direct_extinction_payload_count" != "10" ]; then
   echo "FAIL: projection final target assembly should be centralized in the projection target payload"
   rg -n '\bpoincare_payload_of_extinction_and_extraction\b' \
     Poincare/DependencyProjections.lean || true

@@ -12180,6 +12180,96 @@ theorem poincare_target_payload_of_dependency_projections_to_package_eq
         exact ⟨finiteExtinction, extraction, target, criterion⟩) := by
   apply Subsingleton.elim
 
+section VerificationFamilyProjectionTargetPayloads
+
+variable (dependencies : PoincareProofDependencies.{u})
+variable (verificationFamily :
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package payload.2)))
+
+include dependencies verificationFamily
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications expose the
+projection target payload through the verification-family assembly inputs.
+-/
+theorem poincare_target_payload_of_dependency_projections_and_verification_family :
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ _extractSphere : ExtinctionImpliesSphereStatement.{u},
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases
+      poincare_projection_assembly_inputs_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily with
+    ⟨finiteExtinction, extraction⟩
+  rcases poincare_payload_of_extinction_and_extraction
+      finiteExtinction extraction with
+    ⟨target, criterion⟩
+  exact ⟨finiteExtinction, extraction, target, criterion⟩
+
+/--
+The verification-family projection target payload is assembled from the named
+verification-family projection assembly-input payload.
+-/
+theorem poincare_target_payload_of_dependency_projections_and_verification_family_eq :
+    poincare_target_payload_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      (by
+        rcases
+            poincare_projection_assembly_inputs_payload_of_dependencies_and_verification_family
+              dependencies verificationFamily with
+          ⟨finiteExtinction, extraction⟩
+        rcases poincare_payload_of_extinction_and_extraction
+            finiteExtinction extraction with
+          ⟨target, criterion⟩
+        exact ⟨finiteExtinction, extraction, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family projection target payload is assembled from the named
+finite-extinction and topology-extraction routes.
+-/
+theorem poincare_target_payload_of_dependency_projections_and_verification_family_to_projection_inputs_eq :
+    poincare_target_payload_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      (by
+        rcases poincare_payload_of_extinction_and_extraction
+            (finite_extinction_of_dependencies_and_verification_family
+              dependencies verificationFamily)
+            (extinction_extraction_of_dependencies_and_verification_family
+              dependencies verificationFamily) with
+          ⟨target, criterion⟩
+        exact
+          ⟨ finite_extinction_of_dependencies_and_verification_family
+              dependencies verificationFamily
+          , extinction_extraction_of_dependencies_and_verification_family
+              dependencies verificationFamily
+          , target
+          , criterion ⟩) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift recovers the ordinary dependency
+projection target payload.
+-/
+theorem poincare_target_payload_of_dependency_projections_and_verification_family_to_dependencies_eq :
+    poincare_target_payload_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      poincare_target_payload_of_dependency_projections dependencies := by
+  apply Subsingleton.elim
+
+end VerificationFamilyProjectionTargetPayloads
+
 /--
 The projection route exposes the smoothability/surgery package inputs, a
 certified final extractor, the target statement, and the completion criterion
@@ -13075,6 +13165,77 @@ theorem poincare_completion_payload_of_dependency_projections_to_package_eq
         (extinction_implies_sphere_of_topology_package
           dependencies.topology) := by
   apply Subsingleton.elim
+
+section VerificationFamilyProjectionCompletionPayloads
+
+variable (dependencies : PoincareProofDependencies.{u})
+variable (verificationFamily :
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package payload.2)))
+
+include dependencies verificationFamily
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications expose the
+final target and completion criterion through the verification-family
+projection target payload.
+-/
+theorem poincare_completion_payload_of_dependency_projections_and_verification_family :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases
+      poincare_target_payload_of_dependency_projections_and_verification_family
+        dependencies verificationFamily with
+    ⟨_finiteExtinction, _extraction, target, criterion⟩
+  exact ⟨target, criterion⟩
+
+/--
+The verification-family completion payload is selected from the named
+verification-family projection target payload.
+-/
+theorem poincare_completion_payload_of_dependency_projections_and_verification_family_eq :
+    poincare_completion_payload_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      (by
+        rcases
+            poincare_target_payload_of_dependency_projections_and_verification_family
+              dependencies verificationFamily with
+          ⟨_finiteExtinction, _extraction, target, criterion⟩
+        exact ⟨target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family completion payload factors through the named
+verification-family target-payload route.
+-/
+theorem poincare_completion_payload_of_dependency_projections_and_verification_family_to_target_payload_eq :
+    poincare_completion_payload_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      (by
+        rcases
+            poincare_target_payload_of_dependency_projections_and_verification_family
+              dependencies verificationFamily with
+          ⟨_finiteExtinction, _extraction, target, criterion⟩
+        exact ⟨target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift recovers the ordinary dependency
+projection completion payload.
+-/
+theorem poincare_completion_payload_of_dependency_projections_and_verification_family_to_dependencies_eq :
+    poincare_completion_payload_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      poincare_completion_payload_of_dependency_projections dependencies := by
+  apply Subsingleton.elim
+
+end VerificationFamilyProjectionCompletionPayloads
 
 /--
 The extraction-derivation projection route exposes the local target and
