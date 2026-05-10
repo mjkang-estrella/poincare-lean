@@ -25187,6 +25187,82 @@ theorem canonical_completion_criterion_of_completion_certificate_with_equation_b
   apply Subsingleton.elim
 
 /--
+The verification-family boundary-aware payload canonical completion payload can
+also be read through the explicit dependency-projection endpoints.
+-/
+theorem canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_dependency_projections_eq :
+    canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      canonical_completion_payload_of_dependency_projections_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The verification-family boundary-aware payload project completion payload can
+also be read through the explicit dependency-projection endpoints.
+-/
+theorem poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_dependency_projections_eq :
+    poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      poincare_completion_payload_of_dependency_projections_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The verification-family boundary-aware payload target statement can also be
+read through the explicit dependency-projection endpoints.
+-/
+theorem target_statement_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_dependency_projections_eq :
+    target_statement_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      poincare_statement_of_dependency_projections_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The verification-family boundary-aware payload canonical target can also be
+read through the explicit dependency-projection endpoints.
+-/
+theorem canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_dependency_projections_eq :
+    canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      canonical_completion_target_of_dependency_projections_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The verification-family boundary-aware payload completion criterion can also
+be read through the explicit dependency-projection endpoints.
+-/
+theorem completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_dependency_projections_eq
+    (witness : Type u) :
+    completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload
+      witness
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      completion_criterion_of_dependency_projections_and_verification_family
+        witness dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
+The verification-family boundary-aware payload canonical criterion can also be
+read through the explicit dependency-projection endpoints.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_dependency_projections_eq
+    (witness : Type u) :
+    canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload
+      witness
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      canonical_completion_criterion_of_dependency_projections_and_verification_family
+        dependencies verificationFamily witness := by
+  apply Subsingleton.elim
+
+/--
 The verification-family boundary-aware payload exposes the strengthened
 verification-family full-assembly payload.
 -/
