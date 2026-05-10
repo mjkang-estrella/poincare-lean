@@ -9063,6 +9063,88 @@ structure FiniteExtinctionSurgeryPackageWithEquationBoundary
   equationBoundary :
     RicciFlowEquationBoundaryPackage (ricci_flow_data_of_surgery_package package)
 
+/--
+Build a strengthened surgery package from an ordinary finite-extinction
+surgery package and an already assembled equation-boundary package for its
+projected Ricci-flow data.
+-/
+noncomputable def surgery_package_with_equation_boundary_of_boundary_package
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M)
+    (boundary :
+      RicciFlowEquationBoundaryPackage
+        (ricci_flow_data_of_surgery_package package)) :
+    FiniteExtinctionSurgeryPackageWithEquationBoundary n M :=
+  { package := package
+    equationBoundary := boundary }
+
+/--
+The boundary-built strengthened surgery package is exactly the pair of the
+ordinary package and the supplied equation boundary.
+-/
+@[simp] theorem surgery_package_with_equation_boundary_of_boundary_package_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M)
+    (boundary :
+      RicciFlowEquationBoundaryPackage
+        (ricci_flow_data_of_surgery_package package)) :
+    surgery_package_with_equation_boundary_of_boundary_package
+      package boundary =
+      ({ package := package
+         equationBoundary := boundary } :
+        FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :=
+  rfl
+
+/--
+Build a strengthened surgery package directly from an ordinary
+finite-extinction surgery package and an explicit Ricci-flow equation
+verification for the package's projected Ricci-flow data.
+-/
+noncomputable def surgery_package_with_equation_boundary_of_ricci_flow_equation_verification
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M)
+    (verification :
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package package))) :
+    FiniteExtinctionSurgeryPackageWithEquationBoundary n M :=
+  surgery_package_with_equation_boundary_of_boundary_package
+    package
+    (equation_boundary_package_of_ricci_flow_equation_verification
+      (ricci_flow_data_of_surgery_package package) verification)
+
+/--
+The verification-built strengthened surgery package delegates to the
+boundary-package constructor after packaging the explicit verification with the
+ordinary package's equation evidence.
+-/
+@[simp] theorem surgery_package_with_equation_boundary_of_ricci_flow_equation_verification_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M)
+    (verification :
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package package))) :
+    surgery_package_with_equation_boundary_of_ricci_flow_equation_verification
+      package verification =
+      surgery_package_with_equation_boundary_of_boundary_package
+        package
+        (equation_boundary_package_of_ricci_flow_equation_verification
+          (ricci_flow_data_of_surgery_package package) verification) :=
+  rfl
+
 /-- Forget the explicit equation boundary from a strengthened surgery package. -/
 noncomputable def surgery_package_of_equation_boundary_surgery_package
     {n : ℕ∞ω}
@@ -9082,6 +9164,45 @@ noncomputable def surgery_package_of_equation_boundary_surgery_package
     (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
     surgery_package_of_equation_boundary_surgery_package package =
       package.package :=
+  rfl
+
+/--
+Forgetting the boundary from a boundary-built strengthened surgery package
+recovers the original ordinary surgery package.
+-/
+@[simp] theorem surgery_package_of_surgery_package_with_equation_boundary_of_boundary_package_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M)
+    (boundary :
+      RicciFlowEquationBoundaryPackage
+        (ricci_flow_data_of_surgery_package package)) :
+    surgery_package_of_equation_boundary_surgery_package
+      (surgery_package_with_equation_boundary_of_boundary_package
+        package boundary) =
+      package :=
+  rfl
+
+/--
+Forgetting the boundary from a verification-built strengthened surgery package
+recovers the original ordinary surgery package.
+-/
+@[simp] theorem surgery_package_of_surgery_package_with_equation_boundary_of_ricci_flow_equation_verification_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M)
+    (verification :
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package package))) :
+    surgery_package_of_equation_boundary_surgery_package
+      (surgery_package_with_equation_boundary_of_ricci_flow_equation_verification
+        package verification) =
+      package :=
   rfl
 
 /--
@@ -9107,6 +9228,46 @@ def equation_boundary_of_surgery_package_with_equation_boundary
     (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
     equation_boundary_of_surgery_package_with_equation_boundary package =
       package.equationBoundary :=
+  rfl
+
+/--
+Projecting the boundary from a boundary-built strengthened surgery package
+returns the supplied boundary package.
+-/
+@[simp] theorem equation_boundary_of_surgery_package_with_equation_boundary_of_boundary_package_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M)
+    (boundary :
+      RicciFlowEquationBoundaryPackage
+        (ricci_flow_data_of_surgery_package package)) :
+    equation_boundary_of_surgery_package_with_equation_boundary
+      (surgery_package_with_equation_boundary_of_boundary_package
+        package boundary) =
+      boundary :=
+  rfl
+
+/--
+Projecting the boundary from a verification-built strengthened surgery package
+returns the boundary package obtained from that explicit verification.
+-/
+@[simp] theorem equation_boundary_of_surgery_package_with_equation_boundary_of_ricci_flow_equation_verification_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M)
+    (verification :
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package package))) :
+    equation_boundary_of_surgery_package_with_equation_boundary
+      (surgery_package_with_equation_boundary_of_ricci_flow_equation_verification
+        package verification) =
+      equation_boundary_package_of_ricci_flow_equation_verification
+        (ricci_flow_data_of_surgery_package package) verification :=
   rfl
 
 /-- Project explicit equation verification from a strengthened surgery package. -/
@@ -9564,6 +9725,69 @@ theorem analytic_foundation_with_equation_boundary_of_surgery_package_with_equat
           (surgery_package_of_equation_boundary_surgery_package package))
         (ricci_flow_equation_verification_of_surgery_package_with_equation_boundary
           package) := by
+  apply Subsingleton.elim
+
+/--
+An ordinary surgery package plus an explicit Ricci-flow equation verification
+supplies the strengthened analytic-boundary statement for the package's
+projected Ricci-flow data.
+-/
+theorem analytic_foundation_with_equation_boundary_of_surgery_package_and_ricci_flow_equation_verification
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M)
+    (verification :
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package package))) :
+    AnalyticFoundationWithEquationBoundaryStatement
+      (ricci_flow_data_of_surgery_package package) :=
+  analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+    (surgery_package_with_equation_boundary_of_ricci_flow_equation_verification
+      package verification)
+
+/--
+The ordinary-package-plus-verification analytic-boundary route delegates
+through the verification-built strengthened surgery package.
+-/
+@[simp] theorem analytic_foundation_with_equation_boundary_of_surgery_package_and_ricci_flow_equation_verification_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M)
+    (verification :
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package package))) :
+    analytic_foundation_with_equation_boundary_of_surgery_package_and_ricci_flow_equation_verification
+      package verification =
+      analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+        (surgery_package_with_equation_boundary_of_ricci_flow_equation_verification
+          package verification) :=
+  rfl
+
+/--
+The ordinary-package-plus-verification route agrees with assembling directly
+from the stored analytic package and supplied verification.
+-/
+theorem analytic_foundation_with_equation_boundary_of_surgery_package_and_ricci_flow_equation_verification_to_analytic_package_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M)
+    (verification :
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package package))) :
+    analytic_foundation_with_equation_boundary_of_surgery_package_and_ricci_flow_equation_verification
+      package verification =
+      analytic_foundation_with_equation_boundary_of_package_and_ricci_flow_equation_verification
+        (analytic_foundation_of_surgery_package package)
+        verification := by
   apply Subsingleton.elim
 
 /-- A strengthened surgery package still supplies the finite-extinction result. -/
