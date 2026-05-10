@@ -14605,6 +14605,24 @@ theorem canonical_completion_payload_of_dependency_projections_to_topology_state
   apply Subsingleton.elim
 
 /--
+The dependency projection canonical payload also factors through the
+finite-extinction plus certified extraction-derivation route selected by the
+dependency payload.
+-/
+theorem canonical_completion_payload_of_dependency_projections_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_payload_of_dependency_projections dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
 The dependency projection canonical payload is the finite-extinction plus final
 extractor route selected by the stored topology package.
 -/
@@ -14652,6 +14670,24 @@ theorem canonical_completion_target_of_dependency_projections_to_topology_statem
       canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
         (finite_extinction_of_dependencies dependencies)
         (topology_extraction_statement_of_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The dependency projection canonical target also factors through the
+finite-extinction plus certified extraction-derivation route selected by the
+dependency payload.
+-/
+theorem canonical_completion_target_of_dependency_projections_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_dependency_projections dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
   apply Subsingleton.elim
 
 /--
@@ -14717,6 +14753,26 @@ theorem canonical_completion_criterion_of_dependency_projections_to_topology_sta
         witness
         (finite_extinction_of_dependencies dependencies)
         (topology_extraction_statement_of_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The dependency projection completion criterion also factors through the
+finite-extinction plus certified extraction-derivation route selected by the
+dependency payload.
+-/
+theorem canonical_completion_criterion_of_dependency_projections_to_finite_extinction_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_dependency_projections
+      witness dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+            witness
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
   apply Subsingleton.elim
 
 /--
@@ -15865,6 +15921,26 @@ theorem canonical_completion_payload_of_equation_boundary_dependency_projections
   apply Subsingleton.elim
 
 /--
+The strengthened equation-boundary projection canonical payload also factors
+through the finite-extinction plus certified extraction-derivation route
+selected by the boundary dependency payload.
+-/
+theorem canonical_completion_payload_of_equation_boundary_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_equation_boundary_dependency_projections
+        dependencies =
+      (by
+        rcases
+          topology_extraction_derivation_payload_of_equation_boundary_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened equation-boundary projection canonical payload is the
 finite-extinction plus final-extractor canonical route selected by the stored
 topology package.
@@ -15947,6 +16023,26 @@ theorem canonical_completion_target_of_equation_boundary_dependency_projections_
         (finite_extinction_of_equation_boundary_dependencies dependencies)
         (topology_extraction_statement_of_dependencies
           (dependencies_of_equation_boundary_dependencies dependencies)) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened equation-boundary projection canonical target also factors
+through the finite-extinction plus certified extraction-derivation route
+selected by the boundary dependency payload.
+-/
+theorem canonical_completion_target_of_equation_boundary_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_target_of_equation_boundary_dependency_projections
+        dependencies =
+      (by
+        rcases
+          topology_extraction_derivation_payload_of_equation_boundary_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation) := by
   apply Subsingleton.elim
 
 /--
@@ -16047,6 +16143,28 @@ theorem canonical_completion_criterion_of_equation_boundary_dependency_projectio
         (finite_extinction_of_equation_boundary_dependencies dependencies)
         (topology_extraction_statement_of_dependencies
           (dependencies_of_equation_boundary_dependencies dependencies)) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened equation-boundary projection completion criterion also
+factors through the finite-extinction plus certified extraction-derivation
+route selected by the boundary dependency payload.
+-/
+theorem canonical_completion_criterion_of_equation_boundary_dependency_projections_to_finite_extinction_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_equation_boundary_dependency_projections
+        witness dependencies =
+      (by
+        rcases
+          topology_extraction_derivation_payload_of_equation_boundary_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
+            witness
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation) := by
   apply Subsingleton.elim
 
 /--
@@ -48934,6 +49052,32 @@ theorem completion_certificate_of_equation_boundary_dependency_projections_to_to
   apply Subsingleton.elim
 
 /--
+The strengthened equation-boundary projection certificate also factors through
+the finite-extinction plus certified extraction-derivation canonical payload
+selected by the boundary dependency payload.
+-/
+theorem completion_certificate_of_equation_boundary_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_dependency_projections
+        dependencies =
+      (by
+        rcases
+          topology_extraction_derivation_payload_of_equation_boundary_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        rcases
+          canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation with
+          ⟨target, criterion⟩
+        exact
+          ⟨canonicalCompletionTheoremName, rfl,
+            remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+              dependencies,
+            target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened equation-boundary projection certificate factors through the
 finite-extinction plus final-extractor canonical payload selected by the stored
 topology package.
@@ -50395,6 +50539,33 @@ theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_
           canonical_completion_payload_of_finite_extinction_and_topology_extraction_statement
             (finite_extinction_of_equation_boundary_dependencies dependencies)
             (topology_extraction_statement_of_dependencies remaining) with
+          ⟨target, criterion⟩
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, remaining, target,
+            criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate equation-boundary certificate also factors through
+the boundary finite-extinction theorem and the certified extractor/derivation
+payload selected by the boundary dependency package.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      (by
+        let remaining : RemainingDependencyPackage.{u} :=
+          remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            (dependencies_of_equation_boundary_dependencies dependencies)
+        rcases
+          topology_extraction_derivation_payload_of_equation_boundary_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        rcases
+          canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation with
           ⟨target, criterion⟩
         exact
           ⟨canonicalCompletionTheoremName, rfl, remaining, target,
@@ -59429,6 +59600,28 @@ theorem completion_certificate_of_dependency_projections_to_topology_statement_e
   apply Subsingleton.elim
 
 /--
+The projection-based certificate constructor also factors through the
+finite-extinction plus certified extraction-derivation canonical payload
+selected from the dependency payload.
+-/
+theorem completion_certificate_of_dependency_projections_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_dependency_projections dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        rcases
+          canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation with
+          ⟨target, criterion⟩
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, dependencies, target,
+            criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
 The projection-based certificate constructor factors through the
 finite-extinction plus final extractor canonical payload selected by the stored
 topology package.
@@ -59579,6 +59772,29 @@ theorem poincareCompletionCertificate_iff_dependency_projections_to_topology_sta
               canonical_completion_payload_of_finite_extinction_and_topology_extraction_statement
                 (finite_extinction_of_dependencies dependencies)
                 (topology_extraction_statement_of_dependencies dependencies) with
+              ⟨target, criterion⟩
+            exact
+              ⟨canonicalCompletionTheoremName, rfl, dependencies, target,
+                criterion⟩)⟩ := by
+  apply Subsingleton.elim
+
+/--
+The projection-based dependency equivalence is also the remaining-dependency
+projection paired directly with the finite-extinction plus certified
+extractor/derivation certificate constructor.
+-/
+theorem poincareCompletionCertificate_iff_dependency_projections_to_finite_extinction_eq :
+    poincareCompletionCertificate_iff_dependency_projections =
+      ⟨remaining_dependency_package_of_completion_certificate,
+        fun dependencies =>
+          (by
+            rcases topology_extraction_derivation_payload_of_dependencies
+                dependencies with
+              ⟨extractSphere, derivation⟩
+            rcases
+              canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+                (finite_extinction_of_dependencies dependencies)
+                extractSphere derivation with
               ⟨target, criterion⟩
             exact
               ⟨canonicalCompletionTheoremName, rfl, dependencies, target,
@@ -59748,6 +59964,32 @@ theorem completion_certificate_of_poincareProofDependencies_projections_to_topol
   apply Subsingleton.elim
 
 /--
+The aggregate-dependency projection constructor also factors directly through
+the finite-extinction plus certified extractor/derivation canonical payload
+after converting aggregate dependencies.
+-/
+theorem completion_certificate_of_poincareProofDependencies_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_poincareProofDependencies_projections
+      dependencies =
+      (by
+        let remaining : RemainingDependencyPackage.{u} :=
+          remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies
+        rcases topology_extraction_derivation_payload_of_dependencies
+            remaining with
+          ⟨extractSphere, derivation⟩
+        rcases
+          canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies remaining)
+            extractSphere derivation with
+          ⟨target, criterion⟩
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, remaining, target,
+            criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate-dependency projection constructor factors directly through the
 package-selected final-extractor canonical payload after converting aggregate
 dependencies.
@@ -59816,6 +60058,32 @@ theorem poincareCompletionCertificate_iff_poincareProofDependencies_projections_
                 remainingDependencyPackage_iff_poincareProofDependencies.mpr
                   dependencies,
                 target, criterion⟩)⟩ := by
+  apply Subsingleton.elim
+
+/--
+The aggregate projection equivalence is also the aggregate dependency
+projection paired directly with the finite-extinction plus certified
+extractor/derivation certificate constructor after converting dependencies.
+-/
+theorem poincareCompletionCertificate_iff_poincareProofDependencies_projections_to_finite_extinction_eq :
+    poincareCompletionCertificate_iff_poincareProofDependencies_projections =
+      ⟨poincareProofDependencies_of_completion_certificate,
+        fun dependencies =>
+          (by
+            let remaining : RemainingDependencyPackage.{u} :=
+              remainingDependencyPackage_iff_poincareProofDependencies.mpr
+                dependencies
+            rcases topology_extraction_derivation_payload_of_dependencies
+                remaining with
+              ⟨extractSphere, derivation⟩
+            rcases
+              canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+                (finite_extinction_of_dependencies remaining)
+                extractSphere derivation with
+              ⟨target, criterion⟩
+            exact
+              ⟨canonicalCompletionTheoremName, rfl, remaining, target,
+                criterion⟩)⟩ := by
   apply Subsingleton.elim
 
 /--
