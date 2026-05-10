@@ -16146,6 +16146,20 @@ theorem completion_certificate_of_canonical_statement_payload_of_completion_cert
   apply Subsingleton.elim
 
 /--
+The canonical-statement payload inverse for the strengthened certified
+boundary projection certificate also serves as its statement-route inverse.
+-/
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
+          dependencies)) =
+      completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The aggregate canonical-statement payload constructor recovers the strengthened
 boundary projection certificate from its projected aggregate
 canonical-statement payload.
@@ -16166,6 +16180,21 @@ certified boundary projection certificate from its projected aggregate
 canonical-statement payload.
 -/
 theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
+          dependencies)) =
+      completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The aggregate canonical-statement payload inverse for the strengthened
+certified boundary projection certificate also serves as its statement-route
+inverse.
+-/
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     completion_certificate_of_aggregate_canonical_statement_payload
       (poincareCompletionCertificate_aggregate_canonical_statement_payload
