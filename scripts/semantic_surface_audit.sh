@@ -8940,6 +8940,10 @@ universe u
       Poincare.PoincareConjectureStatement ∧
       ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
 
+#check (Poincare.poincare_conjecture_of_completion_certificate :
+  Poincare.PoincareCompletionCertificate.{u} →
+    Poincare.PoincareConjectureStatement.{u})
+
 #check Poincare.poincareCompletionCertificate_theoremName_payload_eq
 #check Poincare.poincareCompletionCertificate_literal_payload_eq
 #check Poincare.completion_certificate_of_literal_payload_eq
@@ -8952,6 +8956,7 @@ universe u
 #check Poincare.poincare_completion_payload_of_completion_certificate_to_canonical_payload_eq
 #check Poincare.canonical_completion_target_of_completion_certificate_eq
 #check Poincare.target_statement_of_completion_certificate_eq
+#check Poincare.poincare_conjecture_of_completion_certificate_eq
 #check Poincare.canonical_completion_target_of_completion_certificate_to_target_statement_eq
 #check Poincare.completion_criterion_of_completion_certificate_eq
 #check Poincare.canonical_completion_criterion_of_completion_certificate_eq
@@ -11183,6 +11188,7 @@ universe u
 #check Poincare.poincareCompletionCertificate_project_statement_payload
 #check Poincare.completion_certificate_of_project_statement_payload
 #check Poincare.poincareCompletionCertificate_iff_project_statement_payload
+#check Poincare.poincare_conjecture_of_completion_certificate
 #check Poincare.poincareCompletionCertificate_theoremName_payload_eq
 #check Poincare.poincareCompletionCertificate_literal_payload_eq
 #check Poincare.completion_certificate_of_literal_payload_eq
@@ -11195,6 +11201,7 @@ universe u
 #check Poincare.poincare_completion_payload_of_completion_certificate_to_canonical_payload_eq
 #check Poincare.canonical_completion_target_of_completion_certificate_eq
 #check Poincare.target_statement_of_completion_certificate_eq
+#check Poincare.poincare_conjecture_of_completion_certificate_eq
 #check Poincare.canonical_completion_target_of_completion_certificate_to_target_statement_eq
 #check Poincare.completion_criterion_of_completion_certificate_eq
 #check Poincare.canonical_completion_criterion_of_completion_certificate_eq

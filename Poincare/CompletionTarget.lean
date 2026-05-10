@@ -17104,6 +17104,26 @@ theorem target_statement_of_completion_certificate
   canonical_completion_target_of_completion_certificate certificate
 
 /--
+A completion certificate gives the reserved Poincare theorem target. This is
+still conditional on the certificate; it does not manufacture the missing
+certificate itself.
+-/
+theorem poincare_conjecture_of_completion_certificate
+    (certificate : PoincareCompletionCertificate.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate certificate
+
+/--
+The reserved-name bridge is exactly the existing target-statement projection
+from the completion certificate.
+-/
+theorem poincare_conjecture_of_completion_certificate_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    poincare_conjecture_of_completion_certificate certificate =
+      target_statement_of_completion_certificate certificate := by
+  apply Subsingleton.elim
+
+/--
 The project target-statement projection is the canonical target projection
 viewed at the project target proposition.
 -/
