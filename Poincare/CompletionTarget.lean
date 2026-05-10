@@ -24920,6 +24920,57 @@ theorem poincare_full_assembly_payload_of_completion_certificate_with_equation_b
   apply Subsingleton.elim
 
 /--
+The checked certificate projected from a boundary-aware payload gives the
+reserved Poincare theorem target.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_verification_payload
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_equation_boundary_verification_payload payload)
+
+/--
+The checked-certificate reserved-name bridge delegates through the projected
+checked completion certificate.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_conjecture_of_completion_certificate_of_equation_boundary_verification_payload
+        payload =
+      poincare_conjecture_of_completion_certificate
+        (completion_certificate_of_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The checked certificate projected from a boundary-aware payload also exposes a
+reserved-name payload.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_verification_payload
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_conjecture_payload_of_completion_certificate
+    (completion_certificate_of_equation_boundary_verification_payload payload)
+
+/--
+The checked-certificate reserved-name payload delegates through the projected
+checked completion certificate.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_verification_payload
+        payload =
+      poincare_conjecture_payload_of_completion_certificate
+        (completion_certificate_of_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
 The checked certificate projected from a boundary-aware payload exposes the
 projected strengthened dependency package's canonical payload.
 -/
@@ -24975,6 +25026,34 @@ theorem canonical_completion_target_of_completion_certificate_of_equation_bounda
       (completion_certificate_of_equation_boundary_verification_payload
         payload) =
       canonical_completion_target_of_equation_boundary_remaining_dependency_package
+        (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The checked-certificate reserved-name payload can be routed through the
+projected strengthened dependency package.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_verification_payload
+        payload =
+      poincare_completion_payload_of_equation_boundary_remaining_dependency_package
+        (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The checked-certificate reserved-name theorem bridge can be routed through the
+projected strengthened dependency package.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_conjecture_of_completion_certificate_of_equation_boundary_verification_payload
+        payload =
+      poincare_statement_of_equation_boundary_remaining_dependency_package
         (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
           payload) := by
   apply Subsingleton.elim
@@ -25054,6 +25133,88 @@ theorem target_statement_of_completion_certificate_of_equation_boundary_verifica
       canonical_completion_target_of_completion_certificate
         (completion_certificate_of_equation_boundary_verification_payload
           payload) := by
+  apply Subsingleton.elim
+
+/--
+The checked-certificate target-statement endpoint agrees with its reserved-name
+bridge.
+-/
+theorem target_statement_of_completion_certificate_of_equation_boundary_verification_payload_to_poincare_conjecture_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    target_statement_of_completion_certificate
+      (completion_certificate_of_equation_boundary_verification_payload
+        payload) =
+      poincare_conjecture_of_completion_certificate_of_equation_boundary_verification_payload
+        payload := by
+  apply Subsingleton.elim
+
+/--
+The checked-certificate reserved-name theorem bridge agrees with its
+target-statement endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_verification_payload_to_target_statement_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_conjecture_of_completion_certificate_of_equation_boundary_verification_payload
+        payload =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The checked-certificate canonical-target endpoint agrees with its reserved-name
+bridge.
+-/
+theorem canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_to_poincare_conjecture_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    canonical_completion_target_of_completion_certificate
+      (completion_certificate_of_equation_boundary_verification_payload
+        payload) =
+      poincare_conjecture_of_completion_certificate_of_equation_boundary_verification_payload
+        payload := by
+  apply Subsingleton.elim
+
+/--
+The checked-certificate reserved-name theorem bridge agrees with its
+canonical-target endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_verification_payload_to_canonical_target_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_conjecture_of_completion_certificate_of_equation_boundary_verification_payload
+        payload =
+      canonical_completion_target_of_completion_certificate
+        (completion_certificate_of_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The checked-certificate reserved-name payload agrees with its project payload.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_project_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_verification_payload
+        payload =
+      poincare_completion_payload_of_completion_certificate
+        (completion_certificate_of_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The checked-certificate project payload agrees with its reserved-name payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_poincare_conjecture_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_completion_payload_of_completion_certificate
+      (completion_certificate_of_equation_boundary_verification_payload
+        payload) =
+      poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_verification_payload
+        payload := by
   apply Subsingleton.elim
 
 /--
@@ -25248,6 +25409,42 @@ theorem canonical_completion_target_of_completion_certificate_of_equation_bounda
   apply Subsingleton.elim
 
 /--
+The checked-certificate reserved-name payload is carried by the
+certificate-level finite-extinction projection and the projected forgetful
+topology statement.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_finite_extinction_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_verification_payload
+        payload =
+      poincare_payload_of_finite_extinction_and_topology_extraction_statement
+        (finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+          payload)
+        (topology_extraction_statement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
+            payload)) := by
+  apply Subsingleton.elim
+
+/--
+The checked-certificate reserved-name theorem bridge is assembled from the
+certificate-level finite-extinction projection and the projected forgetful
+topology statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_verification_payload_to_finite_extinction_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_conjecture_of_completion_certificate_of_equation_boundary_verification_payload
+        payload =
+      poincare_statement_of_finite_extinction_and_topology_extraction_statement
+        (finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+          payload)
+        (topology_extraction_statement_of_dependencies
+          (remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
+            payload)) := by
+  apply Subsingleton.elim
+
+/--
 The checked certificate projected from a boundary-aware payload exposes the
 completion criterion assembled from the certificate-level finite-extinction
 projection and the projected forgetful topology statement.
@@ -25434,6 +25631,28 @@ theorem canonical_completion_target_of_completion_certificate_of_equation_bounda
             payload)) := by
   apply Subsingleton.elim
 
+theorem poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_boundary_certificate_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_verification_payload
+        payload =
+      poincare_completion_payload_of_completion_certificate
+        (completion_certificate_of_equation_boundary_remaining_dependency_package
+          (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+            payload)) := by
+  apply Subsingleton.elim
+
+theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_verification_payload_to_boundary_certificate_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_conjecture_of_completion_certificate_of_equation_boundary_verification_payload
+        payload =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_equation_boundary_remaining_dependency_package
+          (remaining_dependency_package_with_equation_boundary_of_completion_certificate_with_equation_boundary_verification_payload
+            payload)) := by
+  apply Subsingleton.elim
+
 theorem completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_to_boundary_certificate_eq
     (witness : Type u)
     (payload :
@@ -25555,6 +25774,34 @@ theorem canonical_completion_target_of_completion_certificate_of_equation_bounda
       (completion_certificate_of_equation_boundary_verification_payload
         payload) =
       canonical_completion_target_of_dependencies
+        (remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The checked-certificate reserved-name payload agrees with the ordinary
+remaining-dependency project payload after forgetting boundary data.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_remaining_dependency_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_verification_payload
+        payload =
+      poincare_completion_payload_of_remaining_dependency_package
+        (remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The checked-certificate reserved-name theorem bridge agrees with the ordinary
+remaining-dependency project statement after forgetting boundary data.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_verification_payload_to_remaining_dependency_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_conjecture_of_completion_certificate_of_equation_boundary_verification_payload
+        payload =
+      poincare_statement_of_dependencies
         (remaining_dependency_package_of_completion_certificate_with_equation_boundary_verification_payload
           payload) := by
   apply Subsingleton.elim
