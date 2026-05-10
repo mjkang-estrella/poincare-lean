@@ -1986,6 +1986,143 @@ theorem equation_boundary_verification_payload_of_dependencies_eq
               package⟩) := by
   apply Subsingleton.elim
 
+section VerificationFamilyBoundaryPackageProjections
+
+variable (dependencies : PoincareProofDependencies.{u})
+variable (verificationFamily :
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package payload.2)))
+
+include dependencies verificationFamily
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications expose
+boundary-carrying surgery packages after applying the strengthened dependency
+lift.
+-/
+theorem surgery_packages_with_equation_boundary_of_dependencies_and_verification_family :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        Nonempty
+          (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :=
+  surgery_packages_with_equation_boundary_of_dependencies
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The verification-family boundary package projection delegates to the
+strengthened dependency projection after applying the verification-family lift.
+-/
+theorem surgery_packages_with_equation_boundary_of_dependencies_and_verification_family_eq :
+    surgery_packages_with_equation_boundary_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      surgery_packages_with_equation_boundary_of_dependencies
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting boundary data from the verification-family lift recovers the
+ordinary surgery package family.
+-/
+theorem surgery_packages_of_dependencies_and_verification_family :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M) :=
+  surgery_packages_of_equation_boundary_dependencies
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The verification-family ordinary surgery-package projection delegates through
+the strengthened dependency lift.
+-/
+theorem surgery_packages_of_dependencies_and_verification_family_eq :
+    surgery_packages_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      surgery_packages_of_equation_boundary_dependencies
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift recovers the stored ordinary surgery
+package family.
+-/
+theorem surgery_packages_of_dependencies_and_verification_family_to_dependencies_eq :
+    surgery_packages_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      surgery_packages_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The verification-family lift exposes Ricci-flow equation-boundary packages for
+the projected boundary-carrying surgery packages.
+-/
+theorem ricci_flow_equation_boundary_packages_of_dependencies_and_verification_family :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+          Nonempty
+            (RicciFlowEquationBoundaryPackage
+              (ricci_flow_data_of_surgery_package
+                (surgery_package_of_equation_boundary_surgery_package
+                  package))) :=
+  ricci_flow_equation_boundary_packages_of_dependencies
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The verification-family equation-boundary package projection delegates through
+the strengthened dependency lift.
+-/
+theorem ricci_flow_equation_boundary_packages_of_dependencies_and_verification_family_eq :
+    ricci_flow_equation_boundary_packages_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      ricci_flow_equation_boundary_packages_of_dependencies
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+Ordinary dependencies plus explicit equation verifications expose the canonical
+dependent verification payload for the strengthened lift.
+-/
+theorem equation_boundary_verification_payload_of_dependencies_and_verification_family :
+    EquationBoundaryVerificationPayload
+      (equation_boundary_dependencies_of_dependencies_and_verification_family
+        dependencies verificationFamily) :=
+  equation_boundary_verification_payload_of_dependencies
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The verification-family dependent verification payload is the named payload of
+the strengthened dependency lift.
+-/
+theorem equation_boundary_verification_payload_of_dependencies_and_verification_family_eq :
+    equation_boundary_verification_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      equation_boundary_verification_payload_of_dependencies
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+end VerificationFamilyBoundaryPackageProjections
+
 /--
 An arbitrary verification payload exposes the selected equation-boundary
 package family without requiring callers to unpack the full payload shape.
