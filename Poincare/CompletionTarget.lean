@@ -23921,6 +23921,135 @@ theorem canonical_completion_target_of_completion_certificate_with_equation_boun
   apply Subsingleton.elim
 
 /--
+A boundary-aware certificate payload gives the reserved Poincare theorem target.
+This remains conditional on the payload's stored checked completion certificate.
+-/
+theorem poincare_conjecture_of_completion_certificate_with_equation_boundary_verification_payload
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_equation_boundary_verification_payload payload)
+
+/--
+The boundary-aware reserved-name bridge delegates through the stored checked
+completion certificate.
+-/
+theorem poincare_conjecture_of_completion_certificate_with_equation_boundary_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_conjecture_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      poincare_conjecture_of_completion_certificate
+        (completion_certificate_of_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware target-statement projection and reserved-name bridge have the
+same proof endpoint.
+-/
+theorem target_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_poincare_conjecture_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    target_statement_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      poincare_conjecture_of_completion_certificate_with_equation_boundary_verification_payload
+        payload := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware reserved-name bridge agrees with its target-statement
+projection.
+-/
+theorem poincare_conjecture_of_completion_certificate_with_equation_boundary_verification_payload_to_target_statement_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_conjecture_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      target_statement_of_completion_certificate_with_equation_boundary_verification_payload
+        payload := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware canonical target projection and reserved-name bridge have the
+same proof endpoint.
+-/
+theorem canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload_to_poincare_conjecture_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      poincare_conjecture_of_completion_certificate_with_equation_boundary_verification_payload
+        payload := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware reserved-name bridge agrees with its canonical target
+projection.
+-/
+theorem poincare_conjecture_of_completion_certificate_with_equation_boundary_verification_payload_to_canonical_target_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_conjecture_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload
+        payload := by
+  apply Subsingleton.elim
+
+/--
+A boundary-aware certificate payload also exposes a payload whose target
+component is the reserved-name bridge endpoint.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_conjecture_payload_of_completion_certificate
+    (completion_certificate_of_equation_boundary_verification_payload payload)
+
+/--
+The boundary-aware reserved-name payload delegates through the stored checked
+completion certificate.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      poincare_conjecture_payload_of_completion_certificate
+        (completion_certificate_of_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware reserved-name payload is the same project payload viewed
+through the named reserved endpoint.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_project_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload := by
+  apply Subsingleton.elim
+
+/--
+The boundary-aware project payload is the same payload viewed through the
+reserved-name bridge endpoint.
+-/
+theorem poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_poincare_conjecture_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload =
+      poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        payload := by
+  apply Subsingleton.elim
+
+/--
 Project the explicit completion criterion from a boundary-aware certificate
 payload through its stored checked certificate.
 -/
