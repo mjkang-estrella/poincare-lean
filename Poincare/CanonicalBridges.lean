@@ -24382,6 +24382,19 @@ theorem canonical_three_sphere_statement_of_completion_certificate_with_equation
   apply Subsingleton.elim
 
 /--
+The verification-family boundary-aware payload exposes the canonical statement
+through the direct dependency-projection certificate.
+-/
+theorem canonical_three_sphere_statement_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_dependency_projections_eq :
+    canonical_three_sphere_statement_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      canonical_three_sphere_statement_of_completion_certificate
+        (completion_certificate_of_dependency_projections_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
 The verification-family boundary-aware payload exposes the canonical
 reserved-name payload of its checked certificate.
 -/
@@ -24418,6 +24431,19 @@ theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_
         (completion_certificate_of_remaining_dependency_package
           (remainingDependencyPackage_iff_poincareProofDependencies.mpr
             dependencies)) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family boundary-aware payload exposes the canonical
+reserved-name payload through the direct dependency-projection certificate.
+-/
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_dependency_projections_eq :
+    poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_dependency_projections_and_verification_family
+          dependencies verificationFamily) := by
   apply Subsingleton.elim
 
 /--
@@ -24458,6 +24484,20 @@ theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_c
         (completion_certificate_of_remaining_dependency_package
           (remainingDependencyPackage_iff_poincareProofDependencies.mpr
             dependencies)) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family boundary-aware payload exposes the aggregate
+canonical reserved-name payload through the direct dependency-projection
+certificate.
+-/
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_dependency_projections_eq :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_dependency_projections_and_verification_family
+          dependencies verificationFamily) := by
   apply Subsingleton.elim
 
 /--
@@ -24502,6 +24542,19 @@ theorem completion_certificate_of_canonical_statement_payload_of_completion_cert
   apply Subsingleton.elim
 
 /--
+Reconstructing from the verification-family boundary-aware canonical payload
+recovers the direct dependency-projection certificate.
+-/
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_dependency_projections_eq :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily)) =
+      completion_certificate_of_dependency_projections_and_verification_family
+        dependencies verificationFamily := by
+  apply Subsingleton.elim
+
+/--
 Reconstructing the checked certificate from the verification-family aggregate
 canonical-statement payload recovers the verification-family certificate.
 -/
@@ -24540,6 +24593,19 @@ theorem completion_certificate_of_aggregate_canonical_statement_payload_of_compl
       completion_certificate_of_remaining_dependency_package
         (remainingDependencyPackage_iff_poincareProofDependencies.mpr
           dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Reconstructing from the verification-family boundary-aware aggregate
+canonical payload recovers the direct dependency-projection certificate.
+-/
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_dependency_projections_eq :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+        (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily)) =
+      completion_certificate_of_dependency_projections_and_verification_family
+        dependencies verificationFamily := by
   apply Subsingleton.elim
 
 end VerificationFamilyCanonicalBoundaryPayloads
