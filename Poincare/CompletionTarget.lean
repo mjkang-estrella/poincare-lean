@@ -22021,6 +22021,140 @@ theorem finite_extinction_of_completion_certificate_with_equation_boundary_verif
         dependencies := by
   apply Subsingleton.elim
 
+section VerificationFamilyBoundaryAwareAnalyticProjections
+
+variable (dependencies : PoincareProofDependencies.{u})
+variable (verificationFamily :
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package payload.2)))
+
+include dependencies verificationFamily
+
+/--
+The verification-family boundary-aware payload exposes the lifted
+equation-boundary package family.
+-/
+theorem ricci_flow_equation_boundary_packages_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_eq :
+    ricci_flow_equation_boundary_packages_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      ricci_flow_equation_boundary_packages_of_poincareProofDependenciesWithEquationBoundary
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family boundary-aware payload exposes the lifted
+equation/metric derivative payload.
+-/
+theorem equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_eq :
+    equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family boundary-aware payload exposes the lifted pointwise
+equation payload.
+-/
+theorem equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_eq :
+    equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      equation_boundary_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family boundary-aware payload exposes the lifted direct
+stored-verification pointwise equation payload.
+-/
+theorem equation_boundary_direct_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_eq :
+    equation_boundary_direct_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      equation_boundary_direct_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family boundary-aware payload exposes the lifted
+scalar-pointwise surgery package payload.
+-/
+theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_eq :
+    surgery_package_with_equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      surgery_package_with_equation_boundary_pointwise_equation_payload_of_poincareProofDependenciesWithEquationBoundary
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family boundary-aware payload exposes the lifted full
+surgery-derivative package payload.
+-/
+theorem surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_eq :
+    surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      surgery_package_with_equation_boundary_derivative_payload_of_poincareProofDependenciesWithEquationBoundary
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family boundary-aware payload exposes the lifted boundary
+surgery package payload.
+-/
+theorem surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_eq :
+    surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      surgery_package_with_equation_boundary_payload_of_poincareProofDependenciesWithEquationBoundary
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family boundary-aware payload exposes the lifted analytic
+foundation with equation-boundary statements.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_eq :
+    analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      analytic_foundation_with_equation_boundary_statements_of_poincareProofDependenciesWithEquationBoundary
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family boundary-aware payload exposes the lifted finite
+extinction theorem.
+-/
+theorem finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_eq :
+    finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
+      (completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family
+        dependencies verificationFamily) =
+      finite_extinction_of_poincareProofDependenciesWithEquationBoundary
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+end VerificationFamilyBoundaryAwareAnalyticProjections
+
 /--
 Project the canonical completion payload from a boundary-aware certificate
 payload through its stored checked certificate.
