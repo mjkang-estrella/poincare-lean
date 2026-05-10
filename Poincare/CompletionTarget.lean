@@ -5187,6 +5187,152 @@ theorem analytic_foundation_with_equation_boundary_statements_of_remaining_depen
   apply Subsingleton.elim
 
 /--
+The strengthened remaining package exposes the concrete equation-boundary
+payload behind each analytic-boundary statement.
+-/
+theorem equation_boundary_payload_statements_of_remaining_dependency_package
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        ∃ boundary : RicciFlowEquationBoundaryPackage flow,
+          RicciFlowEquationBoundaryStatement flow ∧
+          IsMetricTimeDerivativeOf
+            (metric_of_ricci_flow_data flow)
+            (metric_time_derivative_field_of_metric_derivative_data
+              (metric_derivative_data_of_equation_boundary_package boundary)) ∧
+          (∀ t : ℝ,
+            metric_time_derivative_at_time_of_metric_derivative_field
+              (metric_time_derivative_field_of_metric_derivative_data
+                (metric_derivative_data_of_equation_boundary_package
+                  boundary)) t =
+              ricci_flow_rhs_tensor
+                (curvature_data_of_ricci_flow_data flow) t) ∧
+          ∀ (t : ℝ) (x : M)
+            (v w : TangentSpace ThreeManifoldModelWithCorners x),
+            metric_time_derivative_at_time_of_metric_derivative_field
+              (metric_time_derivative_field_of_metric_derivative_data
+                (metric_derivative_data_of_equation_boundary_package
+                  boundary)) t x v w =
+              ricci_flow_rhs_tensor
+                (curvature_data_of_ricci_flow_data flow) t x v w :=
+  equation_boundary_payload_statements_of_dependencies dependencies
+
+/--
+The strengthened remaining-package equation-boundary payload family is the
+dependency-level equation-boundary payload family.
+-/
+theorem equation_boundary_payload_statements_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    equation_boundary_payload_statements_of_remaining_dependency_package
+        dependencies =
+      equation_boundary_payload_statements_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package equation-boundary payload family agrees
+directly with the named dependency projection.
+-/
+theorem equation_boundary_payload_statements_of_remaining_dependency_package_to_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    equation_boundary_payload_statements_of_remaining_dependency_package
+        dependencies =
+      equation_boundary_payload_statements_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package equation-boundary payload family is
+reconstructed from its named verification payload.
+-/
+theorem equation_boundary_payload_statements_of_remaining_dependency_package_to_verification_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    equation_boundary_payload_statements_of_remaining_dependency_package
+        dependencies =
+      equation_boundary_payload_statements_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining package exposes the analytic derivation stack
+together with the concrete equation-boundary payload behind each
+analytic-boundary statement.
+-/
+theorem analytic_derivation_and_boundary_payload_statements_of_remaining_dependency_package
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          AnalyticFoundationDerivationStatement flow ∧
+          ∃ boundary : RicciFlowEquationBoundaryPackage flow,
+            RicciFlowEquationBoundaryStatement flow ∧
+            IsMetricTimeDerivativeOf
+              (metric_of_ricci_flow_data flow)
+              (metric_time_derivative_field_of_metric_derivative_data
+                (metric_derivative_data_of_equation_boundary_package
+                  boundary)) ∧
+            (∀ t : ℝ,
+              metric_time_derivative_at_time_of_metric_derivative_field
+                (metric_time_derivative_field_of_metric_derivative_data
+                  (metric_derivative_data_of_equation_boundary_package
+                    boundary)) t =
+                ricci_flow_rhs_tensor
+                  (curvature_data_of_ricci_flow_data flow) t) ∧
+            ∀ (t : ℝ) (x : M)
+              (v w : TangentSpace ThreeManifoldModelWithCorners x),
+              metric_time_derivative_at_time_of_metric_derivative_field
+                (metric_time_derivative_field_of_metric_derivative_data
+                  (metric_derivative_data_of_equation_boundary_package
+                    boundary)) t x v w =
+                ricci_flow_rhs_tensor
+                  (curvature_data_of_ricci_flow_data flow) t x v w :=
+  analytic_derivation_and_boundary_payload_statements_of_dependencies
+    dependencies
+
+/--
+The strengthened remaining-package derivation-and-boundary family is the
+dependency-level derivation-and-boundary family.
+-/
+theorem analytic_derivation_and_boundary_payload_statements_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    analytic_derivation_and_boundary_payload_statements_of_remaining_dependency_package
+        dependencies =
+      analytic_derivation_and_boundary_payload_statements_of_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package derivation-and-boundary family agrees
+directly with the named dependency projection.
+-/
+theorem analytic_derivation_and_boundary_payload_statements_of_remaining_dependency_package_to_dependencies_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    analytic_derivation_and_boundary_payload_statements_of_remaining_dependency_package
+        dependencies =
+      analytic_derivation_and_boundary_payload_statements_of_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-package derivation-and-boundary family is
+reconstructed from its named verification payload.
+-/
+theorem analytic_derivation_and_boundary_payload_statements_of_remaining_dependency_package_to_verification_payload_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    analytic_derivation_and_boundary_payload_statements_of_remaining_dependency_package
+        dependencies =
+      analytic_derivation_and_boundary_payload_statements_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining dependency package produces the canonical completion
 payload through the strengthened aggregate dependency route.
 -/
@@ -7010,6 +7156,154 @@ theorem analytic_foundation_with_equation_boundary_statements_of_poincareProofDe
               (surgery_package_of_equation_boundary_surgery_package package),
             analytic_foundation_with_equation_boundary_of_direct_pointwise_equation_payload
               directPayload⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package exposes the concrete
+equation-boundary payload behind each analytic-boundary statement.
+-/
+theorem equation_boundary_payload_statements_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        ∃ boundary : RicciFlowEquationBoundaryPackage flow,
+          RicciFlowEquationBoundaryStatement flow ∧
+          IsMetricTimeDerivativeOf
+            (metric_of_ricci_flow_data flow)
+            (metric_time_derivative_field_of_metric_derivative_data
+              (metric_derivative_data_of_equation_boundary_package boundary)) ∧
+          (∀ t : ℝ,
+            metric_time_derivative_at_time_of_metric_derivative_field
+              (metric_time_derivative_field_of_metric_derivative_data
+                (metric_derivative_data_of_equation_boundary_package
+                  boundary)) t =
+              ricci_flow_rhs_tensor
+                (curvature_data_of_ricci_flow_data flow) t) ∧
+          ∀ (t : ℝ) (x : M)
+            (v w : TangentSpace ThreeManifoldModelWithCorners x),
+            metric_time_derivative_at_time_of_metric_derivative_field
+              (metric_time_derivative_field_of_metric_derivative_data
+                (metric_derivative_data_of_equation_boundary_package
+                  boundary)) t x v w =
+              ricci_flow_rhs_tensor
+                (curvature_data_of_ricci_flow_data flow) t x v w :=
+  equation_boundary_payload_statements_of_remaining_dependency_package
+    dependencies
+
+/--
+The strengthened aggregate equation-boundary payload family is the
+strengthened remaining-package equation-boundary payload family.
+-/
+theorem equation_boundary_payload_statements_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_payload_statements_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      equation_boundary_payload_statements_of_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate equation-boundary payload family agrees directly
+with the named dependency projection.
+-/
+theorem equation_boundary_payload_statements_of_poincareProofDependenciesWithEquationBoundary_to_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_payload_statements_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      equation_boundary_payload_statements_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate equation-boundary payload family is reconstructed
+from its named verification payload.
+-/
+theorem equation_boundary_payload_statements_of_poincareProofDependenciesWithEquationBoundary_to_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_payload_statements_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      equation_boundary_payload_statements_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package exposes the analytic derivation
+stack together with the concrete equation-boundary payload behind each
+analytic-boundary statement.
+-/
+theorem analytic_derivation_and_boundary_payload_statements_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          AnalyticFoundationDerivationStatement flow ∧
+          ∃ boundary : RicciFlowEquationBoundaryPackage flow,
+            RicciFlowEquationBoundaryStatement flow ∧
+            IsMetricTimeDerivativeOf
+              (metric_of_ricci_flow_data flow)
+              (metric_time_derivative_field_of_metric_derivative_data
+                (metric_derivative_data_of_equation_boundary_package
+                  boundary)) ∧
+            (∀ t : ℝ,
+              metric_time_derivative_at_time_of_metric_derivative_field
+                (metric_time_derivative_field_of_metric_derivative_data
+                  (metric_derivative_data_of_equation_boundary_package
+                    boundary)) t =
+                ricci_flow_rhs_tensor
+                  (curvature_data_of_ricci_flow_data flow) t) ∧
+            ∀ (t : ℝ) (x : M)
+              (v w : TangentSpace ThreeManifoldModelWithCorners x),
+              metric_time_derivative_at_time_of_metric_derivative_field
+                (metric_time_derivative_field_of_metric_derivative_data
+                  (metric_derivative_data_of_equation_boundary_package
+                    boundary)) t x v w =
+                ricci_flow_rhs_tensor
+                  (curvature_data_of_ricci_flow_data flow) t x v w :=
+  analytic_derivation_and_boundary_payload_statements_of_remaining_dependency_package
+    dependencies
+
+/--
+The strengthened aggregate derivation-and-boundary family is the strengthened
+remaining-package derivation-and-boundary family.
+-/
+theorem analytic_derivation_and_boundary_payload_statements_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    analytic_derivation_and_boundary_payload_statements_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      analytic_derivation_and_boundary_payload_statements_of_remaining_dependency_package
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate derivation-and-boundary family agrees directly with
+the named dependency projection.
+-/
+theorem analytic_derivation_and_boundary_payload_statements_of_poincareProofDependenciesWithEquationBoundary_to_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    analytic_derivation_and_boundary_payload_statements_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      analytic_derivation_and_boundary_payload_statements_of_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate derivation-and-boundary family is reconstructed from
+its named verification payload.
+-/
+theorem analytic_derivation_and_boundary_payload_statements_of_poincareProofDependenciesWithEquationBoundary_to_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    analytic_derivation_and_boundary_payload_statements_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      analytic_derivation_and_boundary_payload_statements_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+          dependencies) := by
   apply Subsingleton.elim
 
 /--
