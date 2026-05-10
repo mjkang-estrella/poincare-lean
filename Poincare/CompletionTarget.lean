@@ -42442,6 +42442,25 @@ theorem poincareCompletionCertificate_iff_lifted_homeomorphism_derivation_depend
         completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections⟩ := by
   apply Subsingleton.elim
 
+theorem poincareCompletionCertificate_iff_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq :
+    poincareCompletionCertificate_iff_lifted_homeomorphism_derivation_dependency_projections =
+      ⟨remaining_dependency_package_of_completion_certificate,
+        fun dependencies =>
+          (by
+            rcases
+                extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+                  (topology_extraction_statement_of_dependencies dependencies) with
+              ⟨extractSphere, derivation, _liftedDerivation⟩
+            rcases
+              canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+                (finite_extinction_of_dependencies dependencies)
+                extractSphere derivation with
+              ⟨target, criterion⟩
+            exact
+              ⟨canonicalCompletionTheoremName, rfl, dependencies, target,
+                criterion⟩)⟩ := by
+  apply Subsingleton.elim
+
 theorem poincareCompletionCertificate_iff_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq :
     poincareCompletionCertificate_iff_lifted_homeomorphism_derivation_dependency_projections =
       ⟨remaining_dependency_package_of_completion_certificate,
@@ -42476,6 +42495,12 @@ theorem poincareCompletionCertificate_iff_lifted_homeomorphism_derivation_depend
             exact
               ⟨canonicalCompletionTheoremName, rfl, dependencies, target,
                 criterion⟩)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_iff_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq :
+    poincareCompletionCertificate_iff_lifted_homeomorphism_derivation_dependency_projections =
+      ⟨remaining_dependency_package_of_completion_certificate,
+        completion_certificate_of_extraction_derivation_dependency_projections⟩ := by
   apply Subsingleton.elim
 
 /--
@@ -42615,6 +42640,33 @@ theorem completion_certificate_of_poincareProofDependencies_lifted_homeomorphism
 
 /--
 The aggregate lifted-homeomorphism projection certificate also factors directly
+through the lifted decomposition of the converted dependency package topology
+statement.
+-/
+theorem completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_statement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+      dependencies =
+      (by
+        let remaining : RemainingDependencyPackage.{u} :=
+          remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies remaining) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        rcases
+            canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_of_dependencies remaining)
+              extractSphere derivation with
+          ⟨target, criterion⟩
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, remaining, target,
+            criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate lifted-homeomorphism projection certificate also factors directly
 through the finite-extinction plus certified extractor/derivation canonical
 payload after converting aggregate dependencies.
 -/
@@ -42666,6 +42718,19 @@ theorem completion_certificate_of_poincareProofDependencies_lifted_homeomorphism
   apply Subsingleton.elim
 
 /--
+Forgetting the lifted certificate in the aggregate lifted-homeomorphism
+projection certificate recovers the aggregate certified extraction-derivation
+projection certificate.
+-/
+theorem completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+      dependencies =
+      completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 The completion certificate is equivalent to the aggregate proof dependency
 package through the lifted-homeomorphism projection route.
 -/
@@ -42682,6 +42747,33 @@ theorem poincareCompletionCertificate_iff_poincareProofDependencies_lifted_homeo
     poincareCompletionCertificate_iff_poincareProofDependencies_lifted_homeomorphism_derivation_projections =
       ⟨poincareProofDependencies_of_completion_certificate,
         completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections⟩ := by
+  apply Subsingleton.elim
+
+/--
+The aggregate lifted-homeomorphism projection equivalence is also the aggregate
+dependency projection paired directly with the lifted statement-route
+certificate constructor after converting dependencies.
+-/
+theorem poincareCompletionCertificate_iff_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_statement_eq :
+    poincareCompletionCertificate_iff_poincareProofDependencies_lifted_homeomorphism_derivation_projections =
+      ⟨poincareProofDependencies_of_completion_certificate,
+        fun dependencies =>
+          (by
+            let remaining : RemainingDependencyPackage.{u} :=
+              remainingDependencyPackage_iff_poincareProofDependencies.mpr
+                dependencies
+            rcases
+                extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+                  (topology_extraction_statement_of_dependencies remaining) with
+              ⟨extractSphere, derivation, _liftedDerivation⟩
+            rcases
+                canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+                  (finite_extinction_of_dependencies remaining)
+                  extractSphere derivation with
+              ⟨target, criterion⟩
+            exact
+              ⟨canonicalCompletionTheoremName, rfl, remaining, target,
+                criterion⟩)⟩ := by
   apply Subsingleton.elim
 
 /--
@@ -42734,6 +42826,17 @@ theorem poincareCompletionCertificate_iff_poincareProofDependencies_lifted_homeo
             exact
               ⟨canonicalCompletionTheoremName, rfl, remaining, target,
                 criterion⟩)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the lifted certificate in the aggregate lifted-homeomorphism
+projection equivalence recovers the aggregate certified extraction-derivation
+projection equivalence.
+-/
+theorem poincareCompletionCertificate_iff_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_extraction_derivation_eq :
+    poincareCompletionCertificate_iff_poincareProofDependencies_lifted_homeomorphism_derivation_projections =
+      ⟨poincareProofDependencies_of_completion_certificate,
+        completion_certificate_of_poincareProofDependencies_extraction_derivation_projections⟩ := by
   apply Subsingleton.elim
 
 /--
@@ -42888,6 +42991,35 @@ theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_
 
 /--
 The strengthened aggregate equation-boundary certificate also factors through
+the lifted theorem-shaped topology statement before forgetting to the ordinary
+aggregate lifted projection route.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_lifted_homeomorphism_derivation_projections_to_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      (by
+        let remaining : RemainingDependencyPackage.{u} :=
+          remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            (dependencies_of_equation_boundary_dependencies dependencies)
+        rcases
+            extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+              (topology_extraction_statement_of_dependencies
+                (dependencies_of_equation_boundary_dependencies
+                  dependencies)) with
+          ⟨extractSphere, derivation, _liftedDerivation⟩
+        rcases
+          canonical_completion_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation with
+          ⟨target, criterion⟩
+        exact
+          ⟨canonicalCompletionTheoremName, rfl, remaining, target,
+            criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate equation-boundary certificate also factors through
 the boundary-selected finite-extinction plus certified extractor/derivation
 canonical payload after forgetting only the aggregate dependency package stored
 in the certificate.
@@ -42938,6 +43070,19 @@ theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_
         exact
           ⟨canonicalCompletionTheoremName, rfl, remaining, target,
             criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the lifted certificate in the strengthened aggregate
+equation-boundary certificate recovers the certified extraction-derivation
+projection route after forgetting the boundary data.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_lifted_homeomorphism_derivation_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
   apply Subsingleton.elim
 
 /--
