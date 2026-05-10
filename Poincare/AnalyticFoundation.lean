@@ -5361,4 +5361,127 @@ theorem equation_evidence_of_analytic_foundation_statement_eq
         exact ⟨flow, equation_evidence_of_ricci_flow_data flow⟩) := by
   apply Subsingleton.elim
 
+/--
+A strengthened analytic foundation statement exposes a concrete equation-boundary
+package together with the derivative identification, tensor equation, and
+pointwise Ricci-flow equation carried by that package.
+-/
+theorem equation_boundary_payload_of_analytic_foundation_with_equation_boundary
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (statement : AnalyticFoundationWithEquationBoundaryStatement flow) :
+    ∃ boundary : RicciFlowEquationBoundaryPackage flow,
+      RicciFlowEquationBoundaryStatement flow ∧
+      IsMetricTimeDerivativeOf
+        (metric_of_ricci_flow_data flow)
+        (metric_time_derivative_field_of_metric_derivative_data
+          (metric_derivative_data_of_equation_boundary_package boundary)) ∧
+      (∀ t : ℝ,
+        metric_time_derivative_at_time_of_metric_derivative_field
+          (metric_time_derivative_field_of_metric_derivative_data
+            (metric_derivative_data_of_equation_boundary_package boundary)) t =
+          ricci_flow_rhs_tensor (curvature_data_of_ricci_flow_data flow) t) ∧
+      ∀ (t : ℝ) (x : M) (v w : TangentSpace I x),
+        metric_time_derivative_at_time_of_metric_derivative_field
+          (metric_time_derivative_field_of_metric_derivative_data
+            (metric_derivative_data_of_equation_boundary_package boundary)) t x v w =
+          ricci_flow_rhs_tensor
+            (curvature_data_of_ricci_flow_data flow) t x v w := by
+  rcases equation_boundary_of_analytic_foundation_with_equation_boundary
+      statement with
+    ⟨boundary⟩
+  exact
+    ⟨boundary, ⟨boundary⟩,
+      metric_time_derivative_identification_of_equation_boundary_package
+        boundary,
+      equation_at_time_of_equation_boundary_package_projection boundary,
+      equation_at_time_apply_of_equation_boundary_package_projection
+        boundary⟩
+
+/--
+The strengthened analytic-foundation boundary payload is exactly the package
+obtained by destructuring the boundary statement and then applying the named
+boundary-package projections.
+-/
+theorem equation_boundary_payload_of_analytic_foundation_with_equation_boundary_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (statement : AnalyticFoundationWithEquationBoundaryStatement flow) :
+    equation_boundary_payload_of_analytic_foundation_with_equation_boundary
+        statement =
+      (by
+        rcases equation_boundary_of_analytic_foundation_with_equation_boundary
+            statement with
+          ⟨boundary⟩
+        exact
+          ⟨boundary, ⟨boundary⟩,
+            metric_time_derivative_identification_of_equation_boundary_package
+              boundary,
+            equation_at_time_of_equation_boundary_package_projection
+              boundary,
+            equation_at_time_apply_of_equation_boundary_package_projection
+              boundary⟩) := by
+  apply Subsingleton.elim
+
+/--
+A strengthened analytic foundation statement exposes both its analytic
+derivation stack and the concrete equation-boundary payload.
+-/
+theorem analytic_foundation_derivation_and_boundary_payload_of_with_equation_boundary
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (statement : AnalyticFoundationWithEquationBoundaryStatement flow) :
+    AnalyticFoundationDerivationStatement flow ∧
+    ∃ boundary : RicciFlowEquationBoundaryPackage flow,
+      RicciFlowEquationBoundaryStatement flow ∧
+      IsMetricTimeDerivativeOf
+        (metric_of_ricci_flow_data flow)
+        (metric_time_derivative_field_of_metric_derivative_data
+          (metric_derivative_data_of_equation_boundary_package boundary)) ∧
+      (∀ t : ℝ,
+        metric_time_derivative_at_time_of_metric_derivative_field
+          (metric_time_derivative_field_of_metric_derivative_data
+            (metric_derivative_data_of_equation_boundary_package boundary)) t =
+          ricci_flow_rhs_tensor (curvature_data_of_ricci_flow_data flow) t) ∧
+      ∀ (t : ℝ) (x : M) (v w : TangentSpace I x),
+        metric_time_derivative_at_time_of_metric_derivative_field
+          (metric_time_derivative_field_of_metric_derivative_data
+            (metric_derivative_data_of_equation_boundary_package boundary)) t x v w =
+          ricci_flow_rhs_tensor
+            (curvature_data_of_ricci_flow_data flow) t x v w := by
+  exact
+    ⟨analytic_foundation_derivation_of_with_equation_boundary statement,
+      equation_boundary_payload_of_analytic_foundation_with_equation_boundary
+        statement⟩
+
+/--
+The strengthened analytic-foundation derivation/boundary payload is exactly the
+pair of the named derivation projection and the named concrete boundary payload.
+-/
+theorem analytic_foundation_derivation_and_boundary_payload_of_with_equation_boundary_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (statement : AnalyticFoundationWithEquationBoundaryStatement flow) :
+    analytic_foundation_derivation_and_boundary_payload_of_with_equation_boundary
+        statement =
+      (by
+        exact
+          ⟨analytic_foundation_derivation_of_with_equation_boundary
+              statement,
+            equation_boundary_payload_of_analytic_foundation_with_equation_boundary
+              statement⟩) := by
+  apply Subsingleton.elim
+
 end Poincare
