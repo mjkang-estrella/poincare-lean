@@ -15559,7 +15559,31 @@ theorem completion_certificate_of_canonical_statement_payload_of_completion_cert
     (completion_certificate_of_extraction_derivation_dependency_projections
       dependencies)
 
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_extraction_derivation_dependency_projections_to_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_extraction_derivation_dependency_projections
+          dependencies)) =
+      completion_certificate_of_extraction_derivation_dependency_projections
+        dependencies :=
+  completion_certificate_of_canonical_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_extraction_derivation_dependency_projections
+      dependencies)
+
 theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_extraction_derivation_dependency_projections
+          dependencies)) =
+      completion_certificate_of_extraction_derivation_dependency_projections
+        dependencies :=
+  completion_certificate_of_canonical_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_extraction_derivation_dependency_projections
+      dependencies)
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_extraction_derivation_dependency_projections_to_extraction_derivation_eq
     (dependencies : RemainingDependencyPackage.{u}) :
     completion_certificate_of_canonical_statement_payload
       (poincareCompletionCertificate_canonical_statement_payload
@@ -15766,7 +15790,31 @@ theorem completion_certificate_of_aggregate_canonical_statement_payload_of_compl
     (completion_certificate_of_extraction_derivation_dependency_projections
       dependencies)
 
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_extraction_derivation_dependency_projections_to_statement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_extraction_derivation_dependency_projections
+          dependencies)) =
+      completion_certificate_of_extraction_derivation_dependency_projections
+        dependencies :=
+  completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_extraction_derivation_dependency_projections
+      dependencies)
+
 theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_extraction_derivation_dependency_projections
+          dependencies)) =
+      completion_certificate_of_extraction_derivation_dependency_projections
+        dependencies :=
+  completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_extraction_derivation_dependency_projections
+      dependencies)
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_extraction_derivation_dependency_projections_to_extraction_derivation_eq
     (dependencies : RemainingDependencyPackage.{u}) :
     completion_certificate_of_aggregate_canonical_statement_payload
       (poincareCompletionCertificate_aggregate_canonical_statement_payload
