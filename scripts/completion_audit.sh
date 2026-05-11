@@ -214,6 +214,7 @@ check_payload_route_parity() {
 check_completion_constructor_endpoint_coverage() {
   constructor_surface_dir=$(mktemp -d)
   constructor_surface_constructors="$constructor_surface_dir/constructors"
+  constructor_surface_boundary_constructors="$constructor_surface_dir/boundary-constructors"
   constructor_surface_endpoints="$constructor_surface_dir/endpoints"
   constructor_surface_missing="$constructor_surface_dir/missing"
   constructor_surface_payload_endpoints="$constructor_surface_dir/payload-endpoints"
@@ -430,6 +431,44 @@ check_completion_constructor_endpoint_coverage() {
       status=1
     else
       echo "PASS: every completion certificate constructor exposes a ${payload_route_family} payload route"
+    fi
+  done
+
+  perl -0ne 'while (/^theorem\s+(completion_certificate_with_equation_boundary_verification_payload_of_[A-Za-z0-9_]+)\b(.*?)(?=^theorem\s+|\z)/msg) { my ($n,$b)=($1,$2); next if $n =~ /_eq$/; next unless $b =~ /:\s*PoincareCompletionCertificateWithEquationBoundaryVerificationPayload\.\{u\}/s; print "$n\n"; }' \
+    Poincare/CompletionTarget.lean Poincare/CanonicalBridges.lean |
+    sort -u > "$constructor_surface_boundary_constructors"
+
+  if [ ! -s "$constructor_surface_boundary_constructors" ]; then
+    echo "FAIL: no boundary-aware completion certificate constructors found for endpoint coverage audit"
+    status=1
+    return
+  fi
+
+  for boundary_endpoint_family in \
+      poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload \
+      target_statement_of_completion_certificate_with_equation_boundary_verification_payload \
+      canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload \
+      poincare_conjecture_of_completion_certificate_with_equation_boundary_verification_payload \
+      poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload \
+      completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload \
+      canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload \
+      poincare_full_assembly_payload_of_completion_certificate_with_equation_boundary_verification_payload \
+      poincare_full_assembly_payload_of_completion_certificate_with_equation_boundary_verification_payload_extraction_derivation; do
+    rg --no-filename -o "^theorem ${boundary_endpoint_family}_of_([A-Za-z0-9_]+)\b" \
+      -r 'completion_certificate_with_equation_boundary_verification_payload_of_$1' \
+      Poincare/CanonicalBridges.lean Poincare/CompletionTarget.lean |
+      sed '/_eq$/d' |
+      sort -u > "$constructor_surface_payload_route_endpoints"
+
+    comm -23 "$constructor_surface_boundary_constructors" "$constructor_surface_payload_route_endpoints" \
+      > "$constructor_surface_payload_route_missing"
+
+    if [ -s "$constructor_surface_payload_route_missing" ]; then
+      echo "FAIL: every boundary-aware completion certificate constructor exposes ${boundary_endpoint_family}"
+      sed 's/^/MISSING: /' "$constructor_surface_payload_route_missing"
+      status=1
+    else
+      echo "PASS: every boundary-aware completion certificate constructor exposes ${boundary_endpoint_family}"
     fi
   done
 }
