@@ -2122,18 +2122,24 @@ check_decl "standard sphere target self payload from path-homotopy theorem is de
   '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathHomotopyStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere target self payload from path-homotopy equality contract is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathHomotopyStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere target self payload path-homotopy bare-route compatibility is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathHomotopyStatement_bare_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere target self payload path-homotopy loop-route compatibility is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathHomotopyStatement_loop_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-diffeomorphism payload from path-homotopy theorem is declared" \
   '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_pathHomotopyStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-diffeomorphism payload from path-homotopy equality contract is declared" \
   '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_pathHomotopyStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-diffeomorphism payload path-homotopy bare-route compatibility is declared" \
+  '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_pathHomotopyStatement_bare_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-diffeomorphism payload path-homotopy loop-route compatibility is declared" \
   '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_pathHomotopyStatement_loop_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-homeomorphism payload from path-homotopy theorem is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_pathHomotopyStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-homeomorphism payload from path-homotopy equality contract is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_pathHomotopyStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-homeomorphism payload path-homotopy bare-route compatibility is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_pathHomotopyStatement_bare_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-homeomorphism payload path-homotopy loop-route compatibility is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_pathHomotopyStatement_loop_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere target self payload from path-quotient theorem is declared" \
@@ -20036,12 +20042,15 @@ open scoped Manifold ContDiff
 #check Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement_bare_route_eq
 #check Poincare.threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathHomotopyStatement
 #check Poincare.threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathHomotopyStatement_eq
+#check Poincare.threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathHomotopyStatement_bare_route_eq
 #check Poincare.threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathHomotopyStatement_loop_route_eq
 #check Poincare.threeSphere_self_diffeomorph_payload_of_smooth_statement_and_pathHomotopyStatement
 #check Poincare.threeSphere_self_diffeomorph_payload_of_smooth_statement_and_pathHomotopyStatement_eq
+#check Poincare.threeSphere_self_diffeomorph_payload_of_smooth_statement_and_pathHomotopyStatement_bare_route_eq
 #check Poincare.threeSphere_self_diffeomorph_payload_of_smooth_statement_and_pathHomotopyStatement_loop_route_eq
 #check Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement_and_pathHomotopyStatement
 #check Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement_and_pathHomotopyStatement_eq
+#check Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement_and_pathHomotopyStatement_bare_route_eq
 #check Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement_and_pathHomotopyStatement_loop_route_eq
 #check Poincare.threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathQuotientSubsingletonStatement
 #check Poincare.threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathQuotientSubsingletonStatement_eq

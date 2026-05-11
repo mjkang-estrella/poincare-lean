@@ -2296,6 +2296,20 @@ theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathHomoto
   apply Subsingleton.elim
 
 /--
+The path-homotopy target self payload is the bare self payload under the
+simple-connectedness instance derived from path-homotopy.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathHomotopyStatement_bare_route_eq :
+    threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_pathHomotopyStatement hPath
+          threeSphere_self_homeomorph_payload_of_poincare_statement h) := by
+  funext hPath h
+  apply Subsingleton.elim
+
+/--
 The direct path-homotopy target self payload agrees with the loop-nullhomotopy
 payload route after converting path-homotopy to loop-nullhomotopy.
 -/
@@ -2345,6 +2359,20 @@ theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_pathHomotop
   apply Subsingleton.elim
 
 /--
+The path-homotopy smooth self payload is the bare smooth self payload under the
+simple-connectedness instance derived from path-homotopy.
+-/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_pathHomotopyStatement_bare_route_eq :
+    threeSphere_self_diffeomorph_payload_of_smooth_statement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_pathHomotopyStatement hPath
+          threeSphere_self_diffeomorph_payload_of_smooth_statement h) := by
+  funext hPath h
+  apply Subsingleton.elim
+
+/--
 The direct path-homotopy smooth self payload agrees with the loop-nullhomotopy
 payload route after converting path-homotopy to loop-nullhomotopy.
 -/
@@ -2390,6 +2418,21 @@ theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_pathHomotopy
           ⟨threeSphere_homotopy_prerequisites_of_pathHomotopyStatement hPath,
             threeSphere_self_homeomorph_of_smooth_statement_and_pathHomotopyStatement
               hPath h⟩) := by
+  funext hPath h
+  apply Subsingleton.elim
+
+/--
+The path-homotopy smooth-to-topological payload is the bare
+smooth-to-topological payload under the simple-connectedness instance derived
+from path-homotopy.
+-/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_pathHomotopyStatement_bare_route_eq :
+    threeSphere_self_homeomorph_payload_of_smooth_statement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_pathHomotopyStatement hPath
+          threeSphere_self_homeomorph_payload_of_smooth_statement h) := by
   funext hPath h
   apply Subsingleton.elim
 
