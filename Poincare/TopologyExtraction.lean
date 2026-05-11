@@ -7535,6 +7535,19 @@ theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecog
   funext hPiOne extinction recognize
   apply Subsingleton.elim
 
+/-- The standard-sphere `π₁` extinction-recognition self route agrees with the compactification loop route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement_onePointLoop_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement
+                hPiOne)
+              extinction recognize) := by
+  funext hPiOne extinction recognize
+  apply Subsingleton.elim
+
 /-- The standard-sphere `π₁` extinction-recognition self route agrees with reflexive recognition. -/
 theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement_direct_route_eq
     (hPiOne : ThreeSpherePiOneSubsingletonStatement)
@@ -8342,6 +8355,19 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpa
   funext hPiOne extinction recognize
   apply Subsingleton.elim
 
+/-- The standard-sphere `π₁` extinction-recognition target route agrees with the compactification loop route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement_onePointLoop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement
+                hPiOne)
+              extinction recognize) := by
+  funext hPiOne extinction recognize
+  apply Subsingleton.elim
+
 /-- The standard-sphere `π₁` extinction-recognition target route agrees with the direct model homeomorphism. -/
 theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement_direct_route_eq
     (hPiOne : ThreeSpherePiOneSubsingletonStatement)
@@ -9113,6 +9139,19 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePoint
           fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
             onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
               (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+                hPiOne)
+              extinction recognize) := by
+  funext hPiOne extinction recognize
+  apply Subsingleton.elim
+
+/-- The standard-sphere `π₁` extinction-recognition payload agrees with the compactification loop payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement_onePointLoop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement
                 hPiOne)
               extinction recognize) := by
   funext hPiOne extinction recognize
