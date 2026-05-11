@@ -9113,6 +9113,167 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpace
   apply Subsingleton.elim
 
 /--
+The standard path-homotopy universal-recognition endpoint also packages the
+standard homotopy/manifold prerequisites needed to apply recognition.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_pathHomotopyStatement
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathHomotopyStatement
+      hPath,
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_pathHomotopyStatement
+      hPath recognize⟩
+
+/-- The standard path payload pairs the standard prerequisites with the standard path endpoint. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_pathHomotopyStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathHomotopyStatement
+              hPath,
+            onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_pathHomotopyStatement
+              hPath recognize⟩) := by
+  funext hPath recognize
+  apply Subsingleton.elim
+
+/-- The standard path payload agrees with the standard loop payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_pathHomotopyStatement_loop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement hPath)
+            recognize) := by
+  funext hPath recognize
+  apply Subsingleton.elim
+
+/-- The standard path payload agrees with the compactification-local path payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_pathHomotopyStatement_onePoint_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement
+            (onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePathHomotopyStatement
+              hPath)
+            recognize) := by
+  funext hPath recognize
+  apply Subsingleton.elim
+
+/--
+The standard path-quotient universal-recognition endpoint also packages the
+standard homotopy/manifold prerequisites needed to apply recognition.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_pathQuotientSubsingletonStatement
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathQuotientSubsingletonStatement
+      hQuot,
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_pathQuotientSubsingletonStatement
+      hQuot recognize⟩
+
+/-- The standard quotient payload pairs the standard prerequisites with the standard quotient endpoint. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_pathQuotientSubsingletonStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_pathQuotientSubsingletonStatement =
+      (fun hQuot : ThreeSpherePathQuotientSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathQuotientSubsingletonStatement
+              hQuot,
+            onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_pathQuotientSubsingletonStatement
+              hQuot recognize⟩) := by
+  funext hQuot recognize
+  apply Subsingleton.elim
+
+/-- The standard quotient payload agrees with the standard path payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_pathQuotientSubsingletonStatement_path_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_pathQuotientSubsingletonStatement =
+      (fun hQuot : ThreeSpherePathQuotientSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_pathHomotopyStatement
+            (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot)
+            recognize) := by
+  funext hQuot recognize
+  apply Subsingleton.elim
+
+/-- The standard quotient payload agrees with the standard loop payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_pathQuotientSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_pathQuotientSubsingletonStatement =
+      (fun hQuot : ThreeSpherePathQuotientSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
+              (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot))
+            recognize) := by
+  funext hQuot recognize
+  apply Subsingleton.elim
+
+/-- The standard quotient payload agrees with the compactification-local quotient payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_pathQuotientSubsingletonStatement_onePoint_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_pathQuotientSubsingletonStatement =
+      (fun hQuot : ThreeSpherePathQuotientSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement
+            (onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement
+              hQuot)
+            recognize) := by
+  funext hQuot recognize
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop target payload agrees with the standard path payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_path_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+        onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+          hBased recognize) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_pathHomotopyStatement
+            (threeSphere_pathHomotopyStatement_of_basedLoopNullhomotopyStatement hBased)
+            recognize) := by
+  funext hBased recognize
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop target payload agrees with the standard quotient payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_pathQuotient_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+        onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+          hBased recognize) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_pathQuotientSubsingletonStatement
+            (threeSphere_pathQuotientSubsingletonStatement_of_basedLoopNullhomotopyStatement
+              hBased)
+            recognize) := by
+  funext hBased recognize
+  apply Subsingleton.elim
+
+/--
 Applying the project target statement to the one-point compactification model
 uses the named compactification typeclass witnesses and only requires
 simple-connectedness as the remaining local input.
