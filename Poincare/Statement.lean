@@ -1157,6 +1157,90 @@ theorem threeSphere_piOneSubsingletonStatement_of_simplyConnectedSpace_eq
       threeSphere_simplyConnectedSpace_iff_piOneSubsingletonStatement.mp inferInstance := by
   apply Subsingleton.elim
 
+/-- A based loop-nullhomotopy proof supplies path-homotopy uniqueness on `S^3`. -/
+theorem threeSphere_pathHomotopyStatement_of_basedLoopNullhomotopyStatement
+    {basepoint : ThreeSphere}
+    (h : ThreeSphereBasedLoopNullhomotopyStatement basepoint) :
+    ThreeSpherePathHomotopyStatement :=
+  threeSphere_pathHomotopyStatement_of_loopNullhomotopyStatement
+    (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h)
+
+/-- The based-loop-to-path route factors through full loop-nullhomotopy. -/
+theorem threeSphere_pathHomotopyStatement_of_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      (threeSphere_pathHomotopyStatement_of_basedLoopNullhomotopyStatement h :
+        ThreeSpherePathHomotopyStatement)) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        (threeSphere_pathHomotopyStatement_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h) :
+            ThreeSpherePathHomotopyStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- A based loop-nullhomotopy proof supplies path-quotient uniqueness on `S^3`. -/
+theorem threeSphere_pathQuotientSubsingletonStatement_of_basedLoopNullhomotopyStatement
+    {basepoint : ThreeSphere}
+    (h : ThreeSphereBasedLoopNullhomotopyStatement basepoint) :
+    ThreeSpherePathQuotientSubsingletonStatement :=
+  threeSphere_pathQuotientSubsingletonStatement_of_pathHomotopyStatement
+    (threeSphere_pathHomotopyStatement_of_basedLoopNullhomotopyStatement h)
+
+/-- The based-loop-to-path-quotient route factors through path-homotopy uniqueness. -/
+theorem threeSphere_pathQuotientSubsingletonStatement_of_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      (threeSphere_pathQuotientSubsingletonStatement_of_basedLoopNullhomotopyStatement h :
+        ThreeSpherePathQuotientSubsingletonStatement)) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        (threeSphere_pathQuotientSubsingletonStatement_of_pathHomotopyStatement
+          (threeSphere_pathHomotopyStatement_of_basedLoopNullhomotopyStatement h) :
+            ThreeSpherePathQuotientSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- A based loop-nullhomotopy proof supplies fundamental-group triviality on `S^3`. -/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement
+    {basepoint : ThreeSphere}
+    (h : ThreeSphereBasedLoopNullhomotopyStatement basepoint) :
+    ThreeSphereFundamentalGroupSubsingletonStatement :=
+  threeSphere_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement
+    (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h)
+
+/-- The based-loop-to-fundamental-group route factors through full loop-nullhomotopy. -/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement h :
+        ThreeSphereFundamentalGroupSubsingletonStatement)) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        (threeSphere_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h) :
+            ThreeSphereFundamentalGroupSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- A based loop-nullhomotopy proof supplies the `π₁` formulation on `S^3`. -/
+theorem threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement
+    {basepoint : ThreeSphere}
+    (h : ThreeSphereBasedLoopNullhomotopyStatement basepoint) :
+    ThreeSpherePiOneSubsingletonStatement :=
+  threeSphere_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement
+    (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement h)
+
+/-- The based-loop-to-`π₁` route factors through fundamental groups. -/
+theorem threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement h :
+        ThreeSpherePiOneSubsingletonStatement)) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        (threeSphere_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement
+          (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement h) :
+            ThreeSpherePiOneSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
 /--
 The concrete loop-nullhomotopy obligation supplies the full target prerequisite
 payload for applying the project statement to the standard sphere.
@@ -1504,6 +1588,34 @@ theorem threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_loop_
   apply Subsingleton.elim
 
 /--
+The direct based-loop target-prerequisite route agrees with the route through
+fundamental-group triviality.
+-/
+theorem threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement h) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement
+          (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The direct based-loop target-prerequisite route agrees with the route through
+the `π₁` formulation.
+-/
+theorem threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_piOne_route_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement h) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        threeSphere_target_prerequisites_of_piOneSubsingletonStatement
+          (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The direct based-loop homotopy-prerequisite route agrees with the route that
 first expands based loop-nullhomotopy to the full loop obligation.
 -/
@@ -1514,6 +1626,34 @@ theorem threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_loo
       (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
         threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement
           (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The direct based-loop homotopy-prerequisite route agrees with the route through
+fundamental-group triviality.
+-/
+theorem threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement h) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement
+          (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The direct based-loop homotopy-prerequisite route agrees with the route through
+the `π₁` formulation.
+-/
+theorem threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_piOne_route_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement h) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement
+          (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement h)) := by
   funext h
   apply Subsingleton.elim
 
