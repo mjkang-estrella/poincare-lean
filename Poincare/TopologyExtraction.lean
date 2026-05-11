@@ -3355,6 +3355,221 @@ theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNu
   apply Subsingleton.elim
 
 /--
+The standard sphere's path-homotopy obligation supplies simple-connectedness
+for any source recognized as the compactification model.
+-/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    SimplyConnectedSpace M := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_pathHomotopyStatement hPath
+  exact simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace h
+
+/-- Source simple-connectedness follows by compactification recognition and standard-sphere paths. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement
+      hPath h =
+      (by
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_pathHomotopyStatement hPath
+        exact simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace h) := by
+  apply Subsingleton.elim
+
+/-- The compactification-recognition path simple-connectedness route agrees with the loop route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement
+      hPath h =
+      simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h := by
+  apply Subsingleton.elim
+
+/--
+The standard sphere's path-quotient obligation supplies simple-connectedness
+for any source recognized as the compactification model.
+-/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    SimplyConnectedSpace M := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement hQuot
+  exact simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace h
+
+/-- Source simple-connectedness follows by compactification recognition and standard-sphere quotient uniqueness. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      (by
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement hQuot
+        exact simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace h) := by
+  apply Subsingleton.elim
+
+/-- The compactification-recognition quotient simple-connectedness route agrees with the path route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement_path_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement
+        (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot) h := by
+  apply Subsingleton.elim
+
+/-- The compactification-recognition quotient simple-connectedness route agrees with the loop route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
+          (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot)) h := by
+  apply Subsingleton.elim
+
+/--
+The standard sphere's fundamental-group formulation supplies simple-connectedness
+for any source recognized as the compactification model.
+-/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_fundamentalGroupSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    SimplyConnectedSpace M := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement hFund
+  exact simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace h
+
+/-- Source simple-connectedness follows by compactification recognition and standard-sphere fundamental groups. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_fundamentalGroupSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_fundamentalGroupSubsingletonStatement
+      hFund h =
+      (by
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement hFund
+        exact simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace h) := by
+  apply Subsingleton.elim
+
+/-- The compactification-recognition fundamental-group simple-connectedness route agrees with the loop route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_fundamentalGroupSubsingletonStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_fundamentalGroupSubsingletonStatement
+      hFund h =
+      simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement hFund) h := by
+  apply Subsingleton.elim
+
+/--
+The standard sphere's `π₁` formulation supplies simple-connectedness for any
+source recognized as the compactification model.
+-/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hPi : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    SimplyConnectedSpace M := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement hPi
+  exact simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace h
+
+/-- Source simple-connectedness follows by compactification recognition and standard-sphere `π₁`. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPi : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement
+      hPi h =
+      (by
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement hPi
+        exact simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace h) := by
+  apply Subsingleton.elim
+
+/-- The compactification-recognition `π₁` simple-connectedness route agrees with the fundamental-group route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement_fundamentalGroup_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPi : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement
+      hPi h =
+      simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_fundamentalGroupSubsingletonStatement
+        (threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement hPi) h := by
+  apply Subsingleton.elim
+
+/-- The compactification-recognition `π₁` simple-connectedness route agrees with the loop route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPi : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement
+      hPi h =
+      simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement hPi) h := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop source simple-connectedness route agrees with the path route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement_path_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement
+      hBased h =
+      simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement
+        (threeSphere_pathHomotopyStatement_of_basedLoopNullhomotopyStatement hBased) h := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop source simple-connectedness route agrees with the quotient route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement_pathQuotient_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement
+      hBased h =
+      simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement
+        (threeSphere_pathQuotientSubsingletonStatement_of_basedLoopNullhomotopyStatement hBased) h := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop source simple-connectedness route agrees with the fundamental-group route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement
+      hBased h =
+      simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_fundamentalGroupSubsingletonStatement
+        (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement hBased) h := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop source simple-connectedness route agrees with the `π₁` route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement_piOne_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement
+      hBased h =
+      simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement
+        (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement hBased) h := by
+  apply Subsingleton.elim
+
+/--
 Recognizing a source as the one-point compactification model supplies the full
 homotopy/manifold prerequisite payload once the standard sphere's
 simple-connectedness is available.
