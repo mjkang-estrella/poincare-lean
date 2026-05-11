@@ -3263,6 +3263,11 @@ universe u
     SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))))
 #check Poincare.onePoint_threeSpace_simplyConnectedSpace_of_threeSphere_eq
 
+#check (Poincare.onePoint_threeSpace_simplyConnectedSpace_of_threeSpherePiOneSubsingletonStatement :
+  Poincare.ThreeSpherePiOneSubsingletonStatement →
+    SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))))
+#check Poincare.onePoint_threeSpace_simplyConnectedSpace_of_threeSpherePiOneSubsingletonStatement_eq
+
 #check (Poincare.threeSphere_simplyConnectedSpace_of_onePoint_threeSpace :
   ∀ [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))],
     SimplyConnectedSpace Poincare.ThreeSphere)
@@ -3303,6 +3308,7 @@ universe u
   Poincare.ThreeSpherePiOneSubsingletonStatement →
     Poincare.OnePointThreeSpaceLoopNullhomotopyStatement)
 #check Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement_eq
+#check Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement_simple_route_eq
 
 #check (Poincare.threeSphereLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement :
   Poincare.OnePointThreeSpaceLoopNullhomotopyStatement →

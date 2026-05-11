@@ -5055,6 +5055,10 @@ check_decl "one-point compactification simple-connectedness transport from spher
   '^theorem onePoint_threeSpace_simplyConnectedSpace_of_threeSphere\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification simple-connectedness transport from sphere equality contract is declared" \
   '^theorem onePoint_threeSpace_simplyConnectedSpace_of_threeSphere_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification simple-connectedness transport from standard pi-one is declared" \
+  '^theorem onePoint_threeSpace_simplyConnectedSpace_of_threeSpherePiOneSubsingletonStatement\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification simple-connectedness transport from standard pi-one equality contract is declared" \
+  '^theorem onePoint_threeSpace_simplyConnectedSpace_of_threeSpherePiOneSubsingletonStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "standard sphere simple-connectedness transport from compactification is declared" \
   '^theorem threeSphere_simplyConnectedSpace_of_onePoint_threeSpace\b' Poincare/TopologyExtraction.lean
 check_decl "standard sphere simple-connectedness transport from compactification equality contract is declared" \
@@ -5087,6 +5091,8 @@ check_decl "compactification loop-nullhomotopy transport from standard pi-one is
   '^theorem onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement\b' Poincare/TopologyExtraction.lean
 check_decl "compactification loop-nullhomotopy transport from standard pi-one equality contract is declared" \
   '^theorem onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification loop-nullhomotopy transport from standard pi-one simple-route contract is declared" \
+  '^theorem onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement_simple_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "sphere loop-nullhomotopy transport from compactification is declared" \
   '^theorem threeSphereLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
 check_decl "sphere loop-nullhomotopy transport from compactification equality contract is declared" \
@@ -17174,6 +17180,8 @@ open scoped Manifold ContDiff
 #check Poincare.onePoint_threeSpace_nonempty_eq
 #check Poincare.onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
 #check Poincare.onePoint_threeSpace_simplyConnectedSpace_of_threeSphere_eq
+#check Poincare.onePoint_threeSpace_simplyConnectedSpace_of_threeSpherePiOneSubsingletonStatement
+#check Poincare.onePoint_threeSpace_simplyConnectedSpace_of_threeSpherePiOneSubsingletonStatement_eq
 #check Poincare.threeSphere_simplyConnectedSpace_of_onePoint_threeSpace
 #check Poincare.threeSphere_simplyConnectedSpace_of_onePoint_threeSpace_eq
 #check Poincare.onePoint_threeSpace_simplyConnectedSpace_iff_threeSphere
@@ -17188,6 +17196,9 @@ open scoped Manifold ContDiff
 #check Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_simplyConnectedSpace_eq
 #check Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
 #check Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement_eq
+#check Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement
+#check Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement_eq
+#check Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement_simple_route_eq
 #check Poincare.threeSphereLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
 #check Poincare.threeSphereLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement_eq
 #check Poincare.onePoint_threeSpace_loopNullhomotopyStatement_iff_threeSphereLoopNullhomotopyStatement

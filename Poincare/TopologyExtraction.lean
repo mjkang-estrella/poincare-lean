@@ -663,6 +663,24 @@ theorem onePoint_threeSpace_simplyConnectedSpace_of_threeSphere_eq
         exact e.symm.toHomotopyEquiv.simplyConnectedSpace) := by
   apply Subsingleton.elim
 
+/-- Standard-sphere `π₁` triviality transports to compactification simple-connectedness. -/
+theorem onePoint_threeSpace_simplyConnectedSpace_of_threeSpherePiOneSubsingletonStatement
+    (h : ThreeSpherePiOneSubsingletonStatement) :
+    SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement h
+  exact onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+
+/- The target-`π₁` compactification simple-connected route factors through `ThreeSphere`. -/
+theorem onePoint_threeSpace_simplyConnectedSpace_of_threeSpherePiOneSubsingletonStatement_eq :
+    onePoint_threeSpace_simplyConnectedSpace_of_threeSpherePiOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement h
+        onePoint_threeSpace_simplyConnectedSpace_of_threeSphere) := by
+  funext h
+  apply Subsingleton.elim
+
 /--
 Simple-connectedness of the compactification model transports back to the
 standard sphere along the named homeomorphism.
@@ -928,6 +946,16 @@ theorem onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsing
       (fun h : ThreeSpherePiOneSubsingletonStatement =>
         onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
           (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/- The direct target-`π₁` compactification loop route agrees with the direct simple-connected route. -/
+theorem onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement_simple_route_eq :
+    onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_simplyConnectedSpace_of_threeSpherePiOneSubsingletonStatement h
+        onePoint_threeSpace_loopNullhomotopyStatement_of_simplyConnectedSpace) := by
   funext h
   apply Subsingleton.elim
 
@@ -1352,20 +1380,16 @@ theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_iff_threeSpher
 theorem onePoint_threeSpace_piOneSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement
     (h : ThreeSpherePiOneSubsingletonStatement) :
     OnePointThreeSpacePiOneSubsingletonStatement := by
-  letI : SimplyConnectedSpace ThreeSphere :=
-    threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement h
   letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
-    onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+    onePoint_threeSpace_simplyConnectedSpace_of_threeSpherePiOneSubsingletonStatement h
   exact onePoint_threeSpace_piOneSubsingletonStatement_of_simplyConnectedSpace
 
 /-- The target-to-compactification `π₁` route factors through simple-connectedness. -/
 theorem onePoint_threeSpace_piOneSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement_eq :
     onePoint_threeSpace_piOneSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement =
       (fun h : ThreeSpherePiOneSubsingletonStatement =>
-        letI : SimplyConnectedSpace ThreeSphere :=
-          threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement h
         letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
-          onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+          onePoint_threeSpace_simplyConnectedSpace_of_threeSpherePiOneSubsingletonStatement h
         onePoint_threeSpace_piOneSubsingletonStatement_of_simplyConnectedSpace) := by
   funext h
   apply Subsingleton.elim
