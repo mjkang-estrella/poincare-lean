@@ -2097,6 +2097,90 @@ theorem onePoint_threeSpace_piOneSubsingletonStatement_of_pathQuotientSubsinglet
   funext h
   apply Subsingleton.elim
 
+/-- Compactification based loop-nullhomotopy supplies path-homotopy uniqueness. -/
+theorem onePoint_threeSpace_pathHomotopyStatement_of_basedLoopNullhomotopyStatement
+    {basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))}
+    (h : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint) :
+    OnePointThreeSpacePathHomotopyStatement :=
+  onePoint_threeSpace_pathHomotopyStatement_of_loopNullhomotopyStatement
+    (onePoint_threeSpace_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h)
+
+/-- The compactification based-loop-to-path route factors through full loop-nullhomotopy. -/
+theorem onePoint_threeSpace_pathHomotopyStatement_of_basedLoopNullhomotopyStatement_eq
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    (fun h : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+      (onePoint_threeSpace_pathHomotopyStatement_of_basedLoopNullhomotopyStatement h :
+        OnePointThreeSpacePathHomotopyStatement)) =
+      (fun h : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+        (onePoint_threeSpace_pathHomotopyStatement_of_loopNullhomotopyStatement
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h) :
+            OnePointThreeSpacePathHomotopyStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- Compactification based loop-nullhomotopy supplies path-quotient uniqueness. -/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_basedLoopNullhomotopyStatement
+    {basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))}
+    (h : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint) :
+    OnePointThreeSpacePathQuotientSubsingletonStatement :=
+  onePoint_threeSpace_pathQuotientSubsingletonStatement_of_pathHomotopyStatement
+    (onePoint_threeSpace_pathHomotopyStatement_of_basedLoopNullhomotopyStatement h)
+
+/-- The compactification based-loop-to-quotient route factors through path-homotopy. -/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_basedLoopNullhomotopyStatement_eq
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    (fun h : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+      (onePoint_threeSpace_pathQuotientSubsingletonStatement_of_basedLoopNullhomotopyStatement h :
+        OnePointThreeSpacePathQuotientSubsingletonStatement)) =
+      (fun h : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+        (onePoint_threeSpace_pathQuotientSubsingletonStatement_of_pathHomotopyStatement
+          (onePoint_threeSpace_pathHomotopyStatement_of_basedLoopNullhomotopyStatement h) :
+            OnePointThreeSpacePathQuotientSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- Compactification based loop-nullhomotopy supplies fundamental-group triviality. -/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement
+    {basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))}
+    (h : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint) :
+    OnePointThreeSpaceFundamentalGroupSubsingletonStatement :=
+  onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement
+    (onePoint_threeSpace_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h)
+
+/-- The compactification based-loop-to-fundamental-group route factors through loops. -/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement_eq
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    (fun h : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+      (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement h :
+        OnePointThreeSpaceFundamentalGroupSubsingletonStatement)) =
+      (fun h : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+        (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h) :
+            OnePointThreeSpaceFundamentalGroupSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- Compactification based loop-nullhomotopy supplies the `π₁` formulation. -/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement
+    {basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))}
+    (h : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint) :
+    OnePointThreeSpacePiOneSubsingletonStatement :=
+  onePoint_threeSpace_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement
+    (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement h)
+
+/-- The compactification based-loop-to-`π₁` route factors through fundamental groups. -/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement_eq
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    (fun h : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+      (onePoint_threeSpace_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement h :
+        OnePointThreeSpacePiOneSubsingletonStatement)) =
+      (fun h : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+        (onePoint_threeSpace_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement
+          (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement h) :
+            OnePointThreeSpacePiOneSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
 /-- Quotient uniqueness of `ThreeSphere` transports to the compactification model. -/
 theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement
     (h : ThreeSpherePathQuotientSubsingletonStatement) :
@@ -6312,6 +6396,28 @@ theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_basedLoopNu
       hBased =
       poincare_candidate_prerequisites_of_onePoint_threeSpace_self_loopNullhomotopyStatement
         (onePoint_threeSpace_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased) := by
+  apply Subsingleton.elim
+
+/-- The compactification self based-loop candidate route agrees with the self fundamental-group route. -/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
+    {basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))}
+    (hBased : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint) :
+    poincare_candidate_prerequisites_of_onePoint_threeSpace_self_basedLoopNullhomotopyStatement
+      hBased =
+      poincare_candidate_prerequisites_of_onePoint_threeSpace_self_fundamentalGroupSubsingletonStatement
+        (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement
+          hBased) := by
+  apply Subsingleton.elim
+
+/-- The compactification self based-loop candidate route agrees with the self `π₁` route. -/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_basedLoopNullhomotopyStatement_piOne_route_eq
+    {basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))}
+    (hBased : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint) :
+    poincare_candidate_prerequisites_of_onePoint_threeSpace_self_basedLoopNullhomotopyStatement
+      hBased =
+      poincare_candidate_prerequisites_of_onePoint_threeSpace_self_piOneSubsingletonStatement
+        (onePoint_threeSpace_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement
+          hBased) := by
   apply Subsingleton.elim
 
 /--

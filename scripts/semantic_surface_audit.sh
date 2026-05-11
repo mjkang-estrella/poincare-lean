@@ -3440,6 +3440,24 @@ universe u
       Poincare.OnePointThreeSpaceLoopNullhomotopyStatement)
 #check Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement_eq
 
+#check (Poincare.onePoint_threeSpace_pathHomotopyStatement_of_basedLoopNullhomotopyStatement :
+  {basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))} →
+    Poincare.OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint →
+      Poincare.OnePointThreeSpacePathHomotopyStatement)
+#check Poincare.onePoint_threeSpace_pathHomotopyStatement_of_basedLoopNullhomotopyStatement_eq
+
+#check (Poincare.onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement :
+  {basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))} →
+    Poincare.OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint →
+      Poincare.OnePointThreeSpaceFundamentalGroupSubsingletonStatement)
+#check Poincare.onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement_eq
+
+#check (Poincare.onePoint_threeSpace_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement :
+  {basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))} →
+    Poincare.OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint →
+      Poincare.OnePointThreeSpacePiOneSubsingletonStatement)
+#check Poincare.onePoint_threeSpace_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement_eq
+
 #check (Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement :
   Poincare.ThreeSphereLoopNullhomotopyStatement →
     Poincare.OnePointThreeSpaceLoopNullhomotopyStatement)
@@ -3580,6 +3598,12 @@ universe u
   Poincare.OnePointThreeSpacePathHomotopyStatement →
     Poincare.OnePointThreeSpacePathQuotientSubsingletonStatement)
 #check Poincare.onePoint_threeSpace_pathQuotientSubsingletonStatement_of_pathHomotopyStatement_eq
+
+#check (Poincare.onePoint_threeSpace_pathQuotientSubsingletonStatement_of_basedLoopNullhomotopyStatement :
+  {basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))} →
+    Poincare.OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint →
+      Poincare.OnePointThreeSpacePathQuotientSubsingletonStatement)
+#check Poincare.onePoint_threeSpace_pathQuotientSubsingletonStatement_of_basedLoopNullhomotopyStatement_eq
 
 #check (Poincare.onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement :
   Poincare.OnePointThreeSpacePathQuotientSubsingletonStatement →
@@ -4123,6 +4147,8 @@ universe u
 #check Poincare.poincare_candidate_prerequisites_of_onePoint_threeSpace_self_basedLoopNullhomotopyStatement
 #check Poincare.poincare_candidate_prerequisites_of_onePoint_threeSpace_self_basedLoopNullhomotopyStatement_eq
 #check Poincare.poincare_candidate_prerequisites_of_onePoint_threeSpace_self_basedLoopNullhomotopyStatement_loop_route_eq
+#check Poincare.poincare_candidate_prerequisites_of_onePoint_threeSpace_self_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
+#check Poincare.poincare_candidate_prerequisites_of_onePoint_threeSpace_self_basedLoopNullhomotopyStatement_piOne_route_eq
 
 #check (Poincare.poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement :
   Poincare.OnePointThreeSpacePathHomotopyStatement →
