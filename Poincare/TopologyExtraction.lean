@@ -931,6 +931,91 @@ theorem onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomo
   apply Subsingleton.elim
 
 /--
+Loop-nullhomotopy of `ThreeSphere` supplies based loop-nullhomotopy at any
+chosen basepoint of the compactification model.
+-/
+theorem onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+    (targetBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (h : ThreeSphereLoopNullhomotopyStatement) :
+    OnePointThreeSpaceBasedLoopNullhomotopyStatement targetBasepoint := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement h
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+  exact onePoint_threeSpace_basedLoopNullhomotopyStatement_of_simplyConnectedSpace
+    targetBasepoint
+
+/--
+The standard-loop to compactification based-loop route is the named
+simple-connectedness transport followed by the compactification based-loop
+criterion.
+-/
+theorem onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement_eq
+    (targetBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    (fun h : ThreeSphereLoopNullhomotopyStatement =>
+      onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+        targetBasepoint h) =
+      (fun h : ThreeSphereLoopNullhomotopyStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement h
+        letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+        onePoint_threeSpace_basedLoopNullhomotopyStatement_of_simplyConnectedSpace
+          targetBasepoint) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+Based loop-nullhomotopy of `ThreeSphere` supplies based loop-nullhomotopy at
+any chosen basepoint of the compactification model.
+-/
+theorem onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+    {sourceBasepoint : ThreeSphere}
+    (targetBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (h : ThreeSphereBasedLoopNullhomotopyStatement sourceBasepoint) :
+    OnePointThreeSpaceBasedLoopNullhomotopyStatement targetBasepoint :=
+  onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+    targetBasepoint
+    (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h)
+
+/--
+The standard based-loop to compactification based-loop route factors through
+the full-loop transport.
+-/
+theorem onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement_eq
+    (sourceBasepoint : ThreeSphere)
+    (targetBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement sourceBasepoint =>
+      onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+        targetBasepoint h) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement sourceBasepoint =>
+        onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+          targetBasepoint
+          (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The standard based-loop to compactification based-loop route also agrees with
+the direct simple-connectedness transport.
+-/
+theorem onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement_simple_route_eq
+    (sourceBasepoint : ThreeSphere)
+    (targetBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement sourceBasepoint =>
+      onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+        targetBasepoint h) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement sourceBasepoint =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement h
+        letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+        onePoint_threeSpace_basedLoopNullhomotopyStatement_of_simplyConnectedSpace
+          targetBasepoint) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The standard-sphere `π₁` formulation transports directly to compactification
 loop-nullhomotopy.
 -/
@@ -979,6 +1064,126 @@ theorem threeSphereLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomo
           threeSphere_simplyConnectedSpace_of_onePoint_threeSpace
         threeSphere_loopNullhomotopyStatement_of_simplyConnectedSpace) := by
   funext h
+  apply Subsingleton.elim
+
+/--
+Compactification loop-nullhomotopy supplies based loop-nullhomotopy at any
+chosen basepoint of `ThreeSphere`.
+-/
+theorem threeSphere_basedLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+    (targetBasepoint : ThreeSphere)
+    (h : OnePointThreeSpaceLoopNullhomotopyStatement) :
+    ThreeSphereBasedLoopNullhomotopyStatement targetBasepoint := by
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement h
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_onePoint_threeSpace
+  exact threeSphere_basedLoopNullhomotopyStatement_of_simplyConnectedSpace
+    targetBasepoint
+
+/--
+The compactification-loop to standard based-loop route is the named
+simple-connectedness transport followed by the standard based-loop criterion.
+-/
+theorem threeSphere_basedLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement_eq
+    (targetBasepoint : ThreeSphere) :
+    (fun h : OnePointThreeSpaceLoopNullhomotopyStatement =>
+      threeSphere_basedLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+        targetBasepoint h) =
+      (fun h : OnePointThreeSpaceLoopNullhomotopyStatement =>
+        letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement h
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_onePoint_threeSpace
+        threeSphere_basedLoopNullhomotopyStatement_of_simplyConnectedSpace
+          targetBasepoint) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+Based loop-nullhomotopy at one compactification basepoint supplies based
+loop-nullhomotopy at any chosen basepoint of `ThreeSphere`.
+-/
+theorem threeSphere_basedLoopNullhomotopyStatement_of_onePoint_threeSpace_basedLoopNullhomotopyStatement
+    {sourceBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3))}
+    (targetBasepoint : ThreeSphere)
+    (h : OnePointThreeSpaceBasedLoopNullhomotopyStatement sourceBasepoint) :
+    ThreeSphereBasedLoopNullhomotopyStatement targetBasepoint :=
+  threeSphere_basedLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+    targetBasepoint
+    (onePoint_threeSpace_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h)
+
+/--
+The compactification based-loop to standard based-loop route factors through
+the full-loop transport.
+-/
+theorem threeSphere_basedLoopNullhomotopyStatement_of_onePoint_threeSpace_basedLoopNullhomotopyStatement_eq
+    (sourceBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (targetBasepoint : ThreeSphere) :
+    (fun h : OnePointThreeSpaceBasedLoopNullhomotopyStatement sourceBasepoint =>
+      threeSphere_basedLoopNullhomotopyStatement_of_onePoint_threeSpace_basedLoopNullhomotopyStatement
+        targetBasepoint h) =
+      (fun h : OnePointThreeSpaceBasedLoopNullhomotopyStatement sourceBasepoint =>
+        threeSphere_basedLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+          targetBasepoint
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The compactification based-loop to standard based-loop route also agrees with
+the direct simple-connectedness transport.
+-/
+theorem threeSphere_basedLoopNullhomotopyStatement_of_onePoint_threeSpace_basedLoopNullhomotopyStatement_simple_route_eq
+    (sourceBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (targetBasepoint : ThreeSphere) :
+    (fun h : OnePointThreeSpaceBasedLoopNullhomotopyStatement sourceBasepoint =>
+      threeSphere_basedLoopNullhomotopyStatement_of_onePoint_threeSpace_basedLoopNullhomotopyStatement
+        targetBasepoint h) =
+      (fun h : OnePointThreeSpaceBasedLoopNullhomotopyStatement sourceBasepoint =>
+        letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_simplyConnectedSpace_of_basedLoopNullhomotopyStatement h
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_onePoint_threeSpace
+        threeSphere_basedLoopNullhomotopyStatement_of_simplyConnectedSpace
+          targetBasepoint) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+Based loop-nullhomotopy on the compactification model is equivalent to based
+loop-nullhomotopy on `ThreeSphere`, after choosing basepoints on both sides.
+-/
+theorem onePoint_threeSpace_basedLoopNullhomotopyStatement_iff_threeSphereBasedLoopNullhomotopyStatement
+    (onePointBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (sphereBasepoint : ThreeSphere) :
+    OnePointThreeSpaceBasedLoopNullhomotopyStatement onePointBasepoint ↔
+      ThreeSphereBasedLoopNullhomotopyStatement sphereBasepoint := by
+  constructor
+  · exact
+      threeSphere_basedLoopNullhomotopyStatement_of_onePoint_threeSpace_basedLoopNullhomotopyStatement
+        sphereBasepoint
+  · exact
+      onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+        onePointBasepoint
+
+/--
+The compactification/standard based-loop equivalence is the pair of named
+based-loop transports.
+-/
+theorem onePoint_threeSpace_basedLoopNullhomotopyStatement_iff_threeSphereBasedLoopNullhomotopyStatement_eq
+    (onePointBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (sphereBasepoint : ThreeSphere) :
+    onePoint_threeSpace_basedLoopNullhomotopyStatement_iff_threeSphereBasedLoopNullhomotopyStatement
+      onePointBasepoint sphereBasepoint =
+      (by
+        constructor
+        · exact
+            threeSphere_basedLoopNullhomotopyStatement_of_onePoint_threeSpace_basedLoopNullhomotopyStatement
+              sphereBasepoint
+        · exact
+            onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+              onePointBasepoint) := by
   apply Subsingleton.elim
 
 /-- The compactification and standard-sphere loop-nullhomotopy obligations are equivalent. -/

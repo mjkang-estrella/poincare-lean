@@ -5107,6 +5107,22 @@ check_decl "compactification loop-nullhomotopy statement is declared" \
   '^def OnePointThreeSpaceLoopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
 check_decl "compactification loop-nullhomotopy statement equality contract is declared" \
   '^theorem onePointThreeSpaceLoopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification based-loop nullhomotopy statement is declared" \
+  '^def OnePointThreeSpaceBasedLoopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification based-loop nullhomotopy statement equality contract is declared" \
+  '^theorem onePointThreeSpaceBasedLoopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification simple-connectedness based-loop equivalence is declared" \
+  '^theorem onePoint_threeSpace_simplyConnectedSpace_iff_basedLoopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification simple-connectedness based-loop equivalence equality contract is declared" \
+  '^theorem onePoint_threeSpace_simplyConnectedSpace_iff_basedLoopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification simple-connectedness from based-loop nullhomotopy is declared" \
+  '^theorem onePoint_threeSpace_simplyConnectedSpace_of_basedLoopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification simple-connectedness from based-loop nullhomotopy equality contract is declared" \
+  '^theorem onePoint_threeSpace_simplyConnectedSpace_of_basedLoopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification based-loop nullhomotopy from simple-connectedness is declared" \
+  '^theorem onePoint_threeSpace_basedLoopNullhomotopyStatement_of_simplyConnectedSpace\b' Poincare/TopologyExtraction.lean
+check_decl "compactification based-loop nullhomotopy from simple-connectedness equality contract is declared" \
+  '^theorem onePoint_threeSpace_basedLoopNullhomotopyStatement_of_simplyConnectedSpace_eq\b' Poincare/TopologyExtraction.lean
 check_decl "compactification simple-connectedness loop-nullhomotopy equivalence is declared" \
   '^theorem onePoint_threeSpace_simplyConnectedSpace_iff_loopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
 check_decl "compactification simple-connectedness loop-nullhomotopy equivalence equality contract is declared" \
@@ -5119,10 +5135,24 @@ check_decl "compactification loop-nullhomotopy from simple-connectedness is decl
   '^theorem onePoint_threeSpace_loopNullhomotopyStatement_of_simplyConnectedSpace\b' Poincare/TopologyExtraction.lean
 check_decl "compactification loop-nullhomotopy from simple-connectedness equality contract is declared" \
   '^theorem onePoint_threeSpace_loopNullhomotopyStatement_of_simplyConnectedSpace_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification loop-nullhomotopy from based-loop nullhomotopy is declared" \
+  '^theorem onePoint_threeSpace_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification loop-nullhomotopy from based-loop nullhomotopy equality contract is declared" \
+  '^theorem onePoint_threeSpace_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "compactification loop-nullhomotopy transport from sphere is declared" \
   '^theorem onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
 check_decl "compactification loop-nullhomotopy transport from sphere equality contract is declared" \
   '^theorem onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification based-loop transport from standard loop-nullhomotopy is declared" \
+  '^theorem onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification based-loop transport from standard loop-nullhomotopy equality contract is declared" \
+  '^theorem onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification based-loop transport from standard based-loop is declared" \
+  '^theorem onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification based-loop transport from standard based-loop equality contract is declared" \
+  '^theorem onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification based-loop transport from standard based-loop simple-route contract is declared" \
+  '^theorem onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement_simple_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "compactification loop-nullhomotopy transport from standard pi-one is declared" \
   '^theorem onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement\b' Poincare/TopologyExtraction.lean
 check_decl "compactification loop-nullhomotopy transport from standard pi-one equality contract is declared" \
@@ -5133,6 +5163,20 @@ check_decl "sphere loop-nullhomotopy transport from compactification is declared
   '^theorem threeSphereLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
 check_decl "sphere loop-nullhomotopy transport from compactification equality contract is declared" \
   '^theorem threeSphereLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "sphere based-loop transport from compactification loop-nullhomotopy is declared" \
+  '^theorem threeSphere_basedLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "sphere based-loop transport from compactification loop-nullhomotopy equality contract is declared" \
+  '^theorem threeSphere_basedLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "sphere based-loop transport from compactification based-loop is declared" \
+  '^theorem threeSphere_basedLoopNullhomotopyStatement_of_onePoint_threeSpace_basedLoopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "sphere based-loop transport from compactification based-loop equality contract is declared" \
+  '^theorem threeSphere_basedLoopNullhomotopyStatement_of_onePoint_threeSpace_basedLoopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "sphere based-loop transport from compactification based-loop simple-route contract is declared" \
+  '^theorem threeSphere_basedLoopNullhomotopyStatement_of_onePoint_threeSpace_basedLoopNullhomotopyStatement_simple_route_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification based-loop equivalence with sphere based-loop is declared" \
+  '^theorem onePoint_threeSpace_basedLoopNullhomotopyStatement_iff_threeSphereBasedLoopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification based-loop equivalence with sphere based-loop equality contract is declared" \
+  '^theorem onePoint_threeSpace_basedLoopNullhomotopyStatement_iff_threeSphereBasedLoopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "compactification loop-nullhomotopy equivalence with sphere is declared" \
   '^theorem onePoint_threeSpace_loopNullhomotopyStatement_iff_threeSphereLoopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
 check_decl "compactification loop-nullhomotopy equivalence with sphere equality contract is declared" \
