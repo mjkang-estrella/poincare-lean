@@ -1410,6 +1410,20 @@ theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_loopNullho
   apply Subsingleton.elim
 
 /--
+The loop-nullhomotopy target self payload is the bare self payload under the
+simple-connectedness instance derived from loop-nullhomotopy.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_loopNullhomotopyStatement_bare_route_eq :
+    threeSphere_self_homeomorph_payload_of_poincare_statement_and_loopNullhomotopyStatement =
+      (fun hLoop : ThreeSphereLoopNullhomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+          threeSphere_self_homeomorph_payload_of_poincare_statement h) := by
+  funext hLoop h
+  apply Subsingleton.elim
+
+/--
 The concrete loop-nullhomotopy obligation exposes the smooth self route as a
 payload carrying both the homotopy-oriented prerequisite bundle and the
 self-diffeomorphism endpoint.
@@ -1442,6 +1456,20 @@ theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_loopNullhom
           ⟨threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement hLoop,
             threeSphere_self_diffeomorph_of_smooth_statement_and_loopNullhomotopyStatement
               hLoop h⟩) := by
+  funext hLoop h
+  apply Subsingleton.elim
+
+/--
+The loop-nullhomotopy smooth self payload is the bare smooth self payload under
+the simple-connectedness instance derived from loop-nullhomotopy.
+-/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement_bare_route_eq :
+    threeSphere_self_diffeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement =
+      (fun hLoop : ThreeSphereLoopNullhomotopyStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+          threeSphere_self_diffeomorph_payload_of_smooth_statement h) := by
   funext hLoop h
   apply Subsingleton.elim
 
@@ -1479,6 +1507,21 @@ theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_loopNullhomo
           ⟨threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement hLoop,
             threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement
               hLoop h⟩) := by
+  funext hLoop h
+  apply Subsingleton.elim
+
+/--
+The loop-nullhomotopy smooth-to-topological payload is the bare
+smooth-to-topological payload under the simple-connectedness instance derived
+from loop-nullhomotopy.
+-/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement_bare_route_eq :
+    threeSphere_self_homeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement =
+      (fun hLoop : ThreeSphereLoopNullhomotopyStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+          threeSphere_self_homeomorph_payload_of_smooth_statement h) := by
   funext hLoop h
   apply Subsingleton.elim
 

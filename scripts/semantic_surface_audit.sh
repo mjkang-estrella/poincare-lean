@@ -1661,6 +1661,7 @@ set_option linter.unusedVariables false
           Nonempty Poincare.ThreeSphere),
           Nonempty (Poincare.ThreeSphere ≃ₜ Poincare.ThreeSphere))
 #check Poincare.threeSphere_self_homeomorph_payload_of_poincare_statement_and_loopNullhomotopyStatement_eq
+#check Poincare.threeSphere_self_homeomorph_payload_of_poincare_statement_and_loopNullhomotopyStatement_bare_route_eq
 
 #check (Poincare.threeSphere_self_diffeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement :
   Poincare.ThreeSphereLoopNullhomotopyStatement →
@@ -1677,6 +1678,7 @@ set_option linter.unusedVariables false
           Nonempty Poincare.ThreeSphere),
           Nonempty (Poincare.ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ Poincare.ThreeSphere))
 #check Poincare.threeSphere_self_diffeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement_eq
+#check Poincare.threeSphere_self_diffeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement_bare_route_eq
 
 #check (Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement :
   Poincare.ThreeSphereLoopNullhomotopyStatement →
@@ -1693,6 +1695,7 @@ set_option linter.unusedVariables false
           Nonempty Poincare.ThreeSphere),
           Nonempty (Poincare.ThreeSphere ≃ₜ Poincare.ThreeSphere))
 #check Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement_eq
+#check Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement_bare_route_eq
 
 #check (Poincare.threeSphere_self_homeomorph_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement :
   {basepoint : Poincare.ThreeSphere} →
