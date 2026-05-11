@@ -25849,6 +25849,26 @@ theorem canonical_completion_target_of_completion_certificate_of_equation_bounda
     (completion_certificate_of_equation_boundary_verification_payload
       payload)
 
+theorem completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload
+    (criterionWitness : Type u)
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_equation_boundary_verification_payload
+      payload)
+
+theorem completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_eq
+    (criterionWitness : Type u)
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload
+      criterionWitness payload =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
 theorem canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_eq
     (payload :
       PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :

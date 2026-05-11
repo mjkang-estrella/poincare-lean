@@ -12285,6 +12285,14 @@ theorem canonical_completion_target_of_completion_certificate_of_remaining_depen
     (completion_certificate_of_remaining_dependency_component_requirements
       dependencies)
 
+theorem completion_criterion_of_completion_certificate_of_remaining_dependency_component_requirements
+    (criterionWitness : Type u)
+    (dependencies : RemainingDependencyPackage.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_remaining_dependency_component_requirements
+      dependencies)
+
 theorem poincare_completion_payload_of_completion_certificate_of_remaining_dependency_component_requirements
     (dependencies : RemainingDependencyPackage.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -12352,6 +12360,14 @@ theorem canonical_completion_target_of_completion_certificate_of_remaining_depen
     (dependencies : RemainingDependencyPackage.{u}) :
     canonicalCompletionTarget.{u} :=
   canonical_completion_target_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_package_layer_requirements
+      dependencies)
+
+theorem completion_criterion_of_completion_certificate_of_remaining_dependency_package_layer_requirements
+    (criterionWitness : Type u)
+    (dependencies : RemainingDependencyPackage.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
     (completion_certificate_of_remaining_dependency_package_layer_requirements
       dependencies)
 
@@ -12425,6 +12441,14 @@ theorem canonical_completion_target_of_completion_certificate_of_remaining_depen
     (completion_certificate_of_remaining_dependency_milestone_requirements
       dependencies)
 
+theorem completion_criterion_of_completion_certificate_of_remaining_dependency_milestone_requirements
+    (criterionWitness : Type u)
+    (dependencies : RemainingDependencyPackage.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_remaining_dependency_milestone_requirements
+      dependencies)
+
 theorem poincare_completion_payload_of_completion_certificate_of_remaining_dependency_milestone_requirements
     (dependencies : RemainingDependencyPackage.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -12492,6 +12516,14 @@ theorem canonical_completion_target_of_completion_certificate_of_remaining_depen
     (dependencies : RemainingDependencyPackage.{u}) :
     canonicalCompletionTarget.{u} :=
   canonical_completion_target_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements
+      dependencies)
+
+theorem completion_criterion_of_completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements
+    (criterionWitness : Type u)
+    (dependencies : RemainingDependencyPackage.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
     (completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements
       dependencies)
 
@@ -12565,6 +12597,14 @@ theorem canonical_completion_target_of_completion_certificate_of_remaining_depen
     (completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements
       dependencies)
 
+theorem completion_criterion_of_completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements
+    (criterionWitness : Type u)
+    (dependencies : RemainingDependencyPackage.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements
+      dependencies)
+
 theorem poincare_completion_payload_of_completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements
     (dependencies : RemainingDependencyPackage.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -12632,6 +12672,14 @@ theorem canonical_completion_target_of_completion_certificate_of_remaining_depen
     (dependencies : RemainingDependencyPackage.{u}) :
     canonicalCompletionTarget.{u} :=
   canonical_completion_target_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements
+      dependencies)
+
+theorem completion_criterion_of_completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements
+    (criterionWitness : Type u)
+    (dependencies : RemainingDependencyPackage.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
     (completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements
       dependencies)
 
@@ -12705,6 +12753,14 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     (completion_certificate_of_poincareProofDependencies_component_requirements
       dependencies)
 
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_component_requirements
+    (criterionWitness : Type u)
+    (dependencies : PoincareProofDependencies.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_poincareProofDependencies_component_requirements
+      dependencies)
+
 theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_component_requirements
     (dependencies : PoincareProofDependencies.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -12772,6 +12828,14 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     (dependencies : PoincareProofDependencies.{u}) :
     canonicalCompletionTarget.{u} :=
   canonical_completion_target_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_package_layer_requirements
+      dependencies)
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_package_layer_requirements
+    (criterionWitness : Type u)
+    (dependencies : PoincareProofDependencies.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
     (completion_certificate_of_poincareProofDependencies_package_layer_requirements
       dependencies)
 
@@ -12845,6 +12909,14 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     (completion_certificate_of_poincareProofDependencies_milestone_requirements
       dependencies)
 
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_milestone_requirements
+    (criterionWitness : Type u)
+    (dependencies : PoincareProofDependencies.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_poincareProofDependencies_milestone_requirements
+      dependencies)
+
 theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_milestone_requirements
     (dependencies : PoincareProofDependencies.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -12912,6 +12984,14 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     (dependencies : PoincareProofDependencies.{u}) :
     canonicalCompletionTarget.{u} :=
   canonical_completion_target_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements
+      dependencies)
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements
+    (criterionWitness : Type u)
+    (dependencies : PoincareProofDependencies.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
     (completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements
       dependencies)
 
@@ -12985,6 +13065,14 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     (completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
       dependencies)
 
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+    (criterionWitness : Type u)
+    (dependencies : PoincareProofDependencies.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+      dependencies)
+
 theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
     (dependencies : PoincareProofDependencies.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -13052,6 +13140,14 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     (dependencies : PoincareProofDependencies.{u}) :
     canonicalCompletionTarget.{u} :=
   canonical_completion_target_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+      dependencies)
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+    (criterionWitness : Type u)
+    (dependencies : PoincareProofDependencies.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
     (completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements
       dependencies)
 
@@ -13126,6 +13222,14 @@ theorem canonical_completion_target_of_completion_certificate_of_aggregate_extra
     (completion_certificate_of_aggregate_extraction_derivation_dependencies
       dependencies)
 
+theorem completion_criterion_of_completion_certificate_of_aggregate_extraction_derivation_dependencies
+    (criterionWitness : Type u)
+    (dependencies : RemainingDependencyPackage.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_aggregate_extraction_derivation_dependencies
+      dependencies)
+
 theorem poincare_completion_payload_of_completion_certificate_of_aggregate_extraction_derivation_dependencies
     (dependencies : RemainingDependencyPackage.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -13192,6 +13296,14 @@ theorem canonical_completion_target_of_completion_certificate_of_dependency_proj
     (dependencies : RemainingDependencyPackage.{u}) :
     canonicalCompletionTarget.{u} :=
   canonical_completion_target_of_completion_certificate
+    (completion_certificate_of_dependency_projections
+      dependencies)
+
+theorem completion_criterion_of_completion_certificate_of_dependency_projections
+    (criterionWitness : Type u)
+    (dependencies : RemainingDependencyPackage.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
     (completion_certificate_of_dependency_projections
       dependencies)
 
@@ -13266,6 +13378,14 @@ theorem canonical_completion_target_of_completion_certificate_of_extraction_deri
     (completion_certificate_of_extraction_derivation_dependency_projections
       dependencies)
 
+theorem completion_criterion_of_completion_certificate_of_extraction_derivation_dependency_projections
+    (criterionWitness : Type u)
+    (dependencies : RemainingDependencyPackage.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_extraction_derivation_dependency_projections
+      dependencies)
+
 theorem poincare_completion_payload_of_completion_certificate_of_extraction_derivation_dependency_projections
     (dependencies : RemainingDependencyPackage.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -13334,6 +13454,14 @@ theorem canonical_completion_target_of_completion_certificate_of_lifted_homeomor
     (dependencies : RemainingDependencyPackage.{u}) :
     canonicalCompletionTarget.{u} :=
   canonical_completion_target_of_completion_certificate
+    (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies)
+
+theorem completion_criterion_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+    (criterionWitness : Type u)
+    (dependencies : RemainingDependencyPackage.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
     (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
       dependencies)
 
@@ -13408,6 +13536,14 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     (completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
       dependencies)
 
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
+    (criterionWitness : Type u)
+    (dependencies : PoincareProofDependencies.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
+      dependencies)
+
 theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
     (dependencies : PoincareProofDependencies.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -13476,6 +13612,14 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     (dependencies : PoincareProofDependencies.{u}) :
     canonicalCompletionTarget.{u} :=
   canonical_completion_target_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_projections
+      dependencies)
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_projections
+    (criterionWitness : Type u)
+    (dependencies : PoincareProofDependencies.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
     (completion_certificate_of_poincareProofDependencies_projections
       dependencies)
 
@@ -13550,6 +13694,14 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     (completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
       dependencies)
 
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+    (criterionWitness : Type u)
+    (dependencies : PoincareProofDependencies.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+      dependencies)
+
 theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
     (dependencies : PoincareProofDependencies.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -13618,6 +13770,14 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     (dependencies : PoincareProofDependencies.{u}) :
     canonicalCompletionTarget.{u} :=
   canonical_completion_target_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+      dependencies)
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+    (criterionWitness : Type u)
+    (dependencies : PoincareProofDependencies.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
     (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
       dependencies)
 
@@ -13692,6 +13852,14 @@ theorem canonical_completion_target_of_completion_certificate_of_equation_bounda
     (completion_certificate_of_equation_boundary_remaining_dependency_package
       dependencies)
 
+theorem completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package
+    (criterionWitness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_equation_boundary_remaining_dependency_package
+      dependencies)
+
 theorem poincare_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package
     (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -13760,6 +13928,14 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     canonicalCompletionTarget.{u} :=
   canonical_completion_target_of_completion_certificate
+    (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+      dependencies)
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+    (criterionWitness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
     (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
       dependencies)
 
@@ -13834,6 +14010,14 @@ theorem canonical_completion_target_of_completion_certificate_of_equation_bounda
     (completion_certificate_of_equation_boundary_dependency_projections
       dependencies)
 
+theorem completion_criterion_of_completion_certificate_of_equation_boundary_dependency_projections
+    (criterionWitness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_equation_boundary_dependency_projections
+      dependencies)
+
 theorem poincare_completion_payload_of_completion_certificate_of_equation_boundary_dependency_projections
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -13902,6 +14086,14 @@ theorem canonical_completion_target_of_completion_certificate_of_equation_bounda
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     canonicalCompletionTarget.{u} :=
   canonical_completion_target_of_completion_certificate
+    (completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
+      dependencies)
+
+theorem completion_criterion_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
+    (criterionWitness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
     (completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
       dependencies)
 
@@ -13976,6 +14168,14 @@ theorem canonical_completion_target_of_completion_certificate_of_equation_bounda
     (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
       dependencies)
 
+theorem completion_criterion_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+    (criterionWitness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+      dependencies)
+
 theorem poincare_completion_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -14044,6 +14244,14 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     canonicalCompletionTarget.{u} :=
   canonical_completion_target_of_completion_certificate
+    (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
+      dependencies)
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
+    (criterionWitness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
     (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
       dependencies)
 
@@ -14116,6 +14324,24 @@ theorem canonical_completion_target_of_completion_certificate_of_remaining_depen
   canonical_completion_target_of_completion_certificate
     (completion_certificate_of_remaining_dependency_package
       dependencies)
+
+theorem completion_criterion_of_completion_certificate_of_remaining_dependency_package
+    (criterionWitness : Type u)
+    (dependencies : RemainingDependencyPackage.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_remaining_dependency_package
+      dependencies)
+
+theorem completion_criterion_of_completion_certificate_of_remaining_dependency_package_eq
+    (criterionWitness : Type u)
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_criterion_of_completion_certificate_of_remaining_dependency_package
+      criterionWitness dependencies =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
 
 theorem canonical_completion_target_of_completion_certificate_of_remaining_dependency_package_eq
     (dependencies : RemainingDependencyPackage.{u}) :
@@ -14229,6 +14455,15 @@ theorem canonical_completion_target_of_completion_certificate_of_remaining_depen
     (completion_certificate_of_remaining_dependency_and_target_statement
       dependencies target)
 
+theorem completion_criterion_of_completion_certificate_of_remaining_dependency_and_target_statement
+    (criterionWitness : Type u)
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_remaining_dependency_and_target_statement
+      dependencies target)
+
 theorem poincare_completion_payload_of_completion_certificate_of_remaining_dependency_and_target_statement
     (dependencies : RemainingDependencyPackage.{u})
     (target : PoincareConjectureStatement.{u}) :
@@ -14308,6 +14543,15 @@ theorem canonical_completion_target_of_completion_certificate_of_remaining_depen
     (completion_certificate_of_remaining_dependency_and_canonical_target
       dependencies target)
 
+theorem completion_criterion_of_completion_certificate_of_remaining_dependency_and_canonical_target
+    (criterionWitness : Type u)
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_remaining_dependency_and_canonical_target
+      dependencies target)
+
 theorem poincare_completion_payload_of_completion_certificate_of_remaining_dependency_and_canonical_target
     (dependencies : RemainingDependencyPackage.{u})
     (target : canonicalCompletionTarget.{u}) :
@@ -14384,6 +14628,15 @@ theorem canonical_completion_target_of_completion_certificate_of_remaining_depen
     (criterion : CompletionCriterionAtUniverse witness) :
     canonicalCompletionTarget.{u} :=
   canonical_completion_target_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_and_completion_criterion
+      dependencies witness criterion)
+
+theorem completion_criterion_of_completion_certificate_of_remaining_dependency_and_completion_criterion
+    (criterionWitness : Type u)
+    (dependencies : RemainingDependencyPackage.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
     (completion_certificate_of_remaining_dependency_and_completion_criterion
       dependencies witness criterion)
 
@@ -14499,6 +14752,24 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     (completion_certificate_of_poincareProofDependencies
       dependencies)
 
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies
+    (criterionWitness : Type u)
+    (dependencies : PoincareProofDependencies.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_poincareProofDependencies
+      dependencies)
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_eq
+    (criterionWitness : Type u)
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_criterion_of_completion_certificate_of_poincareProofDependencies
+      criterionWitness dependencies =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_poincareProofDependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
 theorem canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_eq
     (dependencies : PoincareProofDependencies.{u}) :
     canonical_completion_target_of_completion_certificate_of_poincareProofDependencies
@@ -14611,6 +14882,15 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     (completion_certificate_of_poincareProofDependencies_and_target_statement
       dependencies target)
 
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_target_statement
+    (criterionWitness : Type u)
+    (dependencies : PoincareProofDependencies.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_poincareProofDependencies_and_target_statement
+      dependencies target)
+
 theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_target_statement
     (dependencies : PoincareProofDependencies.{u})
     (target : PoincareConjectureStatement.{u}) :
@@ -14690,6 +14970,15 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     (completion_certificate_of_poincareProofDependencies_and_canonical_target
       dependencies target)
 
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_canonical_target
+    (criterionWitness : Type u)
+    (dependencies : PoincareProofDependencies.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_poincareProofDependencies_and_canonical_target
+      dependencies target)
+
 theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_target
     (dependencies : PoincareProofDependencies.{u})
     (target : canonicalCompletionTarget.{u}) :
@@ -14766,6 +15055,15 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     (criterion : CompletionCriterionAtUniverse witness) :
     canonicalCompletionTarget.{u} :=
   canonical_completion_target_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+      dependencies witness criterion)
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion
+    (criterionWitness : Type u)
+    (dependencies : PoincareProofDependencies.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
     (completion_certificate_of_poincareProofDependencies_and_completion_criterion
       dependencies witness criterion)
 
@@ -14883,6 +15181,14 @@ theorem canonical_completion_target_of_completion_certificate_of_equation_bounda
     (completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target
       dependencies)
 
+theorem completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target
+    (criterionWitness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target
+      dependencies)
+
 theorem poincare_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target
     (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -14951,6 +15257,14 @@ theorem canonical_completion_target_of_completion_certificate_of_equation_bounda
     (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
     canonicalCompletionTarget.{u} :=
   canonical_completion_target_of_completion_certificate
+    (completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement
+      dependencies)
+
+theorem completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement
+    (criterionWitness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
     (completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement
       dependencies)
 
@@ -15030,6 +15344,15 @@ theorem canonical_completion_target_of_completion_certificate_of_equation_bounda
     (completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion
       witness dependencies)
 
+theorem completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion
+    (criterionWitness : Type u)
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion
+      witness dependencies)
+
 theorem poincare_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion
     (witness : Type u)
     (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
@@ -15104,6 +15427,14 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target
       dependencies)
 
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target
+    (criterionWitness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target
+      dependencies)
+
 theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -15172,6 +15503,14 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     canonicalCompletionTarget.{u} :=
   canonical_completion_target_of_completion_certificate
+    (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement
+      dependencies)
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement
+    (criterionWitness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
     (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement
       dependencies)
 
@@ -15248,6 +15587,15 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     canonicalCompletionTarget.{u} :=
   canonical_completion_target_of_completion_certificate
+    (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion
+      witness dependencies)
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion
+    (criterionWitness : Type u)
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
     (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion
       witness dependencies)
 
@@ -15335,6 +15683,13 @@ theorem canonical_completion_target_of_completion_certificate_of_dependency_proj
     (completion_certificate_of_dependency_projections_and_verification_family
       dependencies verificationFamily)
 
+theorem completion_criterion_of_completion_certificate_of_dependency_projections_and_verification_family
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_dependency_projections_and_verification_family
+      dependencies verificationFamily)
+
 theorem poincare_completion_payload_of_completion_certificate_of_dependency_projections_and_verification_family :
     ∃ _target : PoincareConjectureStatement.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
@@ -15415,6 +15770,13 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     (completion_certificate_of_poincareProofDependencies_and_verification_family
       dependencies verificationFamily)
 
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_poincareProofDependencies_and_verification_family
+      dependencies verificationFamily)
+
 theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family :
     ∃ _target : PoincareConjectureStatement.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
@@ -15477,6 +15839,22 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
   canonical_completion_target_of_completion_certificate
     (completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target
       dependencies verificationFamily)
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target
+      dependencies verificationFamily)
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_eq
+    (criterionWitness : Type u) :
+    completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target
+      dependencies verificationFamily criterionWitness =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
 
 theorem canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_eq :
     canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target
@@ -15572,6 +15950,22 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
   canonical_completion_target_of_completion_certificate
     (completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement
       dependencies verificationFamily)
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement
+      dependencies verificationFamily)
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_eq
+    (criterionWitness : Type u) :
+    completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement
+      dependencies verificationFamily criterionWitness =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
 
 theorem canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_eq :
     canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement
@@ -15672,6 +16066,24 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
   canonical_completion_target_of_completion_certificate
     (completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion
       dependencies verificationFamily witness)
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion
+    (criterionWitness : Type u)
+    (witness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion
+      dependencies verificationFamily witness)
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_eq
+    (criterionWitness : Type u)
+    (witness : Type u) :
+    completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion
+      dependencies verificationFamily criterionWitness witness =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion
+          dependencies verificationFamily witness) := by
+  apply Subsingleton.elim
 
 theorem canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_eq
     (witness : Type u) :
@@ -15787,6 +16199,22 @@ theorem canonical_completion_target_of_completion_certificate_of_components :
     (completion_certificate_of_components
       smoothability surgery topology)
 
+theorem completion_criterion_of_completion_certificate_of_components
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_components
+      smoothability surgery topology)
+
+theorem completion_criterion_of_completion_certificate_of_components_eq
+    (criterionWitness : Type u) :
+    completion_criterion_of_completion_certificate_of_components
+      smoothability surgery topology criterionWitness =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_components
+          smoothability surgery topology) := by
+  apply Subsingleton.elim
+
 theorem canonical_completion_target_of_completion_certificate_of_components_eq :
     canonical_completion_target_of_completion_certificate_of_components
       smoothability surgery topology =
@@ -15894,6 +16322,22 @@ theorem canonical_completion_target_of_completion_certificate_of_component_requi
   canonical_completion_target_of_completion_certificate
     (completion_certificate_of_component_requirements
       smoothabilityRequirement surgeryRequirement topologyRequirement)
+
+theorem completion_criterion_of_completion_certificate_of_component_requirements
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_component_requirements
+      smoothabilityRequirement surgeryRequirement topologyRequirement)
+
+theorem completion_criterion_of_completion_certificate_of_component_requirements_eq
+    (criterionWitness : Type u) :
+    completion_criterion_of_completion_certificate_of_component_requirements
+      smoothabilityRequirement surgeryRequirement topologyRequirement criterionWitness =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_component_requirements
+          smoothabilityRequirement surgeryRequirement topologyRequirement) := by
+  apply Subsingleton.elim
 
 theorem canonical_completion_target_of_completion_certificate_of_component_requirements_eq :
     canonical_completion_target_of_completion_certificate_of_component_requirements
@@ -16016,6 +16460,25 @@ theorem canonical_completion_target_of_completion_certificate_of_package_layer_r
     (completion_certificate_of_package_layer_requirements
       smoothabilityRequirement analyticRequirement surgeryRequirement
       finiteExtinctionRequirement topologyRequirement)
+
+theorem completion_criterion_of_completion_certificate_of_package_layer_requirements
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_package_layer_requirements
+      smoothabilityRequirement analyticRequirement surgeryRequirement
+      finiteExtinctionRequirement topologyRequirement)
+
+theorem completion_criterion_of_completion_certificate_of_package_layer_requirements_eq
+    (criterionWitness : Type u) :
+    completion_criterion_of_completion_certificate_of_package_layer_requirements
+      smoothabilityRequirement analyticRequirement surgeryRequirement
+      finiteExtinctionRequirement topologyRequirement criterionWitness =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_package_layer_requirements
+          smoothabilityRequirement analyticRequirement surgeryRequirement
+          finiteExtinctionRequirement topologyRequirement) := by
+  apply Subsingleton.elim
 
 theorem canonical_completion_target_of_completion_certificate_of_package_layer_requirements_eq :
     canonical_completion_target_of_completion_certificate_of_package_layer_requirements
@@ -16169,6 +16632,29 @@ theorem canonical_completion_target_of_completion_certificate_of_milestone_requi
       ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
       finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)
 
+theorem completion_criterion_of_completion_certificate_of_milestone_requirements
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_milestone_requirements
+      smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+      ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+      finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)
+
+theorem completion_criterion_of_completion_certificate_of_milestone_requirements_eq
+    (criterionWitness : Type u) :
+    completion_criterion_of_completion_certificate_of_milestone_requirements
+      smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+      ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+      finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement
+      criterionWitness =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_milestone_requirements
+          smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+          ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+          finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) := by
+  apply Subsingleton.elim
+
 theorem canonical_completion_target_of_completion_certificate_of_milestone_requirements_eq :
     canonical_completion_target_of_completion_certificate_of_milestone_requirements
       smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
@@ -16301,6 +16787,22 @@ theorem canonical_completion_target_of_completion_certificate_of_component_extra
     (completion_certificate_of_component_extraction_derivation_requirements
       smoothabilityRequirement surgeryRequirement topologyRequirement)
 
+theorem completion_criterion_of_completion_certificate_of_component_extraction_derivation_requirements
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_component_extraction_derivation_requirements
+      smoothabilityRequirement surgeryRequirement topologyRequirement)
+
+theorem completion_criterion_of_completion_certificate_of_component_extraction_derivation_requirements_eq
+    (criterionWitness : Type u) :
+    completion_criterion_of_completion_certificate_of_component_extraction_derivation_requirements
+      smoothabilityRequirement surgeryRequirement topologyRequirement criterionWitness =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_component_extraction_derivation_requirements
+          smoothabilityRequirement surgeryRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
 theorem canonical_completion_target_of_completion_certificate_of_component_extraction_derivation_requirements_eq :
     canonical_completion_target_of_completion_certificate_of_component_extraction_derivation_requirements
       smoothabilityRequirement surgeryRequirement topologyRequirement =
@@ -16422,6 +16924,25 @@ theorem canonical_completion_target_of_completion_certificate_of_package_layer_e
     (completion_certificate_of_package_layer_extraction_derivation_requirements
       smoothabilityRequirement analyticRequirement surgeryRequirement
       finiteExtinctionRequirement topologyRequirement)
+
+theorem completion_criterion_of_completion_certificate_of_package_layer_extraction_derivation_requirements
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_package_layer_extraction_derivation_requirements
+      smoothabilityRequirement analyticRequirement surgeryRequirement
+      finiteExtinctionRequirement topologyRequirement)
+
+theorem completion_criterion_of_completion_certificate_of_package_layer_extraction_derivation_requirements_eq
+    (criterionWitness : Type u) :
+    completion_criterion_of_completion_certificate_of_package_layer_extraction_derivation_requirements
+      smoothabilityRequirement analyticRequirement surgeryRequirement
+      finiteExtinctionRequirement topologyRequirement criterionWitness =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_package_layer_extraction_derivation_requirements
+          smoothabilityRequirement analyticRequirement surgeryRequirement
+          finiteExtinctionRequirement topologyRequirement) := by
+  apply Subsingleton.elim
 
 theorem canonical_completion_target_of_completion_certificate_of_package_layer_extraction_derivation_requirements_eq :
     canonical_completion_target_of_completion_certificate_of_package_layer_extraction_derivation_requirements
@@ -16575,6 +17096,29 @@ theorem canonical_completion_target_of_completion_certificate_of_milestone_extra
       ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
       finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)
 
+theorem completion_criterion_of_completion_certificate_of_milestone_extraction_derivation_requirements
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_milestone_extraction_derivation_requirements
+      smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+      ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+      finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)
+
+theorem completion_criterion_of_completion_certificate_of_milestone_extraction_derivation_requirements_eq
+    (criterionWitness : Type u) :
+    completion_criterion_of_completion_certificate_of_milestone_extraction_derivation_requirements
+      smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+      ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+      finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement
+      criterionWitness =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_milestone_extraction_derivation_requirements
+          smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+          ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+          finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) := by
+  apply Subsingleton.elim
+
 theorem canonical_completion_target_of_completion_certificate_of_milestone_extraction_derivation_requirements_eq :
     canonical_completion_target_of_completion_certificate_of_milestone_extraction_derivation_requirements
       smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
@@ -16696,6 +17240,22 @@ theorem canonical_completion_target_of_completion_certificate_of_literal_payload
     (completion_certificate_of_literal_payload
       payload)
 
+theorem completion_criterion_of_completion_certificate_of_literal_payload
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_literal_payload
+      payload)
+
+theorem completion_criterion_of_completion_certificate_of_literal_payload_eq
+    (criterionWitness : Type u) :
+    completion_criterion_of_completion_certificate_of_literal_payload
+      payload criterionWitness =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_literal_payload
+          payload) := by
+  apply Subsingleton.elim
+
 theorem canonical_completion_target_of_completion_certificate_of_literal_payload_eq :
     canonical_completion_target_of_completion_certificate_of_literal_payload
       payload =
@@ -16794,6 +17354,22 @@ theorem canonical_completion_target_of_completion_certificate_of_remaining_depen
     (completion_certificate_of_remaining_dependency_and_poincare_payload
       dependencies payload)
 
+theorem completion_criterion_of_completion_certificate_of_remaining_dependency_and_poincare_payload
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_remaining_dependency_and_poincare_payload
+      dependencies payload)
+
+theorem completion_criterion_of_completion_certificate_of_remaining_dependency_and_poincare_payload_eq
+    (criterionWitness : Type u) :
+    completion_criterion_of_completion_certificate_of_remaining_dependency_and_poincare_payload
+      dependencies payload criterionWitness =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_remaining_dependency_and_poincare_payload
+          dependencies payload) := by
+  apply Subsingleton.elim
+
 theorem canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_poincare_payload_eq :
     canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_poincare_payload
       dependencies payload =
@@ -16875,6 +17451,22 @@ theorem canonical_completion_target_of_completion_certificate_of_remaining_depen
   canonical_completion_target_of_completion_certificate
     (completion_certificate_of_remaining_dependency_and_canonical_payload
       dependencies payload)
+
+theorem completion_criterion_of_completion_certificate_of_remaining_dependency_and_canonical_payload
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_remaining_dependency_and_canonical_payload
+      dependencies payload)
+
+theorem completion_criterion_of_completion_certificate_of_remaining_dependency_and_canonical_payload_eq
+    (criterionWitness : Type u) :
+    completion_criterion_of_completion_certificate_of_remaining_dependency_and_canonical_payload
+      dependencies payload criterionWitness =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_remaining_dependency_and_canonical_payload
+          dependencies payload) := by
+  apply Subsingleton.elim
 
 theorem canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_canonical_payload_eq :
     canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_canonical_payload
@@ -16958,6 +17550,22 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     (completion_certificate_of_poincareProofDependencies_and_poincare_payload
       dependencies payload)
 
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+      dependencies payload)
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload_eq
+    (criterionWitness : Type u) :
+    completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload
+      dependencies payload criterionWitness =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+          dependencies payload) := by
+  apply Subsingleton.elim
+
 theorem canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload_eq :
     canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload
       dependencies payload =
@@ -17040,6 +17648,22 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     (completion_certificate_of_poincareProofDependencies_and_canonical_payload
       dependencies payload)
 
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+      dependencies payload)
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload_eq
+    (criterionWitness : Type u) :
+    completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload
+      dependencies payload criterionWitness =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+          dependencies payload) := by
+  apply Subsingleton.elim
+
 theorem canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload_eq :
     canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload
       dependencies payload =
@@ -17121,6 +17745,22 @@ theorem canonical_completion_target_of_completion_certificate_of_aggregate_depen
   canonical_completion_target_of_completion_certificate
     (completion_certificate_of_aggregate_dependency_payload
       payload)
+
+theorem completion_criterion_of_completion_certificate_of_aggregate_dependency_payload
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_aggregate_dependency_payload
+      payload)
+
+theorem completion_criterion_of_completion_certificate_of_aggregate_dependency_payload_eq
+    (criterionWitness : Type u) :
+    completion_criterion_of_completion_certificate_of_aggregate_dependency_payload
+      payload criterionWitness =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_aggregate_dependency_payload
+          payload) := by
+  apply Subsingleton.elim
 
 theorem canonical_completion_target_of_completion_certificate_of_aggregate_dependency_payload_eq :
     canonical_completion_target_of_completion_certificate_of_aggregate_dependency_payload
@@ -17219,6 +17859,22 @@ theorem canonical_completion_target_of_completion_certificate_of_project_stateme
   canonical_completion_target_of_completion_certificate
     (completion_certificate_of_project_statement_payload
       payload)
+
+theorem completion_criterion_of_completion_certificate_of_project_statement_payload
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_project_statement_payload
+      payload)
+
+theorem completion_criterion_of_completion_certificate_of_project_statement_payload_eq
+    (criterionWitness : Type u) :
+    completion_criterion_of_completion_certificate_of_project_statement_payload
+      payload criterionWitness =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_project_statement_payload
+          payload) := by
+  apply Subsingleton.elim
 
 theorem canonical_completion_target_of_completion_certificate_of_project_statement_payload_eq :
     canonical_completion_target_of_completion_certificate_of_project_statement_payload
@@ -17320,6 +17976,22 @@ theorem canonical_completion_target_of_completion_certificate_of_components_payl
     (completion_certificate_of_components_payload
       payload)
 
+theorem completion_criterion_of_completion_certificate_of_components_payload
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_components_payload
+      payload)
+
+theorem completion_criterion_of_completion_certificate_of_components_payload_eq
+    (criterionWitness : Type u) :
+    completion_criterion_of_completion_certificate_of_components_payload
+      payload criterionWitness =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_components_payload
+          payload) := by
+  apply Subsingleton.elim
+
 theorem canonical_completion_target_of_completion_certificate_of_components_payload_eq :
     canonical_completion_target_of_completion_certificate_of_components_payload
       payload =
@@ -17418,6 +18090,22 @@ theorem canonical_completion_target_of_completion_certificate_of_component_requi
     (completion_certificate_of_component_requirements_payload
       payload)
 
+theorem completion_criterion_of_completion_certificate_of_component_requirements_payload
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_component_requirements_payload
+      payload)
+
+theorem completion_criterion_of_completion_certificate_of_component_requirements_payload_eq
+    (criterionWitness : Type u) :
+    completion_criterion_of_completion_certificate_of_component_requirements_payload
+      payload criterionWitness =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_component_requirements_payload
+          payload) := by
+  apply Subsingleton.elim
+
 theorem canonical_completion_target_of_completion_certificate_of_component_requirements_payload_eq :
     canonical_completion_target_of_completion_certificate_of_component_requirements_payload
       payload =
@@ -17504,6 +18192,22 @@ theorem canonical_completion_target_of_completion_certificate_of_component_extra
   canonical_completion_target_of_completion_certificate
     (completion_certificate_of_component_extraction_derivation_requirements_payload
       payload)
+
+theorem completion_criterion_of_completion_certificate_of_component_extraction_derivation_requirements_payload
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_component_extraction_derivation_requirements_payload
+      payload)
+
+theorem completion_criterion_of_completion_certificate_of_component_extraction_derivation_requirements_payload_eq
+    (criterionWitness : Type u) :
+    completion_criterion_of_completion_certificate_of_component_extraction_derivation_requirements_payload
+      payload criterionWitness =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_component_extraction_derivation_requirements_payload
+          payload) := by
+  apply Subsingleton.elim
 
 theorem canonical_completion_target_of_completion_certificate_of_component_extraction_derivation_requirements_payload_eq :
     canonical_completion_target_of_completion_certificate_of_component_extraction_derivation_requirements_payload
@@ -17611,6 +18315,22 @@ theorem canonical_completion_target_of_completion_certificate_of_package_layer_r
     (completion_certificate_of_package_layer_requirements_payload
       payload)
 
+theorem completion_criterion_of_completion_certificate_of_package_layer_requirements_payload
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_package_layer_requirements_payload
+      payload)
+
+theorem completion_criterion_of_completion_certificate_of_package_layer_requirements_payload_eq
+    (criterionWitness : Type u) :
+    completion_criterion_of_completion_certificate_of_package_layer_requirements_payload
+      payload criterionWitness =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_package_layer_requirements_payload
+          payload) := by
+  apply Subsingleton.elim
+
 theorem canonical_completion_target_of_completion_certificate_of_package_layer_requirements_payload_eq :
     canonical_completion_target_of_completion_certificate_of_package_layer_requirements_payload
       payload =
@@ -17697,6 +18417,22 @@ theorem canonical_completion_target_of_completion_certificate_of_package_layer_e
   canonical_completion_target_of_completion_certificate
     (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
       payload)
+
+theorem completion_criterion_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+      payload)
+
+theorem completion_criterion_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload_eq
+    (criterionWitness : Type u) :
+    completion_criterion_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+      payload criterionWitness =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+          payload) := by
+  apply Subsingleton.elim
 
 theorem canonical_completion_target_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload_eq :
     canonical_completion_target_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload
@@ -17806,6 +18542,22 @@ theorem canonical_completion_target_of_completion_certificate_of_milestone_requi
     (completion_certificate_of_milestone_requirements_payload
       payload)
 
+theorem completion_criterion_of_completion_certificate_of_milestone_requirements_payload
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_milestone_requirements_payload
+      payload)
+
+theorem completion_criterion_of_completion_certificate_of_milestone_requirements_payload_eq
+    (criterionWitness : Type u) :
+    completion_criterion_of_completion_certificate_of_milestone_requirements_payload
+      payload criterionWitness =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_milestone_requirements_payload
+          payload) := by
+  apply Subsingleton.elim
+
 theorem canonical_completion_target_of_completion_certificate_of_milestone_requirements_payload_eq :
     canonical_completion_target_of_completion_certificate_of_milestone_requirements_payload
       payload =
@@ -17892,6 +18644,22 @@ theorem canonical_completion_target_of_completion_certificate_of_milestone_extra
   canonical_completion_target_of_completion_certificate
     (completion_certificate_of_milestone_extraction_derivation_requirements_payload
       payload)
+
+theorem completion_criterion_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+      payload)
+
+theorem completion_criterion_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload_eq
+    (criterionWitness : Type u) :
+    completion_criterion_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload
+      payload criterionWitness =
+      completion_criterion_of_completion_certificate criterionWitness
+        (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+          payload) := by
+  apply Subsingleton.elim
 
 theorem canonical_completion_target_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload_eq :
     canonical_completion_target_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload
@@ -18005,6 +18773,13 @@ theorem canonical_completion_target_of_completion_certificate_of_equation_bounda
     (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
       dependencies payload)
 
+theorem completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+      dependencies payload)
+
 theorem poincare_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload :
     ∃ _target : PoincareConjectureStatement.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
@@ -18082,6 +18857,13 @@ theorem canonical_completion_payload_of_completion_certificate_of_poincareProofD
 theorem canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload :
     canonicalCompletionTarget.{u} :=
   canonical_completion_target_of_completion_certificate
+    (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+      dependencies payload)
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
     (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
       dependencies payload)
 
@@ -18168,6 +18950,13 @@ theorem canonical_completion_target_of_completion_certificate_of_equation_bounda
     (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
       dependencies payload)
 
+theorem completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
+    (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+      dependencies payload)
+
 theorem poincare_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload :
     ∃ _target : PoincareConjectureStatement.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
@@ -18248,6 +19037,13 @@ theorem canonical_completion_payload_of_completion_certificate_of_poincareProofD
 theorem canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload :
     canonicalCompletionTarget.{u} :=
   canonical_completion_target_of_completion_certificate
+    (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+      dependencies payload)
+
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+    (criterionWitness : Type u) :
+    CompletionCriterionAtUniverse criterionWitness :=
+  completion_criterion_of_completion_certificate criterionWitness
     (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
       dependencies payload)
 
