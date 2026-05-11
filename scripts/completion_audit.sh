@@ -453,7 +453,10 @@ check_completion_constructor_endpoint_coverage() {
       completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload \
       canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload \
       poincare_full_assembly_payload_of_completion_certificate_with_equation_boundary_verification_payload \
-      poincare_full_assembly_payload_of_completion_certificate_with_equation_boundary_verification_payload_extraction_derivation; do
+      poincare_full_assembly_payload_of_completion_certificate_with_equation_boundary_verification_payload_extraction_derivation \
+      canonical_three_sphere_statement_of_completion_certificate_with_equation_boundary_verification_payload \
+      poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload \
+      poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload; do
     rg --no-filename -o "^theorem ${boundary_endpoint_family}_of_([A-Za-z0-9_]+)\b" \
       -r 'completion_certificate_with_equation_boundary_verification_payload_of_$1' \
       Poincare/CanonicalBridges.lean Poincare/CompletionTarget.lean |
