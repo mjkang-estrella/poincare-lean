@@ -2103,6 +2103,104 @@ theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointLoopNullh
   apply Subsingleton.elim
 
 /--
+The compactification model's own fundamental-group obligation directly supplies
+the full compactification homotopy/manifold prerequisite payload.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointFundamentalGroupSubsingletonStatement
+    (h : OnePointThreeSpaceFundamentalGroupSubsingletonStatement) :
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  exact ⟨onePoint_threeSpace_t2Space, onePoint_threeSpace_chartedSpace,
+    onePoint_threeSpace_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement h,
+    onePoint_threeSpace_compactSpace, onePoint_threeSpace_topologicalManifold,
+    onePoint_threeSpace_pathConnectedSpace, onePoint_threeSpace_locPathConnectedSpace,
+    onePoint_threeSpace_connectedSpace, onePoint_threeSpace_nonempty⟩
+
+/-- The compactification fundamental-group payload route uses the local criterion. -/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointFundamentalGroupSubsingletonStatement_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointFundamentalGroupSubsingletonStatement =
+      (fun h : OnePointThreeSpaceFundamentalGroupSubsingletonStatement =>
+        ⟨onePoint_threeSpace_t2Space, onePoint_threeSpace_chartedSpace,
+          onePoint_threeSpace_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement h,
+          onePoint_threeSpace_compactSpace, onePoint_threeSpace_topologicalManifold,
+          onePoint_threeSpace_pathConnectedSpace, onePoint_threeSpace_locPathConnectedSpace,
+          onePoint_threeSpace_connectedSpace, onePoint_threeSpace_nonempty⟩) := by
+  funext h
+  apply Subsingleton.elim
+
+/- The compactification fundamental-group payload route agrees with the local loop route. -/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointFundamentalGroupSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointFundamentalGroupSubsingletonStatement =
+      (fun h : OnePointThreeSpaceFundamentalGroupSubsingletonStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointLoopNullhomotopyStatement
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The compactification model's own `π₁` obligation directly supplies the full
+compactification homotopy/manifold prerequisite payload.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPiOneSubsingletonStatement
+    (h : OnePointThreeSpacePiOneSubsingletonStatement) :
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  exact ⟨onePoint_threeSpace_t2Space, onePoint_threeSpace_chartedSpace,
+    onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement h,
+    onePoint_threeSpace_compactSpace, onePoint_threeSpace_topologicalManifold,
+    onePoint_threeSpace_pathConnectedSpace, onePoint_threeSpace_locPathConnectedSpace,
+    onePoint_threeSpace_connectedSpace, onePoint_threeSpace_nonempty⟩
+
+/-- The compactification `π₁` payload route uses the local criterion. -/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPiOneSubsingletonStatement_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPiOneSubsingletonStatement =
+      (fun h : OnePointThreeSpacePiOneSubsingletonStatement =>
+        ⟨onePoint_threeSpace_t2Space, onePoint_threeSpace_chartedSpace,
+          onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement h,
+          onePoint_threeSpace_compactSpace, onePoint_threeSpace_topologicalManifold,
+          onePoint_threeSpace_pathConnectedSpace, onePoint_threeSpace_locPathConnectedSpace,
+          onePoint_threeSpace_connectedSpace, onePoint_threeSpace_nonempty⟩) := by
+  funext h
+  apply Subsingleton.elim
+
+/- The compactification `π₁` payload route agrees with the local fundamental-group route. -/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPiOneSubsingletonStatement_fundamentalGroup_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPiOneSubsingletonStatement =
+      (fun h : OnePointThreeSpacePiOneSubsingletonStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointFundamentalGroupSubsingletonStatement
+          (onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+            h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/- The compactification `π₁` payload route agrees with the local loop route. -/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPiOneSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPiOneSubsingletonStatement =
+      (fun h : OnePointThreeSpacePiOneSubsingletonStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointLoopNullhomotopyStatement
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+            (onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+              h))) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The compactification model's own based loop-nullhomotopy obligation directly
 supplies the full compactification homotopy/manifold prerequisite payload.
 -/
