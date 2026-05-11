@@ -1755,6 +1755,66 @@ theorem target_statement_of_completion_certificate_of_poincareProofDependencies_
   apply Subsingleton.elim
 
 /--
+The remaining-dependency canonical statement certificate exposes the reserved
+final theorem route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement
+    (dependencies : RemainingDependencyPackage.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement
+      dependencies h)
+
+/--
+The remaining-dependency canonical statement reserved-name endpoint is the
+direct canonical topological reserved-name route.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_conjecture_of_completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement
+      dependencies h =
+      poincare_conjecture_of_canonical_three_sphere_statement h := by
+  apply Subsingleton.elim
+
+/--
+The aggregate canonical statement certificate exposes the reserved final theorem
+route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement
+    (dependencies : PoincareProofDependencies.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement
+      dependencies h)
+
+/--
+The aggregate canonical statement reserved-name endpoint is the direct canonical
+topological reserved-name route.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement
+      dependencies h =
+      poincare_conjecture_of_canonical_three_sphere_statement h := by
+  apply Subsingleton.elim
+
+/--
 Projecting the project completion payload from an aggregate canonical statement
 certificate returns the payload induced by the supplied canonical statement.
 -/
