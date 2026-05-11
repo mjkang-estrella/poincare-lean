@@ -2201,6 +2201,135 @@ theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPiOneSubs
   apply Subsingleton.elim
 
 /--
+The standard sphere's fundamental-group formulation supplies the full
+compactification homotopy/manifold prerequisite payload.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_fundamentalGroupSubsingletonStatement
+    (h : ThreeSphereFundamentalGroupSubsingletonStatement) :
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement h
+  exact onePoint_threeSpace_homotopy_manifold_prerequisites
+
+/--
+The standard-sphere fundamental-group compactification prerequisite route
+factors through standard-sphere simple-connectedness.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_fundamentalGroupSubsingletonStatement_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_fundamentalGroupSubsingletonStatement =
+      (fun h : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement h
+        onePoint_threeSpace_homotopy_manifold_prerequisites) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The standard-sphere fundamental-group compactification prerequisite route
+agrees with the standard-sphere loop route.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_fundamentalGroupSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_fundamentalGroupSubsingletonStatement =
+      (fun h : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The standard-sphere fundamental-group compactification prerequisite route
+agrees with first transporting to the compactification fundamental-group
+formulation.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_fundamentalGroupSubsingletonStatement_onePoint_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_fundamentalGroupSubsingletonStatement =
+      (fun h : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointFundamentalGroupSubsingletonStatement
+          (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_threeSphereFundamentalGroupSubsingletonStatement
+            h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The standard sphere's `π₁` formulation supplies the full compactification
+homotopy/manifold prerequisite payload.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingletonStatement
+    (h : ThreeSpherePiOneSubsingletonStatement) :
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement h
+  exact onePoint_threeSpace_homotopy_manifold_prerequisites
+
+/--
+The standard-sphere `π₁` compactification prerequisite route factors through
+standard-sphere simple-connectedness.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingletonStatement_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement h
+        onePoint_threeSpace_homotopy_manifold_prerequisites) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The standard-sphere `π₁` compactification prerequisite route agrees with first
+converting target `π₁` subsingletons to fundamental-group triviality.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingletonStatement_fundamentalGroup_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_fundamentalGroupSubsingletonStatement
+          (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+            h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The standard-sphere `π₁` compactification prerequisite route agrees with the loop route. -/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+            (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+              h))) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The standard-sphere `π₁` compactification prerequisite route agrees with first
+transporting to the compactification `π₁` formulation.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingletonStatement_onePoint_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPiOneSubsingletonStatement
+          (onePoint_threeSpace_piOneSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement
+            h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The compactification model's own based loop-nullhomotopy obligation directly
 supplies the full compactification homotopy/manifold prerequisite payload.
 -/
