@@ -614,7 +614,7 @@ theorem threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonS
       (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
         fun h : PoincareConjectureStatement.{0} =>
           threeSphere_self_homeomorph_of_poincare_statement_and_fundamentalGroupSubsingletonStatement
-            (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+            (threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
               hPiOne) h) := by
   funext hPiOne h
   apply Subsingleton.elim
@@ -625,9 +625,8 @@ theorem threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonS
       (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
         fun h : PoincareConjectureStatement.{0} =>
           threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopyStatement
-            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-              (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-                hPiOne)) h) := by
+            (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+              hPiOne) h) := by
   funext hPiOne h
   apply Subsingleton.elim
 
@@ -664,7 +663,7 @@ theorem threeSphere_self_diffeomorph_of_smooth_statement_and_piOneSubsingletonSt
       (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
         fun h : SmoothPoincareConjectureStatement.{0} =>
           threeSphere_self_diffeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement
-            (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+            (threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
               hPiOne) h) := by
   funext hPiOne h
   apply Subsingleton.elim
@@ -675,9 +674,8 @@ theorem threeSphere_self_diffeomorph_of_smooth_statement_and_piOneSubsingletonSt
       (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
         fun h : SmoothPoincareConjectureStatement.{0} =>
           threeSphere_self_diffeomorph_of_smooth_statement_and_loopNullhomotopyStatement
-            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-              (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-                hPiOne)) h) := by
+            (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+              hPiOne) h) := by
   funext hPiOne h
   apply Subsingleton.elim
 
@@ -714,7 +712,7 @@ theorem threeSphere_self_homeomorph_of_smooth_statement_and_piOneSubsingletonSta
       (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
         fun h : SmoothPoincareConjectureStatement.{0} =>
           threeSphere_self_homeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement
-            (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+            (threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
               hPiOne) h) := by
   funext hPiOne h
   apply Subsingleton.elim
@@ -725,9 +723,8 @@ theorem threeSphere_self_homeomorph_of_smooth_statement_and_piOneSubsingletonSta
       (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
         fun h : SmoothPoincareConjectureStatement.{0} =>
           threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement
-            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-              (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-                hPiOne)) h) := by
+            (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+              hPiOne) h) := by
   funext hPiOne h
   apply Subsingleton.elim
 
@@ -1451,7 +1448,7 @@ theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsi
       (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
         fun h : PoincareConjectureStatement.{0} =>
           threeSphere_self_homeomorph_payload_of_poincare_statement_and_fundamentalGroupSubsingletonStatement
-            (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+            (threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
               hPiOne) h) := by
   funext hPiOne h
   apply Subsingleton.elim
@@ -1462,9 +1459,8 @@ theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsi
       (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
         fun h : PoincareConjectureStatement.{0} =>
           threeSphere_self_homeomorph_payload_of_poincare_statement_and_loopNullhomotopyStatement
-            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-              (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-                hPiOne)) h) := by
+            (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+              hPiOne) h) := by
   funext hPiOne h
   apply Subsingleton.elim
 
@@ -1511,7 +1507,7 @@ theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsin
       (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
         fun h : SmoothPoincareConjectureStatement.{0} =>
           threeSphere_self_diffeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement
-            (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+            (threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
               hPiOne) h) := by
   funext hPiOne h
   apply Subsingleton.elim
@@ -1522,9 +1518,8 @@ theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsin
       (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
         fun h : SmoothPoincareConjectureStatement.{0} =>
           threeSphere_self_diffeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement
-            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-              (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-                hPiOne)) h) := by
+            (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+              hPiOne) h) := by
   funext hPiOne h
   apply Subsingleton.elim
 
@@ -1571,7 +1566,7 @@ theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsing
       (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
         fun h : SmoothPoincareConjectureStatement.{0} =>
           threeSphere_self_homeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement
-            (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+            (threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
               hPiOne) h) := by
   funext hPiOne h
   apply Subsingleton.elim
@@ -1582,9 +1577,8 @@ theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsing
       (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
         fun h : SmoothPoincareConjectureStatement.{0} =>
           threeSphere_self_homeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement
-            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-              (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-                hPiOne)) h) := by
+            (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+              hPiOne) h) := by
   funext hPiOne h
   apply Subsingleton.elim
 
