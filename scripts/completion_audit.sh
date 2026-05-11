@@ -531,6 +531,10 @@ check_decl "target sphere full prerequisite payload theorem is declared" \
   '^theorem threeSphere_target_prerequisites\b' Poincare/Statement.lean
 check_decl "target sphere full prerequisite payload equality contract is declared" \
   '^theorem threeSphere_target_prerequisites_eq\b' Poincare/Statement.lean
+check_decl "target sphere direct-simple full prerequisite payload theorem is declared" \
+  '^theorem threeSphere_target_prerequisites_of_simpleConnectedSpace\b' Poincare/Statement.lean
+check_decl "target sphere direct-simple full prerequisite payload equality contract is declared" \
+  '^theorem threeSphere_target_prerequisites_of_simpleConnectedSpace_eq\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisite payload theorem is declared" \
   '^theorem threeSphere_homotopy_prerequisites_except_simpleConnected\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisite payload equality contract is declared" \
@@ -539,6 +543,10 @@ check_decl "target sphere full homotopy prerequisite payload theorem is declared
   '^theorem threeSphere_homotopy_prerequisites\b' Poincare/Statement.lean
 check_decl "target sphere full homotopy prerequisite payload equality contract is declared" \
   '^theorem threeSphere_homotopy_prerequisites_eq\b' Poincare/Statement.lean
+check_decl "target sphere direct-simple full homotopy prerequisite payload theorem is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_simpleConnectedSpace\b' Poincare/Statement.lean
+check_decl "target sphere direct-simple full homotopy prerequisite payload equality contract is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_simpleConnectedSpace_eq\b' Poincare/Statement.lean
 check_decl "target sphere loop-nullhomotopy statement is declared" \
   '^def ThreeSphereLoopNullhomotopyStatement\b' Poincare/Statement.lean
 check_decl "target sphere loop-nullhomotopy statement equality contract is declared" \
@@ -18136,10 +18144,14 @@ open scoped Manifold ContDiff
 #check Poincare.threeSphere_target_prerequisites_except_simpleConnected_eq
 #check Poincare.threeSphere_target_prerequisites
 #check Poincare.threeSphere_target_prerequisites_eq
+#check Poincare.threeSphere_target_prerequisites_of_simpleConnectedSpace
+#check Poincare.threeSphere_target_prerequisites_of_simpleConnectedSpace_eq
 #check Poincare.threeSphere_homotopy_prerequisites_except_simpleConnected
 #check Poincare.threeSphere_homotopy_prerequisites_except_simpleConnected_eq
 #check Poincare.threeSphere_homotopy_prerequisites
 #check Poincare.threeSphere_homotopy_prerequisites_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_simpleConnectedSpace
+#check Poincare.threeSphere_homotopy_prerequisites_of_simpleConnectedSpace_eq
 #check Poincare.ThreeSphereLoopNullhomotopyStatement
 #check Poincare.threeSphereLoopNullhomotopyStatement_eq
 #check Poincare.threeSphere_simplyConnectedSpace_iff_loopNullhomotopyStatement
@@ -24981,6 +24993,8 @@ open scoped Manifold ContDiff
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_target_prerequisites_eq
+#check Poincare.threeSphere_target_prerequisites_of_simpleConnectedSpace
+#check Poincare.threeSphere_target_prerequisites_of_simpleConnectedSpace_eq
 
 #check (Poincare.threeSphere_homotopy_prerequisites_except_simpleConnected :
   ∃ _t2 : T2Space Poincare.ThreeSphere,
@@ -25005,6 +25019,8 @@ open scoped Manifold ContDiff
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_homotopy_prerequisites_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_simpleConnectedSpace
+#check Poincare.threeSphere_homotopy_prerequisites_of_simpleConnectedSpace_eq
 
 #check (Poincare.ThreeSphereLoopNullhomotopyStatement : Prop)
 #check (Poincare.threeSphereLoopNullhomotopyStatement_eq :

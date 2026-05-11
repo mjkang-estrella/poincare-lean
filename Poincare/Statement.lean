@@ -225,6 +225,29 @@ theorem threeSphere_target_prerequisites_eq
   apply Subsingleton.elim
 
 /--
+Direct-simple standard-sphere target prerequisites, explicitly named to match
+the corresponding one-point compactification payload route.
+-/
+theorem threeSphere_target_prerequisites_of_simpleConnectedSpace
+    [SimplyConnectedSpace ThreeSphere] :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere :=
+  threeSphere_target_prerequisites
+
+/-- The direct-simple target prerequisite payload is the named full target payload. -/
+theorem threeSphere_target_prerequisites_of_simpleConnectedSpace_eq
+    [SimplyConnectedSpace ThreeSphere] :
+    threeSphere_target_prerequisites_of_simpleConnectedSpace =
+      threeSphere_target_prerequisites := by
+  apply Subsingleton.elim
+
+/--
 Standard-sphere prerequisites useful for homotopy-level arguments, excluding
 the simple-connectedness input.  This extends the target prerequisite payload
 with local path-connectedness, which is often required by covering-space and
@@ -287,6 +310,30 @@ theorem threeSphere_homotopy_prerequisites_eq
         threeSphere_compactSpace, threeSphere_smoothManifold,
         threeSphere_pathConnectedSpace, threeSphere_locPathConnectedSpace,
         threeSphere_connectedSpace, threeSphere_nonempty⟩ := by
+  apply Subsingleton.elim
+
+/--
+Direct-simple standard-sphere homotopy prerequisites, explicitly named to match
+the corresponding one-point compactification payload route.
+-/
+theorem threeSphere_homotopy_prerequisites_of_simpleConnectedSpace
+    [SimplyConnectedSpace ThreeSphere] :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere :=
+  threeSphere_homotopy_prerequisites
+
+/-- The direct-simple homotopy prerequisite payload is the named full homotopy payload. -/
+theorem threeSphere_homotopy_prerequisites_of_simpleConnectedSpace_eq
+    [SimplyConnectedSpace ThreeSphere] :
+    threeSphere_homotopy_prerequisites_of_simpleConnectedSpace =
+      threeSphere_homotopy_prerequisites := by
   apply Subsingleton.elim
 
 set_option backward.isDefEq.respectTransparency false in

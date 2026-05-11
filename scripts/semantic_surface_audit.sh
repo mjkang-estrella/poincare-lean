@@ -1143,6 +1143,8 @@ set_option linter.unusedVariables false
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_target_prerequisites_eq
+#check Poincare.threeSphere_target_prerequisites_of_simpleConnectedSpace
+#check Poincare.threeSphere_target_prerequisites_of_simpleConnectedSpace_eq
 
 #check (Poincare.threeSphere_homotopy_prerequisites_except_simpleConnected :
   ∃ _t2 : T2Space Poincare.ThreeSphere,
@@ -1167,6 +1169,8 @@ set_option linter.unusedVariables false
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_homotopy_prerequisites_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_simpleConnectedSpace
+#check Poincare.threeSphere_homotopy_prerequisites_of_simpleConnectedSpace_eq
 
 #check (Poincare.ThreeSphereLoopNullhomotopyStatement : Prop)
 #check (Poincare.threeSphereLoopNullhomotopyStatement_eq :
