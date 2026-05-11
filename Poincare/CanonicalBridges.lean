@@ -13999,6 +13999,168 @@ theorem poincare_conjecture_of_completion_certificate_of_milestone_extraction_de
 
 end MilestoneRequirementPayloadReservedTheoremGates
 
+section EquationBoundaryTargetPayloadReservedTheoremGates
+
+variable (dependencies : RemainingDependencyPackageWithEquationBoundary.{u})
+variable (payload :
+  ∃ _surgeryPackages :
+    (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        Nonempty
+          (Σ n : ℕ∞ω,
+            FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+  ∃ _finiteExtinction :
+    (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        FiniteExtinctionByRicciFlowWithSurgery M),
+  ∃ _extractSphere : ExtinctionImpliesSphereStatement.{u},
+  ∃ _target : PoincareConjectureStatement.{u},
+    ∀ witness : Type u, CompletionCriterionAtUniverse witness)
+
+include dependencies payload
+
+theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+      dependencies payload)
+
+theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_eq :
+    poincare_conjecture_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+      dependencies payload =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+          dependencies payload) := by
+  apply Subsingleton.elim
+
+end EquationBoundaryTargetPayloadReservedTheoremGates
+
+section AggregateEquationBoundaryTargetPayloadReservedTheoremGates
+
+variable (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+variable (payload :
+  ∃ _surgeryPackages :
+    (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        Nonempty
+          (Σ n : ℕ∞ω,
+            FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+  ∃ _finiteExtinction :
+    (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        FiniteExtinctionByRicciFlowWithSurgery M),
+  ∃ _extractSphere : ExtinctionImpliesSphereStatement.{u},
+  ∃ _target : PoincareConjectureStatement.{u},
+    ∀ witness : Type u, CompletionCriterionAtUniverse witness)
+
+include dependencies payload
+
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+      dependencies payload)
+
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_eq :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+      dependencies payload =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+          dependencies payload) := by
+  apply Subsingleton.elim
+
+end AggregateEquationBoundaryTargetPayloadReservedTheoremGates
+
+section EquationBoundaryExtractionDerivationTargetPayloadReservedTheoremGates
+
+variable (dependencies : RemainingDependencyPackageWithEquationBoundary.{u})
+variable (payload :
+  ∃ _surgeryPackages :
+    (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        Nonempty
+          (Σ n : ℕ∞ω,
+            FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+  ∃ _finiteExtinction :
+    (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        FiniteExtinctionByRicciFlowWithSurgery M),
+  ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+  ∃ _derivation :
+    ExtinctionTopologyDerivationForExtractionStatement.{u}
+      extractSphere,
+  ∃ _target : PoincareConjectureStatement.{u},
+    ∀ witness : Type u, CompletionCriterionAtUniverse witness)
+
+include dependencies payload
+
+theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+      dependencies payload)
+
+theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_eq :
+    poincare_conjecture_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+      dependencies payload =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+          dependencies payload) := by
+  apply Subsingleton.elim
+
+end EquationBoundaryExtractionDerivationTargetPayloadReservedTheoremGates
+
+section AggregateEquationBoundaryExtractionDerivationTargetPayloadReservedTheoremGates
+
+variable (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+variable (payload :
+  ∃ _surgeryPackages :
+    (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        Nonempty
+          (Σ n : ℕ∞ω,
+            FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+  ∃ _finiteExtinction :
+    (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        FiniteExtinctionByRicciFlowWithSurgery M),
+  ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+  ∃ _derivation :
+    ExtinctionTopologyDerivationForExtractionStatement.{u}
+      extractSphere,
+  ∃ _target : PoincareConjectureStatement.{u},
+    ∀ witness : Type u, CompletionCriterionAtUniverse witness)
+
+include dependencies payload
+
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+      dependencies payload)
+
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_eq :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+      dependencies payload =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+          dependencies payload) := by
+  apply Subsingleton.elim
+
+end AggregateEquationBoundaryExtractionDerivationTargetPayloadReservedTheoremGates
+
 /--
 Projecting the canonical topological statement from the route completion
 certificates returns the named route statement endpoint.
