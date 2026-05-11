@@ -3280,6 +3280,97 @@ theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointLoo
   apply Subsingleton.elim
 
 /--
+The compactification model's own fundamental-group obligation supplies
+simple-connectedness for any source recognized as the compactification model.
+-/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    SimplyConnectedSpace M := by
+  rcases h with ⟨e⟩
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement hFund
+  exact e.toHomotopyEquiv.simplyConnectedSpace
+
+/-- Source simple-connectedness follows by compactification recognition and local fundamental groups. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement
+      hFund h =
+      (by
+        rcases h with ⟨e⟩
+        letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement hFund
+        exact e.toHomotopyEquiv.simplyConnectedSpace) := by
+  apply Subsingleton.elim
+
+/-- The local fundamental-group source simple-connectedness route agrees with the local loop route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement
+      hFund h =
+      simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+          hFund) h := by
+  apply Subsingleton.elim
+
+/--
+The compactification model's own `π₁` obligation supplies simple-connectedness
+for any source recognized as the compactification model.
+-/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hPi : OnePointThreeSpacePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    SimplyConnectedSpace M := by
+  rcases h with ⟨e⟩
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement hPi
+  exact e.toHomotopyEquiv.simplyConnectedSpace
+
+/-- Source simple-connectedness follows by compactification recognition and local `π₁`. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPi : OnePointThreeSpacePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement
+      hPi h =
+      (by
+        rcases h with ⟨e⟩
+        letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement hPi
+        exact e.toHomotopyEquiv.simplyConnectedSpace) := by
+  apply Subsingleton.elim
+
+/-- The local `π₁` source simple-connectedness route agrees with the local fundamental-group route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement_fundamentalGroup_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPi : OnePointThreeSpacePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement
+      hPi h =
+      simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement
+        (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
+          hPi) h := by
+  apply Subsingleton.elim
+
+/-- The local `π₁` source simple-connectedness route agrees with the local loop route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPi : OnePointThreeSpacePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement
+      hPi h =
+      simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement hPi) h := by
+  apply Subsingleton.elim
+
+/--
 The compactification model's own based loop-nullhomotopy obligation supplies
 simple-connectedness for any source recognized as the compactification model.
 -/
@@ -3451,6 +3542,123 @@ theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_
           simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
             hLoop h,
           compact, topological, path, locPath, connected, nonempty⟩) := by
+  apply Subsingleton.elim
+
+/--
+The compactification model's own fundamental-group obligation supplies the full
+source homotopy/manifold prerequisite payload for any source recognized as the
+one-point compactification model.
+-/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  rcases topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h with
+    ⟨t2, charted, compact, topological, path, locPath, connected, nonempty⟩
+  exact ⟨t2, charted,
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement
+      hFund h,
+    compact, topological, path, locPath, connected, nonempty⟩
+
+/-- The local fundamental-group source prerequisite route is transport plus local simple-connectedness. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement
+      hFund h =
+      (by
+        rcases topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h with
+          ⟨t2, charted, compact, topological, path, locPath, connected, nonempty⟩
+        exact ⟨t2, charted,
+          simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement
+            hFund h,
+          compact, topological, path, locPath, connected, nonempty⟩) := by
+  apply Subsingleton.elim
+
+/-- The local fundamental-group source route agrees with the local loop source route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement
+      hFund h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+          hFund) h := by
+  apply Subsingleton.elim
+
+/--
+The compactification model's own `π₁` obligation supplies the full source
+homotopy/manifold prerequisite payload for any source recognized as the
+one-point compactification model.
+-/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hPi : OnePointThreeSpacePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  rcases topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h with
+    ⟨t2, charted, compact, topological, path, locPath, connected, nonempty⟩
+  exact ⟨t2, charted,
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement
+      hPi h,
+    compact, topological, path, locPath, connected, nonempty⟩
+
+/-- The local `π₁` source prerequisite route is transport plus local simple-connectedness. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPi : OnePointThreeSpacePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement
+      hPi h =
+      (by
+        rcases topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h with
+          ⟨t2, charted, compact, topological, path, locPath, connected, nonempty⟩
+        exact ⟨t2, charted,
+          simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement
+            hPi h,
+          compact, topological, path, locPath, connected, nonempty⟩) := by
+  apply Subsingleton.elim
+
+/-- The local `π₁` source route agrees with the local fundamental-group source route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement_fundamentalGroup_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPi : OnePointThreeSpacePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement
+      hPi h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement
+        (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
+          hPi) h := by
+  apply Subsingleton.elim
+
+/-- The local `π₁` source route agrees with the local loop source route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPi : OnePointThreeSpacePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement
+      hPi h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement hPi) h := by
   apply Subsingleton.elim
 
 /--
@@ -4483,6 +4691,103 @@ theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of
       hLoop h =
       homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
         hLoop h := by
+  apply Subsingleton.elim
+
+/--
+The compactification model's own fundamental-group obligation packages any
+recognized source as a Poincare-candidate prerequisite payload.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M :=
+  homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement
+    hFund h
+
+/-- The local fundamental-group candidate route is the local fundamental-group source-prerequisite route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement
+      hFund h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement
+        hFund h := by
+  apply Subsingleton.elim
+
+/-- The local fundamental-group candidate route agrees with the local loop candidate route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement
+      hFund h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+          hFund) h := by
+  apply Subsingleton.elim
+
+/--
+The compactification model's own `π₁` obligation packages any recognized source
+as a Poincare-candidate prerequisite payload.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hPi : OnePointThreeSpacePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M :=
+  homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement
+    hPi h
+
+/-- The local `π₁` candidate route is the local `π₁` source-prerequisite route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPi : OnePointThreeSpacePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement
+      hPi h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement
+        hPi h := by
+  apply Subsingleton.elim
+
+/-- The local `π₁` candidate route agrees with the local fundamental-group candidate route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement_fundamentalGroup_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPi : OnePointThreeSpacePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement
+      hPi h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement
+        (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
+          hPi) h := by
+  apply Subsingleton.elim
+
+/-- The local `π₁` candidate route agrees with the local loop candidate route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPi : OnePointThreeSpacePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement
+      hPi h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement hPi) h := by
   apply Subsingleton.elim
 
 /--
