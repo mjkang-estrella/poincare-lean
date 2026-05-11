@@ -5785,6 +5785,8 @@ check_decl "one-point compactification universal-recognition standard based-loop
   '^theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_loop_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification universal-recognition standard based-loop self endpoint one-point route contract is declared" \
   '^theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_onePoint_route_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification universal-recognition standard based-loop self endpoint one-point based-loop route contract is declared" \
+  '^theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_onePointBased_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification universal-recognition standard based-loop self endpoint direct-route contract is declared" \
   '^theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_direct_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification universal-recognition path self endpoint is declared" \
@@ -5863,6 +5865,8 @@ check_decl "one-point compactification universal-recognition standard based-loop
   '^theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_loop_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification universal-recognition standard based-loop target endpoint one-point route contract is declared" \
   '^theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_onePoint_route_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification universal-recognition standard based-loop target endpoint one-point based-loop route contract is declared" \
+  '^theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_onePointBased_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification universal-recognition standard based-loop target endpoint direct-route contract is declared" \
   '^theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_direct_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification universal-recognition path target endpoint is declared" \
@@ -5933,6 +5937,8 @@ check_decl "one-point compactification universal-recognition standard based-loop
   '^theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_loop_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification universal-recognition standard based-loop target payload one-point route contract is declared" \
   '^theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_onePoint_route_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification universal-recognition standard based-loop target payload one-point based-loop route contract is declared" \
+  '^theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_onePointBased_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification universal-recognition path target payload is declared" \
   '^theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification universal-recognition path target payload equality contract is declared" \
@@ -6011,6 +6017,8 @@ check_decl "one-point compactification standard based-loop target self-applicati
   '^theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_basedLoopNullhomotopyStatement_loop_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification standard based-loop target self-application one-point route contract is declared" \
   '^theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_basedLoopNullhomotopyStatement_onePoint_route_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification standard based-loop target self-application one-point based-loop route contract is declared" \
+  '^theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_basedLoopNullhomotopyStatement_onePointBased_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification standard based-loop target self-application direct-route contract is declared" \
   '^theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_basedLoopNullhomotopyStatement_direct_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification path target self-application route is declared" \
@@ -6081,6 +6089,8 @@ check_decl "one-point compactification standard based-loop target self-applicati
   '^theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement_loop_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification standard based-loop target self-application payload one-point route contract is declared" \
   '^theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement_onePoint_route_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification standard based-loop target self-application payload one-point based-loop route contract is declared" \
+  '^theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement_onePointBased_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification path target self-application payload is declared" \
   '^theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointPathHomotopyStatement\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification path target self-application payload equality contract is declared" \

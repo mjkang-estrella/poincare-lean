@@ -6883,6 +6883,23 @@ theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStat
         recognize := by
   apply Subsingleton.elim
 
+/--
+The standard-sphere based-loop universal-recognition self route agrees with
+the local based-loop route at any compactification basepoint.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_onePointBased_route_eq
+    {basepoint : ThreeSphere}
+    (targetBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+      hBased recognize =
+      onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointBasedLoopNullhomotopyStatement
+        (onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+          targetBasepoint hBased)
+        recognize := by
+  apply Subsingleton.elim
+
 /-- The standard-sphere based-loop universal-recognition self route agrees with reflexive recognition. -/
 theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_direct_route_eq
     {basepoint : ThreeSphere}
@@ -7382,6 +7399,23 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognit
       onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
         (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
           (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased))
+        recognize := by
+  apply Subsingleton.elim
+
+/--
+The standard-sphere based-loop universal-recognition target route agrees with
+the local based-loop target route at any compactification basepoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_onePointBased_route_eq
+    {basepoint : ThreeSphere}
+    (targetBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+      hBased recognize =
+      onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointBasedLoopNullhomotopyStatement
+        (onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+          targetBasepoint hBased)
         recognize := by
   apply Subsingleton.elim
 
@@ -7946,6 +7980,23 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpace
   apply Subsingleton.elim
 
 /--
+The standard-sphere based-loop universal-recognition payload agrees with the
+local based-loop payload at any compactification basepoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_onePointBased_route_eq
+    {basepoint : ThreeSphere}
+    (targetBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+      hBased recognize =
+      onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointBasedLoopNullhomotopyStatement
+        (onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+          targetBasepoint hBased)
+        recognize := by
+  apply Subsingleton.elim
+
+/--
 The compactification path-homotopy universal-recognition endpoint also packages
 the local homotopy/manifold prerequisites needed to apply recognition to the
 compactification model.
@@ -8485,6 +8536,23 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_bas
       onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointLoopNullhomotopyStatement
         (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
           (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased))
+        h := by
+  apply Subsingleton.elim
+
+/--
+The standard-sphere based-loop compactification target route agrees with the
+local based-loop target route at any compactification basepoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_basedLoopNullhomotopyStatement_onePointBased_route_eq
+    {basepoint : ThreeSphere}
+    (targetBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : PoincareConjectureStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_basedLoopNullhomotopyStatement
+      hBased h =
+      onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointBasedLoopNullhomotopyStatement
+        (onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+          targetBasepoint hBased)
         h := by
   apply Subsingleton.elim
 
@@ -9042,6 +9110,23 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement
       onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointLoopNullhomotopyStatement
         (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
           (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased))
+        h := by
+  apply Subsingleton.elim
+
+/--
+The standard-sphere based-loop target payload agrees with the local based-loop
+target payload at any compactification basepoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement_onePointBased_route_eq
+    {basepoint : ThreeSphere}
+    (targetBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : PoincareConjectureStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement
+      hBased h =
+      onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointBasedLoopNullhomotopyStatement
+        (onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+          targetBasepoint hBased)
         h := by
   apply Subsingleton.elim
 
