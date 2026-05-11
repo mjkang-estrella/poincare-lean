@@ -954,6 +954,413 @@ theorem onePoint_threeSpace_loopNullhomotopyStatement_iff_threeSphereLoopNullhom
   apply Subsingleton.elim
 
 /--
+The fundamental-group formulation of the compactification-side
+simple-connectedness obligation.
+-/
+def OnePointThreeSpaceFundamentalGroupSubsingletonStatement : Prop :=
+  ∀ x : OnePoint (EuclideanSpace ℝ (Fin 3)),
+    Subsingleton (FundamentalGroup (OnePoint (EuclideanSpace ℝ (Fin 3))) x)
+
+/- The compactification fundamental-group obligation expands pointwise. -/
+theorem onePointThreeSpaceFundamentalGroupSubsingletonStatement_eq :
+    OnePointThreeSpaceFundamentalGroupSubsingletonStatement =
+      (∀ x : OnePoint (EuclideanSpace ℝ (Fin 3)),
+        Subsingleton (FundamentalGroup (OnePoint (EuclideanSpace ℝ (Fin 3))) x)) :=
+  rfl
+
+/--
+Compactification simple-connectedness gives subsingleton fundamental groups at
+all basepoints.
+-/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_simplyConnectedSpace
+    [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))] :
+    OnePointThreeSpaceFundamentalGroupSubsingletonStatement := by
+  intro x
+  change Subsingleton (Path.Homotopic.Quotient x x)
+  infer_instance
+
+/-- The simple-connectedness-to-fundamental-group route is quotient uniqueness for loops. -/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_simplyConnectedSpace_eq
+    [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))] :
+    onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_simplyConnectedSpace =
+      (by
+        intro x
+        change Subsingleton (Path.Homotopic.Quotient x x)
+        infer_instance) := by
+  apply Subsingleton.elim
+
+/--
+Loop-nullhomotopy for the compactification model gives the fundamental-group
+subsingleton formulation through the local simple-connectedness criterion.
+-/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement
+    (h : OnePointThreeSpaceLoopNullhomotopyStatement) :
+    OnePointThreeSpaceFundamentalGroupSubsingletonStatement := by
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement h
+  exact onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_simplyConnectedSpace
+
+/--
+The compactification loop-to-fundamental-group route factors through the named
+local simple-connectedness reduction.
+-/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement_eq :
+    onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement =
+      (fun h : OnePointThreeSpaceLoopNullhomotopyStatement =>
+        letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement h
+        onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_simplyConnectedSpace) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+Compactification fundamental-group triviality gives loop-nullhomotopy by
+collapsing every based loop quotient to the stationary-loop quotient.
+-/
+theorem onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+    (h : OnePointThreeSpaceFundamentalGroupSubsingletonStatement) :
+    OnePointThreeSpaceLoopNullhomotopyStatement := by
+  intro x γ
+  rw [← Path.Homotopic.Quotient.eq]
+  exact (h x).elim
+    (⟦γ⟧ : Path.Homotopic.Quotient x x)
+    ⟦Path.refl x⟧
+
+/-- The compactification fundamental-group-to-loop route is quotient subsingleton elimination. -/
+theorem onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement_eq :
+    onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement =
+      (fun h : OnePointThreeSpaceFundamentalGroupSubsingletonStatement =>
+        fun x γ =>
+          by
+            rw [← Path.Homotopic.Quotient.eq]
+            exact (h x).elim
+              (⟦γ⟧ : Path.Homotopic.Quotient x x)
+              ⟦Path.refl x⟧) := by
+  funext h x γ
+  apply Subsingleton.elim
+
+/-- The compactification fundamental-group and loop formulations are equivalent. -/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_iff_loopNullhomotopyStatement :
+    OnePointThreeSpaceFundamentalGroupSubsingletonStatement ↔
+      OnePointThreeSpaceLoopNullhomotopyStatement :=
+  ⟨onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement,
+    onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement⟩
+
+/-- The compactification fundamental-group/loop equivalence is the pair of named routes. -/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_iff_loopNullhomotopyStatement_eq :
+    onePoint_threeSpace_fundamentalGroupSubsingletonStatement_iff_loopNullhomotopyStatement =
+      ⟨onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement,
+        onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement⟩ := by
+  apply Subsingleton.elim
+
+/--
+The compactification model is simply connected exactly when all based
+fundamental groups are subsingletons.
+-/
+theorem onePoint_threeSpace_simplyConnectedSpace_iff_fundamentalGroupSubsingletonStatement :
+    SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) ↔
+      OnePointThreeSpaceFundamentalGroupSubsingletonStatement :=
+  onePoint_threeSpace_simplyConnectedSpace_iff_loopNullhomotopyStatement.trans
+    onePoint_threeSpace_fundamentalGroupSubsingletonStatement_iff_loopNullhomotopyStatement.symm
+
+/--
+The compactification simple-connectedness/fundamental-group reduction factors
+through the loop-nullhomotopy criterion.
+-/
+theorem onePoint_threeSpace_simplyConnectedSpace_iff_fundamentalGroupSubsingletonStatement_eq :
+    onePoint_threeSpace_simplyConnectedSpace_iff_fundamentalGroupSubsingletonStatement =
+      onePoint_threeSpace_simplyConnectedSpace_iff_loopNullhomotopyStatement.trans
+        onePoint_threeSpace_fundamentalGroupSubsingletonStatement_iff_loopNullhomotopyStatement.symm := by
+  apply Subsingleton.elim
+
+/-- Fundamental-group triviality supplies compactification simple-connectedness. -/
+theorem onePoint_threeSpace_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement
+    (h : OnePointThreeSpaceFundamentalGroupSubsingletonStatement) :
+    SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+  onePoint_threeSpace_simplyConnectedSpace_iff_fundamentalGroupSubsingletonStatement.mpr h
+
+/-- The fundamental-group-to-simple-connectedness route is the reverse criterion projection. -/
+theorem onePoint_threeSpace_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement_eq :
+    onePoint_threeSpace_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement =
+      onePoint_threeSpace_simplyConnectedSpace_iff_fundamentalGroupSubsingletonStatement.mpr := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The `π₁` formulation of the compactification-side simple-connectedness
+obligation.
+-/
+def OnePointThreeSpacePiOneSubsingletonStatement : Prop :=
+  ∀ x : OnePoint (EuclideanSpace ℝ (Fin 3)),
+    Subsingleton (HomotopyGroup.Pi 1 (OnePoint (EuclideanSpace ℝ (Fin 3))) x)
+
+/-- The compactification `π₁` obligation expands pointwise. -/
+theorem onePointThreeSpacePiOneSubsingletonStatement_eq :
+    OnePointThreeSpacePiOneSubsingletonStatement =
+      (∀ x : OnePoint (EuclideanSpace ℝ (Fin 3)),
+        Subsingleton (HomotopyGroup.Pi 1 (OnePoint (EuclideanSpace ℝ (Fin 3))) x)) :=
+  rfl
+
+/--
+The compactification `π₁` and fundamental-group formulations are equivalent
+through mathlib's `pi1EquivFundamentalGroup`.
+-/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement :
+    OnePointThreeSpacePiOneSubsingletonStatement ↔
+      OnePointThreeSpaceFundamentalGroupSubsingletonStatement := by
+  constructor
+  · intro h x
+    exact ((HomotopyGroup.pi1EquivFundamentalGroup
+      (X := OnePoint (EuclideanSpace ℝ (Fin 3))) (x := x)).subsingleton_congr).mp
+        (h x)
+  · intro h x
+    exact ((HomotopyGroup.pi1EquivFundamentalGroup
+      (X := OnePoint (EuclideanSpace ℝ (Fin 3))) (x := x)).subsingleton_congr).mpr
+        (h x)
+
+/-- The compactification `π₁`/fundamental-group equivalence is pointwise. -/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement_eq :
+    onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement =
+      (by
+        constructor
+        · intro h x
+          exact ((HomotopyGroup.pi1EquivFundamentalGroup
+            (X := OnePoint (EuclideanSpace ℝ (Fin 3))) (x := x)).subsingleton_congr).mp
+              (h x)
+        · intro h x
+          exact ((HomotopyGroup.pi1EquivFundamentalGroup
+            (X := OnePoint (EuclideanSpace ℝ (Fin 3))) (x := x)).subsingleton_congr).mpr
+              (h x)) := by
+  apply Subsingleton.elim
+
+/--
+The compactification model is simply connected exactly when all of its first
+homotopy groups are subsingletons.
+-/
+theorem onePoint_threeSpace_simplyConnectedSpace_iff_piOneSubsingletonStatement :
+    SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) ↔
+      OnePointThreeSpacePiOneSubsingletonStatement :=
+  onePoint_threeSpace_simplyConnectedSpace_iff_fundamentalGroupSubsingletonStatement.trans
+    onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.symm
+
+/-- The compactification simple-connectedness/`π₁` reduction factors through fundamental groups. -/
+theorem onePoint_threeSpace_simplyConnectedSpace_iff_piOneSubsingletonStatement_eq :
+    onePoint_threeSpace_simplyConnectedSpace_iff_piOneSubsingletonStatement =
+      onePoint_threeSpace_simplyConnectedSpace_iff_fundamentalGroupSubsingletonStatement.trans
+        onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.symm := by
+  apply Subsingleton.elim
+
+/-- A proof that all compactification `π₁` groups are subsingletons supplies simple-connectedness. -/
+theorem onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement
+    (h : OnePointThreeSpacePiOneSubsingletonStatement) :
+    SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+  onePoint_threeSpace_simplyConnectedSpace_iff_piOneSubsingletonStatement.mpr h
+
+/-- The compactification `π₁`-to-simple-connectedness route is the reverse criterion projection. -/
+theorem onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement_eq :
+    onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement =
+      onePoint_threeSpace_simplyConnectedSpace_iff_piOneSubsingletonStatement.mpr := by
+  funext h
+  apply Subsingleton.elim
+
+/-- Compactification simple-connectedness supplies the `π₁` subsingleton formulation. -/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_of_simplyConnectedSpace
+    [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))] :
+    OnePointThreeSpacePiOneSubsingletonStatement :=
+  onePoint_threeSpace_simplyConnectedSpace_iff_piOneSubsingletonStatement.mp inferInstance
+
+/-- The compactification simple-connectedness-to-`π₁` route is the forward criterion projection. -/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_of_simplyConnectedSpace_eq
+    [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))] :
+    onePoint_threeSpace_piOneSubsingletonStatement_of_simplyConnectedSpace =
+      onePoint_threeSpace_simplyConnectedSpace_iff_piOneSubsingletonStatement.mp inferInstance := by
+  apply Subsingleton.elim
+
+/--
+Fundamental-group triviality of `ThreeSphere` transports to the one-point
+compactification model.
+-/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_threeSphereFundamentalGroupSubsingletonStatement
+    (h : ThreeSphereFundamentalGroupSubsingletonStatement) :
+    OnePointThreeSpaceFundamentalGroupSubsingletonStatement := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement h
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+  exact onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_simplyConnectedSpace
+
+/- The target-to-compactification fundamental-group route factors through simple-connectedness. -/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_threeSphereFundamentalGroupSubsingletonStatement_eq :
+    onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_threeSphereFundamentalGroupSubsingletonStatement =
+      (fun h : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement h
+        letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+        onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_simplyConnectedSpace) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The target-to-compactification fundamental-group route agrees with the route
+that first converts target fundamental groups to loops.
+-/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_threeSphereFundamentalGroupSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_threeSphereFundamentalGroupSubsingletonStatement =
+      (fun h : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement h))) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+Fundamental-group triviality of the one-point compactification model transports
+back to `ThreeSphere`.
+-/
+theorem threeSphereFundamentalGroupSubsingletonStatement_of_onePoint_threeSpace_fundamentalGroupSubsingletonStatement
+    (h : OnePointThreeSpaceFundamentalGroupSubsingletonStatement) :
+    ThreeSphereFundamentalGroupSubsingletonStatement := by
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement h
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_onePoint_threeSpace
+  exact threeSphere_fundamentalGroupSubsingletonStatement_of_simplyConnectedSpace
+
+/- The compactification-to-target fundamental-group route factors through simple-connectedness. -/
+theorem threeSphereFundamentalGroupSubsingletonStatement_of_onePoint_threeSpace_fundamentalGroupSubsingletonStatement_eq :
+    threeSphereFundamentalGroupSubsingletonStatement_of_onePoint_threeSpace_fundamentalGroupSubsingletonStatement =
+      (fun h : OnePointThreeSpaceFundamentalGroupSubsingletonStatement =>
+        letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement h
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_onePoint_threeSpace
+        threeSphere_fundamentalGroupSubsingletonStatement_of_simplyConnectedSpace) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The compactification-to-target fundamental-group route agrees with the route
+that first converts compactification fundamental groups to loops.
+-/
+theorem threeSphereFundamentalGroupSubsingletonStatement_of_onePoint_threeSpace_fundamentalGroupSubsingletonStatement_loop_route_eq :
+    threeSphereFundamentalGroupSubsingletonStatement_of_onePoint_threeSpace_fundamentalGroupSubsingletonStatement =
+      (fun h : OnePointThreeSpaceFundamentalGroupSubsingletonStatement =>
+        threeSphere_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement
+          (threeSphereLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement h))) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The compactification and target fundamental-group formulations are equivalent. -/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_iff_threeSphereFundamentalGroupSubsingletonStatement :
+    OnePointThreeSpaceFundamentalGroupSubsingletonStatement ↔
+      ThreeSphereFundamentalGroupSubsingletonStatement := by
+  constructor
+  · exact threeSphereFundamentalGroupSubsingletonStatement_of_onePoint_threeSpace_fundamentalGroupSubsingletonStatement
+  · exact onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_threeSphereFundamentalGroupSubsingletonStatement
+
+/-- The compactification/target fundamental-group equivalence is the pair of named transports. -/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_iff_threeSphereFundamentalGroupSubsingletonStatement_eq :
+    onePoint_threeSpace_fundamentalGroupSubsingletonStatement_iff_threeSphereFundamentalGroupSubsingletonStatement =
+      (by
+        constructor
+        · exact
+            threeSphereFundamentalGroupSubsingletonStatement_of_onePoint_threeSpace_fundamentalGroupSubsingletonStatement
+        · exact
+            onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_threeSphereFundamentalGroupSubsingletonStatement) := by
+  apply Subsingleton.elim
+
+/-- The `π₁` formulation of `ThreeSphere` transports to the compactification model. -/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement
+    (h : ThreeSpherePiOneSubsingletonStatement) :
+    OnePointThreeSpacePiOneSubsingletonStatement := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement h
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+  exact onePoint_threeSpace_piOneSubsingletonStatement_of_simplyConnectedSpace
+
+/-- The target-to-compactification `π₁` route factors through simple-connectedness. -/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement_eq :
+    onePoint_threeSpace_piOneSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement h
+        letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+        onePoint_threeSpace_piOneSubsingletonStatement_of_simplyConnectedSpace) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The target-to-compactification `π₁` route agrees with the route that first
+converts target `π₁` subsingletons to fundamental-group triviality.
+-/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement_fundamentalGroup_route_eq :
+    onePoint_threeSpace_piOneSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mpr
+          (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_threeSphereFundamentalGroupSubsingletonStatement
+            (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+              h))) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The compactification `π₁` formulation transports back to `ThreeSphere`. -/
+theorem threeSpherePiOneSubsingletonStatement_of_onePoint_threeSpace_piOneSubsingletonStatement
+    (h : OnePointThreeSpacePiOneSubsingletonStatement) :
+    ThreeSpherePiOneSubsingletonStatement := by
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement h
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_onePoint_threeSpace
+  exact threeSphere_piOneSubsingletonStatement_of_simplyConnectedSpace
+
+/-- The compactification-to-target `π₁` route factors through simple-connectedness. -/
+theorem threeSpherePiOneSubsingletonStatement_of_onePoint_threeSpace_piOneSubsingletonStatement_eq :
+    threeSpherePiOneSubsingletonStatement_of_onePoint_threeSpace_piOneSubsingletonStatement =
+      (fun h : OnePointThreeSpacePiOneSubsingletonStatement =>
+        letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement h
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_onePoint_threeSpace
+        threeSphere_piOneSubsingletonStatement_of_simplyConnectedSpace) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The compactification-to-target `π₁` route agrees with the route that first
+converts compactification `π₁` subsingletons to fundamental-group triviality.
+-/
+theorem threeSpherePiOneSubsingletonStatement_of_onePoint_threeSpace_piOneSubsingletonStatement_fundamentalGroup_route_eq :
+    threeSpherePiOneSubsingletonStatement_of_onePoint_threeSpace_piOneSubsingletonStatement =
+      (fun h : OnePointThreeSpacePiOneSubsingletonStatement =>
+        threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mpr
+          (threeSphereFundamentalGroupSubsingletonStatement_of_onePoint_threeSpace_fundamentalGroupSubsingletonStatement
+            (onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+              h))) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The compactification and target `π₁` formulations are equivalent. -/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_iff_threeSpherePiOneSubsingletonStatement :
+    OnePointThreeSpacePiOneSubsingletonStatement ↔
+      ThreeSpherePiOneSubsingletonStatement := by
+  constructor
+  · exact threeSpherePiOneSubsingletonStatement_of_onePoint_threeSpace_piOneSubsingletonStatement
+  · exact onePoint_threeSpace_piOneSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement
+
+/-- The compactification/target `π₁` equivalence is the pair of named transports. -/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_iff_threeSpherePiOneSubsingletonStatement_eq :
+    onePoint_threeSpace_piOneSubsingletonStatement_iff_threeSpherePiOneSubsingletonStatement =
+      (by
+        constructor
+        · exact threeSpherePiOneSubsingletonStatement_of_onePoint_threeSpace_piOneSubsingletonStatement
+        · exact onePoint_threeSpace_piOneSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement) := by
+  apply Subsingleton.elim
+
+/--
 The concrete path-homotopy uniqueness obligation for the one-point
 compactification model. This is the compactification-side analogue of
 `ThreeSpherePathHomotopyStatement`.
