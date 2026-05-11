@@ -1317,6 +1317,14 @@ check_decl "zero Ricci-flow equation boundary equation-evidence projection contr
   '^@\[simp\] theorem equation_evidence_of_zero_ricci_flow_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "stationary zero Ricci-flow equation boundary evidence projection contract is declared" \
   '^@\[simp\] theorem equation_evidence_of_stationary_zero_ricci_flow_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "zero Ricci-flow equation boundary metric-derivative projection contract is declared" \
+  '^@\[simp\] theorem metric_derivative_data_of_zero_ricci_flow_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow equation boundary metric-derivative projection contract is declared" \
+  '^@\[simp\] theorem metric_derivative_data_of_stationary_zero_ricci_flow_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "zero Ricci-flow equation boundary derivative-identification projection contract is declared" \
+  '^@\[simp\] theorem metric_time_derivative_identification_of_zero_ricci_flow_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow equation boundary derivative-identification projection contract is declared" \
+  '^@\[simp\] theorem metric_time_derivative_identification_of_stationary_zero_ricci_flow_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "zero Ricci-flow equation boundary tensor projection theorem is declared" \
   '^theorem equation_at_time_of_zero_ricci_flow_equation_boundary_package_projection\b' Poincare/AnalyticFoundation.lean
 check_decl "zero Ricci-flow equation boundary tensor projection equality theorem is declared" \
