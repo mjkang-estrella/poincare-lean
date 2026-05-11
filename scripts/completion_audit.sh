@@ -611,6 +611,54 @@ check_decl "target sphere path-homotopy path-quotient equivalence is declared" \
   '^theorem threeSphere_pathHomotopyStatement_iff_pathQuotientSubsingletonStatement\b' Poincare/Statement.lean
 check_decl "target sphere path-homotopy path-quotient equivalence equality contract is declared" \
   '^theorem threeSphere_pathHomotopyStatement_iff_pathQuotientSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere fundamental group subsingleton statement is declared" \
+  '^def ThreeSphereFundamentalGroupSubsingletonStatement\b' Poincare/Statement.lean
+check_decl "target sphere fundamental group subsingleton statement equality contract is declared" \
+  '^theorem threeSphereFundamentalGroupSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere fundamental group subsingleton from simple-connectedness theorem is declared" \
+  '^theorem threeSphere_fundamentalGroupSubsingletonStatement_of_simplyConnectedSpace\b' Poincare/Statement.lean
+check_decl "target sphere fundamental group subsingleton from simple-connectedness equality contract is declared" \
+  '^theorem threeSphere_fundamentalGroupSubsingletonStatement_of_simplyConnectedSpace_eq\b' Poincare/Statement.lean
+check_decl "target sphere fundamental group subsingleton from loop-nullhomotopy theorem is declared" \
+  '^theorem threeSphere_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement\b' Poincare/Statement.lean
+check_decl "target sphere fundamental group subsingleton from loop-nullhomotopy equality contract is declared" \
+  '^theorem threeSphere_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere loop-nullhomotopy from fundamental group subsingleton theorem is declared" \
+  '^theorem threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement\b' Poincare/Statement.lean
+check_decl "target sphere loop-nullhomotopy from fundamental group subsingleton equality contract is declared" \
+  '^theorem threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere fundamental group loop-nullhomotopy equivalence is declared" \
+  '^theorem threeSphere_fundamentalGroupSubsingletonStatement_iff_loopNullhomotopyStatement\b' Poincare/Statement.lean
+check_decl "target sphere fundamental group loop-nullhomotopy equivalence equality contract is declared" \
+  '^theorem threeSphere_fundamentalGroupSubsingletonStatement_iff_loopNullhomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere simple-connectedness fundamental group equivalence is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_iff_fundamentalGroupSubsingletonStatement\b' Poincare/Statement.lean
+check_decl "target sphere simple-connectedness fundamental group equivalence equality contract is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_iff_fundamentalGroupSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere simple-connectedness from fundamental group subsingleton theorem is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement\b' Poincare/Statement.lean
+check_decl "target sphere simple-connectedness from fundamental group subsingleton equality contract is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere pi-one subsingleton statement is declared" \
+  '^def ThreeSpherePiOneSubsingletonStatement\b' Poincare/Statement.lean
+check_decl "target sphere pi-one subsingleton statement equality contract is declared" \
+  '^theorem threeSpherePiOneSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere pi-one fundamental group equivalence is declared" \
+  '^theorem threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement\b' Poincare/Statement.lean
+check_decl "target sphere pi-one fundamental group equivalence equality contract is declared" \
+  '^theorem threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere simple-connectedness pi-one equivalence is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_iff_piOneSubsingletonStatement\b' Poincare/Statement.lean
+check_decl "target sphere simple-connectedness pi-one equivalence equality contract is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_iff_piOneSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere simple-connectedness from pi-one subsingleton theorem is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement\b' Poincare/Statement.lean
+check_decl "target sphere simple-connectedness from pi-one subsingleton equality contract is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere pi-one subsingleton from simple-connectedness theorem is declared" \
+  '^theorem threeSphere_piOneSubsingletonStatement_of_simplyConnectedSpace\b' Poincare/Statement.lean
+check_decl "target sphere pi-one subsingleton from simple-connectedness equality contract is declared" \
+  '^theorem threeSphere_piOneSubsingletonStatement_of_simplyConnectedSpace_eq\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites from loop-nullhomotopy theorem is declared" \
   '^theorem threeSphere_target_prerequisites_of_loopNullhomotopyStatement\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites from loop-nullhomotopy equality contract is declared" \

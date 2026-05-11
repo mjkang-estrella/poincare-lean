@@ -14,6 +14,7 @@ the canonical mathlib statement file `Mathlib.Geometry.Manifold.PoincareConjectu
 
 import Mathlib.Geometry.Manifold.PoincareConjecture
 import Mathlib.Analysis.Normed.Module.Connected
+import Mathlib.Topology.Homotopy.HomotopyGroup
 
 universe u
 
@@ -809,6 +810,229 @@ theorem threeSphere_pathHomotopyStatement_iff_pathQuotientSubsingletonStatement_
     threeSphere_pathHomotopyStatement_iff_pathQuotientSubsingletonStatement =
       ⟨threeSphere_pathQuotientSubsingletonStatement_of_pathHomotopyStatement,
         threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement⟩ := by
+  apply Subsingleton.elim
+
+/--
+The fundamental-group formulation of the remaining simple-connectedness
+obligation for the standard 3-sphere: every based fundamental group is trivial
+as a type.
+-/
+def ThreeSphereFundamentalGroupSubsingletonStatement : Prop :=
+  ∀ x : ThreeSphere, Subsingleton (FundamentalGroup ThreeSphere x)
+
+/--
+The fundamental-group obligation expands to subsingleton fundamental groups at
+every basepoint.
+-/
+theorem threeSphereFundamentalGroupSubsingletonStatement_eq :
+    ThreeSphereFundamentalGroupSubsingletonStatement =
+      (∀ x : ThreeSphere, Subsingleton (FundamentalGroup ThreeSphere x)) :=
+  rfl
+
+/--
+Simple-connectedness of the standard sphere gives the fundamental-group
+subsingleton obligation at every basepoint.
+-/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_simplyConnectedSpace
+    [SimplyConnectedSpace ThreeSphere] :
+    ThreeSphereFundamentalGroupSubsingletonStatement := by
+  intro x
+  change Subsingleton (Path.Homotopic.Quotient x x)
+  infer_instance
+
+/-- The simple-connectedness-to-fundamental-group route is quotient uniqueness for loops. -/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_simplyConnectedSpace_eq
+    [SimplyConnectedSpace ThreeSphere] :
+    threeSphere_fundamentalGroupSubsingletonStatement_of_simplyConnectedSpace =
+      (by
+        intro x
+        change Subsingleton (Path.Homotopic.Quotient x x)
+        infer_instance) := by
+  apply Subsingleton.elim
+
+/--
+Loop-nullhomotopy of every based loop gives the fundamental-group subsingleton
+obligation through the simple-connectedness criterion.
+-/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement
+    (h : ThreeSphereLoopNullhomotopyStatement) :
+    ThreeSphereFundamentalGroupSubsingletonStatement := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement h
+  exact threeSphere_fundamentalGroupSubsingletonStatement_of_simplyConnectedSpace
+
+/--
+The loop-nullhomotopy-to-fundamental-group route factors through the named
+simple-connectedness reduction.
+-/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement_eq :
+    threeSphere_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement =
+      (fun h : ThreeSphereLoopNullhomotopyStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement h
+        threeSphere_fundamentalGroupSubsingletonStatement_of_simplyConnectedSpace) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+Fundamental-group triviality gives loop-nullhomotopy: every loop quotient is
+equal to the quotient of the stationary loop.
+-/
+theorem threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+    (h : ThreeSphereFundamentalGroupSubsingletonStatement) :
+    ThreeSphereLoopNullhomotopyStatement := by
+  intro x γ
+  rw [← Path.Homotopic.Quotient.eq]
+  exact (h x).elim (⟦γ⟧ : Path.Homotopic.Quotient x x)
+    ⟦Path.refl x⟧
+
+/-- The fundamental-group-to-loop route is quotient subsingleton elimination. -/
+theorem threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement_eq :
+    threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement =
+      (fun h : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun x γ =>
+          by
+            rw [← Path.Homotopic.Quotient.eq]
+            exact (h x).elim (⟦γ⟧ : Path.Homotopic.Quotient x x)
+              ⟦Path.refl x⟧) := by
+  funext h x γ
+  apply Subsingleton.elim
+
+/--
+The fundamental-group and loop-nullhomotopy formulations of the standard
+sphere simple-connectedness obligation are equivalent.
+-/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_iff_loopNullhomotopyStatement :
+    ThreeSphereFundamentalGroupSubsingletonStatement ↔
+      ThreeSphereLoopNullhomotopyStatement :=
+  ⟨threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement,
+    threeSphere_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement⟩
+
+/-- The fundamental-group/loop equivalence is the pair of named conversion routes. -/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_iff_loopNullhomotopyStatement_eq :
+    threeSphere_fundamentalGroupSubsingletonStatement_iff_loopNullhomotopyStatement =
+      ⟨threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement,
+        threeSphere_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement⟩ := by
+  apply Subsingleton.elim
+
+/--
+The standard sphere is simply connected exactly when all of its based
+fundamental groups are subsingletons.
+-/
+theorem threeSphere_simplyConnectedSpace_iff_fundamentalGroupSubsingletonStatement :
+    SimplyConnectedSpace ThreeSphere ↔
+      ThreeSphereFundamentalGroupSubsingletonStatement := by
+  exact threeSphere_simplyConnectedSpace_iff_loopNullhomotopyStatement.trans
+    threeSphere_fundamentalGroupSubsingletonStatement_iff_loopNullhomotopyStatement.symm
+
+/--
+The simple-connectedness/fundamental-group reduction factors through the
+existing loop-nullhomotopy criterion.
+-/
+theorem threeSphere_simplyConnectedSpace_iff_fundamentalGroupSubsingletonStatement_eq :
+    threeSphere_simplyConnectedSpace_iff_fundamentalGroupSubsingletonStatement =
+      threeSphere_simplyConnectedSpace_iff_loopNullhomotopyStatement.trans
+        threeSphere_fundamentalGroupSubsingletonStatement_iff_loopNullhomotopyStatement.symm := by
+  apply Subsingleton.elim
+
+/--
+Fundamental-group triviality supplies simple-connectedness of the standard
+3-sphere.
+-/
+theorem threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement
+    (h : ThreeSphereFundamentalGroupSubsingletonStatement) :
+    SimplyConnectedSpace ThreeSphere :=
+  threeSphere_simplyConnectedSpace_iff_fundamentalGroupSubsingletonStatement.mpr h
+
+/-- The fundamental-group-to-simple-connectedness route is the reverse criterion projection. -/
+theorem threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement_eq :
+    threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement =
+      threeSphere_simplyConnectedSpace_iff_fundamentalGroupSubsingletonStatement.mpr := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The first-homotopy-group formulation of the remaining simple-connectedness
+obligation for the standard 3-sphere.
+-/
+def ThreeSpherePiOneSubsingletonStatement : Prop :=
+  ∀ x : ThreeSphere, Subsingleton (HomotopyGroup.Pi 1 ThreeSphere x)
+
+/-- The `π₁` obligation expands to subsingleton first homotopy groups at every basepoint. -/
+theorem threeSpherePiOneSubsingletonStatement_eq :
+    ThreeSpherePiOneSubsingletonStatement =
+      (∀ x : ThreeSphere, Subsingleton (HomotopyGroup.Pi 1 ThreeSphere x)) :=
+  rfl
+
+/--
+The `π₁` and fundamental-group formulations are equivalent through mathlib's
+`π₁`/fundamental-group equivalence.
+-/
+theorem threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement :
+    ThreeSpherePiOneSubsingletonStatement ↔
+      ThreeSphereFundamentalGroupSubsingletonStatement := by
+  constructor
+  · intro h x
+    exact ((HomotopyGroup.pi1EquivFundamentalGroup
+      (X := ThreeSphere) (x := x)).subsingleton_congr).mp (h x)
+  · intro h x
+    exact ((HomotopyGroup.pi1EquivFundamentalGroup
+      (X := ThreeSphere) (x := x)).subsingleton_congr).mpr (h x)
+
+/-- The `π₁`/fundamental-group equivalence is pointwise mathlib's `pi1EquivFundamentalGroup`. -/
+theorem threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement_eq :
+    threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement =
+      (by
+        constructor
+        · intro h x
+          exact ((HomotopyGroup.pi1EquivFundamentalGroup
+            (X := ThreeSphere) (x := x)).subsingleton_congr).mp (h x)
+        · intro h x
+          exact ((HomotopyGroup.pi1EquivFundamentalGroup
+            (X := ThreeSphere) (x := x)).subsingleton_congr).mpr (h x)) := by
+  apply Subsingleton.elim
+
+/--
+The standard sphere is simply connected exactly when all of its first homotopy
+groups are subsingletons.
+-/
+theorem threeSphere_simplyConnectedSpace_iff_piOneSubsingletonStatement :
+    SimplyConnectedSpace ThreeSphere ↔
+      ThreeSpherePiOneSubsingletonStatement :=
+  threeSphere_simplyConnectedSpace_iff_fundamentalGroupSubsingletonStatement.trans
+    threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.symm
+
+/-- The simple-connectedness/`π₁` reduction factors through the fundamental-group endpoint. -/
+theorem threeSphere_simplyConnectedSpace_iff_piOneSubsingletonStatement_eq :
+    threeSphere_simplyConnectedSpace_iff_piOneSubsingletonStatement =
+      threeSphere_simplyConnectedSpace_iff_fundamentalGroupSubsingletonStatement.trans
+        threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.symm := by
+  apply Subsingleton.elim
+
+/-- A proof that all `π₁(S^3, x)` are subsingletons supplies simple-connectedness of `S^3`. -/
+theorem threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement
+    (h : ThreeSpherePiOneSubsingletonStatement) :
+    SimplyConnectedSpace ThreeSphere :=
+  threeSphere_simplyConnectedSpace_iff_piOneSubsingletonStatement.mpr h
+
+/-- The `π₁`-to-simple-connectedness route is the reverse criterion projection. -/
+theorem threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement_eq :
+    threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement =
+      threeSphere_simplyConnectedSpace_iff_piOneSubsingletonStatement.mpr := by
+  funext h
+  apply Subsingleton.elim
+
+/-- Simple-connectedness of `S^3` supplies the `π₁` subsingleton formulation. -/
+theorem threeSphere_piOneSubsingletonStatement_of_simplyConnectedSpace
+    [SimplyConnectedSpace ThreeSphere] :
+    ThreeSpherePiOneSubsingletonStatement :=
+  threeSphere_simplyConnectedSpace_iff_piOneSubsingletonStatement.mp inferInstance
+
+/-- The simple-connectedness-to-`π₁` route is the forward criterion projection. -/
+theorem threeSphere_piOneSubsingletonStatement_of_simplyConnectedSpace_eq
+    [SimplyConnectedSpace ThreeSphere] :
+    threeSphere_piOneSubsingletonStatement_of_simplyConnectedSpace =
+      threeSphere_simplyConnectedSpace_iff_piOneSubsingletonStatement.mp inferInstance := by
   apply Subsingleton.elim
 
 /--
