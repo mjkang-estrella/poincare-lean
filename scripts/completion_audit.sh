@@ -769,6 +769,10 @@ check_decl "target sphere target prerequisites from based-loop equality contract
   '^theorem threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_eq\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites based-loop loop-route compatibility is declared" \
   '^theorem threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_loop_route_eq\b' Poincare/Statement.lean
+check_decl "target sphere target prerequisites based-loop path-route compatibility is declared" \
+  '^theorem threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_path_route_eq\b' Poincare/Statement.lean
+check_decl "target sphere target prerequisites based-loop path-quotient-route compatibility is declared" \
+  '^theorem threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_pathQuotient_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites based-loop fundamental-group-route compatibility is declared" \
   '^theorem threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites based-loop pi-one-route compatibility is declared" \
@@ -779,6 +783,10 @@ check_decl "target sphere homotopy prerequisites from based-loop equality contra
   '^theorem threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_eq\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites based-loop loop-route compatibility is declared" \
   '^theorem threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_loop_route_eq\b' Poincare/Statement.lean
+check_decl "target sphere homotopy prerequisites based-loop path-route compatibility is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_path_route_eq\b' Poincare/Statement.lean
+check_decl "target sphere homotopy prerequisites based-loop path-quotient-route compatibility is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_pathQuotient_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites based-loop fundamental-group-route compatibility is declared" \
   '^theorem threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites based-loop pi-one-route compatibility is declared" \
@@ -17887,11 +17895,15 @@ open scoped Manifold ContDiff
 #check Poincare.threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement
 #check Poincare.threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_eq
 #check Poincare.threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_loop_route_eq
+#check Poincare.threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_path_route_eq
+#check Poincare.threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_pathQuotient_route_eq
 #check Poincare.threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
 #check Poincare.threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_piOne_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement
 #check Poincare.threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_loop_route_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_path_route_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_pathQuotient_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_piOne_route_eq
 #check Poincare.threeSphere_target_prerequisites_of_pathHomotopyStatement

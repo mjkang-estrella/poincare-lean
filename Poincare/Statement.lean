@@ -1861,6 +1861,62 @@ theorem threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_
   apply Subsingleton.elim
 
 /--
+The direct based-loop target-prerequisite route agrees with the route through
+path-homotopy uniqueness.
+-/
+theorem threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_path_route_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement h) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        threeSphere_target_prerequisites_of_pathHomotopyStatement
+          (threeSphere_pathHomotopyStatement_of_basedLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The direct based-loop target-prerequisite route agrees with the route through
+path-quotient uniqueness.
+-/
+theorem threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_pathQuotient_route_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement h) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement
+          (threeSphere_pathQuotientSubsingletonStatement_of_basedLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The direct based-loop homotopy-prerequisite route agrees with the route through
+path-homotopy uniqueness.
+-/
+theorem threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_path_route_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement h) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        threeSphere_homotopy_prerequisites_of_pathHomotopyStatement
+          (threeSphere_pathHomotopyStatement_of_basedLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The direct based-loop homotopy-prerequisite route agrees with the route through
+path-quotient uniqueness.
+-/
+theorem threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_pathQuotient_route_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement h) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement
+          (threeSphere_pathQuotientSubsingletonStatement_of_basedLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The actual target statement of the Poincare Conjecture for this project.
 
 This is a proposition only. It is intentionally not declared as a theorem or
