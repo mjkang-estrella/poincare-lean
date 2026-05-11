@@ -775,6 +775,38 @@ theorem threeSphere_self_homeomorph_of_poincare_statement_and_basedLoopNullhomot
   funext hBased h
   apply Subsingleton.elim
 
+/-- The based-loop target-statement self route agrees with the fundamental-group route. -/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : PoincareConjectureStatement.{0} =>
+        threeSphere_self_homeomorph_of_poincare_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : PoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_of_poincare_statement_and_fundamentalGroupSubsingletonStatement
+            (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement
+              hBased)
+            h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/-- The based-loop target-statement self route agrees with the `π₁` route. -/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_basedLoopNullhomotopyStatement_piOne_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : PoincareConjectureStatement.{0} =>
+        threeSphere_self_homeomorph_of_poincare_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : PoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonStatement
+            (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement
+              hBased)
+            h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
 /--
 The based loop-nullhomotopy obligation is enough to apply the smooth target
 statement to the standard sphere itself.
@@ -822,6 +854,38 @@ theorem threeSphere_self_diffeomorph_of_smooth_statement_and_basedLoopNullhomoto
   funext hBased h
   apply Subsingleton.elim
 
+/-- The based-loop smooth self-diffeomorphism route agrees with the fundamental-group route. -/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : SmoothPoincareConjectureStatement.{0} =>
+        threeSphere_self_diffeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_diffeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement
+            (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement
+              hBased)
+            h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/-- The based-loop smooth self-diffeomorphism route agrees with the `π₁` route. -/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement_piOne_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : SmoothPoincareConjectureStatement.{0} =>
+        threeSphere_self_diffeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_diffeomorph_of_smooth_statement_and_piOneSubsingletonStatement
+            (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement
+              hBased)
+            h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
 /--
 The smooth target plus the based loop-nullhomotopy obligation gives the
 topological self-homeomorphism after forgetting smooth structure.
@@ -865,6 +929,38 @@ theorem threeSphere_self_homeomorph_of_smooth_statement_and_basedLoopNullhomotop
         fun h : SmoothPoincareConjectureStatement.{0} =>
           threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement
             (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased)
+            h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/-- The based-loop smooth-to-topological self route agrees with the fundamental-group route. -/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : SmoothPoincareConjectureStatement.{0} =>
+        threeSphere_self_homeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement
+            (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement
+              hBased)
+            h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/-- The based-loop smooth-to-topological self route agrees with the `π₁` route. -/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement_piOne_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : SmoothPoincareConjectureStatement.{0} =>
+        threeSphere_self_homeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_of_smooth_statement_and_piOneSubsingletonStatement
+            (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement
+              hBased)
             h) := by
   funext hBased h
   apply Subsingleton.elim
@@ -1639,6 +1735,38 @@ theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_basedLoopN
   funext hBased h
   apply Subsingleton.elim
 
+/-- The based-loop target self payload agrees with the fundamental-group payload route. -/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : PoincareConjectureStatement.{0} =>
+        threeSphere_self_homeomorph_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : PoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_payload_of_poincare_statement_and_fundamentalGroupSubsingletonStatement
+            (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement
+              hBased)
+            h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/-- The based-loop target self payload agrees with the `π₁` payload route. -/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement_piOne_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : PoincareConjectureStatement.{0} =>
+        threeSphere_self_homeomorph_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : PoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement
+            (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement
+              hBased)
+            h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
 /--
 The based loop-nullhomotopy obligation exposes the smooth self route as a
 payload carrying both the homotopy-oriented prerequisite bundle and the
@@ -1696,6 +1824,38 @@ theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_basedLoopNu
   funext hBased h
   apply Subsingleton.elim
 
+/-- The based-loop smooth self payload agrees with the fundamental-group payload route. -/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : SmoothPoincareConjectureStatement.{0} =>
+        threeSphere_self_diffeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_diffeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement
+            (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement
+              hBased)
+            h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/-- The based-loop smooth self payload agrees with the `π₁` payload route. -/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement_piOne_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : SmoothPoincareConjectureStatement.{0} =>
+        threeSphere_self_diffeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement
+            (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement
+              hBased)
+            h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
 /--
 The based loop-nullhomotopy obligation exposes the smooth-to-topological self
 route as a payload carrying both the homotopy-oriented prerequisite bundle and
@@ -1749,6 +1909,38 @@ theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_basedLoopNul
         fun h : SmoothPoincareConjectureStatement.{0} =>
           threeSphere_self_homeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement
             (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased)
+            h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/-- The based-loop smooth-to-topological self payload agrees with the fundamental-group payload route. -/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : SmoothPoincareConjectureStatement.{0} =>
+        threeSphere_self_homeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement
+            (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement
+              hBased)
+            h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/-- The based-loop smooth-to-topological self payload agrees with the `π₁` payload route. -/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement_piOne_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : SmoothPoincareConjectureStatement.{0} =>
+        threeSphere_self_homeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement
+            (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement
+              hBased)
             h) := by
   funext hBased h
   apply Subsingleton.elim
