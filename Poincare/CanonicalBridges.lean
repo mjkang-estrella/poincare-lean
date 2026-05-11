@@ -13345,6 +13345,324 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
 
 end VerificationFamilyAggregateReservedTheoremGates
 
+section RawComponentReservedTheoremGates
+
+variable (smoothability : SmoothabilityPackage.{u})
+variable (surgery :
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M],
+      Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+variable (topology : ExtinctionTopologyExtractionPackage.{u})
+
+include smoothability surgery topology
+
+/--
+The raw component completion certificate exposes the reserved final route
+endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_components :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_components smoothability surgery topology)
+
+/--
+The raw component reserved-name endpoint is the certificate target statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_components_eq :
+    poincare_conjecture_of_completion_certificate_of_components
+      smoothability surgery topology =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_components smoothability surgery topology) := by
+  apply Subsingleton.elim
+
+end RawComponentReservedTheoremGates
+
+section ComponentRequirementReservedTheoremGates
+
+variable (smoothabilityRequirement :
+  dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+variable (surgeryRequirement :
+  dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+variable (topologyRequirement :
+  dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent)
+
+include smoothabilityRequirement surgeryRequirement topologyRequirement
+
+/--
+The component-slot requirement completion certificate exposes the reserved
+final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_component_requirements :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_component_requirements
+      smoothabilityRequirement surgeryRequirement topologyRequirement)
+
+/--
+The component-slot requirement reserved-name endpoint is the certificate target
+statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_component_requirements_eq :
+    poincare_conjecture_of_completion_certificate_of_component_requirements
+      smoothabilityRequirement surgeryRequirement topologyRequirement =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_component_requirements
+          smoothabilityRequirement surgeryRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+end ComponentRequirementReservedTheoremGates
+
+section PackageLayerRequirementReservedTheoremGates
+
+variable (smoothabilityRequirement :
+  dependencyPackageLayerRequirement.{u}
+    DependencyPackageLayer.smoothabilityPackage)
+variable (analyticRequirement :
+  dependencyPackageLayerRequirement.{u}
+    DependencyPackageLayer.analyticFoundationPackage)
+variable (surgeryRequirement :
+  dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+variable (finiteExtinctionRequirement :
+  dependencyPackageLayerRequirement.{u}
+    DependencyPackageLayer.finiteExtinctionPackage)
+variable (topologyRequirement :
+  dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage)
+
+include smoothabilityRequirement analyticRequirement surgeryRequirement
+include finiteExtinctionRequirement topologyRequirement
+
+/--
+The package-layer requirement completion certificate exposes the reserved final
+route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_package_layer_requirements :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_package_layer_requirements
+      smoothabilityRequirement analyticRequirement surgeryRequirement
+      finiteExtinctionRequirement topologyRequirement)
+
+/--
+The package-layer requirement reserved-name endpoint is the certificate target
+statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_package_layer_requirements_eq :
+    poincare_conjecture_of_completion_certificate_of_package_layer_requirements
+      smoothabilityRequirement analyticRequirement surgeryRequirement
+      finiteExtinctionRequirement topologyRequirement =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_package_layer_requirements
+          smoothabilityRequirement analyticRequirement surgeryRequirement
+          finiteExtinctionRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+end PackageLayerRequirementReservedTheoremGates
+
+section MilestoneRequirementReservedTheoremGates
+
+variable (smoothabilityBridgeRequirement :
+  dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+variable (ricciFlowAnalyticFoundationRequirement :
+  dependencyMilestoneRequirement.{u}
+    DependencyMilestone.ricciFlowAnalyticFoundation)
+variable (ricciFlowWithSurgeryRequirement :
+  dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+variable (perelmanSingularityControlRequirement :
+  dependencyMilestoneRequirement.{u}
+    DependencyMilestone.perelmanSingularityControl)
+variable (finiteExtinctionRequirement :
+  dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+variable (extinctionToSphereHomeomorphismRequirement :
+  dependencyMilestoneRequirement.{u}
+    DependencyMilestone.extinctionToSphereHomeomorphism)
+
+include smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+include ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+include finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement
+
+/--
+The milestone requirement completion certificate exposes the reserved final
+route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_milestone_requirements :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_milestone_requirements
+      smoothabilityBridgeRequirement
+      ricciFlowAnalyticFoundationRequirement
+      ricciFlowWithSurgeryRequirement
+      perelmanSingularityControlRequirement
+      finiteExtinctionRequirement
+      extinctionToSphereHomeomorphismRequirement)
+
+/--
+The milestone requirement reserved-name endpoint is the certificate target
+statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_milestone_requirements_eq :
+    poincare_conjecture_of_completion_certificate_of_milestone_requirements
+      smoothabilityBridgeRequirement
+      ricciFlowAnalyticFoundationRequirement
+      ricciFlowWithSurgeryRequirement
+      perelmanSingularityControlRequirement
+      finiteExtinctionRequirement
+      extinctionToSphereHomeomorphismRequirement =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_milestone_requirements
+          smoothabilityBridgeRequirement
+          ricciFlowAnalyticFoundationRequirement
+          ricciFlowWithSurgeryRequirement
+          perelmanSingularityControlRequirement
+          finiteExtinctionRequirement
+          extinctionToSphereHomeomorphismRequirement) := by
+  apply Subsingleton.elim
+
+end MilestoneRequirementReservedTheoremGates
+
+section ComponentExtractionDerivationRequirementReservedTheoremGates
+
+variable (smoothabilityRequirement :
+  dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+variable (surgeryRequirement :
+  dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+variable (topologyRequirement :
+  dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent)
+
+include smoothabilityRequirement surgeryRequirement topologyRequirement
+
+/--
+The component-slot extraction-derivation requirement completion certificate
+exposes the reserved final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_component_extraction_derivation_requirements :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_component_extraction_derivation_requirements
+      smoothabilityRequirement surgeryRequirement topologyRequirement)
+
+/--
+The component-slot extraction-derivation requirement reserved-name endpoint is
+the certificate target statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_component_extraction_derivation_requirements_eq :
+    poincare_conjecture_of_completion_certificate_of_component_extraction_derivation_requirements
+      smoothabilityRequirement surgeryRequirement topologyRequirement =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_component_extraction_derivation_requirements
+          smoothabilityRequirement surgeryRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+end ComponentExtractionDerivationRequirementReservedTheoremGates
+
+section PackageLayerExtractionDerivationRequirementReservedTheoremGates
+
+variable (smoothabilityRequirement :
+  dependencyPackageLayerRequirement.{u}
+    DependencyPackageLayer.smoothabilityPackage)
+variable (analyticRequirement :
+  dependencyPackageLayerRequirement.{u}
+    DependencyPackageLayer.analyticFoundationPackage)
+variable (surgeryRequirement :
+  dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+variable (finiteExtinctionRequirement :
+  dependencyPackageLayerRequirement.{u}
+    DependencyPackageLayer.finiteExtinctionPackage)
+variable (topologyRequirement :
+  dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage)
+
+include smoothabilityRequirement analyticRequirement surgeryRequirement
+include finiteExtinctionRequirement topologyRequirement
+
+/--
+The package-layer extraction-derivation requirement completion certificate
+exposes the reserved final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_package_layer_extraction_derivation_requirements :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_package_layer_extraction_derivation_requirements
+      smoothabilityRequirement analyticRequirement surgeryRequirement
+      finiteExtinctionRequirement topologyRequirement)
+
+/--
+The package-layer extraction-derivation requirement reserved-name endpoint is
+the certificate target statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_package_layer_extraction_derivation_requirements_eq :
+    poincare_conjecture_of_completion_certificate_of_package_layer_extraction_derivation_requirements
+      smoothabilityRequirement analyticRequirement surgeryRequirement
+      finiteExtinctionRequirement topologyRequirement =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_package_layer_extraction_derivation_requirements
+          smoothabilityRequirement analyticRequirement surgeryRequirement
+          finiteExtinctionRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+end PackageLayerExtractionDerivationRequirementReservedTheoremGates
+
+section MilestoneExtractionDerivationRequirementReservedTheoremGates
+
+variable (smoothabilityBridgeRequirement :
+  dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+variable (ricciFlowAnalyticFoundationRequirement :
+  dependencyMilestoneRequirement.{u}
+    DependencyMilestone.ricciFlowAnalyticFoundation)
+variable (ricciFlowWithSurgeryRequirement :
+  dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+variable (perelmanSingularityControlRequirement :
+  dependencyMilestoneRequirement.{u}
+    DependencyMilestone.perelmanSingularityControl)
+variable (finiteExtinctionRequirement :
+  dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+variable (extinctionToSphereHomeomorphismRequirement :
+  dependencyMilestoneRequirement.{u}
+    DependencyMilestone.extinctionToSphereHomeomorphism)
+
+include smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+include ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+include finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement
+
+/--
+The milestone extraction-derivation requirement completion certificate exposes
+the reserved final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_milestone_extraction_derivation_requirements :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_milestone_extraction_derivation_requirements
+      smoothabilityBridgeRequirement
+      ricciFlowAnalyticFoundationRequirement
+      ricciFlowWithSurgeryRequirement
+      perelmanSingularityControlRequirement
+      finiteExtinctionRequirement
+      extinctionToSphereHomeomorphismRequirement)
+
+/--
+The milestone extraction-derivation requirement reserved-name endpoint is the
+certificate target statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_milestone_extraction_derivation_requirements_eq :
+    poincare_conjecture_of_completion_certificate_of_milestone_extraction_derivation_requirements
+      smoothabilityBridgeRequirement
+      ricciFlowAnalyticFoundationRequirement
+      ricciFlowWithSurgeryRequirement
+      perelmanSingularityControlRequirement
+      finiteExtinctionRequirement
+      extinctionToSphereHomeomorphismRequirement =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_milestone_extraction_derivation_requirements
+          smoothabilityBridgeRequirement
+          ricciFlowAnalyticFoundationRequirement
+          ricciFlowWithSurgeryRequirement
+          perelmanSingularityControlRequirement
+          finiteExtinctionRequirement
+          extinctionToSphereHomeomorphismRequirement) := by
+  apply Subsingleton.elim
+
+end MilestoneExtractionDerivationRequirementReservedTheoremGates
+
 /--
 Projecting the canonical topological statement from the route completion
 certificates returns the named route statement endpoint.
