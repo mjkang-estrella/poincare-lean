@@ -12263,6 +12263,13 @@ theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_co
         dependencies := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_remaining_dependency_component_requirements
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_component_requirements
+      dependencies)
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_remaining_dependency_component_requirements
     (dependencies : RemainingDependencyPackage.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -12302,6 +12309,13 @@ theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_pa
       poincare_statement_of_remaining_dependency_package_layer_requirements
         dependencies := by
   apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_remaining_dependency_package_layer_requirements
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_package_layer_requirements
+      dependencies)
 
 theorem poincare_conjecture_payload_of_completion_certificate_of_remaining_dependency_package_layer_requirements
     (dependencies : RemainingDependencyPackage.{u}) :
@@ -12343,6 +12357,13 @@ theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_mi
         dependencies := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_remaining_dependency_milestone_requirements
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_milestone_requirements
+      dependencies)
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_remaining_dependency_milestone_requirements
     (dependencies : RemainingDependencyPackage.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -12382,6 +12403,13 @@ theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_co
       poincare_statement_of_remaining_dependency_component_extraction_derivation_requirements
         dependencies := by
   apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements
+      dependencies)
 
 theorem poincare_conjecture_payload_of_completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements
     (dependencies : RemainingDependencyPackage.{u}) :
@@ -12423,6 +12451,13 @@ theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_pa
         dependencies := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements
+      dependencies)
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements
     (dependencies : RemainingDependencyPackage.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -12462,6 +12497,13 @@ theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_mi
       poincare_statement_of_remaining_dependency_milestone_extraction_derivation_requirements
         dependencies := by
   apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements
+      dependencies)
 
 theorem poincare_conjecture_payload_of_completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements
     (dependencies : RemainingDependencyPackage.{u}) :
@@ -12503,6 +12545,13 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
         dependencies := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_component_requirements
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_component_requirements
+      dependencies)
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_component_requirements
     (dependencies : PoincareProofDependencies.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -12542,6 +12591,13 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
       poincare_statement_of_poincareProofDependencies_package_layer_requirements
         dependencies := by
   apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_package_layer_requirements
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_package_layer_requirements
+      dependencies)
 
 theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_package_layer_requirements
     (dependencies : PoincareProofDependencies.{u}) :
@@ -12583,6 +12639,13 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
         dependencies := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_milestone_requirements
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_milestone_requirements
+      dependencies)
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_milestone_requirements
     (dependencies : PoincareProofDependencies.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -12622,6 +12685,13 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
       poincare_statement_of_poincareProofDependencies_component_extraction_derivation_requirements
         dependencies := by
   apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements
+      dependencies)
 
 theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements
     (dependencies : PoincareProofDependencies.{u}) :
@@ -12663,6 +12733,13 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
         dependencies := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+      dependencies)
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
     (dependencies : PoincareProofDependencies.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -12702,6 +12779,13 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
       poincare_statement_of_poincareProofDependencies_milestone_extraction_derivation_requirements
         dependencies := by
   apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+      dependencies)
 
 theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements
     (dependencies : PoincareProofDependencies.{u}) :
@@ -12744,6 +12828,13 @@ theorem poincare_conjecture_of_completion_certificate_of_aggregate_extraction_de
           dependencies) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_aggregate_extraction_derivation_dependencies
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_aggregate_extraction_derivation_dependencies
+      dependencies)
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_aggregate_extraction_derivation_dependencies
     (dependencies : RemainingDependencyPackage.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -12782,6 +12873,13 @@ theorem poincare_conjecture_of_completion_certificate_of_dependency_projections_
       target_statement_of_completion_certificate
         (completion_certificate_of_dependency_projections dependencies) := by
   apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_dependency_projections
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_dependency_projections
+      dependencies)
 
 theorem poincare_conjecture_payload_of_completion_certificate_of_dependency_projections
     (dependencies : RemainingDependencyPackage.{u}) :
@@ -12824,6 +12922,13 @@ theorem poincare_conjecture_of_completion_certificate_of_extraction_derivation_d
           dependencies) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_extraction_derivation_dependency_projections
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_extraction_derivation_dependency_projections
+      dependencies)
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_extraction_derivation_dependency_projections
     (dependencies : RemainingDependencyPackage.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -12864,6 +12969,13 @@ theorem poincare_conjecture_of_completion_certificate_of_lifted_homeomorphism_de
         (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
           dependencies) := by
   apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies)
 
 theorem poincare_conjecture_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
     (dependencies : RemainingDependencyPackage.{u}) :
@@ -12906,6 +13018,13 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
           dependencies) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
+      dependencies)
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
     (dependencies : PoincareProofDependencies.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -12946,6 +13065,13 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
         (completion_certificate_of_poincareProofDependencies_projections
           dependencies) := by
   apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_projections
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_projections
+      dependencies)
 
 theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_projections
     (dependencies : PoincareProofDependencies.{u}) :
@@ -12988,6 +13114,13 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
           dependencies) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+      dependencies)
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
     (dependencies : PoincareProofDependencies.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -13028,6 +13161,13 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
         (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
           dependencies) := by
   apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+      dependencies)
 
 theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
     (dependencies : PoincareProofDependencies.{u}) :
@@ -13070,6 +13210,13 @@ theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_remai
           dependencies) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_equation_boundary_remaining_dependency_package
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_equation_boundary_remaining_dependency_package
+      dependencies)
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package
     (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -13110,6 +13257,13 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
         (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
           dependencies) := by
   apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+      dependencies)
 
 theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
@@ -13152,6 +13306,13 @@ theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_depen
           dependencies) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_equation_boundary_dependency_projections
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_equation_boundary_dependency_projections
+      dependencies)
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_dependency_projections
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -13192,6 +13353,13 @@ theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_extra
         (completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
           dependencies) := by
   apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
+      dependencies)
 
 theorem poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
@@ -13234,6 +13402,13 @@ theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_lifte
           dependencies) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+      dependencies)
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -13275,6 +13450,13 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
           dependencies) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
+      dependencies)
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -13309,6 +13491,22 @@ target statement.
 theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_package_eq
     (dependencies : RemainingDependencyPackage.{u}) :
     poincare_conjecture_of_completion_certificate_of_remaining_dependency_package
+      dependencies =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_remaining_dependency_package
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_package
+      dependencies)
+
+theorem target_statement_of_completion_certificate_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    target_statement_of_completion_certificate_of_remaining_dependency_package
       dependencies =
       target_statement_of_completion_certificate
         (completion_certificate_of_remaining_dependency_package
@@ -13358,6 +13556,14 @@ theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_an
           dependencies target) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_remaining_dependency_and_target_statement
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_and_target_statement
+      dependencies target)
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_remaining_dependency_and_target_statement
     (dependencies : RemainingDependencyPackage.{u})
     (target : PoincareConjectureStatement.{u}) :
@@ -13403,6 +13609,14 @@ theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_an
           dependencies target) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_remaining_dependency_and_canonical_target
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_and_canonical_target
+      dependencies target)
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_remaining_dependency_and_canonical_target
     (dependencies : RemainingDependencyPackage.{u})
     (target : canonicalCompletionTarget.{u}) :
@@ -13442,6 +13656,24 @@ theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_an
     (dependencies : RemainingDependencyPackage.{u}) (witness : Type u)
     (criterion : CompletionCriterionAtUniverse witness) :
     poincare_conjecture_of_completion_certificate_of_remaining_dependency_and_completion_criterion
+      dependencies witness criterion =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_and_completion_criterion
+          dependencies witness criterion) := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_remaining_dependency_and_completion_criterion
+    (dependencies : RemainingDependencyPackage.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_and_completion_criterion
+      dependencies witness criterion)
+
+theorem target_statement_of_completion_certificate_of_remaining_dependency_and_completion_criterion_eq
+    (dependencies : RemainingDependencyPackage.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    target_statement_of_completion_certificate_of_remaining_dependency_and_completion_criterion
       dependencies witness criterion =
       target_statement_of_completion_certificate
         (completion_certificate_of_remaining_dependency_and_completion_criterion
@@ -13489,6 +13721,22 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
         (completion_certificate_of_poincareProofDependencies dependencies) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies
+      dependencies)
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    target_statement_of_completion_certificate_of_poincareProofDependencies
+      dependencies =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies
     (dependencies : PoincareProofDependencies.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -13531,6 +13779,14 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
         (completion_certificate_of_poincareProofDependencies_and_target_statement
           dependencies target) := by
   apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_and_target_statement
+    (dependencies : PoincareProofDependencies.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_and_target_statement
+      dependencies target)
 
 theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_and_target_statement
     (dependencies : PoincareProofDependencies.{u})
@@ -13577,6 +13833,14 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
           dependencies target) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_and_canonical_target
+    (dependencies : PoincareProofDependencies.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_and_canonical_target
+      dependencies target)
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_target
     (dependencies : PoincareProofDependencies.{u})
     (target : canonicalCompletionTarget.{u}) :
@@ -13616,6 +13880,24 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
     (dependencies : PoincareProofDependencies.{u}) (witness : Type u)
     (criterion : CompletionCriterionAtUniverse witness) :
     poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion
+      dependencies witness criterion =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+          dependencies witness criterion) := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion
+    (dependencies : PoincareProofDependencies.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+      dependencies witness criterion)
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion_eq
+    (dependencies : PoincareProofDependencies.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    target_statement_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion
       dependencies witness criterion =
       target_statement_of_completion_certificate
         (completion_certificate_of_poincareProofDependencies_and_completion_criterion
@@ -13665,6 +13947,13 @@ theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_remai
           dependencies) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target
+      dependencies)
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target
     (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -13705,6 +13994,13 @@ theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_remai
         (completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement
           dependencies) := by
   apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement
+      dependencies)
 
 theorem poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement
     (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
@@ -13749,6 +14045,14 @@ theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_remai
           witness dependencies) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion
+      witness dependencies)
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion
     (witness : Type u)
     (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
@@ -13792,6 +14096,13 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
           dependencies) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target
+      dependencies)
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -13832,6 +14143,13 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
         (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement
           dependencies) := by
   apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement
+      dependencies)
 
 theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
@@ -13875,6 +14193,14 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
         (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion
           witness dependencies) := by
   apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion
+      witness dependencies)
 
 theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion
     (witness : Type u)
@@ -13932,6 +14258,12 @@ theorem poincare_conjecture_of_completion_certificate_of_dependency_projections_
           dependencies verificationFamily) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_dependency_projections_and_verification_family :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_dependency_projections_and_verification_family
+      dependencies verificationFamily)
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_dependency_projections_and_verification_family :
     ∃ _target : PoincareConjectureStatement.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
@@ -13986,6 +14318,12 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
           dependencies verificationFamily) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_and_verification_family :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_and_verification_family
+      dependencies verificationFamily)
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family :
     ∃ _target : PoincareConjectureStatement.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
@@ -14017,6 +14355,20 @@ reserved-name endpoint is the certificate target statement.
 -/
 theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_eq :
     poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target
+      dependencies verificationFamily =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target
+      dependencies verificationFamily)
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_eq :
+    target_statement_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target
       dependencies verificationFamily =
       target_statement_of_completion_certificate
         (completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target
@@ -14060,6 +14412,20 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
           dependencies verificationFamily) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement
+      dependencies verificationFamily)
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_eq :
+    target_statement_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement
+      dependencies verificationFamily =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement :
     ∃ _target : PoincareConjectureStatement.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
@@ -14093,6 +14459,22 @@ reserved-name endpoint is the certificate target statement.
 theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_eq
     (witness : Type u) :
     poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion
+      dependencies verificationFamily witness =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion
+          dependencies verificationFamily witness) := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion
+    (witness : Type u) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion
+      dependencies verificationFamily witness)
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_eq
+    (witness : Type u) :
+    target_statement_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion
       dependencies verificationFamily witness =
       target_statement_of_completion_certificate
         (completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion
@@ -14150,6 +14532,20 @@ theorem poincare_conjecture_of_completion_certificate_of_components_eq :
         (completion_certificate_of_components smoothability surgery topology) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_components :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_components
+      smoothability surgery topology)
+
+theorem target_statement_of_completion_certificate_of_components_eq :
+    target_statement_of_completion_certificate_of_components
+      smoothability surgery topology =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_components
+          smoothability surgery topology) := by
+  apply Subsingleton.elim
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_components :
     ∃ _target : PoincareConjectureStatement.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
@@ -14194,6 +14590,20 @@ statement.
 -/
 theorem poincare_conjecture_of_completion_certificate_of_component_requirements_eq :
     poincare_conjecture_of_completion_certificate_of_component_requirements
+      smoothabilityRequirement surgeryRequirement topologyRequirement =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_component_requirements
+          smoothabilityRequirement surgeryRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_component_requirements :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_component_requirements
+      smoothabilityRequirement surgeryRequirement topologyRequirement)
+
+theorem target_statement_of_completion_certificate_of_component_requirements_eq :
+    target_statement_of_completion_certificate_of_component_requirements
       smoothabilityRequirement surgeryRequirement topologyRequirement =
       target_statement_of_completion_certificate
         (completion_certificate_of_component_requirements
@@ -14253,6 +14663,23 @@ statement.
 -/
 theorem poincare_conjecture_of_completion_certificate_of_package_layer_requirements_eq :
     poincare_conjecture_of_completion_certificate_of_package_layer_requirements
+      smoothabilityRequirement analyticRequirement surgeryRequirement
+      finiteExtinctionRequirement topologyRequirement =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_package_layer_requirements
+          smoothabilityRequirement analyticRequirement surgeryRequirement
+          finiteExtinctionRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_package_layer_requirements :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_package_layer_requirements
+      smoothabilityRequirement analyticRequirement surgeryRequirement
+      finiteExtinctionRequirement topologyRequirement)
+
+theorem target_statement_of_completion_certificate_of_package_layer_requirements_eq :
+    target_statement_of_completion_certificate_of_package_layer_requirements
       smoothabilityRequirement analyticRequirement surgeryRequirement
       finiteExtinctionRequirement topologyRequirement =
       target_statement_of_completion_certificate
@@ -14340,6 +14767,26 @@ theorem poincare_conjecture_of_completion_certificate_of_milestone_requirements_
           extinctionToSphereHomeomorphismRequirement) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_milestone_requirements :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_milestone_requirements
+      smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+      ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+      finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)
+
+theorem target_statement_of_completion_certificate_of_milestone_requirements_eq :
+    target_statement_of_completion_certificate_of_milestone_requirements
+      smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+      ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+      finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_milestone_requirements
+          smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+          ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+          finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) := by
+  apply Subsingleton.elim
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_milestone_requirements :
     ∃ _target : PoincareConjectureStatement.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
@@ -14390,6 +14837,20 @@ the certificate target statement.
 -/
 theorem poincare_conjecture_of_completion_certificate_of_component_extraction_derivation_requirements_eq :
     poincare_conjecture_of_completion_certificate_of_component_extraction_derivation_requirements
+      smoothabilityRequirement surgeryRequirement topologyRequirement =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_component_extraction_derivation_requirements
+          smoothabilityRequirement surgeryRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_component_extraction_derivation_requirements :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_component_extraction_derivation_requirements
+      smoothabilityRequirement surgeryRequirement topologyRequirement)
+
+theorem target_statement_of_completion_certificate_of_component_extraction_derivation_requirements_eq :
+    target_statement_of_completion_certificate_of_component_extraction_derivation_requirements
       smoothabilityRequirement surgeryRequirement topologyRequirement =
       target_statement_of_completion_certificate
         (completion_certificate_of_component_extraction_derivation_requirements
@@ -14449,6 +14910,23 @@ the certificate target statement.
 -/
 theorem poincare_conjecture_of_completion_certificate_of_package_layer_extraction_derivation_requirements_eq :
     poincare_conjecture_of_completion_certificate_of_package_layer_extraction_derivation_requirements
+      smoothabilityRequirement analyticRequirement surgeryRequirement
+      finiteExtinctionRequirement topologyRequirement =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_package_layer_extraction_derivation_requirements
+          smoothabilityRequirement analyticRequirement surgeryRequirement
+          finiteExtinctionRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_package_layer_extraction_derivation_requirements :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_package_layer_extraction_derivation_requirements
+      smoothabilityRequirement analyticRequirement surgeryRequirement
+      finiteExtinctionRequirement topologyRequirement)
+
+theorem target_statement_of_completion_certificate_of_package_layer_extraction_derivation_requirements_eq :
+    target_statement_of_completion_certificate_of_package_layer_extraction_derivation_requirements
       smoothabilityRequirement analyticRequirement surgeryRequirement
       finiteExtinctionRequirement topologyRequirement =
       target_statement_of_completion_certificate
@@ -14536,6 +15014,26 @@ theorem poincare_conjecture_of_completion_certificate_of_milestone_extraction_de
           extinctionToSphereHomeomorphismRequirement) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_milestone_extraction_derivation_requirements :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_milestone_extraction_derivation_requirements
+      smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+      ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+      finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)
+
+theorem target_statement_of_completion_certificate_of_milestone_extraction_derivation_requirements_eq :
+    target_statement_of_completion_certificate_of_milestone_extraction_derivation_requirements
+      smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+      ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+      finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_milestone_extraction_derivation_requirements
+          smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement
+          ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement
+          finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) := by
+  apply Subsingleton.elim
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements :
     ∃ _target : PoincareConjectureStatement.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
@@ -14581,6 +15079,20 @@ theorem poincare_conjecture_of_completion_certificate_of_literal_payload_eq :
         (completion_certificate_of_literal_payload payload) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_literal_payload :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_literal_payload
+      payload)
+
+theorem target_statement_of_completion_certificate_of_literal_payload_eq :
+    target_statement_of_completion_certificate_of_literal_payload
+      payload =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_literal_payload
+          payload) := by
+  apply Subsingleton.elim
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_literal_payload :
     ∃ _target : PoincareConjectureStatement.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
@@ -14615,6 +15127,20 @@ theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_an
 
 theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_and_poincare_payload_eq :
     poincare_conjecture_of_completion_certificate_of_remaining_dependency_and_poincare_payload
+      dependencies payload =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_and_poincare_payload
+          dependencies payload) := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_remaining_dependency_and_poincare_payload :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_and_poincare_payload
+      dependencies payload)
+
+theorem target_statement_of_completion_certificate_of_remaining_dependency_and_poincare_payload_eq :
+    target_statement_of_completion_certificate_of_remaining_dependency_and_poincare_payload
       dependencies payload =
       target_statement_of_completion_certificate
         (completion_certificate_of_remaining_dependency_and_poincare_payload
@@ -14661,6 +15187,20 @@ theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_an
           dependencies payload) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_remaining_dependency_and_canonical_payload :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_and_canonical_payload
+      dependencies payload)
+
+theorem target_statement_of_completion_certificate_of_remaining_dependency_and_canonical_payload_eq :
+    target_statement_of_completion_certificate_of_remaining_dependency_and_canonical_payload
+      dependencies payload =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_and_canonical_payload
+          dependencies payload) := by
+  apply Subsingleton.elim
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_remaining_dependency_and_canonical_payload :
     ∃ _target : PoincareConjectureStatement.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
@@ -14695,6 +15235,20 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
 
 theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload_eq :
     poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload
+      dependencies payload =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+          dependencies payload) := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+      dependencies payload)
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload_eq :
+    target_statement_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload
       dependencies payload =
       target_statement_of_completion_certificate
         (completion_certificate_of_poincareProofDependencies_and_poincare_payload
@@ -14741,6 +15295,20 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
           dependencies payload) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+      dependencies payload)
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload_eq :
+    target_statement_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload
+      dependencies payload =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+          dependencies payload) := by
+  apply Subsingleton.elim
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload :
     ∃ _target : PoincareConjectureStatement.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
@@ -14781,6 +15349,20 @@ theorem poincare_conjecture_of_completion_certificate_of_aggregate_dependency_pa
         (completion_certificate_of_aggregate_dependency_payload payload) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_aggregate_dependency_payload :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_aggregate_dependency_payload
+      payload)
+
+theorem target_statement_of_completion_certificate_of_aggregate_dependency_payload_eq :
+    target_statement_of_completion_certificate_of_aggregate_dependency_payload
+      payload =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_aggregate_dependency_payload
+          payload) := by
+  apply Subsingleton.elim
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_aggregate_dependency_payload :
     ∃ _target : PoincareConjectureStatement.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
@@ -14819,6 +15401,20 @@ theorem poincare_conjecture_of_completion_certificate_of_project_statement_paylo
       payload =
       target_statement_of_completion_certificate
         (completion_certificate_of_project_statement_payload payload) := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_project_statement_payload :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_project_statement_payload
+      payload)
+
+theorem target_statement_of_completion_certificate_of_project_statement_payload_eq :
+    target_statement_of_completion_certificate_of_project_statement_payload
+      payload =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_project_statement_payload
+          payload) := by
   apply Subsingleton.elim
 
 theorem poincare_conjecture_payload_of_completion_certificate_of_project_statement_payload :
@@ -14863,6 +15459,20 @@ theorem poincare_conjecture_of_completion_certificate_of_components_payload_eq :
         (completion_certificate_of_components_payload payload) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_components_payload :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_components_payload
+      payload)
+
+theorem target_statement_of_completion_certificate_of_components_payload_eq :
+    target_statement_of_completion_certificate_of_components_payload
+      payload =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_components_payload
+          payload) := by
+  apply Subsingleton.elim
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_components_payload :
     ∃ _target : PoincareConjectureStatement.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
@@ -14903,6 +15513,20 @@ theorem poincare_conjecture_of_completion_certificate_of_component_requirements_
         (completion_certificate_of_component_requirements_payload payload) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_component_requirements_payload :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_component_requirements_payload
+      payload)
+
+theorem target_statement_of_completion_certificate_of_component_requirements_payload_eq :
+    target_statement_of_completion_certificate_of_component_requirements_payload
+      payload =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_component_requirements_payload
+          payload) := by
+  apply Subsingleton.elim
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_component_requirements_payload :
     ∃ _target : PoincareConjectureStatement.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
@@ -14926,6 +15550,20 @@ theorem poincare_conjecture_of_completion_certificate_of_component_extraction_de
 
 theorem poincare_conjecture_of_completion_certificate_of_component_extraction_derivation_requirements_payload_eq :
     poincare_conjecture_of_completion_certificate_of_component_extraction_derivation_requirements_payload
+      payload =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_component_extraction_derivation_requirements_payload
+          payload) := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_component_extraction_derivation_requirements_payload :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_component_extraction_derivation_requirements_payload
+      payload)
+
+theorem target_statement_of_completion_certificate_of_component_extraction_derivation_requirements_payload_eq :
+    target_statement_of_completion_certificate_of_component_extraction_derivation_requirements_payload
       payload =
       target_statement_of_completion_certificate
         (completion_certificate_of_component_extraction_derivation_requirements_payload
@@ -14980,6 +15618,20 @@ theorem poincare_conjecture_of_completion_certificate_of_package_layer_requireme
           payload) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_package_layer_requirements_payload :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_package_layer_requirements_payload
+      payload)
+
+theorem target_statement_of_completion_certificate_of_package_layer_requirements_payload_eq :
+    target_statement_of_completion_certificate_of_package_layer_requirements_payload
+      payload =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_package_layer_requirements_payload
+          payload) := by
+  apply Subsingleton.elim
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_package_layer_requirements_payload :
     ∃ _target : PoincareConjectureStatement.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
@@ -15003,6 +15655,20 @@ theorem poincare_conjecture_of_completion_certificate_of_package_layer_extractio
 
 theorem poincare_conjecture_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload_eq :
     poincare_conjecture_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+      payload =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+          payload) := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+      payload)
+
+theorem target_statement_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload_eq :
+    target_statement_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload
       payload =
       target_statement_of_completion_certificate
         (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
@@ -15059,6 +15725,20 @@ theorem poincare_conjecture_of_completion_certificate_of_milestone_requirements_
         (completion_certificate_of_milestone_requirements_payload payload) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_milestone_requirements_payload :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_milestone_requirements_payload
+      payload)
+
+theorem target_statement_of_completion_certificate_of_milestone_requirements_payload_eq :
+    target_statement_of_completion_certificate_of_milestone_requirements_payload
+      payload =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_milestone_requirements_payload
+          payload) := by
+  apply Subsingleton.elim
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_milestone_requirements_payload :
     ∃ _target : PoincareConjectureStatement.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
@@ -15082,6 +15762,20 @@ theorem poincare_conjecture_of_completion_certificate_of_milestone_extraction_de
 
 theorem poincare_conjecture_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload_eq :
     poincare_conjecture_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload
+      payload =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+          payload) := by
+  apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+      payload)
+
+theorem target_statement_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload_eq :
+    target_statement_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload
       payload =
       target_statement_of_completion_certificate
         (completion_certificate_of_milestone_extraction_derivation_requirements_payload
@@ -15142,6 +15836,12 @@ theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_remai
           dependencies payload) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+      dependencies payload)
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload :
     ∃ _target : PoincareConjectureStatement.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
@@ -15195,6 +15895,12 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
         (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
           dependencies payload) := by
   apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+      dependencies payload)
 
 theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload :
     ∃ _target : PoincareConjectureStatement.{u},
@@ -15253,6 +15959,12 @@ theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_remai
           dependencies payload) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+      dependencies payload)
+
 theorem poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload :
     ∃ _target : PoincareConjectureStatement.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
@@ -15309,6 +16021,12 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
         (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
           dependencies payload) := by
   apply Subsingleton.elim
+
+theorem target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+      dependencies payload)
 
 theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload :
     ∃ _target : PoincareConjectureStatement.{u},

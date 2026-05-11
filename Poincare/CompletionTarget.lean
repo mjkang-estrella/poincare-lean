@@ -25824,6 +25824,24 @@ theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_verif
           payload) := by
   apply Subsingleton.elim
 
+theorem target_statement_of_completion_certificate_of_equation_boundary_verification_payload
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    PoincareConjectureStatement.{u} :=
+  target_statement_of_completion_certificate
+    (completion_certificate_of_equation_boundary_verification_payload
+      payload)
+
+theorem target_statement_of_completion_certificate_of_equation_boundary_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    target_statement_of_completion_certificate_of_equation_boundary_verification_payload
+      payload =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
 /--
 The checked certificate projected from a boundary-aware payload also exposes a
 reserved-name payload.
