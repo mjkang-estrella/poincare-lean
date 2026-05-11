@@ -469,6 +469,269 @@ theorem threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStat
   apply Subsingleton.elim
 
 /--
+The target fundamental-group obligation is enough to apply the project target
+statement to the standard sphere itself.
+-/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_fundamentalGroupSubsingletonStatement
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    Nonempty (ThreeSphere ≃ₜ ThreeSphere) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement hFund
+  exact threeSphere_self_homeomorph_of_poincare_statement h
+
+/--
+The target-statement self route from the fundamental-group formulation is
+exactly the existing self route after converting that formulation to
+simple-connectedness.
+-/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_fundamentalGroupSubsingletonStatement_eq :
+    threeSphere_self_homeomorph_of_poincare_statement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement hFund
+          threeSphere_self_homeomorph_of_poincare_statement h) := by
+  funext hFund h
+  apply Subsingleton.elim
+
+/-- The fundamental-group target self route agrees with the loop route. -/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_fundamentalGroupSubsingletonStatement_loop_route_eq :
+    threeSphere_self_homeomorph_of_poincare_statement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+              hFund) h) := by
+  funext hFund h
+  apply Subsingleton.elim
+
+/--
+The target fundamental-group obligation is enough to apply the smooth target
+statement to the standard sphere itself.
+-/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement hFund
+  exact threeSphere_self_diffeomorph_of_smooth_statement h
+
+/--
+The smooth self-diffeomorphism route from the fundamental-group formulation is
+exactly the existing smooth self route after converting that formulation to
+simple-connectedness.
+-/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_eq :
+    threeSphere_self_diffeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement hFund
+          threeSphere_self_diffeomorph_of_smooth_statement h) := by
+  funext hFund h
+  apply Subsingleton.elim
+
+/-- The fundamental-group smooth self-diffeomorphism route agrees with the loop route. -/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_loop_route_eq :
+    threeSphere_self_diffeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_diffeomorph_of_smooth_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+              hFund) h) := by
+  funext hFund h
+  apply Subsingleton.elim
+
+/--
+The smooth target plus the target fundamental-group obligation gives the
+topological self-homeomorphism after forgetting smooth structure.
+-/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    Nonempty (ThreeSphere ≃ₜ ThreeSphere) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement hFund
+  exact threeSphere_self_homeomorph_of_smooth_statement h
+
+/--
+The smooth-to-topological self route from the fundamental-group formulation is
+exactly the existing smooth-to-topological self route after converting that
+formulation to simple-connectedness.
+-/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_eq :
+    threeSphere_self_homeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement hFund
+          threeSphere_self_homeomorph_of_smooth_statement h) := by
+  funext hFund h
+  apply Subsingleton.elim
+
+/-- The fundamental-group smooth-to-topological self route agrees with the loop route. -/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_loop_route_eq :
+    threeSphere_self_homeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+              hFund) h) := by
+  funext hFund h
+  apply Subsingleton.elim
+
+/--
+The target `π₁` obligation is enough to apply the project target statement to
+the standard sphere itself.
+-/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonStatement
+    (hPiOne : ThreeSpherePiOneSubsingletonStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    Nonempty (ThreeSphere ≃ₜ ThreeSphere) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement hPiOne
+  exact threeSphere_self_homeomorph_of_poincare_statement h
+
+/--
+The target-statement self route from the `π₁` formulation is exactly the
+existing self route after converting that formulation to simple-connectedness.
+-/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonStatement_eq :
+    threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement hPiOne
+          threeSphere_self_homeomorph_of_poincare_statement h) := by
+  funext hPiOne h
+  apply Subsingleton.elim
+
+/-- The `π₁` target self route agrees with the fundamental-group route. -/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq :
+    threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_of_poincare_statement_and_fundamentalGroupSubsingletonStatement
+            (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+              hPiOne) h) := by
+  funext hPiOne h
+  apply Subsingleton.elim
+
+/-- The `π₁` target self route agrees with the loop route. -/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonStatement_loop_route_eq :
+    threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+              (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+                hPiOne)) h) := by
+  funext hPiOne h
+  apply Subsingleton.elim
+
+/--
+The target `π₁` obligation is enough to apply the smooth target statement to
+the standard sphere itself.
+-/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_piOneSubsingletonStatement
+    (hPiOne : ThreeSpherePiOneSubsingletonStatement)
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement hPiOne
+  exact threeSphere_self_diffeomorph_of_smooth_statement h
+
+/--
+The smooth self-diffeomorphism route from the `π₁` formulation is exactly the
+existing smooth self route after converting that formulation to
+simple-connectedness.
+-/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_piOneSubsingletonStatement_eq :
+    threeSphere_self_diffeomorph_of_smooth_statement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement hPiOne
+          threeSphere_self_diffeomorph_of_smooth_statement h) := by
+  funext hPiOne h
+  apply Subsingleton.elim
+
+/-- The `π₁` smooth self-diffeomorphism route agrees with the fundamental-group route. -/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq :
+    threeSphere_self_diffeomorph_of_smooth_statement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_diffeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement
+            (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+              hPiOne) h) := by
+  funext hPiOne h
+  apply Subsingleton.elim
+
+/-- The `π₁` smooth self-diffeomorphism route agrees with the loop route. -/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_piOneSubsingletonStatement_loop_route_eq :
+    threeSphere_self_diffeomorph_of_smooth_statement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_diffeomorph_of_smooth_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+              (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+                hPiOne)) h) := by
+  funext hPiOne h
+  apply Subsingleton.elim
+
+/--
+The smooth target plus the target `π₁` obligation gives the topological
+self-homeomorphism after forgetting smooth structure.
+-/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_piOneSubsingletonStatement
+    (hPiOne : ThreeSpherePiOneSubsingletonStatement)
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    Nonempty (ThreeSphere ≃ₜ ThreeSphere) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement hPiOne
+  exact threeSphere_self_homeomorph_of_smooth_statement h
+
+/--
+The smooth-to-topological self route from the `π₁` formulation is exactly the
+existing smooth-to-topological self route after converting that formulation to
+simple-connectedness.
+-/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_piOneSubsingletonStatement_eq :
+    threeSphere_self_homeomorph_of_smooth_statement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement hPiOne
+          threeSphere_self_homeomorph_of_smooth_statement h) := by
+  funext hPiOne h
+  apply Subsingleton.elim
+
+/-- The `π₁` smooth-to-topological self route agrees with the fundamental-group route. -/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq :
+    threeSphere_self_homeomorph_of_smooth_statement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement
+            (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+              hPiOne) h) := by
+  funext hPiOne h
+  apply Subsingleton.elim
+
+/-- The `π₁` smooth-to-topological self route agrees with the loop route. -/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_piOneSubsingletonStatement_loop_route_eq :
+    threeSphere_self_homeomorph_of_smooth_statement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+              (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+                hPiOne)) h) := by
+  funext hPiOne h
+  apply Subsingleton.elim
+
+/--
 The based loop-nullhomotopy obligation is enough to apply the project target
 statement to the standard sphere itself.
 -/
@@ -995,6 +1258,334 @@ theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_loopNullhomo
             threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement
               hLoop h⟩) := by
   funext hLoop h
+  apply Subsingleton.elim
+
+/--
+The target fundamental-group obligation exposes the target self route as a
+payload carrying both the homotopy-oriented prerequisite bundle and the
+self-homeomorphism endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_fundamentalGroupSubsingletonStatement
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=
+  ⟨threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement hFund,
+    threeSphere_self_homeomorph_of_poincare_statement_and_fundamentalGroupSubsingletonStatement
+      hFund h⟩
+
+/--
+The fundamental-group target self payload is exactly the fundamental-group
+prerequisite route paired with the fundamental-group target endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_fundamentalGroupSubsingletonStatement_eq :
+    threeSphere_self_homeomorph_payload_of_poincare_statement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          ⟨threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement
+              hFund,
+            threeSphere_self_homeomorph_of_poincare_statement_and_fundamentalGroupSubsingletonStatement
+              hFund h⟩) := by
+  funext hFund h
+  apply Subsingleton.elim
+
+/-- The fundamental-group target self payload agrees with the loop payload route. -/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_fundamentalGroupSubsingletonStatement_loop_route_eq :
+    threeSphere_self_homeomorph_payload_of_poincare_statement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_payload_of_poincare_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+              hFund) h) := by
+  funext hFund h
+  apply Subsingleton.elim
+
+/--
+The target fundamental-group obligation exposes the smooth self route as a
+payload carrying both the homotopy-oriented prerequisite bundle and the
+self-diffeomorphism endpoint.
+-/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) :=
+  ⟨threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement hFund,
+    threeSphere_self_diffeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement
+      hFund h⟩
+
+/--
+The fundamental-group smooth self payload is exactly the fundamental-group
+prerequisite route paired with the fundamental-group smooth endpoint.
+-/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_eq :
+    threeSphere_self_diffeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          ⟨threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement
+              hFund,
+            threeSphere_self_diffeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement
+              hFund h⟩) := by
+  funext hFund h
+  apply Subsingleton.elim
+
+/-- The fundamental-group smooth self payload agrees with the loop payload route. -/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_loop_route_eq :
+    threeSphere_self_diffeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_diffeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+              hFund) h) := by
+  funext hFund h
+  apply Subsingleton.elim
+
+/--
+The target fundamental-group obligation exposes the smooth-to-topological self
+route as a payload carrying both the homotopy-oriented prerequisite bundle and
+the self-homeomorphism endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=
+  ⟨threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement hFund,
+    threeSphere_self_homeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement
+      hFund h⟩
+
+/--
+The fundamental-group smooth-to-topological self payload is exactly the
+fundamental-group prerequisite route paired with the fundamental-group
+smooth-to-topological endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_eq :
+    threeSphere_self_homeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          ⟨threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement
+              hFund,
+            threeSphere_self_homeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement
+              hFund h⟩) := by
+  funext hFund h
+  apply Subsingleton.elim
+
+/-- The fundamental-group smooth-to-topological self payload agrees with the loop payload route. -/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_loop_route_eq :
+    threeSphere_self_homeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+              hFund) h) := by
+  funext hFund h
+  apply Subsingleton.elim
+
+/--
+The target `π₁` obligation exposes the target self route as a payload carrying
+both the homotopy-oriented prerequisite bundle and the self-homeomorphism
+endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement
+    (hPiOne : ThreeSpherePiOneSubsingletonStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=
+  ⟨threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement hPiOne,
+    threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonStatement
+      hPiOne h⟩
+
+/--
+The `π₁` target self payload is exactly the `π₁` prerequisite route paired with
+the `π₁` target endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement_eq :
+    threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          ⟨threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement hPiOne,
+            threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonStatement
+              hPiOne h⟩) := by
+  funext hPiOne h
+  apply Subsingleton.elim
+
+/-- The `π₁` target self payload agrees with the fundamental-group payload route. -/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq :
+    threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_payload_of_poincare_statement_and_fundamentalGroupSubsingletonStatement
+            (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+              hPiOne) h) := by
+  funext hPiOne h
+  apply Subsingleton.elim
+
+/-- The `π₁` target self payload agrees with the loop payload route. -/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement_loop_route_eq :
+    threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_payload_of_poincare_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+              (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+                hPiOne)) h) := by
+  funext hPiOne h
+  apply Subsingleton.elim
+
+/--
+The target `π₁` obligation exposes the smooth self route as a payload carrying
+both the homotopy-oriented prerequisite bundle and the self-diffeomorphism
+endpoint.
+-/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement
+    (hPiOne : ThreeSpherePiOneSubsingletonStatement)
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) :=
+  ⟨threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement hPiOne,
+    threeSphere_self_diffeomorph_of_smooth_statement_and_piOneSubsingletonStatement
+      hPiOne h⟩
+
+/--
+The `π₁` smooth self payload is exactly the `π₁` prerequisite route paired with
+the `π₁` smooth endpoint.
+-/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_eq :
+    threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          ⟨threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement hPiOne,
+            threeSphere_self_diffeomorph_of_smooth_statement_and_piOneSubsingletonStatement
+              hPiOne h⟩) := by
+  funext hPiOne h
+  apply Subsingleton.elim
+
+/-- The `π₁` smooth self payload agrees with the fundamental-group payload route. -/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq :
+    threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_diffeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement
+            (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+              hPiOne) h) := by
+  funext hPiOne h
+  apply Subsingleton.elim
+
+/-- The `π₁` smooth self payload agrees with the loop payload route. -/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_loop_route_eq :
+    threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_diffeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+              (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+                hPiOne)) h) := by
+  funext hPiOne h
+  apply Subsingleton.elim
+
+/--
+The target `π₁` obligation exposes the smooth-to-topological self route as a
+payload carrying both the homotopy-oriented prerequisite bundle and the
+self-homeomorphism endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement
+    (hPiOne : ThreeSpherePiOneSubsingletonStatement)
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=
+  ⟨threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement hPiOne,
+    threeSphere_self_homeomorph_of_smooth_statement_and_piOneSubsingletonStatement
+      hPiOne h⟩
+
+/--
+The `π₁` smooth-to-topological self payload is exactly the `π₁` prerequisite
+route paired with the `π₁` smooth-to-topological endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_eq :
+    threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          ⟨threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement hPiOne,
+            threeSphere_self_homeomorph_of_smooth_statement_and_piOneSubsingletonStatement
+              hPiOne h⟩) := by
+  funext hPiOne h
+  apply Subsingleton.elim
+
+/-- The `π₁` smooth-to-topological self payload agrees with the fundamental-group payload route. -/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq :
+    threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement
+            (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+              hPiOne) h) := by
+  funext hPiOne h
+  apply Subsingleton.elim
+
+/-- The `π₁` smooth-to-topological self payload agrees with the loop payload route. -/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_loop_route_eq :
+    threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+              (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+                hPiOne)) h) := by
+  funext hPiOne h
   apply Subsingleton.elim
 
 /--
