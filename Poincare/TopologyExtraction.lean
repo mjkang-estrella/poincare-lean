@@ -912,6 +912,25 @@ theorem onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomo
   funext h
   apply Subsingleton.elim
 
+/--
+The standard-sphere `π₁` formulation transports directly to compactification
+loop-nullhomotopy.
+-/
+theorem onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement
+    (h : ThreeSpherePiOneSubsingletonStatement) :
+    OnePointThreeSpaceLoopNullhomotopyStatement :=
+  onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+    (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement h)
+
+/- The direct target-`π₁` compactification loop route factors through target loops. -/
+theorem onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement_eq :
+    onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
 /-- Compactification loop-nullhomotopy transports back to `ThreeSphere` loop-nullhomotopy. -/
 theorem threeSphereLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
     (h : OnePointThreeSpaceLoopNullhomotopyStatement) :
@@ -7452,9 +7471,8 @@ theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecog
         onePoint_threeSpace_chartedSpace
       letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
         onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
-          (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
-            (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
-              hPiOne))
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement
+            hPiOne)
       letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
         onePoint_threeSpace_compactSpace
       FiniteExtinctionByRicciFlowWithSurgery
@@ -7504,9 +7522,8 @@ theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecog
         onePoint_threeSpace_chartedSpace
       letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
         onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
-          (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
-            (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
-              hPiOne))
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement
+            hPiOne)
       letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
         onePoint_threeSpace_compactSpace
       FiniteExtinctionByRicciFlowWithSurgery
@@ -8262,9 +8279,8 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpa
         onePoint_threeSpace_chartedSpace
       letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
         onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
-          (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
-            (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
-              hPiOne))
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement
+            hPiOne)
       letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
         onePoint_threeSpace_compactSpace
       FiniteExtinctionByRicciFlowWithSurgery
@@ -8313,9 +8329,8 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpa
         onePoint_threeSpace_chartedSpace
       letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
         onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
-          (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
-            (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
-              hPiOne))
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement
+            hPiOne)
       letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
         onePoint_threeSpace_compactSpace
       FiniteExtinctionByRicciFlowWithSurgery
@@ -9016,9 +9031,8 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePoint
         onePoint_threeSpace_chartedSpace
       letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
         onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
-          (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
-            (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
-              hPiOne))
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement
+            hPiOne)
       letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
         onePoint_threeSpace_compactSpace
       FiniteExtinctionByRicciFlowWithSurgery

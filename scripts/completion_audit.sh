@@ -5083,6 +5083,10 @@ check_decl "compactification loop-nullhomotopy transport from sphere is declared
   '^theorem onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
 check_decl "compactification loop-nullhomotopy transport from sphere equality contract is declared" \
   '^theorem onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification loop-nullhomotopy transport from standard pi-one is declared" \
+  '^theorem onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification loop-nullhomotopy transport from standard pi-one equality contract is declared" \
+  '^theorem onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "sphere loop-nullhomotopy transport from compactification is declared" \
   '^theorem threeSphereLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
 check_decl "sphere loop-nullhomotopy transport from compactification equality contract is declared" \

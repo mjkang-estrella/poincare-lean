@@ -3299,6 +3299,11 @@ universe u
     Poincare.OnePointThreeSpaceLoopNullhomotopyStatement)
 #check Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement_eq
 
+#check (Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement :
+  Poincare.ThreeSpherePiOneSubsingletonStatement →
+    Poincare.OnePointThreeSpaceLoopNullhomotopyStatement)
+#check Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement_eq
+
 #check (Poincare.threeSphereLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement :
   Poincare.OnePointThreeSpaceLoopNullhomotopyStatement →
     Poincare.ThreeSphereLoopNullhomotopyStatement)
