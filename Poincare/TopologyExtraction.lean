@@ -5548,6 +5548,20 @@ theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_fundame
   apply Subsingleton.elim
 
 /--
+The direct target fundamental-group candidate route agrees with the matching
+standard fundamental-group route over the one-point compactification model.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement_onePointFundamental_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement
+      hFund h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_fundamentalGroupSubsingletonStatement
+        hFund (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/--
 The standard sphere's `π₁` formulation packages any source recognized directly
 as the project target sphere as a Poincare-candidate prerequisite payload.
 -/
@@ -5612,6 +5626,20 @@ theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_piOneSu
       poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
         (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
           hPiOne) (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/--
+The direct target `π₁` candidate route agrees with the matching standard `π₁`
+route over the one-point compactification model.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement_onePointPiOne_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPiOne : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
+      hPiOne h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement
+        hPiOne (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) := by
   apply Subsingleton.elim
 
 /--
@@ -5727,6 +5755,20 @@ theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_pathHom
   apply Subsingleton.elim
 
 /--
+The direct target path candidate route agrees with the matching standard path
+route over the one-point compactification model.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_pathHomotopyStatement_onePointPath_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_pathHomotopyStatement
+      hPath h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement
+        hPath (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/--
 The standard sphere's path-quotient obligation packages any source recognized
 directly as the project target sphere as a Poincare-candidate prerequisite
 payload.
@@ -5794,6 +5836,20 @@ theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_pathQuo
         (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
           (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
             hQuot)) (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/--
+The direct target quotient candidate route agrees with the matching standard
+quotient route over the one-point compactification model.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement_onePointPathQuotient_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement
+        hQuot (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) := by
   apply Subsingleton.elim
 
 /-- The one-point compactification model is homeomorphic to itself. -/
