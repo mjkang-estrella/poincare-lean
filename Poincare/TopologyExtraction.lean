@@ -6997,6 +6997,30 @@ theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathQuotien
           (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot)) := by
   apply Subsingleton.elim
 
+/-- The compactification self based-loop candidate route agrees with the self path route. -/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_basedLoopNullhomotopyStatement_path_route_eq
+    {basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))}
+    (hBased : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint) :
+    poincare_candidate_prerequisites_of_onePoint_threeSpace_self_basedLoopNullhomotopyStatement
+      hBased =
+      poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement
+        (onePoint_threeSpace_pathHomotopyStatement_of_basedLoopNullhomotopyStatement hBased) := by
+  apply Subsingleton.elim
+
+/--
+The compactification self based-loop candidate route agrees with the self
+path-quotient route.
+-/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_basedLoopNullhomotopyStatement_pathQuotient_route_eq
+    {basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))}
+    (hBased : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint) :
+    poincare_candidate_prerequisites_of_onePoint_threeSpace_self_basedLoopNullhomotopyStatement
+      hBased =
+      poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathQuotientSubsingletonStatement
+        (onePoint_threeSpace_pathQuotientSubsingletonStatement_of_basedLoopNullhomotopyStatement
+          hBased) := by
+  apply Subsingleton.elim
+
 /--
 Universal compactification recognition, applied to the compactification model
 itself, recovers the model's self-homeomorphism endpoint.
