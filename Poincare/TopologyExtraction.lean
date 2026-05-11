@@ -8049,6 +8049,19 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpa
   funext hPiOne extinction recognize
   apply Subsingleton.elim
 
+/-- The `π₁` extinction-recognition target route agrees with the direct simple-connected route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_simple_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement =
+      (fun hPiOne : OnePointThreeSpacePiOneSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement hPiOne
+            onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement
+              extinction recognize) := by
+  funext hPiOne extinction recognize
+  apply Subsingleton.elim
+
 /-- The `π₁` extinction-recognition target route agrees with the direct model homeomorphism. -/
 theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_direct_route_eq
     (hPiOne : OnePointThreeSpacePiOneSubsingletonStatement)
@@ -8849,6 +8862,21 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePoint
               (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement
                 hPiOne)
               extinction recognize) := by
+  funext hPiOne extinction recognize
+  apply Subsingleton.elim
+
+/-- The `π₁` extinction-recognition payload agrees with the direct simple-connected target route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_simple_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement =
+      (fun hPiOne : OnePointThreeSpacePiOneSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPiOneSubsingletonStatement
+                hPiOne,
+              letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+                onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement hPiOne
+              onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement
+                extinction recognize⟩) := by
   funext hPiOne extinction recognize
   apply Subsingleton.elim
 

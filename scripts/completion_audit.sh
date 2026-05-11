@@ -5623,6 +5623,10 @@ check_decl "standard sphere pi-one extinction-recognition target endpoint compac
   '^theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement_onePointLoop_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "standard sphere pi-one extinction-recognition target payload compactification-loop route contract is declared" \
   '^theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement_onePointLoop_route_eq\b' Poincare/TopologyExtraction.lean
+check_decl "local pi-one extinction-recognition target endpoint simple-route contract is declared" \
+  '^theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_simple_route_eq\b' Poincare/TopologyExtraction.lean
+check_decl "local pi-one extinction-recognition target payload simple-route contract is declared" \
+  '^theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_simple_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification path extinction-recognition target payload is declared" \
   '^theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification path extinction-recognition target payload equality contract is declared" \
