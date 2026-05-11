@@ -5179,6 +5179,12 @@ check_decl "compactification path-homotopy transport from sphere equality contra
   '^theorem onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePathHomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "compactification path-homotopy transport from sphere loop-route equality is declared" \
   '^theorem onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePathHomotopyStatement_loop_route_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification path-homotopy transport from standard pi-one is declared" \
+  '^theorem onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePiOneSubsingletonStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification path-homotopy transport from standard pi-one equality contract is declared" \
+  '^theorem onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePiOneSubsingletonStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification path-homotopy transport from standard pi-one loop-route contract is declared" \
+  '^theorem onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePiOneSubsingletonStatement_loop_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "sphere path-homotopy transport from compactification is declared" \
   '^theorem threeSpherePathHomotopyStatement_of_onePoint_threeSpace_pathHomotopyStatement\b' Poincare/TopologyExtraction.lean
 check_decl "sphere path-homotopy transport from compactification equality contract is declared" \
@@ -5225,6 +5231,14 @@ check_decl "compactification path-quotient transport from sphere path-route equa
   '^theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement_path_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "compactification path-quotient transport from sphere loop-route equality is declared" \
   '^theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement_loop_route_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification path-quotient transport from standard pi-one is declared" \
+  '^theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification path-quotient transport from standard pi-one equality contract is declared" \
+  '^theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification path-quotient transport from standard pi-one path-route contract is declared" \
+  '^theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement_path_route_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification path-quotient transport from standard pi-one loop-route contract is declared" \
+  '^theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement_loop_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "sphere path-quotient transport from compactification is declared" \
   '^theorem threeSpherePathQuotientSubsingletonStatement_of_onePoint_threeSpace_pathQuotientSubsingletonStatement\b' Poincare/TopologyExtraction.lean
 check_decl "sphere path-quotient transport from compactification equality contract is declared" \

@@ -1612,6 +1612,36 @@ theorem onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePathHomotopyStat
   funext h
   apply Subsingleton.elim
 
+/-- Standard-sphere `π₁` triviality transports to compactification path-homotopy. -/
+theorem onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePiOneSubsingletonStatement
+    (h : ThreeSpherePiOneSubsingletonStatement) :
+    OnePointThreeSpacePathHomotopyStatement := by
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_threeSpherePiOneSubsingletonStatement h
+  exact (onePoint_threeSpace_pathHomotopyStatement_of_simplyConnectedSpace :
+    OnePointThreeSpacePathHomotopyStatement)
+
+/- The standard-`π₁` compactification path route factors through compactification simple-connectedness. -/
+theorem onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePiOneSubsingletonStatement_eq :
+    onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePiOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_simplyConnectedSpace_of_threeSpherePiOneSubsingletonStatement h
+        (onePoint_threeSpace_pathHomotopyStatement_of_simplyConnectedSpace :
+          OnePointThreeSpacePathHomotopyStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/- The standard-`π₁` compactification path route agrees with the compactification loop route. -/
+theorem onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePiOneSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePiOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        (onePoint_threeSpace_pathHomotopyStatement_of_loopNullhomotopyStatement
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement h) :
+          OnePointThreeSpacePathHomotopyStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
 /-- Compactification path-homotopy uniqueness transports back to `ThreeSphere`. -/
 theorem threeSpherePathHomotopyStatement_of_onePoint_threeSpace_pathHomotopyStatement
     (h : OnePointThreeSpacePathHomotopyStatement) :
@@ -1908,6 +1938,45 @@ theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePath
             (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
               (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
                 (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement h))))) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- Standard-sphere `π₁` triviality transports to compactification path-quotient uniqueness. -/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement
+    (h : ThreeSpherePiOneSubsingletonStatement) :
+    OnePointThreeSpacePathQuotientSubsingletonStatement := by
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_threeSpherePiOneSubsingletonStatement h
+  exact (onePoint_threeSpace_pathQuotientSubsingletonStatement_of_simplyConnectedSpace :
+    OnePointThreeSpacePathQuotientSubsingletonStatement)
+
+/- The standard-`π₁` compactification quotient route factors through simple-connectedness. -/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement_eq :
+    onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          onePoint_threeSpace_simplyConnectedSpace_of_threeSpherePiOneSubsingletonStatement h
+        (onePoint_threeSpace_pathQuotientSubsingletonStatement_of_simplyConnectedSpace :
+          OnePointThreeSpacePathQuotientSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/- The standard-`π₁` compactification quotient route agrees with the compactification path route. -/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement_path_route_eq :
+    onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        onePoint_threeSpace_pathQuotientSubsingletonStatement_of_pathHomotopyStatement
+          (onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePiOneSubsingletonStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/- The standard-`π₁` compactification quotient route also agrees with the compactification loop route. -/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        onePoint_threeSpace_pathQuotientSubsingletonStatement_of_pathHomotopyStatement
+          (onePoint_threeSpace_pathHomotopyStatement_of_loopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement h))) := by
   funext h
   apply Subsingleton.elim
 
