@@ -10032,6 +10032,37 @@ theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecog
         extinction recognize := by
   apply Subsingleton.elim
 
+/--
+The standard-sphere based-loop extinction-recognition self route agrees with
+the compactification based-loop route at any compactification basepoint.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_onePointBased_route_eq
+    {basepoint : ThreeSphere}
+    (targetBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (extinction :
+      letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_t2Space
+      letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+          (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_chartedSpace
+      letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_simplyConnectedSpace_of_basedLoopNullhomotopyStatement
+          (onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+            targetBasepoint hBased)
+      letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_compactSpace
+      FiniteExtinctionByRicciFlowWithSurgery
+        (OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+      hBased extinction recognize =
+      onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointBasedLoopNullhomotopyStatement
+        (onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+          targetBasepoint hBased)
+        extinction recognize := by
+  apply Subsingleton.elim
+
 /-- The standard-sphere based-loop extinction-recognition self route agrees with reflexive recognition. -/
 theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_direct_route_eq
     {basepoint : ThreeSphere}
@@ -10861,6 +10892,37 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpa
         extinction recognize := by
   apply Subsingleton.elim
 
+/--
+The standard-sphere based-loop extinction-recognition target route agrees with
+the compactification based-loop target route at any compactification basepoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_onePointBased_route_eq
+    {basepoint : ThreeSphere}
+    (targetBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (extinction :
+      letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_t2Space
+      letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+          (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_chartedSpace
+      letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_simplyConnectedSpace_of_basedLoopNullhomotopyStatement
+          (onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+            targetBasepoint hBased)
+      letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_compactSpace
+      FiniteExtinctionByRicciFlowWithSurgery
+        (OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+      hBased extinction recognize =
+      onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointBasedLoopNullhomotopyStatement
+        (onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+          targetBasepoint hBased)
+        extinction recognize := by
+  apply Subsingleton.elim
+
 /-- The standard-sphere based-loop extinction-recognition target route agrees with the direct model homeomorphism. -/
 theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_direct_route_eq
     {basepoint : ThreeSphere}
@@ -11652,6 +11714,37 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePoint
       onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
         (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
           (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased))
+        extinction recognize := by
+  apply Subsingleton.elim
+
+/--
+The standard-sphere based-loop extinction-recognition payload agrees with the
+compactification based-loop payload at any compactification basepoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_onePointBased_route_eq
+    {basepoint : ThreeSphere}
+    (targetBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (extinction :
+      letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_t2Space
+      letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+          (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_chartedSpace
+      letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_simplyConnectedSpace_of_basedLoopNullhomotopyStatement
+          (onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+            targetBasepoint hBased)
+      letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_compactSpace
+      FiniteExtinctionByRicciFlowWithSurgery
+        (OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+      hBased extinction recognize =
+      onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointBasedLoopNullhomotopyStatement
+        (onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+          targetBasepoint hBased)
         extinction recognize := by
   apply Subsingleton.elim
 
