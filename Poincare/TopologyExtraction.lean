@@ -2771,6 +2771,565 @@ theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_
   apply Subsingleton.elim
 
 /--
+Recognition against the project target sphere transports the standard
+topological manifold prerequisite payload to the recognized source.
+-/
+theorem topological_manifold_prerequisites_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  rcases h with ⟨e⟩
+  letI : T2Space ThreeSphere := threeSphere_t2Space
+  letI : CompactSpace ThreeSphere := threeSphere_compactSpace
+  letI : PathConnectedSpace ThreeSphere := threeSphere_pathConnectedSpace
+  letI : LocPathConnectedSpace ThreeSphere := threeSphere_locPathConnectedSpace
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere :=
+    threeSphere_chartedSpace
+  let charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M :=
+    e.symm.isLocalHomeomorph.chartedSpace e.symm.surjective
+  let topological : IsManifold (𝓡 3) 0 M := by
+    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M := charted
+    infer_instance
+  let path : PathConnectedSpace M :=
+    e.symm.surjective.pathConnectedSpace e.symm.continuous
+  let locPath : LocPathConnectedSpace M :=
+    e.isOpenEmbedding.locPathConnectedSpace
+  let connected : ConnectedSpace M := by
+    letI : PathConnectedSpace M := path
+    infer_instance
+  let nonempty : Nonempty M := by
+    letI : PathConnectedSpace M := path
+    infer_instance
+  exact ⟨e.symm.t2Space, charted, e.symm.compactSpace, topological, path,
+    locPath, connected, nonempty⟩
+
+/-- The direct target-recognition prerequisite route is explicit homeomorphism transport. -/
+theorem topological_manifold_prerequisites_of_homeomorph_to_threeSphere_eq
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    topological_manifold_prerequisites_of_homeomorph_to_threeSphere h =
+      (by
+        rcases h with ⟨e⟩
+        letI : T2Space ThreeSphere := threeSphere_t2Space
+        letI : CompactSpace ThreeSphere := threeSphere_compactSpace
+        letI : PathConnectedSpace ThreeSphere := threeSphere_pathConnectedSpace
+        letI : LocPathConnectedSpace ThreeSphere := threeSphere_locPathConnectedSpace
+        letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere :=
+          threeSphere_chartedSpace
+        let charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M :=
+          e.symm.isLocalHomeomorph.chartedSpace e.symm.surjective
+        let topological : IsManifold (𝓡 3) 0 M := by
+          letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M := charted
+          infer_instance
+        let path : PathConnectedSpace M :=
+          e.symm.surjective.pathConnectedSpace e.symm.continuous
+        let locPath : LocPathConnectedSpace M :=
+          e.isOpenEmbedding.locPathConnectedSpace
+        let connected : ConnectedSpace M := by
+          letI : PathConnectedSpace M := path
+          infer_instance
+        let nonempty : Nonempty M := by
+          letI : PathConnectedSpace M := path
+          infer_instance
+        exact ⟨e.symm.t2Space, charted, e.symm.compactSpace, topological, path,
+          locPath, connected, nonempty⟩) := by
+  apply Subsingleton.elim
+
+/--
+The direct target-recognition prerequisite route agrees with first restating
+recognition through the one-point compactification model.
+-/
+theorem topological_manifold_prerequisites_of_homeomorph_to_threeSphere_onePoint_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    topological_manifold_prerequisites_of_homeomorph_to_threeSphere h =
+      topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace
+        (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/--
+If the standard sphere is simply connected, any source recognized as the
+project target sphere is simply connected by transport along the recognizing
+homeomorphism.
+-/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M] [SimplyConnectedSpace ThreeSphere]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    SimplyConnectedSpace M := by
+  rcases h with ⟨e⟩
+  exact e.toHomotopyEquiv.simplyConnectedSpace
+
+/-- Source simple-connectedness is transported through direct target recognition. -/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_eq
+    {M : Type u} [TopologicalSpace M] [SimplyConnectedSpace ThreeSphere]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    simplyConnectedSpace_of_homeomorph_to_threeSphere h =
+      (by
+        rcases h with ⟨e⟩
+        exact e.toHomotopyEquiv.simplyConnectedSpace) := by
+  apply Subsingleton.elim
+
+/-- The direct target-recognition simple-connectedness route agrees with the compactification route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_onePoint_route_eq
+    {M : Type u} [TopologicalSpace M] [SimplyConnectedSpace ThreeSphere]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    simplyConnectedSpace_of_homeomorph_to_threeSphere h =
+      simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+        (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/--
+The standard sphere's loop-nullhomotopy obligation supplies
+simple-connectedness for any source recognized as the project target sphere.
+-/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+    {M : Type u} [TopologicalSpace M]
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    SimplyConnectedSpace M := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+  exact simplyConnectedSpace_of_homeomorph_to_threeSphere h
+
+/-- Source simple-connectedness follows by target recognition and standard-sphere loops. -/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    simplyConnectedSpace_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+      hLoop h =
+      (by
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+        exact simplyConnectedSpace_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/-- The direct target loop route agrees with the compactification loop route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement_onePoint_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    simplyConnectedSpace_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+      hLoop h =
+      simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        hLoop (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/--
+The standard sphere's based loop-nullhomotopy obligation supplies
+simple-connectedness for any source recognized as the project target sphere.
+-/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    SimplyConnectedSpace M := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+  exact simplyConnectedSpace_of_homeomorph_to_threeSphere h
+
+/-- Source simple-connectedness follows by target recognition and standard-sphere based loops. -/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (basepoint : ThreeSphere)
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    simplyConnectedSpace_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement
+      hBased h =
+      (by
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+        exact simplyConnectedSpace_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/-- The direct target based-loop route agrees with the direct full-loop route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    simplyConnectedSpace_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement
+      hBased h =
+      simplyConnectedSpace_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement
+          hBased) h := by
+  apply Subsingleton.elim
+
+/--
+The standard sphere's path-homotopy obligation supplies simple-connectedness
+for any source recognized as the project target sphere.
+-/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_pathHomotopyStatement
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    SimplyConnectedSpace M := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_pathHomotopyStatement hPath
+  exact simplyConnectedSpace_of_homeomorph_to_threeSphere h
+
+/-- Source simple-connectedness follows by target recognition and standard-sphere path homotopy. -/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_pathHomotopyStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    simplyConnectedSpace_of_homeomorph_to_threeSphere_of_pathHomotopyStatement
+      hPath h =
+      (by
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_pathHomotopyStatement hPath
+        exact simplyConnectedSpace_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/-- The direct target path route agrees with the direct full-loop route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_pathHomotopyStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    simplyConnectedSpace_of_homeomorph_to_threeSphere_of_pathHomotopyStatement
+      hPath h =
+      simplyConnectedSpace_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h := by
+  apply Subsingleton.elim
+
+/--
+The standard sphere's path-quotient obligation supplies simple-connectedness
+for any source recognized as the project target sphere.
+-/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    SimplyConnectedSpace M := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement hQuot
+  exact simplyConnectedSpace_of_homeomorph_to_threeSphere h
+
+/-- Source simple-connectedness follows by target recognition and standard-sphere quotient uniqueness. -/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    simplyConnectedSpace_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      (by
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement hQuot
+        exact simplyConnectedSpace_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/-- The direct target quotient route agrees with the direct path-homotopy route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement_path_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    simplyConnectedSpace_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      simplyConnectedSpace_of_homeomorph_to_threeSphere_of_pathHomotopyStatement
+        (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+          hQuot) h := by
+  apply Subsingleton.elim
+
+/-- The direct target quotient route agrees with the direct full-loop route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    simplyConnectedSpace_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      simplyConnectedSpace_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
+          (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+            hQuot)) h := by
+  apply Subsingleton.elim
+
+/--
+Recognizing a source as the project target sphere supplies the full
+homotopy/manifold prerequisite payload once the standard sphere's
+simple-connectedness is available.
+-/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M] [SimplyConnectedSpace ThreeSphere]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  rcases topological_manifold_prerequisites_of_homeomorph_to_threeSphere h with
+    ⟨t2, charted, compact, topological, path, locPath, connected, nonempty⟩
+  exact ⟨t2, charted, simplyConnectedSpace_of_homeomorph_to_threeSphere h,
+    compact, topological, path, locPath, connected, nonempty⟩
+
+/-- The full source prerequisite payload is target transport plus simple-connectedness transport. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_eq
+    {M : Type u} [TopologicalSpace M] [SimplyConnectedSpace ThreeSphere]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere h =
+      (by
+        rcases topological_manifold_prerequisites_of_homeomorph_to_threeSphere h with
+          ⟨t2, charted, compact, topological, path, locPath, connected, nonempty⟩
+        exact ⟨t2, charted, simplyConnectedSpace_of_homeomorph_to_threeSphere h,
+          compact, topological, path, locPath, connected, nonempty⟩) := by
+  apply Subsingleton.elim
+
+/-- The direct full source prerequisite route agrees with the compactification route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_onePoint_route_eq
+    {M : Type u} [TopologicalSpace M] [SimplyConnectedSpace ThreeSphere]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace
+        (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/--
+The concrete loop-nullhomotopy obligation for `ThreeSphere` supplies the full
+source homotopy/manifold prerequisite payload for any source recognized as the
+project target sphere.
+-/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+    {M : Type u} [TopologicalSpace M]
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  rcases topological_manifold_prerequisites_of_homeomorph_to_threeSphere h with
+    ⟨t2, charted, compact, topological, path, locPath, connected, nonempty⟩
+  exact ⟨t2, charted,
+    simplyConnectedSpace_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+      hLoop h,
+    compact, topological, path, locPath, connected, nonempty⟩
+
+/-- The target loop source-prerequisite route is direct transport plus target simple-connectedness. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+      hLoop h =
+      (by
+        rcases topological_manifold_prerequisites_of_homeomorph_to_threeSphere h with
+          ⟨t2, charted, compact, topological, path, locPath, connected, nonempty⟩
+        exact ⟨t2, charted,
+          simplyConnectedSpace_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+            hLoop h,
+          compact, topological, path, locPath, connected, nonempty⟩) := by
+  apply Subsingleton.elim
+
+/-- The direct target loop source route agrees with the compactification loop route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement_onePoint_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+      hLoop h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        hLoop (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/--
+The based loop-nullhomotopy obligation for `ThreeSphere` supplies the full
+source homotopy/manifold prerequisite payload for direct target recognition.
+-/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+  exact homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere h
+
+/-- The based-loop source-prerequisite route is full target recognition after based-loop conversion. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (basepoint : ThreeSphere)
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement
+      hBased h =
+      (by
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+        exact homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/-- The direct target based-loop source route agrees with the direct loop source route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement
+      hBased h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement
+          hBased) h := by
+  apply Subsingleton.elim
+
+/--
+The path-homotopy obligation for `ThreeSphere` supplies the full source
+homotopy/manifold prerequisite payload for direct target recognition.
+-/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathHomotopyStatement
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_pathHomotopyStatement hPath
+  exact homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere h
+
+/-- The path source-prerequisite route is full target recognition after path-homotopy conversion. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathHomotopyStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathHomotopyStatement
+      hPath h =
+      (by
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_pathHomotopyStatement hPath
+        exact homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/-- The direct target path source route agrees with the direct loop source route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathHomotopyStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathHomotopyStatement
+      hPath h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h := by
+  apply Subsingleton.elim
+
+/--
+The path-quotient obligation for `ThreeSphere` supplies the full source
+homotopy/manifold prerequisite payload for direct target recognition.
+-/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement hQuot
+  exact homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere h
+
+/-- The quotient source-prerequisite route is full target recognition after quotient conversion. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      (by
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement hQuot
+        exact homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/-- The direct target quotient source route agrees with the direct path source route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement_path_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathHomotopyStatement
+        (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+          hQuot) h := by
+  apply Subsingleton.elim
+
+/-- The direct target quotient source route agrees with the direct loop source route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
+          (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+            hQuot)) h := by
+  apply Subsingleton.elim
+
+/--
+A simply connected space recognized as the project target sphere inherits the
+transported target prerequisite payload together with the given
+simple-connectedness instance.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M] [SimplyConnectedSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  rcases topological_manifold_prerequisites_of_homeomorph_to_threeSphere h with
+    ⟨t2, charted, compact, topological, path, locPath, connected, nonempty⟩
+  exact ⟨t2, charted, inferInstance, compact, topological, path, locPath, connected,
+    nonempty⟩
+
+/-- The target candidate prerequisite payload reuses direct target transport and the source instance. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_eq
+    {M : Type u} [TopologicalSpace M] [SimplyConnectedSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere h =
+      (by
+        rcases topological_manifold_prerequisites_of_homeomorph_to_threeSphere h with
+          ⟨t2, charted, compact, topological, path, locPath, connected, nonempty⟩
+        exact ⟨t2, charted, inferInstance, compact, topological, path, locPath,
+          connected, nonempty⟩) := by
+  apply Subsingleton.elim
+
+/--
 A simply connected space recognized as the one-point compactification model
 inherits the transported compactification prerequisite payload together with
 the given simple-connectedness instance.
@@ -2802,6 +3361,15 @@ theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq
           ⟨t2, charted, compact, topological, path, locPath, connected, nonempty⟩
         exact ⟨t2, charted, inferInstance, compact, topological, path, locPath,
           connected, nonempty⟩) := by
+  apply Subsingleton.elim
+
+/-- The direct target candidate prerequisite route agrees with the compactification route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_onePoint_route_eq
+    {M : Type u} [TopologicalSpace M] [SimplyConnectedSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace
+        (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) := by
   apply Subsingleton.elim
 
 /--
