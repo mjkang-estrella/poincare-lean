@@ -7293,6 +7293,30 @@ theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStat
       onePoint_threeSpace_self_homeomorph := by
   apply Subsingleton.elim
 
+/-- The standard-sphere based-loop universal-recognition self route agrees with the fundamental-group route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+      hBased recognize =
+      onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement
+        (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement hBased)
+        recognize := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop universal-recognition self route agrees with the `π₁` route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_piOne_route_eq
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+      hBased recognize =
+      onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement
+        (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement hBased)
+        recognize := by
+  apply Subsingleton.elim
+
 /--
 The compactification path-homotopy obligation supplies the
 simple-connectedness needed to apply universal compactification recognition to
@@ -7810,6 +7834,30 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognit
     onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
       hBased recognize =
       onePoint_threeSpace_homeomorph_threeSphere := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop universal-recognition target route agrees with the fundamental-group route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+      hBased recognize =
+      onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement
+        (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement hBased)
+        recognize := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop universal-recognition target route agrees with the `π₁` route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_piOne_route_eq
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+      hBased recognize =
+      onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement
+        (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement hBased)
+        recognize := by
   apply Subsingleton.elim
 
 /--
@@ -8376,6 +8424,30 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpace
       onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointBasedLoopNullhomotopyStatement
         (onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
           targetBasepoint hBased)
+        recognize := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop universal-recognition payload agrees with the fundamental-group payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+      hBased recognize =
+      onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement
+        (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement hBased)
+        recognize := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop universal-recognition payload agrees with the `π₁` payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_piOne_route_eq
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+      hBased recognize =
+      onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement
+        (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement hBased)
         recognize := by
   apply Subsingleton.elim
 
