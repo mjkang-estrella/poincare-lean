@@ -1822,14 +1822,20 @@ check_decl "standard sphere target self-application payload theorem is declared"
   '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement\b' Poincare/Assembly.lean
 check_decl "standard sphere target self-application payload equality contract is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere target self-application payload direct-simple route contract is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_direct_simple_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-diffeomorphism payload theorem is declared" \
   '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-diffeomorphism payload equality contract is declared" \
   '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-diffeomorphism payload direct-simple route contract is declared" \
+  '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_direct_simple_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-homeomorphism payload theorem is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-homeomorphism payload equality contract is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-homeomorphism payload direct-simple route contract is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_direct_simple_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere target self route from loop-nullhomotopy theorem is declared" \
   '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopyStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere target self route from loop-nullhomotopy equality contract is declared" \
@@ -19929,10 +19935,13 @@ open scoped Manifold ContDiff
 #check Poincare.threeSphere_self_homeomorph_of_smooth_statement_eq
 #check Poincare.threeSphere_self_homeomorph_payload_of_poincare_statement
 #check Poincare.threeSphere_self_homeomorph_payload_of_poincare_statement_eq
+#check Poincare.threeSphere_self_homeomorph_payload_of_poincare_statement_direct_simple_route_eq
 #check Poincare.threeSphere_self_diffeomorph_payload_of_smooth_statement
 #check Poincare.threeSphere_self_diffeomorph_payload_of_smooth_statement_eq
+#check Poincare.threeSphere_self_diffeomorph_payload_of_smooth_statement_direct_simple_route_eq
 #check Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement
 #check Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement_eq
+#check Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement_direct_simple_route_eq
 #check Poincare.threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopyStatement
 #check Poincare.threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopyStatement_eq
 #check Poincare.threeSphere_self_diffeomorph_of_smooth_statement_and_loopNullhomotopyStatement
