@@ -1133,6 +1133,64 @@ theorem onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsi
               (h x)) := by
   apply Subsingleton.elim
 
+/-- The compactification `π₁` formulation supplies the fundamental-group formulation. -/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
+    (h : OnePointThreeSpacePiOneSubsingletonStatement) :
+    OnePointThreeSpaceFundamentalGroupSubsingletonStatement :=
+  onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp h
+
+/-- The compactification `π₁`-to-fundamental-group route is the forward projection. -/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement_eq :
+    onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement =
+      onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The compactification fundamental-group formulation supplies the `π₁` formulation. -/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement
+    (h : OnePointThreeSpaceFundamentalGroupSubsingletonStatement) :
+    OnePointThreeSpacePiOneSubsingletonStatement :=
+  onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mpr h
+
+/-- The compactification fundamental-group-to-`π₁` route is the reverse projection. -/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement_eq :
+    onePoint_threeSpace_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement =
+      onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mpr := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The compactification `π₁` formulation supplies loop-nullhomotopy. -/
+theorem onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+    (h : OnePointThreeSpacePiOneSubsingletonStatement) :
+    OnePointThreeSpaceLoopNullhomotopyStatement :=
+  onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+    (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement h)
+
+/-- The compactification `π₁`-to-loop route factors through fundamental groups. -/
+theorem onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement_eq :
+    onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement =
+      (fun h : OnePointThreeSpacePiOneSubsingletonStatement =>
+        onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+          (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- Compactification loop-nullhomotopy supplies the `π₁` formulation. -/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_of_loopNullhomotopyStatement
+    (h : OnePointThreeSpaceLoopNullhomotopyStatement) :
+    OnePointThreeSpacePiOneSubsingletonStatement :=
+  onePoint_threeSpace_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement
+    (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement h)
+
+/-- The compactification loop-to-`π₁` route factors through fundamental groups. -/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_of_loopNullhomotopyStatement_eq :
+    onePoint_threeSpace_piOneSubsingletonStatement_of_loopNullhomotopyStatement =
+      (fun h : OnePointThreeSpaceLoopNullhomotopyStatement =>
+        onePoint_threeSpace_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement
+          (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
 /--
 The compactification model is simply connected exactly when all of its first
 homotopy groups are subsingletons.

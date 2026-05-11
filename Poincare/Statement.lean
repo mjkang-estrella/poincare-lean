@@ -992,6 +992,64 @@ theorem threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonS
             (X := ThreeSphere) (x := x)).subsingleton_congr).mpr (h x)) := by
   apply Subsingleton.elim
 
+/-- The `π₁` formulation supplies the fundamental-group formulation. -/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
+    (h : ThreeSpherePiOneSubsingletonStatement) :
+    ThreeSphereFundamentalGroupSubsingletonStatement :=
+  threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp h
+
+/-- The `π₁`-to-fundamental-group route is the forward equivalence projection. -/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement_eq :
+    threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement =
+      threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The fundamental-group formulation supplies the `π₁` formulation. -/
+theorem threeSphere_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement
+    (h : ThreeSphereFundamentalGroupSubsingletonStatement) :
+    ThreeSpherePiOneSubsingletonStatement :=
+  threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mpr h
+
+/-- The fundamental-group-to-`π₁` route is the reverse equivalence projection. -/
+theorem threeSphere_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement_eq :
+    threeSphere_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement =
+      threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mpr := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The `π₁` formulation supplies loop-nullhomotopy through fundamental groups. -/
+theorem threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+    (h : ThreeSpherePiOneSubsingletonStatement) :
+    ThreeSphereLoopNullhomotopyStatement :=
+  threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+    (threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement h)
+
+/-- The `π₁`-to-loop route factors through the named fundamental-group projection. -/
+theorem threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement_eq :
+    threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+          (threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- Loop-nullhomotopy supplies the `π₁` formulation through fundamental groups. -/
+theorem threeSphere_piOneSubsingletonStatement_of_loopNullhomotopyStatement
+    (h : ThreeSphereLoopNullhomotopyStatement) :
+    ThreeSpherePiOneSubsingletonStatement :=
+  threeSphere_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement
+    (threeSphere_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement h)
+
+/-- The loop-to-`π₁` route factors through the named fundamental-group projection. -/
+theorem threeSphere_piOneSubsingletonStatement_of_loopNullhomotopyStatement_eq :
+    threeSphere_piOneSubsingletonStatement_of_loopNullhomotopyStatement =
+      (fun h : ThreeSphereLoopNullhomotopyStatement =>
+        threeSphere_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement
+          (threeSphere_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
 /--
 The standard sphere is simply connected exactly when all of its first homotopy
 groups are subsingletons.
