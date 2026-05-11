@@ -2814,6 +2814,32 @@ theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathQuotientSubsi
   apply Subsingleton.elim
 
 /--
+The standard-sphere `π₁` compactification prerequisite route agrees with the
+compactification path route after transporting the `π₁` obligation.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingletonStatement_onePointPath_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathHomotopyStatement
+          (onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePiOneSubsingletonStatement
+            h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The standard-sphere `π₁` compactification prerequisite route agrees with the
+compactification path-quotient route after transporting the `π₁` obligation.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingletonStatement_onePointPathQuotient_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathQuotientSubsingletonStatement
+          (onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement
+            h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 Any space recognized as the one-point compactification model inherits the same
 basic `C^0` 3-manifold prerequisite payload.
 -/
