@@ -647,6 +647,22 @@ check_decl "target sphere pi-one fundamental group equivalence is declared" \
   '^theorem threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement\b' Poincare/Statement.lean
 check_decl "target sphere pi-one fundamental group equivalence equality contract is declared" \
   '^theorem threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere fundamental group from pi-one theorem is declared" \
+  '^theorem threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement\b' Poincare/Statement.lean
+check_decl "target sphere fundamental group from pi-one equality contract is declared" \
+  '^theorem threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere pi-one from fundamental group theorem is declared" \
+  '^theorem threeSphere_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement\b' Poincare/Statement.lean
+check_decl "target sphere pi-one from fundamental group equality contract is declared" \
+  '^theorem threeSphere_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere loop-nullhomotopy from pi-one theorem is declared" \
+  '^theorem threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement\b' Poincare/Statement.lean
+check_decl "target sphere loop-nullhomotopy from pi-one equality contract is declared" \
+  '^theorem threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere pi-one from loop-nullhomotopy theorem is declared" \
+  '^theorem threeSphere_piOneSubsingletonStatement_of_loopNullhomotopyStatement\b' Poincare/Statement.lean
+check_decl "target sphere pi-one from loop-nullhomotopy equality contract is declared" \
+  '^theorem threeSphere_piOneSubsingletonStatement_of_loopNullhomotopyStatement_eq\b' Poincare/Statement.lean
 check_decl "target sphere simple-connectedness pi-one equivalence is declared" \
   '^theorem threeSphere_simplyConnectedSpace_iff_piOneSubsingletonStatement\b' Poincare/Statement.lean
 check_decl "target sphere simple-connectedness pi-one equivalence equality contract is declared" \
@@ -1702,6 +1718,48 @@ check_decl "standard sphere smooth self-homeomorphism route from loop-nullhomoto
   '^theorem threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-homeomorphism route from loop-nullhomotopy equality contract is declared" \
   '^theorem threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere target self route from fundamental group theorem is declared" \
+  '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_fundamentalGroupSubsingletonStatement\b' Poincare/Assembly.lean
+check_decl "standard sphere target self route from fundamental group equality contract is declared" \
+  '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_fundamentalGroupSubsingletonStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere target self route fundamental group loop-route compatibility is declared" \
+  '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_fundamentalGroupSubsingletonStatement_loop_route_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-diffeomorphism route from fundamental group theorem is declared" \
+  '^theorem threeSphere_self_diffeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-diffeomorphism route from fundamental group equality contract is declared" \
+  '^theorem threeSphere_self_diffeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-diffeomorphism route fundamental group loop-route compatibility is declared" \
+  '^theorem threeSphere_self_diffeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_loop_route_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-homeomorphism route from fundamental group theorem is declared" \
+  '^theorem threeSphere_self_homeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-homeomorphism route from fundamental group equality contract is declared" \
+  '^theorem threeSphere_self_homeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-homeomorphism route fundamental group loop-route compatibility is declared" \
+  '^theorem threeSphere_self_homeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_loop_route_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere target self route from pi-one theorem is declared" \
+  '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonStatement\b' Poincare/Assembly.lean
+check_decl "standard sphere target self route from pi-one equality contract is declared" \
+  '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere target self route pi-one fundamental-group compatibility is declared" \
+  '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere target self route pi-one loop-route compatibility is declared" \
+  '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonStatement_loop_route_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-diffeomorphism route from pi-one theorem is declared" \
+  '^theorem threeSphere_self_diffeomorph_of_smooth_statement_and_piOneSubsingletonStatement\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-diffeomorphism route from pi-one equality contract is declared" \
+  '^theorem threeSphere_self_diffeomorph_of_smooth_statement_and_piOneSubsingletonStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-diffeomorphism route pi-one fundamental-group compatibility is declared" \
+  '^theorem threeSphere_self_diffeomorph_of_smooth_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-diffeomorphism route pi-one loop-route compatibility is declared" \
+  '^theorem threeSphere_self_diffeomorph_of_smooth_statement_and_piOneSubsingletonStatement_loop_route_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-homeomorphism route from pi-one theorem is declared" \
+  '^theorem threeSphere_self_homeomorph_of_smooth_statement_and_piOneSubsingletonStatement\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-homeomorphism route from pi-one equality contract is declared" \
+  '^theorem threeSphere_self_homeomorph_of_smooth_statement_and_piOneSubsingletonStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-homeomorphism route pi-one fundamental-group compatibility is declared" \
+  '^theorem threeSphere_self_homeomorph_of_smooth_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-homeomorphism route pi-one loop-route compatibility is declared" \
+  '^theorem threeSphere_self_homeomorph_of_smooth_statement_and_piOneSubsingletonStatement_loop_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere target self route from path-homotopy theorem is declared" \
   '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere target self route from path-homotopy equality contract is declared" \
@@ -1756,6 +1814,48 @@ check_decl "standard sphere smooth self-homeomorphism payload from loop-nullhomo
   '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-homeomorphism payload from loop-nullhomotopy equality contract is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_loopNullhomotopyStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere target self payload from fundamental group theorem is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_fundamentalGroupSubsingletonStatement\b' Poincare/Assembly.lean
+check_decl "standard sphere target self payload from fundamental group equality contract is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_fundamentalGroupSubsingletonStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere target self payload fundamental group loop-route compatibility is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_fundamentalGroupSubsingletonStatement_loop_route_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-diffeomorphism payload from fundamental group theorem is declared" \
+  '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-diffeomorphism payload from fundamental group equality contract is declared" \
+  '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-diffeomorphism payload fundamental group loop-route compatibility is declared" \
+  '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_loop_route_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-homeomorphism payload from fundamental group theorem is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-homeomorphism payload from fundamental group equality contract is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-homeomorphism payload fundamental group loop-route compatibility is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_loop_route_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere target self payload from pi-one theorem is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement\b' Poincare/Assembly.lean
+check_decl "standard sphere target self payload from pi-one equality contract is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere target self payload pi-one fundamental-group compatibility is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere target self payload pi-one loop-route compatibility is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement_loop_route_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-diffeomorphism payload from pi-one theorem is declared" \
+  '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-diffeomorphism payload from pi-one equality contract is declared" \
+  '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-diffeomorphism payload pi-one fundamental-group compatibility is declared" \
+  '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-diffeomorphism payload pi-one loop-route compatibility is declared" \
+  '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_loop_route_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-homeomorphism payload from pi-one theorem is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-homeomorphism payload from pi-one equality contract is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-homeomorphism payload pi-one fundamental-group compatibility is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-homeomorphism payload pi-one loop-route compatibility is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_loop_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere target self payload from path-homotopy theorem is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_pathHomotopyStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere target self payload from path-homotopy equality contract is declared" \
@@ -4975,6 +5075,34 @@ check_decl "compactification loop-nullhomotopy equivalence with sphere is declar
   '^theorem onePoint_threeSpace_loopNullhomotopyStatement_iff_threeSphereLoopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
 check_decl "compactification loop-nullhomotopy equivalence with sphere equality contract is declared" \
   '^theorem onePoint_threeSpace_loopNullhomotopyStatement_iff_threeSphereLoopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification fundamental group subsingleton statement is declared" \
+  '^def OnePointThreeSpaceFundamentalGroupSubsingletonStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification fundamental group subsingleton statement equality contract is declared" \
+  '^theorem onePointThreeSpaceFundamentalGroupSubsingletonStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification pi-one subsingleton statement is declared" \
+  '^def OnePointThreeSpacePiOneSubsingletonStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification pi-one subsingleton statement equality contract is declared" \
+  '^theorem onePointThreeSpacePiOneSubsingletonStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification pi-one fundamental group equivalence is declared" \
+  '^theorem onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification pi-one fundamental group equivalence equality contract is declared" \
+  '^theorem onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification fundamental group from pi-one theorem is declared" \
+  '^theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification fundamental group from pi-one equality contract is declared" \
+  '^theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification pi-one from fundamental group theorem is declared" \
+  '^theorem onePoint_threeSpace_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification pi-one from fundamental group equality contract is declared" \
+  '^theorem onePoint_threeSpace_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification loop-nullhomotopy from pi-one theorem is declared" \
+  '^theorem onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification loop-nullhomotopy from pi-one equality contract is declared" \
+  '^theorem onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification pi-one from loop-nullhomotopy theorem is declared" \
+  '^theorem onePoint_threeSpace_piOneSubsingletonStatement_of_loopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification pi-one from loop-nullhomotopy equality contract is declared" \
+  '^theorem onePoint_threeSpace_piOneSubsingletonStatement_of_loopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "compactification path-homotopy statement is declared" \
   '^def OnePointThreeSpacePathHomotopyStatement\b' Poincare/TopologyExtraction.lean
 check_decl "compactification path-homotopy statement equality contract is declared" \
