@@ -5953,6 +5953,91 @@ theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_loopNullhom
 
 /--
 The compactification model becomes a local Poincare-candidate payload from its
+own fundamental-group obligation and reflexive self-recognition.
+-/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_fundamentalGroupSubsingletonStatement
+    (hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement) :
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+  poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement
+    hFund onePoint_threeSpace_self_homeomorph
+
+/-- The compactification self fundamental-group candidate route is the general local route at reflexivity. -/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_fundamentalGroupSubsingletonStatement_eq
+    (hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement) :
+    poincare_candidate_prerequisites_of_onePoint_threeSpace_self_fundamentalGroupSubsingletonStatement
+      hFund =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement
+        hFund onePoint_threeSpace_self_homeomorph := by
+  apply Subsingleton.elim
+
+/-- The compactification self fundamental-group candidate route agrees with the self loop-candidate route. -/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_fundamentalGroupSubsingletonStatement_loop_route_eq
+    (hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement) :
+    poincare_candidate_prerequisites_of_onePoint_threeSpace_self_fundamentalGroupSubsingletonStatement
+      hFund =
+      poincare_candidate_prerequisites_of_onePoint_threeSpace_self_loopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+          hFund) := by
+  apply Subsingleton.elim
+
+/--
+The compactification model becomes a local Poincare-candidate payload from its
+own `π₁` obligation and reflexive self-recognition.
+-/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_piOneSubsingletonStatement
+    (hPi : OnePointThreeSpacePiOneSubsingletonStatement) :
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+  poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement
+    hPi onePoint_threeSpace_self_homeomorph
+
+/-- The compactification self `π₁` candidate route is the general local `π₁` route at reflexivity. -/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_piOneSubsingletonStatement_eq
+    (hPi : OnePointThreeSpacePiOneSubsingletonStatement) :
+    poincare_candidate_prerequisites_of_onePoint_threeSpace_self_piOneSubsingletonStatement
+      hPi =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement
+        hPi onePoint_threeSpace_self_homeomorph := by
+  apply Subsingleton.elim
+
+/-- The compactification self `π₁` candidate route agrees with the self fundamental-group route. -/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_piOneSubsingletonStatement_fundamentalGroup_route_eq
+    (hPi : OnePointThreeSpacePiOneSubsingletonStatement) :
+    poincare_candidate_prerequisites_of_onePoint_threeSpace_self_piOneSubsingletonStatement
+      hPi =
+      poincare_candidate_prerequisites_of_onePoint_threeSpace_self_fundamentalGroupSubsingletonStatement
+        (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
+          hPi) := by
+  apply Subsingleton.elim
+
+/-- The compactification self `π₁` candidate route agrees with the self loop-candidate route. -/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_piOneSubsingletonStatement_loop_route_eq
+    (hPi : OnePointThreeSpacePiOneSubsingletonStatement) :
+    poincare_candidate_prerequisites_of_onePoint_threeSpace_self_piOneSubsingletonStatement
+      hPi =
+      poincare_candidate_prerequisites_of_onePoint_threeSpace_self_loopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement hPi) := by
+  apply Subsingleton.elim
+
+/--
+The compactification model becomes a local Poincare-candidate payload from its
 own based loop-nullhomotopy obligation and reflexive self-recognition.
 -/
 theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_basedLoopNullhomotopyStatement
