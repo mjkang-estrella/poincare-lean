@@ -7509,6 +7509,136 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpace
   apply Subsingleton.elim
 
 /--
+The standard-sphere fundamental-group universal-recognition endpoint also
+packages the compactification prerequisites.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_fundamentalGroupSubsingletonStatement
+      hFund,
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement
+      hFund recognize⟩
+
+/-- The standard fundamental-group universal-recognition payload pairs prerequisites with the endpoint. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_fundamentalGroupSubsingletonStatement
+              hFund,
+            onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement
+              hFund recognize⟩) := by
+  funext hFund recognize
+  apply Subsingleton.elim
+
+/-- The standard fundamental-group universal-recognition payload agrees with the loop payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement hFund)
+            recognize) := by
+  funext hFund recognize
+  apply Subsingleton.elim
+
+/-- The standard fundamental-group universal-recognition payload agrees with the compactification-local payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement_onePoint_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
+            (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_threeSphereFundamentalGroupSubsingletonStatement
+              hFund)
+            recognize) := by
+  funext hFund recognize
+  apply Subsingleton.elim
+
+/--
+The standard-sphere `π₁` universal-recognition endpoint also packages the
+compactification prerequisites.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement
+    (hPi : ThreeSpherePiOneSubsingletonStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingletonStatement
+      hPi,
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement
+      hPi recognize⟩
+
+/-- The standard `π₁` universal-recognition payload pairs prerequisites with the endpoint. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement =
+      (fun hPi : ThreeSpherePiOneSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingletonStatement
+              hPi,
+            onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement
+              hPi recognize⟩) := by
+  funext hPi recognize
+  apply Subsingleton.elim
+
+/-- The standard `π₁` universal-recognition payload agrees with the standard fundamental-group payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement =
+      (fun hPi : ThreeSpherePiOneSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement
+            (threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
+              hPi)
+            recognize) := by
+  funext hPi recognize
+  apply Subsingleton.elim
+
+/-- The standard `π₁` universal-recognition payload agrees with the loop payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement =
+      (fun hPi : ThreeSpherePiOneSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement hPi)
+            recognize) := by
+  funext hPi recognize
+  apply Subsingleton.elim
+
+/-- The standard `π₁` universal-recognition payload agrees with the compactification-local payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement_onePoint_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement =
+      (fun hPi : ThreeSpherePiOneSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement
+            (onePoint_threeSpace_piOneSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement
+              hPi)
+            recognize) := by
+  funext hPi recognize
+  apply Subsingleton.elim
+
+/--
 The standard-sphere based-loop universal-recognition endpoint also packages the
 standard based-loop compactification prerequisites.
 -/
