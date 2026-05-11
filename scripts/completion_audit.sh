@@ -44,8 +44,12 @@ dependency_contract_check_dir=
 root_contract_check=
 root_contract_check_dir=
 route_parity_dir=
+constructor_surface_dir=
 
 cleanup() {
+  if [ -n "$constructor_surface_dir" ]; then
+    rm -rf "$constructor_surface_dir"
+  fi
   if [ -n "$route_parity_dir" ]; then
     rm -rf "$route_parity_dir"
   fi
@@ -207,7 +211,40 @@ check_payload_route_parity() {
   done
 }
 
+check_completion_constructor_endpoint_coverage() {
+  constructor_surface_dir=$(mktemp -d)
+  constructor_surface_constructors="$constructor_surface_dir/constructors"
+  constructor_surface_endpoints="$constructor_surface_dir/endpoints"
+  constructor_surface_missing="$constructor_surface_dir/missing"
+
+  perl -0ne 'while (/^theorem\s+(completion_certificate_of_[A-Za-z0-9_]+)\b(.*?)(?=^theorem\s+|\z)/msg) { my ($n,$b)=($1,$2); next if $n =~ /_eq$/; next unless $b =~ /:\s*PoincareCompletionCertificate\.\{u\}/s; print "$n\n"; }' \
+    Poincare/CompletionTarget.lean | sort -u > "$constructor_surface_constructors"
+
+  rg --no-filename -o '^theorem poincare_conjecture_of_completion_certificate_of_([A-Za-z0-9_]+)\b' \
+    -r 'completion_certificate_of_$1' \
+    Poincare/CanonicalBridges.lean Poincare/CompletionTarget.lean |
+    sort -u > "$constructor_surface_endpoints"
+
+  if [ ! -s "$constructor_surface_constructors" ]; then
+    echo "FAIL: no completion certificate constructors found for theorem endpoint coverage audit"
+    status=1
+    return
+  fi
+
+  comm -23 "$constructor_surface_constructors" "$constructor_surface_endpoints" \
+    > "$constructor_surface_missing"
+
+  if [ -s "$constructor_surface_missing" ]; then
+    echo "FAIL: every completion certificate constructor exposes a reserved theorem endpoint"
+    sed 's/^/MISSING: /' "$constructor_surface_missing"
+    status=1
+  else
+    echo "PASS: every completion certificate constructor exposes a reserved theorem endpoint"
+  fi
+}
+
 check_payload_route_parity
+check_completion_constructor_endpoint_coverage
 
 check_decl "Ricci tensor interface is declared" \
   '^inductive IsRicciTensorOf\b' Poincare/RicciFlow.lean
