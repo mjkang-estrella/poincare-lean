@@ -13199,6 +13199,152 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
           witness dependencies) := by
   apply Subsingleton.elim
 
+section VerificationFamilyDependencyProjectionReservedTheoremGates
+
+variable (dependencies : RemainingDependencyPackage.{u})
+variable (verificationFamily :
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package payload.2)))
+
+include dependencies verificationFamily
+
+/--
+The verification-family dependency-projection completion certificate exposes
+the reserved final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_dependency_projections_and_verification_family :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_dependency_projections_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The verification-family dependency-projection reserved-name endpoint is the
+certificate target statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_dependency_projections_and_verification_family_eq :
+    poincare_conjecture_of_completion_certificate_of_dependency_projections_and_verification_family
+      dependencies verificationFamily =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_dependency_projections_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+end VerificationFamilyDependencyProjectionReservedTheoremGates
+
+section VerificationFamilyAggregateReservedTheoremGates
+
+variable (dependencies : PoincareProofDependencies.{u})
+variable (verificationFamily :
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_surgery_package payload.2)))
+
+include dependencies verificationFamily
+
+/--
+The aggregate dependency verification-family completion certificate exposes the
+reserved final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_verification_family :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The aggregate dependency verification-family reserved-name endpoint is the
+certificate target statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_verification_family_eq :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_verification_family
+      dependencies verificationFamily =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate verification-family extraction-derivation canonical-target
+certificate exposes the reserved final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target
+      dependencies verificationFamily)
+
+/--
+The aggregate verification-family extraction-derivation canonical-target
+reserved-name endpoint is the certificate target statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_eq :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target
+      dependencies verificationFamily =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate verification-family extraction-derivation project-statement
+certificate exposes the reserved final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement
+      dependencies verificationFamily)
+
+/--
+The aggregate verification-family extraction-derivation project-statement
+reserved-name endpoint is the certificate target statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_eq :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement
+      dependencies verificationFamily =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate verification-family extraction-derivation completion-criterion
+certificate exposes the reserved final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion
+    (witness : Type u) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion
+      dependencies verificationFamily witness)
+
+/--
+The aggregate verification-family extraction-derivation completion-criterion
+reserved-name endpoint is the certificate target statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_eq
+    (witness : Type u) :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion
+      dependencies verificationFamily witness =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion
+          dependencies verificationFamily witness) := by
+  apply Subsingleton.elim
+
+end VerificationFamilyAggregateReservedTheoremGates
+
 /--
 Projecting the canonical topological statement from the route completion
 certificates returns the named route statement endpoint.
