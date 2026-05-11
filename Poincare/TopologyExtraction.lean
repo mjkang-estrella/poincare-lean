@@ -10507,6 +10507,42 @@ theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecog
   funext hBased extinction recognize
   apply Subsingleton.elim
 
+/-- The standard-sphere based-loop extinction-recognition self route agrees with the fundamental-group route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun extinction =>
+        fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+            hBased extinction recognize) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement
+              (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement
+                hBased)
+              extinction recognize) := by
+  funext hBased extinction recognize
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop extinction-recognition self route agrees with the `π₁` route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_piOne_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun extinction =>
+        fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+            hBased extinction recognize) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement
+              (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement
+                hBased)
+              extinction recognize) := by
+  funext hBased extinction recognize
+  apply Subsingleton.elim
+
 /-- The standard-sphere based-loop extinction-recognition self route agrees with the local loop route. -/
 theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_onePoint_route_eq
     {basepoint : ThreeSphere}
@@ -11367,6 +11403,42 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpa
   funext hBased extinction recognize
   apply Subsingleton.elim
 
+/-- The standard-sphere based-loop extinction-recognition target route agrees with the fundamental-group route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun extinction =>
+        fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+            hBased extinction recognize) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement
+              (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement
+                hBased)
+              extinction recognize) := by
+  funext hBased extinction recognize
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop extinction-recognition target route agrees with the `π₁` route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_piOne_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun extinction =>
+        fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+            hBased extinction recognize) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement
+              (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement
+                hBased)
+              extinction recognize) := by
+  funext hBased extinction recognize
+  apply Subsingleton.elim
+
 /-- The standard-sphere based-loop extinction-recognition target route agrees with the local loop route. -/
 theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_onePoint_route_eq
     {basepoint : ThreeSphere}
@@ -12187,6 +12259,42 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePoint
           fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
             onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
               (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement
+                hBased)
+              extinction recognize) := by
+  funext hBased extinction recognize
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop extinction-recognition payload agrees with the fundamental-group payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun extinction =>
+        fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+            hBased extinction recognize) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement
+              (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement
+                hBased)
+              extinction recognize) := by
+  funext hBased extinction recognize
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop extinction-recognition payload agrees with the `π₁` payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_piOne_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun extinction =>
+        fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+            hBased extinction recognize) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement
+              (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement
                 hBased)
               extinction recognize) := by
   funext hBased extinction recognize
