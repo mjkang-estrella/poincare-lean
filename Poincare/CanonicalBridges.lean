@@ -12517,6 +12517,196 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
   apply Subsingleton.elim
 
 /--
+The aggregate extraction-derivation dependency certificate exposes the
+reserved final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_aggregate_extraction_derivation_dependencies
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_aggregate_extraction_derivation_dependencies
+      dependencies)
+
+/--
+The aggregate extraction-derivation dependency reserved-name endpoint is the
+certificate target statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_aggregate_extraction_derivation_dependencies_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_conjecture_of_completion_certificate_of_aggregate_extraction_derivation_dependencies
+      dependencies =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_aggregate_extraction_derivation_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The dependency projection certificate exposes the reserved final route
+endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_dependency_projections
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_dependency_projections dependencies)
+
+/--
+The dependency projection reserved-name endpoint is the certificate target
+statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_conjecture_of_completion_certificate_of_dependency_projections
+      dependencies =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_dependency_projections dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The extraction-derivation dependency projection certificate exposes the
+reserved final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_extraction_derivation_dependency_projections
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_extraction_derivation_dependency_projections
+      dependencies)
+
+/--
+The extraction-derivation dependency projection reserved-name endpoint is the
+certificate target statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_extraction_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_conjecture_of_completion_certificate_of_extraction_derivation_dependency_projections
+      dependencies =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_extraction_derivation_dependency_projections
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The lifted-homeomorphism derivation dependency projection certificate exposes
+the reserved final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies)
+
+/--
+The lifted-homeomorphism derivation dependency projection reserved-name
+endpoint is the certificate target statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_conjecture_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency extraction-derivation certificate exposes the reserved
+final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
+      dependencies)
+
+/--
+The aggregate dependency extraction-derivation reserved-name endpoint is the
+certificate target statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
+      dependencies =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency projection certificate exposes the reserved final
+route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_projections
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_projections
+      dependencies)
+
+/--
+The aggregate dependency projection reserved-name endpoint is the certificate
+target statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_projections
+      dependencies =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies_projections
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate extraction-derivation projection certificate exposes the reserved
+final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+      dependencies)
+
+/--
+The aggregate extraction-derivation projection reserved-name endpoint is the
+certificate target statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+      dependencies =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate lifted-homeomorphism derivation projection certificate exposes
+the reserved final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+      dependencies)
+
+/--
+The aggregate lifted-homeomorphism derivation projection reserved-name endpoint
+is the certificate target statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+      dependencies =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 Projecting the canonical topological statement from the route completion
 certificates returns the named route statement endpoint.
 -/
