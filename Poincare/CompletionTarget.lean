@@ -25889,6 +25889,41 @@ theorem poincare_full_assembly_payload_of_completion_certificate_of_equation_bou
     (completion_certificate_of_equation_boundary_verification_payload
       payload)
 
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_equation_boundary_verification_payload
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    ∃ _smoothabilityPackage : SmoothabilityPackage.{u},
+    ∃ _surgeryPackages :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+    ∃ _topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ _finiteExtinction :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+    ∃ _derivation :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere,
+      PoincareConjectureStatement.{u} :=
+  poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+    (completion_certificate_of_equation_boundary_verification_payload
+      payload)
+
+theorem poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_equation_boundary_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_equation_boundary_verification_payload
+      payload =
+      poincare_full_assembly_payload_of_completion_certificate_extraction_derivation
+        (completion_certificate_of_equation_boundary_verification_payload
+          payload) := by
+  apply Subsingleton.elim
+
 theorem poincare_full_assembly_payload_of_completion_certificate_of_equation_boundary_verification_payload_eq
     (payload :
       PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
