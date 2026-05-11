@@ -5290,6 +5290,22 @@ theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of
   apply Subsingleton.elim
 
 /--
+The standard-sphere based-loop candidate route agrees with the local
+compactification based-loop route at any chosen compactification basepoint.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement_onePointBased_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (targetBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement
+      hBased h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointBasedLoopNullhomotopyStatement
+        (onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+          targetBasepoint hBased) h := by
+  apply Subsingleton.elim
+
+/--
 The compactification model's own path-homotopy obligation packages any
 recognized source as a Poincare-candidate prerequisite payload.
 -/
@@ -5902,6 +5918,23 @@ theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_basedLo
       poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
         (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement
           hBased) (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/--
+The direct target based-loop candidate route agrees with the compactification
+based-loop route at any chosen compactification basepoint.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement_onePointBased_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (targetBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement
+      hBased h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointBasedLoopNullhomotopyStatement
+        (onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+          targetBasepoint hBased)
+        (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) := by
   apply Subsingleton.elim
 
 /--

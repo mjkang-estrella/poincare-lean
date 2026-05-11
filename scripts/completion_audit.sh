@@ -5573,6 +5573,12 @@ check_decl "one-point compactification local pi-one Poincare candidate fundament
   '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement_fundamentalGroup_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification local pi-one Poincare candidate loop-route contract is declared" \
   '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement_loop_route_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification local based-loop Poincare candidate prerequisite route is declared" \
+  '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointBasedLoopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification local based-loop Poincare candidate prerequisite route equality contract is declared" \
+  '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointBasedLoopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification local based-loop Poincare candidate loop-route contract is declared" \
+  '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointBasedLoopNullhomotopyStatement_loop_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification local path Poincare candidate prerequisite route is declared" \
   '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification local path Poincare candidate prerequisite route equality contract is declared" \
@@ -5609,6 +5615,16 @@ check_decl "one-point compactification standard pi-one Poincare candidate local-
   '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement_onePointPath_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification standard pi-one Poincare candidate local-path-quotient route contract is declared" \
   '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement_onePointPathQuotient_route_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification standard based-loop Poincare candidate prerequisite route is declared" \
+  '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification standard based-loop Poincare candidate prerequisite route equality contract is declared" \
+  '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification standard based-loop Poincare candidate loop-route contract is declared" \
+  '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement_loop_route_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification standard based-loop Poincare candidate local-loop route contract is declared" \
+  '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement_onePoint_route_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point compactification standard based-loop Poincare candidate local-based-loop route contract is declared" \
+  '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement_onePointBased_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification standard path Poincare candidate prerequisite route is declared" \
   '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification standard path Poincare candidate prerequisite route equality contract is declared" \
@@ -5627,6 +5643,16 @@ check_decl "one-point compactification standard path-quotient Poincare candidate
   '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement_loop_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "one-point compactification standard path-quotient Poincare candidate local-route contract is declared" \
   '^theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement_onePoint_route_eq\b' Poincare/TopologyExtraction.lean
+check_decl "target-sphere based-loop Poincare candidate prerequisite route is declared" \
+  '^theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "target-sphere based-loop Poincare candidate prerequisite route equality contract is declared" \
+  '^theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "target-sphere based-loop Poincare candidate loop-route contract is declared" \
+  '^theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement_loop_route_eq\b' Poincare/TopologyExtraction.lean
+check_decl "target-sphere based-loop Poincare candidate one-point loop route contract is declared" \
+  '^theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement_onePoint_route_eq\b' Poincare/TopologyExtraction.lean
+check_decl "target-sphere based-loop Poincare candidate one-point based-loop route contract is declared" \
+  '^theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement_onePointBased_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "target-sphere fundamental-group Poincare candidate one-point fundamental route contract is declared" \
   '^theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement_onePointFundamental_route_eq\b' Poincare/TopologyExtraction.lean
 check_decl "target-sphere pi-one Poincare candidate one-point pi-one route contract is declared" \
