@@ -2923,6 +2923,95 @@ theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_loopNullhomotopySta
   apply Subsingleton.elim
 
 /--
+The standard sphere's fundamental-group formulation supplies
+simple-connectedness for any source recognized as the project target sphere.
+-/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    SimplyConnectedSpace M := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement hFund
+  exact simplyConnectedSpace_of_homeomorph_to_threeSphere h
+
+/-- Source simple-connectedness follows by target recognition and target fundamental groups. -/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    simplyConnectedSpace_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement
+      hFund h =
+      (by
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement hFund
+        exact simplyConnectedSpace_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/-- The direct target fundamental-group route agrees with the direct full-loop route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    simplyConnectedSpace_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement
+      hFund h =
+      simplyConnectedSpace_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+          hFund) h := by
+  apply Subsingleton.elim
+
+/--
+The standard sphere's `π₁` formulation supplies simple-connectedness for any
+source recognized as the project target sphere.
+-/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hPiOne : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    SimplyConnectedSpace M := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement hPiOne
+  exact simplyConnectedSpace_of_homeomorph_to_threeSphere h
+
+/-- Source simple-connectedness follows by target recognition and target `π₁`. -/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPiOne : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    simplyConnectedSpace_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
+      hPiOne h =
+      (by
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement hPiOne
+        exact simplyConnectedSpace_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/-- The direct target `π₁` route agrees with the direct fundamental-group route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement_fundamentalGroup_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPiOne : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    simplyConnectedSpace_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
+      hPiOne h =
+      simplyConnectedSpace_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement
+        (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+          hPiOne) h := by
+  apply Subsingleton.elim
+
+/-- The direct target `π₁` route agrees with the direct full-loop route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPiOne : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    simplyConnectedSpace_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
+      hPiOne h =
+      simplyConnectedSpace_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+          (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+            hPiOne)) h := by
+  apply Subsingleton.elim
+
+/--
 The standard sphere's based loop-nullhomotopy obligation supplies
 simple-connectedness for any source recognized as the project target sphere.
 -/
@@ -3142,6 +3231,111 @@ theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_loopNull
       hLoop h =
       homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
         hLoop (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/--
+The fundamental-group formulation for `ThreeSphere` supplies the full source
+homotopy/manifold prerequisite payload for direct target recognition.
+-/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement hFund
+  exact homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere h
+
+/-- The fundamental-group source-prerequisite route is full target recognition after conversion. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement
+      hFund h =
+      (by
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement hFund
+        exact homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/-- The direct target fundamental-group source route agrees with the direct loop source route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement
+      hFund h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+          hFund) h := by
+  apply Subsingleton.elim
+
+/--
+The `π₁` formulation for `ThreeSphere` supplies the full source
+homotopy/manifold prerequisite payload for direct target recognition.
+-/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hPiOne : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement hPiOne
+  exact homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere h
+
+/-- The `π₁` source-prerequisite route is full target recognition after conversion. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPiOne : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
+      hPiOne h =
+      (by
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement hPiOne
+        exact homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/-- The direct target `π₁` source route agrees with the direct fundamental-group source route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement_fundamentalGroup_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPiOne : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
+      hPiOne h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement
+        (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+          hPiOne) h := by
+  apply Subsingleton.elim
+
+/-- The direct target `π₁` source route agrees with the direct loop source route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPiOne : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
+      hPiOne h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+          (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+            hPiOne)) h := by
   apply Subsingleton.elim
 
 /--
@@ -3684,6 +3878,134 @@ theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_loopNul
       hLoop h =
       poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
         hLoop (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/--
+The standard sphere's fundamental-group formulation packages any source
+recognized directly as the project target sphere as a Poincare-candidate
+prerequisite payload.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M :=
+  homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement
+    hFund h
+
+/--
+The direct target fundamental-group candidate route is the direct
+fundamental-group source-prerequisite route.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement
+      hFund h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement
+        hFund h := by
+  apply Subsingleton.elim
+
+/-- The direct target fundamental-group candidate route agrees with the direct target loop route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement
+      hFund h =
+      poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+          hFund) h := by
+  apply Subsingleton.elim
+
+/-- The direct target fundamental-group candidate route agrees with the compactification loop route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement_onePoint_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement
+      hFund h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+          hFund) (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/--
+The standard sphere's `π₁` formulation packages any source recognized directly
+as the project target sphere as a Poincare-candidate prerequisite payload.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hPiOne : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M :=
+  homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
+    hPiOne h
+
+/-- The direct target `π₁` candidate route is the direct `π₁` source-prerequisite route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPiOne : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
+      hPiOne h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
+        hPiOne h := by
+  apply Subsingleton.elim
+
+/-- The direct target `π₁` candidate route agrees with the direct fundamental-group route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement_fundamentalGroup_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPiOne : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
+      hPiOne h =
+      poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement
+        (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+          hPiOne) h := by
+  apply Subsingleton.elim
+
+/-- The direct target `π₁` candidate route agrees with the direct target loop route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPiOne : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
+      hPiOne h =
+      poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+          (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+            hPiOne)) h := by
+  apply Subsingleton.elim
+
+/-- The direct target `π₁` candidate route agrees with the compactification loop route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement_onePoint_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPiOne : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
+      hPiOne h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+          (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+            hPiOne)) (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) := by
   apply Subsingleton.elim
 
 /--
