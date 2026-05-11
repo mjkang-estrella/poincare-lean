@@ -12241,6 +12241,282 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
   apply Subsingleton.elim
 
 /--
+The remaining-dependency component-requirements certificate exposes the
+reserved final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_component_requirements
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_component_requirements
+      dependencies)
+
+/--
+The remaining-dependency component-requirements reserved-name endpoint is the
+component-requirements target route.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_component_requirements_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_conjecture_of_completion_certificate_of_remaining_dependency_component_requirements
+      dependencies =
+      poincare_statement_of_remaining_dependency_component_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency package-layer-requirements certificate exposes the
+reserved final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_package_layer_requirements
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_package_layer_requirements
+      dependencies)
+
+/--
+The remaining-dependency package-layer-requirements reserved-name endpoint is
+the package-layer-requirements target route.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_package_layer_requirements_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_conjecture_of_completion_certificate_of_remaining_dependency_package_layer_requirements
+      dependencies =
+      poincare_statement_of_remaining_dependency_package_layer_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency milestone-requirements certificate exposes the
+reserved final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_milestone_requirements
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_milestone_requirements
+      dependencies)
+
+/--
+The remaining-dependency milestone-requirements reserved-name endpoint is the
+milestone-requirements target route.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_milestone_requirements_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_conjecture_of_completion_certificate_of_remaining_dependency_milestone_requirements
+      dependencies =
+      poincare_statement_of_remaining_dependency_milestone_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency component extraction-derivation requirements
+certificate exposes the reserved final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements
+      dependencies)
+
+/--
+The remaining-dependency component extraction-derivation requirements
+reserved-name endpoint is the component extraction-derivation target route.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_conjecture_of_completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements
+      dependencies =
+      poincare_statement_of_remaining_dependency_component_extraction_derivation_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency package-layer extraction-derivation requirements
+certificate exposes the reserved final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements
+      dependencies)
+
+/--
+The remaining-dependency package-layer extraction-derivation requirements
+reserved-name endpoint is the package-layer extraction-derivation target route.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_conjecture_of_completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements
+      dependencies =
+      poincare_statement_of_remaining_dependency_package_layer_extraction_derivation_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency milestone extraction-derivation requirements
+certificate exposes the reserved final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements
+      dependencies)
+
+/--
+The remaining-dependency milestone extraction-derivation requirements
+reserved-name endpoint is the milestone extraction-derivation target route.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_conjecture_of_completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements
+      dependencies =
+      poincare_statement_of_remaining_dependency_milestone_extraction_derivation_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The aggregate component-requirements certificate exposes the reserved final
+route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_component_requirements
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_component_requirements
+      dependencies)
+
+/--
+The aggregate component-requirements reserved-name endpoint is the
+component-requirements target route.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_component_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_component_requirements
+      dependencies =
+      poincare_statement_of_poincareProofDependencies_component_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The aggregate package-layer-requirements certificate exposes the reserved final
+route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_package_layer_requirements
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_package_layer_requirements
+      dependencies)
+
+/--
+The aggregate package-layer-requirements reserved-name endpoint is the
+package-layer-requirements target route.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_package_layer_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_package_layer_requirements
+      dependencies =
+      poincare_statement_of_poincareProofDependencies_package_layer_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The aggregate milestone-requirements certificate exposes the reserved final
+route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_milestone_requirements
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_milestone_requirements
+      dependencies)
+
+/--
+The aggregate milestone-requirements reserved-name endpoint is the
+milestone-requirements target route.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_milestone_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_milestone_requirements
+      dependencies =
+      poincare_statement_of_poincareProofDependencies_milestone_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The aggregate component extraction-derivation requirements certificate exposes
+the reserved final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements
+      dependencies)
+
+/--
+The aggregate component extraction-derivation requirements reserved-name
+endpoint is the component extraction-derivation target route.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements
+      dependencies =
+      poincare_statement_of_poincareProofDependencies_component_extraction_derivation_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The aggregate package-layer extraction-derivation requirements certificate
+exposes the reserved final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+      dependencies)
+
+/--
+The aggregate package-layer extraction-derivation requirements reserved-name
+endpoint is the package-layer extraction-derivation target route.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+      dependencies =
+      poincare_statement_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The aggregate milestone extraction-derivation requirements certificate exposes
+the reserved final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+      dependencies)
+
+/--
+The aggregate milestone extraction-derivation requirements reserved-name
+endpoint is the milestone extraction-derivation target route.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+      dependencies =
+      poincare_statement_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 Projecting the canonical topological statement from the route completion
 certificates returns the named route statement endpoint.
 -/
