@@ -6912,6 +6912,179 @@ theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecog
   apply Subsingleton.elim
 
 /--
+The compactification fundamental-group obligation supplies the
+simple-connectedness needed to apply extinction compactification recognition to
+the model itself.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
+    (hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement)
+    (extinction :
+      letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_t2Space
+      letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+          (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_chartedSpace
+      letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement
+          hFund
+      letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_compactSpace
+      FiniteExtinctionByRicciFlowWithSurgery
+        (OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ
+      (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement
+      hFund
+  exact onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement
+    extinction recognize
+
+/--
+The fundamental-group extinction-recognition self route first turns local
+fundamental-group triviality into simple-connectedness.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement_eq :
+    onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement =
+      (fun hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement
+                hFund
+            onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement
+              extinction recognize) := by
+  funext hFund extinction recognize
+  apply Subsingleton.elim
+
+/-- The fundamental-group extinction-recognition self route agrees with the loop-mediated route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement =
+      (fun hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+                hFund)
+              extinction recognize) := by
+  funext hFund extinction recognize
+  apply Subsingleton.elim
+
+/-- The fundamental-group extinction-recognition self route agrees with reflexive recognition. -/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement_direct_route_eq
+    (hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement)
+    (extinction :
+      letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_t2Space
+      letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+          (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_chartedSpace
+      letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement
+          hFund
+      letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_compactSpace
+      FiniteExtinctionByRicciFlowWithSurgery
+        (OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
+      hFund extinction recognize =
+      onePoint_threeSpace_self_homeomorph := by
+  apply Subsingleton.elim
+
+/--
+The compactification `π₁` obligation supplies the simple-connectedness needed
+to apply extinction compactification recognition to the model itself.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement
+    (hPiOne : OnePointThreeSpacePiOneSubsingletonStatement)
+    (extinction :
+      letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_t2Space
+      letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+          (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_chartedSpace
+      letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement
+          hPiOne
+      letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_compactSpace
+      FiniteExtinctionByRicciFlowWithSurgery
+        (OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ
+      (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement hPiOne
+  exact onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement
+    extinction recognize
+
+/--
+The `π₁` extinction-recognition self route first turns local `π₁`
+subsingletons into simple-connectedness.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_eq :
+    onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement =
+      (fun hPiOne : OnePointThreeSpacePiOneSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement hPiOne
+            onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement
+              extinction recognize) := by
+  funext hPiOne extinction recognize
+  apply Subsingleton.elim
+
+/-- The `π₁` extinction-recognition self route agrees with the fundamental-group route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_fundamentalGroup_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement =
+      (fun hPiOne : OnePointThreeSpacePiOneSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
+              (onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+                hPiOne)
+              extinction recognize) := by
+  funext hPiOne extinction recognize
+  apply Subsingleton.elim
+
+/-- The `π₁` extinction-recognition self route agrees with the loop-mediated route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement =
+      (fun hPiOne : OnePointThreeSpacePiOneSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+                (onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+                  hPiOne))
+              extinction recognize) := by
+  funext hPiOne extinction recognize
+  apply Subsingleton.elim
+
+/-- The `π₁` extinction-recognition self route agrees with reflexive recognition. -/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_direct_route_eq
+    (hPiOne : OnePointThreeSpacePiOneSubsingletonStatement)
+    (extinction :
+      letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_t2Space
+      letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+          (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_chartedSpace
+      letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement
+          hPiOne
+      letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_compactSpace
+      FiniteExtinctionByRicciFlowWithSurgery
+        (OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement
+      hPiOne extinction recognize =
+      onePoint_threeSpace_self_homeomorph := by
+  apply Subsingleton.elim
+
+/--
 The compactification based loop-nullhomotopy obligation supplies the
 simple-connectedness needed to apply extinction compactification recognition to
 the model itself.
@@ -7424,6 +7597,167 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpa
     (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0}) :
     onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
       hLoop extinction recognize =
+      onePoint_threeSpace_homeomorph_threeSphere := by
+  apply Subsingleton.elim
+
+/--
+The fundamental-group extinction-recognition self endpoint composes to the
+target `ThreeSphere` endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
+    (hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement)
+    (extinction :
+      letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_t2Space
+      letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+          (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_chartedSpace
+      letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement
+          hFund
+      letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_compactSpace
+      FiniteExtinctionByRicciFlowWithSurgery
+        (OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
+    (onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
+      hFund extinction recognize)
+
+/--
+The fundamental-group extinction-recognition target route is the
+fundamental-group self route followed by the model map.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement =
+      (fun hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
+              (onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
+                hFund extinction recognize)) := by
+  funext hFund extinction recognize
+  apply Subsingleton.elim
+
+/-- The fundamental-group extinction-recognition target route agrees with the loop-mediated target route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement =
+      (fun hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+                hFund)
+              extinction recognize) := by
+  funext hFund extinction recognize
+  apply Subsingleton.elim
+
+/-- The fundamental-group extinction-recognition target route agrees with the direct model homeomorphism. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement_direct_route_eq
+    (hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement)
+    (extinction :
+      letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_t2Space
+      letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+          (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_chartedSpace
+      letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement
+          hFund
+      letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_compactSpace
+      FiniteExtinctionByRicciFlowWithSurgery
+        (OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
+      hFund extinction recognize =
+      onePoint_threeSpace_homeomorph_threeSphere := by
+  apply Subsingleton.elim
+
+/--
+The `π₁` extinction-recognition self endpoint composes to the target
+`ThreeSphere` endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement
+    (hPiOne : OnePointThreeSpacePiOneSubsingletonStatement)
+    (extinction :
+      letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_t2Space
+      letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+          (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_chartedSpace
+      letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement
+          hPiOne
+      letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_compactSpace
+      FiniteExtinctionByRicciFlowWithSurgery
+        (OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
+    (onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement
+      hPiOne extinction recognize)
+
+/-- The `π₁` extinction-recognition target route is the `π₁` self route followed by the model map. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement =
+      (fun hPiOne : OnePointThreeSpacePiOneSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
+              (onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement
+                hPiOne extinction recognize)) := by
+  funext hPiOne extinction recognize
+  apply Subsingleton.elim
+
+/-- The `π₁` extinction-recognition target route agrees with the fundamental-group target route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_fundamentalGroup_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement =
+      (fun hPiOne : OnePointThreeSpacePiOneSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
+              (onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+                hPiOne)
+              extinction recognize) := by
+  funext hPiOne extinction recognize
+  apply Subsingleton.elim
+
+/-- The `π₁` extinction-recognition target route agrees with the loop-mediated target route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement =
+      (fun hPiOne : OnePointThreeSpacePiOneSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+                (onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+                  hPiOne))
+              extinction recognize) := by
+  funext hPiOne extinction recognize
+  apply Subsingleton.elim
+
+/-- The `π₁` extinction-recognition target route agrees with the direct model homeomorphism. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_direct_route_eq
+    (hPiOne : OnePointThreeSpacePiOneSubsingletonStatement)
+    (extinction :
+      letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_t2Space
+      letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+          (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_chartedSpace
+      letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement
+          hPiOne
+      letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_compactSpace
+      FiniteExtinctionByRicciFlowWithSurgery
+        (OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement
+      hPiOne extinction recognize =
       onePoint_threeSpace_homeomorph_threeSphere := by
   apply Subsingleton.elim
 
