@@ -2074,6 +2074,8 @@ check_decl "standard sphere target self payload from based loop-nullhomotopy the
   '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere target self payload from based loop-nullhomotopy equality contract is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere target self payload based loop-nullhomotopy bare-route compatibility is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement_bare_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere target self payload based loop-nullhomotopy loop-route compatibility is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement_loop_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere target self payload based loop-nullhomotopy path-route compatibility is declared" \
@@ -2088,6 +2090,8 @@ check_decl "standard sphere smooth self-diffeomorphism payload from based loop-n
   '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-diffeomorphism payload from based loop-nullhomotopy equality contract is declared" \
   '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-diffeomorphism payload based loop-nullhomotopy bare-route compatibility is declared" \
+  '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement_bare_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-diffeomorphism payload based loop-nullhomotopy loop-route compatibility is declared" \
   '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement_loop_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-diffeomorphism payload based loop-nullhomotopy path-route compatibility is declared" \
@@ -2102,6 +2106,8 @@ check_decl "standard sphere smooth self-homeomorphism payload from based loop-nu
   '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-homeomorphism payload from based loop-nullhomotopy equality contract is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-homeomorphism payload based loop-nullhomotopy bare-route compatibility is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement_bare_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-homeomorphism payload based loop-nullhomotopy loop-route compatibility is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement_loop_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-homeomorphism payload based loop-nullhomotopy path-route compatibility is declared" \

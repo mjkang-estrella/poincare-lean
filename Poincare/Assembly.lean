@@ -1979,6 +1979,24 @@ theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_basedLoopN
   funext hBased h
   apply Subsingleton.elim
 
+/--
+The based-loop target self payload is the bare self payload under the
+simple-connectedness instance derived from the based-loop formulation.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement_bare_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : PoincareConjectureStatement.{0} =>
+        threeSphere_self_homeomorph_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+          threeSphere_self_homeomorph_payload_of_poincare_statement h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
 /-- The based-loop target self payload agrees with the full-loop payload route. -/
 theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement_loop_route_eq
     (basepoint : ThreeSphere) :
@@ -2068,6 +2086,24 @@ theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_basedLoopNu
   funext hBased h
   apply Subsingleton.elim
 
+/--
+The based-loop smooth self payload is the bare smooth self payload under the
+simple-connectedness instance derived from the based-loop formulation.
+-/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement_bare_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : SmoothPoincareConjectureStatement.{0} =>
+        threeSphere_self_diffeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+          threeSphere_self_diffeomorph_payload_of_smooth_statement h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
 /-- The based-loop smooth self payload agrees with the full-loop payload route. -/
 theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement_loop_route_eq
     (basepoint : ThreeSphere) :
@@ -2154,6 +2190,25 @@ theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_basedLoopNul
           ⟨threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement hBased,
             threeSphere_self_homeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement
               hBased h⟩) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/--
+The based-loop smooth-to-topological payload is the bare
+smooth-to-topological payload under the simple-connectedness instance derived
+from the based-loop formulation.
+-/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement_bare_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : SmoothPoincareConjectureStatement.{0} =>
+        threeSphere_self_homeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+          threeSphere_self_homeomorph_payload_of_smooth_statement h) := by
   funext hBased h
   apply Subsingleton.elim
 
