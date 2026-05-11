@@ -1099,6 +1099,210 @@ theorem threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement_eq :
   apply Subsingleton.elim
 
 /--
+Fundamental-group triviality supplies the full target prerequisite payload for
+the standard sphere.
+-/
+theorem threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement
+    (h : ThreeSphereFundamentalGroupSubsingletonStatement) :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement h
+  exact threeSphere_target_prerequisites
+
+/--
+The fundamental-group target-prerequisite route is exactly the full target
+payload after converting fundamental-group triviality to simple-connectedness.
+-/
+theorem threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement_eq :
+    threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement =
+      (fun h : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement h
+        threeSphere_target_prerequisites) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The fundamental-group target-prerequisite route agrees with the route that
+first converts fundamental-group triviality to loop-nullhomotopy.
+-/
+theorem threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement_loop_route_eq :
+    threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement =
+      (fun h : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        threeSphere_target_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+Fundamental-group triviality also supplies the full homotopy-oriented
+prerequisite payload for the standard sphere.
+-/
+theorem threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement
+    (h : ThreeSphereFundamentalGroupSubsingletonStatement) :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement h
+  exact threeSphere_homotopy_prerequisites
+
+/--
+The fundamental-group homotopy-prerequisite route is exactly the full homotopy
+payload after converting fundamental-group triviality to simple-connectedness.
+-/
+theorem threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement_eq :
+    threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement =
+      (fun h : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement h
+        threeSphere_homotopy_prerequisites) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The fundamental-group homotopy-prerequisite route agrees with the route that
+first converts fundamental-group triviality to loop-nullhomotopy.
+-/
+theorem threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement_loop_route_eq :
+    threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement =
+      (fun h : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The `π₁` subsingleton formulation supplies the full target prerequisite payload
+for the standard sphere.
+-/
+theorem threeSphere_target_prerequisites_of_piOneSubsingletonStatement
+    (h : ThreeSpherePiOneSubsingletonStatement) :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement h
+  exact threeSphere_target_prerequisites
+
+/--
+The `π₁` target-prerequisite route is exactly the full target payload after
+converting the `π₁` formulation to simple-connectedness.
+-/
+theorem threeSphere_target_prerequisites_of_piOneSubsingletonStatement_eq :
+    threeSphere_target_prerequisites_of_piOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement h
+        threeSphere_target_prerequisites) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The `π₁` target-prerequisite route agrees with the route that first converts
+`π₁` subsingletons to fundamental-group triviality.
+-/
+theorem threeSphere_target_prerequisites_of_piOneSubsingletonStatement_fundamentalGroup_route_eq :
+    threeSphere_target_prerequisites_of_piOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement
+          (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+            h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The `π₁` target-prerequisite route also agrees with the route that first goes
+through fundamental-group triviality and then loop-nullhomotopy.
+-/
+theorem threeSphere_target_prerequisites_of_piOneSubsingletonStatement_loop_route_eq :
+    threeSphere_target_prerequisites_of_piOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        threeSphere_target_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+            (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+              h))) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The `π₁` subsingleton formulation also supplies the full homotopy-oriented
+prerequisite payload for the standard sphere.
+-/
+theorem threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement
+    (h : ThreeSpherePiOneSubsingletonStatement) :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement h
+  exact threeSphere_homotopy_prerequisites
+
+/--
+The `π₁` homotopy-prerequisite route is exactly the full homotopy payload after
+converting the `π₁` formulation to simple-connectedness.
+-/
+theorem threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement_eq :
+    threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement h
+        threeSphere_homotopy_prerequisites) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The `π₁` homotopy-prerequisite route agrees with the route that first converts
+`π₁` subsingletons to fundamental-group triviality.
+-/
+theorem threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement_fundamentalGroup_route_eq :
+    threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement
+          (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+            h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The `π₁` homotopy-prerequisite route also agrees with the route that first goes
+through fundamental-group triviality and then loop-nullhomotopy.
+-/
+theorem threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement_loop_route_eq :
+    threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+            (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+              h))) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The based loop-nullhomotopy obligation supplies the full target prerequisite
 payload for applying the project statement to the standard sphere.
 -/

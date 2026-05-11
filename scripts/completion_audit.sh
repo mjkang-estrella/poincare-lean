@@ -667,6 +667,34 @@ check_decl "target sphere homotopy prerequisites from loop-nullhomotopy theorem 
   '^theorem threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites from loop-nullhomotopy equality contract is declared" \
   '^theorem threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere target prerequisites from fundamental group theorem is declared" \
+  '^theorem threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement\b' Poincare/Statement.lean
+check_decl "target sphere target prerequisites from fundamental group equality contract is declared" \
+  '^theorem threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere target prerequisites fundamental group loop-route compatibility is declared" \
+  '^theorem threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement_loop_route_eq\b' Poincare/Statement.lean
+check_decl "target sphere homotopy prerequisites from fundamental group theorem is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement\b' Poincare/Statement.lean
+check_decl "target sphere homotopy prerequisites from fundamental group equality contract is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere homotopy prerequisites fundamental group loop-route compatibility is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement_loop_route_eq\b' Poincare/Statement.lean
+check_decl "target sphere target prerequisites from pi-one theorem is declared" \
+  '^theorem threeSphere_target_prerequisites_of_piOneSubsingletonStatement\b' Poincare/Statement.lean
+check_decl "target sphere target prerequisites from pi-one equality contract is declared" \
+  '^theorem threeSphere_target_prerequisites_of_piOneSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere target prerequisites pi-one fundamental-group-route compatibility is declared" \
+  '^theorem threeSphere_target_prerequisites_of_piOneSubsingletonStatement_fundamentalGroup_route_eq\b' Poincare/Statement.lean
+check_decl "target sphere target prerequisites pi-one loop-route compatibility is declared" \
+  '^theorem threeSphere_target_prerequisites_of_piOneSubsingletonStatement_loop_route_eq\b' Poincare/Statement.lean
+check_decl "target sphere homotopy prerequisites from pi-one theorem is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement\b' Poincare/Statement.lean
+check_decl "target sphere homotopy prerequisites from pi-one equality contract is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere homotopy prerequisites pi-one fundamental-group-route compatibility is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement_fundamentalGroup_route_eq\b' Poincare/Statement.lean
+check_decl "target sphere homotopy prerequisites pi-one loop-route compatibility is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement_loop_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites from path-homotopy theorem is declared" \
   '^theorem threeSphere_target_prerequisites_of_pathHomotopyStatement\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites from path-homotopy equality contract is declared" \
@@ -23334,6 +23362,62 @@ open scoped Manifold ContDiff
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement_eq
+
+#check (Poincare.threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement :
+  Poincare.ThreeSphereFundamentalGroupSubsingletonStatement →
+  ∃ _t2 : T2Space Poincare.ThreeSphere,
+  ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) Poincare.ThreeSphere,
+  ∃ _simplyConnected : SimplyConnectedSpace Poincare.ThreeSphere,
+  ∃ _compact : CompactSpace Poincare.ThreeSphere,
+  ∃ _smooth : IsManifold (𝓡 3) ∞ Poincare.ThreeSphere,
+  ∃ _path : PathConnectedSpace Poincare.ThreeSphere,
+  ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
+    Nonempty Poincare.ThreeSphere)
+#check Poincare.threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement_eq
+#check Poincare.threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement_loop_route_eq
+
+#check (Poincare.threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement :
+  Poincare.ThreeSphereFundamentalGroupSubsingletonStatement →
+  ∃ _t2 : T2Space Poincare.ThreeSphere,
+  ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) Poincare.ThreeSphere,
+  ∃ _simplyConnected : SimplyConnectedSpace Poincare.ThreeSphere,
+  ∃ _compact : CompactSpace Poincare.ThreeSphere,
+  ∃ _smooth : IsManifold (𝓡 3) ∞ Poincare.ThreeSphere,
+  ∃ _path : PathConnectedSpace Poincare.ThreeSphere,
+  ∃ _locPath : LocPathConnectedSpace Poincare.ThreeSphere,
+  ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
+    Nonempty Poincare.ThreeSphere)
+#check Poincare.threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement_loop_route_eq
+
+#check (Poincare.threeSphere_target_prerequisites_of_piOneSubsingletonStatement :
+  Poincare.ThreeSpherePiOneSubsingletonStatement →
+  ∃ _t2 : T2Space Poincare.ThreeSphere,
+  ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) Poincare.ThreeSphere,
+  ∃ _simplyConnected : SimplyConnectedSpace Poincare.ThreeSphere,
+  ∃ _compact : CompactSpace Poincare.ThreeSphere,
+  ∃ _smooth : IsManifold (𝓡 3) ∞ Poincare.ThreeSphere,
+  ∃ _path : PathConnectedSpace Poincare.ThreeSphere,
+  ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
+    Nonempty Poincare.ThreeSphere)
+#check Poincare.threeSphere_target_prerequisites_of_piOneSubsingletonStatement_eq
+#check Poincare.threeSphere_target_prerequisites_of_piOneSubsingletonStatement_fundamentalGroup_route_eq
+#check Poincare.threeSphere_target_prerequisites_of_piOneSubsingletonStatement_loop_route_eq
+
+#check (Poincare.threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement :
+  Poincare.ThreeSpherePiOneSubsingletonStatement →
+  ∃ _t2 : T2Space Poincare.ThreeSphere,
+  ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) Poincare.ThreeSphere,
+  ∃ _simplyConnected : SimplyConnectedSpace Poincare.ThreeSphere,
+  ∃ _compact : CompactSpace Poincare.ThreeSphere,
+  ∃ _smooth : IsManifold (𝓡 3) ∞ Poincare.ThreeSphere,
+  ∃ _path : PathConnectedSpace Poincare.ThreeSphere,
+  ∃ _locPath : LocPathConnectedSpace Poincare.ThreeSphere,
+  ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
+    Nonempty Poincare.ThreeSphere)
+#check Poincare.threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement_fundamentalGroup_route_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement_loop_route_eq
 
 #check (Poincare.threeSphere_target_prerequisites_of_pathHomotopyStatement :
   Poincare.ThreeSpherePathHomotopyStatement →

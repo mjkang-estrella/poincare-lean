@@ -3,7 +3,7 @@ Canonical completion bridges for mathlib-shaped Poincare statements.
 
 This module connects the explicit canonical topological and smooth 3-sphere
 statement shapes to the project's canonical completion target. It does not use
-mathlib's current `proof_wanted` declarations; each theorem takes the relevant
+mathlib's current reserved theorem declarations; each theorem takes the relevant
 future proof-bearing statement as an explicit argument.
 -/
 

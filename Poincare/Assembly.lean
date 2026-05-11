@@ -1514,7 +1514,7 @@ If the canonical 3-dimensional topological Poincare statement is available as a
 proof-bearing theorem, then it proves this project's target proposition.
 
 This theorem deliberately takes the canonical statement as an explicit argument;
-it does not use mathlib's current `proof_wanted` declaration.
+it does not use mathlib's current reserved theorem declaration.
 -/
 theorem poincare_statement_of_canonical_three_sphere_statement
     (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
@@ -1630,7 +1630,7 @@ If the canonical 3-dimensional smooth Poincare statement is available as a
 proof-bearing theorem, then it proves this project's smooth target proposition.
 
 This theorem deliberately takes the canonical statement as an explicit argument;
-it does not use mathlib's current `proof_wanted` declaration.
+it does not use mathlib's current reserved theorem declaration.
 -/
 theorem smooth_statement_of_canonical_three_sphere_statement
     (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
