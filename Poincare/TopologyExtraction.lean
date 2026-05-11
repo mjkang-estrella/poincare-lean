@@ -1755,6 +1755,70 @@ theorem onePoint_threeSpace_pathHomotopyStatement_iff_pathQuotientSubsingletonSt
         onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement⟩ := by
   apply Subsingleton.elim
 
+/-- Compactification path-homotopy uniqueness supplies fundamental-group triviality. -/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_pathHomotopyStatement
+    (h : OnePointThreeSpacePathHomotopyStatement) :
+    OnePointThreeSpaceFundamentalGroupSubsingletonStatement :=
+  onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement
+    (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement h)
+
+/-- The compactification path-to-fundamental-group route factors through loops. -/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_pathHomotopyStatement_eq :
+    onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_pathHomotopyStatement =
+      (fun h : OnePointThreeSpacePathHomotopyStatement =>
+        onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- Compactification path-quotient uniqueness supplies fundamental-group triviality. -/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_pathQuotientSubsingletonStatement
+    (h : OnePointThreeSpacePathQuotientSubsingletonStatement) :
+    OnePointThreeSpaceFundamentalGroupSubsingletonStatement :=
+  onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_pathHomotopyStatement
+    (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement h)
+
+/-- The compactification quotient-to-fundamental-group route factors through paths. -/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_pathQuotientSubsingletonStatement_eq :
+    onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_pathQuotientSubsingletonStatement =
+      (fun h : OnePointThreeSpacePathQuotientSubsingletonStatement =>
+        onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_pathHomotopyStatement
+          (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- Compactification path-homotopy uniqueness supplies the `π₁` formulation. -/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_of_pathHomotopyStatement
+    (h : OnePointThreeSpacePathHomotopyStatement) :
+    OnePointThreeSpacePiOneSubsingletonStatement :=
+  onePoint_threeSpace_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement
+    (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_pathHomotopyStatement h)
+
+/-- The compactification path-to-`π₁` route factors through fundamental groups. -/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_of_pathHomotopyStatement_eq :
+    onePoint_threeSpace_piOneSubsingletonStatement_of_pathHomotopyStatement =
+      (fun h : OnePointThreeSpacePathHomotopyStatement =>
+        onePoint_threeSpace_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement
+          (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_pathHomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- Compactification path-quotient uniqueness supplies the `π₁` formulation. -/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_of_pathQuotientSubsingletonStatement
+    (h : OnePointThreeSpacePathQuotientSubsingletonStatement) :
+    OnePointThreeSpacePiOneSubsingletonStatement :=
+  onePoint_threeSpace_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement
+    (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_pathQuotientSubsingletonStatement h)
+
+/-- The compactification quotient-to-`π₁` route factors through fundamental groups. -/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_of_pathQuotientSubsingletonStatement_eq :
+    onePoint_threeSpace_piOneSubsingletonStatement_of_pathQuotientSubsingletonStatement =
+      (fun h : OnePointThreeSpacePathQuotientSubsingletonStatement =>
+        onePoint_threeSpace_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement
+          (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_pathQuotientSubsingletonStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
 /-- Quotient uniqueness of `ThreeSphere` transports to the compactification model. -/
 theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement
     (h : ThreeSpherePathQuotientSubsingletonStatement) :

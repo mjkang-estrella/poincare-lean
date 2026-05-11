@@ -663,6 +663,22 @@ check_decl "target sphere pi-one from loop-nullhomotopy theorem is declared" \
   '^theorem threeSphere_piOneSubsingletonStatement_of_loopNullhomotopyStatement\b' Poincare/Statement.lean
 check_decl "target sphere pi-one from loop-nullhomotopy equality contract is declared" \
   '^theorem threeSphere_piOneSubsingletonStatement_of_loopNullhomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere fundamental group from path-homotopy theorem is declared" \
+  '^theorem threeSphere_fundamentalGroupSubsingletonStatement_of_pathHomotopyStatement\b' Poincare/Statement.lean
+check_decl "target sphere fundamental group from path-homotopy equality contract is declared" \
+  '^theorem threeSphere_fundamentalGroupSubsingletonStatement_of_pathHomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere fundamental group from path-quotient theorem is declared" \
+  '^theorem threeSphere_fundamentalGroupSubsingletonStatement_of_pathQuotientSubsingletonStatement\b' Poincare/Statement.lean
+check_decl "target sphere fundamental group from path-quotient equality contract is declared" \
+  '^theorem threeSphere_fundamentalGroupSubsingletonStatement_of_pathQuotientSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere pi-one from path-homotopy theorem is declared" \
+  '^theorem threeSphere_piOneSubsingletonStatement_of_pathHomotopyStatement\b' Poincare/Statement.lean
+check_decl "target sphere pi-one from path-homotopy equality contract is declared" \
+  '^theorem threeSphere_piOneSubsingletonStatement_of_pathHomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere pi-one from path-quotient theorem is declared" \
+  '^theorem threeSphere_piOneSubsingletonStatement_of_pathQuotientSubsingletonStatement\b' Poincare/Statement.lean
+check_decl "target sphere pi-one from path-quotient equality contract is declared" \
+  '^theorem threeSphere_piOneSubsingletonStatement_of_pathQuotientSubsingletonStatement_eq\b' Poincare/Statement.lean
 check_decl "target sphere simple-connectedness pi-one equivalence is declared" \
   '^theorem threeSphere_simplyConnectedSpace_iff_piOneSubsingletonStatement\b' Poincare/Statement.lean
 check_decl "target sphere simple-connectedness pi-one equivalence equality contract is declared" \
@@ -5103,6 +5119,22 @@ check_decl "compactification pi-one from loop-nullhomotopy theorem is declared" 
   '^theorem onePoint_threeSpace_piOneSubsingletonStatement_of_loopNullhomotopyStatement\b' Poincare/TopologyExtraction.lean
 check_decl "compactification pi-one from loop-nullhomotopy equality contract is declared" \
   '^theorem onePoint_threeSpace_piOneSubsingletonStatement_of_loopNullhomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification fundamental group from path-homotopy theorem is declared" \
+  '^theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_pathHomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification fundamental group from path-homotopy equality contract is declared" \
+  '^theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_pathHomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification fundamental group from path-quotient theorem is declared" \
+  '^theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_pathQuotientSubsingletonStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification fundamental group from path-quotient equality contract is declared" \
+  '^theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_pathQuotientSubsingletonStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification pi-one from path-homotopy theorem is declared" \
+  '^theorem onePoint_threeSpace_piOneSubsingletonStatement_of_pathHomotopyStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification pi-one from path-homotopy equality contract is declared" \
+  '^theorem onePoint_threeSpace_piOneSubsingletonStatement_of_pathHomotopyStatement_eq\b' Poincare/TopologyExtraction.lean
+check_decl "compactification pi-one from path-quotient theorem is declared" \
+  '^theorem onePoint_threeSpace_piOneSubsingletonStatement_of_pathQuotientSubsingletonStatement\b' Poincare/TopologyExtraction.lean
+check_decl "compactification pi-one from path-quotient equality contract is declared" \
+  '^theorem onePoint_threeSpace_piOneSubsingletonStatement_of_pathQuotientSubsingletonStatement_eq\b' Poincare/TopologyExtraction.lean
 check_decl "compactification path-homotopy statement is declared" \
   '^def OnePointThreeSpacePathHomotopyStatement\b' Poincare/TopologyExtraction.lean
 check_decl "compactification path-homotopy statement equality contract is declared" \

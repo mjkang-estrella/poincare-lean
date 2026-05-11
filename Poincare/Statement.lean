@@ -1050,6 +1050,70 @@ theorem threeSphere_piOneSubsingletonStatement_of_loopNullhomotopyStatement_eq :
   funext h
   apply Subsingleton.elim
 
+/-- Path-homotopy uniqueness supplies fundamental-group triviality through loops. -/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_pathHomotopyStatement
+    (h : ThreeSpherePathHomotopyStatement) :
+    ThreeSphereFundamentalGroupSubsingletonStatement :=
+  threeSphere_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement
+    (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement h)
+
+/-- The path-to-fundamental-group route factors through loop-nullhomotopy. -/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_pathHomotopyStatement_eq :
+    threeSphere_fundamentalGroupSubsingletonStatement_of_pathHomotopyStatement =
+      (fun h : ThreeSpherePathHomotopyStatement =>
+        threeSphere_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- Path-quotient uniqueness supplies fundamental-group triviality through paths. -/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_pathQuotientSubsingletonStatement
+    (h : ThreeSpherePathQuotientSubsingletonStatement) :
+    ThreeSphereFundamentalGroupSubsingletonStatement :=
+  threeSphere_fundamentalGroupSubsingletonStatement_of_pathHomotopyStatement
+    (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement h)
+
+/-- The quotient-to-fundamental-group route factors through path-homotopy. -/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_pathQuotientSubsingletonStatement_eq :
+    threeSphere_fundamentalGroupSubsingletonStatement_of_pathQuotientSubsingletonStatement =
+      (fun h : ThreeSpherePathQuotientSubsingletonStatement =>
+        threeSphere_fundamentalGroupSubsingletonStatement_of_pathHomotopyStatement
+          (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- Path-homotopy uniqueness supplies the `π₁` formulation through fundamental groups. -/
+theorem threeSphere_piOneSubsingletonStatement_of_pathHomotopyStatement
+    (h : ThreeSpherePathHomotopyStatement) :
+    ThreeSpherePiOneSubsingletonStatement :=
+  threeSphere_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement
+    (threeSphere_fundamentalGroupSubsingletonStatement_of_pathHomotopyStatement h)
+
+/-- The path-to-`π₁` route factors through fundamental groups. -/
+theorem threeSphere_piOneSubsingletonStatement_of_pathHomotopyStatement_eq :
+    threeSphere_piOneSubsingletonStatement_of_pathHomotopyStatement =
+      (fun h : ThreeSpherePathHomotopyStatement =>
+        threeSphere_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement
+          (threeSphere_fundamentalGroupSubsingletonStatement_of_pathHomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- Path-quotient uniqueness supplies the `π₁` formulation through fundamental groups. -/
+theorem threeSphere_piOneSubsingletonStatement_of_pathQuotientSubsingletonStatement
+    (h : ThreeSpherePathQuotientSubsingletonStatement) :
+    ThreeSpherePiOneSubsingletonStatement :=
+  threeSphere_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement
+    (threeSphere_fundamentalGroupSubsingletonStatement_of_pathQuotientSubsingletonStatement h)
+
+/-- The quotient-to-`π₁` route factors through fundamental groups. -/
+theorem threeSphere_piOneSubsingletonStatement_of_pathQuotientSubsingletonStatement_eq :
+    threeSphere_piOneSubsingletonStatement_of_pathQuotientSubsingletonStatement =
+      (fun h : ThreeSpherePathQuotientSubsingletonStatement =>
+        threeSphere_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement
+          (threeSphere_fundamentalGroupSubsingletonStatement_of_pathQuotientSubsingletonStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
 /--
 The standard sphere is simply connected exactly when all of its first homotopy
 groups are subsingletons.
