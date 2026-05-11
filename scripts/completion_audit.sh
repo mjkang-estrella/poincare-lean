@@ -1317,14 +1317,42 @@ check_decl "zero Ricci-flow equation boundary equation-evidence projection contr
   '^@\[simp\] theorem equation_evidence_of_zero_ricci_flow_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "stationary zero Ricci-flow equation boundary evidence projection contract is declared" \
   '^@\[simp\] theorem equation_evidence_of_stationary_zero_ricci_flow_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "zero Ricci-flow equation boundary tensor projection theorem is declared" \
+  '^theorem equation_at_time_of_zero_ricci_flow_equation_boundary_package_projection\b' Poincare/AnalyticFoundation.lean
+check_decl "zero Ricci-flow equation boundary tensor projection equality theorem is declared" \
+  '^@\[simp\] theorem equation_at_time_of_zero_ricci_flow_equation_boundary_package_projection_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "zero Ricci-flow equation boundary tensor projection verification equality theorem is declared" \
+  '^@\[simp\] theorem equation_at_time_of_zero_ricci_flow_equation_boundary_package_projection_to_verification_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow equation boundary tensor projection theorem is declared" \
+  '^theorem equation_at_time_of_stationary_zero_ricci_flow_equation_boundary_package_projection\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow equation boundary tensor projection equality theorem is declared" \
+  '^@\[simp\] theorem equation_at_time_of_stationary_zero_ricci_flow_equation_boundary_package_projection_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow equation boundary tensor projection verification equality theorem is declared" \
+  '^@\[simp\] theorem equation_at_time_of_stationary_zero_ricci_flow_equation_boundary_package_projection_to_verification_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "zero Ricci-flow equation boundary pointwise projection theorem is declared" \
   '^theorem equation_at_time_apply_of_zero_ricci_flow_equation_boundary_package_projection\b' Poincare/AnalyticFoundation.lean
 check_decl "zero Ricci-flow equation boundary pointwise projection equality theorem is declared" \
   '^@\[simp\] theorem equation_at_time_apply_of_zero_ricci_flow_equation_boundary_package_projection_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "zero Ricci-flow equation boundary pointwise projection verification equality theorem is declared" \
+  '^@\[simp\] theorem equation_at_time_apply_of_zero_ricci_flow_equation_boundary_package_projection_to_verification_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "stationary zero Ricci-flow equation boundary pointwise projection theorem is declared" \
   '^theorem equation_at_time_apply_of_stationary_zero_ricci_flow_equation_boundary_package_projection\b' Poincare/AnalyticFoundation.lean
 check_decl "stationary zero Ricci-flow equation boundary pointwise projection equality theorem is declared" \
   '^@\[simp\] theorem equation_at_time_apply_of_stationary_zero_ricci_flow_equation_boundary_package_projection_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow equation boundary pointwise projection verification equality theorem is declared" \
+  '^@\[simp\] theorem equation_at_time_apply_of_stationary_zero_ricci_flow_equation_boundary_package_projection_to_verification_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "zero Ricci-flow equation boundary pointwise equation payload theorem is declared" \
+  '^theorem pointwise_equation_payload_of_zero_ricci_flow_equation_boundary_package\b' Poincare/AnalyticFoundation.lean
+check_decl "zero Ricci-flow equation boundary pointwise equation payload equality theorem is declared" \
+  '^@\[simp\] theorem pointwise_equation_payload_of_zero_ricci_flow_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "zero Ricci-flow equation boundary pointwise equation payload verification equality theorem is declared" \
+  '^@\[simp\] theorem pointwise_equation_payload_of_zero_ricci_flow_equation_boundary_package_to_verification_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow equation boundary pointwise equation payload theorem is declared" \
+  '^theorem pointwise_equation_payload_of_stationary_zero_ricci_flow_equation_boundary_package\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow equation boundary pointwise equation payload equality theorem is declared" \
+  '^@\[simp\] theorem pointwise_equation_payload_of_stationary_zero_ricci_flow_equation_boundary_package_eq\b' Poincare/AnalyticFoundation.lean
+check_decl "stationary zero Ricci-flow equation boundary pointwise equation payload verification equality theorem is declared" \
+  '^@\[simp\] theorem pointwise_equation_payload_of_stationary_zero_ricci_flow_equation_boundary_package_to_verification_eq\b' Poincare/AnalyticFoundation.lean
 check_decl "zero Ricci-flow equation boundary pointwise derivative zero theorem is declared" \
   '^@\[simp\] theorem metric_time_derivative_at_time_apply_of_zero_ricci_flow_equation_boundary_package\b' Poincare/AnalyticFoundation.lean
 check_decl "zero Ricci-flow equation boundary pointwise derivative zero equality theorem is declared" \
