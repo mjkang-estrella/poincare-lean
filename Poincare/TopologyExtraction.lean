@@ -3030,6 +3030,63 @@ theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathQuotientSubsi
   apply Subsingleton.elim
 
 /--
+The standard based-loop compactification prerequisite route agrees with first
+converting based loop-nullhomotopy to standard-sphere path homotopy.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement_path_route_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement h) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathHomotopyStatement
+          (threeSphere_pathHomotopyStatement_of_basedLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The standard based-loop compactification prerequisite route agrees with first
+converting based loop-nullhomotopy to standard-sphere path-quotient uniqueness.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement_pathQuotient_route_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement h) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathQuotientSubsingletonStatement
+          (threeSphere_pathQuotientSubsingletonStatement_of_basedLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The standard based-loop compactification prerequisite route agrees with first
+converting based loop-nullhomotopy to standard-sphere fundamental-group
+triviality.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement h) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_fundamentalGroupSubsingletonStatement
+          (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The standard based-loop compactification prerequisite route agrees with first
+converting based loop-nullhomotopy to the standard-sphere `π₁` formulation.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement_piOne_route_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement h) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingletonStatement
+          (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The compactification model's own path-quotient obligation directly supplies
 the full compactification homotopy/manifold prerequisite payload.
 -/

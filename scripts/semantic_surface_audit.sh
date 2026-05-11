@@ -3700,6 +3700,26 @@ universe u
       Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))))
 #check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement_eq
 
+#check (Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement :
+  {basepoint : Poincare.ThreeSphere} →
+    Poincare.ThreeSphereBasedLoopNullhomotopyStatement basepoint →
+      ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))))
+#check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement_eq
+#check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement_loop_route_eq
+#check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement_path_route_eq
+#check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement_pathQuotient_route_eq
+#check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
+#check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement_piOne_route_eq
+
 #check (Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathHomotopyStatement :
   Poincare.ThreeSpherePathHomotopyStatement →
     ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
