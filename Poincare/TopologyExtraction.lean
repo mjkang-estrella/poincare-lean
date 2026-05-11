@@ -4776,6 +4776,50 @@ theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_pathQuotientSubsing
             hQuot)) h := by
   apply Subsingleton.elim
 
+/-- The direct target based-loop route agrees with the direct path route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement_path_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    simplyConnectedSpace_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement
+      hBased h =
+      simplyConnectedSpace_of_homeomorph_to_threeSphere_of_pathHomotopyStatement
+        (threeSphere_pathHomotopyStatement_of_basedLoopNullhomotopyStatement hBased) h := by
+  apply Subsingleton.elim
+
+/-- The direct target based-loop route agrees with the direct quotient route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement_pathQuotient_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    simplyConnectedSpace_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement
+      hBased h =
+      simplyConnectedSpace_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement
+        (threeSphere_pathQuotientSubsingletonStatement_of_basedLoopNullhomotopyStatement hBased) h := by
+  apply Subsingleton.elim
+
+/-- The direct target based-loop route agrees with the direct fundamental-group route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    simplyConnectedSpace_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement
+      hBased h =
+      simplyConnectedSpace_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement
+        (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement hBased) h := by
+  apply Subsingleton.elim
+
+/-- The direct target based-loop route agrees with the direct `π₁` route. -/
+theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement_piOne_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    simplyConnectedSpace_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement
+      hBased h =
+      simplyConnectedSpace_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
+        (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement hBased) h := by
+  apply Subsingleton.elim
+
 /--
 Recognizing a source as the project target sphere supplies the full
 homotopy/manifold prerequisite payload once the standard sphere's
