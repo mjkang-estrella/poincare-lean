@@ -6273,6 +6273,114 @@ theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStat
   apply Subsingleton.elim
 
 /--
+The compactification fundamental-group obligation supplies the
+simple-connectedness needed to apply universal compactification recognition to
+the model itself.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
+    (hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ
+      (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement
+      hFund
+  exact onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement
+    recognize
+
+/-- The fundamental-group universal-recognition self route first turns fundamental groups into simple-connectedness. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement_eq :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement =
+      (fun hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement
+              hFund
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement
+            recognize) := by
+  funext hFund recognize
+  apply Subsingleton.elim
+
+/-- The fundamental-group universal-recognition self route agrees with the loop-mediated route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement =
+      (fun hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+              hFund)
+            recognize) := by
+  funext hFund recognize
+  apply Subsingleton.elim
+
+/-- The fundamental-group universal-recognition self route agrees with reflexive recognition. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement_direct_route_eq
+    (hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
+      hFund recognize =
+      onePoint_threeSpace_self_homeomorph := by
+  apply Subsingleton.elim
+
+/--
+The compactification `π₁` obligation supplies the simple-connectedness needed
+to apply universal compactification recognition to the model itself.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement
+    (hPi : OnePointThreeSpacePiOneSubsingletonStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ
+      (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement hPi
+  exact onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement
+    recognize
+
+/-- The `π₁` universal-recognition self route first turns `π₁` into simple-connectedness. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_eq :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement =
+      (fun hPi : OnePointThreeSpacePiOneSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement hPi
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement
+            recognize) := by
+  funext hPi recognize
+  apply Subsingleton.elim
+
+/-- The `π₁` universal-recognition self route agrees with the fundamental-group route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_fundamentalGroup_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement =
+      (fun hPi : OnePointThreeSpacePiOneSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
+            (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
+              hPi)
+            recognize) := by
+  funext hPi recognize
+  apply Subsingleton.elim
+
+/-- The `π₁` universal-recognition self route agrees with the loop-mediated route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement =
+      (fun hPi : OnePointThreeSpacePiOneSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement hPi)
+            recognize) := by
+  funext hPi recognize
+  apply Subsingleton.elim
+
+/-- The `π₁` universal-recognition self route agrees with reflexive recognition. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_direct_route_eq
+    (hPi : OnePointThreeSpacePiOneSubsingletonStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement
+      hPi recognize =
+      onePoint_threeSpace_self_homeomorph := by
+  apply Subsingleton.elim
+
+/--
 The compactification based loop-nullhomotopy obligation supplies the
 simple-connectedness needed to apply universal compactification recognition to
 the model itself.
@@ -6581,6 +6689,105 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognit
     (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
     onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
       hLoop recognize =
+      onePoint_threeSpace_homeomorph_threeSphere := by
+  apply Subsingleton.elim
+
+/--
+The fundamental-group universal-recognition self endpoint composes to the
+target `ThreeSphere` endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
+    (hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
+    (onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
+      hFund recognize)
+
+/-- The fundamental-group universal-recognition target route is the fundamental-group self route followed by the model map. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement =
+      (fun hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
+            (onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
+              hFund recognize)) := by
+  funext hFund recognize
+  apply Subsingleton.elim
+
+/-- The fundamental-group universal-recognition target route agrees with the loop-mediated target route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement =
+      (fun hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+              hFund)
+            recognize) := by
+  funext hFund recognize
+  apply Subsingleton.elim
+
+/-- The fundamental-group universal-recognition target route agrees with the direct model homeomorphism. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement_direct_route_eq
+    (hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
+      hFund recognize =
+      onePoint_threeSpace_homeomorph_threeSphere := by
+  apply Subsingleton.elim
+
+/--
+The `π₁` universal-recognition self endpoint composes to the target
+`ThreeSphere` endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement
+    (hPi : OnePointThreeSpacePiOneSubsingletonStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
+    (onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement
+      hPi recognize)
+
+/-- The `π₁` universal-recognition target route is the `π₁` self route followed by the model map. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement =
+      (fun hPi : OnePointThreeSpacePiOneSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
+            (onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement
+              hPi recognize)) := by
+  funext hPi recognize
+  apply Subsingleton.elim
+
+/-- The `π₁` universal-recognition target route agrees with the fundamental-group target route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_fundamentalGroup_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement =
+      (fun hPi : OnePointThreeSpacePiOneSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
+            (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
+              hPi)
+            recognize) := by
+  funext hPi recognize
+  apply Subsingleton.elim
+
+/-- The `π₁` universal-recognition target route agrees with the loop-mediated target route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_loop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement =
+      (fun hPi : OnePointThreeSpacePiOneSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement hPi)
+            recognize) := by
+  funext hPi recognize
+  apply Subsingleton.elim
+
+/-- The `π₁` universal-recognition target route agrees with the direct model homeomorphism. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_direct_route_eq
+    (hPi : OnePointThreeSpacePiOneSubsingletonStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement
+      hPi recognize =
       onePoint_threeSpace_homeomorph_threeSphere := by
   apply Subsingleton.elim
 
