@@ -10252,6 +10252,20 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement
   apply Subsingleton.elim
 
 /--
+The local loop target payload is the bare target payload under the
+simple-connectedness instance derived from loop-nullhomotopy.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointLoopNullhomotopyStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointLoopNullhomotopyStatement =
+      (fun hLoop : OnePointThreeSpaceLoopNullhomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement h) := by
+  funext hLoop h
+  apply Subsingleton.elim
+
+/--
 The compactification fundamental-group target self-case exposes both the local
 homotopy/manifold prerequisites and the target endpoint.
 -/
@@ -10284,6 +10298,21 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement
               hFund,
             onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointFundamentalGroupSubsingletonStatement
               hFund h⟩) := by
+  funext hFund h
+  apply Subsingleton.elim
+
+/--
+The local fundamental-group target payload is the bare target payload under the
+simple-connectedness instance derived from fundamental-group triviality.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointFundamentalGroupSubsingletonStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointFundamentalGroupSubsingletonStatement =
+      (fun hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement
+              hFund
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement h) := by
   funext hFund h
   apply Subsingleton.elim
 
@@ -10332,6 +10361,20 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement
               hPi,
             onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPiOneSubsingletonStatement
               hPi h⟩) := by
+  funext hPi h
+  apply Subsingleton.elim
+
+/--
+The local `π₁` target payload is the bare target payload under the
+simple-connectedness instance derived from `π₁` triviality.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointPiOneSubsingletonStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointPiOneSubsingletonStatement =
+      (fun hPi : OnePointThreeSpacePiOneSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement hPi
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement h) := by
   funext hPi h
   apply Subsingleton.elim
 
@@ -10396,6 +10439,24 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement
               hBased,
             onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointBasedLoopNullhomotopyStatement
               hBased h⟩) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/--
+The local based-loop target payload is the bare target payload under the
+simple-connectedness instance derived from based-loop nullhomotopy.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointBasedLoopNullhomotopyStatement_bare_route_eq
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    (fun hBased : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+      fun h : PoincareConjectureStatement.{0} =>
+        onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointBasedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement h) := by
   funext hBased h
   apply Subsingleton.elim
 
@@ -10738,6 +10799,20 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement
   funext hPath h
   apply Subsingleton.elim
 
+/--
+The local path-homotopy target payload is the bare target payload under the
+simple-connectedness instance derived from path-homotopy uniqueness.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointPathHomotopyStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointPathHomotopyStatement =
+      (fun hPath : OnePointThreeSpacePathHomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement hPath
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement h) := by
+  funext hPath h
+  apply Subsingleton.elim
+
 /-- The path target payload agrees with the loop-mediated target payload. -/
 theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointPathHomotopyStatement_loop_route_eq :
     onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointPathHomotopyStatement =
@@ -10781,6 +10856,21 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement
               hQuot,
             onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathQuotientSubsingletonStatement
               hQuot h⟩) := by
+  funext hQuot h
+  apply Subsingleton.elim
+
+/--
+The local path-quotient target payload is the bare target payload under the
+simple-connectedness instance derived from path-quotient uniqueness.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointPathQuotientSubsingletonStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointPathQuotientSubsingletonStatement =
+      (fun hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_pathQuotientSubsingletonStatement
+              hQuot
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement h) := by
   funext hQuot h
   apply Subsingleton.elim
 
