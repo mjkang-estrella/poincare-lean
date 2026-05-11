@@ -2020,18 +2020,24 @@ check_decl "standard sphere target self payload from fundamental group theorem i
   '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_fundamentalGroupSubsingletonStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere target self payload from fundamental group equality contract is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_fundamentalGroupSubsingletonStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere target self payload fundamental group bare-route compatibility is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_fundamentalGroupSubsingletonStatement_bare_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere target self payload fundamental group loop-route compatibility is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_fundamentalGroupSubsingletonStatement_loop_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-diffeomorphism payload from fundamental group theorem is declared" \
   '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-diffeomorphism payload from fundamental group equality contract is declared" \
   '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-diffeomorphism payload fundamental group bare-route compatibility is declared" \
+  '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_bare_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-diffeomorphism payload fundamental group loop-route compatibility is declared" \
   '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_loop_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-homeomorphism payload from fundamental group theorem is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-homeomorphism payload from fundamental group equality contract is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-homeomorphism payload fundamental group bare-route compatibility is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_bare_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-homeomorphism payload fundamental group loop-route compatibility is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_loop_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere target self payload from pi-one theorem is declared" \

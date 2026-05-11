@@ -1563,6 +1563,20 @@ theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_fundamenta
   funext hFund h
   apply Subsingleton.elim
 
+/--
+The fundamental-group target self payload is the bare self payload under the
+simple-connectedness instance derived from the fundamental-group formulation.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_fundamentalGroupSubsingletonStatement_bare_route_eq :
+    threeSphere_self_homeomorph_payload_of_poincare_statement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement hFund
+          threeSphere_self_homeomorph_payload_of_poincare_statement h) := by
+  funext hFund h
+  apply Subsingleton.elim
+
 /-- The fundamental-group target self payload agrees with the loop payload route. -/
 theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_fundamentalGroupSubsingletonStatement_loop_route_eq :
     threeSphere_self_homeomorph_payload_of_poincare_statement_and_fundamentalGroupSubsingletonStatement =
@@ -1609,6 +1623,21 @@ theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_fundamental
               hFund,
             threeSphere_self_diffeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement
               hFund h⟩) := by
+  funext hFund h
+  apply Subsingleton.elim
+
+/--
+The fundamental-group smooth self payload is the bare smooth self payload under
+the simple-connectedness instance derived from the fundamental-group
+formulation.
+-/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_bare_route_eq :
+    threeSphere_self_diffeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement hFund
+          threeSphere_self_diffeomorph_payload_of_smooth_statement h) := by
   funext hFund h
   apply Subsingleton.elim
 
@@ -1659,6 +1688,21 @@ theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_fundamentalG
               hFund,
             threeSphere_self_homeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement
               hFund h⟩) := by
+  funext hFund h
+  apply Subsingleton.elim
+
+/--
+The fundamental-group smooth-to-topological payload is the bare
+smooth-to-topological payload under the simple-connectedness instance derived
+from the fundamental-group formulation.
+-/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_bare_route_eq :
+    threeSphere_self_homeomorph_payload_of_smooth_statement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement hFund
+          threeSphere_self_homeomorph_payload_of_smooth_statement h) := by
   funext hFund h
   apply Subsingleton.elim
 
