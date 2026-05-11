@@ -5182,6 +5182,270 @@ theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of
   apply Subsingleton.elim
 
 /--
+The standard sphere's fundamental-group formulation packages any recognized
+source as a Poincare-candidate prerequisite payload through the one-point model.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_fundamentalGroupSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M :=
+  homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_fundamentalGroupSubsingletonStatement
+    hFund h
+
+/-- The standard fundamental-group candidate route is the standard source-prerequisite route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_fundamentalGroupSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_fundamentalGroupSubsingletonStatement
+      hFund h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_fundamentalGroupSubsingletonStatement
+        hFund h := by
+  apply Subsingleton.elim
+
+/-- The standard fundamental-group candidate route agrees with the standard loop candidate route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_fundamentalGroupSubsingletonStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_fundamentalGroupSubsingletonStatement
+      hFund h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+          hFund) h := by
+  apply Subsingleton.elim
+
+/-- The standard fundamental-group candidate route agrees with the local fundamental-group route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_fundamentalGroupSubsingletonStatement_onePoint_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_fundamentalGroupSubsingletonStatement
+      hFund h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement
+        (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_threeSphereFundamentalGroupSubsingletonStatement
+          hFund) h := by
+  apply Subsingleton.elim
+
+/--
+The standard sphere's `π₁` formulation packages any recognized source as a
+Poincare-candidate prerequisite payload through the one-point model.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hPi : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M :=
+  homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement
+    hPi h
+
+/-- The standard `π₁` candidate route is the standard `π₁` source-prerequisite route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPi : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement
+      hPi h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement
+        hPi h := by
+  apply Subsingleton.elim
+
+/-- The standard `π₁` candidate route agrees with the standard fundamental-group route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement_fundamentalGroup_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPi : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement
+      hPi h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_fundamentalGroupSubsingletonStatement
+        (threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
+          hPi) h := by
+  apply Subsingleton.elim
+
+/-- The standard `π₁` candidate route agrees with the standard loop route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPi : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement
+      hPi h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement hPi) h := by
+  apply Subsingleton.elim
+
+/-- The standard `π₁` candidate route agrees with the local `π₁` route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement_onePoint_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPi : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement
+      hPi h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement
+        (onePoint_threeSpace_piOneSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement
+          hPi) h := by
+  apply Subsingleton.elim
+
+/-- The standard `π₁` candidate route agrees with the local compactification path route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement_onePointPath_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPi : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement
+      hPi h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement
+        (onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePiOneSubsingletonStatement
+          hPi) h := by
+  apply Subsingleton.elim
+
+/-- The standard `π₁` candidate route agrees with the local compactification quotient route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement_onePointPathQuotient_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPi : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement
+      hPi h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement
+        (onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement
+          hPi) h := by
+  apply Subsingleton.elim
+
+/--
+The standard sphere's path-homotopy obligation packages any recognized source as
+a Poincare-candidate prerequisite payload through the one-point model.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M :=
+  homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement
+    hPath h
+
+/-- The standard path candidate route is the standard path source-prerequisite route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement
+      hPath h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement
+        hPath h := by
+  apply Subsingleton.elim
+
+/-- The standard path candidate route agrees with the standard loop candidate route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement
+      hPath h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h := by
+  apply Subsingleton.elim
+
+/-- The standard path candidate route agrees with the local compactification path route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement_onePoint_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement
+      hPath h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement
+        (onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePathHomotopyStatement hPath) h := by
+  apply Subsingleton.elim
+
+/--
+The standard sphere's path-quotient obligation packages any recognized source as
+a Poincare-candidate prerequisite payload through the one-point model.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M :=
+  homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement
+    hQuot h
+
+/-- The standard quotient candidate route is the standard quotient source-prerequisite route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement
+        hQuot h := by
+  apply Subsingleton.elim
+
+/-- The standard quotient candidate route agrees with the standard path candidate route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement_path_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement
+        (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot) h := by
+  apply Subsingleton.elim
+
+/-- The standard quotient candidate route agrees with the standard loop candidate route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
+          (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot)) h := by
+  apply Subsingleton.elim
+
+/-- The standard quotient candidate route agrees with the local compactification quotient route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement_onePoint_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement
+        (onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement
+          hQuot) h := by
+  apply Subsingleton.elim
+
+/--
 The standard sphere's loop-nullhomotopy obligation packages any source
 recognized directly as the project target sphere as a Poincare-candidate
 prerequisite payload.
