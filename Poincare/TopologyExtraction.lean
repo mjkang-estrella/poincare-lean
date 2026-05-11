@@ -9021,6 +9021,30 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_bas
       onePoint_threeSpace_homeomorph_threeSphere := by
   apply Subsingleton.elim
 
+/-- The standard-sphere based-loop compactification target route agrees with the fundamental-group route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : PoincareConjectureStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_basedLoopNullhomotopyStatement
+      hBased h =
+      onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_fundamentalGroupSubsingletonStatement
+        (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement hBased)
+        h := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop compactification target route agrees with the `π₁` route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_basedLoopNullhomotopyStatement_piOne_route_eq
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : PoincareConjectureStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_basedLoopNullhomotopyStatement
+      hBased h =
+      onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_piOneSubsingletonStatement
+        (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement hBased)
+        h := by
+  apply Subsingleton.elim
+
 /--
 The compactification path-homotopy obligation is enough to apply the project
 target statement to the compactification model.
@@ -9582,6 +9606,30 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement
       onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointBasedLoopNullhomotopyStatement
         (onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
           targetBasepoint hBased)
+        h := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop target payload agrees with the fundamental-group payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : PoincareConjectureStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement
+      hBased h =
+      onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_fundamentalGroupSubsingletonStatement
+        (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement hBased)
+        h := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop target payload agrees with the `π₁` payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement_piOne_route_eq
+    {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : PoincareConjectureStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement
+      hBased h =
+      onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_piOneSubsingletonStatement
+        (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement hBased)
         h := by
   apply Subsingleton.elim
 
