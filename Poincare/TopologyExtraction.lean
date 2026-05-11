@@ -13967,6 +13967,22 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePoint
   apply Subsingleton.elim
 
 /--
+The local loop extinction-recognition payload is the bare extinction payload
+under the simple-connectedness instance derived from loop-nullhomotopy.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement =
+      (fun hLoop : OnePointThreeSpaceLoopNullhomotopyStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+            onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement
+              extinction recognize) := by
+  funext hLoop extinction recognize
+  apply Subsingleton.elim
+
+/--
 The compactification fundamental-group extinction-recognition endpoint also
 packages the local homotopy/manifold prerequisites needed to apply recognition
 to the compactification model after finite extinction.
@@ -14014,6 +14030,24 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePoint
                 hFund,
               onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
                 hFund extinction recognize⟩) := by
+  funext hFund extinction recognize
+  apply Subsingleton.elim
+
+/--
+The local fundamental-group extinction-recognition payload is the bare
+extinction payload under the simple-connectedness instance derived from
+fundamental-group triviality.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement =
+      (fun hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement
+                hFund
+            onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement
+              extinction recognize) := by
   funext hFund extinction recognize
   apply Subsingleton.elim
 
@@ -14077,6 +14111,23 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePoint
                 hPiOne,
               onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement
                 hPiOne extinction recognize⟩) := by
+  funext hPiOne extinction recognize
+  apply Subsingleton.elim
+
+/--
+The local `π₁` extinction-recognition payload is the bare extinction payload
+under the simple-connectedness instance derived from `π₁` triviality.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement =
+      (fun hPiOne : OnePointThreeSpacePiOneSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement
+                hPiOne
+            onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement
+              extinction recognize) := by
   funext hPiOne extinction recognize
   apply Subsingleton.elim
 
@@ -14174,6 +14225,28 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePoint
                 hBased,
               onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointBasedLoopNullhomotopyStatement
                 hBased extinction recognize⟩) := by
+  funext hBased extinction recognize
+  apply Subsingleton.elim
+
+/--
+The local based-loop extinction-recognition payload is the bare extinction
+payload under the simple-connectedness instance derived from based-loop
+nullhomotopy.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointBasedLoopNullhomotopyStatement_bare_route_eq
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    (fun hBased : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+      fun extinction =>
+        fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointBasedLoopNullhomotopyStatement
+            hBased extinction recognize) =
+      (fun hBased : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+            onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement
+              extinction recognize) := by
   funext hBased extinction recognize
   apply Subsingleton.elim
 
@@ -14673,6 +14746,22 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePoint
   funext hPath extinction recognize
   apply Subsingleton.elim
 
+/--
+The local path extinction-recognition payload is the bare extinction payload
+under the simple-connectedness instance derived from path-homotopy uniqueness.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement =
+      (fun hPath : OnePointThreeSpacePathHomotopyStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement hPath
+            onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement
+              extinction recognize) := by
+  funext hPath extinction recognize
+  apply Subsingleton.elim
+
 /-- The path extinction-recognition payload agrees with the loop-mediated payload route. -/
 theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement_loop_route_eq :
     onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement =
@@ -14733,6 +14822,24 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePoint
                 hQuot,
               onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement
                 hQuot extinction recognize⟩) := by
+  funext hQuot extinction recognize
+  apply Subsingleton.elim
+
+/--
+The local quotient extinction-recognition payload is the bare extinction
+payload under the simple-connectedness instance derived from path-quotient
+uniqueness.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement =
+      (fun hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_pathQuotientSubsingletonStatement
+                hQuot
+            onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement
+              extinction recognize) := by
   funext hQuot extinction recognize
   apply Subsingleton.elim
 
