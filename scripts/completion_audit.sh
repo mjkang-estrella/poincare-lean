@@ -739,26 +739,36 @@ check_decl "target sphere target prerequisites from loop-nullhomotopy theorem is
   '^theorem threeSphere_target_prerequisites_of_loopNullhomotopyStatement\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites from loop-nullhomotopy equality contract is declared" \
   '^theorem threeSphere_target_prerequisites_of_loopNullhomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere target prerequisites loop-nullhomotopy direct-simple compatibility is declared" \
+  '^theorem threeSphere_target_prerequisites_of_loopNullhomotopyStatement_direct_simple_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites from loop-nullhomotopy theorem is declared" \
   '^theorem threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites from loop-nullhomotopy equality contract is declared" \
   '^theorem threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere homotopy prerequisites loop-nullhomotopy direct-simple compatibility is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement_direct_simple_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites from fundamental group theorem is declared" \
   '^theorem threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites from fundamental group equality contract is declared" \
   '^theorem threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere target prerequisites fundamental group direct-simple compatibility is declared" \
+  '^theorem threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement_direct_simple_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites fundamental group loop-route compatibility is declared" \
   '^theorem threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement_loop_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites from fundamental group theorem is declared" \
   '^theorem threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites from fundamental group equality contract is declared" \
   '^theorem threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere homotopy prerequisites fundamental group direct-simple compatibility is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement_direct_simple_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites fundamental group loop-route compatibility is declared" \
   '^theorem threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement_loop_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites from pi-one theorem is declared" \
   '^theorem threeSphere_target_prerequisites_of_piOneSubsingletonStatement\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites from pi-one equality contract is declared" \
   '^theorem threeSphere_target_prerequisites_of_piOneSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere target prerequisites pi-one direct-simple compatibility is declared" \
+  '^theorem threeSphere_target_prerequisites_of_piOneSubsingletonStatement_direct_simple_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites pi-one fundamental-group-route compatibility is declared" \
   '^theorem threeSphere_target_prerequisites_of_piOneSubsingletonStatement_fundamentalGroup_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites pi-one loop-route compatibility is declared" \
@@ -767,6 +777,8 @@ check_decl "target sphere homotopy prerequisites from pi-one theorem is declared
   '^theorem threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites from pi-one equality contract is declared" \
   '^theorem threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere homotopy prerequisites pi-one direct-simple compatibility is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement_direct_simple_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites pi-one fundamental-group-route compatibility is declared" \
   '^theorem threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement_fundamentalGroup_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites pi-one loop-route compatibility is declared" \
@@ -775,6 +787,8 @@ check_decl "target sphere target prerequisites from based-loop theorem is declar
   '^theorem threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites from based-loop equality contract is declared" \
   '^theorem threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere target prerequisites based-loop direct-simple compatibility is declared" \
+  '^theorem threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_direct_simple_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites based-loop loop-route compatibility is declared" \
   '^theorem threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_loop_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites based-loop path-route compatibility is declared" \
@@ -789,6 +803,8 @@ check_decl "target sphere homotopy prerequisites from based-loop theorem is decl
   '^theorem threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites from based-loop equality contract is declared" \
   '^theorem threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere homotopy prerequisites based-loop direct-simple compatibility is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_direct_simple_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites based-loop loop-route compatibility is declared" \
   '^theorem threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_loop_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites based-loop path-route compatibility is declared" \
@@ -803,18 +819,24 @@ check_decl "target sphere target prerequisites from path-homotopy theorem is dec
   '^theorem threeSphere_target_prerequisites_of_pathHomotopyStatement\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites from path-homotopy equality contract is declared" \
   '^theorem threeSphere_target_prerequisites_of_pathHomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere target prerequisites path-homotopy direct-simple compatibility is declared" \
+  '^theorem threeSphere_target_prerequisites_of_pathHomotopyStatement_direct_simple_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites path-homotopy loop-route compatibility is declared" \
   '^theorem threeSphere_target_prerequisites_of_pathHomotopyStatement_loop_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites from path-homotopy theorem is declared" \
   '^theorem threeSphere_homotopy_prerequisites_of_pathHomotopyStatement\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites from path-homotopy equality contract is declared" \
   '^theorem threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere homotopy prerequisites path-homotopy direct-simple compatibility is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_direct_simple_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites path-homotopy loop-route compatibility is declared" \
   '^theorem threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_loop_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites from path-quotient theorem is declared" \
   '^theorem threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites from path-quotient equality contract is declared" \
   '^theorem threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere target prerequisites path-quotient direct-simple compatibility is declared" \
+  '^theorem threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_direct_simple_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites path-quotient path-route compatibility is declared" \
   '^theorem threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_path_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites path-quotient loop-route compatibility is declared" \
@@ -823,6 +845,8 @@ check_decl "target sphere homotopy prerequisites from path-quotient theorem is d
   '^theorem threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites from path-quotient equality contract is declared" \
   '^theorem threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere homotopy prerequisites path-quotient direct-simple compatibility is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_direct_simple_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites path-quotient path-route compatibility is declared" \
   '^theorem threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_path_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites path-quotient loop-route compatibility is declared" \
@@ -18214,10 +18238,13 @@ open scoped Manifold ContDiff
 #check Poincare.threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement_eq
 #check Poincare.threeSphere_target_prerequisites_of_loopNullhomotopyStatement
 #check Poincare.threeSphere_target_prerequisites_of_loopNullhomotopyStatement_eq
+#check Poincare.threeSphere_target_prerequisites_of_loopNullhomotopyStatement_direct_simple_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement
 #check Poincare.threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement_direct_simple_route_eq
 #check Poincare.threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement
 #check Poincare.threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_eq
+#check Poincare.threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_direct_simple_route_eq
 #check Poincare.threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_loop_route_eq
 #check Poincare.threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_path_route_eq
 #check Poincare.threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_pathQuotient_route_eq
@@ -18225,6 +18252,7 @@ open scoped Manifold ContDiff
 #check Poincare.threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_piOne_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement
 #check Poincare.threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_direct_simple_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_loop_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_path_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_pathQuotient_route_eq
@@ -18232,16 +18260,20 @@ open scoped Manifold ContDiff
 #check Poincare.threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_piOne_route_eq
 #check Poincare.threeSphere_target_prerequisites_of_pathHomotopyStatement
 #check Poincare.threeSphere_target_prerequisites_of_pathHomotopyStatement_eq
+#check Poincare.threeSphere_target_prerequisites_of_pathHomotopyStatement_direct_simple_route_eq
 #check Poincare.threeSphere_target_prerequisites_of_pathHomotopyStatement_loop_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathHomotopyStatement
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_direct_simple_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_loop_route_eq
 #check Poincare.threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement
 #check Poincare.threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_eq
+#check Poincare.threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_direct_simple_route_eq
 #check Poincare.threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_path_route_eq
 #check Poincare.threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_loop_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_direct_simple_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_path_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_loop_route_eq
 #check Poincare.poincareConjectureStatement_eq
@@ -25135,6 +25167,7 @@ open scoped Manifold ContDiff
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_target_prerequisites_of_loopNullhomotopyStatement_eq
+#check Poincare.threeSphere_target_prerequisites_of_loopNullhomotopyStatement_direct_simple_route_eq
 
 #check (Poincare.threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement :
   Poincare.ThreeSphereLoopNullhomotopyStatement →
@@ -25148,6 +25181,7 @@ open scoped Manifold ContDiff
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement_direct_simple_route_eq
 
 #check (Poincare.threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement :
   Poincare.ThreeSphereFundamentalGroupSubsingletonStatement →
@@ -25160,6 +25194,7 @@ open scoped Manifold ContDiff
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement_eq
+#check Poincare.threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement_direct_simple_route_eq
 #check Poincare.threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement_loop_route_eq
 
 #check (Poincare.threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement :
@@ -25174,6 +25209,7 @@ open scoped Manifold ContDiff
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement_direct_simple_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement_loop_route_eq
 
 #check (Poincare.threeSphere_target_prerequisites_of_piOneSubsingletonStatement :
@@ -25187,6 +25223,7 @@ open scoped Manifold ContDiff
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_target_prerequisites_of_piOneSubsingletonStatement_eq
+#check Poincare.threeSphere_target_prerequisites_of_piOneSubsingletonStatement_direct_simple_route_eq
 #check Poincare.threeSphere_target_prerequisites_of_piOneSubsingletonStatement_fundamentalGroup_route_eq
 #check Poincare.threeSphere_target_prerequisites_of_piOneSubsingletonStatement_loop_route_eq
 
@@ -25202,6 +25239,7 @@ open scoped Manifold ContDiff
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement_direct_simple_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement_fundamentalGroup_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement_loop_route_eq
 
@@ -25216,6 +25254,7 @@ open scoped Manifold ContDiff
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_target_prerequisites_of_pathHomotopyStatement_eq
+#check Poincare.threeSphere_target_prerequisites_of_pathHomotopyStatement_direct_simple_route_eq
 #check Poincare.threeSphere_target_prerequisites_of_pathHomotopyStatement_loop_route_eq
 
 #check (Poincare.threeSphere_homotopy_prerequisites_of_pathHomotopyStatement :
@@ -25230,6 +25269,7 @@ open scoped Manifold ContDiff
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_direct_simple_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_loop_route_eq
 
 #check (Poincare.threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement :
@@ -25243,6 +25283,7 @@ open scoped Manifold ContDiff
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_eq
+#check Poincare.threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_direct_simple_route_eq
 #check Poincare.threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_path_route_eq
 #check Poincare.threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_loop_route_eq
 
@@ -25258,6 +25299,7 @@ open scoped Manifold ContDiff
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_direct_simple_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_path_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_loop_route_eq
 

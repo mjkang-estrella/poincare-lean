@@ -1296,6 +1296,7 @@ set_option linter.unusedVariables false
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_target_prerequisites_of_loopNullhomotopyStatement_eq
+#check Poincare.threeSphere_target_prerequisites_of_loopNullhomotopyStatement_direct_simple_route_eq
 
 #check (Poincare.threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement :
   Poincare.ThreeSphereLoopNullhomotopyStatement →
@@ -1309,9 +1310,11 @@ set_option linter.unusedVariables false
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement_direct_simple_route_eq
 
 #check Poincare.threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement
 #check Poincare.threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_eq
+#check Poincare.threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_direct_simple_route_eq
 #check Poincare.threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_loop_route_eq
 #check Poincare.threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_path_route_eq
 #check Poincare.threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_pathQuotient_route_eq
@@ -1319,6 +1322,7 @@ set_option linter.unusedVariables false
 #check Poincare.threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_piOne_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement
 #check Poincare.threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_direct_simple_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_loop_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_path_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_pathQuotient_route_eq
@@ -1336,6 +1340,7 @@ set_option linter.unusedVariables false
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_target_prerequisites_of_pathHomotopyStatement_eq
+#check Poincare.threeSphere_target_prerequisites_of_pathHomotopyStatement_direct_simple_route_eq
 #check Poincare.threeSphere_target_prerequisites_of_pathHomotopyStatement_loop_route_eq
 
 #check (Poincare.threeSphere_homotopy_prerequisites_of_pathHomotopyStatement :
@@ -1350,6 +1355,7 @@ set_option linter.unusedVariables false
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_direct_simple_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_loop_route_eq
 
 #check (Poincare.threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement :
@@ -1363,6 +1369,7 @@ set_option linter.unusedVariables false
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_eq
+#check Poincare.threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_direct_simple_route_eq
 #check Poincare.threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_path_route_eq
 #check Poincare.threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_loop_route_eq
 
@@ -1378,6 +1385,7 @@ set_option linter.unusedVariables false
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_direct_simple_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_path_route_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_loop_route_eq
 

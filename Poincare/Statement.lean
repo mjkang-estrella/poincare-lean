@@ -1320,6 +1320,19 @@ theorem threeSphere_target_prerequisites_of_loopNullhomotopyStatement_eq :
   apply Subsingleton.elim
 
 /--
+The loop-nullhomotopy target-prerequisite route also agrees with the explicit
+direct-simple prerequisite alias.
+-/
+theorem threeSphere_target_prerequisites_of_loopNullhomotopyStatement_direct_simple_route_eq :
+    threeSphere_target_prerequisites_of_loopNullhomotopyStatement =
+      (fun h : ThreeSphereLoopNullhomotopyStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement h
+        threeSphere_target_prerequisites_of_simpleConnectedSpace) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The concrete loop-nullhomotopy obligation also supplies the full
 homotopy-oriented prerequisite payload for the standard sphere.
 -/
@@ -1352,6 +1365,19 @@ theorem threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement_eq :
   apply Subsingleton.elim
 
 /--
+The loop-nullhomotopy homotopy-prerequisite route also agrees with the explicit
+direct-simple homotopy prerequisite alias.
+-/
+theorem threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement_direct_simple_route_eq :
+    threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement =
+      (fun h : ThreeSphereLoopNullhomotopyStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement h
+        threeSphere_homotopy_prerequisites_of_simpleConnectedSpace) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 Fundamental-group triviality supplies the full target prerequisite payload for
 the standard sphere.
 -/
@@ -1379,6 +1405,19 @@ theorem threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatemen
         letI : SimplyConnectedSpace ThreeSphere :=
           threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement h
         threeSphere_target_prerequisites) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The fundamental-group target-prerequisite route also agrees with the explicit
+direct-simple prerequisite alias.
+-/
+theorem threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement_direct_simple_route_eq :
+    threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement =
+      (fun h : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement h
+        threeSphere_target_prerequisites_of_simpleConnectedSpace) := by
   funext h
   apply Subsingleton.elim
 
@@ -1427,6 +1466,19 @@ theorem threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatem
   apply Subsingleton.elim
 
 /--
+The fundamental-group homotopy-prerequisite route also agrees with the explicit
+direct-simple homotopy prerequisite alias.
+-/
+theorem threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement_direct_simple_route_eq :
+    threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement =
+      (fun h : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement h
+        threeSphere_homotopy_prerequisites_of_simpleConnectedSpace) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The fundamental-group homotopy-prerequisite route agrees with the route that
 first converts fundamental-group triviality to loop-nullhomotopy.
 -/
@@ -1466,6 +1518,19 @@ theorem threeSphere_target_prerequisites_of_piOneSubsingletonStatement_eq :
         letI : SimplyConnectedSpace ThreeSphere :=
           threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement h
         threeSphere_target_prerequisites) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The `π₁` target-prerequisite route also agrees with the explicit direct-simple
+prerequisite alias.
+-/
+theorem threeSphere_target_prerequisites_of_piOneSubsingletonStatement_direct_simple_route_eq :
+    threeSphere_target_prerequisites_of_piOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement h
+        threeSphere_target_prerequisites_of_simpleConnectedSpace) := by
   funext h
   apply Subsingleton.elim
 
@@ -1523,6 +1588,19 @@ theorem threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement_eq :
         letI : SimplyConnectedSpace ThreeSphere :=
           threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement h
         threeSphere_homotopy_prerequisites) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The `π₁` homotopy-prerequisite route also agrees with the explicit
+direct-simple homotopy prerequisite alias.
+-/
+theorem threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement_direct_simple_route_eq :
+    threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement h
+        threeSphere_homotopy_prerequisites_of_simpleConnectedSpace) := by
   funext h
   apply Subsingleton.elim
 
@@ -1586,6 +1664,21 @@ theorem threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_eq
   apply Subsingleton.elim
 
 /--
+The based-loop target-prerequisite route also agrees with the explicit
+direct-simple prerequisite alias.
+-/
+theorem threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement_direct_simple_route_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement h) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement h
+        threeSphere_target_prerequisites_of_simpleConnectedSpace) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The based loop-nullhomotopy obligation also supplies the full homotopy-oriented
 prerequisite payload for the standard sphere.
 -/
@@ -1617,6 +1710,21 @@ theorem threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_eq
         letI : SimplyConnectedSpace ThreeSphere :=
           threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement h
         threeSphere_homotopy_prerequisites) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The based-loop homotopy-prerequisite route also agrees with the explicit
+direct-simple homotopy prerequisite alias.
+-/
+theorem threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_direct_simple_route_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement h) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement h
+        threeSphere_homotopy_prerequisites_of_simpleConnectedSpace) := by
   funext h
   apply Subsingleton.elim
 
@@ -1736,6 +1844,19 @@ theorem threeSphere_target_prerequisites_of_pathHomotopyStatement_eq :
   apply Subsingleton.elim
 
 /--
+The path-homotopy target-prerequisite route also agrees with the explicit
+direct-simple prerequisite alias.
+-/
+theorem threeSphere_target_prerequisites_of_pathHomotopyStatement_direct_simple_route_eq :
+    threeSphere_target_prerequisites_of_pathHomotopyStatement =
+      (fun h : ThreeSpherePathHomotopyStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_pathHomotopyStatement h
+        threeSphere_target_prerequisites_of_simpleConnectedSpace) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The direct path-homotopy target-prerequisite route agrees with the route that
 first converts path-homotopy to loop-nullhomotopy.
 -/
@@ -1781,6 +1902,19 @@ theorem threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_eq :
   apply Subsingleton.elim
 
 /--
+The path-homotopy homotopy-prerequisite route also agrees with the explicit
+direct-simple homotopy prerequisite alias.
+-/
+theorem threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_direct_simple_route_eq :
+    threeSphere_homotopy_prerequisites_of_pathHomotopyStatement =
+      (fun h : ThreeSpherePathHomotopyStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_pathHomotopyStatement h
+        threeSphere_homotopy_prerequisites_of_simpleConnectedSpace) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The direct path-homotopy homotopy-prerequisite route agrees with the route that
 first converts path-homotopy to loop-nullhomotopy.
 -/
@@ -1820,6 +1954,19 @@ theorem threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_eq
         letI : SimplyConnectedSpace ThreeSphere :=
           threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement h
         threeSphere_target_prerequisites) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The quotient-uniqueness target-prerequisite route also agrees with the explicit
+direct-simple prerequisite alias.
+-/
+theorem threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement_direct_simple_route_eq :
+    threeSphere_target_prerequisites_of_pathQuotientSubsingletonStatement =
+      (fun h : ThreeSpherePathQuotientSubsingletonStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement h
+        threeSphere_target_prerequisites_of_simpleConnectedSpace) := by
   funext h
   apply Subsingleton.elim
 
@@ -1878,6 +2025,19 @@ theorem threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_
         letI : SimplyConnectedSpace ThreeSphere :=
           threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement h
         threeSphere_homotopy_prerequisites) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The quotient-uniqueness homotopy-prerequisite route also agrees with the
+explicit direct-simple homotopy prerequisite alias.
+-/
+theorem threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_direct_simple_route_eq :
+    threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement =
+      (fun h : ThreeSpherePathQuotientSubsingletonStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement h
+        threeSphere_homotopy_prerequisites_of_simpleConnectedSpace) := by
   funext h
   apply Subsingleton.elim
 
