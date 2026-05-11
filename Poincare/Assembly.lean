@@ -1754,6 +1754,20 @@ theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsi
   funext hPiOne h
   apply Subsingleton.elim
 
+/--
+The `π₁` target self payload is the bare self payload under the
+simple-connectedness instance derived from the `π₁` formulation.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement_bare_route_eq :
+    threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement hPiOne
+          threeSphere_self_homeomorph_payload_of_poincare_statement h) := by
+  funext hPiOne h
+  apply Subsingleton.elim
+
 /-- The `π₁` target self payload agrees with the fundamental-group payload route. -/
 theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq :
     threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement =
@@ -1813,6 +1827,20 @@ theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsin
   funext hPiOne h
   apply Subsingleton.elim
 
+/--
+The `π₁` smooth self payload is the bare smooth self payload under the
+simple-connectedness instance derived from the `π₁` formulation.
+-/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_bare_route_eq :
+    threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement hPiOne
+          threeSphere_self_diffeomorph_payload_of_smooth_statement h) := by
+  funext hPiOne h
+  apply Subsingleton.elim
+
 /-- The `π₁` smooth self payload agrees with the fundamental-group payload route. -/
 theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq :
     threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement =
@@ -1869,6 +1897,21 @@ theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsing
           ⟨threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement hPiOne,
             threeSphere_self_homeomorph_of_smooth_statement_and_piOneSubsingletonStatement
               hPiOne h⟩) := by
+  funext hPiOne h
+  apply Subsingleton.elim
+
+/--
+The `π₁` smooth-to-topological payload is the bare smooth-to-topological
+payload under the simple-connectedness instance derived from the `π₁`
+formulation.
+-/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_bare_route_eq :
+    threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement hPiOne
+          threeSphere_self_homeomorph_payload_of_smooth_statement h) := by
   funext hPiOne h
   apply Subsingleton.elim
 

@@ -2044,6 +2044,8 @@ check_decl "standard sphere target self payload from pi-one theorem is declared"
   '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere target self payload from pi-one equality contract is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere target self payload pi-one bare-route compatibility is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement_bare_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere target self payload pi-one fundamental-group compatibility is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere target self payload pi-one loop-route compatibility is declared" \
@@ -2052,6 +2054,8 @@ check_decl "standard sphere smooth self-diffeomorphism payload from pi-one theor
   '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-diffeomorphism payload from pi-one equality contract is declared" \
   '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-diffeomorphism payload pi-one bare-route compatibility is declared" \
+  '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_bare_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-diffeomorphism payload pi-one fundamental-group compatibility is declared" \
   '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-diffeomorphism payload pi-one loop-route compatibility is declared" \
@@ -2060,6 +2064,8 @@ check_decl "standard sphere smooth self-homeomorphism payload from pi-one theore
   '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-homeomorphism payload from pi-one equality contract is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-homeomorphism payload pi-one bare-route compatibility is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_bare_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-homeomorphism payload pi-one fundamental-group compatibility is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-homeomorphism payload pi-one loop-route compatibility is declared" \
