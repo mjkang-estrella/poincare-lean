@@ -1358,9 +1358,9 @@ converts target `π₁` subsingletons to fundamental-group triviality.
 theorem onePoint_threeSpace_piOneSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement_fundamentalGroup_route_eq :
     onePoint_threeSpace_piOneSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement =
       (fun h : ThreeSpherePiOneSubsingletonStatement =>
-        onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mpr
+        onePoint_threeSpace_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement
           (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_threeSphereFundamentalGroupSubsingletonStatement
-            (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+            (threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
               h))) := by
   funext h
   apply Subsingleton.elim
@@ -1394,9 +1394,9 @@ converts compactification `π₁` subsingletons to fundamental-group triviality.
 theorem threeSpherePiOneSubsingletonStatement_of_onePoint_threeSpace_piOneSubsingletonStatement_fundamentalGroup_route_eq :
     threeSpherePiOneSubsingletonStatement_of_onePoint_threeSpace_piOneSubsingletonStatement =
       (fun h : OnePointThreeSpacePiOneSubsingletonStatement =>
-        threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mpr
+        threeSphere_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement
           (threeSphereFundamentalGroupSubsingletonStatement_of_onePoint_threeSpace_fundamentalGroupSubsingletonStatement
-            (onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+            (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
               h))) := by
   funext h
   apply Subsingleton.elim
@@ -2306,7 +2306,7 @@ theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPiOneSubs
     onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPiOneSubsingletonStatement =
       (fun h : OnePointThreeSpacePiOneSubsingletonStatement =>
         onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointFundamentalGroupSubsingletonStatement
-          (onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+          (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
             h)) := by
   funext h
   apply Subsingleton.elim
@@ -2316,9 +2316,7 @@ theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPiOneSubs
     onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPiOneSubsingletonStatement =
       (fun h : OnePointThreeSpacePiOneSubsingletonStatement =>
         onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointLoopNullhomotopyStatement
-          (onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-            (onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-              h))) := by
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement h)) := by
   funext h
   apply Subsingleton.elim
 
@@ -2422,7 +2420,7 @@ theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingleton
     onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingletonStatement =
       (fun h : ThreeSpherePiOneSubsingletonStatement =>
         onePoint_threeSpace_homotopy_manifold_prerequisites_of_fundamentalGroupSubsingletonStatement
-          (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+          (threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
             h)) := by
   funext h
   apply Subsingleton.elim
@@ -2432,9 +2430,7 @@ theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingleton
     onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingletonStatement =
       (fun h : ThreeSpherePiOneSubsingletonStatement =>
         onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
-          (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-            (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-              h))) := by
+          (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement h)) := by
   funext h
   apply Subsingleton.elim
 
@@ -3750,7 +3746,7 @@ theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_piOneSubsingletonSt
     simplyConnectedSpace_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
       hPiOne h =
       simplyConnectedSpace_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement
-        (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+        (threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
           hPiOne) h := by
   apply Subsingleton.elim
 
@@ -3762,9 +3758,8 @@ theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_of_piOneSubsingletonSt
     simplyConnectedSpace_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
       hPiOne h =
       simplyConnectedSpace_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
-        (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-          (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-            hPiOne)) h := by
+        (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+          hPiOne) h := by
   apply Subsingleton.elim
 
 /--
@@ -4077,7 +4072,7 @@ theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_piOneSub
     homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
       hPiOne h =
       homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement
-        (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+        (threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
           hPiOne) h := by
   apply Subsingleton.elim
 
@@ -4089,9 +4084,8 @@ theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_piOneSub
     homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
       hPiOne h =
       homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
-        (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-          (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-            hPiOne)) h := by
+        (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+          hPiOne) h := by
   apply Subsingleton.elim
 
 /--
@@ -4734,7 +4728,7 @@ theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_piOneSu
     poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
       hPiOne h =
       poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement
-        (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+        (threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
           hPiOne) h := by
   apply Subsingleton.elim
 
@@ -4746,9 +4740,8 @@ theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_piOneSu
     poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
       hPiOne h =
       poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
-        (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-          (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-            hPiOne)) h := by
+        (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+          hPiOne) h := by
   apply Subsingleton.elim
 
 /-- The direct target `π₁` candidate route agrees with the compactification loop route. -/
@@ -4759,9 +4752,8 @@ theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_piOneSu
     poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
       hPiOne h =
       poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
-        (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-          (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-            hPiOne)) (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) := by
+        (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+          hPiOne) (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) := by
   apply Subsingleton.elim
 
 /--
@@ -7164,7 +7156,7 @@ theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecog
         fun extinction =>
           fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
             onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
-              (onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+              (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
                 hPiOne)
               extinction recognize) := by
   funext hPiOne extinction recognize
@@ -7177,9 +7169,8 @@ theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecog
         fun extinction =>
           fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
             onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
-              (onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-                (onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-                  hPiOne))
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+                hPiOne)
               extinction recognize) := by
   funext hPiOne extinction recognize
   apply Subsingleton.elim
@@ -7462,9 +7453,8 @@ theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecog
       letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
         onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
           (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
-            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-              (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-                hPiOne)))
+            (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+              hPiOne))
       letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
         onePoint_threeSpace_compactSpace
       FiniteExtinctionByRicciFlowWithSurgery
@@ -7473,9 +7463,8 @@ theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecog
     Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ
       (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
   onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
-    (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-      (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-        hPiOne))
+    (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+      hPiOne)
     extinction recognize
 
 /-- The standard-sphere `π₁` extinction-recognition self route reduces through fundamental groups to loops. -/
@@ -7485,9 +7474,8 @@ theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecog
         fun extinction =>
           fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
             onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
-              (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-                (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-                  hPiOne))
+              (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+                hPiOne)
               extinction recognize) := by
   funext hPiOne extinction recognize
   apply Subsingleton.elim
@@ -7499,7 +7487,7 @@ theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecog
         fun extinction =>
           fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
             onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement
-              (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+              (threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
                 hPiOne)
               extinction recognize) := by
   funext hPiOne extinction recognize
@@ -7517,9 +7505,8 @@ theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecog
       letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
         onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
           (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
-            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-              (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-                hPiOne)))
+            (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+              hPiOne))
       letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
         onePoint_threeSpace_compactSpace
       FiniteExtinctionByRicciFlowWithSurgery
@@ -7989,7 +7976,7 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpa
         fun extinction =>
           fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
             onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
-              (onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+              (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
                 hPiOne)
               extinction recognize) := by
   funext hPiOne extinction recognize
@@ -8002,9 +7989,8 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpa
         fun extinction =>
           fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
             onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
-              (onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-                (onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-                  hPiOne))
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+                hPiOne)
               extinction recognize) := by
   funext hPiOne extinction recognize
   apply Subsingleton.elim
@@ -8277,9 +8263,8 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpa
       letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
         onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
           (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
-            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-              (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-                hPiOne)))
+            (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+              hPiOne))
       letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
         onePoint_threeSpace_compactSpace
       FiniteExtinctionByRicciFlowWithSurgery
@@ -8287,9 +8272,8 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpa
     (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0}) :
     Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
   onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
-    (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-      (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-        hPiOne))
+    (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+      hPiOne)
     extinction recognize
 
 /-- The standard-sphere `π₁` extinction-recognition target route reduces through fundamental groups to loops. -/
@@ -8299,9 +8283,8 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpa
         fun extinction =>
           fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
             onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
-              (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-                (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-                  hPiOne))
+              (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+                hPiOne)
               extinction recognize) := by
   funext hPiOne extinction recognize
   apply Subsingleton.elim
@@ -8313,7 +8296,7 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpa
         fun extinction =>
           fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
             onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement
-              (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+              (threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
                 hPiOne)
               extinction recognize) := by
   funext hPiOne extinction recognize
@@ -8331,9 +8314,8 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpa
       letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
         onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
           (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
-            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-              (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-                hPiOne)))
+            (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+              hPiOne))
       letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
         onePoint_threeSpace_compactSpace
       FiniteExtinctionByRicciFlowWithSurgery
@@ -8786,7 +8768,7 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePoint
         fun extinction =>
           fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
             onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
-              (onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+              (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
                 hPiOne)
               extinction recognize) := by
   funext hPiOne extinction recognize
@@ -8799,9 +8781,8 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePoint
         fun extinction =>
           fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
             onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
-              (onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-                (onePoint_threeSpace_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-                  hPiOne))
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+                hPiOne)
               extinction recognize) := by
   funext hPiOne extinction recognize
   apply Subsingleton.elim
@@ -9036,9 +9017,8 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePoint
       letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
         onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
           (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
-            (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-              (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-                hPiOne)))
+            (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+              hPiOne))
       letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
         onePoint_threeSpace_compactSpace
       FiniteExtinctionByRicciFlowWithSurgery
@@ -9081,7 +9061,7 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePoint
         fun extinction =>
           fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
             onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement
-              (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+              (threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
                 hPiOne)
               extinction recognize) := by
   funext hPiOne extinction recognize
@@ -9094,9 +9074,8 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePoint
         fun extinction =>
           fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
             onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
-              (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-                (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-                  hPiOne))
+              (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+                hPiOne)
               extinction recognize) := by
   funext hPiOne extinction recognize
   apply Subsingleton.elim

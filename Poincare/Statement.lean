@@ -1346,7 +1346,7 @@ theorem threeSphere_target_prerequisites_of_piOneSubsingletonStatement_fundament
     threeSphere_target_prerequisites_of_piOneSubsingletonStatement =
       (fun h : ThreeSpherePiOneSubsingletonStatement =>
         threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement
-          (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+          (threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
             h)) := by
   funext h
   apply Subsingleton.elim
@@ -1359,9 +1359,7 @@ theorem threeSphere_target_prerequisites_of_piOneSubsingletonStatement_loop_rout
     threeSphere_target_prerequisites_of_piOneSubsingletonStatement =
       (fun h : ThreeSpherePiOneSubsingletonStatement =>
         threeSphere_target_prerequisites_of_loopNullhomotopyStatement
-          (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-            (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-              h))) := by
+          (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement h)) := by
   funext h
   apply Subsingleton.elim
 
@@ -1405,7 +1403,7 @@ theorem threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement_fundame
     threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement =
       (fun h : ThreeSpherePiOneSubsingletonStatement =>
         threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement
-          (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
+          (threeSphere_fundamentalGroupSubsingletonStatement_of_piOneSubsingletonStatement
             h)) := by
   funext h
   apply Subsingleton.elim
@@ -1418,9 +1416,7 @@ theorem threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement_loop_ro
     threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement =
       (fun h : ThreeSpherePiOneSubsingletonStatement =>
         threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement
-          (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
-            (threeSphere_piOneSubsingletonStatement_iff_fundamentalGroupSubsingletonStatement.mp
-              h))) := by
+          (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement h)) := by
   funext h
   apply Subsingleton.elim
 
