@@ -228,6 +228,8 @@ check_completion_constructor_endpoint_coverage() {
   constructor_surface_canonical_target_missing="$constructor_surface_dir/canonical-target-missing"
   constructor_surface_criterion_endpoints="$constructor_surface_dir/criterion-endpoints"
   constructor_surface_criterion_missing="$constructor_surface_dir/criterion-missing"
+  constructor_surface_canonical_criterion_endpoints="$constructor_surface_dir/canonical-criterion-endpoints"
+  constructor_surface_canonical_criterion_missing="$constructor_surface_dir/canonical-criterion-missing"
 
   perl -0ne 'while (/^theorem\s+(completion_certificate_of_[A-Za-z0-9_]+)\b(.*?)(?=^theorem\s+|\z)/msg) { my ($n,$b)=($1,$2); next if $n =~ /_eq$/; next unless $b =~ /:\s*PoincareCompletionCertificate\.\{u\}/s; print "$n\n"; }' \
     Poincare/CompletionTarget.lean | sort -u > "$constructor_surface_constructors"
@@ -354,6 +356,23 @@ check_completion_constructor_endpoint_coverage() {
     status=1
   else
     echo "PASS: every completion certificate constructor exposes a completion-criterion endpoint"
+  fi
+
+  rg --no-filename -o '^theorem canonical_completion_criterion_of_completion_certificate_of_([A-Za-z0-9_]+)\b' \
+    -r 'completion_certificate_of_$1' \
+    Poincare/CanonicalBridges.lean Poincare/CompletionTarget.lean |
+    sed '/_eq$/d' |
+    sort -u > "$constructor_surface_canonical_criterion_endpoints"
+
+  comm -23 "$constructor_surface_constructors" "$constructor_surface_canonical_criterion_endpoints" \
+    > "$constructor_surface_canonical_criterion_missing"
+
+  if [ -s "$constructor_surface_canonical_criterion_missing" ]; then
+    echo "FAIL: every completion certificate constructor exposes a canonical-criterion endpoint"
+    sed 's/^/MISSING: /' "$constructor_surface_canonical_criterion_missing"
+    status=1
+  else
+    echo "PASS: every completion certificate constructor exposes a canonical-criterion endpoint"
   fi
 }
 
