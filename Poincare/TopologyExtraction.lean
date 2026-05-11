@@ -8653,6 +8653,21 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpace
   apply Subsingleton.elim
 
 /--
+The local loop universal-recognition payload is the bare recognition payload
+under the simple-connectedness instance derived from loop-nullhomotopy.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement =
+      (fun hLoop : OnePointThreeSpaceLoopNullhomotopyStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement
+            recognize) := by
+  funext hLoop recognize
+  apply Subsingleton.elim
+
+/--
 The compactification fundamental-group universal-recognition endpoint also
 packages the local homotopy/manifold prerequisites needed to apply recognition
 to the compactification model.
@@ -8686,6 +8701,23 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpace
               hFund,
             onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
               hFund recognize⟩) := by
+  funext hFund recognize
+  apply Subsingleton.elim
+
+/--
+The local fundamental-group universal-recognition payload is the bare
+recognition payload under the simple-connectedness instance derived from
+fundamental-group triviality.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement =
+      (fun hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement
+              hFund
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement
+            recognize) := by
   funext hFund recognize
   apply Subsingleton.elim
 
@@ -8735,6 +8767,21 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpace
               hPi,
             onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement
               hPi recognize⟩) := by
+  funext hPi recognize
+  apply Subsingleton.elim
+
+/--
+The local `π₁` universal-recognition payload is the bare recognition payload
+under the simple-connectedness instance derived from `π₁` triviality.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement =
+      (fun hPi : OnePointThreeSpacePiOneSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement hPi
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement
+            recognize) := by
   funext hPi recognize
   apply Subsingleton.elim
 
@@ -8800,6 +8847,26 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpace
               hBased,
             onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointBasedLoopNullhomotopyStatement
               hBased recognize⟩) := by
+  funext hBased recognize
+  apply Subsingleton.elim
+
+/--
+The local based-loop universal-recognition payload is the bare recognition
+payload under the simple-connectedness instance derived from based-loop
+nullhomotopy.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointBasedLoopNullhomotopyStatement_bare_route_eq
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    (fun hBased : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+      fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+        onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointBasedLoopNullhomotopyStatement
+          hBased recognize) =
+      (fun hBased : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement
+            recognize) := by
   funext hBased recognize
   apply Subsingleton.elim
 
@@ -9143,6 +9210,21 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpace
   funext hPath recognize
   apply Subsingleton.elim
 
+/--
+The local path universal-recognition payload is the bare recognition payload
+under the simple-connectedness instance derived from path-homotopy uniqueness.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement =
+      (fun hPath : OnePointThreeSpacePathHomotopyStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement hPath
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement
+            recognize) := by
+  funext hPath recognize
+  apply Subsingleton.elim
+
 /-- The path universal-recognition payload agrees with the loop-mediated payload route. -/
 theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement_loop_route_eq :
     onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement =
@@ -9188,6 +9270,23 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpace
               hQuot,
             onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement
               hQuot recognize⟩) := by
+  funext hQuot recognize
+  apply Subsingleton.elim
+
+/--
+The local quotient universal-recognition payload is the bare recognition
+payload under the simple-connectedness instance derived from path-quotient
+uniqueness.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement =
+      (fun hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_pathQuotientSubsingletonStatement
+              hQuot
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement
+            recognize) := by
   funext hQuot recognize
   apply Subsingleton.elim
 
