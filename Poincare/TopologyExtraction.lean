@@ -11356,6 +11356,19 @@ theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecog
   funext hFund extinction recognize
   apply Subsingleton.elim
 
+/-- The standard-sphere fundamental-group extinction-recognition self route agrees with the compactification-local route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement_onePoint_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
+              (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_threeSphereFundamentalGroupSubsingletonStatement
+                hFund)
+              extinction recognize) := by
+  funext hFund extinction recognize
+  apply Subsingleton.elim
+
 /-- The standard-sphere fundamental-group extinction-recognition self route agrees with reflexive recognition. -/
 theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement_direct_route_eq
     (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
@@ -12487,6 +12500,19 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpa
   funext hFund extinction recognize
   apply Subsingleton.elim
 
+/-- The standard-sphere fundamental-group extinction-recognition target route agrees with the compactification-local route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement_onePoint_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
+              (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_threeSphereFundamentalGroupSubsingletonStatement
+                hFund)
+              extinction recognize) := by
+  funext hFund extinction recognize
+  apply Subsingleton.elim
+
 /-- The standard-sphere fundamental-group extinction-recognition target route agrees with the direct model homeomorphism. -/
 theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement_direct_route_eq
     (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
@@ -13578,6 +13604,19 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePoint
           fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
             onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
               (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement hFund)
+              extinction recognize) := by
+  funext hFund extinction recognize
+  apply Subsingleton.elim
+
+/-- The standard-sphere fundamental-group extinction-recognition payload agrees with the compactification-local payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement_onePoint_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
+              (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_threeSphereFundamentalGroupSubsingletonStatement
+                hFund)
               extinction recognize) := by
   funext hFund extinction recognize
   apply Subsingleton.elim
