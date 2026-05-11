@@ -1591,6 +1591,6251 @@ theorem completion_certificate_of_project_statement_payload_of_completion_certif
         payload := by
   apply Subsingleton.elim
 
+
+
+/-
+Completion certificate payload route coverage for constructor families whose
+route contracts were not part of the original base payload constructors.
+-/
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_component_extraction_derivation_requirements_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_component_extraction_derivation_requirements
+        smoothabilityRequirement surgeryRequirement topologyRequirement) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_component_extraction_derivation_requirements_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_component_extraction_derivation_requirements
+        smoothabilityRequirement surgeryRequirement topologyRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_component_extraction_derivation_requirements
+            smoothabilityRequirement surgeryRequirement topologyRequirement),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_component_extraction_derivation_requirements
+            smoothabilityRequirement surgeryRequirement topologyRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_component_extraction_derivation_requirements
+              smoothabilityRequirement surgeryRequirement topologyRequirement)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_component_extraction_derivation_requirements_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_component_extraction_derivation_requirements
+        smoothabilityRequirement surgeryRequirement topologyRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_component_extraction_derivation_requirements
+            smoothabilityRequirement surgeryRequirement topologyRequirement),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_component_extraction_derivation_requirements
+            smoothabilityRequirement surgeryRequirement topologyRequirement),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_component_extraction_derivation_requirements
+            smoothabilityRequirement surgeryRequirement topologyRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_component_extraction_derivation_requirements
+              smoothabilityRequirement surgeryRequirement topologyRequirement)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_component_extraction_derivation_requirements_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_component_extraction_derivation_requirements
+        smoothabilityRequirement surgeryRequirement topologyRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_component_extraction_derivation_requirements
+            smoothabilityRequirement surgeryRequirement topologyRequirement),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_component_extraction_derivation_requirements
+            smoothabilityRequirement surgeryRequirement topologyRequirement),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_component_extraction_derivation_requirements
+            smoothabilityRequirement surgeryRequirement topologyRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_component_extraction_derivation_requirements
+              smoothabilityRequirement surgeryRequirement topologyRequirement)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_component_extraction_derivation_requirements_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_component_extraction_derivation_requirements
+        smoothabilityRequirement surgeryRequirement topologyRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_component_extraction_derivation_requirements
+            smoothabilityRequirement surgeryRequirement topologyRequirement),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_component_extraction_derivation_requirements
+            smoothabilityRequirement surgeryRequirement topologyRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_component_extraction_derivation_requirements
+              smoothabilityRequirement surgeryRequirement topologyRequirement)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_component_extraction_derivation_requirements_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_component_extraction_derivation_requirements
+        smoothabilityRequirement surgeryRequirement topologyRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_component_extraction_derivation_requirements
+            smoothabilityRequirement surgeryRequirement topologyRequirement),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_component_extraction_derivation_requirements
+            smoothabilityRequirement surgeryRequirement topologyRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_component_extraction_derivation_requirements
+              smoothabilityRequirement surgeryRequirement topologyRequirement)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_component_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_component_extraction_derivation_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_component_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_component_extraction_derivation_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_component_extraction_derivation_requirements_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_component_extraction_derivation_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_component_extraction_derivation_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_component_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_component_extraction_derivation_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_component_extraction_derivation_requirements_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_component_extraction_derivation_requirements_payload
+            payload),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_component_extraction_derivation_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_component_extraction_derivation_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_component_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_component_extraction_derivation_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_component_extraction_derivation_requirements_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_component_extraction_derivation_requirements_payload
+            payload),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_component_extraction_derivation_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_component_extraction_derivation_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_component_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_component_extraction_derivation_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_component_extraction_derivation_requirements_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_component_extraction_derivation_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_component_extraction_derivation_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_component_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_component_extraction_derivation_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_component_extraction_derivation_requirements_payload
+            payload),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_component_extraction_derivation_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_component_extraction_derivation_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_component_requirements_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_component_requirements
+        smoothabilityRequirement surgeryRequirement topologyRequirement) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_component_requirements_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_component_requirements
+        smoothabilityRequirement surgeryRequirement topologyRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_component_requirements
+            smoothabilityRequirement surgeryRequirement topologyRequirement),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_component_requirements
+            smoothabilityRequirement surgeryRequirement topologyRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_component_requirements
+              smoothabilityRequirement surgeryRequirement topologyRequirement)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_component_requirements_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_component_requirements
+        smoothabilityRequirement surgeryRequirement topologyRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_component_requirements
+            smoothabilityRequirement surgeryRequirement topologyRequirement),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_component_requirements
+            smoothabilityRequirement surgeryRequirement topologyRequirement),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_component_requirements
+            smoothabilityRequirement surgeryRequirement topologyRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_component_requirements
+              smoothabilityRequirement surgeryRequirement topologyRequirement)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_component_requirements_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_component_requirements
+        smoothabilityRequirement surgeryRequirement topologyRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_component_requirements
+            smoothabilityRequirement surgeryRequirement topologyRequirement),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_component_requirements
+            smoothabilityRequirement surgeryRequirement topologyRequirement),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_component_requirements
+            smoothabilityRequirement surgeryRequirement topologyRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_component_requirements
+              smoothabilityRequirement surgeryRequirement topologyRequirement)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_component_requirements_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_component_requirements
+        smoothabilityRequirement surgeryRequirement topologyRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_component_requirements
+            smoothabilityRequirement surgeryRequirement topologyRequirement),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_component_requirements
+            smoothabilityRequirement surgeryRequirement topologyRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_component_requirements
+              smoothabilityRequirement surgeryRequirement topologyRequirement)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_component_requirements_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_component_requirements
+        smoothabilityRequirement surgeryRequirement topologyRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_component_requirements
+            smoothabilityRequirement surgeryRequirement topologyRequirement),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_component_requirements
+            smoothabilityRequirement surgeryRequirement topologyRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_component_requirements
+              smoothabilityRequirement surgeryRequirement topologyRequirement)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_component_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_component_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_component_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_component_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_component_requirements_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_component_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_component_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_component_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_component_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_component_requirements_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_component_requirements_payload
+            payload),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_component_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_component_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_component_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_component_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_component_requirements_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_component_requirements_payload
+            payload),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_component_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_component_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_component_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_component_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_component_requirements_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_component_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_component_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_component_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_component_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_component_requirements_payload
+            payload),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_component_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_component_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_components_eq
+    (smoothability : SmoothabilityPackage.{u})
+    (surgery :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topology : ExtinctionTopologyExtractionPackage.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_components
+        smoothability surgery topology) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_components_eq
+    (smoothability : SmoothabilityPackage.{u})
+    (surgery :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topology : ExtinctionTopologyExtractionPackage.{u}) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_components
+        smoothability surgery topology) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_components
+            smoothability surgery topology),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_components
+            smoothability surgery topology),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_components
+              smoothability surgery topology)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_components_eq
+    (smoothability : SmoothabilityPackage.{u})
+    (surgery :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topology : ExtinctionTopologyExtractionPackage.{u}) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_components
+        smoothability surgery topology) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_components
+            smoothability surgery topology),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_components
+            smoothability surgery topology),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_components
+            smoothability surgery topology),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_components
+              smoothability surgery topology)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_components_eq
+    (smoothability : SmoothabilityPackage.{u})
+    (surgery :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topology : ExtinctionTopologyExtractionPackage.{u}) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_components
+        smoothability surgery topology) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_components
+            smoothability surgery topology),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_components
+            smoothability surgery topology),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_components
+            smoothability surgery topology),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_components
+              smoothability surgery topology)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_components_eq
+    (smoothability : SmoothabilityPackage.{u})
+    (surgery :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topology : ExtinctionTopologyExtractionPackage.{u}) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_components
+        smoothability surgery topology) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_components
+            smoothability surgery topology),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_components
+            smoothability surgery topology),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_components
+              smoothability surgery topology)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_components_eq
+    (smoothability : SmoothabilityPackage.{u})
+    (surgery :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topology : ExtinctionTopologyExtractionPackage.{u}) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_components
+        smoothability surgery topology) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_components
+            smoothability surgery topology),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_components
+            smoothability surgery topology),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_components
+              smoothability surgery topology)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_components_payload_eq
+    (payload :
+      ∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+        ExtinctionTopologyExtractionPackage.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_components_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_components_payload_eq
+    (payload :
+      ∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+        ExtinctionTopologyExtractionPackage.{u}) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_components_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_components_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_components_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_components_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_components_payload_eq
+    (payload :
+      ∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+        ExtinctionTopologyExtractionPackage.{u}) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_components_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_components_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_components_payload
+            payload),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_components_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_components_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_components_payload_eq
+    (payload :
+      ∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+        ExtinctionTopologyExtractionPackage.{u}) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_components_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_components_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_components_payload
+            payload),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_components_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_components_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_components_payload_eq
+    (payload :
+      ∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+        ExtinctionTopologyExtractionPackage.{u}) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_components_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_components_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_components_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_components_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_components_payload_eq
+    (payload :
+      ∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+        ExtinctionTopologyExtractionPackage.{u}) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_components_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_components_payload
+            payload),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_components_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_components_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+            dependencies),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+            dependencies),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+              dependencies)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+            dependencies),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+            dependencies),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+            dependencies),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+              dependencies)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+            dependencies),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+            dependencies),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+            dependencies),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+              dependencies)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+            dependencies),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+            dependencies),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+              dependencies)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+            dependencies),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+            dependencies),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+              dependencies)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_equation_boundary_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_equation_boundary_verification_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_equation_boundary_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_equation_boundary_verification_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_equation_boundary_verification_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_equation_boundary_verification_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_equation_boundary_verification_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_equation_boundary_verification_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_equation_boundary_verification_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_equation_boundary_verification_payload
+            payload),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_equation_boundary_verification_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_equation_boundary_verification_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_equation_boundary_verification_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_equation_boundary_verification_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_equation_boundary_verification_payload
+            payload),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_equation_boundary_verification_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_equation_boundary_verification_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_equation_boundary_verification_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_equation_boundary_verification_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_equation_boundary_verification_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_equation_boundary_verification_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_equation_boundary_verification_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_equation_boundary_verification_payload
+            payload),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_equation_boundary_verification_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_equation_boundary_verification_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_milestone_extraction_derivation_requirements
+        smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_milestone_extraction_derivation_requirements
+        smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_milestone_extraction_derivation_requirements
+            smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_milestone_extraction_derivation_requirements
+            smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_milestone_extraction_derivation_requirements
+              smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_milestone_extraction_derivation_requirements
+        smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_milestone_extraction_derivation_requirements
+            smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_milestone_extraction_derivation_requirements
+            smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_milestone_extraction_derivation_requirements
+            smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_milestone_extraction_derivation_requirements
+              smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_milestone_extraction_derivation_requirements
+        smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_milestone_extraction_derivation_requirements
+            smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_milestone_extraction_derivation_requirements
+            smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_milestone_extraction_derivation_requirements
+            smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_milestone_extraction_derivation_requirements
+              smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_milestone_extraction_derivation_requirements
+        smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_milestone_extraction_derivation_requirements
+            smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_milestone_extraction_derivation_requirements
+            smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_milestone_extraction_derivation_requirements
+              smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_milestone_extraction_derivation_requirements
+        smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_milestone_extraction_derivation_requirements
+            smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_milestone_extraction_derivation_requirements
+            smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_milestone_extraction_derivation_requirements
+              smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+            payload),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+            payload),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+            payload),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_milestone_requirements_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_milestone_requirements
+        smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_milestone_requirements_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_milestone_requirements
+        smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_milestone_requirements
+            smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_milestone_requirements
+            smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_milestone_requirements
+              smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_milestone_requirements_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_milestone_requirements
+        smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_milestone_requirements
+            smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_milestone_requirements
+            smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_milestone_requirements
+            smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_milestone_requirements
+              smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_milestone_requirements_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_milestone_requirements
+        smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_milestone_requirements
+            smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_milestone_requirements
+            smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_milestone_requirements
+            smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_milestone_requirements
+              smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_milestone_requirements_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_milestone_requirements
+        smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_milestone_requirements
+            smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_milestone_requirements
+            smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_milestone_requirements
+              smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_milestone_requirements_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_milestone_requirements
+        smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_milestone_requirements
+            smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_milestone_requirements
+            smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_milestone_requirements
+              smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_milestone_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_milestone_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_milestone_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_milestone_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_milestone_requirements_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_milestone_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_milestone_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_milestone_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_milestone_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_milestone_requirements_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_milestone_requirements_payload
+            payload),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_milestone_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_milestone_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_milestone_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_milestone_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_milestone_requirements_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_milestone_requirements_payload
+            payload),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_milestone_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_milestone_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_milestone_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_milestone_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_milestone_requirements_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_milestone_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_milestone_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_milestone_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_milestone_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_milestone_requirements_payload
+            payload),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_milestone_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_milestone_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_package_layer_extraction_derivation_requirements
+        smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_package_layer_extraction_derivation_requirements
+        smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_package_layer_extraction_derivation_requirements
+            smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_package_layer_extraction_derivation_requirements
+            smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_package_layer_extraction_derivation_requirements
+              smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_package_layer_extraction_derivation_requirements
+        smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_package_layer_extraction_derivation_requirements
+            smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_package_layer_extraction_derivation_requirements
+            smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_package_layer_extraction_derivation_requirements
+            smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_package_layer_extraction_derivation_requirements
+              smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_package_layer_extraction_derivation_requirements
+        smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_package_layer_extraction_derivation_requirements
+            smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_package_layer_extraction_derivation_requirements
+            smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_package_layer_extraction_derivation_requirements
+            smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_package_layer_extraction_derivation_requirements
+              smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_package_layer_extraction_derivation_requirements
+        smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_package_layer_extraction_derivation_requirements
+            smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_package_layer_extraction_derivation_requirements
+            smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_package_layer_extraction_derivation_requirements
+              smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_package_layer_extraction_derivation_requirements
+        smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_package_layer_extraction_derivation_requirements
+            smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_package_layer_extraction_derivation_requirements
+            smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_package_layer_extraction_derivation_requirements
+              smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+            payload),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+            payload),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+            payload),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_package_layer_requirements_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_package_layer_requirements
+        smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_package_layer_requirements_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_package_layer_requirements
+        smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_package_layer_requirements
+            smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_package_layer_requirements
+            smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_package_layer_requirements
+              smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_package_layer_requirements_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_package_layer_requirements
+        smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_package_layer_requirements
+            smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_package_layer_requirements
+            smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_package_layer_requirements
+            smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_package_layer_requirements
+              smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_package_layer_requirements_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_package_layer_requirements
+        smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_package_layer_requirements
+            smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_package_layer_requirements
+            smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_package_layer_requirements
+            smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_package_layer_requirements
+              smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_package_layer_requirements_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_package_layer_requirements
+        smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_package_layer_requirements
+            smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_package_layer_requirements
+            smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_package_layer_requirements
+              smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_package_layer_requirements_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_package_layer_requirements
+        smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_package_layer_requirements
+            smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_package_layer_requirements
+            smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_package_layer_requirements
+              smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_package_layer_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_package_layer_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_package_layer_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_package_layer_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_package_layer_requirements_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_package_layer_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_package_layer_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_package_layer_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_package_layer_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_package_layer_requirements_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_package_layer_requirements_payload
+            payload),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_package_layer_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_package_layer_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_package_layer_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_package_layer_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_package_layer_requirements_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_package_layer_requirements_payload
+            payload),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_package_layer_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_package_layer_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_package_layer_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_package_layer_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_package_layer_requirements_payload
+            payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_package_layer_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_package_layer_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_package_layer_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_package_layer_requirements_payload
+        payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_package_layer_requirements_payload
+            payload),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_package_layer_requirements_payload
+            payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_package_layer_requirements_payload
+              payload)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_poincareProofDependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_poincareProofDependencies
+        dependencies) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_poincareProofDependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_poincareProofDependencies
+        dependencies) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies
+            dependencies),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies
+            dependencies),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies
+              dependencies)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_poincareProofDependencies
+        dependencies) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies
+            dependencies),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies
+            dependencies),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies
+            dependencies),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies
+              dependencies)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_poincareProofDependencies
+        dependencies) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies
+            dependencies),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies
+            dependencies),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies
+            dependencies),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies
+              dependencies)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_poincareProofDependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_poincareProofDependencies
+        dependencies) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies
+            dependencies),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies
+            dependencies),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies
+              dependencies)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_poincareProofDependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_poincareProofDependencies
+        dependencies) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies
+            dependencies),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies
+            dependencies),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies
+              dependencies)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+        dependencies payload) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+        dependencies payload) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+            dependencies payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+            dependencies payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+              dependencies payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+        dependencies payload) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+            dependencies payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+            dependencies payload),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+            dependencies payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+              dependencies payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+        dependencies payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+            dependencies payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+            dependencies payload),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+            dependencies payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+              dependencies payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+        dependencies payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+            dependencies payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+            dependencies payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+              dependencies payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+        dependencies payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+            dependencies payload),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+            dependencies payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+              dependencies payload)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_target_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_poincareProofDependencies_and_canonical_target
+        dependencies target) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_target_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_poincareProofDependencies_and_canonical_target
+        dependencies target) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_canonical_target
+            dependencies target),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_canonical_target
+            dependencies target),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_canonical_target
+              dependencies target)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_target_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_poincareProofDependencies_and_canonical_target
+        dependencies target) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_canonical_target
+            dependencies target),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_canonical_target
+            dependencies target),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_canonical_target
+            dependencies target),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_canonical_target
+              dependencies target)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_target_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_poincareProofDependencies_and_canonical_target
+        dependencies target) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_canonical_target
+            dependencies target),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_canonical_target
+            dependencies target),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_canonical_target
+            dependencies target),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_canonical_target
+              dependencies target)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_target_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_poincareProofDependencies_and_canonical_target
+        dependencies target) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_canonical_target
+            dependencies target),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_canonical_target
+            dependencies target),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_canonical_target
+              dependencies target)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_target_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_poincareProofDependencies_and_canonical_target
+        dependencies target) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_canonical_target
+            dependencies target),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_canonical_target
+            dependencies target),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_canonical_target
+              dependencies target)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion_eq
+    (dependencies : PoincareProofDependencies.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+        dependencies witness criterion) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion_eq
+    (dependencies : PoincareProofDependencies.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+        dependencies witness criterion) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+            dependencies witness criterion),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+            dependencies witness criterion),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+              dependencies witness criterion)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion_eq
+    (dependencies : PoincareProofDependencies.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+        dependencies witness criterion) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+            dependencies witness criterion),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+            dependencies witness criterion),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+            dependencies witness criterion),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+              dependencies witness criterion)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion_eq
+    (dependencies : PoincareProofDependencies.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+        dependencies witness criterion) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+            dependencies witness criterion),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+            dependencies witness criterion),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+            dependencies witness criterion),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+              dependencies witness criterion)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion_eq
+    (dependencies : PoincareProofDependencies.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+        dependencies witness criterion) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+            dependencies witness criterion),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+            dependencies witness criterion),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+              dependencies witness criterion)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion_eq
+    (dependencies : PoincareProofDependencies.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+        dependencies witness criterion) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+            dependencies witness criterion),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+            dependencies witness criterion),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+              dependencies witness criterion)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+        dependencies payload) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+        dependencies payload) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+            dependencies payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+            dependencies payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+              dependencies payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+        dependencies payload) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+            dependencies payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+            dependencies payload),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+            dependencies payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+              dependencies payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+        dependencies payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+            dependencies payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+            dependencies payload),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+            dependencies payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+              dependencies payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+        dependencies payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+            dependencies payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+            dependencies payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+              dependencies payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+        dependencies payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+            dependencies payload),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+            dependencies payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+              dependencies payload)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_poincareProofDependencies_and_target_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_poincareProofDependencies_and_target_statement
+        dependencies target) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_poincareProofDependencies_and_target_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_poincareProofDependencies_and_target_statement
+        dependencies target) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_target_statement
+            dependencies target),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_target_statement
+            dependencies target),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_target_statement
+              dependencies target)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_target_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_poincareProofDependencies_and_target_statement
+        dependencies target) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_target_statement
+            dependencies target),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_target_statement
+            dependencies target),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_target_statement
+            dependencies target),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_target_statement
+              dependencies target)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_target_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_poincareProofDependencies_and_target_statement
+        dependencies target) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_target_statement
+            dependencies target),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_target_statement
+            dependencies target),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_target_statement
+            dependencies target),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_target_statement
+              dependencies target)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_poincareProofDependencies_and_target_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_poincareProofDependencies_and_target_statement
+        dependencies target) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_target_statement
+            dependencies target),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_target_statement
+            dependencies target),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_target_statement
+              dependencies target)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_target_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_poincareProofDependencies_and_target_statement
+        dependencies target) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_target_statement
+            dependencies target),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_poincareProofDependencies_and_target_statement
+            dependencies target),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_poincareProofDependencies_and_target_statement
+              dependencies target)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_remaining_dependency_and_canonical_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_remaining_dependency_and_canonical_payload
+        dependencies payload) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_remaining_dependency_and_canonical_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_remaining_dependency_and_canonical_payload
+        dependencies payload) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_canonical_payload
+            dependencies payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_canonical_payload
+            dependencies payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_canonical_payload
+              dependencies payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_remaining_dependency_and_canonical_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_remaining_dependency_and_canonical_payload
+        dependencies payload) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_canonical_payload
+            dependencies payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_canonical_payload
+            dependencies payload),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_canonical_payload
+            dependencies payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_canonical_payload
+              dependencies payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_remaining_dependency_and_canonical_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_remaining_dependency_and_canonical_payload
+        dependencies payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_canonical_payload
+            dependencies payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_canonical_payload
+            dependencies payload),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_canonical_payload
+            dependencies payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_canonical_payload
+              dependencies payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_remaining_dependency_and_canonical_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_remaining_dependency_and_canonical_payload
+        dependencies payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_canonical_payload
+            dependencies payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_canonical_payload
+            dependencies payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_canonical_payload
+              dependencies payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_remaining_dependency_and_canonical_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_remaining_dependency_and_canonical_payload
+        dependencies payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_canonical_payload
+            dependencies payload),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_canonical_payload
+            dependencies payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_canonical_payload
+              dependencies payload)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_remaining_dependency_and_canonical_target_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_remaining_dependency_and_canonical_target
+        dependencies target) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_remaining_dependency_and_canonical_target_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_remaining_dependency_and_canonical_target
+        dependencies target) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_canonical_target
+            dependencies target),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_canonical_target
+            dependencies target),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_canonical_target
+              dependencies target)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_remaining_dependency_and_canonical_target_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_remaining_dependency_and_canonical_target
+        dependencies target) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_canonical_target
+            dependencies target),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_canonical_target
+            dependencies target),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_canonical_target
+            dependencies target),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_canonical_target
+              dependencies target)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_remaining_dependency_and_canonical_target_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_remaining_dependency_and_canonical_target
+        dependencies target) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_canonical_target
+            dependencies target),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_canonical_target
+            dependencies target),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_canonical_target
+            dependencies target),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_canonical_target
+              dependencies target)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_remaining_dependency_and_canonical_target_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_remaining_dependency_and_canonical_target
+        dependencies target) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_canonical_target
+            dependencies target),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_canonical_target
+            dependencies target),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_canonical_target
+              dependencies target)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_remaining_dependency_and_canonical_target_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_remaining_dependency_and_canonical_target
+        dependencies target) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_canonical_target
+            dependencies target),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_canonical_target
+            dependencies target),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_canonical_target
+              dependencies target)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_remaining_dependency_and_completion_criterion_eq
+    (dependencies : RemainingDependencyPackage.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_remaining_dependency_and_completion_criterion
+        dependencies witness criterion) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_remaining_dependency_and_completion_criterion_eq
+    (dependencies : RemainingDependencyPackage.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_remaining_dependency_and_completion_criterion
+        dependencies witness criterion) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_completion_criterion
+            dependencies witness criterion),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_completion_criterion
+            dependencies witness criterion),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_completion_criterion
+              dependencies witness criterion)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_remaining_dependency_and_completion_criterion_eq
+    (dependencies : RemainingDependencyPackage.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_remaining_dependency_and_completion_criterion
+        dependencies witness criterion) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_completion_criterion
+            dependencies witness criterion),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_completion_criterion
+            dependencies witness criterion),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_completion_criterion
+            dependencies witness criterion),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_completion_criterion
+              dependencies witness criterion)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_remaining_dependency_and_completion_criterion_eq
+    (dependencies : RemainingDependencyPackage.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_remaining_dependency_and_completion_criterion
+        dependencies witness criterion) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_completion_criterion
+            dependencies witness criterion),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_completion_criterion
+            dependencies witness criterion),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_completion_criterion
+            dependencies witness criterion),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_completion_criterion
+              dependencies witness criterion)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_remaining_dependency_and_completion_criterion_eq
+    (dependencies : RemainingDependencyPackage.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_remaining_dependency_and_completion_criterion
+        dependencies witness criterion) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_completion_criterion
+            dependencies witness criterion),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_completion_criterion
+            dependencies witness criterion),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_completion_criterion
+              dependencies witness criterion)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_remaining_dependency_and_completion_criterion_eq
+    (dependencies : RemainingDependencyPackage.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_remaining_dependency_and_completion_criterion
+        dependencies witness criterion) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_completion_criterion
+            dependencies witness criterion),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_completion_criterion
+            dependencies witness criterion),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_completion_criterion
+              dependencies witness criterion)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_remaining_dependency_and_poincare_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_remaining_dependency_and_poincare_payload
+        dependencies payload) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_remaining_dependency_and_poincare_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_remaining_dependency_and_poincare_payload
+        dependencies payload) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_poincare_payload
+            dependencies payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_poincare_payload
+            dependencies payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_poincare_payload
+              dependencies payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_remaining_dependency_and_poincare_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_remaining_dependency_and_poincare_payload
+        dependencies payload) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_poincare_payload
+            dependencies payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_poincare_payload
+            dependencies payload),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_poincare_payload
+            dependencies payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_poincare_payload
+              dependencies payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_remaining_dependency_and_poincare_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_remaining_dependency_and_poincare_payload
+        dependencies payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_poincare_payload
+            dependencies payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_poincare_payload
+            dependencies payload),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_poincare_payload
+            dependencies payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_poincare_payload
+              dependencies payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_remaining_dependency_and_poincare_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_remaining_dependency_and_poincare_payload
+        dependencies payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_poincare_payload
+            dependencies payload),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_poincare_payload
+            dependencies payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_poincare_payload
+              dependencies payload)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_remaining_dependency_and_poincare_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_remaining_dependency_and_poincare_payload
+        dependencies payload) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_poincare_payload
+            dependencies payload),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_poincare_payload
+            dependencies payload),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_poincare_payload
+              dependencies payload)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_remaining_dependency_and_target_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_remaining_dependency_and_target_statement
+        dependencies target) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_remaining_dependency_and_target_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_remaining_dependency_and_target_statement
+        dependencies target) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_target_statement
+            dependencies target),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_target_statement
+            dependencies target),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_target_statement
+              dependencies target)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_remaining_dependency_and_target_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_remaining_dependency_and_target_statement
+        dependencies target) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_target_statement
+            dependencies target),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_target_statement
+            dependencies target),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_target_statement
+            dependencies target),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_target_statement
+              dependencies target)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_remaining_dependency_and_target_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_remaining_dependency_and_target_statement
+        dependencies target) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_target_statement
+            dependencies target),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_target_statement
+            dependencies target),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_target_statement
+            dependencies target),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_target_statement
+              dependencies target)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_remaining_dependency_and_target_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_remaining_dependency_and_target_statement
+        dependencies target) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_target_statement
+            dependencies target),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_target_statement
+            dependencies target),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_target_statement
+              dependencies target)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_remaining_dependency_and_target_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_remaining_dependency_and_target_statement
+        dependencies target) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_target_statement
+            dependencies target),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_and_target_statement
+            dependencies target),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_and_target_statement
+              dependencies target)⟩ := by
+  apply Subsingleton.elim
+
+/--
+Completion-certificate payload projections for this constructor route.
+-/
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_remaining_dependency_package
+        dependencies) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_remaining_dependency_package
+        dependencies) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_package
+            dependencies),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_package
+            dependencies),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_package
+              dependencies)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_remaining_dependency_package
+        dependencies) =
+      ⟨"poincare_conjecture", rfl,
+        remaining_dependency_package_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_package
+            dependencies),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_package
+            dependencies),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_package
+            dependencies),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_package
+              dependencies)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_remaining_dependency_package
+        dependencies) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_package
+            dependencies),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_package
+            dependencies),
+        canonical_three_sphere_statement_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_package
+            dependencies),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_package
+              dependencies)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_remaining_dependency_package
+        dependencies) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_package
+            dependencies),
+        canonical_completion_target_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_package
+            dependencies),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_package
+              dependencies)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_remaining_dependency_package
+        dependencies) =
+      ⟨"poincare_conjecture", rfl,
+        poincareProofDependencies_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_package
+            dependencies),
+        target_statement_of_completion_certificate
+          (completion_certificate_of_remaining_dependency_package
+            dependencies),
+        fun routeWitness =>
+          completion_criterion_of_completion_certificate routeWitness
+            (completion_certificate_of_remaining_dependency_package
+              dependencies)⟩ := by
+  apply Subsingleton.elim
+
+
+
+
+/-
+Completion certificate payload constructor-reconstruction coverage for the
+constructor routes introduced above.
+-/
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_component_extraction_derivation_requirements_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_component_extraction_derivation_requirements
+          smoothabilityRequirement surgeryRequirement topologyRequirement)) =
+      (completion_certificate_of_component_extraction_derivation_requirements
+        smoothabilityRequirement surgeryRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_component_extraction_derivation_requirements_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_component_extraction_derivation_requirements
+          smoothabilityRequirement surgeryRequirement topologyRequirement)) =
+      (completion_certificate_of_component_extraction_derivation_requirements
+        smoothabilityRequirement surgeryRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_component_extraction_derivation_requirements_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_component_extraction_derivation_requirements
+          smoothabilityRequirement surgeryRequirement topologyRequirement)) =
+      (completion_certificate_of_component_extraction_derivation_requirements
+        smoothabilityRequirement surgeryRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_component_extraction_derivation_requirements_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_component_extraction_derivation_requirements
+          smoothabilityRequirement surgeryRequirement topologyRequirement)) =
+      (completion_certificate_of_component_extraction_derivation_requirements
+        smoothabilityRequirement surgeryRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_component_extraction_derivation_requirements_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_component_extraction_derivation_requirements
+          smoothabilityRequirement surgeryRequirement topologyRequirement)) =
+      (completion_certificate_of_component_extraction_derivation_requirements
+        smoothabilityRequirement surgeryRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_component_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_component_extraction_derivation_requirements_payload
+          payload)) =
+      (completion_certificate_of_component_extraction_derivation_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_component_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_component_extraction_derivation_requirements_payload
+          payload)) =
+      (completion_certificate_of_component_extraction_derivation_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_component_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_component_extraction_derivation_requirements_payload
+          payload)) =
+      (completion_certificate_of_component_extraction_derivation_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_component_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_component_extraction_derivation_requirements_payload
+          payload)) =
+      (completion_certificate_of_component_extraction_derivation_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_component_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_component_extraction_derivation_requirements_payload
+          payload)) =
+      (completion_certificate_of_component_extraction_derivation_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_component_requirements_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_component_requirements
+          smoothabilityRequirement surgeryRequirement topologyRequirement)) =
+      (completion_certificate_of_component_requirements
+        smoothabilityRequirement surgeryRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_component_requirements_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_component_requirements
+          smoothabilityRequirement surgeryRequirement topologyRequirement)) =
+      (completion_certificate_of_component_requirements
+        smoothabilityRequirement surgeryRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_component_requirements_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_component_requirements
+          smoothabilityRequirement surgeryRequirement topologyRequirement)) =
+      (completion_certificate_of_component_requirements
+        smoothabilityRequirement surgeryRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_component_requirements_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_component_requirements
+          smoothabilityRequirement surgeryRequirement topologyRequirement)) =
+      (completion_certificate_of_component_requirements
+        smoothabilityRequirement surgeryRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_component_requirements_eq
+    (smoothabilityRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent)
+    (surgeryRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent)
+    (topologyRequirement :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_component_requirements
+          smoothabilityRequirement surgeryRequirement topologyRequirement)) =
+      (completion_certificate_of_component_requirements
+        smoothabilityRequirement surgeryRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_component_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_component_requirements_payload
+          payload)) =
+      (completion_certificate_of_component_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_component_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_component_requirements_payload
+          payload)) =
+      (completion_certificate_of_component_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_component_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_component_requirements_payload
+          payload)) =
+      (completion_certificate_of_component_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_component_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_component_requirements_payload
+          payload)) =
+      (completion_certificate_of_component_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_component_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_component_requirements_payload
+          payload)) =
+      (completion_certificate_of_component_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_components_eq
+    (smoothability : SmoothabilityPackage.{u})
+    (surgery :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topology : ExtinctionTopologyExtractionPackage.{u}) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_components
+          smoothability surgery topology)) =
+      (completion_certificate_of_components
+        smoothability surgery topology) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_components_eq
+    (smoothability : SmoothabilityPackage.{u})
+    (surgery :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topology : ExtinctionTopologyExtractionPackage.{u}) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_components
+          smoothability surgery topology)) =
+      (completion_certificate_of_components
+        smoothability surgery topology) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_components_eq
+    (smoothability : SmoothabilityPackage.{u})
+    (surgery :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topology : ExtinctionTopologyExtractionPackage.{u}) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_components
+          smoothability surgery topology)) =
+      (completion_certificate_of_components
+        smoothability surgery topology) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_components_eq
+    (smoothability : SmoothabilityPackage.{u})
+    (surgery :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topology : ExtinctionTopologyExtractionPackage.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_components
+          smoothability surgery topology)) =
+      (completion_certificate_of_components
+        smoothability surgery topology) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_components_eq
+    (smoothability : SmoothabilityPackage.{u})
+    (surgery :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topology : ExtinctionTopologyExtractionPackage.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_components
+          smoothability surgery topology)) =
+      (completion_certificate_of_components
+        smoothability surgery topology) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_components_payload_eq
+    (payload :
+      ∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+        ExtinctionTopologyExtractionPackage.{u}) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_components_payload
+          payload)) =
+      (completion_certificate_of_components_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_components_payload_eq
+    (payload :
+      ∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+        ExtinctionTopologyExtractionPackage.{u}) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_components_payload
+          payload)) =
+      (completion_certificate_of_components_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_components_payload_eq
+    (payload :
+      ∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+        ExtinctionTopologyExtractionPackage.{u}) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_components_payload
+          payload)) =
+      (completion_certificate_of_components_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_components_payload_eq
+    (payload :
+      ∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+        ExtinctionTopologyExtractionPackage.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_components_payload
+          payload)) =
+      (completion_certificate_of_components_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_components_payload_eq
+    (payload :
+      ∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+        ExtinctionTopologyExtractionPackage.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_components_payload
+          payload)) =
+      (completion_certificate_of_components_payload
+        payload) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+          dependencies)) =
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+          dependencies)) =
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+          dependencies)) =
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+          dependencies)) =
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+          dependencies)) =
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_equation_boundary_verification_payload
+          payload)) =
+      (completion_certificate_of_equation_boundary_verification_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_eq
+    (payload :
+      PoincareCompletionCertificateWithEquationBoundaryVerificationPayload.{u}) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_equation_boundary_verification_payload
+          payload)) =
+      (completion_certificate_of_equation_boundary_verification_payload
+        payload) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_milestone_extraction_derivation_requirements
+          smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)) =
+      (completion_certificate_of_milestone_extraction_derivation_requirements
+        smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_milestone_extraction_derivation_requirements
+          smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)) =
+      (completion_certificate_of_milestone_extraction_derivation_requirements
+        smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_milestone_extraction_derivation_requirements
+          smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)) =
+      (completion_certificate_of_milestone_extraction_derivation_requirements
+        smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_milestone_extraction_derivation_requirements
+          smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)) =
+      (completion_certificate_of_milestone_extraction_derivation_requirements
+        smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_milestone_extraction_derivation_requirements
+          smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)) =
+      (completion_certificate_of_milestone_extraction_derivation_requirements
+        smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+          payload)) =
+      (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+          payload)) =
+      (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+          payload)) =
+      (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+          payload)) =
+      (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+          payload)) =
+      (completion_certificate_of_milestone_extraction_derivation_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_milestone_requirements_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_milestone_requirements
+          smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)) =
+      (completion_certificate_of_milestone_requirements
+        smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_milestone_requirements_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_milestone_requirements
+          smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)) =
+      (completion_certificate_of_milestone_requirements
+        smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_milestone_requirements_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_milestone_requirements
+          smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)) =
+      (completion_certificate_of_milestone_requirements
+        smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_milestone_requirements_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_milestone_requirements
+          smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)) =
+      (completion_certificate_of_milestone_requirements
+        smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_milestone_requirements_eq
+    (smoothabilityBridgeRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge)
+    (ricciFlowAnalyticFoundationRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation)
+    (ricciFlowWithSurgeryRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery)
+    (perelmanSingularityControlRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (finiteExtinctionRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction)
+    (extinctionToSphereHomeomorphismRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.extinctionToSphereHomeomorphism) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_milestone_requirements
+          smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement)) =
+      (completion_certificate_of_milestone_requirements
+        smoothabilityBridgeRequirement ricciFlowAnalyticFoundationRequirement ricciFlowWithSurgeryRequirement perelmanSingularityControlRequirement finiteExtinctionRequirement extinctionToSphereHomeomorphismRequirement) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_milestone_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_milestone_requirements_payload
+          payload)) =
+      (completion_certificate_of_milestone_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_milestone_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_milestone_requirements_payload
+          payload)) =
+      (completion_certificate_of_milestone_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_milestone_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_milestone_requirements_payload
+          payload)) =
+      (completion_certificate_of_milestone_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_milestone_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_milestone_requirements_payload
+          payload)) =
+      (completion_certificate_of_milestone_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_milestone_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_milestone_requirements_payload
+          payload)) =
+      (completion_certificate_of_milestone_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_package_layer_extraction_derivation_requirements
+          smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement)) =
+      (completion_certificate_of_package_layer_extraction_derivation_requirements
+        smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_package_layer_extraction_derivation_requirements
+          smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement)) =
+      (completion_certificate_of_package_layer_extraction_derivation_requirements
+        smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_package_layer_extraction_derivation_requirements
+          smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement)) =
+      (completion_certificate_of_package_layer_extraction_derivation_requirements
+        smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_package_layer_extraction_derivation_requirements
+          smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement)) =
+      (completion_certificate_of_package_layer_extraction_derivation_requirements
+        smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_package_layer_extraction_derivation_requirements
+          smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement)) =
+      (completion_certificate_of_package_layer_extraction_derivation_requirements
+        smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+          payload)) =
+      (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+          payload)) =
+      (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+          payload)) =
+      (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+          payload)) =
+      (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+          payload)) =
+      (completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_package_layer_requirements_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_package_layer_requirements
+          smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement)) =
+      (completion_certificate_of_package_layer_requirements
+        smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_package_layer_requirements_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_package_layer_requirements
+          smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement)) =
+      (completion_certificate_of_package_layer_requirements
+        smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_package_layer_requirements_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_package_layer_requirements
+          smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement)) =
+      (completion_certificate_of_package_layer_requirements
+        smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_package_layer_requirements_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_package_layer_requirements
+          smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement)) =
+      (completion_certificate_of_package_layer_requirements
+        smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_package_layer_requirements_eq
+    (smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage)
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage)
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topologyRequirement :
+      dependencyPackageLayerRequirement.{u} DependencyPackageLayer.topologyPackage) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_package_layer_requirements
+          smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement)) =
+      (completion_certificate_of_package_layer_requirements
+        smoothabilityRequirement analyticRequirement surgeryRequirement finiteExtinctionRequirement topologyRequirement) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_package_layer_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_package_layer_requirements_payload
+          payload)) =
+      (completion_certificate_of_package_layer_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_package_layer_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_package_layer_requirements_payload
+          payload)) =
+      (completion_certificate_of_package_layer_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_package_layer_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_package_layer_requirements_payload
+          payload)) =
+      (completion_certificate_of_package_layer_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_package_layer_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_package_layer_requirements_payload
+          payload)) =
+      (completion_certificate_of_package_layer_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_package_layer_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_package_layer_requirements_payload
+          payload)) =
+      (completion_certificate_of_package_layer_requirements_payload
+        payload) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_poincareProofDependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_poincareProofDependencies
+          dependencies)) =
+      (completion_certificate_of_poincareProofDependencies
+        dependencies) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_poincareProofDependencies
+          dependencies)) =
+      (completion_certificate_of_poincareProofDependencies
+        dependencies) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_poincareProofDependencies
+          dependencies)) =
+      (completion_certificate_of_poincareProofDependencies
+        dependencies) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_poincareProofDependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_poincareProofDependencies
+          dependencies)) =
+      (completion_certificate_of_poincareProofDependencies
+        dependencies) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_poincareProofDependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_poincareProofDependencies
+          dependencies)) =
+      (completion_certificate_of_poincareProofDependencies
+        dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+          dependencies payload)) =
+      (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+        dependencies payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+          dependencies payload)) =
+      (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+        dependencies payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+          dependencies payload)) =
+      (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+        dependencies payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+          dependencies payload)) =
+      (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+        dependencies payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+          dependencies payload)) =
+      (completion_certificate_of_poincareProofDependencies_and_canonical_payload
+        dependencies payload) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_target_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_poincareProofDependencies_and_canonical_target
+          dependencies target)) =
+      (completion_certificate_of_poincareProofDependencies_and_canonical_target
+        dependencies target) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_target_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_poincareProofDependencies_and_canonical_target
+          dependencies target)) =
+      (completion_certificate_of_poincareProofDependencies_and_canonical_target
+        dependencies target) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_target_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_poincareProofDependencies_and_canonical_target
+          dependencies target)) =
+      (completion_certificate_of_poincareProofDependencies_and_canonical_target
+        dependencies target) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_target_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_poincareProofDependencies_and_canonical_target
+          dependencies target)) =
+      (completion_certificate_of_poincareProofDependencies_and_canonical_target
+        dependencies target) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_target_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_poincareProofDependencies_and_canonical_target
+          dependencies target)) =
+      (completion_certificate_of_poincareProofDependencies_and_canonical_target
+        dependencies target) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion_eq
+    (dependencies : PoincareProofDependencies.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+          dependencies witness criterion)) =
+      (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+        dependencies witness criterion) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion_eq
+    (dependencies : PoincareProofDependencies.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+          dependencies witness criterion)) =
+      (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+        dependencies witness criterion) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion_eq
+    (dependencies : PoincareProofDependencies.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+          dependencies witness criterion)) =
+      (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+        dependencies witness criterion) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion_eq
+    (dependencies : PoincareProofDependencies.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+          dependencies witness criterion)) =
+      (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+        dependencies witness criterion) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion_eq
+    (dependencies : PoincareProofDependencies.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+          dependencies witness criterion)) =
+      (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+        dependencies witness criterion) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+          dependencies payload)) =
+      (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+        dependencies payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+          dependencies payload)) =
+      (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+        dependencies payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+          dependencies payload)) =
+      (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+        dependencies payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+          dependencies payload)) =
+      (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+        dependencies payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+          dependencies payload)) =
+      (completion_certificate_of_poincareProofDependencies_and_poincare_payload
+        dependencies payload) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_poincareProofDependencies_and_target_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_poincareProofDependencies_and_target_statement
+          dependencies target)) =
+      (completion_certificate_of_poincareProofDependencies_and_target_statement
+        dependencies target) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_target_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_poincareProofDependencies_and_target_statement
+          dependencies target)) =
+      (completion_certificate_of_poincareProofDependencies_and_target_statement
+        dependencies target) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_target_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_poincareProofDependencies_and_target_statement
+          dependencies target)) =
+      (completion_certificate_of_poincareProofDependencies_and_target_statement
+        dependencies target) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_poincareProofDependencies_and_target_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_poincareProofDependencies_and_target_statement
+          dependencies target)) =
+      (completion_certificate_of_poincareProofDependencies_and_target_statement
+        dependencies target) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_poincareProofDependencies_and_target_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_poincareProofDependencies_and_target_statement
+          dependencies target)) =
+      (completion_certificate_of_poincareProofDependencies_and_target_statement
+        dependencies target) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_remaining_dependency_and_canonical_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_remaining_dependency_and_canonical_payload
+          dependencies payload)) =
+      (completion_certificate_of_remaining_dependency_and_canonical_payload
+        dependencies payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_remaining_dependency_and_canonical_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_remaining_dependency_and_canonical_payload
+          dependencies payload)) =
+      (completion_certificate_of_remaining_dependency_and_canonical_payload
+        dependencies payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_remaining_dependency_and_canonical_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_remaining_dependency_and_canonical_payload
+          dependencies payload)) =
+      (completion_certificate_of_remaining_dependency_and_canonical_payload
+        dependencies payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_remaining_dependency_and_canonical_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_remaining_dependency_and_canonical_payload
+          dependencies payload)) =
+      (completion_certificate_of_remaining_dependency_and_canonical_payload
+        dependencies payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_remaining_dependency_and_canonical_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_remaining_dependency_and_canonical_payload
+          dependencies payload)) =
+      (completion_certificate_of_remaining_dependency_and_canonical_payload
+        dependencies payload) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_remaining_dependency_and_canonical_target_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_remaining_dependency_and_canonical_target
+          dependencies target)) =
+      (completion_certificate_of_remaining_dependency_and_canonical_target
+        dependencies target) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_remaining_dependency_and_canonical_target_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_remaining_dependency_and_canonical_target
+          dependencies target)) =
+      (completion_certificate_of_remaining_dependency_and_canonical_target
+        dependencies target) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_remaining_dependency_and_canonical_target_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_remaining_dependency_and_canonical_target
+          dependencies target)) =
+      (completion_certificate_of_remaining_dependency_and_canonical_target
+        dependencies target) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_remaining_dependency_and_canonical_target_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_remaining_dependency_and_canonical_target
+          dependencies target)) =
+      (completion_certificate_of_remaining_dependency_and_canonical_target
+        dependencies target) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_remaining_dependency_and_canonical_target_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_remaining_dependency_and_canonical_target
+          dependencies target)) =
+      (completion_certificate_of_remaining_dependency_and_canonical_target
+        dependencies target) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_remaining_dependency_and_completion_criterion_eq
+    (dependencies : RemainingDependencyPackage.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_remaining_dependency_and_completion_criterion
+          dependencies witness criterion)) =
+      (completion_certificate_of_remaining_dependency_and_completion_criterion
+        dependencies witness criterion) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_remaining_dependency_and_completion_criterion_eq
+    (dependencies : RemainingDependencyPackage.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_remaining_dependency_and_completion_criterion
+          dependencies witness criterion)) =
+      (completion_certificate_of_remaining_dependency_and_completion_criterion
+        dependencies witness criterion) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_remaining_dependency_and_completion_criterion_eq
+    (dependencies : RemainingDependencyPackage.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_remaining_dependency_and_completion_criterion
+          dependencies witness criterion)) =
+      (completion_certificate_of_remaining_dependency_and_completion_criterion
+        dependencies witness criterion) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_remaining_dependency_and_completion_criterion_eq
+    (dependencies : RemainingDependencyPackage.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_remaining_dependency_and_completion_criterion
+          dependencies witness criterion)) =
+      (completion_certificate_of_remaining_dependency_and_completion_criterion
+        dependencies witness criterion) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_remaining_dependency_and_completion_criterion_eq
+    (dependencies : RemainingDependencyPackage.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_remaining_dependency_and_completion_criterion
+          dependencies witness criterion)) =
+      (completion_certificate_of_remaining_dependency_and_completion_criterion
+        dependencies witness criterion) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_remaining_dependency_and_poincare_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_remaining_dependency_and_poincare_payload
+          dependencies payload)) =
+      (completion_certificate_of_remaining_dependency_and_poincare_payload
+        dependencies payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_remaining_dependency_and_poincare_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_remaining_dependency_and_poincare_payload
+          dependencies payload)) =
+      (completion_certificate_of_remaining_dependency_and_poincare_payload
+        dependencies payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_remaining_dependency_and_poincare_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_remaining_dependency_and_poincare_payload
+          dependencies payload)) =
+      (completion_certificate_of_remaining_dependency_and_poincare_payload
+        dependencies payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_remaining_dependency_and_poincare_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_remaining_dependency_and_poincare_payload
+          dependencies payload)) =
+      (completion_certificate_of_remaining_dependency_and_poincare_payload
+        dependencies payload) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_remaining_dependency_and_poincare_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_remaining_dependency_and_poincare_payload
+          dependencies payload)) =
+      (completion_certificate_of_remaining_dependency_and_poincare_payload
+        dependencies payload) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_remaining_dependency_and_target_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_remaining_dependency_and_target_statement
+          dependencies target)) =
+      (completion_certificate_of_remaining_dependency_and_target_statement
+        dependencies target) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_remaining_dependency_and_target_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_remaining_dependency_and_target_statement
+          dependencies target)) =
+      (completion_certificate_of_remaining_dependency_and_target_statement
+        dependencies target) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_remaining_dependency_and_target_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_remaining_dependency_and_target_statement
+          dependencies target)) =
+      (completion_certificate_of_remaining_dependency_and_target_statement
+        dependencies target) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_remaining_dependency_and_target_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_remaining_dependency_and_target_statement
+          dependencies target)) =
+      (completion_certificate_of_remaining_dependency_and_target_statement
+        dependencies target) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_remaining_dependency_and_target_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_remaining_dependency_and_target_statement
+          dependencies target)) =
+      (completion_certificate_of_remaining_dependency_and_target_statement
+        dependencies target) := by
+  apply Subsingleton.elim
+
+/--
+Projected payload reconstruction for this constructor route.
+-/
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_remaining_dependency_package
+          dependencies)) =
+      (completion_certificate_of_remaining_dependency_package
+        dependencies) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_remaining_dependency_package
+          dependencies)) =
+      (completion_certificate_of_remaining_dependency_package
+        dependencies) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_remaining_dependency_package
+          dependencies)) =
+      (completion_certificate_of_remaining_dependency_package
+        dependencies) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_remaining_dependency_package
+          dependencies)) =
+      (completion_certificate_of_remaining_dependency_package
+        dependencies) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_remaining_dependency_package
+          dependencies)) =
+      (completion_certificate_of_remaining_dependency_package
+        dependencies) := by
+  apply Subsingleton.elim
+
+
 /--
 Projecting the dependency package from a remaining-dependency canonical
 statement certificate returns the input package.
