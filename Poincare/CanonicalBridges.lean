@@ -12851,6 +12851,207 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
   apply Subsingleton.elim
 
 /--
+The remaining-dependency package completion certificate exposes the reserved
+final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_package
+    (dependencies : RemainingDependencyPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_package dependencies)
+
+/--
+The remaining-dependency package reserved-name endpoint is the certificate
+target statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_conjecture_of_completion_certificate_of_remaining_dependency_package
+      dependencies =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency plus project-target certificate exposes the reserved
+final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_and_target_statement
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_and_target_statement
+      dependencies target)
+
+/--
+The remaining-dependency plus project-target reserved-name endpoint is the
+certificate target statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_and_target_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    poincare_conjecture_of_completion_certificate_of_remaining_dependency_and_target_statement
+      dependencies target =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_and_target_statement
+          dependencies target) := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency plus canonical-target certificate exposes the reserved
+final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_and_canonical_target
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_and_canonical_target
+      dependencies target)
+
+/--
+The remaining-dependency plus canonical-target reserved-name endpoint is the
+certificate target statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_and_canonical_target_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    poincare_conjecture_of_completion_certificate_of_remaining_dependency_and_canonical_target
+      dependencies target =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_and_canonical_target
+          dependencies target) := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency plus completion-criterion certificate exposes the
+reserved final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_and_completion_criterion
+    (dependencies : RemainingDependencyPackage.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_and_completion_criterion
+      dependencies witness criterion)
+
+/--
+The remaining-dependency plus completion-criterion reserved-name endpoint is
+the certificate target statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_and_completion_criterion_eq
+    (dependencies : RemainingDependencyPackage.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    poincare_conjecture_of_completion_certificate_of_remaining_dependency_and_completion_criterion
+      dependencies witness criterion =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_and_completion_criterion
+          dependencies witness criterion) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency package completion certificate exposes the reserved
+final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies dependencies)
+
+/--
+The aggregate dependency package reserved-name endpoint is the certificate
+target statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies
+      dependencies =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency plus project-target certificate exposes the reserved
+final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_target_statement
+    (dependencies : PoincareProofDependencies.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_and_target_statement
+      dependencies target)
+
+/--
+The aggregate dependency plus project-target reserved-name endpoint is the
+certificate target statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_target_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : PoincareConjectureStatement.{u}) :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_target_statement
+      dependencies target =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies_and_target_statement
+          dependencies target) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency plus canonical-target certificate exposes the reserved
+final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_canonical_target
+    (dependencies : PoincareProofDependencies.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_and_canonical_target
+      dependencies target)
+
+/--
+The aggregate dependency plus canonical-target reserved-name endpoint is the
+certificate target statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_canonical_target_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (target : canonicalCompletionTarget.{u}) :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_canonical_target
+      dependencies target =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies_and_canonical_target
+          dependencies target) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency plus completion-criterion certificate exposes the
+reserved final route endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion
+    (dependencies : PoincareProofDependencies.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+      dependencies witness criterion)
+
+/--
+The aggregate dependency plus completion-criterion reserved-name endpoint is
+the certificate target statement.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion_eq
+    (dependencies : PoincareProofDependencies.{u}) (witness : Type u)
+    (criterion : CompletionCriterionAtUniverse witness) :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion
+      dependencies witness criterion =
+      target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies_and_completion_criterion
+          dependencies witness criterion) := by
+  apply Subsingleton.elim
+
+/--
 Projecting the canonical topological statement from the route completion
 certificates returns the named route statement endpoint.
 -/
