@@ -3643,6 +3643,231 @@ theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of
             hQuot)) h := by
   apply Subsingleton.elim
 
+/--
+The standard sphere's loop-nullhomotopy obligation packages any source
+recognized directly as the project target sphere as a Poincare-candidate
+prerequisite payload.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+    {M : Type u} [TopologicalSpace M]
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M :=
+  homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+    hLoop h
+
+/-- The direct target loop candidate route is the direct target loop source-prerequisite route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+      hLoop h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+        hLoop h := by
+  apply Subsingleton.elim
+
+/-- The direct target loop candidate route agrees with the compactification loop candidate route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement_onePoint_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hLoop : ThreeSphereLoopNullhomotopyStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+      hLoop h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        hLoop (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/--
+The standard sphere's based loop-nullhomotopy obligation packages any source
+recognized directly as the project target sphere as a Poincare-candidate
+prerequisite payload.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M :=
+  homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement
+    hBased h
+
+/-- The direct target based-loop candidate route is the direct based-loop source route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (basepoint : ThreeSphere)
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement
+      hBased h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement
+        hBased h := by
+  apply Subsingleton.elim
+
+/-- The direct target based-loop candidate route agrees with the direct target loop route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement
+      hBased h =
+      poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement
+          hBased) h := by
+  apply Subsingleton.elim
+
+/-- The direct target based-loop candidate route agrees with the compactification loop route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement_onePoint_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement
+      hBased h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement
+          hBased) (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/--
+The standard sphere's path-homotopy obligation packages any source recognized
+directly as the project target sphere as a Poincare-candidate prerequisite
+payload.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_pathHomotopyStatement
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M :=
+  homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathHomotopyStatement
+    hPath h
+
+/-- The direct target path candidate route is the direct path source-prerequisite route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_pathHomotopyStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_pathHomotopyStatement
+      hPath h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathHomotopyStatement
+        hPath h := by
+  apply Subsingleton.elim
+
+/-- The direct target path candidate route agrees with the direct target loop route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_pathHomotopyStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_pathHomotopyStatement
+      hPath h =
+      poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement hPath) h := by
+  apply Subsingleton.elim
+
+/-- The direct target path candidate route agrees with the compactification loop route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_pathHomotopyStatement_onePoint_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_pathHomotopyStatement
+      hPath h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement hPath)
+        (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
+/--
+The standard sphere's path-quotient obligation packages any source recognized
+directly as the project target sphere as a Poincare-candidate prerequisite
+payload.
+-/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M :=
+  homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement
+    hQuot h
+
+/-- The direct target quotient candidate route is the direct quotient source-prerequisite route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement
+        hQuot h := by
+  apply Subsingleton.elim
+
+/-- The direct target quotient candidate route agrees with the direct target path route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement_path_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_pathHomotopyStatement
+        (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+          hQuot) h := by
+  apply Subsingleton.elim
+
+/-- The direct target quotient candidate route agrees with the direct target loop route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement_loop_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
+          (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+            hQuot)) h := by
+  apply Subsingleton.elim
+
+/-- The direct target quotient candidate route agrees with the compactification loop route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement_onePoint_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
+          (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+            hQuot)) (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) := by
+  apply Subsingleton.elim
+
 /-- The one-point compactification model is homeomorphic to itself. -/
 theorem onePoint_threeSpace_self_homeomorph :
     Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ
