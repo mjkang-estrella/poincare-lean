@@ -4365,6 +4365,50 @@ theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_
           hPi) h := by
   apply Subsingleton.elim
 
+/-- The standard based-loop source route agrees with the standard path route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement_path_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement
+      hBased h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement
+        (threeSphere_pathHomotopyStatement_of_basedLoopNullhomotopyStatement hBased) h := by
+  apply Subsingleton.elim
+
+/-- The standard based-loop source route agrees with the standard quotient route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement_pathQuotient_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement
+      hBased h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement
+        (threeSphere_pathQuotientSubsingletonStatement_of_basedLoopNullhomotopyStatement hBased) h := by
+  apply Subsingleton.elim
+
+/-- The standard based-loop source route agrees with the standard fundamental-group route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement
+      hBased h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_fundamentalGroupSubsingletonStatement
+        (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement hBased) h := by
+  apply Subsingleton.elim
+
+/-- The standard based-loop source route agrees with the standard `π₁` route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement_piOne_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement
+      hBased h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement
+        (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement hBased) h := by
+  apply Subsingleton.elim
+
 /--
 Recognition against the project target sphere transports the standard
 topological manifold prerequisite payload to the recognized source.
@@ -5080,6 +5124,50 @@ theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathQuot
         (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
           (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
             hQuot)) h := by
+  apply Subsingleton.elim
+
+/-- The direct target based-loop source route agrees with the direct path route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement_path_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement
+      hBased h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathHomotopyStatement
+        (threeSphere_pathHomotopyStatement_of_basedLoopNullhomotopyStatement hBased) h := by
+  apply Subsingleton.elim
+
+/-- The direct target based-loop source route agrees with the direct quotient route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement_pathQuotient_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement
+      hBased h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement
+        (threeSphere_pathQuotientSubsingletonStatement_of_basedLoopNullhomotopyStatement hBased) h := by
+  apply Subsingleton.elim
+
+/-- The direct target based-loop source route agrees with the direct fundamental-group route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement_fundamentalGroup_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement
+      hBased h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement
+        (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement hBased) h := by
+  apply Subsingleton.elim
+
+/-- The direct target based-loop source route agrees with the direct `π₁` route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement_piOne_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement
+      hBased h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
+        (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement hBased) h := by
   apply Subsingleton.elim
 
 /--
