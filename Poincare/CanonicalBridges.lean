@@ -2461,6 +2461,14 @@ theorem poincareCompletionCertificate_theoremName_payload_of_completion_certific
       ⟨"poincare_conjecture", rfl⟩ := by
   apply Subsingleton.elim
 
+theorem poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_theoremName_payload
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      ⟨"poincare_conjecture", rfl⟩ := by
+  apply Subsingleton.elim
+
 theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     poincareCompletionCertificate_literal_payload
@@ -2477,6 +2485,24 @@ theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_
           completion_criterion_of_completion_certificate routeWitness
             (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
               dependencies)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_literal_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_literal_payload
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      ⟨ "poincare_conjecture", rfl,
+        remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies,
+        poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+          dependencies.smoothability dependencies.surgery dependencies.topology,
+        fun witness =>
+          completionCriterionAtUniverse_of_poincareConjectureStatement
+            witness
+            (poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+              dependencies.smoothability dependencies.surgery
+              dependencies.topology)⟩ := by
   apply Subsingleton.elim
 
 theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
@@ -2539,6 +2565,23 @@ theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion
               dependencies)⟩ := by
   apply Subsingleton.elim
 
+theorem poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_aggregate_dependency_payload
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      ⟨ "poincare_conjecture", rfl,
+        dependencies_of_equation_boundary_dependencies dependencies,
+        poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+          dependencies.smoothability dependencies.surgery dependencies.topology,
+        fun witness =>
+          completionCriterionAtUniverse_of_poincareConjectureStatement
+            witness
+            (poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+              dependencies.smoothability dependencies.surgery
+              dependencies.topology)⟩ := by
+  apply Subsingleton.elim
+
 theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     poincareCompletionCertificate_project_statement_payload
@@ -2555,6 +2598,23 @@ theorem poincareCompletionCertificate_project_statement_payload_of_completion_ce
           completion_criterion_of_completion_certificate routeWitness
             (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
               dependencies)⟩ := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_project_statement_payload
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      ⟨ "poincare_conjecture", rfl,
+        dependencies_of_equation_boundary_dependencies dependencies,
+        poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+          dependencies.smoothability dependencies.surgery dependencies.topology,
+        fun witness =>
+          completionCriterionAtUniverse_of_poincareConjectureStatement
+            witness
+            (poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+              dependencies.smoothability dependencies.surgery
+              dependencies.topology)⟩ := by
   apply Subsingleton.elim
 
 /--
@@ -6080,6 +6140,25 @@ theorem completion_certificate_of_literal_payload_of_completion_certificate_of_e
         dependencies) := by
   apply Subsingleton.elim
 
+theorem completion_certificate_of_literal_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_literal_payload
+      (poincareCompletionCertificate_literal_payload
+        (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+          dependencies)) =
+      ⟨canonicalCompletionTheoremName, rfl,
+        remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies,
+        poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+          dependencies.smoothability dependencies.surgery dependencies.topology,
+        fun witness =>
+          completionCriterionAtUniverse_of_poincareConjectureStatement
+            witness
+            (poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+              dependencies.smoothability dependencies.surgery
+              dependencies.topology)⟩ := by
+  apply Subsingleton.elim
+
 theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     completion_certificate_of_canonical_statement_payload
@@ -6110,6 +6189,25 @@ theorem completion_certificate_of_aggregate_dependency_payload_of_completion_cer
         dependencies) := by
   apply Subsingleton.elim
 
+theorem completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_aggregate_dependency_payload
+      (poincareCompletionCertificate_aggregate_dependency_payload
+        (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+          dependencies)) =
+      ⟨canonicalCompletionTheoremName, rfl,
+        remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies,
+        poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+          dependencies.smoothability dependencies.surgery dependencies.topology,
+        fun witness =>
+          completionCriterionAtUniverse_of_poincareConjectureStatement
+            witness
+            (poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+              dependencies.smoothability dependencies.surgery
+              dependencies.topology)⟩ := by
+  apply Subsingleton.elim
+
 theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     completion_certificate_of_project_statement_payload
@@ -6118,6 +6216,25 @@ theorem completion_certificate_of_project_statement_payload_of_completion_certif
           dependencies)) =
       (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
         dependencies) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_project_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_project_statement_payload
+      (poincareCompletionCertificate_project_statement_payload
+        (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+          dependencies)) =
+      ⟨canonicalCompletionTheoremName, rfl,
+        remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies,
+        poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+          dependencies.smoothability dependencies.surgery dependencies.topology,
+        fun witness =>
+          completionCriterionAtUniverse_of_poincareConjectureStatement
+            witness
+            (poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+              dependencies.smoothability dependencies.surgery
+              dependencies.topology)⟩ := by
   apply Subsingleton.elim
 
 /--
@@ -21777,6 +21894,14 @@ theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_lifte
           dependencies) := by
   apply Subsingleton.elim
 
+theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_conjecture_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+        dependencies.smoothability dependencies.surgery dependencies.topology := by
+  apply Subsingleton.elim
+
 theorem target_statement_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     PoincareConjectureStatement.{u} :=
@@ -21901,6 +22026,19 @@ theorem poincare_conjecture_payload_of_completion_certificate_of_equation_bounda
       poincare_conjecture_payload_of_completion_certificate
         (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
           dependencies) := by
+  apply Subsingleton.elim
+
+theorem poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      ⟨poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+        dependencies.smoothability dependencies.surgery dependencies.topology,
+        fun witness =>
+          completionCriterionAtUniverse_of_poincareConjectureStatement
+            witness
+            (poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+              dependencies.smoothability dependencies.surgery dependencies.topology)⟩ := by
   apply Subsingleton.elim
 
 /--
@@ -30617,6 +30755,24 @@ theorem canonical_three_sphere_statement_of_completion_certificate_of_equation_b
           (dependencies_of_equation_boundary_dependencies dependencies)) := by
   apply Subsingleton.elim
 
+theorem canonical_three_sphere_statement_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      canonical_three_sphere_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+theorem canonical_three_sphere_statement_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      canonical_three_sphere_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+        dependencies.smoothability dependencies.surgery dependencies.topology := by
+  apply Subsingleton.elim
+
 /--
 Projecting the full canonical-statement payload from the route completion
 certificates returns the payload assembled from the named route endpoints.
@@ -36979,6 +37135,25 @@ theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_
           (dependencies_of_equation_boundary_dependencies dependencies)) := by
   apply Subsingleton.elim
 
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      ⟨ "poincare_conjecture", rfl,
+        remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies,
+        poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+          dependencies.smoothability dependencies.surgery dependencies.topology,
+        canonical_three_sphere_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+          dependencies.smoothability dependencies.surgery dependencies.topology,
+        fun witness =>
+          completionCriterionAtUniverse_of_poincareConjectureStatement
+            witness
+            (poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+              dependencies.smoothability dependencies.surgery dependencies.topology)⟩ := by
+  apply Subsingleton.elim
+
 theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_dependency_projections_to_boundary_target_payload_eq
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     poincareCompletionCertificate_aggregate_canonical_statement_payload
@@ -37050,6 +37225,24 @@ theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_c
       poincareCompletionCertificate_aggregate_canonical_statement_payload
         (completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
           (dependencies_of_equation_boundary_dependencies dependencies)) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies) =
+      ⟨ "poincare_conjecture", rfl,
+        dependencies_of_equation_boundary_dependencies dependencies,
+        poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+          dependencies.smoothability dependencies.surgery dependencies.topology,
+        canonical_three_sphere_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+          dependencies.smoothability dependencies.surgery dependencies.topology,
+        fun witness =>
+          completionCriterionAtUniverse_of_poincareConjectureStatement
+            witness
+            (poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+              dependencies.smoothability dependencies.surgery dependencies.topology)⟩ := by
   apply Subsingleton.elim
 
 theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_equation_boundary_dependency_projections_to_boundary_target_payload_eq
@@ -37125,6 +37318,24 @@ theorem completion_certificate_of_canonical_statement_payload_of_completion_cert
         (dependencies_of_equation_boundary_dependencies dependencies) := by
   apply Subsingleton.elim
 
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+          dependencies)) =
+      ⟨canonicalCompletionTheoremName, rfl,
+        remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies,
+        poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+          dependencies.smoothability dependencies.surgery dependencies.topology,
+        fun witness =>
+          completionCriterionAtUniverse_of_poincareConjectureStatement
+            witness
+            (poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+              dependencies.smoothability dependencies.surgery dependencies.topology)⟩ := by
+  apply Subsingleton.elim
+
 theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_dependency_projections_to_boundary_target_payload_eq
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     completion_certificate_of_aggregate_canonical_statement_payload
@@ -37196,6 +37407,24 @@ theorem completion_certificate_of_aggregate_canonical_statement_payload_of_compl
           dependencies)) =
       completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+          dependencies)) =
+      ⟨canonicalCompletionTheoremName, rfl,
+        remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies,
+        poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+          dependencies.smoothability dependencies.surgery dependencies.topology,
+        fun witness =>
+          completionCriterionAtUniverse_of_poincareConjectureStatement
+            witness
+            (poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+              dependencies.smoothability dependencies.surgery dependencies.topology)⟩ := by
   apply Subsingleton.elim
 
 /--
