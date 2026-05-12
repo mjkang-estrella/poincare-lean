@@ -4626,6 +4626,18 @@ check_decl "surgery package statement-mediated finite-extinction projection is d
   '^theorem finite_extinction_via_statement_of_surgery_package\b' Poincare/Surgery.lean
 check_decl "surgery package statement-mediated finite-extinction equality contract is declared" \
   '^theorem finite_extinction_via_statement_of_surgery_package_eq\b' Poincare/Surgery.lean
+check_decl "surgery package statement-mediated finite-extinction direct-route contract is declared" \
+  '^theorem finite_extinction_via_statement_of_surgery_package_direct_route_eq\b' Poincare/Surgery.lean
+check_decl "boundary surgery package finite-extinction statement bridge is declared" \
+  '^theorem finite_extinction_statement_of_surgery_package_with_equation_boundary\b' Poincare/Surgery.lean
+check_decl "boundary surgery package finite-extinction statement equality contract is declared" \
+  '^theorem finite_extinction_statement_of_surgery_package_with_equation_boundary_eq\b' Poincare/Surgery.lean
+check_decl "boundary surgery package statement-mediated finite-extinction projection is declared" \
+  '^theorem finite_extinction_via_statement_of_surgery_package_with_equation_boundary\b' Poincare/Surgery.lean
+check_decl "boundary surgery package statement-mediated finite-extinction equality contract is declared" \
+  '^theorem finite_extinction_via_statement_of_surgery_package_with_equation_boundary_eq\b' Poincare/Surgery.lean
+check_decl "boundary surgery package statement-mediated finite-extinction direct-route contract is declared" \
+  '^theorem finite_extinction_via_statement_of_surgery_package_with_equation_boundary_direct_route_eq\b' Poincare/Surgery.lean
 check_decl "finite-extinction width sub-obligations statement is declared" \
   '^def FiniteExtinctionWidthSubobligationsStatement\b' Poincare/Surgery.lean
 check_decl "finite-extinction width sub-obligations statement shape contract is declared" \
@@ -20217,6 +20229,12 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_of_finite_extinction_statement_eq
 #check Poincare.finite_extinction_via_statement_of_surgery_package
 #check Poincare.finite_extinction_via_statement_of_surgery_package_eq
+#check Poincare.finite_extinction_via_statement_of_surgery_package_direct_route_eq
+#check Poincare.finite_extinction_statement_of_surgery_package_with_equation_boundary
+#check Poincare.finite_extinction_statement_of_surgery_package_with_equation_boundary_eq
+#check Poincare.finite_extinction_via_statement_of_surgery_package_with_equation_boundary
+#check Poincare.finite_extinction_via_statement_of_surgery_package_with_equation_boundary_eq
+#check Poincare.finite_extinction_via_statement_of_surgery_package_with_equation_boundary_direct_route_eq
 #check Poincare.FiniteExtinctionWidthSubobligationsStatement
 #check Poincare.finiteExtinctionWidthSubobligationsStatement_eq
 #check Poincare.FiniteExtinctionSubobligationsStatement
@@ -26474,6 +26492,12 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_of_finite_extinction_statement_eq
 #check Poincare.finite_extinction_via_statement_of_surgery_package
 #check Poincare.finite_extinction_via_statement_of_surgery_package_eq
+#check Poincare.finite_extinction_via_statement_of_surgery_package_direct_route_eq
+#check Poincare.finite_extinction_statement_of_surgery_package_with_equation_boundary
+#check Poincare.finite_extinction_statement_of_surgery_package_with_equation_boundary_eq
+#check Poincare.finite_extinction_via_statement_of_surgery_package_with_equation_boundary
+#check Poincare.finite_extinction_via_statement_of_surgery_package_with_equation_boundary_eq
+#check Poincare.finite_extinction_via_statement_of_surgery_package_with_equation_boundary_direct_route_eq
 #check Poincare.FiniteExtinctionWidthSubobligationsStatement
 #check Poincare.finiteExtinctionWidthSubobligationsStatement_eq
 #check Poincare.FiniteExtinctionSubobligationsStatement

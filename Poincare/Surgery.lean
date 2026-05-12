@@ -7421,6 +7421,20 @@ theorem finite_extinction_via_statement_of_surgery_package_eq
   apply Subsingleton.elim
 
 /--
+The statement-mediated finite-extinction route from a completed surgery package
+agrees with the direct package projection.
+-/
+theorem finite_extinction_via_statement_of_surgery_package_direct_route_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M) :
+    finite_extinction_via_statement_of_surgery_package package =
+      finite_extinction_of_surgery_package package := by
+  apply Subsingleton.elim
+
+/--
 The fixed-flow finite-extinction width statement: the sweepout, min-max width,
 width evolution, surgery comparison, discard-control, and component topology
 inputs used before the final extinction derivation.
@@ -9947,6 +9961,83 @@ underlying surgery package.
       finite_extinction_of_surgery_package
         (surgery_package_of_equation_boundary_surgery_package package) :=
   rfl
+
+/--
+A strengthened surgery package supplies the theorem-shaped finite-extinction
+statement through its underlying ordinary surgery package.
+-/
+theorem finite_extinction_statement_of_surgery_package_with_equation_boundary
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    FiniteExtinctionStatement n M :=
+  finite_extinction_statement_of_surgery_package
+    (surgery_package_of_equation_boundary_surgery_package package)
+
+/--
+The strengthened-package finite-extinction statement delegates to the ordinary
+statement route after forgetting the equation-boundary payload.
+-/
+theorem finite_extinction_statement_of_surgery_package_with_equation_boundary_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    finite_extinction_statement_of_surgery_package_with_equation_boundary
+        package =
+      finite_extinction_statement_of_surgery_package
+        (surgery_package_of_equation_boundary_surgery_package package) := by
+  apply Subsingleton.elim
+
+/--
+Statement-mediated projection of finite extinction from a strengthened surgery
+package.
+-/
+theorem finite_extinction_via_statement_of_surgery_package_with_equation_boundary
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    FiniteExtinctionByRicciFlowWithSurgery M :=
+  finite_extinction_of_finite_extinction_statement
+    (finite_extinction_statement_of_surgery_package_with_equation_boundary
+      package)
+
+/--
+The strengthened-package statement-mediated finite-extinction route is exactly
+finite-extinction extraction from the strengthened theorem-shaped statement.
+-/
+theorem finite_extinction_via_statement_of_surgery_package_with_equation_boundary_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    finite_extinction_via_statement_of_surgery_package_with_equation_boundary
+        package =
+      finite_extinction_of_finite_extinction_statement
+        (finite_extinction_statement_of_surgery_package_with_equation_boundary
+          package) := by
+  apply Subsingleton.elim
+
+/--
+The statement-mediated finite-extinction route from a strengthened surgery
+package agrees with the direct strengthened-package projection.
+-/
+theorem finite_extinction_via_statement_of_surgery_package_with_equation_boundary_direct_route_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    finite_extinction_via_statement_of_surgery_package_with_equation_boundary
+        package =
+      finite_extinction_of_surgery_package_with_equation_boundary package := by
+  apply Subsingleton.elim
 
 /--
 A strengthened surgery package exposes the ordinary package, equation-boundary
