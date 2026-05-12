@@ -13003,6 +13003,30 @@ theorem poincare_target_payload_of_equation_boundary_extraction_derivation_depen
   apply Subsingleton.elim
 
 /--
+The strengthened certified projection target payload agrees with the direct
+boundary-package certified extraction-derivation route.
+-/
+theorem poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation⟩
+        let target :=
+          poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+            dependencies.smoothability dependencies.surgery dependencies.topology
+        exact
+          ⟨finite_extinction_input_of_smoothability_and_boundary_surgery_packages
+              dependencies.smoothability dependencies.surgery,
+            extractSphere, derivation, target,
+            fun witness =>
+              completionCriterionAtUniverse_of_poincareConjectureStatement
+                witness target⟩) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened lifted-homeomorphism projection route exposes boundary finite
 extinction, a certified final extractor, its lifted homeomorphism derivation
 certificate, the target statement, and the completion criterion.
@@ -13870,6 +13894,24 @@ theorem poincare_completion_payload_of_equation_boundary_extraction_derivation_d
   apply Subsingleton.elim
 
 /--
+The strengthened certified projection completion payload agrees with projecting
+the target and criterion from the direct boundary-package certified route.
+-/
+theorem poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      ⟨poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+        dependencies.smoothability dependencies.surgery dependencies.topology,
+        fun witness =>
+          completionCriterionAtUniverse_of_poincareConjectureStatement
+            witness
+            (poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+              dependencies.smoothability dependencies.surgery
+              dependencies.topology)⟩ := by
+  apply Subsingleton.elim
+
+/--
 The strengthened lifted-homeomorphism projection route exposes the local
 target and universe-indexed completion criterion through the boundary lifted
 target payload.
@@ -14434,6 +14476,18 @@ theorem poincare_statement_of_equation_boundary_extraction_derivation_dependency
         dependencies =
       poincare_statement_of_extraction_derivation_dependency_projections
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified projection Poincare statement agrees with the direct
+boundary-package certified extraction-derivation statement route.
+-/
+theorem poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+        dependencies.smoothability dependencies.surgery dependencies.topology := by
   apply Subsingleton.elim
 
 /--
@@ -15059,6 +15113,18 @@ theorem canonical_three_sphere_statement_of_equation_boundary_extraction_derivat
   apply Subsingleton.elim
 
 /--
+The strengthened certified projection canonical statement agrees with the direct
+boundary-package certified extraction-derivation canonical route.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      canonical_three_sphere_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+        dependencies.smoothability dependencies.surgery dependencies.topology := by
+  apply Subsingleton.elim
+
+/--
 The strengthened lifted-homeomorphism projection route exposes the canonical
 mathlib-shaped topological 3-sphere statement.
 -/
@@ -15654,6 +15720,21 @@ theorem completion_criterion_of_equation_boundary_extraction_derivation_dependen
       completion_criterion_of_extraction_derivation_dependency_projections
         witness
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified projection completion criterion agrees with the
+direct boundary-package certified extraction-derivation statement route.
+-/
+theorem completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_to_boundary_route_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections
+        witness dependencies =
+      completionCriterionAtUniverse_of_poincareConjectureStatement
+        witness
+        (poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+          dependencies.smoothability dependencies.surgery dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
