@@ -12934,6 +12934,30 @@ theorem poincare_target_payload_of_equation_boundary_dependency_projections_to_f
   apply Subsingleton.elim
 
 /--
+The strengthened dependency projection target payload also factors through the
+explicit boundary finite-extinction projection and the topology package's final
+extractor.
+-/
+theorem poincare_target_payload_of_equation_boundary_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_target_payload_of_equation_boundary_dependency_projections
+        dependencies =
+      (by
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let extraction :=
+          extinction_implies_sphere_of_topology_package dependencies.topology
+        let target :=
+          poincare_statement_of_extinction_and_extraction
+            finiteExtinction extraction
+        let criterion :=
+          fun witness =>
+            completionCriterionAtUniverse_of_poincareConjectureStatement
+              witness target
+        exact ⟨finiteExtinction, extraction, target, criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened certified dependency projection route exposes the boundary
 finite-extinction input together with a certified final extractor, the target
 statement, and the completion criterion.
@@ -13898,6 +13922,30 @@ theorem poincare_completion_payload_of_equation_boundary_dependency_projections_
   apply Subsingleton.elim
 
 /--
+The strengthened dependency projection completion payload also factors through
+the explicit boundary finite-extinction projection and the topology package's
+final extractor.
+-/
+theorem poincare_completion_payload_of_equation_boundary_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_dependency_projections
+        dependencies =
+      (by
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let extraction :=
+          extinction_implies_sphere_of_topology_package dependencies.topology
+        let target :=
+          poincare_statement_of_extinction_and_extraction
+            finiteExtinction extraction
+        exact
+          ⟨target,
+            fun witness =>
+              completionCriterionAtUniverse_of_poincareConjectureStatement
+                witness target⟩) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened certified dependency projection route exposes the local target
 and universe-indexed completion criterion through the boundary certified target
 payload.
@@ -14524,6 +14572,25 @@ theorem poincare_statement_of_equation_boundary_dependency_projections_to_forget
   apply Subsingleton.elim
 
 /--
+The strengthened dependency projection Poincare statement also factors through
+the explicit boundary finite-extinction projection and the topology package's
+final extractor.
+-/
+theorem poincare_statement_of_equation_boundary_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_dependency_projections
+        dependencies =
+      (by
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let extraction :=
+          extinction_implies_sphere_of_topology_package dependencies.topology
+        exact
+          poincare_statement_of_extinction_and_extraction
+            finiteExtinction extraction) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened certified dependency projection route proves the Poincare
 target through the boundary certified projection completion payload.
 -/
@@ -15129,6 +15196,26 @@ theorem canonical_three_sphere_statement_of_equation_boundary_dependency_project
         dependencies =
       canonical_three_sphere_statement_of_dependency_projections
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened equation-boundary canonical statement also factors through the
+explicit boundary finite-extinction projection and the topology package's final
+extractor.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_equation_boundary_dependency_projections
+        dependencies =
+      (by
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let extraction :=
+          extinction_implies_sphere_of_topology_package dependencies.topology
+        exact
+          canonical_three_sphere_statement_of_poincare_statement
+            (poincare_statement_of_extinction_and_extraction
+              finiteExtinction extraction)) := by
   apply Subsingleton.elim
 
 /--
@@ -15806,6 +15893,28 @@ theorem completion_criterion_of_equation_boundary_dependency_projections_to_forg
         witness dependencies =
       completion_criterion_of_dependency_projections witness
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened equation-boundary completion criterion also factors through
+the explicit boundary finite-extinction projection and the topology package's
+final extractor.
+-/
+theorem completion_criterion_of_equation_boundary_dependency_projections_to_finite_extinction_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_equation_boundary_dependency_projections
+        witness dependencies =
+      (by
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        let extraction :=
+          extinction_implies_sphere_of_topology_package dependencies.topology
+        exact
+          completionCriterionAtUniverse_of_poincareConjectureStatement
+            witness
+            (poincare_statement_of_extinction_and_extraction
+              finiteExtinction extraction)) := by
   apply Subsingleton.elim
 
 /--
