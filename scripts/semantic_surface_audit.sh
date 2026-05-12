@@ -6012,6 +6012,7 @@ universe u
 #check Poincare.poincare_target_payload_of_dependencies_and_verification_family_eq
 #check Poincare.poincare_target_payload_of_equation_boundary_dependencies_to_forgetful_dependencies
 #check Poincare.poincare_target_payload_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
+#check Poincare.poincare_target_payload_of_equation_boundary_dependencies_to_finite_extinction_eq
 
 #check (Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies :
   Poincare.PoincareProofDependenciesWithEquationBoundary →
@@ -6108,6 +6109,7 @@ universe u
 #check Poincare.poincare_full_assembly_payload_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
 #check Poincare.poincare_full_assembly_payload_of_equation_boundary_dependencies_to_forgetful_boundary_route_eq
 #check Poincare.poincare_full_assembly_payload_of_equation_boundary_dependencies_to_boundary_route_eq
+#check Poincare.poincare_full_assembly_payload_of_equation_boundary_dependencies_to_finite_extinction_eq
 
 #check (Poincare.poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies :
   Poincare.PoincareProofDependenciesWithEquationBoundary →
@@ -6173,6 +6175,7 @@ universe u
 #check Poincare.poincare_completion_payload_of_equation_boundary_dependencies_eq
 #check Poincare.poincare_completion_payload_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
 #check Poincare.poincare_completion_payload_of_equation_boundary_dependencies_to_boundary_route_eq
+#check Poincare.poincare_completion_payload_of_equation_boundary_dependencies_to_finite_extinction_eq
 
 #check (Poincare.poincare_completion_payload_of_aggregate_extraction_derivation_dependencies :
   Poincare.PoincareProofDependencies →
@@ -6199,6 +6202,7 @@ universe u
 #check Poincare.poincare_statement_of_equation_boundary_dependencies_eq
 #check Poincare.poincare_statement_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
 #check Poincare.poincare_statement_of_equation_boundary_dependencies_to_boundary_route_eq
+#check Poincare.poincare_statement_of_equation_boundary_dependencies_to_finite_extinction_eq
 
 #check (Poincare.poincare_statement_of_aggregate_extraction_derivation_dependencies :
   Poincare.PoincareProofDependencies → Poincare.PoincareConjectureStatement)
@@ -6226,6 +6230,7 @@ universe u
 #check Poincare.canonical_three_sphere_statement_of_equation_boundary_dependencies_eq
 #check Poincare.canonical_three_sphere_statement_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
 #check Poincare.canonical_three_sphere_statement_of_equation_boundary_dependencies_to_boundary_route_eq
+#check Poincare.canonical_three_sphere_statement_of_equation_boundary_dependencies_to_finite_extinction_eq
 
 #check (Poincare.canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies :
   Poincare.PoincareProofDependencies →
@@ -6258,6 +6263,7 @@ universe u
 #check Poincare.completion_criterion_of_equation_boundary_dependencies_eq
 #check Poincare.completion_criterion_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
 #check Poincare.completion_criterion_of_equation_boundary_dependencies_to_boundary_route_eq
+#check Poincare.completion_criterion_of_equation_boundary_dependencies_to_finite_extinction_eq
 #check Poincare.completion_criterion_of_aggregate_extraction_derivation_dependencies_eq
 #check Poincare.completion_criterion_of_aggregate_extraction_derivation_dependencies_to_finite_extinction_eq
 #check (Poincare.completion_criterion_of_equation_boundary_extraction_derivation_dependencies :
@@ -16492,7 +16498,7 @@ equation_boundary_target_payload_count=$(
   rg -c '\bpoincare_target_payload_of_equation_boundary_dependencies\b' \
     Poincare/Dependencies.lean || true
 )
-if [ "$equation_boundary_target_payload_count" != "7" ]; then
+if [ "$equation_boundary_target_payload_count" != "8" ]; then
   echo "FAIL: equation-boundary full assembly and verification-family routes should consume the boundary-preserving target payload"
   rg -n '\bpoincare_target_payload_of_equation_boundary_dependencies\b' \
     Poincare/Dependencies.lean || true
