@@ -1602,6 +1602,118 @@ theorem poincare_statement_of_boundary_surgery_and_topology_packages_to_boundary
   apply Subsingleton.elim
 
 /--
+If the smoothability, boundary-carrying surgery, and topology packages are
+available, then the topology package may also be unpacked through the certified
+extraction-derivation route after forgetting equation-boundary data in the
+surgery packages.
+-/
+theorem poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω,
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_surgery_and_topology_package_extraction_derivation
+    smoothabilityPackage
+    (fun (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M] =>
+        by
+          rcases surgeryPackages M with ⟨⟨n, package⟩⟩
+          exact
+            ⟨⟨n,
+              surgery_package_of_equation_boundary_surgery_package
+                package⟩⟩)
+    topologyPackage
+
+/--
+The boundary certified extraction-derivation route delegates to the ordinary
+certified extraction-derivation route after forgetting equation-boundary data in
+each selected surgery package.
+-/
+theorem poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω,
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+      smoothabilityPackage surgeryPackages topologyPackage =
+      poincare_statement_of_surgery_and_topology_package_extraction_derivation
+        smoothabilityPackage
+        (fun (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M] =>
+            by
+              rcases surgeryPackages M with ⟨⟨n, package⟩⟩
+              exact
+                ⟨⟨n,
+                  surgery_package_of_equation_boundary_surgery_package
+                    package⟩⟩)
+        topologyPackage := by
+  apply Subsingleton.elim
+
+/--
+The boundary package Poincare route agrees with the boundary certified
+topology-package extraction-derivation route.
+-/
+theorem poincare_statement_of_boundary_surgery_and_topology_packages_to_topology_package_extraction_derivation_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω,
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    poincare_statement_of_boundary_surgery_and_topology_packages
+      smoothabilityPackage surgeryPackages topologyPackage =
+      poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+        smoothabilityPackage surgeryPackages topologyPackage := by
+  apply Subsingleton.elim
+
+/--
+The boundary certified extraction-derivation route also agrees with assembling
+from the boundary-package finite-extinction input and the topology package's
+extraction theorem.
+-/
+theorem poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation_to_boundary_input_route_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω,
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+      smoothabilityPackage surgeryPackages topologyPackage =
+      poincare_statement_of_extinction_and_extraction
+        (finite_extinction_input_of_smoothability_and_boundary_surgery_packages
+          smoothabilityPackage surgeryPackages)
+        (extinction_implies_sphere_of_topology_extraction_statement
+          (extinction_topology_extraction_statement_of_topology_package
+            topologyPackage)) := by
+  apply Subsingleton.elim
+
+/--
 The explicit smoothability, surgery, and topology packages also expose the
 canonical mathlib-shaped topological 3-sphere statement.
 -/
@@ -1879,6 +1991,133 @@ theorem canonical_three_sphere_statement_of_boundary_surgery_and_topology_packag
       canonical_three_sphere_statement_of_poincare_statement
         (poincare_statement_of_boundary_surgery_and_topology_packages
           smoothabilityPackage surgeryPackages topologyPackage) := by
+  apply Subsingleton.elim
+
+/--
+The boundary-carrying smoothability/surgery/topology package route also exposes
+the canonical topological 3-sphere statement through the certified
+extraction-derivation topology-package route.
+-/
+theorem canonical_three_sphere_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω,
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) :=
+  canonical_three_sphere_statement_of_poincare_statement
+    (poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+      smoothabilityPackage surgeryPackages topologyPackage)
+
+/--
+The boundary certified canonical topological statement is the canonical bridge
+applied to the named boundary certified Poincare statement.
+-/
+theorem canonical_three_sphere_statement_of_boundary_surgery_and_topology_package_extraction_derivation_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω,
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    canonical_three_sphere_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+      smoothabilityPackage surgeryPackages topologyPackage =
+      canonical_three_sphere_statement_of_poincare_statement
+        (poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+          smoothabilityPackage surgeryPackages topologyPackage) := by
+  apply Subsingleton.elim
+
+/--
+The boundary canonical statement agrees with the boundary certified
+topology-package extraction-derivation canonical route.
+-/
+theorem canonical_three_sphere_statement_of_boundary_surgery_and_topology_packages_to_topology_package_extraction_derivation_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω,
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    canonical_three_sphere_statement_of_boundary_surgery_and_topology_packages
+      smoothabilityPackage surgeryPackages topologyPackage =
+      canonical_three_sphere_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+        smoothabilityPackage surgeryPackages topologyPackage := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the equation boundary from the strengthened surgery packages gives
+the same certified canonical topological 3-sphere statement as the ordinary
+certified package route.
+-/
+theorem canonical_three_sphere_statement_of_boundary_surgery_and_topology_package_extraction_derivation_to_ordinary_route_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω,
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    canonical_three_sphere_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+      smoothabilityPackage surgeryPackages topologyPackage =
+      canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation
+        smoothabilityPackage
+        (fun (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M] =>
+            by
+              rcases surgeryPackages M with ⟨⟨n, package⟩⟩
+              exact
+                ⟨⟨n,
+                  surgery_package_of_equation_boundary_surgery_package
+                    package⟩⟩)
+        topologyPackage := by
+  apply Subsingleton.elim
+
+/--
+The boundary certified canonical statement also agrees with the canonical
+bridge over the boundary finite-extinction input and topology package's
+extraction theorem route.
+-/
+theorem canonical_three_sphere_statement_of_boundary_surgery_and_topology_package_extraction_derivation_to_boundary_input_route_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω,
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    canonical_three_sphere_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+      smoothabilityPackage surgeryPackages topologyPackage =
+      canonical_three_sphere_statement_of_poincare_statement
+        (poincare_statement_of_extinction_and_extraction
+          (finite_extinction_input_of_smoothability_and_boundary_surgery_packages
+            smoothabilityPackage surgeryPackages)
+          (extinction_implies_sphere_of_topology_extraction_statement
+            (extinction_topology_extraction_statement_of_topology_package
+              topologyPackage))) := by
   apply Subsingleton.elim
 
 /--

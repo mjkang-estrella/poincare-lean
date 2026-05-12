@@ -5463,6 +5463,20 @@ universe u
 #check Poincare.poincare_statement_of_boundary_surgery_and_topology_packages_eq
 #check Poincare.poincare_statement_of_boundary_surgery_and_topology_packages_to_boundary_input_route_eq
 
+#check (Poincare.poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω,
+          Poincare.FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) →
+    Poincare.ExtinctionTopologyExtractionPackage →
+      Poincare.PoincareConjectureStatement)
+#check Poincare.poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation_eq
+#check Poincare.poincare_statement_of_boundary_surgery_and_topology_packages_to_topology_package_extraction_derivation_eq
+#check Poincare.poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation_to_boundary_input_route_eq
+
 #check (Poincare.poincare_statement_of_surgery_and_topology_extraction_statement :
   Poincare.SmoothabilityPackage →
     (∀ (M : Type) [TopologicalSpace M] [T2Space M]
@@ -5564,6 +5578,24 @@ universe u
           Nonempty (M ≃ₜ Poincare.ThreeSphere))
 #check Poincare.canonical_three_sphere_statement_of_boundary_surgery_and_topology_packages_eq
 #check Poincare.canonical_three_sphere_statement_of_boundary_surgery_and_topology_packages_to_ordinary_route_eq
+
+#check (Poincare.canonical_three_sphere_statement_of_boundary_surgery_and_topology_package_extraction_derivation :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω,
+          Poincare.FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) →
+    Poincare.ExtinctionTopologyExtractionPackage →
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ Poincare.ThreeSphere))
+#check Poincare.canonical_three_sphere_statement_of_boundary_surgery_and_topology_package_extraction_derivation_eq
+#check Poincare.canonical_three_sphere_statement_of_boundary_surgery_and_topology_packages_to_topology_package_extraction_derivation_eq
+#check Poincare.canonical_three_sphere_statement_of_boundary_surgery_and_topology_package_extraction_derivation_to_ordinary_route_eq
+#check Poincare.canonical_three_sphere_statement_of_boundary_surgery_and_topology_package_extraction_derivation_to_boundary_input_route_eq
 
 #check (Poincare.poincare_statement_of_canonical_three_sphere_statement :
   (∀ (M : Type) [TopologicalSpace M] [T2Space M]
