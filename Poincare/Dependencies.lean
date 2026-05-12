@@ -1346,6 +1346,26 @@ theorem poincare_completion_payload_of_aggregate_extraction_derivation_dependenc
   apply Subsingleton.elim
 
 /--
+The certified aggregate completion payload also factors directly through the
+finite-extinction endpoint and the extractor/derivation certificate carried by
+the topology package.
+-/
+theorem poincare_completion_payload_of_aggregate_extraction_derivation_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_aggregate_extraction_derivation_dependencies
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation⟩
+        exact
+          poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_input_of_smoothability_and_surgery_packages
+              dependencies.smoothability dependencies.surgery)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate dependency package exposes the local target and
 completion criterion through the certified extraction-derivation route while
 retaining explicit equation-boundary data.
@@ -1406,6 +1426,26 @@ theorem poincare_completion_payload_of_equation_boundary_extraction_derivation_d
             (poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
               dependencies.smoothability dependencies.surgery
               dependencies.topology)⟩ := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified completion payload also factors directly through
+the finite-extinction endpoint and the extractor/derivation certificate carried
+by the topology package.
+-/
+theorem poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation⟩
+        exact
+          poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_input_of_smoothability_and_boundary_surgery_packages
+              dependencies.smoothability dependencies.surgery)
+            extractSphere derivation) := by
   apply Subsingleton.elim
 
 /--
