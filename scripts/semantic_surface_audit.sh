@@ -7646,6 +7646,7 @@ universe u
 #check Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections
 #check Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections_eq
 #check Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
+#check Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_finite_extinction_eq
 #check Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_forgetful_dependencies_eq
 #check Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_boundary_route_eq
 #check Poincare.canonical_three_sphere_statement_of_equation_boundary_dependency_projections
@@ -7677,6 +7678,7 @@ universe u
 #check Poincare.completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections
 #check Poincare.completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_eq
 #check Poincare.completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
+#check Poincare.completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_to_finite_extinction_eq
 #check Poincare.completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_to_forgetful_dependencies_eq
 #check Poincare.completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_to_boundary_route_eq
 #check Poincare.finite_extinction_of_remaining_dependency_package
@@ -16364,8 +16366,8 @@ projection_equation_boundary_extraction_derivation_completion_criterion_count=$(
   rg -c '\bcompletion_criterion_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_equation_boundary_extraction_derivation_completion_criterion_count" != "6" ]; then
-  echo "FAIL: equation-boundary certified projection criterion endpoints should expose theorem, equality, statement, forgetful, and boundary routes"
+if [ "$projection_equation_boundary_extraction_derivation_completion_criterion_count" != "7" ]; then
+  echo "FAIL: equation-boundary certified projection criterion endpoints should expose theorem, equality, statement, finite-extinction, forgetful, and boundary routes"
   rg -n '\bcompletion_criterion_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/DependencyProjections.lean || true
   exit 1

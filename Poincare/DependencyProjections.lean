@@ -14512,6 +14512,26 @@ theorem poincare_statement_of_equation_boundary_extraction_derivation_dependency
   apply Subsingleton.elim
 
 /--
+The strengthened certified dependency projection Poincare statement also
+factors through the explicit finite-extinction input and the dependency-level
+extraction/derivation payload.
+-/
+theorem poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            topology_extraction_derivation_payload_of_equation_boundary_dependencies
+              dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          poincare_statement_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
 Forgetting equation-boundary data in the strengthened certified projection
 Poincare statement recovers the ordinary certified dependency projection
 Poincare statement.
@@ -15772,6 +15792,28 @@ theorem completion_criterion_of_equation_boundary_extraction_derivation_dependen
               (topology_extraction_statement_of_dependencies
                 (dependencies_of_equation_boundary_dependencies
                   dependencies)) with
+          ⟨extractSphere, derivation⟩
+        rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified equation-boundary completion criterion also factors
+through the explicit finite-extinction input and the dependency-level
+extraction/derivation payload.
+-/
+theorem completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_to_finite_extinction_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections
+        witness dependencies =
+      (by
+        rcases
+            topology_extraction_derivation_payload_of_equation_boundary_dependencies
+              dependencies with
           ⟨extractSphere, derivation⟩
         rcases poincare_payload_of_finite_extinction_and_extraction_derivation
             (finite_extinction_of_equation_boundary_dependencies dependencies)
