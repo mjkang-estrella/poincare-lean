@@ -11555,10 +11555,14 @@ check_decl "strengthened aggregate dependency reserved-name forgetful route cont
   '^theorem poincare_conjecture_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies_eq\b' Poincare/CompletionTarget.lean
 check_decl "strengthened aggregate dependency reserved-name boundary-route contract is declared" \
   '^theorem poincare_conjecture_of_poincareProofDependenciesWithEquationBoundary_to_boundary_route_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened aggregate dependency reserved-name finite-extinction route is declared" \
+  '^theorem poincare_conjecture_of_poincareProofDependenciesWithEquationBoundary_to_finite_extinction_eq\b' Poincare/CompletionTarget.lean
 check_decl "strengthened remaining dependency reserved-name forgetful route contract is declared" \
   '^theorem poincare_conjecture_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
 check_decl "strengthened remaining dependency reserved-name boundary-route contract is declared" \
   '^theorem poincare_conjecture_of_equation_boundary_remaining_dependency_package_to_boundary_route_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened remaining dependency reserved-name finite-extinction route is declared" \
+  '^theorem poincare_conjecture_of_equation_boundary_remaining_dependency_package_to_finite_extinction_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate canonical target project endpoint contract is declared" \
   '^theorem canonical_completion_target_of_completion_certificate_to_target_statement_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion certificate canonical target reserved-name endpoint contract is declared" \
