@@ -492,6 +492,20 @@ theorem threeSphere_self_diffeomorph_of_smooth_statement_and_loopNullhomotopySta
   apply Subsingleton.elim
 
 /--
+The loop-nullhomotopy smooth self route is the bare smooth target route under
+the simple-connectedness instance derived from loop-nullhomotopy.
+-/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_loopNullhomotopyStatement_bare_route_eq :
+    threeSphere_self_diffeomorph_of_smooth_statement_and_loopNullhomotopyStatement =
+      (fun hLoop : ThreeSphereLoopNullhomotopyStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+          threeSphere_self_diffeomorph_of_smooth_statement h) := by
+  funext hLoop h
+  apply Subsingleton.elim
+
+/--
 The smooth target plus the concrete loop-nullhomotopy obligation gives the
 topological self-homeomorphism after forgetting smooth structure.
 -/
@@ -509,6 +523,20 @@ existing smooth-to-topological self route after converting loop-nullhomotopy to
 simple-connectedness.
 -/
 theorem threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement_eq :
+    threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement =
+      (fun hLoop : ThreeSphereLoopNullhomotopyStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+          threeSphere_self_homeomorph_of_smooth_statement h) := by
+  funext hLoop h
+  apply Subsingleton.elim
+
+/--
+The loop-nullhomotopy smooth-to-topological self route is the bare
+smooth-to-topological route under the derived simple-connectedness instance.
+-/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement_bare_route_eq :
     threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement =
       (fun hLoop : ThreeSphereLoopNullhomotopyStatement =>
         fun h : SmoothPoincareConjectureStatement.{0} =>
@@ -598,6 +626,20 @@ theorem threeSphere_self_diffeomorph_of_smooth_statement_and_fundamentalGroupSub
   funext hFund h
   apply Subsingleton.elim
 
+/--
+The fundamental-group smooth self route is the bare smooth target route under
+the simple-connectedness instance derived from fundamental-group triviality.
+-/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_bare_route_eq :
+    threeSphere_self_diffeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement hFund
+          threeSphere_self_diffeomorph_of_smooth_statement h) := by
+  funext hFund h
+  apply Subsingleton.elim
+
 /-- The fundamental-group smooth self-diffeomorphism route agrees with the loop route. -/
 theorem threeSphere_self_diffeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_loop_route_eq :
     threeSphere_self_diffeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement =
@@ -627,6 +669,20 @@ exactly the existing smooth-to-topological self route after converting that
 formulation to simple-connectedness.
 -/
 theorem threeSphere_self_homeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_eq :
+    threeSphere_self_homeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement hFund
+          threeSphere_self_homeomorph_of_smooth_statement h) := by
+  funext hFund h
+  apply Subsingleton.elim
+
+/--
+The fundamental-group smooth-to-topological self route is the bare
+smooth-to-topological route under the derived simple-connectedness instance.
+-/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement_bare_route_eq :
     threeSphere_self_homeomorph_of_smooth_statement_and_fundamentalGroupSubsingletonStatement =
       (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
         fun h : SmoothPoincareConjectureStatement.{0} =>
@@ -736,6 +792,20 @@ theorem threeSphere_self_diffeomorph_of_smooth_statement_and_piOneSubsingletonSt
   funext hPiOne h
   apply Subsingleton.elim
 
+/--
+The `π₁` smooth self route is the bare smooth target route under the
+simple-connectedness instance derived from `π₁` triviality.
+-/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_piOneSubsingletonStatement_bare_route_eq :
+    threeSphere_self_diffeomorph_of_smooth_statement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement hPiOne
+          threeSphere_self_diffeomorph_of_smooth_statement h) := by
+  funext hPiOne h
+  apply Subsingleton.elim
+
 /-- The `π₁` smooth self-diffeomorphism route agrees with the fundamental-group route. -/
 theorem threeSphere_self_diffeomorph_of_smooth_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq :
     threeSphere_self_diffeomorph_of_smooth_statement_and_piOneSubsingletonStatement =
@@ -776,6 +846,20 @@ existing smooth-to-topological self route after converting that formulation to
 simple-connectedness.
 -/
 theorem threeSphere_self_homeomorph_of_smooth_statement_and_piOneSubsingletonStatement_eq :
+    threeSphere_self_homeomorph_of_smooth_statement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement hPiOne
+          threeSphere_self_homeomorph_of_smooth_statement h) := by
+  funext hPiOne h
+  apply Subsingleton.elim
+
+/--
+The `π₁` smooth-to-topological self route is the bare smooth-to-topological
+route under the derived simple-connectedness instance.
+-/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_piOneSubsingletonStatement_bare_route_eq :
     threeSphere_self_homeomorph_of_smooth_statement_and_piOneSubsingletonStatement =
       (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
         fun h : SmoothPoincareConjectureStatement.{0} =>
@@ -936,6 +1020,24 @@ theorem threeSphere_self_diffeomorph_of_smooth_statement_and_basedLoopNullhomoto
   funext hBased h
   apply Subsingleton.elim
 
+/--
+The based-loop smooth self route is the bare smooth target route under the
+simple-connectedness instance derived from based loop-nullhomotopy.
+-/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement_bare_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : SmoothPoincareConjectureStatement.{0} =>
+        threeSphere_self_diffeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+          threeSphere_self_diffeomorph_of_smooth_statement h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
 /-- The based-loop smooth self-diffeomorphism route agrees with the full-loop route. -/
 theorem threeSphere_self_diffeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement_loop_route_eq
     (basepoint : ThreeSphere) :
@@ -1002,6 +1104,24 @@ the existing smooth-to-topological self route after converting based
 loop-nullhomotopy to simple-connectedness.
 -/
 theorem threeSphere_self_homeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : SmoothPoincareConjectureStatement.{0} =>
+        threeSphere_self_homeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+          threeSphere_self_homeomorph_of_smooth_statement h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/--
+The based-loop smooth-to-topological self route is the bare
+smooth-to-topological route under the derived simple-connectedness instance.
+-/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_basedLoopNullhomotopyStatement_bare_route_eq
     (basepoint : ThreeSphere) :
     (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
       fun h : SmoothPoincareConjectureStatement.{0} =>
@@ -1142,6 +1262,20 @@ theorem threeSphere_self_diffeomorph_of_smooth_statement_and_pathHomotopyStateme
   apply Subsingleton.elim
 
 /--
+The path-homotopy smooth self route is the bare smooth target route under the
+simple-connectedness instance derived from path-homotopy uniqueness.
+-/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_pathHomotopyStatement_bare_route_eq :
+    threeSphere_self_diffeomorph_of_smooth_statement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_pathHomotopyStatement hPath
+          threeSphere_self_diffeomorph_of_smooth_statement h) := by
+  funext hPath h
+  apply Subsingleton.elim
+
+/--
 The direct path-homotopy smooth self route agrees with the route that first
 converts path-homotopy to loop-nullhomotopy.
 -/
@@ -1172,6 +1306,20 @@ smooth-to-topological self route after converting path-homotopy to
 simple-connectedness.
 -/
 theorem threeSphere_self_homeomorph_of_smooth_statement_and_pathHomotopyStatement_eq :
+    threeSphere_self_homeomorph_of_smooth_statement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_pathHomotopyStatement hPath
+          threeSphere_self_homeomorph_of_smooth_statement h) := by
+  funext hPath h
+  apply Subsingleton.elim
+
+/--
+The path-homotopy smooth-to-topological self route is the bare
+smooth-to-topological route under the derived simple-connectedness instance.
+-/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_pathHomotopyStatement_bare_route_eq :
     threeSphere_self_homeomorph_of_smooth_statement_and_pathHomotopyStatement =
       (fun hPath : ThreeSpherePathHomotopyStatement =>
         fun h : SmoothPoincareConjectureStatement.{0} =>
@@ -1289,6 +1437,20 @@ theorem threeSphere_self_diffeomorph_of_smooth_statement_and_pathQuotientSubsing
   apply Subsingleton.elim
 
 /--
+The path-quotient smooth self route is the bare smooth target route under the
+simple-connectedness instance derived from path-quotient uniqueness.
+-/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_pathQuotientSubsingletonStatement_bare_route_eq :
+    threeSphere_self_diffeomorph_of_smooth_statement_and_pathQuotientSubsingletonStatement =
+      (fun hQuot : ThreeSpherePathQuotientSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement hQuot
+          threeSphere_self_diffeomorph_of_smooth_statement h) := by
+  funext hQuot h
+  apply Subsingleton.elim
+
+/--
 The direct path-quotient smooth self route agrees with the route that first
 converts quotient uniqueness to path-homotopy uniqueness.
 -/
@@ -1333,6 +1495,20 @@ the existing smooth-to-topological self route after converting quotient
 uniqueness to simple-connectedness.
 -/
 theorem threeSphere_self_homeomorph_of_smooth_statement_and_pathQuotientSubsingletonStatement_eq :
+    threeSphere_self_homeomorph_of_smooth_statement_and_pathQuotientSubsingletonStatement =
+      (fun hQuot : ThreeSpherePathQuotientSubsingletonStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement hQuot
+          threeSphere_self_homeomorph_of_smooth_statement h) := by
+  funext hQuot h
+  apply Subsingleton.elim
+
+/--
+The path-quotient smooth-to-topological self route is the bare
+smooth-to-topological route under the derived simple-connectedness instance.
+-/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_pathQuotientSubsingletonStatement_bare_route_eq :
     threeSphere_self_homeomorph_of_smooth_statement_and_pathQuotientSubsingletonStatement =
       (fun hQuot : ThreeSpherePathQuotientSubsingletonStatement =>
         fun h : SmoothPoincareConjectureStatement.{0} =>
