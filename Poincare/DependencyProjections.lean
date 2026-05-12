@@ -12257,6 +12257,25 @@ theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_extract
   apply Subsingleton.elim
 
 /--
+The strengthened certified projection assembly-input payload also factors
+through the explicit boundary finite-extinction input and the dependency-level
+extraction/derivation payload.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      (by
+        rcases
+            topology_extraction_derivation_payload_of_equation_boundary_dependencies
+              dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          ⟨finite_extinction_of_equation_boundary_dependencies dependencies,
+            extractSphere, derivation⟩) := by
+  apply Subsingleton.elim
+
+/--
 Forgetting equation-boundary data in the strengthened certified projection
 assembly-input payload recovers the ordinary certified dependency projection
 assembly-input payload.
@@ -12980,6 +12999,30 @@ theorem poincare_target_payload_of_equation_boundary_extraction_derivation_depen
               (topology_extraction_statement_of_dependencies
                 (dependencies_of_equation_boundary_dependencies
                   dependencies)) with
+          ⟨extractSphere, derivation⟩
+        rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation with
+          ⟨target, criterion⟩
+        exact
+          ⟨finiteExtinction, extractSphere, derivation, target,
+            criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified dependency projection target payload also factors
+through the explicit boundary finite-extinction input and the dependency-level
+extraction/derivation payload.
+-/
+theorem poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      (by
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        rcases
+            topology_extraction_derivation_payload_of_equation_boundary_dependencies
+              dependencies with
           ⟨extractSphere, derivation⟩
         rcases poincare_payload_of_finite_extinction_and_extraction_derivation
             finiteExtinction extractSphere derivation with
@@ -13901,6 +13944,26 @@ theorem poincare_completion_payload_of_equation_boundary_extraction_derivation_d
               (topology_extraction_statement_of_dependencies
                 (dependencies_of_equation_boundary_dependencies
                   dependencies)) with
+          ⟨extractSphere, derivation⟩
+        exact
+          poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified dependency projection completion payload also
+factors through the explicit boundary finite-extinction input and the
+dependency-level extraction/derivation payload.
+-/
+theorem poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            topology_extraction_derivation_payload_of_equation_boundary_dependencies
+              dependencies with
           ⟨extractSphere, derivation⟩
         exact
           poincare_payload_of_finite_extinction_and_extraction_derivation
