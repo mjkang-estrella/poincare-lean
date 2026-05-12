@@ -10124,6 +10124,20 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_one
   funext hLoop h
   apply Subsingleton.elim
 
+/--
+The compactification loop-nullhomotopy target route is the bare target route
+under the simple-connectedness instance derived from loop-nullhomotopy.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointLoopNullhomotopyStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointLoopNullhomotopyStatement =
+      (fun hLoop : OnePointThreeSpaceLoopNullhomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+          onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement h) := by
+  funext hLoop h
+  apply Subsingleton.elim
+
 /-- The loop compactification target route agrees with the direct model homeomorphism. -/
 theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointLoopNullhomotopyStatement_direct_route_eq
     (hLoop : OnePointThreeSpaceLoopNullhomotopyStatement)
@@ -10148,6 +10162,22 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_one
 
 /-- The fundamental-group compactification self-case first turns fundamental groups into simple-connectedness. -/
 theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointFundamentalGroupSubsingletonStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointFundamentalGroupSubsingletonStatement =
+      (fun hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement
+              hFund
+          onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement h) := by
+  funext hFund h
+  apply Subsingleton.elim
+
+/--
+The compactification fundamental-group target route is the bare target route
+under the simple-connectedness instance derived from fundamental-group
+triviality.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointFundamentalGroupSubsingletonStatement_bare_route_eq :
     onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointFundamentalGroupSubsingletonStatement =
       (fun hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement =>
         fun h : PoincareConjectureStatement.{0} =>
@@ -10193,6 +10223,20 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_one
 
 /-- The `π₁` compactification self-case first turns `π₁` into simple-connectedness. -/
 theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPiOneSubsingletonStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPiOneSubsingletonStatement =
+      (fun hPi : OnePointThreeSpacePiOneSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement hPi
+          onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement h) := by
+  funext hPi h
+  apply Subsingleton.elim
+
+/--
+The compactification `π₁` target route is the bare target route under the
+simple-connectedness instance derived from `π₁` triviality.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPiOneSubsingletonStatement_bare_route_eq :
     onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPiOneSubsingletonStatement =
       (fun hPi : OnePointThreeSpacePiOneSubsingletonStatement =>
         fun h : PoincareConjectureStatement.{0} =>
@@ -10249,6 +10293,24 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_one
 
 /-- The based-loop compactification self-case first turns based loops into simple-connectedness. -/
 theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointBasedLoopNullhomotopyStatement_eq
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    (fun hBased : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+      fun h : PoincareConjectureStatement.{0} =>
+        onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointBasedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+          onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/--
+The compactification based-loop target route is the bare target route under
+the simple-connectedness instance derived from based loop-nullhomotopy.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointBasedLoopNullhomotopyStatement_bare_route_eq
     (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
     (fun hBased : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
       fun h : PoincareConjectureStatement.{0} =>
@@ -10635,6 +10697,20 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_one
   funext hPath h
   apply Subsingleton.elim
 
+/--
+The compactification path-homotopy target route is the bare target route under
+the simple-connectedness instance derived from path-homotopy uniqueness.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathHomotopyStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathHomotopyStatement =
+      (fun hPath : OnePointThreeSpacePathHomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement hPath
+          onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement h) := by
+  funext hPath h
+  apply Subsingleton.elim
+
 /-- The path compactification target route agrees with the loop-mediated route. -/
 theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathHomotopyStatement_loop_route_eq :
     onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathHomotopyStatement =
@@ -10669,6 +10745,21 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_one
 
 /-- The quotient compactification self-case first turns quotient uniqueness into simple-connectedness. -/
 theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathQuotientSubsingletonStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathQuotientSubsingletonStatement =
+      (fun hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_pathQuotientSubsingletonStatement
+              hQuot
+          onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement h) := by
+  funext hQuot h
+  apply Subsingleton.elim
+
+/--
+The compactification path-quotient target route is the bare target route under
+the simple-connectedness instance derived from path-quotient uniqueness.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathQuotientSubsingletonStatement_bare_route_eq :
     onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPathQuotientSubsingletonStatement =
       (fun hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement =>
         fun h : PoincareConjectureStatement.{0} =>
