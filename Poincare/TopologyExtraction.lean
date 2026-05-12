@@ -13016,6 +13016,19 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpa
   funext hLoop extinction recognize
   apply Subsingleton.elim
 
+/-- The local loop extinction-recognition target route is the bare target endpoint under its loop-induced instance. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement =
+      (fun hLoop : OnePointThreeSpaceLoopNullhomotopyStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+            onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement
+              extinction recognize) := by
+  funext hLoop extinction recognize
+  apply Subsingleton.elim
+
 /-- The loop extinction-recognition target route agrees with the direct model homeomorphism. -/
 theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement_direct_route_eq
     (hLoop : OnePointThreeSpaceLoopNullhomotopyStatement)
@@ -13074,6 +13087,20 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpa
             homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
               (onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement
                 hFund extinction recognize)) := by
+  funext hFund extinction recognize
+  apply Subsingleton.elim
+
+/-- The local fundamental-group extinction-recognition target route is the bare target endpoint under its induced instance. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement =
+      (fun hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement
+                hFund
+            onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement
+              extinction recognize) := by
   funext hFund extinction recognize
   apply Subsingleton.elim
 
@@ -13146,6 +13173,19 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpa
             homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
               (onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement
                 hPiOne extinction recognize)) := by
+  funext hPiOne extinction recognize
+  apply Subsingleton.elim
+
+/-- The local `π₁` extinction-recognition target route is the bare target endpoint under its induced instance. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement =
+      (fun hPiOne : OnePointThreeSpacePiOneSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement hPiOne
+            onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement
+              extinction recognize) := by
   funext hPiOne extinction recognize
   apply Subsingleton.elim
 
@@ -13249,6 +13289,25 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpa
             homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
               (onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointBasedLoopNullhomotopyStatement
                 hBased extinction recognize)) := by
+  funext hBased extinction recognize
+  apply Subsingleton.elim
+
+/-- The local based-loop extinction-recognition target route is the bare target endpoint under its induced instance. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointBasedLoopNullhomotopyStatement_bare_route_eq
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    (fun hBased : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+      fun extinction =>
+        fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointBasedLoopNullhomotopyStatement
+            hBased extinction recognize) =
+      (fun hBased : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_basedLoopNullhomotopyStatement
+                hBased
+            onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement
+              extinction recognize) := by
   funext hBased extinction recognize
   apply Subsingleton.elim
 
@@ -13855,6 +13914,19 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpa
   funext hPath extinction recognize
   apply Subsingleton.elim
 
+/-- The local path extinction-recognition target route is the bare target endpoint under its induced instance. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement =
+      (fun hPath : OnePointThreeSpacePathHomotopyStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement hPath
+            onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement
+              extinction recognize) := by
+  funext hPath extinction recognize
+  apply Subsingleton.elim
+
 /-- The path extinction-recognition target route agrees with the loop-mediated target route. -/
 theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement_loop_route_eq :
     onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement =
@@ -13922,6 +13994,20 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpa
             homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
               (onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement
                 hQuot extinction recognize)) := by
+  funext hQuot extinction recognize
+  apply Subsingleton.elim
+
+/-- The local quotient extinction-recognition target route is the bare target endpoint under its induced instance. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement =
+      (fun hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_pathQuotientSubsingletonStatement
+                hQuot
+            onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement
+              extinction recognize) := by
   funext hQuot extinction recognize
   apply Subsingleton.elim
 
