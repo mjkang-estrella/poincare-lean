@@ -7663,6 +7663,8 @@ check_decl "aggregate dependency extraction-derivation full assembly payload the
   '^theorem poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency extraction-derivation full assembly payload equality contract is declared" \
   '^theorem poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate dependency extraction-derivation full assembly payload finite-extinction route is declared" \
+  '^theorem poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies_to_finite_extinction_eq\b' Poincare/Dependencies.lean
 check_decl "aggregate equation-boundary full assembly payload theorem is declared" \
   '^theorem poincare_full_assembly_payload_of_equation_boundary_dependencies\b' Poincare/Dependencies.lean
 check_decl "aggregate equation-boundary full assembly payload equality contract is declared" \
@@ -7687,6 +7689,8 @@ check_decl "aggregate equation-boundary extraction-derivation full assembly payl
   '^theorem poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_boundary_route_eq\b' Poincare/Dependencies.lean
 check_decl "aggregate equation-boundary extraction-derivation full assembly payload boundary-route equality contract is declared" \
   '^theorem poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq\b' Poincare/Dependencies.lean
+check_decl "aggregate equation-boundary extraction-derivation full assembly payload finite-extinction route is declared" \
+  '^theorem poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_finite_extinction_eq\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency assembly payload theorem is declared" \
   '^theorem poincare_assembly_payload_of_dependencies\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency assembly payload equality contract is declared" \
@@ -10176,6 +10180,8 @@ check_decl "strengthened remaining dependency certified full-assembly remaining-
   '^theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
 check_decl "strengthened remaining dependency certified full-assembly boundary-route equality contract is declared" \
   '^theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation_to_boundary_route_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened remaining dependency certified full-assembly finite-extinction route is declared" \
+  '^theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation_to_finite_extinction_eq\b' Poincare/CompletionTarget.lean
 check_decl "strengthened aggregate dependency full-assembly forgetful projection is declared" \
   '^theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies\b' Poincare/CompletionTarget.lean
 check_decl "strengthened aggregate dependency full-assembly forgetful equality contract is declared" \
@@ -10196,6 +10202,8 @@ check_decl "strengthened aggregate dependency certified full-assembly remaining-
   '^theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
 check_decl "strengthened aggregate dependency certified full-assembly boundary-route equality contract is declared" \
   '^theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_boundary_route_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened aggregate dependency certified full-assembly finite-extinction route is declared" \
+  '^theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_finite_extinction_eq\b' Poincare/CompletionTarget.lean
 check_decl "verification-family full-assembly theorem is declared" \
   '^theorem poincare_full_assembly_payload_of_poincareProofDependencies_and_verification_family\b' Poincare/CompletionTarget.lean
 check_decl "verification-family full-assembly equality contract is declared" \
@@ -10212,6 +10220,8 @@ check_decl "verification-family certified full-assembly equality contract is dec
   '^theorem poincare_full_assembly_payload_of_poincareProofDependencies_and_verification_family_extraction_derivation_eq\b' Poincare/CompletionTarget.lean
 check_decl "verification-family certified full-assembly boundary-route equality contract is declared" \
   '^theorem poincare_full_assembly_payload_of_poincareProofDependencies_and_verification_family_extraction_derivation_to_boundary_route_eq\b' Poincare/CompletionTarget.lean
+check_decl "verification-family certified full-assembly finite-extinction route is declared" \
+  '^theorem poincare_full_assembly_payload_of_poincareProofDependencies_and_verification_family_extraction_derivation_to_finite_extinction_eq\b' Poincare/CompletionTarget.lean
 check_decl "verification-family certified full-assembly forgetful projection is declared" \
   '^theorem poincare_full_assembly_payload_of_poincareProofDependencies_and_verification_family_extraction_derivation_to_forgetful_dependencies\b' Poincare/CompletionTarget.lean
 check_decl "verification-family certified full-assembly forgetful equality contract is declared" \
@@ -25216,6 +25226,7 @@ open scoped Manifold ContDiff
 #check Poincare.poincare_full_assembly_payload_of_dependencies_eq
 #check Poincare.poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
 #check Poincare.poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies_to_finite_extinction_eq
 #check Poincare.poincare_full_assembly_payload_of_equation_boundary_dependencies
 #check Poincare.poincare_full_assembly_payload_of_equation_boundary_dependencies_eq
 #check Poincare.poincare_full_assembly_payload_of_equation_boundary_dependencies_to_forgetful_dependencies
@@ -25228,6 +25239,7 @@ open scoped Manifold ContDiff
 #check Poincare.poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
 #check Poincare.poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_boundary_route_eq
 #check Poincare.poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
+#check Poincare.poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_finite_extinction_eq
 #check Poincare.poincare_assembly_payload_of_dependencies
 #check Poincare.poincare_assembly_payload_of_dependencies_eq
 #check Poincare.poincare_completion_payload_of_dependencies
@@ -28458,6 +28470,7 @@ open scoped Manifold ContDiff
 #check Poincare.poincare_full_assembly_payload_of_dependencies_eq
 #check Poincare.poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
 #check Poincare.poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies_to_finite_extinction_eq
 #check Poincare.poincare_full_assembly_payload_of_equation_boundary_dependencies
 #check Poincare.poincare_full_assembly_payload_of_equation_boundary_dependencies_eq
 #check Poincare.poincare_full_assembly_payload_of_equation_boundary_dependencies_to_forgetful_dependencies
@@ -28470,6 +28483,7 @@ open scoped Manifold ContDiff
 #check Poincare.poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
 #check Poincare.poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_boundary_route_eq
 #check Poincare.poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
+#check Poincare.poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_finite_extinction_eq
 #check Poincare.poincare_assembly_payload_of_dependencies
 #check Poincare.poincare_assembly_payload_of_dependencies_eq
 #check Poincare.poincare_completion_payload_of_dependencies
