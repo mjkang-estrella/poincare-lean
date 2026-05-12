@@ -1550,6 +1550,26 @@ theorem poincare_statement_of_aggregate_extraction_derivation_dependencies_eq
   apply Subsingleton.elim
 
 /--
+The certified aggregate Poincare statement also factors directly through the
+finite-extinction endpoint and the extractor/derivation certificate carried by
+the topology package.
+-/
+theorem poincare_statement_of_aggregate_extraction_derivation_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_statement_of_aggregate_extraction_derivation_dependencies
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation⟩
+        exact
+          poincare_statement_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_input_of_smoothability_and_surgery_packages
+              dependencies.smoothability dependencies.surgery)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate dependency package is sufficient for the target
 Poincare statement through the certified extraction-derivation route while
 retaining explicit equation-boundary data.
@@ -1601,6 +1621,26 @@ theorem poincare_statement_of_equation_boundary_extraction_derivation_dependenci
         dependencies =
       poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
         dependencies.smoothability dependencies.surgery dependencies.topology := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified aggregate Poincare statement also factors directly
+through the finite-extinction endpoint and the extractor/derivation certificate
+carried by the topology package.
+-/
+theorem poincare_statement_of_equation_boundary_extraction_derivation_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation⟩
+        exact
+          poincare_statement_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_input_of_smoothability_and_boundary_surgery_packages
+              dependencies.smoothability dependencies.surgery)
+            extractSphere derivation) := by
   apply Subsingleton.elim
 
 /--
@@ -1707,6 +1747,27 @@ theorem canonical_three_sphere_statement_of_aggregate_extraction_derivation_depe
   apply Subsingleton.elim
 
 /--
+The certified aggregate canonical topological statement also factors directly
+through the finite-extinction endpoint and the extractor/derivation certificate
+carried by the topology package.
+-/
+theorem canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_three_sphere_statement_of_poincare_statement
+            (poincare_statement_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_input_of_smoothability_and_surgery_packages
+                dependencies.smoothability dependencies.surgery)
+              extractSphere derivation)) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate dependency package exposes the canonical
 mathlib-shaped topological 3-sphere statement through the certified
 extraction-derivation route while retaining explicit equation-boundary data.
@@ -1759,6 +1820,27 @@ theorem canonical_three_sphere_statement_of_equation_boundary_extraction_derivat
         dependencies =
       canonical_three_sphere_statement_of_boundary_surgery_and_topology_package_extraction_derivation
         dependencies.smoothability dependencies.surgery dependencies.topology := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified aggregate canonical topological statement also
+factors directly through the finite-extinction endpoint and the
+extractor/derivation certificate carried by the topology package.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_three_sphere_statement_of_poincare_statement
+            (poincare_statement_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_input_of_smoothability_and_boundary_surgery_packages
+                dependencies.smoothability dependencies.surgery)
+              extractSphere derivation)) := by
   apply Subsingleton.elim
 
 /--
@@ -1872,6 +1954,28 @@ theorem completion_criterion_of_aggregate_extraction_derivation_dependencies_eq
   apply Subsingleton.elim
 
 /--
+The certified aggregate completion criterion also factors directly through the
+finite-extinction endpoint and the extractor/derivation certificate carried by
+the topology package.
+-/
+theorem completion_criterion_of_aggregate_extraction_derivation_dependencies_to_finite_extinction_eq
+    (witness : Type u) (dependencies : PoincareProofDependencies.{u}) :
+    completion_criterion_of_aggregate_extraction_derivation_dependencies
+      witness dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation⟩
+        exact
+          completionCriterionAtUniverse_of_poincareConjectureStatement
+            witness
+            (poincare_statement_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_input_of_smoothability_and_surgery_packages
+                dependencies.smoothability dependencies.surgery)
+              extractSphere derivation)) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate dependency package discharges the project's explicit
 completion criterion through the certified extraction-derivation route while
 retaining explicit equation-boundary data.
@@ -1930,6 +2034,29 @@ theorem completion_criterion_of_equation_boundary_extraction_derivation_dependen
         witness
         (poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
           dependencies.smoothability dependencies.surgery dependencies.topology) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified aggregate completion criterion also factors directly
+through the finite-extinction endpoint and the extractor/derivation certificate
+carried by the topology package.
+-/
+theorem completion_criterion_of_equation_boundary_extraction_derivation_dependencies_to_finite_extinction_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_equation_boundary_extraction_derivation_dependencies
+        witness dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation⟩
+        exact
+          completionCriterionAtUniverse_of_poincareConjectureStatement
+            witness
+            (poincare_statement_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_input_of_smoothability_and_boundary_surgery_packages
+                dependencies.smoothability dependencies.surgery)
+              extractSphere derivation)) := by
   apply Subsingleton.elim
 
 end Poincare

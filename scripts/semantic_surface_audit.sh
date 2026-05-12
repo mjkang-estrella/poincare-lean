@@ -6202,6 +6202,7 @@ universe u
   Poincare.PoincareProofDependencies → Poincare.PoincareConjectureStatement)
 
 #check Poincare.poincare_statement_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.poincare_statement_of_aggregate_extraction_derivation_dependencies_to_finite_extinction_eq
 #check (Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependencies :
   Poincare.PoincareProofDependenciesWithEquationBoundary →
     Poincare.PoincareConjectureStatement)
@@ -6209,6 +6210,7 @@ universe u
 #check Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependencies_eq
 #check Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
 #check Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
+#check Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependencies_to_finite_extinction_eq
 
 #check (Poincare.canonical_three_sphere_statement_of_dependencies :
   Poincare.PoincareProofDependencies →
@@ -6231,6 +6233,7 @@ universe u
         Nonempty (M ≃ₜ Poincare.ThreeSphere))
 
 #check Poincare.canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies_to_finite_extinction_eq
 #check (Poincare.canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependencies :
   Poincare.PoincareProofDependenciesWithEquationBoundary →
     ∀ (M : Type) [TopologicalSpace M] [T2Space M]
@@ -6241,6 +6244,7 @@ universe u
 #check Poincare.canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependencies_eq
 #check Poincare.canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
 #check Poincare.canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
+#check Poincare.canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependencies_to_finite_extinction_eq
 
 #check (Poincare.completion_criterion_of_aggregate_extraction_derivation_dependencies :
   ∀ witness : Type,
@@ -6253,6 +6257,7 @@ universe u
 #check Poincare.completion_criterion_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
 #check Poincare.completion_criterion_of_equation_boundary_dependencies_to_boundary_route_eq
 #check Poincare.completion_criterion_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.completion_criterion_of_aggregate_extraction_derivation_dependencies_to_finite_extinction_eq
 #check (Poincare.completion_criterion_of_equation_boundary_extraction_derivation_dependencies :
   ∀ witness : Type,
     Poincare.PoincareProofDependenciesWithEquationBoundary →
@@ -6261,6 +6266,7 @@ universe u
 #check Poincare.completion_criterion_of_equation_boundary_extraction_derivation_dependencies_eq
 #check Poincare.completion_criterion_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
 #check Poincare.completion_criterion_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
+#check Poincare.completion_criterion_of_equation_boundary_extraction_derivation_dependencies_to_finite_extinction_eq
 
 #check (Poincare.PoincareProofDependencies.smoothability :
   Poincare.PoincareProofDependencies →
