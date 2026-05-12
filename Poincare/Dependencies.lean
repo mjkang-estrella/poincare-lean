@@ -528,6 +528,30 @@ theorem poincare_target_payload_of_aggregate_extraction_derivation_dependencies_
   apply Subsingleton.elim
 
 /--
+The certified aggregate target payload also factors directly through the
+finite-extinction endpoint and the extractor/derivation certificate carried by
+the topology package.
+-/
+theorem poincare_target_payload_of_aggregate_extraction_derivation_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_target_payload_of_aggregate_extraction_derivation_dependencies
+      dependencies =
+      (by
+        let finiteExtinction :=
+          finite_extinction_input_of_smoothability_and_surgery_packages
+            dependencies.smoothability dependencies.surgery
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation⟩
+        rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation with
+          ⟨target, criterion⟩
+        exact
+          ⟨finiteExtinction, extractSphere, derivation, target,
+            criterion⟩) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate dependency package exposes the boundary-carrying
 surgery family together with the ordinary final assembly inputs, target
 statement, and universe-indexed completion criterion.
@@ -772,6 +796,30 @@ theorem poincare_target_payload_of_equation_boundary_extraction_derivation_depen
             fun witness =>
               completionCriterionAtUniverse_of_poincareConjectureStatement
                 witness target⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified target payload also factors directly through the
+boundary finite-extinction endpoint and the extractor/derivation certificate
+carried by the topology package.
+-/
+theorem poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      (by
+        let finiteExtinction :=
+          finite_extinction_input_of_smoothability_and_boundary_surgery_packages
+            dependencies.smoothability dependencies.surgery
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation⟩
+        rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation with
+          ⟨target, criterion⟩
+        exact
+          ⟨dependencies.surgery, finiteExtinction, extractSphere, derivation,
+            target, criterion⟩) := by
   apply Subsingleton.elim
 
 /--

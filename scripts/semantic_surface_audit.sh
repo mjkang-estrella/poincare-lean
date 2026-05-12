@@ -5987,6 +5987,7 @@ universe u
       ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
 
 #check Poincare.poincare_target_payload_of_aggregate_extraction_derivation_dependencies_eq
+#check Poincare.poincare_target_payload_of_aggregate_extraction_derivation_dependencies_to_finite_extinction_eq
 
 #check (Poincare.poincare_target_payload_of_equation_boundary_dependencies :
   Poincare.PoincareProofDependenciesWithEquationBoundary →
@@ -6036,6 +6037,7 @@ universe u
 #check Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies
 #check Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
 #check Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
+#check Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies_to_finite_extinction_eq
 
 #check (Poincare.poincare_full_assembly_payload_of_dependencies :
   Poincare.PoincareProofDependencies →
@@ -16479,7 +16481,7 @@ aggregate_extraction_derivation_target_payload_count=$(
   rg -c '\bpoincare_target_payload_of_aggregate_extraction_derivation_dependencies\b' \
     Poincare/Dependencies.lean || true
 )
-if [ "$aggregate_extraction_derivation_target_payload_count" != "9" ]; then
+if [ "$aggregate_extraction_derivation_target_payload_count" != "10" ]; then
   echo "FAIL: aggregate extraction-derivation and equation-boundary dependency routes should consume the certified aggregate target payload"
   rg -n '\bpoincare_target_payload_of_aggregate_extraction_derivation_dependencies\b' \
     Poincare/Dependencies.lean || true
@@ -16501,7 +16503,7 @@ equation_boundary_extraction_derivation_target_payload_count=$(
   rg -c '\bpoincare_target_payload_of_equation_boundary_extraction_derivation_dependencies\b' \
     Poincare/Dependencies.lean || true
 )
-if [ "$equation_boundary_extraction_derivation_target_payload_count" != "8" ]; then
+if [ "$equation_boundary_extraction_derivation_target_payload_count" != "9" ]; then
   echo "FAIL: equation-boundary certified full assembly routes should consume the boundary-preserving certified target payload"
   rg -n '\bpoincare_target_payload_of_equation_boundary_extraction_derivation_dependencies\b' \
     Poincare/Dependencies.lean || true
