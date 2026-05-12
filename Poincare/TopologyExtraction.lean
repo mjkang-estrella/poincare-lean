@@ -10334,6 +10334,23 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_loo
   apply Subsingleton.elim
 
 /--
+The standard-sphere loop compactification target route is the bare
+target-statement route under simple-connectedness transported from the
+standard sphere.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_loopNullhomotopyStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_loopNullhomotopyStatement =
+      (fun hLoop : ThreeSphereLoopNullhomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+          onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement h) := by
+  funext hLoop h
+  apply Subsingleton.elim
+
+/--
 The standard sphere fundamental-group obligation is enough to apply the project
 target statement to the compactification model.
 -/
@@ -10375,6 +10392,24 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_fun
     onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_fundamentalGroupSubsingletonStatement
       hFund h =
       onePoint_threeSpace_homeomorph_threeSphere := by
+  apply Subsingleton.elim
+
+/--
+The standard fundamental-group compactification target route is the bare
+target-statement route under simple-connectedness transported from the
+standard sphere.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_fundamentalGroupSubsingletonStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement
+              hFund
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+          onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement h) := by
+  funext hFund h
   apply Subsingleton.elim
 
 /--
@@ -10431,6 +10466,22 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_piO
     onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_piOneSubsingletonStatement
       hPi h =
       onePoint_threeSpace_homeomorph_threeSphere := by
+  apply Subsingleton.elim
+
+/--
+The standard `π₁` compactification target route is the bare target-statement
+route under simple-connectedness transported from the standard sphere.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_piOneSubsingletonStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_piOneSubsingletonStatement =
+      (fun hPi : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement hPi
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+          onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement h) := by
+  funext hPi h
   apply Subsingleton.elim
 
 /--
@@ -10514,6 +10565,27 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_bas
     onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_basedLoopNullhomotopyStatement
       hBased h =
       onePoint_threeSpace_homeomorph_threeSphere := by
+  apply Subsingleton.elim
+
+/--
+The standard based-loop compactification target route is the bare
+target-statement route under simple-connectedness transported from the
+standard sphere.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_basedLoopNullhomotopyStatement_bare_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : PoincareConjectureStatement.{0} =>
+        onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+          onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement h) := by
+  funext hBased h
   apply Subsingleton.elim
 
 /-- The standard-sphere based-loop compactification target route agrees with the fundamental-group route. -/
@@ -10699,6 +10771,22 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_pat
   apply Subsingleton.elim
 
 /--
+The standard path compactification target route is the bare target-statement
+route under simple-connectedness transported from the standard sphere.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_pathHomotopyStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_pathHomotopyStatement hPath
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+          onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement h) := by
+  funext hPath h
+  apply Subsingleton.elim
+
+/--
 The standard path-quotient obligation is enough to apply the project target
 statement to the compactification model.
 -/
@@ -10765,6 +10853,24 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_pat
     onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_pathQuotientSubsingletonStatement
       hQuot h =
       onePoint_threeSpace_homeomorph_threeSphere := by
+  apply Subsingleton.elim
+
+/--
+The standard quotient compactification target route is the bare
+target-statement route under simple-connectedness transported from the
+standard sphere.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_pathQuotientSubsingletonStatement_bare_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_pathQuotientSubsingletonStatement =
+      (fun hQuot : ThreeSpherePathQuotientSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement
+              hQuot
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+          onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement h) := by
+  funext hQuot h
   apply Subsingleton.elim
 
 /-- The standard-sphere based-loop compactification target route agrees with the standard path route. -/
