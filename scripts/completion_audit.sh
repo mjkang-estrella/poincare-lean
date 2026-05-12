@@ -11859,6 +11859,8 @@ check_decl "boundary-aware verification certificate checked-certificate projecte
   '^theorem completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate checked-certificate remaining dependency route is declared" \
   '^theorem completion_certificate_of_equation_boundary_verification_payload_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
+check_decl "boundary-aware verification certificate checked-certificate finite-extinction route is declared" \
+  '^theorem completion_certificate_of_equation_boundary_verification_payload_to_finite_extinction_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate projected checked-certificate roundtrip is declared" \
   '^theorem completion_certificate_of_equation_boundary_verification_payload_of_projected_dependency_and_verification_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "boundary-aware verification certificate projected verification-payload roundtrip is declared" \
