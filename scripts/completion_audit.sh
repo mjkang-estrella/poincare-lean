@@ -10228,6 +10228,8 @@ check_decl "strengthened remaining dependency full-assembly remaining-dependency
   '^theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
 check_decl "strengthened remaining dependency full-assembly boundary-route equality contract is declared" \
   '^theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_to_boundary_route_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened remaining dependency full-assembly finite-extinction route is declared" \
+  '^theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_to_finite_extinction_eq\b' Poincare/CompletionTarget.lean
 check_decl "strengthened remaining dependency certified full-assembly aggregate projection is declared" \
   '^theorem poincare_full_assembly_payload_of_equation_boundary_remaining_dependency_package_extraction_derivation_to_forgetful_dependencies\b' Poincare/CompletionTarget.lean
 check_decl "strengthened remaining dependency certified full-assembly aggregate equality contract is declared" \
@@ -10250,6 +10252,8 @@ check_decl "strengthened aggregate dependency full-assembly remaining-dependency
   '^theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_to_remaining_dependency_eq\b' Poincare/CompletionTarget.lean
 check_decl "strengthened aggregate dependency full-assembly boundary-route equality contract is declared" \
   '^theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_to_boundary_route_eq\b' Poincare/CompletionTarget.lean
+check_decl "strengthened aggregate dependency full-assembly finite-extinction route is declared" \
+  '^theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_to_finite_extinction_eq\b' Poincare/CompletionTarget.lean
 check_decl "strengthened aggregate dependency certified full-assembly forgetful projection is declared" \
   '^theorem poincare_full_assembly_payload_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_to_forgetful_dependencies\b' Poincare/CompletionTarget.lean
 check_decl "strengthened aggregate dependency certified full-assembly forgetful equality contract is declared" \
