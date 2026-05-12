@@ -750,6 +750,31 @@ theorem poincare_target_payload_of_equation_boundary_extraction_derivation_depen
   apply Subsingleton.elim
 
 /--
+The strengthened certified target payload agrees with the direct
+boundary-package certified extraction-derivation route.
+-/
+theorem poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation⟩
+        let target :=
+          poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+            dependencies.smoothability dependencies.surgery dependencies.topology
+        exact
+          ⟨dependencies.surgery,
+            finite_extinction_input_of_smoothability_and_boundary_surgery_packages
+              dependencies.smoothability dependencies.surgery,
+            extractSphere, derivation, target,
+            fun witness =>
+              completionCriterionAtUniverse_of_poincareConjectureStatement
+                witness target⟩) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency package exposes the explicit end-to-end assembly
 inputs and target statement.
 -/
@@ -1059,6 +1084,29 @@ theorem poincare_full_assembly_payload_of_equation_boundary_extraction_derivatio
   apply Subsingleton.elim
 
 /--
+The strengthened certified full-assembly payload agrees with the direct
+boundary-package certified extraction-derivation route.
+-/
+theorem poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation⟩
+        exact
+          ⟨dependencies.smoothability, dependencies.surgery,
+            dependencies.topology,
+            finite_extinction_input_of_smoothability_and_boundary_surgery_packages
+              dependencies.smoothability dependencies.surgery,
+            extractSphere, derivation,
+            poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+              dependencies.smoothability dependencies.surgery
+              dependencies.topology⟩) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency package is sufficient for the target Poincare
 statement.
 -/
@@ -1247,6 +1295,24 @@ theorem poincare_completion_payload_of_equation_boundary_extraction_derivation_d
   apply Subsingleton.elim
 
 /--
+The strengthened certified completion payload agrees with projecting the target
+and criterion from the direct boundary-package certified route.
+-/
+theorem poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      ⟨poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+        dependencies.smoothability dependencies.surgery dependencies.topology,
+        fun witness =>
+          completionCriterionAtUniverse_of_poincareConjectureStatement
+            witness
+            (poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+              dependencies.smoothability dependencies.surgery
+              dependencies.topology)⟩ := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency package is sufficient for the target Poincare
 statement, extracted from the aggregate assembly payload.
 -/
@@ -1387,6 +1453,18 @@ theorem poincare_statement_of_equation_boundary_extraction_derivation_dependenci
         dependencies =
       poincare_statement_of_aggregate_extraction_derivation_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified aggregate Poincare statement agrees with the direct
+boundary-package certified extraction-derivation statement route.
+-/
+theorem poincare_statement_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+        dependencies.smoothability dependencies.surgery dependencies.topology := by
   apply Subsingleton.elim
 
 /--
@@ -1532,6 +1610,19 @@ theorem canonical_three_sphere_statement_of_equation_boundary_extraction_derivat
         dependencies =
       canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified aggregate canonical topological statement agrees
+with the direct boundary-package certified extraction-derivation canonical
+route.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      canonical_three_sphere_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+        dependencies.smoothability dependencies.surgery dependencies.topology := by
   apply Subsingleton.elim
 
 /--
@@ -1688,6 +1779,21 @@ theorem completion_criterion_of_equation_boundary_extraction_derivation_dependen
         witness dependencies =
       completion_criterion_of_aggregate_extraction_derivation_dependencies
         witness (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified aggregate completion criterion agrees with the
+direct boundary-package certified extraction-derivation statement route.
+-/
+theorem completion_criterion_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_equation_boundary_extraction_derivation_dependencies
+        witness dependencies =
+      completionCriterionAtUniverse_of_poincareConjectureStatement
+        witness
+        (poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+          dependencies.smoothability dependencies.surgery dependencies.topology) := by
   apply Subsingleton.elim
 
 end Poincare

@@ -6035,6 +6035,7 @@ universe u
 #check Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies_eq
 #check Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies
 #check Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
+#check Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
 
 #check (Poincare.poincare_full_assembly_payload_of_dependencies :
   Poincare.PoincareProofDependencies →
@@ -6128,6 +6129,7 @@ universe u
 #check Poincare.poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_eq
 #check Poincare.poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies
 #check Poincare.poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
+#check Poincare.poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
 
 #check (Poincare.poincare_assembly_payload_of_dependencies :
   Poincare.PoincareProofDependencies →
@@ -6179,6 +6181,7 @@ universe u
 
 #check Poincare.poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies_eq
 #check Poincare.poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
+#check Poincare.poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
 
 #check (Poincare.poincare_statement_of_dependencies :
   Poincare.PoincareProofDependencies → Poincare.PoincareConjectureStatement)
@@ -6199,6 +6202,7 @@ universe u
 
 #check Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependencies_eq
 #check Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
+#check Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
 
 #check (Poincare.canonical_three_sphere_statement_of_dependencies :
   Poincare.PoincareProofDependencies →
@@ -6230,6 +6234,7 @@ universe u
 
 #check Poincare.canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependencies_eq
 #check Poincare.canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
+#check Poincare.canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
 
 #check (Poincare.completion_criterion_of_aggregate_extraction_derivation_dependencies :
   ∀ witness : Type,
@@ -6249,6 +6254,7 @@ universe u
 
 #check Poincare.completion_criterion_of_equation_boundary_extraction_derivation_dependencies_eq
 #check Poincare.completion_criterion_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
+#check Poincare.completion_criterion_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
 
 #check (Poincare.PoincareProofDependencies.smoothability :
   Poincare.PoincareProofDependencies →
@@ -16349,7 +16355,7 @@ equation_boundary_extraction_derivation_target_payload_count=$(
   rg -c '\bpoincare_target_payload_of_equation_boundary_extraction_derivation_dependencies\b' \
     Poincare/Dependencies.lean || true
 )
-if [ "$equation_boundary_extraction_derivation_target_payload_count" != "7" ]; then
+if [ "$equation_boundary_extraction_derivation_target_payload_count" != "8" ]; then
   echo "FAIL: equation-boundary certified full assembly routes should consume the boundary-preserving certified target payload"
   rg -n '\bpoincare_target_payload_of_equation_boundary_extraction_derivation_dependencies\b' \
     Poincare/Dependencies.lean || true
@@ -16371,7 +16377,7 @@ equation_boundary_extraction_derivation_completion_payload_count=$(
   rg -c '\bpoincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies\b' \
     Poincare/Dependencies.lean || true
 )
-if [ "$equation_boundary_extraction_derivation_completion_payload_count" != "7" ]; then
+if [ "$equation_boundary_extraction_derivation_completion_payload_count" != "8" ]; then
   echo "FAIL: equation-boundary extraction-derivation statement and criterion should consume the strengthened certified completion payload"
   rg -n '\bpoincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies\b' \
     Poincare/Dependencies.lean || true
