@@ -956,6 +956,32 @@ theorem poincare_full_assembly_payload_of_equation_boundary_dependencies_to_forg
   apply Subsingleton.elim
 
 /--
+The forgetful projection of the strengthened full assembly payload agrees with
+the direct boundary-package route after forgetting the boundary-carrying
+surgery family in the payload fields.
+-/
+theorem poincare_full_assembly_payload_of_equation_boundary_dependencies_to_forgetful_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_equation_boundary_dependencies_to_forgetful_dependencies
+        dependencies =
+      (by
+        let finiteExtinction :=
+          finite_extinction_input_of_smoothability_and_boundary_surgery_packages
+            dependencies.smoothability dependencies.surgery
+        let extractSphere :=
+          extinction_implies_sphere_of_topology_extraction_statement
+            (extinction_topology_extraction_statement_of_topology_package
+              dependencies.topology)
+        exact
+          ⟨dependencies.smoothability,
+            (dependencies_of_equation_boundary_dependencies dependencies).surgery,
+            dependencies.topology, finiteExtinction, extractSphere,
+            poincare_statement_of_boundary_surgery_and_topology_packages
+              dependencies.smoothability dependencies.surgery
+              dependencies.topology⟩) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate full-assembly payload agrees with the direct
 boundary-package route exposed by the full assembly layer.
 -/
@@ -1081,6 +1107,31 @@ theorem poincare_full_assembly_payload_of_equation_boundary_extraction_derivatio
         dependencies =
       poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The forgetful projection of the strengthened certified full assembly payload
+agrees with the direct boundary-package certified route after forgetting the
+boundary-carrying surgery family in the payload fields.
+-/
+theorem poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies
+        dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation⟩
+        exact
+          ⟨dependencies.smoothability,
+            (dependencies_of_equation_boundary_dependencies dependencies).surgery,
+            dependencies.topology,
+            finite_extinction_input_of_smoothability_and_boundary_surgery_packages
+              dependencies.smoothability dependencies.surgery,
+            extractSphere, derivation,
+            poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+              dependencies.smoothability dependencies.surgery
+              dependencies.topology⟩) := by
   apply Subsingleton.elim
 
 /--
