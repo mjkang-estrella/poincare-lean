@@ -30961,6 +30961,22 @@ theorem canonical_three_sphere_statement_of_completion_certificate_of_equation_b
         dependencies.smoothability dependencies.surgery dependencies.topology := by
   apply Subsingleton.elim
 
+theorem canonical_three_sphere_statement_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies) =
+      (by
+        rcases topology_extraction_derivation_payload_of_equation_boundary_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_three_sphere_statement_of_canonical_completion_target
+            (canonical_completion_target_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_of_equation_boundary_dependencies dependencies)
+              extractSphere derivation)) := by
+  apply Subsingleton.elim
+
 theorem canonical_three_sphere_statement_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_poincareProofDependencies_extraction_derivation_projections_eq
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     canonical_three_sphere_statement_of_completion_certificate
