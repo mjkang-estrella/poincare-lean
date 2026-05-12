@@ -7480,6 +7480,23 @@ theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStat
   funext hLoop recognize
   apply Subsingleton.elim
 
+/--
+The standard-sphere loop universal-recognition self route is the bare self
+endpoint under the transported compactification simple-connectedness instance.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement_bare_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement =
+      (fun hLoop : ThreeSphereLoopNullhomotopyStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+                hLoop)
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement
+            recognize) := by
+  funext hLoop recognize
+  apply Subsingleton.elim
+
 /-- The standard-sphere loop universal-recognition self route agrees with the local loop route. -/
 theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement_onePoint_route_eq
     (hLoop : ThreeSphereLoopNullhomotopyStatement)
@@ -7526,6 +7543,25 @@ theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStat
   funext hFund recognize
   apply Subsingleton.elim
 
+/--
+The standard fundamental-group universal-recognition self route is the bare
+self endpoint under the transported compactification simple-connectedness
+instance.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement_bare_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+                (threeSphere_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+                  hFund))
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement
+            recognize) := by
+  funext hFund recognize
+  apply Subsingleton.elim
+
 /-- The standard fundamental-group universal-recognition self route agrees with the compactification-local route. -/
 theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement_onePoint_route_eq :
     onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement =
@@ -7567,6 +7603,23 @@ theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStat
         fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
           onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
             (threeSphere_loopNullhomotopyStatement_of_piOneSubsingletonStatement hPi)
+            recognize) := by
+  funext hPi recognize
+  apply Subsingleton.elim
+
+/--
+The standard pi-one universal-recognition self route is the bare self endpoint
+under the transported compactification simple-connectedness instance.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement_bare_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement =
+      (fun hPi : ThreeSpherePiOneSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement
+                hPi)
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement
             recognize) := by
   funext hPi recognize
   apply Subsingleton.elim
@@ -7630,6 +7683,28 @@ theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStat
         fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
           onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
             (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement hBased)
+            recognize) := by
+  funext hBased recognize
+  apply Subsingleton.elim
+
+/--
+The standard based-loop universal-recognition self route is the bare self
+endpoint under the transported compactification simple-connectedness instance.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_bare_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+        onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+          hBased recognize) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+                (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement
+                  hBased))
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement
             recognize) := by
   funext hBased recognize
   apply Subsingleton.elim
@@ -7872,6 +7947,23 @@ theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStat
   funext hPath recognize
   apply Subsingleton.elim
 
+/--
+The standard path universal-recognition self route is the bare self endpoint
+under the transported compactification simple-connectedness instance.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_pathHomotopyStatement_bare_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement
+              (onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePathHomotopyStatement
+                hPath)
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement
+            recognize) := by
+  funext hPath recognize
+  apply Subsingleton.elim
+
 /-- The standard path self-recognition route agrees with the loop route. -/
 theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_pathHomotopyStatement_loop_route_eq :
     onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_pathHomotopyStatement =
@@ -7926,6 +8018,23 @@ theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStat
           onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement
             (onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement
               hQuot)
+            recognize) := by
+  funext hQuot recognize
+  apply Subsingleton.elim
+
+/--
+The standard quotient universal-recognition self route is the bare self
+endpoint under the transported compactification simple-connectedness instance.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_pathQuotientSubsingletonStatement_bare_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_pathQuotientSubsingletonStatement =
+      (fun hQuot : ThreeSpherePathQuotientSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_simplyConnectedSpace_of_pathQuotientSubsingletonStatement
+              (onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement
+                hQuot)
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement
             recognize) := by
   funext hQuot recognize
   apply Subsingleton.elim
