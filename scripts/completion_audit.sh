@@ -7419,6 +7419,16 @@ check_decl "full-assembly finite-extinction input theorem is declared" \
   '^theorem finite_extinction_input_of_smoothability_and_surgery_packages\b' Poincare/FullAssembly.lean
 check_decl "full-assembly finite-extinction input equality contract is declared" \
   '^theorem finite_extinction_input_of_smoothability_and_surgery_packages_eq\b' Poincare/FullAssembly.lean
+check_decl "boundary full-assembly finite-extinction statement payload theorem is declared" \
+  '^theorem finite_extinction_statement_payload_of_smoothability_and_boundary_surgery_packages\b' Poincare/FullAssembly.lean
+check_decl "boundary full-assembly finite-extinction statement payload equality contract is declared" \
+  '^theorem finite_extinction_statement_payload_of_smoothability_and_boundary_surgery_packages_eq\b' Poincare/FullAssembly.lean
+check_decl "boundary full-assembly finite-extinction input theorem is declared" \
+  '^theorem finite_extinction_input_of_smoothability_and_boundary_surgery_packages\b' Poincare/FullAssembly.lean
+check_decl "boundary full-assembly finite-extinction input equality contract is declared" \
+  '^theorem finite_extinction_input_of_smoothability_and_boundary_surgery_packages_eq\b' Poincare/FullAssembly.lean
+check_decl "boundary full-assembly finite-extinction input ordinary-route equality contract is declared" \
+  '^theorem finite_extinction_input_of_smoothability_and_boundary_surgery_packages_to_ordinary_route_eq\b' Poincare/FullAssembly.lean
 check_decl "explicit package-route assembly inputs payload theorem is declared" \
   '^theorem poincare_assembly_inputs_payload_of_surgery_and_topology_packages\b' Poincare/FullAssembly.lean
 check_decl "explicit package-route assembly inputs payload equality contract is declared" \
@@ -7519,6 +7529,12 @@ check_decl "explicit package-route extraction-derivation assembly theorem direct
   '^theorem poincare_statement_of_surgery_and_topology_package_extraction_derivation_to_extraction_derivation_eq\b' Poincare/FullAssembly.lean
 check_decl "end-to-end conditional assembly theorem certified package route equality contract is declared" \
   '^theorem poincare_statement_of_surgery_and_topology_packages_to_topology_package_extraction_derivation_eq\b' Poincare/FullAssembly.lean
+check_decl "boundary end-to-end conditional assembly theorem is declared" \
+  '^theorem poincare_statement_of_boundary_surgery_and_topology_packages\b' Poincare/FullAssembly.lean
+check_decl "boundary end-to-end conditional assembly theorem equality contract is declared" \
+  '^theorem poincare_statement_of_boundary_surgery_and_topology_packages_eq\b' Poincare/FullAssembly.lean
+check_decl "boundary end-to-end conditional assembly theorem input-route equality contract is declared" \
+  '^theorem poincare_statement_of_boundary_surgery_and_topology_packages_to_boundary_input_route_eq\b' Poincare/FullAssembly.lean
 check_decl "end-to-end canonical statement theorem is declared" \
   '^theorem canonical_three_sphere_statement_of_surgery_and_topology_packages\b' Poincare/FullAssembly.lean
 check_decl "end-to-end canonical statement equality contract is declared" \
@@ -7541,6 +7557,12 @@ check_decl "explicit package-route extraction-derivation canonical statement dir
   '^theorem canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation_to_extraction_derivation_eq\b' Poincare/FullAssembly.lean
 check_decl "end-to-end canonical statement certified package route equality contract is declared" \
   '^theorem canonical_three_sphere_statement_of_surgery_and_topology_packages_to_topology_package_extraction_derivation_eq\b' Poincare/FullAssembly.lean
+check_decl "boundary end-to-end canonical statement theorem is declared" \
+  '^theorem canonical_three_sphere_statement_of_boundary_surgery_and_topology_packages\b' Poincare/FullAssembly.lean
+check_decl "boundary end-to-end canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_boundary_surgery_and_topology_packages_eq\b' Poincare/FullAssembly.lean
+check_decl "boundary end-to-end canonical statement ordinary-route equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_boundary_surgery_and_topology_packages_to_ordinary_route_eq\b' Poincare/FullAssembly.lean
 check_decl "aggregate dependency package is declared" \
   '^structure PoincareProofDependencies\b' Poincare/Dependencies.lean
 check_decl "aggregate dependency package with equation boundary is declared" \
@@ -20778,6 +20800,11 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_statement_payload_of_smoothability_and_surgery_packages_eq
 #check Poincare.finite_extinction_input_of_smoothability_and_surgery_packages
 #check Poincare.finite_extinction_input_of_smoothability_and_surgery_packages_eq
+#check Poincare.finite_extinction_statement_payload_of_smoothability_and_boundary_surgery_packages
+#check Poincare.finite_extinction_statement_payload_of_smoothability_and_boundary_surgery_packages_eq
+#check Poincare.finite_extinction_input_of_smoothability_and_boundary_surgery_packages
+#check Poincare.finite_extinction_input_of_smoothability_and_boundary_surgery_packages_eq
+#check Poincare.finite_extinction_input_of_smoothability_and_boundary_surgery_packages_to_ordinary_route_eq
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages_eq
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages_to_extraction_statement_eq
@@ -20828,6 +20855,9 @@ open scoped Manifold ContDiff
 #check Poincare.poincare_statement_of_surgery_and_topology_package_extraction_derivation_eq
 #check Poincare.poincare_statement_of_surgery_and_topology_package_extraction_derivation_to_extraction_derivation_eq
 #check Poincare.poincare_statement_of_surgery_and_topology_packages_to_topology_package_extraction_derivation_eq
+#check Poincare.poincare_statement_of_boundary_surgery_and_topology_packages
+#check Poincare.poincare_statement_of_boundary_surgery_and_topology_packages_eq
+#check Poincare.poincare_statement_of_boundary_surgery_and_topology_packages_to_boundary_input_route_eq
 #check Poincare.canonical_three_sphere_statement_of_surgery_and_topology_packages
 #check Poincare.canonical_three_sphere_statement_of_surgery_and_topology_packages_eq
 #check Poincare.canonical_three_sphere_statement_of_surgery_and_topology_extraction_statement
@@ -20839,6 +20869,9 @@ open scoped Manifold ContDiff
 #check Poincare.canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation_eq
 #check Poincare.canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation_to_extraction_derivation_eq
 #check Poincare.canonical_three_sphere_statement_of_surgery_and_topology_packages_to_topology_package_extraction_derivation_eq
+#check Poincare.canonical_three_sphere_statement_of_boundary_surgery_and_topology_packages
+#check Poincare.canonical_three_sphere_statement_of_boundary_surgery_and_topology_packages_eq
+#check Poincare.canonical_three_sphere_statement_of_boundary_surgery_and_topology_packages_to_ordinary_route_eq
 #check Poincare.canonical_completion_payload_of_surgery_and_topology_packages
 #check Poincare.canonical_completion_payload_of_surgery_and_topology_packages_eq
 #check Poincare.canonical_completion_target_of_surgery_and_topology_packages
@@ -27000,6 +27033,23 @@ open scoped Manifold ContDiff
       [SimplyConnectedSpace M] [CompactSpace M],
         Poincare.FiniteExtinctionByRicciFlowWithSurgery M)
 #check Poincare.finite_extinction_input_of_smoothability_and_surgery_packages_eq
+#check Poincare.finite_extinction_statement_payload_of_smoothability_and_boundary_surgery_packages
+#check Poincare.finite_extinction_statement_payload_of_smoothability_and_boundary_surgery_packages_eq
+
+#check (Poincare.finite_extinction_input_of_smoothability_and_boundary_surgery_packages :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω,
+          Poincare.FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) →
+    ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Poincare.FiniteExtinctionByRicciFlowWithSurgery M)
+#check Poincare.finite_extinction_input_of_smoothability_and_boundary_surgery_packages_eq
+#check Poincare.finite_extinction_input_of_smoothability_and_boundary_surgery_packages_to_ordinary_route_eq
 
 #check (Poincare.poincare_target_payload_of_surgery_and_topology_extraction_statement :
   Poincare.SmoothabilityPackage →
@@ -27110,6 +27160,19 @@ open scoped Manifold ContDiff
     Poincare.ExtinctionTopologyExtractionPackage →
       Poincare.PoincareConjectureStatement)
 
+#check (Poincare.poincare_statement_of_boundary_surgery_and_topology_packages :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω,
+          Poincare.FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) →
+    Poincare.ExtinctionTopologyExtractionPackage →
+      Poincare.PoincareConjectureStatement)
+#check Poincare.poincare_statement_of_boundary_surgery_and_topology_packages_eq
+#check Poincare.poincare_statement_of_boundary_surgery_and_topology_packages_to_boundary_input_route_eq
+
 #check (Poincare.poincare_statement_of_surgery_and_topology_extraction_statement :
   Poincare.SmoothabilityPackage →
     (∀ (M : Type) [TopologicalSpace M] [T2Space M]
@@ -27168,6 +27231,22 @@ open scoped Manifold ContDiff
         [ChartedSpace Poincare.ThreeManifoldModel M]
         [SimplyConnectedSpace M] [CompactSpace M],
           Nonempty (M ≃ₜ Poincare.ThreeSphere))
+
+#check (Poincare.canonical_three_sphere_statement_of_boundary_surgery_and_topology_packages :
+  Poincare.SmoothabilityPackage →
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace Poincare.ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold Poincare.ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω,
+          Poincare.FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) →
+    Poincare.ExtinctionTopologyExtractionPackage →
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace Poincare.ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ Poincare.ThreeSphere))
+#check Poincare.canonical_three_sphere_statement_of_boundary_surgery_and_topology_packages_eq
+#check Poincare.canonical_three_sphere_statement_of_boundary_surgery_and_topology_packages_to_ordinary_route_eq
 
 #check (Poincare.canonical_three_sphere_statement_of_surgery_and_topology_extraction_statement :
   Poincare.SmoothabilityPackage →
@@ -27866,6 +27945,11 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_statement_payload_of_smoothability_and_surgery_packages_eq
 #check Poincare.finite_extinction_input_of_smoothability_and_surgery_packages
 #check Poincare.finite_extinction_input_of_smoothability_and_surgery_packages_eq
+#check Poincare.finite_extinction_statement_payload_of_smoothability_and_boundary_surgery_packages
+#check Poincare.finite_extinction_statement_payload_of_smoothability_and_boundary_surgery_packages_eq
+#check Poincare.finite_extinction_input_of_smoothability_and_boundary_surgery_packages
+#check Poincare.finite_extinction_input_of_smoothability_and_boundary_surgery_packages_eq
+#check Poincare.finite_extinction_input_of_smoothability_and_boundary_surgery_packages_to_ordinary_route_eq
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages_eq
 #check Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_packages_to_extraction_statement_eq
@@ -27906,6 +27990,9 @@ open scoped Manifold ContDiff
 #check Poincare.poincare_statement_of_surgery_and_topology_package_extraction_derivation_eq
 #check Poincare.poincare_statement_of_surgery_and_topology_package_extraction_derivation_to_extraction_derivation_eq
 #check Poincare.poincare_statement_of_surgery_and_topology_packages_to_topology_package_extraction_derivation_eq
+#check Poincare.poincare_statement_of_boundary_surgery_and_topology_packages
+#check Poincare.poincare_statement_of_boundary_surgery_and_topology_packages_eq
+#check Poincare.poincare_statement_of_boundary_surgery_and_topology_packages_to_boundary_input_route_eq
 #check Poincare.canonical_three_sphere_statement_of_surgery_and_topology_packages
 #check Poincare.canonical_three_sphere_statement_of_surgery_and_topology_packages_eq
 #check Poincare.canonical_three_sphere_statement_of_surgery_and_topology_packages_to_extraction_statement_eq
@@ -27913,6 +28000,9 @@ open scoped Manifold ContDiff
 #check Poincare.canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation_eq
 #check Poincare.canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation_to_extraction_derivation_eq
 #check Poincare.canonical_three_sphere_statement_of_surgery_and_topology_packages_to_topology_package_extraction_derivation_eq
+#check Poincare.canonical_three_sphere_statement_of_boundary_surgery_and_topology_packages
+#check Poincare.canonical_three_sphere_statement_of_boundary_surgery_and_topology_packages_eq
+#check Poincare.canonical_three_sphere_statement_of_boundary_surgery_and_topology_packages_to_ordinary_route_eq
 #check Poincare.poincare_assembly_inputs_payload_of_aggregate_dependencies
 #check Poincare.poincare_assembly_inputs_payload_of_aggregate_dependencies_eq
 #check Poincare.poincare_assembly_inputs_payload_of_aggregate_extraction_derivation_dependencies
