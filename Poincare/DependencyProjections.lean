@@ -13176,6 +13176,34 @@ theorem poincare_target_payload_of_equation_boundary_lifted_homeomorphism_deriva
   apply Subsingleton.elim
 
 /--
+Forgetting the lifted certificate in the strengthened lifted-homeomorphism
+target payload and choosing the direct boundary target recovers the direct
+boundary-package certified extraction-derivation route.
+-/
+theorem poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      (by
+        let finiteExtinction :=
+          finite_extinction_input_of_smoothability_and_boundary_surgery_packages
+            dependencies.smoothability dependencies.surgery
+        rcases
+            topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+              dependencies.topology with
+          ⟨extractSphere, derivation, liftedDerivation⟩
+        let target :=
+          poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+            dependencies.smoothability dependencies.surgery dependencies.topology
+        exact
+          ⟨finiteExtinction, extractSphere, derivation,
+            liftedDerivation, target,
+            fun witness =>
+              completionCriterionAtUniverse_of_poincareConjectureStatement
+                witness target⟩) := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies the explicit packages, final assembly
 inputs, and target statement through the projection route.
 -/
@@ -14022,6 +14050,24 @@ theorem poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_de
   apply Subsingleton.elim
 
 /--
+The strengthened lifted-homeomorphism completion payload agrees with the
+direct boundary-package certified extraction-derivation route.
+-/
+theorem poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      ⟨poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+        dependencies.smoothability dependencies.surgery dependencies.topology,
+        fun witness =>
+          completionCriterionAtUniverse_of_poincareConjectureStatement
+            witness
+            (poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+              dependencies.smoothability dependencies.surgery
+              dependencies.topology)⟩ := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency package also proves the Poincare target through the
 full finite-extinction and post-extinction extraction projection payload.
 -/
@@ -14594,6 +14640,19 @@ theorem poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_
         dependencies =
       poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections
         dependencies := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the lifted certificate in the strengthened lifted-homeomorphism
+Poincare statement recovers the direct boundary-package certified
+extraction-derivation statement route.
+-/
+theorem poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+        dependencies.smoothability dependencies.surgery dependencies.topology := by
   apply Subsingleton.elim
 
 /--
@@ -15241,6 +15300,19 @@ theorem canonical_three_sphere_statement_of_equation_boundary_lifted_homeomorphi
   apply Subsingleton.elim
 
 /--
+Forgetting the lifted certificate in the strengthened lifted-homeomorphism
+canonical statement recovers the direct boundary-package certified
+extraction-derivation canonical route.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      canonical_three_sphere_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+        dependencies.smoothability dependencies.surgery dependencies.topology := by
+  apply Subsingleton.elim
+
+/--
 The projection-based assembly route also discharges the explicit
 universe-indexed completion criterion.
 -/
@@ -15851,6 +15923,22 @@ theorem completion_criterion_of_equation_boundary_lifted_homeomorphism_derivatio
         witness dependencies =
       completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections
         witness dependencies := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the lifted certificate in the strengthened lifted-homeomorphism
+completion criterion recovers the direct boundary-package certified
+extraction-derivation criterion route.
+-/
+theorem completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        witness dependencies =
+      completionCriterionAtUniverse_of_poincareConjectureStatement
+        witness
+        (poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+          dependencies.smoothability dependencies.surgery dependencies.topology) := by
   apply Subsingleton.elim
 
 end Poincare
