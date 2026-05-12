@@ -1864,6 +1864,8 @@ check_decl "standard sphere target self route from loop-nullhomotopy theorem is 
   '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopyStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere target self route from loop-nullhomotopy equality contract is declared" \
   '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopyStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere target self route from loop-nullhomotopy bare-route contract is declared" \
+  '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopyStatement_bare_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-diffeomorphism route from loop-nullhomotopy theorem is declared" \
   '^theorem threeSphere_self_diffeomorph_of_smooth_statement_and_loopNullhomotopyStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-diffeomorphism route from loop-nullhomotopy equality contract is declared" \
@@ -1876,6 +1878,8 @@ check_decl "standard sphere target self route from fundamental group theorem is 
   '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_fundamentalGroupSubsingletonStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere target self route from fundamental group equality contract is declared" \
   '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_fundamentalGroupSubsingletonStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere target self route from fundamental group bare-route contract is declared" \
+  '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_fundamentalGroupSubsingletonStatement_bare_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere target self route fundamental group loop-route compatibility is declared" \
   '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_fundamentalGroupSubsingletonStatement_loop_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-diffeomorphism route from fundamental group theorem is declared" \
@@ -1894,6 +1898,8 @@ check_decl "standard sphere target self route from pi-one theorem is declared" \
   '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere target self route from pi-one equality contract is declared" \
   '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere target self route from pi-one bare-route contract is declared" \
+  '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonStatement_bare_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere target self route pi-one fundamental-group compatibility is declared" \
   '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere target self route pi-one loop-route compatibility is declared" \
@@ -1918,6 +1924,8 @@ check_decl "standard sphere target self route from based loop-nullhomotopy theor
   '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_basedLoopNullhomotopyStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere target self route from based loop-nullhomotopy equality contract is declared" \
   '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_basedLoopNullhomotopyStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere target self route from based loop-nullhomotopy bare-route contract is declared" \
+  '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_basedLoopNullhomotopyStatement_bare_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere target self route based loop-nullhomotopy loop-route compatibility is declared" \
   '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_basedLoopNullhomotopyStatement_loop_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere target self route based loop-nullhomotopy path-route compatibility is declared" \
@@ -1960,6 +1968,8 @@ check_decl "standard sphere target self route from path-homotopy theorem is decl
   '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere target self route from path-homotopy equality contract is declared" \
   '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere target self route from path-homotopy bare-route contract is declared" \
+  '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatement_bare_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere target self route path-homotopy loop-route compatibility is declared" \
   '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatement_loop_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-diffeomorphism route from path-homotopy theorem is declared" \
@@ -1978,6 +1988,8 @@ check_decl "standard sphere target self route from path-quotient theorem is decl
   '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_pathQuotientSubsingletonStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere target self route from path-quotient equality contract is declared" \
   '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_pathQuotientSubsingletonStatement_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere target self route from path-quotient bare-route contract is declared" \
+  '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_pathQuotientSubsingletonStatement_bare_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere target self route path-quotient path-route compatibility is declared" \
   '^theorem threeSphere_self_homeomorph_of_poincare_statement_and_pathQuotientSubsingletonStatement_path_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere target self route path-quotient loop-route compatibility is declared" \
@@ -20324,12 +20336,17 @@ open scoped Manifold ContDiff
 #check Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement_direct_simple_route_eq
 #check Poincare.threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopyStatement
 #check Poincare.threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopyStatement_eq
+#check Poincare.threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopyStatement_bare_route_eq
+#check Poincare.threeSphere_self_homeomorph_of_poincare_statement_and_fundamentalGroupSubsingletonStatement_bare_route_eq
+#check Poincare.threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonStatement_bare_route_eq
+#check Poincare.threeSphere_self_homeomorph_of_poincare_statement_and_basedLoopNullhomotopyStatement_bare_route_eq
 #check Poincare.threeSphere_self_diffeomorph_of_smooth_statement_and_loopNullhomotopyStatement
 #check Poincare.threeSphere_self_diffeomorph_of_smooth_statement_and_loopNullhomotopyStatement_eq
 #check Poincare.threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement
 #check Poincare.threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStatement_eq
 #check Poincare.threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatement
 #check Poincare.threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatement_eq
+#check Poincare.threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatement_bare_route_eq
 #check Poincare.threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatement_loop_route_eq
 #check Poincare.threeSphere_self_diffeomorph_of_smooth_statement_and_pathHomotopyStatement
 #check Poincare.threeSphere_self_diffeomorph_of_smooth_statement_and_pathHomotopyStatement_eq
@@ -20339,6 +20356,7 @@ open scoped Manifold ContDiff
 #check Poincare.threeSphere_self_homeomorph_of_smooth_statement_and_pathHomotopyStatement_loop_route_eq
 #check Poincare.threeSphere_self_homeomorph_of_poincare_statement_and_pathQuotientSubsingletonStatement
 #check Poincare.threeSphere_self_homeomorph_of_poincare_statement_and_pathQuotientSubsingletonStatement_eq
+#check Poincare.threeSphere_self_homeomorph_of_poincare_statement_and_pathQuotientSubsingletonStatement_bare_route_eq
 #check Poincare.threeSphere_self_homeomorph_of_poincare_statement_and_pathQuotientSubsingletonStatement_path_route_eq
 #check Poincare.threeSphere_self_homeomorph_of_poincare_statement_and_pathQuotientSubsingletonStatement_loop_route_eq
 #check Poincare.threeSphere_self_diffeomorph_of_smooth_statement_and_pathQuotientSubsingletonStatement

@@ -451,6 +451,20 @@ theorem threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopySt
   apply Subsingleton.elim
 
 /--
+The loop-nullhomotopy target self route is the bare project-target self route
+under the simple-connectedness instance derived from loop-nullhomotopy.
+-/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopyStatement_bare_route_eq :
+    threeSphere_self_homeomorph_of_poincare_statement_and_loopNullhomotopyStatement =
+      (fun hLoop : ThreeSphereLoopNullhomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement hLoop
+          threeSphere_self_homeomorph_of_poincare_statement h) := by
+  funext hLoop h
+  apply Subsingleton.elim
+
+/--
 The concrete loop-nullhomotopy obligation is enough to apply the smooth target
 statement to the standard sphere itself.
 -/
@@ -522,6 +536,21 @@ exactly the existing self route after converting that formulation to
 simple-connectedness.
 -/
 theorem threeSphere_self_homeomorph_of_poincare_statement_and_fundamentalGroupSubsingletonStatement_eq :
+    threeSphere_self_homeomorph_of_poincare_statement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_fundamentalGroupSubsingletonStatement hFund
+          threeSphere_self_homeomorph_of_poincare_statement h) := by
+  funext hFund h
+  apply Subsingleton.elim
+
+/--
+The fundamental-group target self route is the bare project-target self route
+under the simple-connectedness instance derived from fundamental-group
+triviality.
+-/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_fundamentalGroupSubsingletonStatement_bare_route_eq :
     threeSphere_self_homeomorph_of_poincare_statement_and_fundamentalGroupSubsingletonStatement =
       (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
         fun h : PoincareConjectureStatement.{0} =>
@@ -635,6 +664,20 @@ The target-statement self route from the `π₁` formulation is exactly the
 existing self route after converting that formulation to simple-connectedness.
 -/
 theorem threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonStatement_eq :
+    threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_piOneSubsingletonStatement hPiOne
+          threeSphere_self_homeomorph_of_poincare_statement h) := by
+  funext hPiOne h
+  apply Subsingleton.elim
+
+/--
+The `π₁` target self route is the bare project-target self route under the
+simple-connectedness instance derived from `π₁` triviality.
+-/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonStatement_bare_route_eq :
     threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonStatement =
       (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
         fun h : PoincareConjectureStatement.{0} =>
@@ -783,6 +826,24 @@ existing self route after converting based loop-nullhomotopy to
 simple-connectedness.
 -/
 theorem threeSphere_self_homeomorph_of_poincare_statement_and_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun h : PoincareConjectureStatement.{0} =>
+        threeSphere_self_homeomorph_of_poincare_statement_and_basedLoopNullhomotopyStatement
+          hBased h) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hBased
+          threeSphere_self_homeomorph_of_poincare_statement h) := by
+  funext hBased h
+  apply Subsingleton.elim
+
+/--
+The based-loop target self route is the bare project-target self route under
+the simple-connectedness instance derived from based loop-nullhomotopy.
+-/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_basedLoopNullhomotopyStatement_bare_route_eq
     (basepoint : ThreeSphere) :
     (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
       fun h : PoincareConjectureStatement.{0} =>
@@ -1028,6 +1089,20 @@ theorem threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatem
   apply Subsingleton.elim
 
 /--
+The path-homotopy target self route is the bare project-target self route under
+the simple-connectedness instance derived from path-homotopy uniqueness.
+-/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatement_bare_route_eq :
+    threeSphere_self_homeomorph_of_poincare_statement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_pathHomotopyStatement hPath
+          threeSphere_self_homeomorph_of_poincare_statement h) := by
+  funext hPath h
+  apply Subsingleton.elim
+
+/--
 The direct path-homotopy target self route agrees with the route that first
 converts path-homotopy to loop-nullhomotopy.
 -/
@@ -1136,6 +1211,20 @@ The target-statement self route from path-quotient uniqueness is exactly the
 existing self route after converting quotient uniqueness to simple-connectedness.
 -/
 theorem threeSphere_self_homeomorph_of_poincare_statement_and_pathQuotientSubsingletonStatement_eq :
+    threeSphere_self_homeomorph_of_poincare_statement_and_pathQuotientSubsingletonStatement =
+      (fun hQuot : ThreeSpherePathQuotientSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_pathQuotientSubsingletonStatement hQuot
+          threeSphere_self_homeomorph_of_poincare_statement h) := by
+  funext hQuot h
+  apply Subsingleton.elim
+
+/--
+The path-quotient target self route is the bare project-target self route under
+the simple-connectedness instance derived from path-quotient uniqueness.
+-/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_pathQuotientSubsingletonStatement_bare_route_eq :
     threeSphere_self_homeomorph_of_poincare_statement_and_pathQuotientSubsingletonStatement =
       (fun hQuot : ThreeSpherePathQuotientSubsingletonStatement =>
         fun h : PoincareConjectureStatement.{0} =>
