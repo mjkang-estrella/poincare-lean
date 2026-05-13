@@ -15353,6 +15353,95 @@ theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecog
   funext hQuot extinction recognize
   apply Subsingleton.elim
 
+/-- The local loop extinction-recognition self route agrees with the north-pole route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement_northPole_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement =
+      (fun hLoop : OnePointThreeSpaceLoopNullhomotopyStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+              (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+                hLoop)
+              extinction recognize) := by
+  funext hLoop extinction recognize
+  apply Subsingleton.elim
+
+/-- The local fundamental-group extinction-recognition self route agrees with the north-pole route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointFundamentalGroupSubsingletonStatement =
+      (fun hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+              (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+                (onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+                  hFund))
+              extinction recognize) := by
+  funext hFund extinction recognize
+  apply Subsingleton.elim
+
+/-- The local `π₁` extinction-recognition self route agrees with the north-pole route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement =
+      (fun hPi : OnePointThreeSpacePiOneSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+              (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+                (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+                  hPi))
+              extinction recognize) := by
+  funext hPi extinction recognize
+  apply Subsingleton.elim
+
+/-- The local based-loop extinction-recognition self route agrees with the north-pole route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointBasedLoopNullhomotopyStatement_northPole_route_eq
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    (fun hBased : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+      fun extinction =>
+        fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointBasedLoopNullhomotopyStatement
+            hBased extinction recognize) =
+      (fun hBased : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+              (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+                (onePoint_threeSpace_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement
+                  hBased))
+              extinction recognize) := by
+  funext hBased extinction recognize
+  apply Subsingleton.elim
+
+/-- The local path extinction-recognition self route agrees with the north-pole route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement_northPole_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathHomotopyStatement =
+      (fun hPath : OnePointThreeSpacePathHomotopyStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+              (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+                (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement
+                  hPath))
+              extinction recognize) := by
+  funext hPath extinction recognize
+  apply Subsingleton.elim
+
+/-- The local quotient extinction-recognition self route agrees with the north-pole route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement =
+      (fun hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+              (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+                (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement
+                  (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+                    hQuot)))
+              extinction recognize) := by
+  funext hQuot extinction recognize
+  apply Subsingleton.elim
+
 /-- The quotient extinction-recognition self route agrees with reflexive recognition. -/
 theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement_direct_route_eq
     (hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement)
