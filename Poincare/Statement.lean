@@ -465,6 +465,85 @@ theorem threeSphere_simplyConnectedSpace_iff_basedLoopNullhomotopyStatement_eq
             basepoint).mpr ⟨threeSphere_pathConnectedSpace, h⟩⟩ := by
   apply Subsingleton.elim
 
+/--
+The north-pole based loop-nullhomotopy obligation for the standard 3-sphere.
+This is the concrete basepoint-specialized form of the remaining
+simple-connectedness input for `ThreeSphere`.
+-/
+def ThreeSphereNorthPoleLoopNullhomotopyStatement : Prop :=
+  ThreeSphereBasedLoopNullhomotopyStatement threeSphere_northPole
+
+/--
+The north-pole loop-nullhomotopy obligation expands to nullhomotopy of every
+loop based at the explicit north-pole point.
+-/
+theorem threeSphereNorthPoleLoopNullhomotopyStatement_eq :
+    ThreeSphereNorthPoleLoopNullhomotopyStatement =
+      (∀ γ : Path threeSphere_northPole threeSphere_northPole,
+        Path.Homotopic γ (Path.refl threeSphere_northPole)) :=
+  rfl
+
+/--
+For the standard sphere, simple-connectedness is equivalent to nullhomotopy of
+all loops based at the explicit north-pole point, because path-connectedness has
+already been proved.
+-/
+theorem threeSphere_simplyConnectedSpace_iff_northPoleLoopNullhomotopyStatement :
+    SimplyConnectedSpace ThreeSphere ↔
+      ThreeSphereNorthPoleLoopNullhomotopyStatement :=
+  threeSphere_simplyConnectedSpace_iff_basedLoopNullhomotopyStatement
+    threeSphere_northPole
+
+/--
+The north-pole simple-connectedness reduction is the existing based-loop
+criterion specialized to the named north-pole point.
+-/
+theorem threeSphere_simplyConnectedSpace_iff_northPoleLoopNullhomotopyStatement_eq :
+    threeSphere_simplyConnectedSpace_iff_northPoleLoopNullhomotopyStatement =
+      threeSphere_simplyConnectedSpace_iff_basedLoopNullhomotopyStatement
+        threeSphere_northPole :=
+  rfl
+
+/--
+A north-pole based loop-nullhomotopy proof supplies simple-connectedness of
+`S^3`.
+-/
+theorem threeSphere_simplyConnectedSpace_of_northPoleLoopNullhomotopyStatement
+    (h : ThreeSphereNorthPoleLoopNullhomotopyStatement) :
+    SimplyConnectedSpace ThreeSphere :=
+  threeSphere_simplyConnectedSpace_iff_northPoleLoopNullhomotopyStatement.mpr h
+
+/--
+The north-pole loop-nullhomotopy-to-simple-connectedness route is the reverse
+projection of the named north-pole criterion.
+-/
+theorem threeSphere_simplyConnectedSpace_of_northPoleLoopNullhomotopyStatement_eq :
+    threeSphere_simplyConnectedSpace_of_northPoleLoopNullhomotopyStatement =
+      threeSphere_simplyConnectedSpace_iff_northPoleLoopNullhomotopyStatement.mpr := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+A supplied simple-connectedness instance gives north-pole based
+loop-nullhomotopy.
+-/
+theorem threeSphere_northPoleLoopNullhomotopyStatement_of_simplyConnectedSpace
+    [SimplyConnectedSpace ThreeSphere] :
+    ThreeSphereNorthPoleLoopNullhomotopyStatement :=
+  threeSphere_simplyConnectedSpace_iff_northPoleLoopNullhomotopyStatement.mp
+    inferInstance
+
+/--
+The simple-connectedness-to-north-pole-loop route is the forward projection of
+the named north-pole criterion.
+-/
+theorem threeSphere_northPoleLoopNullhomotopyStatement_of_simplyConnectedSpace_eq
+    [SimplyConnectedSpace ThreeSphere] :
+    threeSphere_northPoleLoopNullhomotopyStatement_of_simplyConnectedSpace =
+      threeSphere_simplyConnectedSpace_iff_northPoleLoopNullhomotopyStatement.mp
+        inferInstance := by
+  apply Subsingleton.elim
+
 /-- A based loop-nullhomotopy proof supplies simple-connectedness of `S^3`. -/
 theorem threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement
     {basepoint : ThreeSphere}
