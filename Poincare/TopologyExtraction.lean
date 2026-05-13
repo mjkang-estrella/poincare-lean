@@ -7701,6 +7701,51 @@ theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStat
   apply Subsingleton.elim
 
 /--
+The north-pole based-loop obligation supplies the simple-connectedness needed
+to apply universal compactification recognition to the model itself.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+    (hNorth : ThreeSphereNorthPoleLoopNullhomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ
+      (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+  onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+    (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement hNorth)
+    recognize
+
+/-- The north-pole universal-recognition self route reduces to full loops. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement_eq :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement =
+      (fun hNorth : ThreeSphereNorthPoleLoopNullhomotopyStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement hNorth)
+            recognize) := by
+  funext hNorth recognize
+  apply Subsingleton.elim
+
+/-- The north-pole universal-recognition self route agrees with the local loop route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement_onePoint_route_eq
+    (hNorth : ThreeSphereNorthPoleLoopNullhomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+      hNorth recognize =
+      onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereNorthPoleLoopNullhomotopyStatement
+          hNorth)
+        recognize := by
+  apply Subsingleton.elim
+
+/-- The north-pole universal-recognition self route agrees with reflexive recognition. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement_direct_route_eq
+    (hNorth : ThreeSphereNorthPoleLoopNullhomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+      hNorth recognize =
+      onePoint_threeSpace_self_homeomorph := by
+  apply Subsingleton.elim
+
+/--
 The standard sphere fundamental-group obligation supplies the
 simple-connectedness needed to apply universal compactification recognition to
 the model itself.
