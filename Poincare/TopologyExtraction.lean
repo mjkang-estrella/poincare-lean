@@ -12997,6 +12997,94 @@ theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecog
   apply Subsingleton.elim
 
 /--
+The north-pole based-loop obligation supplies the simple-connectedness needed
+to apply extinction compactification recognition to the model itself.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+    (hNorth : ThreeSphereNorthPoleLoopNullhomotopyStatement)
+    (extinction :
+      letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_t2Space
+      letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+          (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_chartedSpace
+      letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement hNorth))
+      letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_compactSpace
+      FiniteExtinctionByRicciFlowWithSurgery
+        (OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ
+      (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+  onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+    (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement hNorth)
+    extinction recognize
+
+/-- The north-pole extinction-recognition self route reduces to full loops. -/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement_eq :
+    onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement =
+      (fun hNorth : ThreeSphereNorthPoleLoopNullhomotopyStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+              (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement hNorth)
+              extinction recognize) := by
+  funext hNorth extinction recognize
+  apply Subsingleton.elim
+
+/-- The north-pole extinction-recognition self route agrees with the local loop route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement_onePoint_route_eq
+    (hNorth : ThreeSphereNorthPoleLoopNullhomotopyStatement)
+    (extinction :
+      letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_t2Space
+      letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+          (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_chartedSpace
+      letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement hNorth))
+      letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_compactSpace
+      FiniteExtinctionByRicciFlowWithSurgery
+        (OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+      hNorth extinction recognize =
+      onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereNorthPoleLoopNullhomotopyStatement
+          hNorth)
+        extinction recognize := by
+  apply Subsingleton.elim
+
+/-- The north-pole extinction-recognition self route agrees with reflexive recognition. -/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement_direct_route_eq
+    (hNorth : ThreeSphereNorthPoleLoopNullhomotopyStatement)
+    (extinction :
+      letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_t2Space
+      letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+          (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_chartedSpace
+      letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement hNorth))
+      letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+        onePoint_threeSpace_compactSpace
+      FiniteExtinctionByRicciFlowWithSurgery
+        (OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+      hNorth extinction recognize =
+      onePoint_threeSpace_self_homeomorph := by
+  apply Subsingleton.elim
+
+/--
 The standard-sphere fundamental-group formulation supplies the
 simple-connectedness needed to apply extinction compactification recognition to
 the model itself.
