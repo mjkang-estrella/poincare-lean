@@ -433,6 +433,60 @@ theorem poincareProofDependenciesWithEquationBoundary_components_payload_to_name
   apply Subsingleton.elim
 
 /--
+Forgetting equation-boundary data from the strengthened aggregate dependency
+package can be described through the named strengthened projections.
+-/
+theorem dependencies_of_equation_boundary_dependencies_to_named_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependencies_of_equation_boundary_dependencies dependencies =
+      ({ smoothability :=
+          smoothabilityPackage_of_poincareProofDependenciesWithEquationBoundary
+            dependencies
+         surgery := fun M =>
+          (boundarySurgeryPackages_of_poincareProofDependenciesWithEquationBoundary
+            dependencies M).map
+            (fun payload =>
+              ⟨payload.1,
+                surgery_package_of_equation_boundary_surgery_package
+                  payload.2⟩)
+         topology :=
+          topologyExtractionPackage_of_poincareProofDependenciesWithEquationBoundary
+            dependencies } : PoincareProofDependencies.{u}) := by
+  apply Subsingleton.elim
+
+/--
+Lifting ordinary aggregate dependencies with an equation-verification family can
+be described through the named ordinary projections.
+-/
+theorem equation_boundary_dependencies_of_dependencies_and_verification_family_to_named_projections_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    equation_boundary_dependencies_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      ({ smoothability :=
+          smoothabilityPackage_of_poincareProofDependencies dependencies
+         surgery := fun M =>
+          (surgeryPackages_of_poincareProofDependencies dependencies M).map
+            (fun payload =>
+              ⟨payload.1,
+                surgery_package_with_equation_boundary_of_ricci_flow_equation_verification
+                  payload.2
+                  (verificationFamily M payload)⟩)
+         topology :=
+          topologyExtractionPackage_of_poincareProofDependencies
+            dependencies } :
+        PoincareProofDependenciesWithEquationBoundary.{u}) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate dependency package is equivalent to exactly its
 three component inputs.
 -/
