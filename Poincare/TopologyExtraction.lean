@@ -3401,6 +3401,135 @@ theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingleton
   funext h
   apply Subsingleton.elim
 
+/-- The local loop compactification-prerequisite route agrees with the north-pole-mediated standard loop route. -/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointLoopNullhomotopyStatement_northPole_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointLoopNullhomotopyStatement =
+      (fun h : OnePointThreeSpaceLoopNullhomotopyStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+              h))) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The local fundamental-group compactification-prerequisite route agrees with the north-pole-mediated standard loop route. -/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointFundamentalGroupSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointFundamentalGroupSubsingletonStatement =
+      (fun h : OnePointThreeSpaceFundamentalGroupSubsingletonStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+                h)))) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The local `π₁` compactification-prerequisite route agrees with the north-pole-mediated standard loop route. -/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPiOneSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPiOneSubsingletonStatement =
+      (fun h : OnePointThreeSpacePiOneSubsingletonStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement h)))) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The local based-loop compactification-prerequisite route agrees with the north-pole-mediated standard loop route. -/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointBasedLoopNullhomotopyStatement_northPole_route_eq
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    (fun h : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+      onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointBasedLoopNullhomotopyStatement h) =
+      (fun h : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement
+                h)))) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The local path compactification-prerequisite route agrees with the north-pole-mediated standard loop route. -/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathHomotopyStatement_northPole_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathHomotopyStatement =
+      (fun h : OnePointThreeSpacePathHomotopyStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement h)))) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The local quotient compactification-prerequisite route agrees with the north-pole-mediated standard loop route. -/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathQuotientSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_onePointPathQuotientSubsingletonStatement =
+      (fun h : OnePointThreeSpacePathQuotientSubsingletonStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement
+                (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+                  h))))) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The standard fundamental-group compactification-prerequisite route agrees with the north-pole-mediated loop route. -/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_fundamentalGroupSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_fundamentalGroupSubsingletonStatement =
+      (fun h : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+              h))) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The standard `π₁` compactification-prerequisite route agrees with the north-pole-mediated loop route. -/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_piOneSubsingletonStatement h))) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The standard based-loop compactification-prerequisite route agrees with the north-pole-mediated loop route. -/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement_northPole_route_eq
+    (basepoint : ThreeSphere) :
+    (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement h) =
+      (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_basedLoopNullhomotopyStatement
+              (onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+                (Classical.choice onePoint_threeSpace_nonempty) h)))) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The standard path compactification-prerequisite route agrees with the north-pole-mediated loop route. -/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathHomotopyStatement_northPole_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathHomotopyStatement =
+      (fun h : ThreeSpherePathHomotopyStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_pathHomotopyStatement h))) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- The standard quotient compactification-prerequisite route agrees with the north-pole-mediated loop route. -/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathQuotientSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathQuotientSubsingletonStatement =
+      (fun h : ThreeSpherePathQuotientSubsingletonStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_pathHomotopyStatement
+              (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+                h)))) := by
+  funext h
+  apply Subsingleton.elim
+
 /--
 Any space recognized as the one-point compactification model inherits the same
 basic `C^0` 3-manifold prerequisite payload.
