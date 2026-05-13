@@ -1396,6 +1396,66 @@ theorem threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement
   funext h
   apply Subsingleton.elim
 
+/-- North-pole based loop-nullhomotopy supplies path-homotopy uniqueness on `S^3`. -/
+theorem threeSphere_pathHomotopyStatement_of_northPoleLoopNullhomotopyStatement
+    (h : ThreeSphereNorthPoleLoopNullhomotopyStatement) :
+    ThreeSpherePathHomotopyStatement :=
+  threeSphere_pathHomotopyStatement_of_basedLoopNullhomotopyStatement h
+
+/-- The north-pole-to-path route is the generic based-loop route at the north pole. -/
+theorem threeSphere_pathHomotopyStatement_of_northPoleLoopNullhomotopyStatement_eq :
+    threeSphere_pathHomotopyStatement_of_northPoleLoopNullhomotopyStatement =
+      (fun h : ThreeSphereNorthPoleLoopNullhomotopyStatement =>
+        (threeSphere_pathHomotopyStatement_of_basedLoopNullhomotopyStatement h :
+          ThreeSpherePathHomotopyStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- North-pole based loop-nullhomotopy supplies path-quotient uniqueness on `S^3`. -/
+theorem threeSphere_pathQuotientSubsingletonStatement_of_northPoleLoopNullhomotopyStatement
+    (h : ThreeSphereNorthPoleLoopNullhomotopyStatement) :
+    ThreeSpherePathQuotientSubsingletonStatement :=
+  threeSphere_pathQuotientSubsingletonStatement_of_basedLoopNullhomotopyStatement h
+
+/-- The north-pole-to-path-quotient route factors through path-homotopy uniqueness. -/
+theorem threeSphere_pathQuotientSubsingletonStatement_of_northPoleLoopNullhomotopyStatement_eq :
+    threeSphere_pathQuotientSubsingletonStatement_of_northPoleLoopNullhomotopyStatement =
+      (fun h : ThreeSphereNorthPoleLoopNullhomotopyStatement =>
+        threeSphere_pathQuotientSubsingletonStatement_of_pathHomotopyStatement
+          (threeSphere_pathHomotopyStatement_of_northPoleLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- North-pole based loop-nullhomotopy supplies fundamental-group triviality on `S^3`. -/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_northPoleLoopNullhomotopyStatement
+    (h : ThreeSphereNorthPoleLoopNullhomotopyStatement) :
+    ThreeSphereFundamentalGroupSubsingletonStatement :=
+  threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement h
+
+/-- The north-pole-to-fundamental-group route factors through full loop-nullhomotopy. -/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_northPoleLoopNullhomotopyStatement_eq :
+    threeSphere_fundamentalGroupSubsingletonStatement_of_northPoleLoopNullhomotopyStatement =
+      (fun h : ThreeSphereNorthPoleLoopNullhomotopyStatement =>
+        threeSphere_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- North-pole based loop-nullhomotopy supplies the `π₁` formulation on `S^3`. -/
+theorem threeSphere_piOneSubsingletonStatement_of_northPoleLoopNullhomotopyStatement
+    (h : ThreeSphereNorthPoleLoopNullhomotopyStatement) :
+    ThreeSpherePiOneSubsingletonStatement :=
+  threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement h
+
+/-- The north-pole-to-`π₁` route factors through fundamental-group triviality. -/
+theorem threeSphere_piOneSubsingletonStatement_of_northPoleLoopNullhomotopyStatement_eq :
+    threeSphere_piOneSubsingletonStatement_of_northPoleLoopNullhomotopyStatement =
+      (fun h : ThreeSphereNorthPoleLoopNullhomotopyStatement =>
+        threeSphere_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement
+          (threeSphere_fundamentalGroupSubsingletonStatement_of_northPoleLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
 /--
 The concrete loop-nullhomotopy obligation supplies the full target prerequisite
 payload for applying the project statement to the standard sphere.
