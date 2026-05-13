@@ -6459,6 +6459,77 @@ theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of
           hQuot) h := by
   apply Subsingleton.elim
 
+/-- The standard fundamental-group candidate route agrees with the north-pole-mediated loop route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_fundamentalGroupSubsingletonStatement_northPole_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_fundamentalGroupSubsingletonStatement
+      hFund h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+            hFund))
+        h := by
+  apply Subsingleton.elim
+
+/-- The standard `π₁` candidate route agrees with the north-pole-mediated loop route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement_northPole_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPi : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement
+      hPi h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_piOneSubsingletonStatement
+            hPi))
+        h := by
+  apply Subsingleton.elim
+
+/-- The standard based-loop candidate route agrees with the north-pole-mediated loop route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement_northPole_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement
+      hBased h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_basedLoopNullhomotopyStatement
+            (onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+              (Classical.choice onePoint_threeSpace_nonempty) hBased)))
+        h := by
+  apply Subsingleton.elim
+
+/-- The standard path candidate route agrees with the north-pole-mediated loop route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement_northPole_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement
+      hPath h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_pathHomotopyStatement hPath))
+        h := by
+  apply Subsingleton.elim
+
+/-- The standard quotient candidate route agrees with the north-pole-mediated loop route. -/
+theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement_northPole_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_pathHomotopyStatement
+            (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+              hQuot)))
+        h := by
+  apply Subsingleton.elim
+
 /-- The standard based-loop candidate route agrees with the standard path route. -/
 theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement_path_route_eq
     {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
