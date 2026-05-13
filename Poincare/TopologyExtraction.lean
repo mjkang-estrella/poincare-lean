@@ -10743,6 +10743,50 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_loo
   apply Subsingleton.elim
 
 /--
+The north-pole based-loop obligation is enough to apply the project target
+statement to the compactification model.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_northPoleLoopNullhomotopyStatement
+    (hNorth : ThreeSphereNorthPoleLoopNullhomotopyStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_loopNullhomotopyStatement
+    (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement hNorth)
+    h
+
+/-- The north-pole target-statement route reduces to full loops. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_northPoleLoopNullhomotopyStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_northPoleLoopNullhomotopyStatement =
+      (fun hNorth : ThreeSphereNorthPoleLoopNullhomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement hNorth)
+            h) := by
+  funext hNorth h
+  apply Subsingleton.elim
+
+/-- The north-pole target-statement route agrees with the compactification-local loop route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_northPoleLoopNullhomotopyStatement_onePoint_route_eq
+    (hNorth : ThreeSphereNorthPoleLoopNullhomotopyStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_northPoleLoopNullhomotopyStatement
+      hNorth h =
+      onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereNorthPoleLoopNullhomotopyStatement
+          hNorth)
+        h := by
+  apply Subsingleton.elim
+
+/-- The north-pole target-statement route agrees with the direct model homeomorphism. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_northPoleLoopNullhomotopyStatement_direct_route_eq
+    (hNorth : ThreeSphereNorthPoleLoopNullhomotopyStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_northPoleLoopNullhomotopyStatement
+      hNorth h =
+      onePoint_threeSpace_homeomorph_threeSphere := by
+  apply Subsingleton.elim
+
+/--
 The standard sphere fundamental-group obligation is enough to apply the project
 target statement to the compactification model.
 -/
@@ -11646,6 +11690,65 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement
       onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointLoopNullhomotopyStatement
         (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
           hLoop)
+        h := by
+  apply Subsingleton.elim
+
+/--
+The north-pole target self-case exposes both the compactification
+prerequisites and the target endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_northPoleLoopNullhomotopyStatement
+    (hNorth : ThreeSphereNorthPoleLoopNullhomotopyStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_northPoleLoopNullhomotopyStatement
+      hNorth,
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_northPoleLoopNullhomotopyStatement
+      hNorth h⟩
+
+/-- The north-pole target payload pairs prerequisites with the endpoint. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_northPoleLoopNullhomotopyStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_northPoleLoopNullhomotopyStatement =
+      (fun hNorth : ThreeSphereNorthPoleLoopNullhomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_northPoleLoopNullhomotopyStatement
+              hNorth,
+            onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_northPoleLoopNullhomotopyStatement
+              hNorth h⟩) := by
+  funext hNorth h
+  apply Subsingleton.elim
+
+/-- The north-pole target payload agrees with the full-loop target payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_northPoleLoopNullhomotopyStatement_loop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_northPoleLoopNullhomotopyStatement =
+      (fun hNorth : ThreeSphereNorthPoleLoopNullhomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement hNorth)
+            h) := by
+  funext hNorth h
+  apply Subsingleton.elim
+
+/-- The north-pole target payload agrees with the compactification-local loop target payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_northPoleLoopNullhomotopyStatement_onePoint_route_eq
+    (hNorth : ThreeSphereNorthPoleLoopNullhomotopyStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_northPoleLoopNullhomotopyStatement
+      hNorth h =
+      onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereNorthPoleLoopNullhomotopyStatement
+          hNorth)
         h := by
   apply Subsingleton.elim
 
