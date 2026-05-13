@@ -36,6 +36,18 @@ theorem threeSphere_eq :
     ThreeSphere = Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) :=
   rfl
 
+/-- The concrete north-pole point of the target 3-sphere. -/
+noncomputable def threeSphere_northPole : ThreeSphere :=
+  let v : EuclideanSpace ℝ (Fin 4) := .single 0 1
+  ⟨v, by simp [v]⟩
+
+/-- The north pole is the first coordinate unit vector, viewed on the unit sphere. -/
+theorem threeSphere_northPole_eq :
+    threeSphere_northPole =
+      (let v : EuclideanSpace ℝ (Fin 4) := .single 0 1
+       ⟨v, by simp [v]⟩) :=
+  rfl
+
 /-- The target 3-sphere is Hausdorff. -/
 theorem threeSphere_t2Space :
     T2Space ThreeSphere :=
@@ -152,16 +164,13 @@ theorem threeSphere_connectedSpace_eq :
 
 /-- The target 3-sphere is nonempty. -/
 theorem threeSphere_nonempty :
-    Nonempty ThreeSphere := by
-  letI : PathConnectedSpace ThreeSphere := threeSphere_pathConnectedSpace
-  infer_instance
+    Nonempty ThreeSphere :=
+  ⟨threeSphere_northPole⟩
 
-/-- The target 3-sphere nonemptiness witness is induced by path-connectedness. -/
+/-- The target 3-sphere nonemptiness witness is the named north-pole point. -/
 theorem threeSphere_nonempty_eq :
     threeSphere_nonempty =
-      (by
-        letI : PathConnectedSpace ThreeSphere := threeSphere_pathConnectedSpace
-        infer_instance) := by
+      ⟨threeSphere_northPole⟩ := by
   apply Subsingleton.elim
 
 /--
