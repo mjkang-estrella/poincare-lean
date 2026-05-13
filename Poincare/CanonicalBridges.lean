@@ -13766,6 +13766,18 @@ theorem poincare_completion_payload_of_poincareProofDependencies_and_packaged_sm
         smoothStatement := by
   apply Subsingleton.elim
 
+theorem poincare_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    poincare_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement
+      dependencies smoothStatement =
+      poincare_completion_payload_of_remaining_dependency_and_packaged_smooth_statement
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies)
+        smoothStatement :=
+  poincare_completion_payload_of_poincareProofDependencies_and_packaged_smooth_statement_to_remaining_dependency_eq
+    dependencies smoothStatement
+
 /--
 The aggregate packaged canonical-smooth project target converts to the
 remaining dependency packaged canonical-smooth project target after the
@@ -13827,6 +13839,22 @@ theorem poincare_completion_payload_of_poincareProofDependencies_and_packaged_ca
           dependencies)
         h := by
   apply Subsingleton.elim
+
+theorem poincare_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    poincare_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement
+      dependencies h =
+      poincare_completion_payload_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies)
+        h :=
+  poincare_completion_payload_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_remaining_dependency_eq
+    dependencies h
 
 /--
 The aggregate packaged smooth canonical payload converts to the remaining
@@ -14710,6 +14738,22 @@ theorem poincare_completion_payload_of_poincareProofDependencies_and_packaged_re
           dependencies)
         h := by
   apply Subsingleton.elim
+
+theorem poincare_completion_payload_of_poincareProofDependencies_and_packaged_reverse_canonical_smooth_three_sphere_statement_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    poincare_completion_payload_of_poincareProofDependencies_and_packaged_reverse_canonical_smooth_three_sphere_statement
+      dependencies h =
+      poincare_completion_payload_of_remaining_dependency_and_packaged_reverse_canonical_smooth_three_sphere_statement
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies)
+        h :=
+  poincare_completion_payload_of_poincareProofDependencies_and_packaged_reverse_canonical_smooth_three_sphere_statement_to_remaining_dependency_eq
+    dependencies h
 
 /--
 The aggregate packaged reverse canonical smooth canonical payload converts to the
