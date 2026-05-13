@@ -93,6 +93,39 @@ theorem poincare_statement_of_extinction_and_extraction_eq
   apply Subsingleton.elim
 
 /--
+The reserved final theorem endpoint follows once the two core mathematical
+inputs are supplied: finite extinction for every target 3-manifold and the
+post-extinction sphere extraction theorem.
+-/
+theorem poincare_conjecture_of_extinction_and_extraction
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_extinction_and_extraction finiteExtinction extractSphere
+
+/--
+The reserved endpoint is exactly the existing extinction/extraction assembly
+theorem; this records that the remaining gap is the two mathematical inputs,
+not a final assembly step.
+-/
+theorem poincare_conjecture_of_extinction_and_extraction_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    poincare_conjecture_of_extinction_and_extraction
+        finiteExtinction extractSphere =
+      poincare_statement_of_extinction_and_extraction
+        finiteExtinction extractSphere := by
+  apply Subsingleton.elim
+
+/--
 Conversely, a proof of the project target supplies the theorem-shaped
 post-extinction extraction interface. The extinction input is unused because
 the target already gives the homeomorphism conclusion for every closed simply
