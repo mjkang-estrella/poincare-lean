@@ -44967,6 +44967,23 @@ theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_
                 dependencies))) := by
   apply Subsingleton.elim
 
+theorem poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_finite_extinction_eq
+    (payload :
+      ∃ dependencies : RemainingDependencyPackageWithEquationBoundary.{u},
+        EquationBoundaryVerificationPayload dependencies) :
+    poincareCompletionCertificate_canonical_statement_payload
+      (completion_certificate_of_equation_boundary_verification_payload
+        (completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload
+          payload)) =
+      (by
+        rcases payload with ⟨dependencies, _verificationPayload⟩
+        exact
+          poincareCompletionCertificate_canonical_statement_payload
+            (completion_certificate_of_remaining_dependency_package
+              (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+                dependencies))) := by
+  apply Subsingleton.elim
+
 theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_forgetful_dependencies_eq
     (payload :
       ∃ dependencies : RemainingDependencyPackageWithEquationBoundary.{u},
@@ -44981,6 +44998,23 @@ theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_c
           poincareCompletionCertificate_aggregate_canonical_statement_payload
             (completion_certificate_of_poincareProofDependencies
               (dependencies_of_equation_boundary_dependencies
+                dependencies))) := by
+  apply Subsingleton.elim
+
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_finite_extinction_eq
+    (payload :
+      ∃ dependencies : RemainingDependencyPackageWithEquationBoundary.{u},
+        EquationBoundaryVerificationPayload dependencies) :
+    poincareCompletionCertificate_aggregate_canonical_statement_payload
+      (completion_certificate_of_equation_boundary_verification_payload
+        (completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload
+          payload)) =
+      (by
+        rcases payload with ⟨dependencies, _verificationPayload⟩
+        exact
+          poincareCompletionCertificate_aggregate_canonical_statement_payload
+            (completion_certificate_of_remaining_dependency_package
+              (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
                 dependencies))) := by
   apply Subsingleton.elim
 
