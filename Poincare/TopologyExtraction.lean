@@ -2516,6 +2516,69 @@ theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePath
   funext h
   apply Subsingleton.elim
 
+/--
+The compactification-to-target fundamental-group transport agrees with the
+north-pole-mediated target loop route.
+-/
+theorem threeSphereFundamentalGroupSubsingletonStatement_of_onePoint_threeSpace_fundamentalGroupSubsingletonStatement_northPole_route_eq :
+    threeSphereFundamentalGroupSubsingletonStatement_of_onePoint_threeSpace_fundamentalGroupSubsingletonStatement =
+      (fun h : OnePointThreeSpaceFundamentalGroupSubsingletonStatement =>
+        threeSphere_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+                h)))) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The compactification-to-target `π₁` transport agrees with the north-pole-mediated
+target loop route.
+-/
+theorem threeSpherePiOneSubsingletonStatement_of_onePoint_threeSpace_piOneSubsingletonStatement_northPole_route_eq :
+    threeSpherePiOneSubsingletonStatement_of_onePoint_threeSpace_piOneSubsingletonStatement =
+      (fun h : OnePointThreeSpacePiOneSubsingletonStatement =>
+        threeSphere_piOneSubsingletonStatement_of_fundamentalGroupSubsingletonStatement
+          (threeSphere_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+              (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+                (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+                  h))))) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The compactification-to-target path transport agrees with the north-pole-mediated
+target loop route.
+-/
+theorem threeSpherePathHomotopyStatement_of_onePoint_threeSpace_pathHomotopyStatement_northPole_route_eq :
+    threeSpherePathHomotopyStatement_of_onePoint_threeSpace_pathHomotopyStatement =
+      (fun h : OnePointThreeSpacePathHomotopyStatement =>
+        (threeSphere_pathHomotopyStatement_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement
+                h))) : ThreeSpherePathHomotopyStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The compactification-to-target quotient transport agrees with the
+north-pole-mediated target loop route.
+-/
+theorem threeSpherePathQuotientSubsingletonStatement_of_onePoint_threeSpace_pathQuotientSubsingletonStatement_northPole_route_eq :
+    threeSpherePathQuotientSubsingletonStatement_of_onePoint_threeSpace_pathQuotientSubsingletonStatement =
+      (fun h : OnePointThreeSpacePathQuotientSubsingletonStatement =>
+        (threeSphere_pathQuotientSubsingletonStatement_of_pathHomotopyStatement
+          (threeSphere_pathHomotopyStatement_of_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+              (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+                (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement
+                  (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+                    h))))) : ThreeSpherePathQuotientSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
 /-- The compactification and standard-sphere path-quotient obligations are equivalent. -/
 theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_iff_threeSpherePathQuotientSubsingletonStatement :
     OnePointThreeSpacePathQuotientSubsingletonStatement ↔
