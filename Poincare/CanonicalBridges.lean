@@ -21272,6 +21272,18 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
           dependencies) := by
   apply Subsingleton.elim
 
+/--
+The checked-certificate aggregate extraction-derivation endpoint agrees with
+the direct certified aggregate reserved-endpoint route.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation_to_direct_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
+      dependencies =
+      poincare_conjecture_of_aggregate_extraction_derivation_dependencies
+        dependencies := by
+  apply Subsingleton.elim
+
 theorem target_statement_of_completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
     (dependencies : PoincareProofDependencies.{u}) :
     PoincareConjectureStatement.{u} :=
@@ -24767,6 +24779,18 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
       target_statement_of_completion_certificate
         (completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target
           dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The checked-certificate strengthened extraction-derivation endpoint agrees with
+the direct strengthened certified aggregate reserved-endpoint route.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_direct_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target
+      dependencies =
+      poincare_conjecture_of_equation_boundary_extraction_derivation_dependencies
+        dependencies := by
   apply Subsingleton.elim
 
 theorem target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target
