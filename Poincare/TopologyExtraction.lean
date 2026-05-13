@@ -4911,6 +4911,165 @@ theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_
         (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement hBased) h := by
   apply Subsingleton.elim
 
+/-- The local loop source-prerequisite route agrees with the north-pole-mediated standard loop route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement_northPole_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hLoop : OnePointThreeSpaceLoopNullhomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointLoopNullhomotopyStatement
+      hLoop h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+            hLoop))
+        h := by
+  apply Subsingleton.elim
+
+/-- The local fundamental-group source-prerequisite route agrees with the north-pole-mediated standard loop route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement_northPole_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointFundamentalGroupSubsingletonStatement
+      hFund h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+              hFund)))
+        h := by
+  apply Subsingleton.elim
+
+/-- The local `π₁` source-prerequisite route agrees with the north-pole-mediated standard loop route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement_northPole_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPi : OnePointThreeSpacePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPiOneSubsingletonStatement
+      hPi h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement hPi)))
+        h := by
+  apply Subsingleton.elim
+
+/-- The local based-loop source-prerequisite route agrees with the north-pole-mediated standard loop route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointBasedLoopNullhomotopyStatement_northPole_route_eq
+    {M : Type u} [TopologicalSpace M]
+    {basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))}
+    (hBased : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointBasedLoopNullhomotopyStatement
+      hBased h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement
+              hBased)))
+        h := by
+  apply Subsingleton.elim
+
+/-- The local path source-prerequisite route agrees with the north-pole-mediated standard loop route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement_northPole_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : OnePointThreeSpacePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathHomotopyStatement
+      hPath h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement hPath)))
+        h := by
+  apply Subsingleton.elim
+
+/-- The local quotient source-prerequisite route agrees with the north-pole-mediated standard loop route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement_northPole_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_onePointPathQuotientSubsingletonStatement
+      hQuot h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement
+              (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+                hQuot))))
+        h := by
+  apply Subsingleton.elim
+
+/-- The compactification-recognition fundamental-group prerequisite route agrees with the north-pole-mediated loop route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_fundamentalGroupSubsingletonStatement_northPole_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_fundamentalGroupSubsingletonStatement
+      hFund h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+            hFund))
+        h := by
+  apply Subsingleton.elim
+
+/-- The compactification-recognition `π₁` prerequisite route agrees with the north-pole-mediated loop route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement_northPole_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPi : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_piOneSubsingletonStatement
+      hPi h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_piOneSubsingletonStatement hPi))
+        h := by
+  apply Subsingleton.elim
+
+/-- The compactification-recognition based-loop prerequisite route agrees with the north-pole-mediated loop route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement_northPole_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_basedLoopNullhomotopyStatement
+      hBased h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_basedLoopNullhomotopyStatement
+            (onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+              (Classical.choice onePoint_threeSpace_nonempty) hBased)))
+        h := by
+  apply Subsingleton.elim
+
+/-- The compactification-recognition path prerequisite route agrees with the north-pole-mediated loop route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement_northPole_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathHomotopyStatement
+      hPath h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_pathHomotopyStatement hPath))
+        h := by
+  apply Subsingleton.elim
+
+/-- The compactification-recognition quotient prerequisite route agrees with the north-pole-mediated loop route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement_northPole_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_pathHomotopyStatement
+            (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+              hQuot)))
+        h := by
+  apply Subsingleton.elim
+
 /--
 Recognition against the project target sphere transports the standard
 topological manifold prerequisite payload to the recognized source.
