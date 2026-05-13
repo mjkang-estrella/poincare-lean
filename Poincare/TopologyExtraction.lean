@@ -5672,6 +5672,77 @@ theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathQuot
             hQuot)) h := by
   apply Subsingleton.elim
 
+/-- The direct target fundamental-group source route agrees with the north-pole-mediated loop route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement_northPole_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hFund : ThreeSphereFundamentalGroupSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_fundamentalGroupSubsingletonStatement
+      hFund h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+            hFund))
+        h := by
+  apply Subsingleton.elim
+
+/-- The direct target `π₁` source route agrees with the north-pole-mediated loop route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement_northPole_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPi : ThreeSpherePiOneSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_piOneSubsingletonStatement
+      hPi h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_piOneSubsingletonStatement
+            hPi))
+        h := by
+  apply Subsingleton.elim
+
+/-- The direct target based-loop source route agrees with the north-pole-mediated loop route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement_northPole_route_eq
+    {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
+    (hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement
+      hBased h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_basedLoopNullhomotopyStatement
+            (onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+              (Classical.choice onePoint_threeSpace_nonempty) hBased)))
+        h := by
+  apply Subsingleton.elim
+
+/-- The direct target path source route agrees with the north-pole-mediated loop route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathHomotopyStatement_northPole_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hPath : ThreeSpherePathHomotopyStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathHomotopyStatement
+      hPath h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_pathHomotopyStatement hPath))
+        h := by
+  apply Subsingleton.elim
+
+/-- The direct target quotient source route agrees with the north-pole-mediated loop route. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement_northPole_route_eq
+    {M : Type u} [TopologicalSpace M]
+    (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_pathQuotientSubsingletonStatement
+      hQuot h =
+      homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_pathHomotopyStatement
+            (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+              hQuot)))
+        h := by
+  apply Subsingleton.elim
+
 /-- The direct target based-loop source route agrees with the direct path route. -/
 theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_of_basedLoopNullhomotopyStatement_path_route_eq
     {M : Type u} [TopologicalSpace M] {basepoint : ThreeSphere}
