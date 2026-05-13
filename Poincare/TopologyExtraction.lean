@@ -2670,6 +2670,37 @@ theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyS
   apply Subsingleton.elim
 
 /--
+The north-pole based-loop nullhomotopy obligation on `ThreeSphere` supplies the
+full compactification homotopy/manifold prerequisite payload.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_northPoleLoopNullhomotopyStatement
+    (h : ThreeSphereNorthPoleLoopNullhomotopyStatement) :
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+  onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
+    (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement h)
+
+/--
+The north-pole compactification prerequisite route factors through the full
+standard-sphere loop-nullhomotopy route.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_northPoleLoopNullhomotopyStatement_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_northPoleLoopNullhomotopyStatement =
+      (fun h : ThreeSphereNorthPoleLoopNullhomotopyStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The standard sphere's based loop-nullhomotopy obligation supplies the full
 compactification homotopy/manifold prerequisite payload.
 -/
@@ -2716,6 +2747,18 @@ theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomo
       (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
         onePoint_threeSpace_homotopy_manifold_prerequisites_of_loopNullhomotopyStatement
           (threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The north-pole compactification prerequisite route also agrees with the
+standard based-loop prerequisite route specialized to the named north pole.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_northPoleLoopNullhomotopyStatement_based_route_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_northPoleLoopNullhomotopyStatement =
+      (fun h : ThreeSphereNorthPoleLoopNullhomotopyStatement =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_basedLoopNullhomotopyStatement
+          h) := by
   funext h
   apply Subsingleton.elim
 
