@@ -126,6 +126,48 @@ theorem poincare_conjecture_of_extinction_and_extraction_eq
   apply Subsingleton.elim
 
 /--
+Finite extinction plus the post-extinction topological extraction theorem
+exposes the reserved endpoint together with the explicit completion criterion.
+This names the final conditional route through
+`poincare_conjecture_of_extinction_and_extraction`, while keeping both
+mathematical inputs explicit.
+-/
+theorem poincare_conjecture_payload_of_extinction_and_extraction
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let target : PoincareConjectureStatement.{u} :=
+    poincare_conjecture_of_extinction_and_extraction
+      finiteExtinction extractSphere
+  exact poincare_completion_payload_of_poincareConjectureStatement target
+
+/--
+The reserved endpoint payload is exactly the project completion payload
+constructed from the named conditional reserved endpoint theorem.
+-/
+theorem poincare_conjecture_payload_of_extinction_and_extraction_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    poincare_conjecture_payload_of_extinction_and_extraction
+        finiteExtinction extractSphere =
+      (by
+        let target : PoincareConjectureStatement.{u} :=
+          poincare_conjecture_of_extinction_and_extraction
+            finiteExtinction extractSphere
+        exact poincare_completion_payload_of_poincareConjectureStatement
+          target) := by
+  apply Subsingleton.elim
+
+/--
 Conversely, a proof of the project target supplies the theorem-shaped
 post-extinction extraction interface. The extinction input is unused because
 the target already gives the homeomorphism conclusion for every closed simply
