@@ -1725,6 +1725,204 @@ theorem poincare_completion_payload_of_equation_boundary_extraction_derivation_d
   apply Subsingleton.elim
 
 /--
+The certified aggregate dependency package exposes the reserved conditional
+endpoint and completion criterion through the finite-extinction endpoint and
+the topology package's certified extractor.
+-/
+theorem poincare_conjecture_payload_of_aggregate_extraction_derivation_dependencies
+    (dependencies : PoincareProofDependencies.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases topology_extraction_derivation_payload_of_topology_package
+      dependencies.topology with
+    ⟨extractSphere, _derivation⟩
+  exact
+    poincare_conjecture_payload_of_extinction_and_extraction
+      (finite_extinction_input_of_smoothability_and_surgery_packages
+        dependencies.smoothability dependencies.surgery)
+      extractSphere
+
+/--
+The certified aggregate reserved-endpoint payload factors through the
+finite-extinction endpoint and the certified extractor carried by the topology
+package.
+-/
+theorem poincare_conjecture_payload_of_aggregate_extraction_derivation_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_payload_of_aggregate_extraction_derivation_dependencies
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, _derivation⟩
+        exact
+          poincare_conjecture_payload_of_extinction_and_extraction
+            (finite_extinction_input_of_smoothability_and_surgery_packages
+              dependencies.smoothability dependencies.surgery)
+            extractSphere) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified aggregate dependency package exposes the reserved
+conditional endpoint and completion criterion through the boundary
+finite-extinction endpoint and the topology package's certified extractor.
+-/
+theorem poincare_conjecture_payload_of_equation_boundary_extraction_derivation_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases topology_extraction_derivation_payload_of_topology_package
+      dependencies.topology with
+    ⟨extractSphere, _derivation⟩
+  exact
+    poincare_conjecture_payload_of_extinction_and_extraction
+      (finite_extinction_input_of_smoothability_and_boundary_surgery_packages
+        dependencies.smoothability dependencies.surgery)
+      extractSphere
+
+/--
+The strengthened certified reserved-endpoint payload factors through the
+boundary finite-extinction endpoint and the certified extractor carried by the
+topology package.
+-/
+theorem poincare_conjecture_payload_of_equation_boundary_extraction_derivation_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_conjecture_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, _derivation⟩
+        exact
+          poincare_conjecture_payload_of_extinction_and_extraction
+            (finite_extinction_input_of_smoothability_and_boundary_surgery_packages
+              dependencies.smoothability dependencies.surgery)
+            extractSphere) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified reserved-endpoint payload agrees with the ordinary
+certified aggregate reserved-endpoint payload after forgetting equation-boundary
+data.
+-/
+theorem poincare_conjecture_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_conjecture_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      poincare_conjecture_payload_of_aggregate_extraction_derivation_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The certified aggregate dependency package is sufficient for the reserved
+conditional endpoint.
+-/
+theorem poincare_conjecture_of_aggregate_extraction_derivation_dependencies
+    (dependencies : PoincareProofDependencies.{u}) :
+    PoincareConjectureStatement.{u} := by
+  rcases
+      poincare_conjecture_payload_of_aggregate_extraction_derivation_dependencies
+        dependencies with
+    ⟨target, _criterion⟩
+  exact target
+
+/--
+The certified aggregate reserved endpoint is selected from the named certified
+aggregate reserved-endpoint payload.
+-/
+theorem poincare_conjecture_of_aggregate_extraction_derivation_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_of_aggregate_extraction_derivation_dependencies
+      dependencies =
+      (by
+        rcases
+            poincare_conjecture_payload_of_aggregate_extraction_derivation_dependencies
+              dependencies with
+          ⟨target, _criterion⟩
+        exact target) := by
+  apply Subsingleton.elim
+
+/--
+The certified aggregate reserved endpoint factors directly through finite
+extinction and the certified extractor carried by the topology package.
+-/
+theorem poincare_conjecture_of_aggregate_extraction_derivation_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_of_aggregate_extraction_derivation_dependencies
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, _derivation⟩
+        exact
+          poincare_conjecture_of_extinction_and_extraction
+            (finite_extinction_input_of_smoothability_and_surgery_packages
+              dependencies.smoothability dependencies.surgery)
+            extractSphere) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified aggregate dependency package is sufficient for the
+reserved conditional endpoint.
+-/
+theorem poincare_conjecture_of_equation_boundary_extraction_derivation_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} := by
+  rcases
+      poincare_conjecture_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies with
+    ⟨target, _criterion⟩
+  exact target
+
+/--
+The strengthened certified aggregate reserved endpoint is selected from the
+named strengthened certified reserved-endpoint payload.
+-/
+theorem poincare_conjecture_of_equation_boundary_extraction_derivation_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_conjecture_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      (by
+        rcases
+            poincare_conjecture_payload_of_equation_boundary_extraction_derivation_dependencies
+              dependencies with
+          ⟨target, _criterion⟩
+        exact target) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified aggregate reserved endpoint agrees with the ordinary
+certified aggregate reserved endpoint after forgetting equation-boundary data.
+-/
+theorem poincare_conjecture_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_conjecture_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      poincare_conjecture_of_aggregate_extraction_derivation_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified aggregate reserved endpoint factors directly
+through the boundary finite-extinction endpoint and the certified extractor
+carried by the topology package.
+-/
+theorem poincare_conjecture_of_equation_boundary_extraction_derivation_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_conjecture_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, _derivation⟩
+        exact
+          poincare_conjecture_of_extinction_and_extraction
+            (finite_extinction_input_of_smoothability_and_boundary_surgery_packages
+              dependencies.smoothability dependencies.surgery)
+            extractSphere) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency package is sufficient for the target Poincare
 statement, extracted from the aggregate assembly payload.
 -/
