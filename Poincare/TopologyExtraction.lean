@@ -9190,6 +9190,72 @@ theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStat
   funext hQuot recognize
   apply Subsingleton.elim
 
+/-- The standard fundamental-group self-recognition route agrees with the north-pole route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+              hFund)
+            recognize) := by
+  funext hFund recognize
+  apply Subsingleton.elim
+
+/-- The standard `π₁` self-recognition route agrees with the north-pole route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement =
+      (fun hPi : ThreeSpherePiOneSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_piOneSubsingletonStatement
+              hPi)
+            recognize) := by
+  funext hPi recognize
+  apply Subsingleton.elim
+
+/-- The standard based-loop self-recognition route agrees with the north-pole route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_northPole_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+        onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+          hBased recognize) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_basedLoopNullhomotopyStatement
+              (onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+                (Classical.choice onePoint_threeSpace_nonempty) hBased))
+            recognize) := by
+  funext hBased recognize
+  apply Subsingleton.elim
+
+/-- The standard path self-recognition route agrees with the north-pole route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_pathHomotopyStatement_northPole_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_pathHomotopyStatement
+              hPath)
+            recognize) := by
+  funext hPath recognize
+  apply Subsingleton.elim
+
+/-- The standard quotient self-recognition route agrees with the north-pole route. -/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_pathQuotientSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_pathQuotientSubsingletonStatement =
+      (fun hQuot : ThreeSpherePathQuotientSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_pathHomotopyStatement
+              (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+                hQuot))
+            recognize) := by
+  funext hQuot recognize
+  apply Subsingleton.elim
+
 /-- The standard quotient self-recognition route agrees with reflexive recognition. -/
 theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_pathQuotientSubsingletonStatement_direct_route_eq
     (hQuot : ThreeSpherePathQuotientSubsingletonStatement)
@@ -10186,6 +10252,72 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognit
           onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement
             (onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement
               hQuot)
+            recognize) := by
+  funext hQuot recognize
+  apply Subsingleton.elim
+
+/-- The standard fundamental-group universal-recognition target route agrees with the north-pole route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+              hFund)
+            recognize) := by
+  funext hFund recognize
+  apply Subsingleton.elim
+
+/-- The standard `π₁` universal-recognition target route agrees with the north-pole route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement =
+      (fun hPi : ThreeSpherePiOneSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_piOneSubsingletonStatement
+              hPi)
+            recognize) := by
+  funext hPi recognize
+  apply Subsingleton.elim
+
+/-- The standard based-loop universal-recognition target route agrees with the north-pole route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_northPole_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+        onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+          hBased recognize) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_basedLoopNullhomotopyStatement
+              (onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+                (Classical.choice onePoint_threeSpace_nonempty) hBased))
+            recognize) := by
+  funext hBased recognize
+  apply Subsingleton.elim
+
+/-- The standard path universal-recognition target route agrees with the north-pole route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_pathHomotopyStatement_northPole_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_pathHomotopyStatement
+              hPath)
+            recognize) := by
+  funext hPath recognize
+  apply Subsingleton.elim
+
+/-- The standard quotient universal-recognition target route agrees with the north-pole route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_pathQuotientSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_pathQuotientSubsingletonStatement =
+      (fun hQuot : ThreeSpherePathQuotientSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_pathHomotopyStatement
+              (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+                hQuot))
             recognize) := by
   funext hQuot recognize
   apply Subsingleton.elim
@@ -11304,6 +11436,72 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpace
           onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement
             (onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement
               hQuot)
+            recognize) := by
+  funext hQuot recognize
+  apply Subsingleton.elim
+
+/-- The standard fundamental-group target payload agrees with the north-pole payload route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+              hFund)
+            recognize) := by
+  funext hFund recognize
+  apply Subsingleton.elim
+
+/-- The standard `π₁` target payload agrees with the north-pole payload route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement =
+      (fun hPi : ThreeSpherePiOneSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_piOneSubsingletonStatement
+              hPi)
+            recognize) := by
+  funext hPi recognize
+  apply Subsingleton.elim
+
+/-- The standard based-loop target payload agrees with the north-pole payload route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_northPole_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+        onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+          hBased recognize) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_basedLoopNullhomotopyStatement
+              (onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+                (Classical.choice onePoint_threeSpace_nonempty) hBased))
+            recognize) := by
+  funext hBased recognize
+  apply Subsingleton.elim
+
+/-- The standard path target payload agrees with the north-pole payload route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_pathHomotopyStatement_northPole_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_pathHomotopyStatement
+              hPath)
+            recognize) := by
+  funext hPath recognize
+  apply Subsingleton.elim
+
+/-- The standard quotient target payload agrees with the north-pole payload route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_pathQuotientSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_pathQuotientSubsingletonStatement =
+      (fun hQuot : ThreeSpherePathQuotientSubsingletonStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_pathHomotopyStatement
+              (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+                hQuot))
             recognize) := by
   funext hQuot recognize
   apply Subsingleton.elim
