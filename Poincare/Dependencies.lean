@@ -564,6 +564,24 @@ theorem poincare_assembly_inputs_payload_of_aggregate_dependencies_eq
   apply Subsingleton.elim
 
 /--
+The aggregate assembly-input payload also factors through the named aggregate
+dependency projections.
+-/
+theorem poincare_assembly_inputs_payload_of_aggregate_dependencies_to_named_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_assembly_inputs_payload_of_aggregate_dependencies dependencies =
+      (by
+        rcases
+            poincare_assembly_inputs_payload_of_surgery_and_topology_packages
+              (smoothabilityPackage_of_poincareProofDependencies dependencies)
+              (surgeryPackages_of_poincareProofDependencies dependencies)
+              (topologyExtractionPackage_of_poincareProofDependencies
+                dependencies) with
+          ⟨finiteExtinction, extractSphere⟩
+        exact ⟨finiteExtinction, extractSphere⟩) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency package also exposes the final finite-extinction input
 together with a certified final extractor and its topology derivation
 certificate.
@@ -596,6 +614,25 @@ theorem poincare_assembly_inputs_payload_of_aggregate_extraction_derivation_depe
         rcases
             poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation
             dependencies.smoothability dependencies.surgery dependencies.topology with
+          ⟨finiteExtinction, extractSphere, derivation⟩
+        exact ⟨finiteExtinction, extractSphere, derivation⟩) := by
+  apply Subsingleton.elim
+
+/--
+The certified aggregate assembly-input payload also factors through the named
+aggregate dependency projections.
+-/
+theorem poincare_assembly_inputs_payload_of_aggregate_extraction_derivation_dependencies_to_named_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_assembly_inputs_payload_of_aggregate_extraction_derivation_dependencies
+        dependencies =
+      (by
+        rcases
+            poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation
+              (smoothabilityPackage_of_poincareProofDependencies dependencies)
+              (surgeryPackages_of_poincareProofDependencies dependencies)
+              (topologyExtractionPackage_of_poincareProofDependencies
+                dependencies) with
           ⟨finiteExtinction, extractSphere, derivation⟩
         exact ⟨finiteExtinction, extractSphere, derivation⟩) := by
   apply Subsingleton.elim
