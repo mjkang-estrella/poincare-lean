@@ -8596,6 +8596,50 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognit
   apply Subsingleton.elim
 
 /--
+The north-pole based-loop universal-recognition route composes to the target
+`ThreeSphere` endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+    (hNorth : ThreeSphereNorthPoleLoopNullhomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+    (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement hNorth)
+    recognize
+
+/-- The north-pole universal-recognition target route reduces to full loops. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement =
+      (fun hNorth : ThreeSphereNorthPoleLoopNullhomotopyStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement hNorth)
+            recognize) := by
+  funext hNorth recognize
+  apply Subsingleton.elim
+
+/-- The north-pole universal-recognition target route agrees with the compactification-local loop route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement_onePoint_route_eq
+    (hNorth : ThreeSphereNorthPoleLoopNullhomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+      hNorth recognize =
+      onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereNorthPoleLoopNullhomotopyStatement
+          hNorth)
+        recognize := by
+  apply Subsingleton.elim
+
+/-- The north-pole universal-recognition target route agrees with the direct model homeomorphism. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement_direct_route_eq
+    (hNorth : ThreeSphereNorthPoleLoopNullhomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+      hNorth recognize =
+      onePoint_threeSpace_homeomorph_threeSphere := by
+  apply Subsingleton.elim
+
+/--
 The standard-sphere fundamental-group universal-recognition self endpoint
 composes to the target `ThreeSphere` endpoint.
 -/
@@ -9504,6 +9548,65 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpace
       onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
         (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
           hLoop)
+        recognize := by
+  apply Subsingleton.elim
+
+/--
+The north-pole based-loop universal-recognition endpoint also packages the
+compactification prerequisites.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+    (hNorth : ThreeSphereNorthPoleLoopNullhomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_northPoleLoopNullhomotopyStatement
+      hNorth,
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+      hNorth recognize⟩
+
+/-- The north-pole universal-recognition payload pairs its prerequisites with the endpoint. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement =
+      (fun hNorth : ThreeSphereNorthPoleLoopNullhomotopyStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_northPoleLoopNullhomotopyStatement
+              hNorth,
+            onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+              hNorth recognize⟩) := by
+  funext hNorth recognize
+  apply Subsingleton.elim
+
+/-- The north-pole universal-recognition payload agrees with the full-loop payload route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement_loop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement =
+      (fun hNorth : ThreeSphereNorthPoleLoopNullhomotopyStatement =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+            (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement hNorth)
+            recognize) := by
+  funext hNorth recognize
+  apply Subsingleton.elim
+
+/-- The north-pole universal-recognition payload agrees with the compactification-local loop payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement_onePoint_route_eq
+    (hNorth : ThreeSphereNorthPoleLoopNullhomotopyStatement)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+      hNorth recognize =
+      onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereNorthPoleLoopNullhomotopyStatement
+          hNorth)
         recognize := by
   apply Subsingleton.elim
 
