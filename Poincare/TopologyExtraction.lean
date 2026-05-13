@@ -17099,6 +17099,19 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePoint
   funext hFund extinction recognize
   apply Subsingleton.elim
 
+/-- The standard-sphere fundamental-group extinction-recognition payload agrees with the north-pole payload route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_fundamentalGroupSubsingletonStatement =
+      (fun hFund : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+              (threeSphere_northPoleLoopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+                hFund)
+              extinction recognize) := by
+  funext hFund extinction recognize
+  apply Subsingleton.elim
+
 /--
 The standard-sphere `π₁` extinction-recognition endpoint also packages the
 compactification prerequisites after finite extinction.
@@ -17215,6 +17228,19 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePoint
           fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
             onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement
               (onePoint_threeSpace_piOneSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement
+                hPiOne)
+              extinction recognize) := by
+  funext hPiOne extinction recognize
+  apply Subsingleton.elim
+
+/-- The standard-sphere `π₁` extinction-recognition payload agrees with the north-pole payload route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_piOneSubsingletonStatement =
+      (fun hPiOne : ThreeSpherePiOneSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+              (threeSphere_northPoleLoopNullhomotopyStatement_of_piOneSubsingletonStatement
                 hPiOne)
               extinction recognize) := by
   funext hPiOne extinction recognize
@@ -17413,6 +17439,25 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePoint
         (onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
           targetBasepoint hBased)
         extinction recognize := by
+  apply Subsingleton.elim
+
+/-- The standard-sphere based-loop extinction-recognition payload agrees with the north-pole payload route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement_northPole_route_eq
+    (basepoint : ThreeSphere) :
+    (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+      fun extinction =>
+        fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_basedLoopNullhomotopyStatement
+            hBased extinction recognize) =
+      (fun hBased : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+              (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_basedLoopNullhomotopyStatement
+                (onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereBasedLoopNullhomotopyStatement
+                  (Classical.choice onePoint_threeSpace_nonempty) hBased))
+              extinction recognize) := by
+  funext hBased extinction recognize
   apply Subsingleton.elim
 
 /--
@@ -17685,6 +17730,18 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePoint
   funext hPath extinction recognize
   apply Subsingleton.elim
 
+/-- The standard path extinction-recognition payload agrees with the north-pole payload route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_pathHomotopyStatement_northPole_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+              (threeSphere_northPoleLoopNullhomotopyStatement_of_pathHomotopyStatement hPath)
+              extinction recognize) := by
+  funext hPath extinction recognize
+  apply Subsingleton.elim
+
 /--
 The standard path-quotient extinction-recognition endpoint also packages the
 standard homotopy/manifold prerequisites needed to apply recognition after
@@ -17791,6 +17848,20 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePoint
             onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPathQuotientSubsingletonStatement
               (onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement
                 hQuot)
+              extinction recognize) := by
+  funext hQuot extinction recognize
+  apply Subsingleton.elim
+
+/-- The standard quotient extinction-recognition payload agrees with the north-pole payload route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_pathQuotientSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_pathQuotientSubsingletonStatement =
+      (fun hQuot : ThreeSpherePathQuotientSubsingletonStatement =>
+        fun extinction =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+              (threeSphere_northPoleLoopNullhomotopyStatement_of_pathHomotopyStatement
+                (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+                  hQuot))
               extinction recognize) := by
   funext hQuot extinction recognize
   apply Subsingleton.elim
