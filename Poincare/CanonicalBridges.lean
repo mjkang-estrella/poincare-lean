@@ -9509,6 +9509,34 @@ theorem canonical_completion_criterion_of_poincareProofDependencies_and_packaged
         (topology_extraction_statement_of_dependencies dependencies) := by
   apply Subsingleton.elim
 
+theorem completion_criterion_of_poincareProofDependencies_and_packaged_smooth_statement_to_finite_extinction_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependencies.{u})
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    completion_criterion_of_poincareProofDependencies_and_packaged_smooth_statement
+      witness dependencies smoothStatement =
+      canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+        witness
+        (finite_extinction_of_dependencies dependencies)
+        (topology_extraction_statement_of_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+theorem completion_criterion_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_finite_extinction_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependencies.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    completion_criterion_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement
+      witness dependencies h =
+      canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+        witness
+        (finite_extinction_of_dependencies dependencies)
+        (topology_extraction_statement_of_dependencies dependencies) := by
+  apply Subsingleton.elim
+
 /--
 A remaining-dependency package and a project smooth statement expose the
 canonical topological 3-sphere statement through the named packaged smooth
@@ -14745,6 +14773,22 @@ theorem canonical_completion_criterion_of_poincareProofDependencies_and_packaged
         h := by
   apply Subsingleton.elim
 
+theorem completion_criterion_of_poincareProofDependencies_and_packaged_reverse_canonical_smooth_three_sphere_statement_to_finite_extinction_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependencies.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    completion_criterion_of_poincareProofDependencies_and_packaged_reverse_canonical_smooth_three_sphere_statement
+      witness dependencies h =
+      canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+        witness
+        (finite_extinction_of_dependencies dependencies)
+        (topology_extraction_statement_of_dependencies dependencies) := by
+  apply Subsingleton.elim
+
 /--
 The aggregate packaged reverse canonical smooth canonical statement converts to
 the remaining dependency packaged reverse canonical smooth canonical statement
@@ -14824,6 +14868,71 @@ theorem completion_certificate_of_poincareProofDependencies_and_packaged_reverse
         dependencies
         (canonical_completion_payload_of_poincareProofDependencies_and_packaged_reverse_canonical_smooth_three_sphere_statement
           dependencies h) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_poincareProofDependencies_and_packaged_smooth_statement_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    completion_certificate_of_poincareProofDependencies_and_packaged_smooth_statement
+      dependencies smoothStatement =
+      (by
+        let finiteExtinction := finite_extinction_of_dependencies dependencies
+        let extraction := topology_extraction_statement_of_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction extraction
+        exact ⟨canonicalCompletionTheoremName, rfl,
+          remainingDependencyPackage_iff_poincareProofDependencies.mpr dependencies,
+          target,
+          fun witness =>
+            canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+              witness finiteExtinction extraction⟩) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    completion_certificate_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement
+      dependencies h =
+      (by
+        let finiteExtinction := finite_extinction_of_dependencies dependencies
+        let extraction := topology_extraction_statement_of_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction extraction
+        exact ⟨canonicalCompletionTheoremName, rfl,
+          remainingDependencyPackage_iff_poincareProofDependencies.mpr dependencies,
+          target,
+          fun witness =>
+            canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+              witness finiteExtinction extraction⟩) := by
+  apply Subsingleton.elim
+
+theorem completion_certificate_of_poincareProofDependencies_and_packaged_reverse_canonical_smooth_three_sphere_statement_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    completion_certificate_of_poincareProofDependencies_and_packaged_reverse_canonical_smooth_three_sphere_statement
+      dependencies h =
+      (by
+        let finiteExtinction := finite_extinction_of_dependencies dependencies
+        let extraction := topology_extraction_statement_of_dependencies dependencies
+        let target :=
+          canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+            finiteExtinction extraction
+        exact ⟨canonicalCompletionTheoremName, rfl,
+          remainingDependencyPackage_iff_poincareProofDependencies.mpr dependencies,
+          target,
+          fun witness =>
+            canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
+              witness finiteExtinction extraction⟩) := by
   apply Subsingleton.elim
 
 /--
