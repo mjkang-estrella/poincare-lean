@@ -10786,6 +10786,31 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_nor
       onePoint_threeSpace_homeomorph_threeSphere := by
   apply Subsingleton.elim
 
+/-- The fundamental-group compactification target route agrees with the standard north-pole route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointFundamentalGroupSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointFundamentalGroupSubsingletonStatement =
+      (fun hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+                hFund))
+            h) := by
+  funext hFund h
+  apply Subsingleton.elim
+
+/-- The `π₁` compactification target route agrees with the standard north-pole route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPiOneSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_onePointPiOneSubsingletonStatement =
+      (fun hPi : OnePointThreeSpacePiOneSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement hPi))
+            h) := by
+  funext hPi h
+  apply Subsingleton.elim
+
 /--
 The standard sphere fundamental-group obligation is enough to apply the project
 target statement to the compactification model.
@@ -11808,6 +11833,31 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement
         (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereNorthPoleLoopNullhomotopyStatement
           hNorth)
         h := by
+  apply Subsingleton.elim
+
+/-- The fundamental-group target payload agrees with the standard north-pole payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointFundamentalGroupSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointFundamentalGroupSubsingletonStatement =
+      (fun hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+                hFund))
+            h) := by
+  funext hFund h
+  apply Subsingleton.elim
+
+/-- The `π₁` target payload agrees with the standard north-pole payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointPiOneSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_onePointPiOneSubsingletonStatement =
+      (fun hPi : OnePointThreeSpacePiOneSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+              (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement hPi))
+            h) := by
+  funext hPi h
   apply Subsingleton.elim
 
 /--
