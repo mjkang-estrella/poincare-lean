@@ -30940,6 +30940,22 @@ theorem canonical_three_sphere_statement_of_completion_certificate_of_equation_b
             dependencies)) := by
   apply Subsingleton.elim
 
+theorem canonical_three_sphere_statement_of_completion_certificate_of_equation_boundary_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+      (completion_certificate_of_equation_boundary_dependency_projections
+        dependencies) =
+      (by
+        rcases topology_extraction_derivation_payload_of_equation_boundary_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_three_sphere_statement_of_canonical_completion_target
+            (canonical_completion_target_of_finite_extinction_and_extraction_derivation
+              (finite_extinction_of_equation_boundary_dependencies dependencies)
+              extractSphere derivation)) := by
+  apply Subsingleton.elim
+
 theorem canonical_three_sphere_statement_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_boundary_extraction_derivation_target_payload_eq
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     canonical_three_sphere_statement_of_completion_certificate
@@ -37632,6 +37648,18 @@ theorem completion_certificate_of_canonical_statement_payload_of_completion_cert
           dependencies) := by
   apply Subsingleton.elim
 
+theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_equation_boundary_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_canonical_statement_payload
+      (poincareCompletionCertificate_canonical_statement_payload
+        (completion_certificate_of_equation_boundary_dependency_projections
+          dependencies)) =
+      completion_certificate_of_equation_boundary_dependency_projections
+        dependencies :=
+  completion_certificate_of_canonical_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_equation_boundary_dependency_projections
+      dependencies)
+
 theorem completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_boundary_extraction_derivation_target_payload_eq
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     completion_certificate_of_canonical_statement_payload
@@ -37746,6 +37774,18 @@ theorem completion_certificate_of_aggregate_canonical_statement_payload_of_compl
         (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
           dependencies) := by
   apply Subsingleton.elim
+
+theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_aggregate_canonical_statement_payload
+      (poincareCompletionCertificate_aggregate_canonical_statement_payload
+        (completion_certificate_of_equation_boundary_dependency_projections
+          dependencies)) =
+      completion_certificate_of_equation_boundary_dependency_projections
+        dependencies :=
+  completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_eq
+    (completion_certificate_of_equation_boundary_dependency_projections
+      dependencies)
 
 theorem completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_boundary_extraction_derivation_target_payload_eq
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
