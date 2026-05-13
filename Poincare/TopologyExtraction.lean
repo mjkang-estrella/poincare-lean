@@ -1133,6 +1133,28 @@ theorem threeSphereLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomo
   apply Subsingleton.elim
 
 /--
+Compactification loop-nullhomotopy supplies the concrete north-pole
+based-loop obligation on the standard sphere.
+-/
+theorem threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+    (h : OnePointThreeSpaceLoopNullhomotopyStatement) :
+    ThreeSphereNorthPoleLoopNullhomotopyStatement :=
+  threeSphere_northPoleLoopNullhomotopyStatement_of_loopNullhomotopyStatement
+    (threeSphereLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement h)
+
+/--
+The compactification-loop to north-pole route factors through full
+`ThreeSphere` loop-nullhomotopy.
+-/
+theorem threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement_eq :
+    threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement =
+      (fun h : OnePointThreeSpaceLoopNullhomotopyStatement =>
+        threeSphere_northPoleLoopNullhomotopyStatement_of_loopNullhomotopyStatement
+          (threeSphereLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 Compactification loop-nullhomotopy supplies based loop-nullhomotopy at any
 chosen basepoint of `ThreeSphere`.
 -/
@@ -1217,6 +1239,31 @@ theorem threeSphere_basedLoopNullhomotopyStatement_of_onePoint_threeSpace_basedL
   apply Subsingleton.elim
 
 /--
+Based loop-nullhomotopy at one compactification basepoint supplies the
+standard-sphere north-pole based-loop obligation.
+-/
+theorem threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_basedLoopNullhomotopyStatement
+    {sourceBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3))}
+    (h : OnePointThreeSpaceBasedLoopNullhomotopyStatement sourceBasepoint) :
+    ThreeSphereNorthPoleLoopNullhomotopyStatement :=
+  threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+    (onePoint_threeSpace_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h)
+
+/--
+The compactification based-loop to north-pole route factors through
+compactification full loop-nullhomotopy.
+-/
+theorem threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_basedLoopNullhomotopyStatement_eq
+    (sourceBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    (fun h : OnePointThreeSpaceBasedLoopNullhomotopyStatement sourceBasepoint =>
+      threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_basedLoopNullhomotopyStatement h) =
+      (fun h : OnePointThreeSpaceBasedLoopNullhomotopyStatement sourceBasepoint =>
+        threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 Based loop-nullhomotopy on the compactification model is equivalent to based
 loop-nullhomotopy on `ThreeSphere`, after choosing basepoints on both sides.
 -/
@@ -1269,6 +1316,32 @@ theorem onePoint_threeSpace_loopNullhomotopyStatement_iff_threeSphereLoopNullhom
             threeSphereLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
         · exact
             onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement) := by
+  apply Subsingleton.elim
+
+/--
+The compactification loop-nullhomotopy obligation is equivalent to the
+concrete north-pole based-loop obligation on `ThreeSphere`.
+-/
+theorem onePoint_threeSpace_loopNullhomotopyStatement_iff_threeSphereNorthPoleLoopNullhomotopyStatement :
+    OnePointThreeSpaceLoopNullhomotopyStatement ↔
+      ThreeSphereNorthPoleLoopNullhomotopyStatement := by
+  constructor
+  · exact
+      threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+  · exact
+      onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereNorthPoleLoopNullhomotopyStatement
+
+/--
+The compactification/north-pole equivalence is the pair of named transports.
+-/
+theorem onePoint_threeSpace_loopNullhomotopyStatement_iff_threeSphereNorthPoleLoopNullhomotopyStatement_eq :
+    onePoint_threeSpace_loopNullhomotopyStatement_iff_threeSphereNorthPoleLoopNullhomotopyStatement =
+      (by
+        constructor
+        · exact
+            threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+        · exact
+            onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereNorthPoleLoopNullhomotopyStatement) := by
   apply Subsingleton.elim
 
 /--
