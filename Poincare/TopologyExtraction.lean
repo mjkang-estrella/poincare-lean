@@ -2458,6 +2458,64 @@ theorem threeSpherePathQuotientSubsingletonStatement_of_onePoint_threeSpace_path
   funext h
   apply Subsingleton.elim
 
+/--
+The target-to-compactification fundamental-group transport agrees with the
+north-pole-mediated compactification loop route.
+-/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_threeSphereFundamentalGroupSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_threeSphereFundamentalGroupSubsingletonStatement =
+      (fun h : ThreeSphereFundamentalGroupSubsingletonStatement =>
+        onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereNorthPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+              h))) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The target-to-compactification `π₁` transport agrees with the north-pole-mediated
+compactification loop route.
+-/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_piOneSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement =
+      (fun h : ThreeSpherePiOneSubsingletonStatement =>
+        onePoint_threeSpace_piOneSubsingletonStatement_of_loopNullhomotopyStatement
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereNorthPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_piOneSubsingletonStatement
+              h))) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The target-to-compactification path transport agrees with the north-pole-mediated
+compactification loop route.
+-/
+theorem onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePathHomotopyStatement_northPole_route_eq :
+    onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePathHomotopyStatement =
+      (fun (h : ThreeSpherePathHomotopyStatement) =>
+        (onePoint_threeSpace_pathHomotopyStatement_of_loopNullhomotopyStatement
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereNorthPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_pathHomotopyStatement
+              h)) : OnePointThreeSpacePathHomotopyStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The target-to-compactification quotient transport agrees with the
+north-pole-mediated compactification loop route.
+-/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePathQuotientSubsingletonStatement =
+      (fun (h : ThreeSpherePathQuotientSubsingletonStatement) =>
+        (onePoint_threeSpace_pathQuotientSubsingletonStatement_of_pathHomotopyStatement
+          (onePoint_threeSpace_pathHomotopyStatement_of_loopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereNorthPoleLoopNullhomotopyStatement
+              (threeSphere_northPoleLoopNullhomotopyStatement_of_pathHomotopyStatement
+                (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+                  h)))) : OnePointThreeSpacePathQuotientSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
 /-- The compactification and standard-sphere path-quotient obligations are equivalent. -/
 theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_iff_threeSpherePathQuotientSubsingletonStatement :
     OnePointThreeSpacePathQuotientSubsingletonStatement ↔
