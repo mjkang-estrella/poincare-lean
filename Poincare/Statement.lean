@@ -673,6 +673,26 @@ theorem threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement_
   apply Subsingleton.elim
 
 /--
+North-pole based loop-nullhomotopy supplies the full loop-nullhomotopy
+obligation for `S^3`.
+-/
+theorem threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+    (h : ThreeSphereNorthPoleLoopNullhomotopyStatement) :
+    ThreeSphereLoopNullhomotopyStatement :=
+  threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h
+
+/--
+The north-pole-to-full-loop route is the generic based-loop route specialized
+to the named north-pole point.
+-/
+theorem threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement_eq :
+    threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement =
+      (fun h : ThreeSphereNorthPoleLoopNullhomotopyStatement =>
+        threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The concrete path-homotopy uniqueness obligation whose proof would also supply
 `SimplyConnectedSpace ThreeSphere`.
 -/
@@ -1897,6 +1917,85 @@ theorem threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement_piO
       (fun h : ThreeSphereBasedLoopNullhomotopyStatement basepoint =>
         threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement
           (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The north-pole based loop-nullhomotopy obligation supplies the full target
+prerequisite payload for applying the project statement to the standard sphere.
+-/
+theorem threeSphere_target_prerequisites_of_northPoleLoopNullhomotopyStatement
+    (h : ThreeSphereNorthPoleLoopNullhomotopyStatement) :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere :=
+  threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement h
+
+/--
+The north-pole target-prerequisite route is the generic based-loop target route
+specialized to the named north-pole point.
+-/
+theorem threeSphere_target_prerequisites_of_northPoleLoopNullhomotopyStatement_eq :
+    threeSphere_target_prerequisites_of_northPoleLoopNullhomotopyStatement =
+      (fun h : ThreeSphereNorthPoleLoopNullhomotopyStatement =>
+        threeSphere_target_prerequisites_of_basedLoopNullhomotopyStatement h) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The north-pole target-prerequisite route also agrees with first expanding to
+the full loop-nullhomotopy obligation.
+-/
+theorem threeSphere_target_prerequisites_of_northPoleLoopNullhomotopyStatement_loop_route_eq :
+    threeSphere_target_prerequisites_of_northPoleLoopNullhomotopyStatement =
+      (fun h : ThreeSphereNorthPoleLoopNullhomotopyStatement =>
+        threeSphere_target_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The north-pole based loop-nullhomotopy obligation supplies the full
+homotopy-oriented prerequisite payload for the standard sphere.
+-/
+theorem threeSphere_homotopy_prerequisites_of_northPoleLoopNullhomotopyStatement
+    (h : ThreeSphereNorthPoleLoopNullhomotopyStatement) :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere :=
+  threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement h
+
+/--
+The north-pole homotopy-prerequisite route is the generic based-loop homotopy
+route specialized to the named north-pole point.
+-/
+theorem threeSphere_homotopy_prerequisites_of_northPoleLoopNullhomotopyStatement_eq :
+    threeSphere_homotopy_prerequisites_of_northPoleLoopNullhomotopyStatement =
+      (fun h : ThreeSphereNorthPoleLoopNullhomotopyStatement =>
+        threeSphere_homotopy_prerequisites_of_basedLoopNullhomotopyStatement h) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The north-pole homotopy-prerequisite route also agrees with first expanding to
+the full loop-nullhomotopy obligation.
+-/
+theorem threeSphere_homotopy_prerequisites_of_northPoleLoopNullhomotopyStatement_loop_route_eq :
+    threeSphere_homotopy_prerequisites_of_northPoleLoopNullhomotopyStatement =
+      (fun h : ThreeSphereNorthPoleLoopNullhomotopyStatement =>
+        threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement h)) := by
   funext h
   apply Subsingleton.elim
 
