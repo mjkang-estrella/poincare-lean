@@ -7444,6 +7444,83 @@ theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathQuotien
           (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot)) := by
   apply Subsingleton.elim
 
+/-- The compactification self loop-candidate route agrees with the north-pole-mediated standard loop route. -/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_loopNullhomotopyStatement_northPole_route_eq
+    (hLoop : OnePointThreeSpaceLoopNullhomotopyStatement) :
+    poincare_candidate_prerequisites_of_onePoint_threeSpace_self_loopNullhomotopyStatement
+      hLoop =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+            hLoop))
+        onePoint_threeSpace_self_homeomorph := by
+  apply Subsingleton.elim
+
+/-- The compactification self fundamental-group route agrees with the north-pole-mediated standard loop route. -/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_fundamentalGroupSubsingletonStatement_northPole_route_eq
+    (hFund : OnePointThreeSpaceFundamentalGroupSubsingletonStatement) :
+    poincare_candidate_prerequisites_of_onePoint_threeSpace_self_fundamentalGroupSubsingletonStatement
+      hFund =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_fundamentalGroupSubsingletonStatement
+              hFund)))
+        onePoint_threeSpace_self_homeomorph := by
+  apply Subsingleton.elim
+
+/-- The compactification self `π₁` route agrees with the north-pole-mediated standard loop route. -/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_piOneSubsingletonStatement_northPole_route_eq
+    (hPi : OnePointThreeSpacePiOneSubsingletonStatement) :
+    poincare_candidate_prerequisites_of_onePoint_threeSpace_self_piOneSubsingletonStatement
+      hPi =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement hPi)))
+        onePoint_threeSpace_self_homeomorph := by
+  apply Subsingleton.elim
+
+/-- The compactification self based-loop route agrees with the north-pole-mediated standard loop route. -/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_basedLoopNullhomotopyStatement_northPole_route_eq
+    {basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))}
+    (hBased : OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint) :
+    poincare_candidate_prerequisites_of_onePoint_threeSpace_self_basedLoopNullhomotopyStatement
+      hBased =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement
+              hBased)))
+        onePoint_threeSpace_self_homeomorph := by
+  apply Subsingleton.elim
+
+/-- The compactification self path route agrees with the north-pole-mediated standard loop route. -/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement_northPole_route_eq
+    (hPath : OnePointThreeSpacePathHomotopyStatement) :
+    poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathHomotopyStatement
+      hPath =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement hPath)))
+        onePoint_threeSpace_self_homeomorph := by
+  apply Subsingleton.elim
+
+/-- The compactification self quotient route agrees with the north-pole-mediated standard loop route. -/
+theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathQuotientSubsingletonStatement_northPole_route_eq
+    (hQuot : OnePointThreeSpacePathQuotientSubsingletonStatement) :
+    poincare_candidate_prerequisites_of_onePoint_threeSpace_self_pathQuotientSubsingletonStatement
+      hQuot =
+      poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_of_loopNullhomotopyStatement
+        (threeSphere_loopNullhomotopyStatement_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement
+              (onePoint_threeSpace_pathHomotopyStatement_of_pathQuotientSubsingletonStatement
+                hQuot))))
+        onePoint_threeSpace_self_homeomorph := by
+  apply Subsingleton.elim
+
 /-- The compactification self based-loop candidate route agrees with the self path route. -/
 theorem poincare_candidate_prerequisites_of_onePoint_threeSpace_self_basedLoopNullhomotopyStatement_path_route_eq
     {basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))}
