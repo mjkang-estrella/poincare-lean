@@ -11214,6 +11214,17 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_pat
   funext hPath h
   apply Subsingleton.elim
 
+/-- The standard path target self-case agrees with the north-pole route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_pathHomotopyStatement_northPole_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_pathHomotopyStatement hPath)
+            h) := by
+  funext hPath h
+  apply Subsingleton.elim
+
 /-- The standard path target self-case agrees with the compactification path route. -/
 theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_pathHomotopyStatement_onePoint_route_eq :
     onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_pathHomotopyStatement =
@@ -11294,6 +11305,18 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_pat
         fun h : PoincareConjectureStatement.{0} =>
           onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_loopNullhomotopyStatement
             (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
+              (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot))
+            h) := by
+  funext hQuot h
+  apply Subsingleton.elim
+
+/-- The standard quotient target self-case agrees with the north-pole route. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_pathQuotientSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_pathQuotientSubsingletonStatement =
+      (fun hQuot : ThreeSpherePathQuotientSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_poincare_statement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_pathHomotopyStatement
               (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot))
             h) := by
   funext hQuot h
@@ -12244,6 +12267,17 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement
   funext hPath h
   apply Subsingleton.elim
 
+/-- The standard path target payload agrees with the north-pole payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_pathHomotopyStatement_northPole_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_pathHomotopyStatement =
+      (fun hPath : ThreeSpherePathHomotopyStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_pathHomotopyStatement hPath)
+            h) := by
+  funext hPath h
+  apply Subsingleton.elim
+
 /-- The standard path target payload agrees with the compactification-local path payload. -/
 theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_pathHomotopyStatement_onePoint_route_eq :
     onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_pathHomotopyStatement =
@@ -12327,6 +12361,18 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement
         fun h : PoincareConjectureStatement.{0} =>
           onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_loopNullhomotopyStatement
             (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement
+              (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot))
+            h) := by
+  funext hQuot h
+  apply Subsingleton.elim
+
+/-- The standard quotient target payload agrees with the north-pole payload. -/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_pathQuotientSubsingletonStatement_northPole_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_pathQuotientSubsingletonStatement =
+      (fun hQuot : ThreeSpherePathQuotientSubsingletonStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_poincare_statement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_pathHomotopyStatement
               (threeSphere_pathHomotopyStatement_of_pathQuotientSubsingletonStatement hQuot))
             h) := by
   funext hQuot h
