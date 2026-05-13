@@ -166,6 +166,71 @@ theorem poincareProofDependencies_components_payload_eq
         dependencies.topology⟩ := by
   apply Subsingleton.elim
 
+/-- Project the smoothability obligation from the aggregate dependency package. -/
+theorem smoothabilityPackage_of_poincareProofDependencies
+    (dependencies : PoincareProofDependencies.{u}) :
+    SmoothabilityPackage.{u} :=
+  dependencies.smoothability
+
+/--
+The aggregate smoothability projection is the stored smoothability field.
+-/
+theorem smoothabilityPackage_of_poincareProofDependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    smoothabilityPackage_of_poincareProofDependencies dependencies =
+      dependencies.smoothability := by
+  apply Subsingleton.elim
+
+/--
+Project the universal finite-extinction surgery package family from the
+aggregate dependency package.
+-/
+theorem surgeryPackages_of_poincareProofDependencies
+    (dependencies : PoincareProofDependencies.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M) :=
+  dependencies.surgery
+
+/--
+The aggregate surgery-package projection is the stored surgery family field.
+-/
+theorem surgeryPackages_of_poincareProofDependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    surgeryPackages_of_poincareProofDependencies dependencies =
+      dependencies.surgery := by
+  apply Subsingleton.elim
+
+/-- Project the topology extraction obligation from the aggregate dependency package. -/
+theorem topologyExtractionPackage_of_poincareProofDependencies
+    (dependencies : PoincareProofDependencies.{u}) :
+    ExtinctionTopologyExtractionPackage.{u} :=
+  dependencies.topology
+
+/--
+The aggregate topology-extraction projection is the stored topology field.
+-/
+theorem topologyExtractionPackage_of_poincareProofDependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topologyExtractionPackage_of_poincareProofDependencies dependencies =
+      dependencies.topology := by
+  apply Subsingleton.elim
+
+/--
+The aggregate component payload is the tuple of the named dependency
+projections.
+-/
+theorem poincareProofDependencies_components_payload_to_named_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareProofDependencies_components_payload dependencies =
+      ⟨smoothabilityPackage_of_poincareProofDependencies dependencies,
+        surgeryPackages_of_poincareProofDependencies dependencies,
+        topologyExtractionPackage_of_poincareProofDependencies
+          dependencies⟩ := by
+  apply Subsingleton.elim
+
 /--
 The aggregate dependency package is equivalent to exactly its three component
 inputs.
@@ -284,6 +349,87 @@ theorem poincareProofDependenciesWithEquationBoundary_components_payload_eq
         dependencies =
       ⟨dependencies.smoothability, dependencies.surgery,
         dependencies.topology⟩ := by
+  apply Subsingleton.elim
+
+/--
+Project the smoothability obligation from the strengthened aggregate dependency
+package.
+-/
+theorem smoothabilityPackage_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    SmoothabilityPackage.{u} :=
+  dependencies.smoothability
+
+/--
+The strengthened aggregate smoothability projection is the stored smoothability
+field.
+-/
+theorem smoothabilityPackage_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    smoothabilityPackage_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      dependencies.smoothability := by
+  apply Subsingleton.elim
+
+/--
+Project the universal boundary-carrying surgery package family from the
+strengthened aggregate dependency package.
+-/
+theorem boundarySurgeryPackages_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        Nonempty
+          (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :=
+  dependencies.surgery
+
+/--
+The strengthened aggregate boundary-surgery projection is the stored surgery
+family field.
+-/
+theorem boundarySurgeryPackages_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    boundarySurgeryPackages_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+Project the topology extraction obligation from the strengthened aggregate
+dependency package.
+-/
+theorem topologyExtractionPackage_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ExtinctionTopologyExtractionPackage.{u} :=
+  dependencies.topology
+
+/--
+The strengthened aggregate topology-extraction projection is the stored
+topology field.
+-/
+theorem topologyExtractionPackage_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    topologyExtractionPackage_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      dependencies.topology := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate component payload is the tuple of the named
+dependency projections.
+-/
+theorem poincareProofDependenciesWithEquationBoundary_components_payload_to_named_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareProofDependenciesWithEquationBoundary_components_payload
+        dependencies =
+      ⟨smoothabilityPackage_of_poincareProofDependenciesWithEquationBoundary
+          dependencies,
+        boundarySurgeryPackages_of_poincareProofDependenciesWithEquationBoundary
+          dependencies,
+        topologyExtractionPackage_of_poincareProofDependenciesWithEquationBoundary
+          dependencies⟩ := by
   apply Subsingleton.elim
 
 /--
