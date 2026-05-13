@@ -14834,6 +14834,50 @@ theorem poincare_completion_payload_of_poincareProofDependencies_and_packaged_re
   poincare_completion_payload_of_poincareProofDependencies_and_packaged_reverse_canonical_smooth_three_sphere_statement_to_remaining_dependency_eq
     dependencies h
 
+theorem poincare_statement_of_poincareProofDependencies_and_packaged_smooth_statement_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    poincare_statement_of_poincareProofDependencies_and_packaged_smooth_statement
+      dependencies smoothStatement =
+      poincare_statement_of_remaining_dependency_and_packaged_smooth_statement
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies)
+        smoothStatement :=
+  poincare_statement_of_poincareProofDependencies_and_packaged_smooth_statement_to_remaining_dependency_eq
+    dependencies smoothStatement
+
+theorem poincare_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    poincare_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement
+      dependencies h =
+      poincare_statement_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies)
+        h :=
+  poincare_statement_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_to_remaining_dependency_eq
+    dependencies h
+
+theorem poincare_statement_of_poincareProofDependencies_and_packaged_reverse_canonical_smooth_three_sphere_statement_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    poincare_statement_of_poincareProofDependencies_and_packaged_reverse_canonical_smooth_three_sphere_statement
+      dependencies h =
+      poincare_statement_of_remaining_dependency_and_packaged_reverse_canonical_smooth_three_sphere_statement
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies)
+        h :=
+  poincare_statement_of_poincareProofDependencies_and_packaged_reverse_canonical_smooth_three_sphere_statement_to_remaining_dependency_eq
+    dependencies h
+
 /--
 The aggregate packaged reverse canonical smooth canonical payload converts to the
 remaining dependency packaged reverse canonical smooth canonical payload after
