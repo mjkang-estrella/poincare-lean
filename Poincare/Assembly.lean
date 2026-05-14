@@ -573,6 +573,34 @@ theorem threeSphere_self_homeomorph_of_poincare_statement_and_stereographicVanKa
   apply Subsingleton.elim
 
 /--
+The concrete stereographic Van Kampen conclusion contract is enough to apply
+the project target statement to the standard sphere itself.
+-/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_stereographicVanKampenConclusionStatement
+    (hConclusion : ThreeSphereStereographicVanKampenConclusionStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=
+  threeSphere_self_homeomorph_of_poincare_statement_and_stereographicVanKampenReductionStatement
+    (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement
+      hConclusion)
+    h
+
+/--
+The target-statement self route from the conclusion contract is exactly the
+full-reduction route after assembling the reduction package.
+-/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_stereographicVanKampenConclusionStatement_eq :
+    threeSphere_self_homeomorph_of_poincare_statement_and_stereographicVanKampenConclusionStatement =
+      (fun hConclusion : ThreeSphereStereographicVanKampenConclusionStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_of_poincare_statement_and_stereographicVanKampenReductionStatement
+            (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement
+              hConclusion)
+            h) := by
+  funext hConclusion h
+  apply Subsingleton.elim
+
+/--
 The full stereographic Van Kampen reduction is enough to apply the smooth target
 statement to the standard sphere itself.
 -/
@@ -600,6 +628,34 @@ theorem threeSphere_self_diffeomorph_of_smooth_statement_and_stereographicVanKam
   apply Subsingleton.elim
 
 /--
+The concrete stereographic Van Kampen conclusion contract is enough to apply
+the smooth target statement to the standard sphere itself.
+-/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_stereographicVanKampenConclusionStatement
+    (hConclusion : ThreeSphereStereographicVanKampenConclusionStatement)
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) :=
+  threeSphere_self_diffeomorph_of_smooth_statement_and_stereographicVanKampenReductionStatement
+    (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement
+      hConclusion)
+    h
+
+/--
+The smooth self-diffeomorphism route from the conclusion contract is exactly
+the full-reduction route after assembling the reduction package.
+-/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_stereographicVanKampenConclusionStatement_eq :
+    threeSphere_self_diffeomorph_of_smooth_statement_and_stereographicVanKampenConclusionStatement =
+      (fun hConclusion : ThreeSphereStereographicVanKampenConclusionStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_diffeomorph_of_smooth_statement_and_stereographicVanKampenReductionStatement
+            (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement
+              hConclusion)
+            h) := by
+  funext hConclusion h
+  apply Subsingleton.elim
+
+/--
 The smooth target plus the full stereographic Van Kampen reduction gives the
 topological self-homeomorphism after forgetting smooth structure.
 -/
@@ -624,6 +680,35 @@ theorem threeSphere_self_homeomorph_of_smooth_statement_and_stereographicVanKamp
             threeSphere_simplyConnectedSpace_of_stereographicVanKampenReductionStatement hReduction
           threeSphere_self_homeomorph_of_smooth_statement h) := by
   funext hReduction h
+  apply Subsingleton.elim
+
+/--
+The smooth target plus the concrete stereographic Van Kampen conclusion
+contract gives the topological self-homeomorphism after forgetting smooth
+structure.
+-/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_stereographicVanKampenConclusionStatement
+    (hConclusion : ThreeSphereStereographicVanKampenConclusionStatement)
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=
+  threeSphere_self_homeomorph_of_smooth_statement_and_stereographicVanKampenReductionStatement
+    (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement
+      hConclusion)
+    h
+
+/--
+The smooth-to-topological route from the conclusion contract is exactly the
+full-reduction route after assembling the reduction package.
+-/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_stereographicVanKampenConclusionStatement_eq :
+    threeSphere_self_homeomorph_of_smooth_statement_and_stereographicVanKampenConclusionStatement =
+      (fun hConclusion : ThreeSphereStereographicVanKampenConclusionStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_of_smooth_statement_and_stereographicVanKampenReductionStatement
+            (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement
+              hConclusion)
+            h) := by
+  funext hConclusion h
   apply Subsingleton.elim
 
 /--

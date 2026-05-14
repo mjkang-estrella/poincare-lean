@@ -1460,6 +1460,95 @@ theorem threeSphereStereographicVanKampenReductionStatement_eq :
   rfl
 
 /--
+The topological Van Kampen conclusion needed for the concrete stereographic
+cover: from the already isolated cover-input tuple, derive the equatorial
+based-loop nullhomotopy conclusion.
+-/
+def ThreeSphereStereographicVanKampenConclusionStatement : Prop :=
+  ThreeSphereStereographicVanKampenInputsStatement →
+    ThreeSphereStereographicVanKampenLoopStatement
+
+/--
+The stereographic Van Kampen conclusion contract is exactly the implication
+from the verified input tuple to the equatorial loop-nullhomotopy obligation.
+-/
+theorem threeSphereStereographicVanKampenConclusionStatement_eq :
+    ThreeSphereStereographicVanKampenConclusionStatement =
+      (ThreeSphereStereographicVanKampenInputsStatement →
+        ThreeSphereStereographicVanKampenLoopStatement) :=
+  rfl
+
+/--
+The concrete stereographic Van Kampen conclusion fills the full reduction,
+because the cover-input side has already been proved.
+-/
+theorem threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement
+    (h : ThreeSphereStereographicVanKampenConclusionStatement) :
+    ThreeSphereStereographicVanKampenReductionStatement := by
+  rw [threeSphereStereographicVanKampenReductionStatement_eq]
+  exact ⟨threeSphere_stereographicCoverOverlapPackage_vanKampenInputs,
+    h threeSphere_stereographicCoverOverlapPackage_vanKampenInputs⟩
+
+/--
+The conclusion-to-reduction route pairs the proved stereographic cover inputs
+with the conclusion applied to those same inputs.
+-/
+theorem threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement_eq :
+    threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement =
+      (fun h : ThreeSphereStereographicVanKampenConclusionStatement =>
+        by
+          rw [threeSphereStereographicVanKampenReductionStatement_eq]
+          exact ⟨threeSphere_stereographicCoverOverlapPackage_vanKampenInputs,
+            h threeSphere_stereographicCoverOverlapPackage_vanKampenInputs⟩) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+A full stereographic reduction supplies the Van Kampen conclusion contract by
+projecting its equatorial loop-nullhomotopy component.
+-/
+theorem threeSphere_stereographicVanKampenConclusionStatement_of_reductionStatement
+    (h : ThreeSphereStereographicVanKampenReductionStatement) :
+    ThreeSphereStereographicVanKampenConclusionStatement := by
+  intro _inputs
+  rw [threeSphereStereographicVanKampenReductionStatement_eq] at h
+  exact h.2
+
+/--
+The reduction-to-conclusion route is projection of the loop component from the
+full reduction package.
+-/
+theorem threeSphere_stereographicVanKampenConclusionStatement_of_reductionStatement_eq :
+    threeSphere_stereographicVanKampenConclusionStatement_of_reductionStatement =
+      (fun h : ThreeSphereStereographicVanKampenReductionStatement =>
+        by
+          intro _inputs
+          rw [threeSphereStereographicVanKampenReductionStatement_eq] at h
+          exact h.2) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+With the stereographic cover inputs proved, the concrete Van Kampen conclusion
+contract is equivalent to the full reduction statement.
+-/
+theorem threeSphere_stereographicVanKampenConclusionStatement_iff_reductionStatement :
+    ThreeSphereStereographicVanKampenConclusionStatement ↔
+      ThreeSphereStereographicVanKampenReductionStatement :=
+  ⟨threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement,
+    threeSphere_stereographicVanKampenConclusionStatement_of_reductionStatement⟩
+
+/--
+The conclusion/reduction equivalence is exactly the two named projection
+routes between the implication contract and the full reduction package.
+-/
+theorem threeSphere_stereographicVanKampenConclusionStatement_iff_reductionStatement_eq :
+    threeSphere_stereographicVanKampenConclusionStatement_iff_reductionStatement =
+      ⟨threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement,
+        threeSphere_stereographicVanKampenConclusionStatement_of_reductionStatement⟩ :=
+  rfl
+
+/--
 Because the stereographic cover inputs are now proved, the reduction statement
 is equivalent to the remaining loop-nullhomotopy obligation.
 -/
@@ -1573,6 +1662,29 @@ theorem threeSphere_simplyConnectedSpace_of_stereographicVanKampenReductionState
   apply Subsingleton.elim
 
 /--
+A proof of the concrete stereographic Van Kampen conclusion contract supplies
+simple-connectedness of the standard 3-sphere through the full reduction
+package.
+-/
+theorem threeSphere_simplyConnectedSpace_of_stereographicVanKampenConclusionStatement
+    (h : ThreeSphereStereographicVanKampenConclusionStatement) :
+    SimplyConnectedSpace ThreeSphere :=
+  threeSphere_simplyConnectedSpace_of_stereographicVanKampenReductionStatement
+    (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h)
+
+/--
+The conclusion-contract route to simple-connectedness is exactly the reduction
+route after constructing the full stereographic reduction from the conclusion.
+-/
+theorem threeSphere_simplyConnectedSpace_of_stereographicVanKampenConclusionStatement_eq :
+    threeSphere_simplyConnectedSpace_of_stereographicVanKampenConclusionStatement =
+      (fun h : ThreeSphereStereographicVanKampenConclusionStatement =>
+        threeSphere_simplyConnectedSpace_of_stereographicVanKampenReductionStatement
+          (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 A supplied simple-connectedness instance gives the stereographic Van Kampen
 loop obligation at the explicit equatorial overlap basepoint.
 -/
@@ -1612,6 +1724,27 @@ theorem threeSphere_stereographicVanKampenReductionStatement_of_simplyConnectedS
     threeSphere_stereographicVanKampenReductionStatement_of_simplyConnectedSpace =
       threeSphere_simplyConnectedSpace_iff_stereographicVanKampenReductionStatement.mp
         inferInstance := by
+  apply Subsingleton.elim
+
+/--
+A supplied simple-connectedness instance gives the concrete stereographic
+Van Kampen conclusion contract.
+-/
+theorem threeSphere_stereographicVanKampenConclusionStatement_of_simplyConnectedSpace
+    [SimplyConnectedSpace ThreeSphere] :
+    ThreeSphereStereographicVanKampenConclusionStatement :=
+  threeSphere_stereographicVanKampenConclusionStatement_of_reductionStatement
+    threeSphere_stereographicVanKampenReductionStatement_of_simplyConnectedSpace
+
+/--
+The simple-connectedness-to-conclusion route factors through the full reduction
+statement and then projects the conclusion contract.
+-/
+theorem threeSphere_stereographicVanKampenConclusionStatement_of_simplyConnectedSpace_eq
+    [SimplyConnectedSpace ThreeSphere] :
+    threeSphere_stereographicVanKampenConclusionStatement_of_simplyConnectedSpace =
+      threeSphere_stereographicVanKampenConclusionStatement_of_reductionStatement
+        threeSphere_stereographicVanKampenReductionStatement_of_simplyConnectedSpace := by
   apply Subsingleton.elim
 
 /--
@@ -1712,6 +1845,35 @@ theorem threeSphere_target_prerequisites_of_stereographicVanKampenReductionState
   apply Subsingleton.elim
 
 /--
+A concrete stereographic Van Kampen conclusion contract supplies the
+target-prerequisite tuple for the standard 3-sphere.
+-/
+theorem threeSphere_target_prerequisites_of_stereographicVanKampenConclusionStatement
+    (h : ThreeSphereStereographicVanKampenConclusionStatement) :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere :=
+  threeSphere_target_prerequisites_of_stereographicVanKampenReductionStatement
+    (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h)
+
+/--
+The conclusion-contract target-prerequisite route is the reduction route after
+assembling the full stereographic reduction.
+-/
+theorem threeSphere_target_prerequisites_of_stereographicVanKampenConclusionStatement_eq :
+    threeSphere_target_prerequisites_of_stereographicVanKampenConclusionStatement =
+      (fun h : ThreeSphereStereographicVanKampenConclusionStatement =>
+        threeSphere_target_prerequisites_of_stereographicVanKampenReductionStatement
+          (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 A full stereographic Van Kampen reduction proof supplies the homotopy-prerequisite
 tuple for the standard 3-sphere.
 -/
@@ -1741,6 +1903,36 @@ theorem threeSphere_homotopy_prerequisites_of_stereographicVanKampenReductionSta
         letI : SimplyConnectedSpace ThreeSphere :=
           threeSphere_simplyConnectedSpace_of_stereographicVanKampenReductionStatement h
         threeSphere_homotopy_prerequisites_of_simpleConnectedSpace) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+A concrete stereographic Van Kampen conclusion contract supplies the
+homotopy-prerequisite tuple for the standard 3-sphere.
+-/
+theorem threeSphere_homotopy_prerequisites_of_stereographicVanKampenConclusionStatement
+    (h : ThreeSphereStereographicVanKampenConclusionStatement) :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere :=
+  threeSphere_homotopy_prerequisites_of_stereographicVanKampenReductionStatement
+    (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h)
+
+/--
+The conclusion-contract homotopy-prerequisite route is the reduction route
+after assembling the full stereographic reduction.
+-/
+theorem threeSphere_homotopy_prerequisites_of_stereographicVanKampenConclusionStatement_eq :
+    threeSphere_homotopy_prerequisites_of_stereographicVanKampenConclusionStatement =
+      (fun h : ThreeSphereStereographicVanKampenConclusionStatement =>
+        threeSphere_homotopy_prerequisites_of_stereographicVanKampenReductionStatement
+          (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h)) := by
   funext h
   apply Subsingleton.elim
 
