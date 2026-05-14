@@ -28,6 +28,16 @@ theorem smoothability_package_of_dependencies_eq
       dependencies.smoothability :=
   rfl
 
+/--
+The legacy dependency-projection name agrees with the structural aggregate
+smoothability projection.
+-/
+theorem smoothability_package_of_dependencies_to_structural_projection_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    smoothability_package_of_dependencies dependencies =
+      smoothability_of_poincareProofDependencies dependencies :=
+  rfl
+
 /-- A completed dependency package supplies Moise triangulation evidence. -/
 theorem smoothability_moise_local_charts_of_dependencies
     (dependencies : PoincareProofDependencies.{u})
@@ -1132,6 +1142,16 @@ theorem surgery_packages_of_dependencies_eq
   rfl
 
 /--
+The legacy dependency-projection name agrees with the structural aggregate
+surgery-family projection.
+-/
+theorem surgery_packages_of_dependencies_to_structural_projection_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    surgery_packages_of_dependencies dependencies =
+      surgery_of_poincareProofDependencies dependencies :=
+  rfl
+
+/--
 The strengthened dependency package supplies boundary-carrying surgery
 packages for every target manifold after smoothability regularity has been
 installed.
@@ -1157,6 +1177,16 @@ theorem surgery_packages_with_equation_boundary_of_dependencies_eq
   rfl
 
 /--
+The legacy strengthened dependency-projection name agrees with the structural
+boundary-carrying surgery-family projection.
+-/
+theorem surgery_packages_with_equation_boundary_of_dependencies_to_structural_projection_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgery_packages_with_equation_boundary_of_dependencies dependencies =
+      surgery_of_poincareProofDependenciesWithEquationBoundary dependencies :=
+  rfl
+
+/--
 Forgetting equation boundaries from strengthened dependencies supplies the
 ordinary finite-extinction surgery package family.
 -/
@@ -1178,6 +1208,18 @@ theorem surgery_packages_of_equation_boundary_dependencies_eq
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     surgery_packages_of_equation_boundary_dependencies dependencies =
       surgery_packages_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) :=
+  rfl
+
+/--
+The ordinary surgery projection from strengthened dependencies also agrees
+with the structural surgery projection after applying the forgetful aggregate
+dependency map.
+-/
+theorem surgery_packages_of_equation_boundary_dependencies_to_structural_projection_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgery_packages_of_equation_boundary_dependencies dependencies =
+      surgery_of_poincareProofDependencies
         (dependencies_of_equation_boundary_dependencies dependencies) :=
   rfl
 
@@ -5407,6 +5449,16 @@ theorem topology_package_of_dependencies
 theorem topology_package_of_dependencies_eq
     (dependencies : PoincareProofDependencies.{u}) :
     topology_package_of_dependencies dependencies = dependencies.topology :=
+  rfl
+
+/--
+The legacy dependency-projection name agrees with the structural aggregate
+topology-extraction projection.
+-/
+theorem topology_package_of_dependencies_to_structural_projection_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topology_package_of_dependencies dependencies =
+      topology_of_poincareProofDependencies dependencies :=
   rfl
 
 /--
