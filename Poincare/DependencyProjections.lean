@@ -3150,6 +3150,45 @@ theorem analytic_derivation_and_boundary_payload_statements_of_equation_boundary
   apply Subsingleton.elim
 
 /--
+A verification payload's derivation-and-boundary family forgets to the
+analytic derivation statement family for each target manifold.
+-/
+theorem analytic_derivation_statements_of_equation_boundary_verification_payload
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          AnalyticFoundationDerivationStatement flow := by
+  intro M _ _ _ _ _ _
+  rcases
+      analytic_derivation_and_boundary_payload_statements_of_equation_boundary_verification_payload
+        payload M with
+    ⟨n, flow, derivation, _boundaryPayload⟩
+  exact ⟨n, flow, derivation⟩
+
+/--
+The verification-payload analytic derivation family is the forgetful projection
+of the named derivation-and-boundary family.
+-/
+theorem analytic_derivation_statements_of_equation_boundary_verification_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    analytic_derivation_statements_of_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            analytic_derivation_and_boundary_payload_statements_of_equation_boundary_verification_payload
+              payload M with
+          ⟨n, flow, derivation, _boundaryPayload⟩
+        exact ⟨n, flow, derivation⟩) := by
+  apply Subsingleton.elim
+
+/--
 The named dependency equation-boundary package family is the projection of the
 named verification payload.
 -/
@@ -3501,6 +3540,55 @@ theorem analytic_derivation_and_boundary_payload_statements_of_dependencies_to_v
     analytic_derivation_and_boundary_payload_statements_of_dependencies
         dependencies =
       analytic_derivation_and_boundary_payload_statements_of_equation_boundary_verification_payload
+        (equation_boundary_verification_payload_of_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Strengthened dependencies expose the analytic derivation family by forgetting
+the concrete equation-boundary payload carried with each analytic-boundary
+statement.
+-/
+theorem analytic_derivation_statements_of_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          AnalyticFoundationDerivationStatement flow := by
+  intro M _ _ _ _ _ _
+  rcases
+      analytic_derivation_and_boundary_payload_statements_of_dependencies
+        dependencies M with
+    ⟨n, flow, derivation, _boundaryPayload⟩
+  exact ⟨n, flow, derivation⟩
+
+/--
+The strengthened dependency analytic derivation family is the forgetful
+projection of its named derivation-and-boundary family.
+-/
+theorem analytic_derivation_statements_of_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    analytic_derivation_statements_of_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            analytic_derivation_and_boundary_payload_statements_of_dependencies
+              dependencies M with
+          ⟨n, flow, derivation, _boundaryPayload⟩
+        exact ⟨n, flow, derivation⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency analytic derivation family is reconstructed from
+the named verification payload.
+-/
+theorem analytic_derivation_statements_of_dependencies_to_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    analytic_derivation_statements_of_dependencies dependencies =
+      analytic_derivation_statements_of_equation_boundary_verification_payload
         (equation_boundary_verification_payload_of_dependencies
           dependencies) := by
   apply Subsingleton.elim
