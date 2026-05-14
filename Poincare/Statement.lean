@@ -871,6 +871,65 @@ theorem threeSphere_stereographicCoverOverlapPackage_eq :
         actualOverlapPathConnected := threeSphere_actualOverlap_pathConnectedSpace } := by
   rfl
 
+/--
+The bridged stereographic cover package supplies the standard Van Kampen
+topological inputs: simply connected chart domains, open cover, path-connected
+overlap, and a chosen overlap basepoint.
+-/
+theorem threeSphere_stereographicCoverOverlapPackage_vanKampenInputs :
+    ∃ _northSimple :
+      SimplyConnectedSpace (stereographic' 3 threeSphere_northPole).source,
+    ∃ _southSimple :
+      SimplyConnectedSpace (stereographic' 3 (-threeSphere_northPole)).source,
+    ∃ _northOpen : IsOpen (stereographic' 3 threeSphere_northPole).source,
+    ∃ _southOpen : IsOpen (stereographic' 3 (-threeSphere_northPole)).source,
+    ∃ _cover :
+      (stereographic' 3 threeSphere_northPole).source ∪
+          (stereographic' 3 (-threeSphere_northPole)).source =
+        Set.univ,
+    ∃ _overlapOpen :
+      IsOpen ((stereographic' 3 threeSphere_northPole).source ∩
+        (stereographic' 3 (-threeSphere_northPole)).source),
+    ∃ _overlapPath :
+      PathConnectedSpace
+        (((stereographic' 3 threeSphere_northPole).source ∩
+          (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere),
+    ∃ _basepoint :
+      threeSphere_equatorPoint ∈
+        (stereographic' 3 threeSphere_northPole).source ∩
+          (stereographic' 3 (-threeSphere_northPole)).source,
+      Nonempty
+        (((stereographic' 3 threeSphere_northPole).source ∩
+          (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere) := by
+  exact
+    ⟨threeSphere_stereographicOpenCoverPackage.northSourceSimplyConnected,
+      threeSphere_stereographicOpenCoverPackage.southSourceSimplyConnected,
+      threeSphere_stereographicOpenCoverPackage.northSourceOpen,
+      threeSphere_stereographicOpenCoverPackage.southSourceOpen,
+      threeSphere_stereographicOpenCoverPackage.cover,
+      threeSphere_stereographicOpenCoverPackage.overlapOpen,
+      threeSphere_actualOverlap_pathConnectedSpace,
+      threeSphere_stereographicOpenCoverPackage.overlapBasepoint,
+      ⟨⟨threeSphere_equatorPoint,
+        threeSphere_stereographicOpenCoverPackage.overlapBasepoint⟩⟩⟩
+
+/-- The Van Kampen input tuple is assembled from the named stereographic package fields. -/
+theorem threeSphere_stereographicCoverOverlapPackage_vanKampenInputs_eq :
+    threeSphere_stereographicCoverOverlapPackage_vanKampenInputs =
+      (by
+        exact
+          ⟨threeSphere_stereographicOpenCoverPackage.northSourceSimplyConnected,
+            threeSphere_stereographicOpenCoverPackage.southSourceSimplyConnected,
+            threeSphere_stereographicOpenCoverPackage.northSourceOpen,
+            threeSphere_stereographicOpenCoverPackage.southSourceOpen,
+            threeSphere_stereographicOpenCoverPackage.cover,
+            threeSphere_stereographicOpenCoverPackage.overlapOpen,
+            threeSphere_actualOverlap_pathConnectedSpace,
+            threeSphere_stereographicOpenCoverPackage.overlapBasepoint,
+            ⟨⟨threeSphere_equatorPoint,
+              threeSphere_stereographicOpenCoverPackage.overlapBasepoint⟩⟩⟩) := by
+  apply Subsingleton.elim
+
 /-- The target 3-sphere is path-connected as a subset of Euclidean space. -/
 theorem threeSphere_isPathConnected_set :
     IsPathConnected (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) := by
