@@ -876,7 +876,7 @@ The bridged stereographic cover package supplies the standard Van Kampen
 topological inputs: simply connected chart domains, open cover, path-connected
 overlap, and a chosen overlap basepoint.
 -/
-theorem threeSphere_stereographicCoverOverlapPackage_vanKampenInputs :
+def ThreeSphereStereographicVanKampenInputsStatement : Prop :=
     ∃ _northSimple :
       SimplyConnectedSpace (stereographic' 3 threeSphere_northPole).source,
     ∃ _southSimple :
@@ -900,7 +900,47 @@ theorem threeSphere_stereographicCoverOverlapPackage_vanKampenInputs :
           (stereographic' 3 (-threeSphere_northPole)).source,
       Nonempty
         (((stereographic' 3 threeSphere_northPole).source ∩
-          (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere) := by
+          (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere)
+
+/--
+The Van Kampen input statement is exactly the tuple of simply connected chart
+domains, open cover data, path-connected overlap, overlap basepoint, and
+overlap nonemptiness.
+-/
+theorem threeSphereStereographicVanKampenInputsStatement_eq :
+    ThreeSphereStereographicVanKampenInputsStatement =
+      (∃ _northSimple :
+        SimplyConnectedSpace (stereographic' 3 threeSphere_northPole).source,
+      ∃ _southSimple :
+        SimplyConnectedSpace (stereographic' 3 (-threeSphere_northPole)).source,
+      ∃ _northOpen : IsOpen (stereographic' 3 threeSphere_northPole).source,
+      ∃ _southOpen : IsOpen (stereographic' 3 (-threeSphere_northPole)).source,
+      ∃ _cover :
+        (stereographic' 3 threeSphere_northPole).source ∪
+            (stereographic' 3 (-threeSphere_northPole)).source =
+          Set.univ,
+      ∃ _overlapOpen :
+        IsOpen ((stereographic' 3 threeSphere_northPole).source ∩
+          (stereographic' 3 (-threeSphere_northPole)).source),
+      ∃ _overlapPath :
+        PathConnectedSpace
+          (((stereographic' 3 threeSphere_northPole).source ∩
+            (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere),
+      ∃ _basepoint :
+        threeSphere_equatorPoint ∈
+          (stereographic' 3 threeSphere_northPole).source ∩
+            (stereographic' 3 (-threeSphere_northPole)).source,
+        Nonempty
+          (((stereographic' 3 threeSphere_northPole).source ∩
+            (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere)) :=
+  rfl
+
+/--
+The bridged stereographic cover package proves the standard Van Kampen
+topological input statement.
+-/
+theorem threeSphere_stereographicCoverOverlapPackage_vanKampenInputs :
+    ThreeSphereStereographicVanKampenInputsStatement := by
   exact
     ⟨threeSphere_stereographicOpenCoverPackage.northSourceSimplyConnected,
       threeSphere_stereographicOpenCoverPackage.southSourceSimplyConnected,
@@ -1399,6 +1439,52 @@ theorem threeSphereStereographicVanKampenLoopStatement_eq :
     ThreeSphereStereographicVanKampenLoopStatement =
       ThreeSphereBasedLoopNullhomotopyStatement threeSphere_equatorPoint :=
   rfl
+
+/--
+The stereographic Van Kampen reduction for `S^3`: the concrete cover satisfies
+the standard topological inputs, and the only remaining conclusion is the
+equatorial based-loop nullhomotopy obligation.
+-/
+def ThreeSphereStereographicVanKampenReductionStatement : Prop :=
+  ThreeSphereStereographicVanKampenInputsStatement ∧
+    ThreeSphereStereographicVanKampenLoopStatement
+
+/--
+The reduction statement is exactly the verified stereographic cover-input
+tuple paired with the equatorial loop-nullhomotopy obligation.
+-/
+theorem threeSphereStereographicVanKampenReductionStatement_eq :
+    ThreeSphereStereographicVanKampenReductionStatement =
+      (ThreeSphereStereographicVanKampenInputsStatement ∧
+        ThreeSphereStereographicVanKampenLoopStatement) :=
+  rfl
+
+/--
+Because the stereographic cover inputs are now proved, the reduction statement
+is equivalent to the remaining loop-nullhomotopy obligation.
+-/
+theorem threeSphere_stereographicVanKampenLoopStatement_iff_reductionStatement :
+    ThreeSphereStereographicVanKampenLoopStatement ↔
+      ThreeSphereStereographicVanKampenReductionStatement := by
+  rw [threeSphereStereographicVanKampenReductionStatement_eq]
+  constructor
+  · intro h
+    exact ⟨threeSphere_stereographicCoverOverlapPackage_vanKampenInputs, h⟩
+  · exact And.right
+
+/--
+The loop/reduction equivalence pairs the proved cover inputs with the loop
+obligation in one direction and projects the loop obligation in the other.
+-/
+theorem threeSphere_stereographicVanKampenLoopStatement_iff_reductionStatement_eq :
+    threeSphere_stereographicVanKampenLoopStatement_iff_reductionStatement =
+      (by
+        rw [threeSphereStereographicVanKampenReductionStatement_eq]
+        constructor
+        · intro h
+          exact ⟨threeSphere_stereographicCoverOverlapPackage_vanKampenInputs, h⟩
+        · exact And.right) := by
+  apply Subsingleton.elim
 
 /--
 For the standard sphere, simple-connectedness is equivalent to the
