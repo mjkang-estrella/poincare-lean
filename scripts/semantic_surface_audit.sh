@@ -16686,8 +16686,8 @@ canonical_completion_equation_boundary_payload_count=$(
   rg -c '\bcanonical_completion_payload_of_equation_boundary_dependency_projections\b' \
     Poincare/CompletionTarget.lean || true
 )
-if [ "$canonical_completion_equation_boundary_payload_count" != "14" ]; then
-  echo "FAIL: equation-boundary projection canonical completion payload endpoints should expose theorem, equality, topology, finite-extinction, package, forgetful, and remaining-dependency routes"
+if [ "$canonical_completion_equation_boundary_payload_count" != "15" ]; then
+  echo "FAIL: equation-boundary projection canonical completion payload endpoints should expose theorem, equality, topology, finite-extinction, direct-verification, package, forgetful, and remaining-dependency routes"
   rg -n '\bcanonical_completion_payload_of_equation_boundary_dependency_projections\b' \
     Poincare/CompletionTarget.lean || true
   exit 1
@@ -16697,8 +16697,8 @@ canonical_completion_equation_boundary_target_count=$(
   rg -c '\bcanonical_completion_target_of_equation_boundary_dependency_projections\b' \
     Poincare/CompletionTarget.lean || true
 )
-if [ "$canonical_completion_equation_boundary_target_count" != "12" ]; then
-  echo "FAIL: equation-boundary projection canonical completion target endpoints should expose theorem, equality, topology, finite-extinction, package, forgetful, remaining-dependency, and project-statement routes"
+if [ "$canonical_completion_equation_boundary_target_count" != "13" ]; then
+  echo "FAIL: equation-boundary projection canonical completion target endpoints should expose theorem, equality, topology, finite-extinction, direct-verification, package, forgetful, remaining-dependency, and project-statement routes"
   rg -n '\bcanonical_completion_target_of_equation_boundary_dependency_projections\b' \
     Poincare/CompletionTarget.lean || true
   exit 1
@@ -16708,8 +16708,8 @@ canonical_completion_equation_boundary_criterion_count=$(
   rg -c '\bcanonical_completion_criterion_of_equation_boundary_dependency_projections\b' \
     Poincare/CompletionTarget.lean || true
 )
-if [ "$canonical_completion_equation_boundary_criterion_count" != "13" ]; then
-  echo "FAIL: equation-boundary projection canonical completion criterion endpoints should expose theorem, equality, topology, finite-extinction, package, forgetful, remaining-dependency, project-criterion, and certificate routes"
+if [ "$canonical_completion_equation_boundary_criterion_count" != "14" ]; then
+  echo "FAIL: equation-boundary projection canonical completion criterion endpoints should expose theorem, equality, topology, finite-extinction, direct-verification, package, forgetful, remaining-dependency, project-criterion, and certificate routes"
   rg -n '\bcanonical_completion_criterion_of_equation_boundary_dependency_projections\b' \
     Poincare/CompletionTarget.lean || true
   exit 1
