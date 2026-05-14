@@ -629,6 +629,65 @@ theorem threeSphere_northSource_southSource_preimage_eq_compl_southPole_eq :
           exact hp (Subtype.ext hval)) := by
   apply Subsingleton.elim
 
+/--
+The north-pole stereographic homeomorphism restricts to a homeomorphism from
+the north-source overlap model to punctured `ℝ³`, with the puncture at the
+south-pole chart image.
+-/
+noncomputable def threeSphere_northSourceOverlap_homeomorph_puncturedChart :
+    ({threeSphere_southPoleInNorthSource}ᶜ :
+      Set (stereographic' 3 threeSphere_northPole).source) ≃ₜ
+      ({threeSphere_southPole_northChartImage}ᶜ :
+        Set (EuclideanSpace ℝ (Fin 3))) :=
+  (threeSphere_stereographic_source_homeomorph threeSphere_northPole).subtype
+    (fun p => by
+      simp [threeSphere_southPole_northChartImage])
+
+/--
+The restricted overlap homeomorphism is the subtype restriction of the named
+north-pole stereographic source homeomorphism to the complement of the
+south-pole source point.
+-/
+theorem threeSphere_northSourceOverlap_homeomorph_puncturedChart_eq :
+    threeSphere_northSourceOverlap_homeomorph_puncturedChart =
+      (threeSphere_stereographic_source_homeomorph threeSphere_northPole).subtype
+        (fun p => by
+          simp [threeSphere_southPole_northChartImage]) :=
+  rfl
+
+/--
+The north-source model of the north/south overlap is path-connected, transported
+from punctured `ℝ³` across the restricted stereographic homeomorphism.
+-/
+theorem threeSphere_northSourceOverlap_pathConnectedSpace :
+    PathConnectedSpace
+      ({threeSphere_southPoleInNorthSource}ᶜ :
+        Set (stereographic' 3 threeSphere_northPole).source) := by
+  letI : PathConnectedSpace
+      ({threeSphere_southPole_northChartImage}ᶜ :
+        Set (EuclideanSpace ℝ (Fin 3))) :=
+    threeSphere_northChartImage_compl_southPole_pathConnectedSpace
+  exact
+    threeSphere_northSourceOverlap_homeomorph_puncturedChart.symm.surjective.pathConnectedSpace
+      threeSphere_northSourceOverlap_homeomorph_puncturedChart.symm.continuous
+
+/--
+The north-source overlap path-connectedness witness is transported from the
+punctured-chart path-connectedness witness by the inverse restricted
+homeomorphism.
+-/
+theorem threeSphere_northSourceOverlap_pathConnectedSpace_eq :
+    threeSphere_northSourceOverlap_pathConnectedSpace =
+      (by
+        letI : PathConnectedSpace
+            ({threeSphere_southPole_northChartImage}ᶜ :
+              Set (EuclideanSpace ℝ (Fin 3))) :=
+          threeSphere_northChartImage_compl_southPole_pathConnectedSpace
+        exact
+          threeSphere_northSourceOverlap_homeomorph_puncturedChart.symm.surjective.pathConnectedSpace
+            threeSphere_northSourceOverlap_homeomorph_puncturedChart.symm.continuous) := by
+  apply Subsingleton.elim
+
 /-- The target 3-sphere is path-connected as a subset of Euclidean space. -/
 theorem threeSphere_isPathConnected_set :
     IsPathConnected (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) := by
