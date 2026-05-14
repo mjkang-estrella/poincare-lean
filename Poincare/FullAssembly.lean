@@ -174,6 +174,81 @@ theorem universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
   apply Subsingleton.elim
 
 /--
+The smoothability/surgery package route proves the project Poincare endpoint
+through the named universal finite-extinction boundary.
+-/
+theorem poincare_conjecture_of_smoothability_and_surgery_packages
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_universalFiniteExtinctionStatement
+    (universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+      smoothabilityPackage surgeryPackages)
+
+/--
+The smoothability/surgery Poincare endpoint is exactly the
+universal-finite-extinction endpoint applied to its named package-level
+universal boundary.
+-/
+theorem poincare_conjecture_of_smoothability_and_surgery_packages_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+    poincare_conjecture_of_smoothability_and_surgery_packages
+        smoothabilityPackage surgeryPackages =
+      poincare_conjecture_of_universalFiniteExtinctionStatement
+        (universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+          smoothabilityPackage surgeryPackages) := by
+  apply Subsingleton.elim
+
+/--
+The smoothability/surgery package route exposes the reserved endpoint and all
+completion criteria through the named universal finite-extinction payload.
+-/
+theorem poincare_conjecture_payload_of_smoothability_and_surgery_packages
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  universalFiniteExtinctionStatement_completion_payload
+    (universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+      smoothabilityPackage surgeryPackages)
+
+/--
+The smoothability/surgery package endpoint payload is exactly the universal
+finite-extinction completion payload for its named package-level universal
+boundary.
+-/
+theorem poincare_conjecture_payload_of_smoothability_and_surgery_packages_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+    poincare_conjecture_payload_of_smoothability_and_surgery_packages
+        smoothabilityPackage surgeryPackages =
+      universalFiniteExtinctionStatement_completion_payload
+        (universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+          smoothabilityPackage surgeryPackages) := by
+  apply Subsingleton.elim
+
+/--
 The smoothability route together with boundary-carrying surgery packages
 exposes the manifold evidence, strengthened surgery package, theorem-shaped
 finite-extinction statement, analytic-boundary statement, and resulting
@@ -340,6 +415,90 @@ theorem universalFiniteExtinctionStatement_of_smoothability_and_boundary_surgery
         smoothabilityPackage surgeryPackages =
       finite_extinction_input_of_smoothability_and_boundary_surgery_packages
         smoothabilityPackage surgeryPackages := by
+  apply Subsingleton.elim
+
+/--
+The boundary-carrying smoothability/surgery package route proves the project
+Poincare endpoint through the named universal finite-extinction boundary.
+-/
+theorem poincare_conjecture_of_smoothability_and_boundary_surgery_packages
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω,
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_universalFiniteExtinctionStatement
+    (universalFiniteExtinctionStatement_of_smoothability_and_boundary_surgery_packages
+      smoothabilityPackage surgeryPackages)
+
+/--
+The boundary-carrying smoothability/surgery Poincare endpoint is exactly the
+universal-finite-extinction endpoint applied to its named package-level
+universal boundary.
+-/
+theorem poincare_conjecture_of_smoothability_and_boundary_surgery_packages_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω,
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+    poincare_conjecture_of_smoothability_and_boundary_surgery_packages
+        smoothabilityPackage surgeryPackages =
+      poincare_conjecture_of_universalFiniteExtinctionStatement
+        (universalFiniteExtinctionStatement_of_smoothability_and_boundary_surgery_packages
+          smoothabilityPackage surgeryPackages) := by
+  apply Subsingleton.elim
+
+/--
+The boundary-carrying smoothability/surgery package route exposes the reserved
+endpoint and all completion criteria through the named universal
+finite-extinction payload.
+-/
+theorem poincare_conjecture_payload_of_smoothability_and_boundary_surgery_packages
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω,
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  universalFiniteExtinctionStatement_completion_payload
+    (universalFiniteExtinctionStatement_of_smoothability_and_boundary_surgery_packages
+      smoothabilityPackage surgeryPackages)
+
+/--
+The boundary-carrying smoothability/surgery package endpoint payload is exactly
+the universal finite-extinction completion payload for its named package-level
+universal boundary.
+-/
+theorem poincare_conjecture_payload_of_smoothability_and_boundary_surgery_packages_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω,
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+    poincare_conjecture_payload_of_smoothability_and_boundary_surgery_packages
+        smoothabilityPackage surgeryPackages =
+      universalFiniteExtinctionStatement_completion_payload
+        (universalFiniteExtinctionStatement_of_smoothability_and_boundary_surgery_packages
+          smoothabilityPackage surgeryPackages) := by
   apply Subsingleton.elim
 
 /--
