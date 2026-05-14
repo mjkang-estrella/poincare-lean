@@ -650,6 +650,218 @@ theorem canonical_three_sphere_statement_of_completion_certificate_of_poincarePr
   apply Subsingleton.elim
 
 /--
+The strengthened remaining-dependency certificate canonical payload agrees
+with the boundary-carrying package-level canonical completion payload.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_smoothability_boundary_surgery_packages_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_completion_certificate
+        (completion_certificate_of_equation_boundary_remaining_dependency_package
+          dependencies) =
+      canonical_completion_payload_of_smoothability_and_boundary_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-dependency certificate project payload agrees with
+the boundary-carrying package-level Poincare payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_smoothability_boundary_surgery_packages_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_completion_certificate
+        (completion_certificate_of_equation_boundary_remaining_dependency_package
+          dependencies) =
+      poincare_conjecture_payload_of_smoothability_and_boundary_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-dependency certificate reserved payload agrees with
+the boundary-carrying package-level Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_smoothability_boundary_surgery_packages_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_conjecture_payload_of_completion_certificate
+        (completion_certificate_of_equation_boundary_remaining_dependency_package
+          dependencies) =
+      poincare_conjecture_payload_of_smoothability_and_boundary_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-dependency certificate canonical target agrees with
+the boundary-carrying package-level canonical completion target.
+-/
+theorem canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_smoothability_boundary_surgery_packages_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_completion_target_of_completion_certificate
+        (completion_certificate_of_equation_boundary_remaining_dependency_package
+          dependencies) =
+      canonical_completion_target_of_smoothability_and_boundary_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-dependency certificate project target agrees with
+the boundary-carrying package-level Poincare endpoint.
+-/
+theorem target_statement_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_smoothability_boundary_surgery_packages_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    target_statement_of_completion_certificate
+        (completion_certificate_of_equation_boundary_remaining_dependency_package
+          dependencies) =
+      poincare_conjecture_of_smoothability_and_boundary_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-dependency certificate reserved endpoint agrees
+with the boundary-carrying package-level Poincare endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_smoothability_boundary_surgery_packages_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_conjecture_of_completion_certificate
+        (completion_certificate_of_equation_boundary_remaining_dependency_package
+          dependencies) =
+      poincare_conjecture_of_smoothability_and_boundary_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-dependency certificate completion criterion agrees
+with the boundary-carrying package-level completion criterion.
+-/
+theorem completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_smoothability_boundary_surgery_packages_eq
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_criterion_of_completion_certificate witness
+        (completion_certificate_of_equation_boundary_remaining_dependency_package
+          dependencies) =
+      completion_criterion_of_smoothability_and_boundary_surgery_packages
+        witness dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-dependency certificate canonical criterion agrees
+with the boundary-carrying package-level canonical criterion.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_smoothability_boundary_surgery_packages_eq
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+        (completion_certificate_of_equation_boundary_remaining_dependency_package
+          dependencies) =
+      canonical_completion_criterion_of_smoothability_and_boundary_surgery_packages
+        witness dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency certificate canonical payload agrees
+with the boundary-carrying package-level canonical completion payload.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_smoothability_boundary_surgery_packages_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_completion_certificate
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies) =
+      canonical_completion_payload_of_smoothability_and_boundary_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency certificate project payload agrees with
+the boundary-carrying package-level Poincare payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_smoothability_boundary_surgery_packages_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_completion_certificate
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies) =
+      poincare_conjecture_payload_of_smoothability_and_boundary_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency certificate reserved payload agrees with
+the boundary-carrying package-level Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_smoothability_boundary_surgery_packages_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_conjecture_payload_of_completion_certificate
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies) =
+      poincare_conjecture_payload_of_smoothability_and_boundary_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency certificate canonical target agrees with
+the boundary-carrying package-level canonical completion target.
+-/
+theorem canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_smoothability_boundary_surgery_packages_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_target_of_completion_certificate
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies) =
+      canonical_completion_target_of_smoothability_and_boundary_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency certificate project target agrees with
+the boundary-carrying package-level Poincare endpoint.
+-/
+theorem target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_smoothability_boundary_surgery_packages_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies) =
+      poincare_conjecture_of_smoothability_and_boundary_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency certificate reserved endpoint agrees
+with the boundary-carrying package-level Poincare endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_smoothability_boundary_surgery_packages_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_conjecture_of_completion_certificate
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies) =
+      poincare_conjecture_of_smoothability_and_boundary_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency certificate completion criterion agrees
+with the boundary-carrying package-level completion criterion.
+-/
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_smoothability_boundary_surgery_packages_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_completion_certificate witness
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies) =
+      completion_criterion_of_smoothability_and_boundary_surgery_packages
+        witness dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency certificate canonical criterion agrees
+with the boundary-carrying package-level canonical criterion.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_smoothability_boundary_surgery_packages_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies) =
+      canonical_completion_criterion_of_smoothability_and_boundary_surgery_packages
+        witness dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency certificate project target agrees with the
 package-level Poincare endpoint assembled from the same smoothability and
 surgery families.
