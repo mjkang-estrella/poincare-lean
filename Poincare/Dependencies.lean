@@ -591,6 +591,52 @@ theorem topologyExtractionPackage_of_poincareProofDependencies_to_structural_pro
   apply Subsingleton.elim
 
 /--
+The aggregate dependency package exposes the topology extraction derivation
+payload carried by its stored topology package.
+-/
+theorem topology_extraction_derivation_payload_of_poincareProofDependencies_package_projection
+    (dependencies : PoincareProofDependencies.{u}) :
+    ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere :=
+  topology_extraction_derivation_payload_of_topology_package
+    dependencies.topology
+
+/--
+The aggregate topology extraction derivation payload is the package-level
+payload of the stored topology package.
+-/
+theorem topology_extraction_derivation_payload_of_poincareProofDependencies_package_projection_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topology_extraction_derivation_payload_of_poincareProofDependencies_package_projection
+        dependencies =
+      topology_extraction_derivation_payload_of_topology_package
+        dependencies.topology :=
+  rfl
+
+/--
+The aggregate dependency package exposes the lifted-homeomorphism derivation
+payload carried by its stored topology package.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_poincareProofDependencies_package_projection
+    (dependencies : PoincareProofDependencies.{u}) :
+    ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u} :=
+  topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+    dependencies.topology
+
+/--
+The aggregate lifted-homeomorphism topology payload is the package-level
+payload of the stored topology package.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_poincareProofDependencies_package_projection_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_poincareProofDependencies_package_projection
+        dependencies =
+      topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+        dependencies.topology :=
+  rfl
+
+/--
 The aggregate component payload is the tuple of the named dependency
 projections.
 -/
@@ -977,6 +1023,52 @@ theorem topologyExtractionPackage_of_poincareProofDependenciesWithEquationBounda
       topology_of_poincareProofDependenciesWithEquationBoundary
         dependencies := by
   apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package exposes the topology extraction
+derivation payload carried by its stored topology package.
+-/
+theorem topology_extraction_derivation_payload_of_poincareProofDependenciesWithEquationBoundary_package_projection
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ extractSphere : ExtinctionImpliesSphereStatement.{u},
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere :=
+  topology_extraction_derivation_payload_of_topology_package
+    dependencies.topology
+
+/--
+The strengthened aggregate topology extraction derivation payload is the
+package-level payload of the stored topology package.
+-/
+theorem topology_extraction_derivation_payload_of_poincareProofDependenciesWithEquationBoundary_package_projection_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    topology_extraction_derivation_payload_of_poincareProofDependenciesWithEquationBoundary_package_projection
+        dependencies =
+      topology_extraction_derivation_payload_of_topology_package
+        dependencies.topology :=
+  rfl
+
+/--
+The strengthened aggregate dependency package exposes the lifted-homeomorphism
+derivation payload carried by its stored topology package.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_poincareProofDependenciesWithEquationBoundary_package_projection
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u} :=
+  topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+    dependencies.topology
+
+/--
+The strengthened aggregate lifted-homeomorphism topology payload is the
+package-level payload of the stored topology package.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_poincareProofDependenciesWithEquationBoundary_package_projection_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_poincareProofDependenciesWithEquationBoundary_package_projection
+        dependencies =
+      topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+        dependencies.topology :=
+  rfl
 
 /--
 The strengthened aggregate component payload is the tuple of the named
