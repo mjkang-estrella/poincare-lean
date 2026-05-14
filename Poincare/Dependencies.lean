@@ -1049,6 +1049,18 @@ theorem topology_extraction_derivation_payload_of_poincareProofDependenciesWithE
   rfl
 
 /--
+The strengthened package-projection topology derivation payload agrees with the
+ordinary aggregate package projection after forgetting equation-boundary data.
+-/
+theorem topology_extraction_derivation_payload_of_poincareProofDependenciesWithEquationBoundary_package_projection_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    topology_extraction_derivation_payload_of_poincareProofDependenciesWithEquationBoundary_package_projection
+        dependencies =
+      topology_extraction_derivation_payload_of_poincareProofDependencies_package_projection
+        (dependencies_of_equation_boundary_dependencies dependencies) :=
+  rfl
+
+/--
 The strengthened aggregate dependency package exposes the lifted-homeomorphism
 derivation payload carried by its stored topology package.
 -/
@@ -1068,6 +1080,19 @@ theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_poincareP
         dependencies =
       topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
         dependencies.topology :=
+  rfl
+
+/--
+The strengthened package-projection lifted-homeomorphism topology payload
+agrees with the ordinary aggregate package projection after forgetting
+equation-boundary data.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_poincareProofDependenciesWithEquationBoundary_package_projection_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_poincareProofDependenciesWithEquationBoundary_package_projection
+        dependencies =
+      topology_extraction_lifted_homeomorphism_derivation_payload_of_poincareProofDependencies_package_projection
+        (dependencies_of_equation_boundary_dependencies dependencies) :=
   rfl
 
 /--
