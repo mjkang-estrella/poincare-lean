@@ -9059,6 +9059,69 @@ theorem finite_extinction_statement_payload_of_surgery_package_eq
   apply Subsingleton.elim
 
 /--
+The finite-extinction statement payload exposes the package-level
+theorem-shaped finite-extinction statement as a named Prop-valued projection.
+-/
+theorem finite_extinction_statement_from_statement_payload_of_surgery_package
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M) :
+    FiniteExtinctionStatement n M := by
+  rcases finite_extinction_statement_payload_of_surgery_package package with
+    ⟨_flow, _surgery, _control, packageStatement,
+      _subobligationsStatement, _viaSubobligationsStatement, _derivation,
+      _finiteExtinction⟩
+  exact packageStatement
+
+/--
+The statement-payload projection of the package-level finite-extinction
+statement agrees with the direct package projection.
+-/
+theorem finite_extinction_statement_from_statement_payload_of_surgery_package_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M) :
+    finite_extinction_statement_from_statement_payload_of_surgery_package
+        package =
+      finite_extinction_statement_of_surgery_package package := by
+  apply Subsingleton.elim
+
+/--
+The finite-extinction statement payload exposes the final extinction witness as
+a named Prop-valued projection.
+-/
+theorem finite_extinction_from_statement_payload_of_surgery_package
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M) :
+    FiniteExtinctionByRicciFlowWithSurgery M := by
+  rcases finite_extinction_statement_payload_of_surgery_package package with
+    ⟨_flow, _surgery, _control, _packageStatement,
+      _subobligationsStatement, _viaSubobligationsStatement, _derivation,
+      finiteExtinction⟩
+  exact finiteExtinction
+
+/--
+The statement-payload projection of finite extinction agrees with the direct
+statement-mediated package route.
+-/
+theorem finite_extinction_from_statement_payload_of_surgery_package_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M) :
+    finite_extinction_from_statement_payload_of_surgery_package package =
+      finite_extinction_via_statement_of_surgery_package package := by
+  apply Subsingleton.elim
+
+/--
 A finite-extinction surgery package strengthened with the explicit smooth-piece
 Ricci-flow equation boundary.
 
