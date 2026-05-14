@@ -16719,8 +16719,8 @@ canonical_completion_equation_boundary_extraction_derivation_payload_count=$(
   rg -c '\bcanonical_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/CompletionTarget.lean || true
 )
-if [ "$canonical_completion_equation_boundary_extraction_derivation_payload_count" != "19" ]; then
-  echo "FAIL: equation-boundary certified projection canonical completion payload endpoints should expose theorem, equality, statement, finite-extinction, package, extraction-derivation, forgetful, remaining-dependency, boundary-route, and aggregate lifted-certificate routes"
+if [ "$canonical_completion_equation_boundary_extraction_derivation_payload_count" != "20" ]; then
+  echo "FAIL: equation-boundary certified projection canonical completion payload endpoints should expose theorem, equality, statement, finite-extinction, direct-verification, package, extraction-derivation, forgetful, remaining-dependency, boundary-route, and aggregate lifted-certificate routes"
   rg -n '\bcanonical_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/CompletionTarget.lean || true
   exit 1
@@ -16730,8 +16730,8 @@ canonical_completion_equation_boundary_extraction_derivation_target_count=$(
   rg -c '\bcanonical_completion_target_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/CompletionTarget.lean || true
 )
-if [ "$canonical_completion_equation_boundary_extraction_derivation_target_count" != "18" ]; then
-  echo "FAIL: equation-boundary certified projection canonical completion target endpoints should expose theorem, equality, statement, finite-extinction, package, extraction-derivation, forgetful, remaining-dependency, project-statement, canonical-statement, boundary-route, and aggregate lifted-certificate routes"
+if [ "$canonical_completion_equation_boundary_extraction_derivation_target_count" != "19" ]; then
+  echo "FAIL: equation-boundary certified projection canonical completion target endpoints should expose theorem, equality, statement, finite-extinction, direct-verification, package, extraction-derivation, forgetful, remaining-dependency, project-statement, canonical-statement, boundary-route, and aggregate lifted-certificate routes"
   rg -n '\bcanonical_completion_target_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/CompletionTarget.lean || true
   exit 1
@@ -16741,8 +16741,8 @@ canonical_completion_equation_boundary_extraction_derivation_criterion_count=$(
   rg -c '\bcanonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/CompletionTarget.lean || true
 )
-if [ "$canonical_completion_equation_boundary_extraction_derivation_criterion_count" != "20" ]; then
-  echo "FAIL: equation-boundary certified projection canonical completion criterion endpoints should expose theorem, equality, statement, finite-extinction, package, extraction-derivation, forgetful, remaining-dependency, project-criterion, boundary-route, certificate, and aggregate lifted-certificate routes"
+if [ "$canonical_completion_equation_boundary_extraction_derivation_criterion_count" != "21" ]; then
+  echo "FAIL: equation-boundary certified projection canonical completion criterion endpoints should expose theorem, equality, statement, finite-extinction, direct-verification, package, extraction-derivation, forgetful, remaining-dependency, project-criterion, boundary-route, certificate, and aggregate lifted-certificate routes"
   rg -n '\bcanonical_completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/CompletionTarget.lean || true
   exit 1
