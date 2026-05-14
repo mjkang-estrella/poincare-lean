@@ -29,6 +29,28 @@ inductive FiniteExtinctionByRicciFlowWithSurgery
     [SimplyConnectedSpace M] [CompactSpace M] : Prop
 
 /--
+The remaining universal Ricci-flow input after the current interface's
+post-extinction extraction component has been discharged.
+-/
+def UniversalFiniteExtinctionStatement : Prop :=
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      FiniteExtinctionByRicciFlowWithSurgery M
+
+/--
+The universal finite-extinction statement is exactly finite extinction for every
+compact simply connected charted 3-manifold target.
+-/
+theorem universalFiniteExtinctionStatement_eq :
+    UniversalFiniteExtinctionStatement.{u} =
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M) :=
+  rfl
+
+/--
 The topological extraction theorem needed after finite extinction.
 
 This is a theorem-shaped interface: given finite extinction for a closed simply
@@ -183,6 +205,25 @@ theorem poincare_conjecture_of_finite_extinction_eq
   apply Subsingleton.elim
 
 /--
+The current final mathematical boundary: a proof of universal finite extinction
+supplies the Poincare target through the finite-extinction-only route.
+-/
+theorem poincare_conjecture_of_universalFiniteExtinctionStatement
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_finite_extinction finiteExtinction
+
+/--
+The universal-finite-extinction route is exactly the finite-extinction-only
+route after unfolding the named remaining input statement.
+-/
+theorem poincare_conjecture_of_universalFiniteExtinctionStatement_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    poincare_conjecture_of_universalFiniteExtinctionStatement finiteExtinction =
+      poincare_conjecture_of_finite_extinction finiteExtinction := by
+  apply Subsingleton.elim
+
+/--
 Finite extinction plus the post-extinction topological extraction theorem
 exposes the reserved endpoint together with the explicit completion criterion.
 This names the final conditional route through
@@ -257,6 +298,27 @@ theorem poincare_conjecture_payload_of_finite_extinction_eq
           poincare_conjecture_of_finite_extinction finiteExtinction
         exact poincare_completion_payload_of_poincareConjectureStatement
           target) := by
+  apply Subsingleton.elim
+
+/--
+The named universal finite-extinction input exposes the reserved endpoint
+together with the explicit completion criterion.
+-/
+theorem poincare_conjecture_payload_of_universalFiniteExtinctionStatement
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_conjecture_payload_of_finite_extinction finiteExtinction
+
+/--
+The universal-finite-extinction reserved payload is exactly the
+finite-extinction-only payload under the named remaining input statement.
+-/
+theorem poincare_conjecture_payload_of_universalFiniteExtinctionStatement_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    poincare_conjecture_payload_of_universalFiniteExtinctionStatement
+        finiteExtinction =
+      poincare_conjecture_payload_of_finite_extinction finiteExtinction := by
   apply Subsingleton.elim
 
 /--
