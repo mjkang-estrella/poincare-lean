@@ -48,6 +48,18 @@ theorem threeSphere_northPole_eq :
        ⟨v, by simp [v]⟩) :=
   rfl
 
+/-- A concrete equatorial point of the target 3-sphere, used as a chart-overlap basepoint. -/
+noncomputable def threeSphere_equatorPoint : ThreeSphere :=
+  let v : EuclideanSpace ℝ (Fin 4) := .single 1 1
+  ⟨v, by simp [v]⟩
+
+/-- The equatorial point is the second coordinate unit vector, viewed on the unit sphere. -/
+theorem threeSphere_equatorPoint_eq :
+    threeSphere_equatorPoint =
+      (let v : EuclideanSpace ℝ (Fin 4) := .single 1 1
+       ⟨v, by simp [v]⟩) :=
+  rfl
+
 /-- The target 3-sphere is Hausdorff. -/
 theorem threeSphere_t2Space :
     T2Space ThreeSphere :=
@@ -280,6 +292,51 @@ theorem threeSphere_stereographic_antipodal_sources_inter_isOpen_eq
     threeSphere_stereographic_antipodal_sources_inter_isOpen v =
       (threeSphere_stereographic_source_isOpen v).inter
         (threeSphere_stereographic_source_isOpen (-v)) := by
+  apply Subsingleton.elim
+
+/--
+The explicit equatorial point lies in the overlap of the north- and south-pole
+stereographic sources.
+-/
+theorem threeSphere_equatorPoint_mem_northPole_antipodal_sources_inter :
+    threeSphere_equatorPoint ∈
+      (stereographic' 3 threeSphere_northPole).source ∩
+        (stereographic' 3 (-threeSphere_northPole)).source := by
+  rw [threeSphere_stereographic_antipodal_sources_inter]
+  simp only [Set.mem_compl_iff, Set.mem_union, Set.mem_singleton_iff, not_or]
+  constructor
+  · intro h
+    have hcoord := congrArg
+      (fun w : EuclideanSpace ℝ (Fin 4) => w 0)
+      (congrArg Subtype.val h)
+    norm_num [threeSphere_equatorPoint, threeSphere_northPole] at hcoord
+  · intro h
+    have hcoord := congrArg
+      (fun w : EuclideanSpace ℝ (Fin 4) => w 0)
+      (congrArg Subtype.val h)
+    norm_num [threeSphere_equatorPoint, threeSphere_northPole] at hcoord
+
+/--
+The explicit overlap-basepoint membership proof is exactly the two coordinate
+separations from the north and south poles after the overlap is rewritten as the
+complement of those two points.
+-/
+theorem threeSphere_equatorPoint_mem_northPole_antipodal_sources_inter_eq :
+    threeSphere_equatorPoint_mem_northPole_antipodal_sources_inter =
+      (by
+        rw [threeSphere_stereographic_antipodal_sources_inter]
+        simp only [Set.mem_compl_iff, Set.mem_union, Set.mem_singleton_iff, not_or]
+        constructor
+        · intro h
+          have hcoord := congrArg
+            (fun w : EuclideanSpace ℝ (Fin 4) => w 0)
+            (congrArg Subtype.val h)
+          norm_num [threeSphere_equatorPoint, threeSphere_northPole] at hcoord
+        · intro h
+          have hcoord := congrArg
+            (fun w : EuclideanSpace ℝ (Fin 4) => w 0)
+            (congrArg Subtype.val h)
+          norm_num [threeSphere_equatorPoint, threeSphere_northPole] at hcoord) := by
   apply Subsingleton.elim
 
 /-- The target 3-sphere carries the expected smooth manifold structure. -/
