@@ -352,6 +352,32 @@ theorem canonical_completion_target_of_completion_certificate_of_remaining_depen
   apply Subsingleton.elim
 
 /--
+The remaining-dependency certificate completion criterion agrees with the
+package-level completion criterion assembled from the same smoothability and
+surgery families.
+-/
+theorem completion_criterion_of_completion_certificate_of_remaining_dependency_package_to_smoothability_surgery_packages_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    completion_criterion_of_completion_certificate witness
+        (completion_certificate_of_remaining_dependency_package dependencies) =
+      completion_criterion_of_smoothability_and_surgery_packages
+        witness dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency certificate canonical criterion agrees with the
+package-level canonical criterion assembled from the same smoothability and
+surgery families.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_package_to_smoothability_surgery_packages_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+        (completion_certificate_of_remaining_dependency_package dependencies) =
+      canonical_completion_criterion_of_smoothability_and_surgery_packages
+        witness dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency completion certificate factors through the named
 universal finite-extinction boundary exposed by the aggregate dependency
 package.
@@ -405,6 +431,32 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
         (completion_certificate_of_poincareProofDependencies dependencies) =
       canonical_completion_target_of_smoothability_and_surgery_packages
         dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency certificate completion criterion agrees with the
+package-level completion criterion assembled from the same smoothability and
+surgery families.
+-/
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_to_smoothability_surgery_packages_eq
+    (witness : Type u) (dependencies : PoincareProofDependencies.{u}) :
+    completion_criterion_of_completion_certificate witness
+        (completion_certificate_of_poincareProofDependencies dependencies) =
+      completion_criterion_of_smoothability_and_surgery_packages
+        witness dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency certificate canonical criterion agrees with the
+package-level canonical criterion assembled from the same smoothability and
+surgery families.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_to_smoothability_surgery_packages_eq
+    (witness : Type u) (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+        (completion_certificate_of_poincareProofDependencies dependencies) =
+      canonical_completion_criterion_of_smoothability_and_surgery_packages
+        witness dependencies.smoothability dependencies.surgery := by
   apply Subsingleton.elim
 
 /--
