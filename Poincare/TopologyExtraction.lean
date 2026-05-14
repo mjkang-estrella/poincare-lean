@@ -953,6 +953,29 @@ theorem onePoint_threeSpace_loopNullhomotopyStatement_of_stereographicVanKampenR
   apply Subsingleton.elim
 
 /--
+The concrete stereographic Van Kampen conclusion contract transports to
+loop-nullhomotopy of the one-point compactification model through the full
+reduction package.
+-/
+theorem onePoint_threeSpace_loopNullhomotopyStatement_of_stereographicVanKampenConclusionStatement
+    (h : ThreeSphereStereographicVanKampenConclusionStatement) :
+    OnePointThreeSpaceLoopNullhomotopyStatement :=
+  onePoint_threeSpace_loopNullhomotopyStatement_of_stereographicVanKampenReductionStatement
+    (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h)
+
+/--
+The conclusion-contract to compactification-loop route is the reduction route
+after assembling the full stereographic reduction.
+-/
+theorem onePoint_threeSpace_loopNullhomotopyStatement_of_stereographicVanKampenConclusionStatement_eq :
+    onePoint_threeSpace_loopNullhomotopyStatement_of_stereographicVanKampenConclusionStatement =
+      (fun h : ThreeSphereStereographicVanKampenConclusionStatement =>
+        onePoint_threeSpace_loopNullhomotopyStatement_of_stereographicVanKampenReductionStatement
+          (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 North-pole based loop-nullhomotopy of `ThreeSphere` transports to
 loop-nullhomotopy of the one-point compactification model.
 -/
@@ -1034,6 +1057,34 @@ theorem onePoint_threeSpace_basedLoopNullhomotopyStatement_of_stereographicVanKa
         onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
           targetBasepoint
           (threeSphere_loopNullhomotopyStatement_of_stereographicVanKampenReductionStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The concrete stereographic Van Kampen conclusion contract supplies based
+loop-nullhomotopy at any chosen compactification basepoint.
+-/
+theorem onePoint_threeSpace_basedLoopNullhomotopyStatement_of_stereographicVanKampenConclusionStatement
+    (targetBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (h : ThreeSphereStereographicVanKampenConclusionStatement) :
+    OnePointThreeSpaceBasedLoopNullhomotopyStatement targetBasepoint :=
+  onePoint_threeSpace_basedLoopNullhomotopyStatement_of_stereographicVanKampenReductionStatement
+    targetBasepoint
+    (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h)
+
+/--
+The conclusion-contract to compactification based-loop route is the reduction
+route after assembling the full stereographic reduction.
+-/
+theorem onePoint_threeSpace_basedLoopNullhomotopyStatement_of_stereographicVanKampenConclusionStatement_eq
+    (targetBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    (fun h : ThreeSphereStereographicVanKampenConclusionStatement =>
+      onePoint_threeSpace_basedLoopNullhomotopyStatement_of_stereographicVanKampenConclusionStatement
+        targetBasepoint h) =
+      (fun h : ThreeSphereStereographicVanKampenConclusionStatement =>
+        onePoint_threeSpace_basedLoopNullhomotopyStatement_of_stereographicVanKampenReductionStatement
+          targetBasepoint
+          (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h)) := by
   funext h
   apply Subsingleton.elim
 
@@ -2212,6 +2263,29 @@ theorem onePoint_threeSpace_pathHomotopyStatement_of_stereographicVanKampenReduc
   apply Subsingleton.elim
 
 /--
+The concrete stereographic Van Kampen conclusion contract transports to
+path-homotopy uniqueness of the compactification model.
+-/
+theorem onePoint_threeSpace_pathHomotopyStatement_of_stereographicVanKampenConclusionStatement
+    (h : ThreeSphereStereographicVanKampenConclusionStatement) :
+    OnePointThreeSpacePathHomotopyStatement :=
+  onePoint_threeSpace_pathHomotopyStatement_of_stereographicVanKampenReductionStatement
+    (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h)
+
+/--
+The conclusion-contract to compactification-path route is the reduction route
+after assembling the full stereographic reduction.
+-/
+theorem onePoint_threeSpace_pathHomotopyStatement_of_stereographicVanKampenConclusionStatement_eq :
+    onePoint_threeSpace_pathHomotopyStatement_of_stereographicVanKampenConclusionStatement =
+      (fun h : ThreeSphereStereographicVanKampenConclusionStatement =>
+        (onePoint_threeSpace_pathHomotopyStatement_of_stereographicVanKampenReductionStatement
+          (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h) :
+            OnePointThreeSpacePathHomotopyStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The full stereographic Van Kampen reduction on `ThreeSphere` transports to
 path-quotient uniqueness of the compactification model.
 -/
@@ -2230,6 +2304,29 @@ theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_stereographicVa
       (fun h : ThreeSphereStereographicVanKampenReductionStatement =>
         (onePoint_threeSpace_pathQuotientSubsingletonStatement_of_pathHomotopyStatement
           (onePoint_threeSpace_pathHomotopyStatement_of_stereographicVanKampenReductionStatement h) :
+            OnePointThreeSpacePathQuotientSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The concrete stereographic Van Kampen conclusion contract transports to
+path-quotient uniqueness of the compactification model.
+-/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_stereographicVanKampenConclusionStatement
+    (h : ThreeSphereStereographicVanKampenConclusionStatement) :
+    OnePointThreeSpacePathQuotientSubsingletonStatement :=
+  onePoint_threeSpace_pathQuotientSubsingletonStatement_of_stereographicVanKampenReductionStatement
+    (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h)
+
+/--
+The conclusion-contract to compactification-quotient route is the reduction
+route after assembling the full stereographic reduction.
+-/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_stereographicVanKampenConclusionStatement_eq :
+    onePoint_threeSpace_pathQuotientSubsingletonStatement_of_stereographicVanKampenConclusionStatement =
+      (fun h : ThreeSphereStereographicVanKampenConclusionStatement =>
+        (onePoint_threeSpace_pathQuotientSubsingletonStatement_of_stereographicVanKampenReductionStatement
+          (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h) :
             OnePointThreeSpacePathQuotientSubsingletonStatement)) := by
   funext h
   apply Subsingleton.elim
@@ -2258,6 +2355,29 @@ theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_stereograph
   apply Subsingleton.elim
 
 /--
+The concrete stereographic Van Kampen conclusion contract transports to
+fundamental-group triviality of the compactification model.
+-/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenConclusionStatement
+    (h : ThreeSphereStereographicVanKampenConclusionStatement) :
+    OnePointThreeSpaceFundamentalGroupSubsingletonStatement :=
+  onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenReductionStatement
+    (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h)
+
+/--
+The conclusion-contract to compactification-fundamental-group route is the
+reduction route after assembling the full stereographic reduction.
+-/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenConclusionStatement_eq :
+    onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenConclusionStatement =
+      (fun h : ThreeSphereStereographicVanKampenConclusionStatement =>
+        (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenReductionStatement
+          (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h) :
+            OnePointThreeSpaceFundamentalGroupSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The full stereographic Van Kampen reduction on `ThreeSphere` transports to the
 `π₁` formulation of the compactification model.
 -/
@@ -2276,6 +2396,29 @@ theorem onePoint_threeSpace_piOneSubsingletonStatement_of_stereographicVanKampen
       (fun h : ThreeSphereStereographicVanKampenReductionStatement =>
         (onePoint_threeSpace_piOneSubsingletonStatement_of_loopNullhomotopyStatement
           (onePoint_threeSpace_loopNullhomotopyStatement_of_stereographicVanKampenReductionStatement h) :
+            OnePointThreeSpacePiOneSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The concrete stereographic Van Kampen conclusion contract transports to the
+`π₁` formulation of the compactification model.
+-/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_of_stereographicVanKampenConclusionStatement
+    (h : ThreeSphereStereographicVanKampenConclusionStatement) :
+    OnePointThreeSpacePiOneSubsingletonStatement :=
+  onePoint_threeSpace_piOneSubsingletonStatement_of_stereographicVanKampenReductionStatement
+    (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h)
+
+/--
+The conclusion-contract to compactification-`π₁` route is the reduction route
+after assembling the full stereographic reduction.
+-/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_of_stereographicVanKampenConclusionStatement_eq :
+    onePoint_threeSpace_piOneSubsingletonStatement_of_stereographicVanKampenConclusionStatement =
+      (fun h : ThreeSphereStereographicVanKampenConclusionStatement =>
+        (onePoint_threeSpace_piOneSubsingletonStatement_of_stereographicVanKampenReductionStatement
+          (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h) :
             OnePointThreeSpacePiOneSubsingletonStatement)) := by
   funext h
   apply Subsingleton.elim
