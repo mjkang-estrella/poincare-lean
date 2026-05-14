@@ -931,6 +931,28 @@ theorem onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomo
   apply Subsingleton.elim
 
 /--
+The full stereographic Van Kampen reduction on `ThreeSphere` transports to
+loop-nullhomotopy of the one-point compactification model.
+-/
+theorem onePoint_threeSpace_loopNullhomotopyStatement_of_stereographicVanKampenReductionStatement
+    (h : ThreeSphereStereographicVanKampenReductionStatement) :
+    OnePointThreeSpaceLoopNullhomotopyStatement :=
+  onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+    (threeSphere_loopNullhomotopyStatement_of_stereographicVanKampenReductionStatement h)
+
+/--
+The stereographic-reduction to compactification-loop route factors through the
+standard-sphere full-loop transport.
+-/
+theorem onePoint_threeSpace_loopNullhomotopyStatement_of_stereographicVanKampenReductionStatement_eq :
+    onePoint_threeSpace_loopNullhomotopyStatement_of_stereographicVanKampenReductionStatement =
+      (fun h : ThreeSphereStereographicVanKampenReductionStatement =>
+        onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+          (threeSphere_loopNullhomotopyStatement_of_stereographicVanKampenReductionStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 North-pole based loop-nullhomotopy of `ThreeSphere` transports to
 loop-nullhomotopy of the one-point compactification model.
 -/
@@ -984,6 +1006,34 @@ theorem onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereLoopNul
           onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
         onePoint_threeSpace_basedLoopNullhomotopyStatement_of_simplyConnectedSpace
           targetBasepoint) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The full stereographic Van Kampen reduction on `ThreeSphere` supplies based
+loop-nullhomotopy at any chosen compactification basepoint.
+-/
+theorem onePoint_threeSpace_basedLoopNullhomotopyStatement_of_stereographicVanKampenReductionStatement
+    (targetBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (h : ThreeSphereStereographicVanKampenReductionStatement) :
+    OnePointThreeSpaceBasedLoopNullhomotopyStatement targetBasepoint :=
+  onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+    targetBasepoint
+    (threeSphere_loopNullhomotopyStatement_of_stereographicVanKampenReductionStatement h)
+
+/--
+The stereographic-reduction to compactification based-loop route factors
+through the standard-sphere full-loop transport.
+-/
+theorem onePoint_threeSpace_basedLoopNullhomotopyStatement_of_stereographicVanKampenReductionStatement_eq
+    (targetBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    (fun h : ThreeSphereStereographicVanKampenReductionStatement =>
+      onePoint_threeSpace_basedLoopNullhomotopyStatement_of_stereographicVanKampenReductionStatement
+        targetBasepoint h) =
+      (fun h : ThreeSphereStereographicVanKampenReductionStatement =>
+        onePoint_threeSpace_basedLoopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
+          targetBasepoint
+          (threeSphere_loopNullhomotopyStatement_of_stereographicVanKampenReductionStatement h)) := by
   funext h
   apply Subsingleton.elim
 
@@ -2135,6 +2185,98 @@ theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_pathHomotopySta
         (onePoint_threeSpace_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement.mp
           (onePoint_threeSpace_simplyConnectedSpace_of_pathHomotopyStatement h) :
             OnePointThreeSpacePathQuotientSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The full stereographic Van Kampen reduction on `ThreeSphere` transports to
+path-homotopy uniqueness of the compactification model.
+-/
+theorem onePoint_threeSpace_pathHomotopyStatement_of_stereographicVanKampenReductionStatement
+    (h : ThreeSphereStereographicVanKampenReductionStatement) :
+    OnePointThreeSpacePathHomotopyStatement :=
+  onePoint_threeSpace_pathHomotopyStatement_of_loopNullhomotopyStatement
+    (onePoint_threeSpace_loopNullhomotopyStatement_of_stereographicVanKampenReductionStatement h)
+
+/--
+The stereographic-reduction to compactification-path route factors through the
+compactification loop-nullhomotopy transport.
+-/
+theorem onePoint_threeSpace_pathHomotopyStatement_of_stereographicVanKampenReductionStatement_eq :
+    onePoint_threeSpace_pathHomotopyStatement_of_stereographicVanKampenReductionStatement =
+      (fun h : ThreeSphereStereographicVanKampenReductionStatement =>
+        (onePoint_threeSpace_pathHomotopyStatement_of_loopNullhomotopyStatement
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_stereographicVanKampenReductionStatement h) :
+            OnePointThreeSpacePathHomotopyStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The full stereographic Van Kampen reduction on `ThreeSphere` transports to
+path-quotient uniqueness of the compactification model.
+-/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_stereographicVanKampenReductionStatement
+    (h : ThreeSphereStereographicVanKampenReductionStatement) :
+    OnePointThreeSpacePathQuotientSubsingletonStatement :=
+  onePoint_threeSpace_pathQuotientSubsingletonStatement_of_pathHomotopyStatement
+    (onePoint_threeSpace_pathHomotopyStatement_of_stereographicVanKampenReductionStatement h)
+
+/--
+The stereographic-reduction to compactification-quotient route factors through
+compactification path-homotopy uniqueness.
+-/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_stereographicVanKampenReductionStatement_eq :
+    onePoint_threeSpace_pathQuotientSubsingletonStatement_of_stereographicVanKampenReductionStatement =
+      (fun h : ThreeSphereStereographicVanKampenReductionStatement =>
+        (onePoint_threeSpace_pathQuotientSubsingletonStatement_of_pathHomotopyStatement
+          (onePoint_threeSpace_pathHomotopyStatement_of_stereographicVanKampenReductionStatement h) :
+            OnePointThreeSpacePathQuotientSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The full stereographic Van Kampen reduction on `ThreeSphere` transports to
+fundamental-group triviality of the compactification model.
+-/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenReductionStatement
+    (h : ThreeSphereStereographicVanKampenReductionStatement) :
+    OnePointThreeSpaceFundamentalGroupSubsingletonStatement :=
+  onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement
+    (onePoint_threeSpace_loopNullhomotopyStatement_of_stereographicVanKampenReductionStatement h)
+
+/--
+The stereographic-reduction to compactification-fundamental-group route factors
+through compactification loop-nullhomotopy.
+-/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenReductionStatement_eq :
+    onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenReductionStatement =
+      (fun h : ThreeSphereStereographicVanKampenReductionStatement =>
+        (onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_loopNullhomotopyStatement
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_stereographicVanKampenReductionStatement h) :
+            OnePointThreeSpaceFundamentalGroupSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The full stereographic Van Kampen reduction on `ThreeSphere` transports to the
+`π₁` formulation of the compactification model.
+-/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_of_stereographicVanKampenReductionStatement
+    (h : ThreeSphereStereographicVanKampenReductionStatement) :
+    OnePointThreeSpacePiOneSubsingletonStatement :=
+  onePoint_threeSpace_piOneSubsingletonStatement_of_loopNullhomotopyStatement
+    (onePoint_threeSpace_loopNullhomotopyStatement_of_stereographicVanKampenReductionStatement h)
+
+/--
+The stereographic-reduction to compactification-`π₁` route factors through
+compactification loop-nullhomotopy.
+-/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_of_stereographicVanKampenReductionStatement_eq :
+    onePoint_threeSpace_piOneSubsingletonStatement_of_stereographicVanKampenReductionStatement =
+      (fun h : ThreeSphereStereographicVanKampenReductionStatement =>
+        (onePoint_threeSpace_piOneSubsingletonStatement_of_loopNullhomotopyStatement
+          (onePoint_threeSpace_loopNullhomotopyStatement_of_stereographicVanKampenReductionStatement h) :
+            OnePointThreeSpacePiOneSubsingletonStatement)) := by
   funext h
   apply Subsingleton.elim
 
