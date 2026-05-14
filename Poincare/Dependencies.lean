@@ -1289,6 +1289,48 @@ theorem poincare_full_assembly_payload_of_dependencies_eq
   apply Subsingleton.elim
 
 /--
+The smoothability component consumed by the aggregate full-assembly payload is
+the structural smoothability projection of the aggregate dependencies.
+-/
+theorem smoothability_of_poincare_full_assembly_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    (by
+      rcases poincare_full_assembly_payload_of_dependencies dependencies with
+        ⟨smoothabilityPackage, _surgeryPackages, _topologyPackage,
+          _finiteExtinction, _extractSphere, _target⟩
+      exact smoothabilityPackage) =
+      smoothability_of_poincareProofDependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The surgery-family component consumed by the aggregate full-assembly payload is
+the structural surgery projection of the aggregate dependencies.
+-/
+theorem surgery_of_poincare_full_assembly_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    (by
+      rcases poincare_full_assembly_payload_of_dependencies dependencies with
+        ⟨_smoothabilityPackage, surgeryPackages, _topologyPackage,
+          _finiteExtinction, _extractSphere, _target⟩
+      exact surgeryPackages) =
+      surgery_of_poincareProofDependencies dependencies := by
+  rfl
+
+/--
+The topology-extraction component consumed by the aggregate full-assembly
+payload is the structural topology projection of the aggregate dependencies.
+-/
+theorem topology_of_poincare_full_assembly_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    (by
+      rcases poincare_full_assembly_payload_of_dependencies dependencies with
+        ⟨_smoothabilityPackage, _surgeryPackages, topologyPackage,
+          _finiteExtinction, _extractSphere, _target⟩
+      exact topologyPackage) =
+      topology_of_poincareProofDependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency package exposes the explicit end-to-end certified
 extraction-derivation assembly inputs and target statement.
 -/
