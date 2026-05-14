@@ -426,6 +426,45 @@ theorem poincareProofDependencies_components_payload_eq
         dependencies.topology⟩ := by
   apply Subsingleton.elim
 
+/--
+The smoothability component of the aggregate component payload is the
+structural smoothability projection.
+-/
+theorem smoothability_of_poincareProofDependencies_components_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    (by
+      rcases poincareProofDependencies_components_payload dependencies with
+        ⟨smoothabilityPackage, _surgeryPackages, _topologyPackage⟩
+      exact smoothabilityPackage) =
+      smoothability_of_poincareProofDependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The surgery-family component of the aggregate component payload is the
+structural surgery projection.
+-/
+theorem surgery_of_poincareProofDependencies_components_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    (by
+      rcases poincareProofDependencies_components_payload dependencies with
+        ⟨_smoothabilityPackage, surgeryPackages, _topologyPackage⟩
+      exact surgeryPackages) =
+      surgery_of_poincareProofDependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The topology-extraction component of the aggregate component payload is the
+structural topology projection.
+-/
+theorem topology_of_poincareProofDependencies_components_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    (by
+      rcases poincareProofDependencies_components_payload dependencies with
+        ⟨_smoothabilityPackage, _surgeryPackages, topologyPackage⟩
+      exact topologyPackage) =
+      topology_of_poincareProofDependencies dependencies := by
+  apply Subsingleton.elim
+
 /-- Project the smoothability obligation from the aggregate dependency package. -/
 theorem smoothabilityPackage_of_poincareProofDependencies
     (dependencies : PoincareProofDependencies.{u}) :
@@ -639,6 +678,54 @@ theorem poincareProofDependenciesWithEquationBoundary_components_payload_eq
         dependencies =
       ⟨dependencies.smoothability, dependencies.surgery,
         dependencies.topology⟩ := by
+  apply Subsingleton.elim
+
+/--
+The smoothability component of the strengthened component payload is the
+structural strengthened smoothability projection.
+-/
+theorem smoothability_of_poincareProofDependenciesWithEquationBoundary_components_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    (by
+      rcases
+          poincareProofDependenciesWithEquationBoundary_components_payload
+            dependencies with
+        ⟨smoothabilityPackage, _surgeryPackages, _topologyPackage⟩
+      exact smoothabilityPackage) =
+      smoothability_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The boundary-carrying surgery-family component of the strengthened component
+payload is the structural strengthened surgery projection.
+-/
+theorem surgery_of_poincareProofDependenciesWithEquationBoundary_components_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    (by
+      rcases
+          poincareProofDependenciesWithEquationBoundary_components_payload
+            dependencies with
+        ⟨_smoothabilityPackage, surgeryPackages, _topologyPackage⟩
+      exact surgeryPackages) =
+      surgery_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The topology-extraction component of the strengthened component payload is the
+structural strengthened topology projection.
+-/
+theorem topology_of_poincareProofDependenciesWithEquationBoundary_components_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    (by
+      rcases
+          poincareProofDependenciesWithEquationBoundary_components_payload
+            dependencies with
+        ⟨_smoothabilityPackage, _surgeryPackages, topologyPackage⟩
+      exact topologyPackage) =
+      topology_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
   apply Subsingleton.elim
 
 /--
