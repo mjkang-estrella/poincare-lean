@@ -433,6 +433,59 @@ theorem threeSphere_euclidean_rank_gt_one_eq :
         norm_num) := by
   apply Subsingleton.elim
 
+/--
+The stereographic target space `ℝ³` has rank greater than one, the input needed
+for path-connectedness of complements of singletons.
+-/
+theorem euclideanThree_rank_gt_one :
+    1 < Module.rank ℝ (EuclideanSpace ℝ (Fin 3)) := by
+  rw [(EuclideanSpace.equiv (Fin 3) ℝ).toLinearEquiv.rank_eq]
+  rw [rank_fin_fun]
+  norm_num
+
+/-- The `ℝ³` rank witness is the finite-dimensional rank computation. -/
+theorem euclideanThree_rank_gt_one_eq :
+    euclideanThree_rank_gt_one =
+      (by
+        rw [(EuclideanSpace.equiv (Fin 3) ℝ).toLinearEquiv.rank_eq]
+        rw [rank_fin_fun]
+        norm_num) := by
+  apply Subsingleton.elim
+
+/-- In the stereographic target `ℝ³`, the complement of any point is path-connected. -/
+theorem euclideanThree_isPathConnected_compl_singleton
+    (x : EuclideanSpace ℝ (Fin 3)) :
+    IsPathConnected ({x}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+  isPathConnected_compl_singleton_of_one_lt_rank euclideanThree_rank_gt_one x
+
+/--
+The punctured-`ℝ³` path-connectedness witness is mathlib's complement-of-a-point
+result applied to the stereographic target rank computation.
+-/
+theorem euclideanThree_isPathConnected_compl_singleton_eq
+    (x : EuclideanSpace ℝ (Fin 3)) :
+    euclideanThree_isPathConnected_compl_singleton x =
+      isPathConnected_compl_singleton_of_one_lt_rank euclideanThree_rank_gt_one x := by
+  apply Subsingleton.elim
+
+/-- The subtype of punctured `ℝ³` is path-connected. -/
+theorem euclideanThree_compl_singleton_pathConnectedSpace
+    (x : EuclideanSpace ℝ (Fin 3)) :
+    PathConnectedSpace ({x}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+  isPathConnected_iff_pathConnectedSpace.mp
+    (euclideanThree_isPathConnected_compl_singleton x)
+
+/--
+The punctured-`ℝ³` subtype path-connectedness is induced from the corresponding
+set-level path-connectedness witness.
+-/
+theorem euclideanThree_compl_singleton_pathConnectedSpace_eq
+    (x : EuclideanSpace ℝ (Fin 3)) :
+    euclideanThree_compl_singleton_pathConnectedSpace x =
+      isPathConnected_iff_pathConnectedSpace.mp
+        (euclideanThree_isPathConnected_compl_singleton x) := by
+  apply Subsingleton.elim
+
 /-- The target 3-sphere is path-connected as a subset of Euclidean space. -/
 theorem threeSphere_isPathConnected_set :
     IsPathConnected (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) := by
