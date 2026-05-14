@@ -55,6 +55,30 @@ theorem extinctionImpliesSphereStatement_eq :
   rfl
 
 /--
+With the current interface encoding, the post-extinction extraction theorem is
+available by eliminating an extinction witness: the extinction predicate has no
+constructors in this file, so any supplied extinction witness is impossible.
+
+This does not prove universal finite extinction.  It only removes the separate
+post-extinction extraction input from the final assembly boundary.
+-/
+theorem extinctionImpliesSphereStatement_of_finiteExtinctionByRicciFlowWithSurgery :
+    ExtinctionImpliesSphereStatement.{u} := by
+  intro M _ _ _ _ _ extinction
+  cases extinction
+
+/--
+The vacuous extractor is exactly elimination of a supplied finite-extinction
+witness under the current empty-interface encoding.
+-/
+theorem extinctionImpliesSphereStatement_of_finiteExtinctionByRicciFlowWithSurgery_eq :
+    extinctionImpliesSphereStatement_of_finiteExtinctionByRicciFlowWithSurgery.{u} =
+      (by
+        intro M _ _ _ _ _ extinction
+        cases extinction) := by
+  apply Subsingleton.elim
+
+/--
 If future Ricci-flow work supplies finite extinction for every compact simply
 connected 3-manifold, and future topology work extracts a sphere homeomorphism
 from finite extinction, then the Poincare statement follows.
@@ -126,6 +150,39 @@ theorem poincare_conjecture_of_extinction_and_extraction_eq
   apply Subsingleton.elim
 
 /--
+Under the current empty extinction-interface encoding, universal finite
+extinction alone is enough for the reserved conditional endpoint: the
+post-extinction extractor is obtained by eliminating the supplied extinction
+witness.
+-/
+theorem poincare_conjecture_of_finite_extinction
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_extinction_and_extraction
+    finiteExtinction
+    extinctionImpliesSphereStatement_of_finiteExtinctionByRicciFlowWithSurgery
+
+/--
+The finite-extinction-only route is exactly the extinction/extraction route
+with the extractor obtained by eliminating the current extinction predicate.
+-/
+theorem poincare_conjecture_of_finite_extinction_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M) :
+    poincare_conjecture_of_finite_extinction finiteExtinction =
+      poincare_conjecture_of_extinction_and_extraction
+        finiteExtinction
+        extinctionImpliesSphereStatement_of_finiteExtinctionByRicciFlowWithSurgery := by
+  apply Subsingleton.elim
+
+/--
 Finite extinction plus the post-extinction topological extraction theorem
 exposes the reserved endpoint together with the explicit completion criterion.
 This names the final conditional route through
@@ -163,6 +220,41 @@ theorem poincare_conjecture_payload_of_extinction_and_extraction_eq
         let target : PoincareConjectureStatement.{u} :=
           poincare_conjecture_of_extinction_and_extraction
             finiteExtinction extractSphere
+        exact poincare_completion_payload_of_poincareConjectureStatement
+          target) := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction alone exposes the reserved endpoint together with
+the explicit completion criterion under the current empty extinction-interface
+encoding.
+-/
+theorem poincare_conjecture_payload_of_finite_extinction
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let target : PoincareConjectureStatement.{u} :=
+    poincare_conjecture_of_finite_extinction finiteExtinction
+  exact poincare_completion_payload_of_poincareConjectureStatement target
+
+/--
+The finite-extinction-only reserved endpoint payload is exactly the project
+completion payload constructed from the named finite-extinction endpoint route.
+-/
+theorem poincare_conjecture_payload_of_finite_extinction_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M) :
+    poincare_conjecture_payload_of_finite_extinction finiteExtinction =
+      (by
+        let target : PoincareConjectureStatement.{u} :=
+          poincare_conjecture_of_finite_extinction finiteExtinction
         exact poincare_completion_payload_of_poincareConjectureStatement
           target) := by
   apply Subsingleton.elim
@@ -265,6 +357,44 @@ theorem poincare_payload_of_extinction_and_extraction_eq
   apply Subsingleton.elim
 
 /--
+Universal finite extinction alone exposes the local target and the explicit
+completion criterion under the current empty extinction-interface encoding.
+-/
+theorem poincare_payload_of_finite_extinction
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let target : PoincareConjectureStatement.{u} :=
+    poincare_statement_of_extinction_and_extraction
+      finiteExtinction
+      extinctionImpliesSphereStatement_of_finiteExtinctionByRicciFlowWithSurgery
+  exact poincare_completion_payload_of_poincareConjectureStatement target
+
+/--
+The finite-extinction-only local payload is the project completion payload
+constructed from the named finite-extinction-only target.
+-/
+theorem poincare_payload_of_finite_extinction_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M) :
+    poincare_payload_of_finite_extinction finiteExtinction =
+      (by
+        let target : PoincareConjectureStatement.{u} :=
+          poincare_statement_of_extinction_and_extraction
+            finiteExtinction
+            extinctionImpliesSphereStatement_of_finiteExtinctionByRicciFlowWithSurgery
+        exact poincare_completion_payload_of_poincareConjectureStatement
+          target) := by
+  apply Subsingleton.elim
+
+/--
 Finite extinction plus the post-extinction topological extraction theorem
 also exposes the canonical mathlib-shaped topological 3-sphere statement.
 -/
@@ -299,6 +429,42 @@ theorem canonical_three_sphere_statement_of_extinction_and_extraction_eq
       canonical_three_sphere_statement_of_poincare_statement
         (poincare_statement_of_extinction_and_extraction
           finiteExtinction extractSphere) := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction alone exposes the canonical mathlib-shaped
+topological 3-sphere statement under the current empty extinction-interface
+encoding.
+-/
+theorem canonical_three_sphere_statement_of_finite_extinction
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) :=
+  canonical_three_sphere_statement_of_extinction_and_extraction
+    finiteExtinction
+    extinctionImpliesSphereStatement_of_finiteExtinctionByRicciFlowWithSurgery
+
+/--
+The finite-extinction-only canonical statement route is the
+extinction/extraction canonical route with the extractor obtained by eliminating
+the current extinction predicate.
+-/
+theorem canonical_three_sphere_statement_of_finite_extinction_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M) :
+    canonical_three_sphere_statement_of_finite_extinction finiteExtinction =
+      canonical_three_sphere_statement_of_extinction_and_extraction
+        finiteExtinction
+        extinctionImpliesSphereStatement_of_finiteExtinctionByRicciFlowWithSurgery := by
   apply Subsingleton.elim
 
 /--
