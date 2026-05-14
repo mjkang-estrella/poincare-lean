@@ -339,6 +339,63 @@ theorem threeSphere_equatorPoint_mem_northPole_antipodal_sources_inter_eq :
           norm_num [threeSphere_equatorPoint, threeSphere_northPole] at hcoord) := by
   apply Subsingleton.elim
 
+/-- The south pole lies in the north-pole stereographic source. -/
+theorem threeSphere_southPole_mem_northPole_stereographic_source :
+    (-threeSphere_northPole) ∈ (stereographic' 3 threeSphere_northPole).source := by
+  rw [threeSphere_stereographic_source_eq_compl_singleton]
+  intro h
+  have hcoord := congrArg
+    (fun w : EuclideanSpace ℝ (Fin 4) => w 0)
+    (congrArg Subtype.val h)
+  norm_num [threeSphere_northPole] at hcoord
+
+/--
+The south-pole source-membership proof is the coordinate separation of the
+south pole from the north pole after rewriting the stereographic source as a
+singleton complement.
+-/
+theorem threeSphere_southPole_mem_northPole_stereographic_source_eq :
+    threeSphere_southPole_mem_northPole_stereographic_source =
+      (by
+        rw [threeSphere_stereographic_source_eq_compl_singleton]
+        intro h
+        have hcoord := congrArg
+          (fun w : EuclideanSpace ℝ (Fin 4) => w 0)
+          (congrArg Subtype.val h)
+        norm_num [threeSphere_northPole] at hcoord) := by
+  apply Subsingleton.elim
+
+/-- The south pole as a point of the north-pole stereographic source. -/
+noncomputable def threeSphere_southPoleInNorthSource :
+    (stereographic' 3 threeSphere_northPole).source :=
+  ⟨-threeSphere_northPole, threeSphere_southPole_mem_northPole_stereographic_source⟩
+
+/-- The south-pole source point is the south pole with the named source-membership proof. -/
+theorem threeSphere_southPoleInNorthSource_eq :
+    threeSphere_southPoleInNorthSource =
+      ⟨-threeSphere_northPole,
+        threeSphere_southPole_mem_northPole_stereographic_source⟩ :=
+  rfl
+
+/--
+The image of the south pole in the north-pole stereographic chart.  Its
+complement in `ℝ³` is the target-side model for the north/south chart overlap.
+-/
+noncomputable def threeSphere_southPole_northChartImage :
+    EuclideanSpace ℝ (Fin 3) :=
+  threeSphere_stereographic_source_homeomorph threeSphere_northPole
+    threeSphere_southPoleInNorthSource
+
+/--
+The south-pole north-chart image is obtained by applying the named source
+homeomorphism to the south pole as a point of the north-pole source.
+-/
+theorem threeSphere_southPole_northChartImage_eq :
+    threeSphere_southPole_northChartImage =
+      threeSphere_stereographic_source_homeomorph threeSphere_northPole
+        threeSphere_southPoleInNorthSource :=
+  rfl
+
 /--
 The verified north/south stereographic open-cover data for the standard
 3-sphere.  This packages the concrete inputs needed by a later Van Kampen or
@@ -484,6 +541,48 @@ theorem euclideanThree_compl_singleton_pathConnectedSpace_eq
     euclideanThree_compl_singleton_pathConnectedSpace x =
       isPathConnected_iff_pathConnectedSpace.mp
         (euclideanThree_isPathConnected_compl_singleton x) := by
+  apply Subsingleton.elim
+
+/--
+The complement of the south-pole image in the north-pole stereographic chart is
+path-connected in `ℝ³`.
+-/
+theorem threeSphere_northChartImage_compl_southPole_isPathConnected :
+    IsPathConnected
+      ({threeSphere_southPole_northChartImage}ᶜ :
+        Set (EuclideanSpace ℝ (Fin 3))) :=
+  euclideanThree_isPathConnected_compl_singleton
+    threeSphere_southPole_northChartImage
+
+/--
+The chart-side overlap path-connectedness input is the punctured-`ℝ³`
+path-connectedness theorem applied to the south-pole chart image.
+-/
+theorem threeSphere_northChartImage_compl_southPole_isPathConnected_eq :
+    threeSphere_northChartImage_compl_southPole_isPathConnected =
+      euclideanThree_isPathConnected_compl_singleton
+        threeSphere_southPole_northChartImage := by
+  apply Subsingleton.elim
+
+/--
+The subtype complement of the south-pole image in the north-pole stereographic
+chart is path-connected.
+-/
+theorem threeSphere_northChartImage_compl_southPole_pathConnectedSpace :
+    PathConnectedSpace
+      ({threeSphere_southPole_northChartImage}ᶜ :
+        Set (EuclideanSpace ℝ (Fin 3))) :=
+  euclideanThree_compl_singleton_pathConnectedSpace
+    threeSphere_southPole_northChartImage
+
+/--
+The chart-side overlap subtype path-connectedness is the punctured-`ℝ³` subtype
+path-connectedness theorem applied to the south-pole chart image.
+-/
+theorem threeSphere_northChartImage_compl_southPole_pathConnectedSpace_eq :
+    threeSphere_northChartImage_compl_southPole_pathConnectedSpace =
+      euclideanThree_compl_singleton_pathConnectedSpace
+        threeSphere_southPole_northChartImage := by
   apply Subsingleton.elim
 
 /-- The target 3-sphere is path-connected as a subset of Euclidean space. -/
