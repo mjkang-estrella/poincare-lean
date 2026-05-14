@@ -904,6 +904,30 @@ theorem threeSphereStereographicVanKampenLoopStatement_eq :
   rfl
 
 /--
+For the standard sphere, simple-connectedness is equivalent to the
+stereographic Van Kampen loop obligation at the explicit equatorial overlap
+basepoint.
+-/
+theorem threeSphere_simplyConnectedSpace_iff_stereographicVanKampenLoopStatement :
+    SimplyConnectedSpace ThreeSphere ↔
+      ThreeSphereStereographicVanKampenLoopStatement := by
+  rw [threeSphereStereographicVanKampenLoopStatement_eq]
+  exact threeSphere_simplyConnectedSpace_iff_basedLoopNullhomotopyStatement
+    threeSphere_equatorPoint
+
+/--
+The stereographic Van Kampen equivalence is exactly the based-loop
+simple-connectedness criterion at the equatorial overlap basepoint.
+-/
+theorem threeSphere_simplyConnectedSpace_iff_stereographicVanKampenLoopStatement_eq :
+    threeSphere_simplyConnectedSpace_iff_stereographicVanKampenLoopStatement =
+      (by
+        rw [threeSphereStereographicVanKampenLoopStatement_eq]
+        exact threeSphere_simplyConnectedSpace_iff_basedLoopNullhomotopyStatement
+          threeSphere_equatorPoint) := by
+  apply Subsingleton.elim
+
+/--
 A proof of the stereographic Van Kampen loop obligation supplies
 simple-connectedness of the standard 3-sphere through the existing
 change-of-basepoint criterion.
