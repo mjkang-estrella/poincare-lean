@@ -10399,6 +10399,63 @@ theorem surgery_package_with_equation_boundary_derivative_payload_eq
   apply Subsingleton.elim
 
 /--
+A derivative-strengthened boundary surgery payload forgets to the
+finite-extinction conclusion carried in its final field.
+-/
+theorem finite_extinction_of_derivative_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M}
+    (payload :
+      SurgeryPackageWithEquationBoundaryDerivativePayload package) :
+    FiniteExtinctionByRicciFlowWithSurgery M := by
+  rcases payload with
+    ⟨_basePackage, _basePackage_eq, _equationBoundary, _verification,
+      _verification_eq, _metricDerivative, _metricDerivative_eq,
+      _derivativeId, _equationAtTime, _analyticBoundary,
+      finiteExtinction⟩
+  exact finiteExtinction
+
+/--
+The finite-extinction projection of a derivative payload is the final field of
+the derivative-strengthened tuple.
+-/
+theorem finite_extinction_of_derivative_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M}
+    (payload :
+      SurgeryPackageWithEquationBoundaryDerivativePayload package) :
+    finite_extinction_of_derivative_payload payload =
+      (by
+        rcases payload with
+          ⟨_basePackage, _basePackage_eq, _equationBoundary, _verification,
+            _verification_eq, _metricDerivative, _metricDerivative_eq,
+            _derivativeId, _equationAtTime, _analyticBoundary,
+            finiteExtinction⟩
+        exact finiteExtinction) := by
+  apply Subsingleton.elim
+
+/--
+The finite-extinction conclusion of the named derivative payload is the
+finite-extinction conclusion of the strengthened surgery package.
+-/
+theorem finite_extinction_of_surgery_package_with_equation_boundary_to_derivative_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    finite_extinction_of_surgery_package_with_equation_boundary package =
+      finite_extinction_of_derivative_payload
+        (surgery_package_with_equation_boundary_derivative_payload package) := by
+  apply Subsingleton.elim
+
+/--
 The scalar-pointwise version of the full boundary-carrying surgery payload.  It
 keeps the same package, equation boundary, verification, metric derivative,
 analytic-boundary statement, and finite-extinction conclusion as the derivative

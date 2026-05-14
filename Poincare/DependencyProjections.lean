@@ -2780,6 +2780,24 @@ theorem surgery_package_with_equation_boundary_derivative_payload_of_equation_bo
   apply Subsingleton.elim
 
 /--
+The verification-payload finite-extinction projection is the
+finite-extinction projection of the reconstructed derivative-strengthened
+surgery payload.
+-/
+theorem finite_extinction_of_equation_boundary_verification_payload_to_derivative_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    finite_extinction_of_equation_boundary_verification_payload payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            surgery_package_with_equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+              payload M with
+          ⟨_n, _package, derivativePayload⟩
+        exact finite_extinction_of_derivative_payload derivativePayload) := by
+  apply Subsingleton.elim
+
+/--
 The verification-payload derivative surgery payload is reconstructed from the
 verification-payload scalar-pointwise surgery payload.
 -/
@@ -11077,6 +11095,25 @@ theorem finite_extinction_of_equation_boundary_dependencies_to_pointwise_equatio
           ⟨_n, _package, pointwisePayload⟩
         exact finite_extinction_of_pointwise_equation_payload
           pointwisePayload) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency finite-extinction theorem is reconstructed from the
+dependency-level derivative-strengthened surgery payload.
+-/
+theorem finite_extinction_of_equation_boundary_dependencies_to_derivative_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    finite_extinction_of_equation_boundary_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _
+        letI : IsManifold ThreeManifoldModelWithCorners 1 M :=
+          smoothability_bridge_of_dependencies
+            (dependencies_of_equation_boundary_dependencies dependencies) M
+        rcases
+            surgery_package_with_equation_boundary_derivative_payload_of_dependencies
+              dependencies M with
+          ⟨_n, _package, derivativePayload⟩
+        exact finite_extinction_of_derivative_payload derivativePayload) := by
   apply Subsingleton.elim
 
 /--
