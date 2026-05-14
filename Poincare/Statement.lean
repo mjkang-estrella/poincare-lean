@@ -339,6 +339,70 @@ theorem threeSphere_equatorPoint_mem_northPole_antipodal_sources_inter_eq :
           norm_num [threeSphere_equatorPoint, threeSphere_northPole] at hcoord) := by
   apply Subsingleton.elim
 
+/--
+The verified north/south stereographic open-cover data for the standard
+3-sphere.  This packages the concrete inputs needed by a later Van Kampen or
+loop-fragment argument without asserting that missing argument.
+-/
+structure ThreeSphereStereographicOpenCoverPackage where
+  northSourceSimplyConnected :
+    SimplyConnectedSpace (stereographic' 3 threeSphere_northPole).source
+  southSourceSimplyConnected :
+    SimplyConnectedSpace (stereographic' 3 (-threeSphere_northPole)).source
+  northSourceOpen : IsOpen (stereographic' 3 threeSphere_northPole).source
+  southSourceOpen : IsOpen (stereographic' 3 (-threeSphere_northPole)).source
+  cover :
+    (stereographic' 3 threeSphere_northPole).source ∪
+        (stereographic' 3 (-threeSphere_northPole)).source =
+      Set.univ
+  overlapOpen :
+    IsOpen ((stereographic' 3 threeSphere_northPole).source ∩
+      (stereographic' 3 (-threeSphere_northPole)).source)
+  overlapBasepoint :
+    threeSphere_equatorPoint ∈
+      (stereographic' 3 threeSphere_northPole).source ∩
+        (stereographic' 3 (-threeSphere_northPole)).source
+
+/-- The concrete north/south stereographic open-cover package for `ThreeSphere`. -/
+noncomputable def threeSphere_stereographicOpenCoverPackage :
+    ThreeSphereStereographicOpenCoverPackage where
+  northSourceSimplyConnected :=
+    threeSphere_stereographic_source_simplyConnectedSpace threeSphere_northPole
+  southSourceSimplyConnected :=
+    threeSphere_stereographic_source_simplyConnectedSpace (-threeSphere_northPole)
+  northSourceOpen :=
+    threeSphere_stereographic_source_isOpen threeSphere_northPole
+  southSourceOpen :=
+    threeSphere_stereographic_source_isOpen (-threeSphere_northPole)
+  cover :=
+    threeSphere_stereographic_antipodal_sources_cover threeSphere_northPole
+  overlapOpen :=
+    threeSphere_stereographic_antipodal_sources_inter_isOpen threeSphere_northPole
+  overlapBasepoint :=
+    threeSphere_equatorPoint_mem_northPole_antipodal_sources_inter
+
+/--
+The stereographic open-cover package is assembled exactly from the named
+north/south chart-domain, cover, overlap, and basepoint witnesses.
+-/
+theorem threeSphere_stereographicOpenCoverPackage_eq :
+    threeSphere_stereographicOpenCoverPackage =
+      { northSourceSimplyConnected :=
+          threeSphere_stereographic_source_simplyConnectedSpace threeSphere_northPole
+        southSourceSimplyConnected :=
+          threeSphere_stereographic_source_simplyConnectedSpace (-threeSphere_northPole)
+        northSourceOpen :=
+          threeSphere_stereographic_source_isOpen threeSphere_northPole
+        southSourceOpen :=
+          threeSphere_stereographic_source_isOpen (-threeSphere_northPole)
+        cover :=
+          threeSphere_stereographic_antipodal_sources_cover threeSphere_northPole
+        overlapOpen :=
+          threeSphere_stereographic_antipodal_sources_inter_isOpen threeSphere_northPole
+        overlapBasepoint :=
+          threeSphere_equatorPoint_mem_northPole_antipodal_sources_inter } := by
+  rfl
+
 /-- The target 3-sphere carries the expected smooth manifold structure. -/
 theorem threeSphere_smoothManifold :
     IsManifold (𝓡 3) ∞ ThreeSphere :=
