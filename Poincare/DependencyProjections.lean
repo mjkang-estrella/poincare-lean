@@ -3453,6 +3453,25 @@ theorem equation_boundary_payload_statements_of_dependencies_eq
   apply Subsingleton.elim
 
 /--
+The named dependency equation-boundary payload family is the equation-boundary
+projection of the named analytic-boundary statement family.
+-/
+theorem equation_boundary_payload_statements_of_dependencies_to_analytic_boundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_payload_statements_of_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            analytic_foundation_with_equation_boundary_statements_of_dependencies
+              dependencies M with
+          ⟨n, flow, analyticBoundary⟩
+        exact
+          ⟨n, flow,
+            equation_boundary_payload_of_analytic_foundation_with_equation_boundary
+              analyticBoundary⟩) := by
+  apply Subsingleton.elim
+
+/--
 The named dependency equation-boundary payload family is reconstructed from the
 named verification payload.
 -/
