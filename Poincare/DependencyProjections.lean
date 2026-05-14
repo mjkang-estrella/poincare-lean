@@ -10417,6 +10417,62 @@ theorem smoothability_subobligations_of_dependencies_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level smoothability sub-obligation payload exposes the
+smooth-structure tail used by the bridge layer.
+-/
+theorem smoothability_bridge_tail_payload_of_dependencies
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+    ∃ smoothDerivationStatement :
+      SmoothStructureDerivationStatement M smoothStructure,
+    ∃ manifoldEvidence : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ bridgeDerivation :
+      HasSmoothabilityBridgeDerivation
+        M smoothStructure smoothDerivationStatement manifoldEvidence,
+    ∃ modelCompatibility :
+      HasSmoothManifoldModelCompatibility
+        M smoothStructure smoothDerivationStatement manifoldEvidence
+        bridgeDerivation,
+      HasSmoothChartCompatibility
+        M smoothStructure smoothDerivationStatement manifoldEvidence
+        bridgeDerivation modelCompatibility :=
+  smoothability_bridge_tail_payload_of_subobligations_payload M
+    (smoothability_subobligations_payload_of_dependencies dependencies M)
+
+/--
+The dependency-level smoothability bridge-tail payload is the generic
+sub-obligation tail projection applied to the named dependency payload.
+-/
+theorem smoothability_bridge_tail_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    smoothability_bridge_tail_payload_of_dependencies dependencies M =
+      smoothability_bridge_tail_payload_of_subobligations_payload M
+        (smoothability_subobligations_payload_of_dependencies
+          dependencies M) :=
+  rfl
+
+/--
+The dependency-level smoothability bridge-tail payload agrees with extracting
+the tail from the direct smoothability-package sub-obligation payload.
+-/
+theorem smoothability_bridge_tail_payload_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    smoothability_bridge_tail_payload_of_dependencies dependencies M =
+      smoothability_bridge_tail_payload_of_subobligations_payload M
+        (smoothability_subobligations_of_smoothability_package
+          dependencies.smoothability M) := by
+  apply Subsingleton.elim
+
+/--
 The dependency-level smoothability sub-obligation stack agrees with the direct
 smoothability-package sub-obligation bridge.
 -/
