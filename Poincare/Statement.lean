@@ -3082,6 +3082,120 @@ theorem threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenReductio
   funext h
   apply Subsingleton.elim
 
+/--
+The concrete stereographic Van Kampen conclusion contract supplies full
+loop-nullhomotopy on `S^3`.
+-/
+theorem threeSphere_loopNullhomotopyStatement_of_stereographicVanKampenConclusionStatement
+    (h : ThreeSphereStereographicVanKampenConclusionStatement) :
+    ThreeSphereLoopNullhomotopyStatement :=
+  threeSphere_loopNullhomotopyStatement_of_stereographicVanKampenReductionStatement
+    (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h)
+
+/--
+The conclusion-contract-to-full-loop route is the full-reduction route after
+assembling the stereographic reduction.
+-/
+theorem threeSphere_loopNullhomotopyStatement_of_stereographicVanKampenConclusionStatement_eq :
+    threeSphere_loopNullhomotopyStatement_of_stereographicVanKampenConclusionStatement =
+      (fun h : ThreeSphereStereographicVanKampenConclusionStatement =>
+        threeSphere_loopNullhomotopyStatement_of_stereographicVanKampenReductionStatement
+          (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The concrete stereographic Van Kampen conclusion contract supplies
+path-homotopy uniqueness on `S^3`.
+-/
+theorem threeSphere_pathHomotopyStatement_of_stereographicVanKampenConclusionStatement
+    (h : ThreeSphereStereographicVanKampenConclusionStatement) :
+    ThreeSpherePathHomotopyStatement :=
+  threeSphere_pathHomotopyStatement_of_stereographicVanKampenReductionStatement
+    (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h)
+
+/--
+The conclusion-contract-to-path route is the full-reduction route after
+assembling the stereographic reduction.
+-/
+theorem threeSphere_pathHomotopyStatement_of_stereographicVanKampenConclusionStatement_eq :
+    threeSphere_pathHomotopyStatement_of_stereographicVanKampenConclusionStatement =
+      (fun h : ThreeSphereStereographicVanKampenConclusionStatement =>
+        (threeSphere_pathHomotopyStatement_of_stereographicVanKampenReductionStatement
+          (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h) :
+            ThreeSpherePathHomotopyStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The concrete stereographic Van Kampen conclusion contract supplies
+path-quotient uniqueness on `S^3`.
+-/
+theorem threeSphere_pathQuotientSubsingletonStatement_of_stereographicVanKampenConclusionStatement
+    (h : ThreeSphereStereographicVanKampenConclusionStatement) :
+    ThreeSpherePathQuotientSubsingletonStatement :=
+  threeSphere_pathQuotientSubsingletonStatement_of_stereographicVanKampenReductionStatement
+    (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h)
+
+/--
+The conclusion-contract-to-path-quotient route is the full-reduction route
+after assembling the stereographic reduction.
+-/
+theorem threeSphere_pathQuotientSubsingletonStatement_of_stereographicVanKampenConclusionStatement_eq :
+    threeSphere_pathQuotientSubsingletonStatement_of_stereographicVanKampenConclusionStatement =
+      (fun h : ThreeSphereStereographicVanKampenConclusionStatement =>
+        (threeSphere_pathQuotientSubsingletonStatement_of_stereographicVanKampenReductionStatement
+          (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h) :
+            ThreeSpherePathQuotientSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The concrete stereographic Van Kampen conclusion contract supplies
+fundamental-group triviality on `S^3`.
+-/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenConclusionStatement
+    (h : ThreeSphereStereographicVanKampenConclusionStatement) :
+    ThreeSphereFundamentalGroupSubsingletonStatement :=
+  threeSphere_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenReductionStatement
+    (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h)
+
+/--
+The conclusion-contract-to-fundamental-group route is the full-reduction route
+after assembling the stereographic reduction.
+-/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenConclusionStatement_eq :
+    threeSphere_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenConclusionStatement =
+      (fun h : ThreeSphereStereographicVanKampenConclusionStatement =>
+        (threeSphere_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenReductionStatement
+          (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h) :
+            ThreeSphereFundamentalGroupSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The concrete stereographic Van Kampen conclusion contract supplies the `π₁`
+formulation on `S^3`.
+-/
+theorem threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenConclusionStatement
+    (h : ThreeSphereStereographicVanKampenConclusionStatement) :
+    ThreeSpherePiOneSubsingletonStatement :=
+  threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenReductionStatement
+    (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h)
+
+/--
+The conclusion-contract-to-`π₁` route is the full-reduction route after
+assembling the stereographic reduction.
+-/
+theorem threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenConclusionStatement_eq :
+    threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenConclusionStatement =
+      (fun h : ThreeSphereStereographicVanKampenConclusionStatement =>
+        (threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenReductionStatement
+          (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement h) :
+            ThreeSpherePiOneSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
 /-- North-pole based loop-nullhomotopy supplies path-homotopy uniqueness on `S^3`. -/
 theorem threeSphere_pathHomotopyStatement_of_northPoleLoopNullhomotopyStatement
     (h : ThreeSphereNorthPoleLoopNullhomotopyStatement) :
