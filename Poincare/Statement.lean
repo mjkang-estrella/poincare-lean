@@ -688,6 +688,40 @@ theorem threeSphere_northSourceOverlap_pathConnectedSpace_eq :
             threeSphere_northSourceOverlap_homeomorph_puncturedChart.symm.continuous) := by
   apply Subsingleton.elim
 
+/--
+Augmented north/south stereographic cover data, adding the source-overlap model
+homeomorphism and path-connectedness witness to the base open-cover package.
+-/
+structure ThreeSphereStereographicOverlapPackage where
+  openCover : ThreeSphereStereographicOpenCoverPackage
+  northOverlapModelHomeomorph :
+    ({threeSphere_southPoleInNorthSource}ᶜ :
+      Set (stereographic' 3 threeSphere_northPole).source) ≃ₜ
+      ({threeSphere_southPole_northChartImage}ᶜ :
+        Set (EuclideanSpace ℝ (Fin 3)))
+  northOverlapModelPathConnected :
+    PathConnectedSpace
+      ({threeSphere_southPoleInNorthSource}ᶜ :
+        Set (stereographic' 3 threeSphere_northPole).source)
+
+/--
+Concrete augmented stereographic overlap data for the standard north/south
+3-sphere chart cover.
+-/
+noncomputable def threeSphere_stereographicOverlapPackage :
+    ThreeSphereStereographicOverlapPackage where
+  openCover := threeSphere_stereographicOpenCoverPackage
+  northOverlapModelHomeomorph := threeSphere_northSourceOverlap_homeomorph_puncturedChart
+  northOverlapModelPathConnected := threeSphere_northSourceOverlap_pathConnectedSpace
+
+/-- The augmented stereographic overlap package is built from the named witnesses. -/
+theorem threeSphere_stereographicOverlapPackage_eq :
+    threeSphere_stereographicOverlapPackage =
+      { openCover := threeSphere_stereographicOpenCoverPackage
+        northOverlapModelHomeomorph := threeSphere_northSourceOverlap_homeomorph_puncturedChart
+        northOverlapModelPathConnected := threeSphere_northSourceOverlap_pathConnectedSpace } := by
+  rfl
+
 /-- The target 3-sphere is path-connected as a subset of Euclidean space. -/
 theorem threeSphere_isPathConnected_set :
     IsPathConnected (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) := by
