@@ -254,6 +254,20 @@ theorem canonical_completion_payload_of_completion_certificate_of_remaining_depe
   apply Subsingleton.elim
 
 /--
+The universal finite-extinction certificate canonical payload agrees with the
+source-layer completion payload exposed by the Ricci-flow interface.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_to_interface_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    canonical_completion_payload_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+          dependencies finiteExtinction) =
+      universalFiniteExtinctionStatement_completion_payload
+        finiteExtinction := by
+  apply Subsingleton.elim
+
+/--
 The universal finite-extinction certificate's reserved-name payload is the
 finite-extinction-only reserved-name payload.
 -/
@@ -265,6 +279,22 @@ theorem poincare_conjecture_payload_of_completion_certificate_of_remaining_depen
           dependencies finiteExtinction) =
       poincare_conjecture_payload_of_universalFiniteExtinctionStatement
         finiteExtinction := by
+  apply Subsingleton.elim
+
+/--
+The universal finite-extinction certificate discharges each universe-indexed
+completion criterion through the source-layer universal finite-extinction
+criterion projection.
+-/
+theorem completion_criterion_of_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_eq
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackage.{u})
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    completion_criterion_of_completion_certificate witness
+        (completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+          dependencies finiteExtinction) =
+      completion_criterion_of_universalFiniteExtinctionStatement
+        witness finiteExtinction := by
   apply Subsingleton.elim
 
 /--
