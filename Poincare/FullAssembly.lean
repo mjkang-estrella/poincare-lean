@@ -503,6 +503,99 @@ theorem poincare_conjecture_payload_of_smoothability_and_boundary_surgery_packag
 
 /--
 Forgetting the equation boundary from the strengthened surgery packages gives
+the same universal finite-extinction boundary as the ordinary
+smoothability/surgery route built from the forgotten surgery packages.
+-/
+theorem universalFiniteExtinctionStatement_of_smoothability_and_boundary_surgery_packages_to_ordinary_route_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω,
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+    universalFiniteExtinctionStatement_of_smoothability_and_boundary_surgery_packages
+        smoothabilityPackage surgeryPackages =
+      universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+        smoothabilityPackage
+        (fun (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M] =>
+            by
+              rcases surgeryPackages M with ⟨⟨n, package⟩⟩
+              exact
+                ⟨⟨n,
+                  surgery_package_of_equation_boundary_surgery_package
+                    package⟩⟩) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the equation boundary from the strengthened surgery packages gives
+the same Poincare endpoint as the ordinary smoothability/surgery route built
+from the forgotten surgery packages.
+-/
+theorem poincare_conjecture_of_smoothability_and_boundary_surgery_packages_to_ordinary_route_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω,
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+    poincare_conjecture_of_smoothability_and_boundary_surgery_packages
+        smoothabilityPackage surgeryPackages =
+      poincare_conjecture_of_smoothability_and_surgery_packages
+        smoothabilityPackage
+        (fun (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M] =>
+            by
+              rcases surgeryPackages M with ⟨⟨n, package⟩⟩
+              exact
+                ⟨⟨n,
+                  surgery_package_of_equation_boundary_surgery_package
+                    package⟩⟩) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the equation boundary from the strengthened surgery packages gives
+the same Poincare endpoint payload as the ordinary smoothability/surgery route
+built from the forgotten surgery packages.
+-/
+theorem poincare_conjecture_payload_of_smoothability_and_boundary_surgery_packages_to_ordinary_route_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω,
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+    poincare_conjecture_payload_of_smoothability_and_boundary_surgery_packages
+        smoothabilityPackage surgeryPackages =
+      poincare_conjecture_payload_of_smoothability_and_surgery_packages
+        smoothabilityPackage
+        (fun (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M] =>
+            by
+              rcases surgeryPackages M with ⟨⟨n, package⟩⟩
+              exact
+                ⟨⟨n,
+                  surgery_package_of_equation_boundary_surgery_package
+                    package⟩⟩) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the equation boundary from the strengthened surgery packages gives
 the same finite-extinction input as the ordinary smoothability/surgery route.
 -/
 theorem finite_extinction_input_of_smoothability_and_boundary_surgery_packages_to_ordinary_route_eq
