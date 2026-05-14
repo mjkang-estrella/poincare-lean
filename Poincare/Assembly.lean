@@ -547,6 +547,86 @@ theorem threeSphere_self_homeomorph_of_smooth_statement_and_loopNullhomotopyStat
   apply Subsingleton.elim
 
 /--
+The full stereographic Van Kampen reduction is enough to apply the project
+target statement to the standard sphere itself.
+-/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_stereographicVanKampenReductionStatement
+    (hReduction : ThreeSphereStereographicVanKampenReductionStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    Nonempty (ThreeSphere ≃ₜ ThreeSphere) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_stereographicVanKampenReductionStatement hReduction
+  exact threeSphere_self_homeomorph_of_poincare_statement h
+
+/--
+The target-statement self route from the stereographic reduction is exactly the
+existing self route after converting the reduction to simple-connectedness.
+-/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_stereographicVanKampenReductionStatement_eq :
+    threeSphere_self_homeomorph_of_poincare_statement_and_stereographicVanKampenReductionStatement =
+      (fun hReduction : ThreeSphereStereographicVanKampenReductionStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_stereographicVanKampenReductionStatement hReduction
+          threeSphere_self_homeomorph_of_poincare_statement h) := by
+  funext hReduction h
+  apply Subsingleton.elim
+
+/--
+The full stereographic Van Kampen reduction is enough to apply the smooth target
+statement to the standard sphere itself.
+-/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_stereographicVanKampenReductionStatement
+    (hReduction : ThreeSphereStereographicVanKampenReductionStatement)
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_stereographicVanKampenReductionStatement hReduction
+  exact threeSphere_self_diffeomorph_of_smooth_statement h
+
+/--
+The smooth self-diffeomorphism route from the stereographic reduction is exactly
+the existing smooth self route after converting the reduction to
+simple-connectedness.
+-/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_stereographicVanKampenReductionStatement_eq :
+    threeSphere_self_diffeomorph_of_smooth_statement_and_stereographicVanKampenReductionStatement =
+      (fun hReduction : ThreeSphereStereographicVanKampenReductionStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_stereographicVanKampenReductionStatement hReduction
+          threeSphere_self_diffeomorph_of_smooth_statement h) := by
+  funext hReduction h
+  apply Subsingleton.elim
+
+/--
+The smooth target plus the full stereographic Van Kampen reduction gives the
+topological self-homeomorphism after forgetting smooth structure.
+-/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_stereographicVanKampenReductionStatement
+    (hReduction : ThreeSphereStereographicVanKampenReductionStatement)
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    Nonempty (ThreeSphere ≃ₜ ThreeSphere) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_stereographicVanKampenReductionStatement hReduction
+  exact threeSphere_self_homeomorph_of_smooth_statement h
+
+/--
+The smooth-to-topological self route from the stereographic reduction is exactly
+the existing smooth-to-topological route after converting the reduction to
+simple-connectedness.
+-/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_stereographicVanKampenReductionStatement_eq :
+    threeSphere_self_homeomorph_of_smooth_statement_and_stereographicVanKampenReductionStatement =
+      (fun hReduction : ThreeSphereStereographicVanKampenReductionStatement =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_stereographicVanKampenReductionStatement hReduction
+          threeSphere_self_homeomorph_of_smooth_statement h) := by
+  funext hReduction h
+  apply Subsingleton.elim
+
+/--
 The target fundamental-group obligation is enough to apply the project target
 statement to the standard sphere itself.
 -/
