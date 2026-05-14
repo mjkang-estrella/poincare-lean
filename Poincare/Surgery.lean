@@ -11140,6 +11140,25 @@ theorem finite_extinction_of_pointwise_equation_payload_eq
   apply Subsingleton.elim
 
 /--
+The finite-extinction projection of the derivative payload reconstructed from a
+scalar-pointwise payload agrees with the scalar-pointwise finite-extinction
+projection.
+-/
+theorem finite_extinction_of_derivative_payload_of_pointwise_equation_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M}
+    (payload :
+      SurgeryPackageWithEquationBoundaryPointwiseEquationPayload package) :
+    finite_extinction_of_derivative_payload
+        (surgery_package_with_equation_boundary_derivative_payload_of_pointwise_equation_payload
+          payload) =
+      finite_extinction_of_pointwise_equation_payload payload := by
+  apply Subsingleton.elim
+
+/--
 The named strengthened surgery-package finite-extinction projection is the
 finite-extinction projection of the named scalar-pointwise surgery payload.
 -/
@@ -11190,6 +11209,25 @@ theorem finite_extinction_of_direct_pointwise_equation_payload_eq
         (surgery_package_with_equation_boundary_pointwise_equation_payload_of_direct_pointwise_equation_payload
           payload) :=
   rfl
+
+/--
+The finite-extinction projection of the derivative payload reconstructed from a
+direct scalar equation agrees with the direct scalar finite-extinction
+projection.
+-/
+theorem finite_extinction_of_derivative_payload_of_direct_pointwise_equation_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M}
+    (payload :
+      SurgeryPackageWithEquationBoundaryDirectPointwiseEquationPayload package) :
+    finite_extinction_of_derivative_payload
+        (surgery_package_with_equation_boundary_derivative_payload_of_direct_pointwise_equation_payload
+          payload) =
+      finite_extinction_of_direct_pointwise_equation_payload payload := by
+  apply Subsingleton.elim
 
 /--
 The named strengthened surgery-package finite-extinction projection can be
