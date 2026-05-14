@@ -10561,6 +10561,36 @@ theorem finite_extinction_of_dependencies_to_package_eq
   apply Subsingleton.elim
 
 /--
+A completed dependency package supplies the named universal finite-extinction
+boundary used by the finite-extinction-only completion route.
+-/
+theorem universalFiniteExtinctionStatement_of_dependencies
+    (dependencies : PoincareProofDependencies.{u}) :
+    UniversalFiniteExtinctionStatement.{u} :=
+  finite_extinction_via_subobligations_of_dependencies dependencies
+
+/--
+The dependency-level universal finite-extinction boundary is exactly the
+named subobligations-route finite-extinction projection.
+-/
+theorem universalFiniteExtinctionStatement_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    universalFiniteExtinctionStatement_of_dependencies dependencies =
+      finite_extinction_via_subobligations_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level universal finite-extinction boundary follows the shared
+finite-extinction package route instead of reopening the surgery package
+payload.
+-/
+theorem universalFiniteExtinctionStatement_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    universalFiniteExtinctionStatement_of_dependencies dependencies =
+      finite_extinction_via_subobligations_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
 The strengthened dependency package supplies finite extinction by installing
 its smoothability bridge and extracting the witness from the named
 equation-boundary verification payload.
@@ -10665,6 +10695,38 @@ theorem finite_extinction_of_equation_boundary_dependencies_to_forgetful_depende
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     finite_extinction_of_equation_boundary_dependencies dependencies =
       finite_extinction_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+A strengthened dependency package supplies the named universal finite-extinction
+boundary used by the finite-extinction-only completion route.
+-/
+theorem universalFiniteExtinctionStatement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    UniversalFiniteExtinctionStatement.{u} :=
+  finite_extinction_of_equation_boundary_dependencies dependencies
+
+/--
+The strengthened dependency universal finite-extinction boundary is exactly the
+strengthened finite-extinction projection.
+-/
+theorem universalFiniteExtinctionStatement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    universalFiniteExtinctionStatement_of_equation_boundary_dependencies
+        dependencies =
+      finite_extinction_of_equation_boundary_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency universal finite-extinction boundary agrees with
+the ordinary dependency universal boundary after forgetting equation data.
+-/
+theorem universalFiniteExtinctionStatement_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    universalFiniteExtinctionStatement_of_equation_boundary_dependencies
+        dependencies =
+      universalFiniteExtinctionStatement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
   apply Subsingleton.elim
 
