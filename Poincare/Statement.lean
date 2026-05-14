@@ -886,6 +886,77 @@ theorem threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement_eq
   funext h
   apply Subsingleton.elim
 
+/--
+The remaining Van Kampen-style obligation for the north/south stereographic
+open cover: every loop based at the explicit equatorial overlap point is
+null-homotopic.
+-/
+def ThreeSphereStereographicVanKampenLoopStatement : Prop :=
+  ThreeSphereBasedLoopNullhomotopyStatement threeSphere_equatorPoint
+
+/--
+The stereographic Van Kampen loop obligation is exactly based loop
+nullhomotopy at the explicit overlap basepoint.
+-/
+theorem threeSphereStereographicVanKampenLoopStatement_eq :
+    ThreeSphereStereographicVanKampenLoopStatement =
+      ThreeSphereBasedLoopNullhomotopyStatement threeSphere_equatorPoint :=
+  rfl
+
+/--
+A proof of the stereographic Van Kampen loop obligation supplies
+simple-connectedness of the standard 3-sphere through the existing
+change-of-basepoint criterion.
+-/
+theorem threeSphere_simplyConnectedSpace_of_stereographicVanKampenLoopStatement
+    (h : ThreeSphereStereographicVanKampenLoopStatement) :
+    SimplyConnectedSpace ThreeSphere :=
+  threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement h
+
+/--
+The stereographic Van Kampen loop route to simple-connectedness is exactly the
+based-loop route at the explicit equatorial overlap basepoint.
+-/
+theorem threeSphere_simplyConnectedSpace_of_stereographicVanKampenLoopStatement_eq :
+    threeSphere_simplyConnectedSpace_of_stereographicVanKampenLoopStatement =
+      (fun h : ThreeSphereStereographicVanKampenLoopStatement =>
+        threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement
+          (basepoint := threeSphere_equatorPoint) h) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+A stereographic Van Kampen loop proof supplies the full target-prerequisite
+tuple for the standard 3-sphere.
+-/
+theorem threeSphere_target_prerequisites_of_stereographicVanKampenLoopStatement
+    (h : ThreeSphereStereographicVanKampenLoopStatement) :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_stereographicVanKampenLoopStatement h
+  exact threeSphere_target_prerequisites_of_simpleConnectedSpace
+
+/--
+The stereographic Van Kampen target-prerequisite route is simple-connectedness
+from the equatorial based-loop obligation followed by the direct-simple
+target-prerequisite payload.
+-/
+theorem threeSphere_target_prerequisites_of_stereographicVanKampenLoopStatement_eq :
+    threeSphere_target_prerequisites_of_stereographicVanKampenLoopStatement =
+      (fun h : ThreeSphereStereographicVanKampenLoopStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_stereographicVanKampenLoopStatement h
+        threeSphere_target_prerequisites_of_simpleConnectedSpace) := by
+  funext h
+  apply Subsingleton.elim
+
 /-- A supplied simple-connectedness instance gives based loop-nullhomotopy at any basepoint. -/
 theorem threeSphere_basedLoopNullhomotopyStatement_of_simplyConnectedSpace
     (basepoint : ThreeSphere) [SimplyConnectedSpace ThreeSphere] :
