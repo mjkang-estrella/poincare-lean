@@ -1869,6 +1869,85 @@ theorem threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement
   funext h
   apply Subsingleton.elim
 
+/-- A stereographic Van Kampen loop proof supplies full loop-nullhomotopy on `S^3`. -/
+theorem threeSphere_loopNullhomotopyStatement_of_stereographicVanKampenLoopStatement
+    (h : ThreeSphereStereographicVanKampenLoopStatement) :
+    ThreeSphereLoopNullhomotopyStatement :=
+  threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement h
+
+/-- The stereographic-loop-to-full-loop route is the equatorial based-loop route. -/
+theorem threeSphere_loopNullhomotopyStatement_of_stereographicVanKampenLoopStatement_eq :
+    threeSphere_loopNullhomotopyStatement_of_stereographicVanKampenLoopStatement =
+      (fun h : ThreeSphereStereographicVanKampenLoopStatement =>
+        threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement
+          (basepoint := threeSphere_equatorPoint) h) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- A stereographic Van Kampen loop proof supplies path-homotopy uniqueness on `S^3`. -/
+theorem threeSphere_pathHomotopyStatement_of_stereographicVanKampenLoopStatement
+    (h : ThreeSphereStereographicVanKampenLoopStatement) :
+    ThreeSpherePathHomotopyStatement :=
+  threeSphere_pathHomotopyStatement_of_basedLoopNullhomotopyStatement h
+
+/-- The stereographic-loop-to-path route is the equatorial based-loop route. -/
+theorem threeSphere_pathHomotopyStatement_of_stereographicVanKampenLoopStatement_eq :
+    threeSphere_pathHomotopyStatement_of_stereographicVanKampenLoopStatement =
+      (fun h : ThreeSphereStereographicVanKampenLoopStatement =>
+        (threeSphere_pathHomotopyStatement_of_basedLoopNullhomotopyStatement
+          (basepoint := threeSphere_equatorPoint) h :
+            ThreeSpherePathHomotopyStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- A stereographic Van Kampen loop proof supplies path-quotient uniqueness on `S^3`. -/
+theorem threeSphere_pathQuotientSubsingletonStatement_of_stereographicVanKampenLoopStatement
+    (h : ThreeSphereStereographicVanKampenLoopStatement) :
+    ThreeSpherePathQuotientSubsingletonStatement :=
+  threeSphere_pathQuotientSubsingletonStatement_of_basedLoopNullhomotopyStatement h
+
+/-- The stereographic-loop-to-path-quotient route is the equatorial based-loop route. -/
+theorem threeSphere_pathQuotientSubsingletonStatement_of_stereographicVanKampenLoopStatement_eq :
+    threeSphere_pathQuotientSubsingletonStatement_of_stereographicVanKampenLoopStatement =
+      (fun h : ThreeSphereStereographicVanKampenLoopStatement =>
+        (threeSphere_pathQuotientSubsingletonStatement_of_basedLoopNullhomotopyStatement
+          (basepoint := threeSphere_equatorPoint) h :
+            ThreeSpherePathQuotientSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- A stereographic Van Kampen loop proof supplies fundamental-group triviality on `S^3`. -/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenLoopStatement
+    (h : ThreeSphereStereographicVanKampenLoopStatement) :
+    ThreeSphereFundamentalGroupSubsingletonStatement :=
+  threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement h
+
+/-- The stereographic-loop-to-fundamental-group route is the equatorial based-loop route. -/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenLoopStatement_eq :
+    threeSphere_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenLoopStatement =
+      (fun h : ThreeSphereStereographicVanKampenLoopStatement =>
+        (threeSphere_fundamentalGroupSubsingletonStatement_of_basedLoopNullhomotopyStatement
+          (basepoint := threeSphere_equatorPoint) h :
+            ThreeSphereFundamentalGroupSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- A stereographic Van Kampen loop proof supplies the `π₁` formulation on `S^3`. -/
+theorem threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenLoopStatement
+    (h : ThreeSphereStereographicVanKampenLoopStatement) :
+    ThreeSpherePiOneSubsingletonStatement :=
+  threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement h
+
+/-- The stereographic-loop-to-`π₁` route is the equatorial based-loop route. -/
+theorem threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenLoopStatement_eq :
+    threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenLoopStatement =
+      (fun h : ThreeSphereStereographicVanKampenLoopStatement =>
+        (threeSphere_piOneSubsingletonStatement_of_basedLoopNullhomotopyStatement
+          (basepoint := threeSphere_equatorPoint) h :
+            ThreeSpherePiOneSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
 /-- North-pole based loop-nullhomotopy supplies path-homotopy uniqueness on `S^3`. -/
 theorem threeSphere_pathHomotopyStatement_of_northPoleLoopNullhomotopyStatement
     (h : ThreeSphereNorthPoleLoopNullhomotopyStatement) :
