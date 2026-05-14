@@ -140,6 +140,40 @@ theorem finite_extinction_input_of_smoothability_and_surgery_packages_eq
   apply Subsingleton.elim
 
 /--
+The smoothability/surgery package route supplies the named universal
+finite-extinction boundary used by the final completion target.
+-/
+theorem universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+    UniversalFiniteExtinctionStatement.{u} :=
+  finite_extinction_input_of_smoothability_and_surgery_packages
+    smoothabilityPackage surgeryPackages
+
+/--
+The smoothability/surgery universal finite-extinction boundary is exactly the
+finite-extinction family projected from the named package payload.
+-/
+theorem universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+    universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+        smoothabilityPackage surgeryPackages =
+      finite_extinction_input_of_smoothability_and_surgery_packages
+        smoothabilityPackage surgeryPackages := by
+  apply Subsingleton.elim
+
+/--
 The smoothability route together with boundary-carrying surgery packages
 exposes the manifold evidence, strengthened surgery package, theorem-shaped
 finite-extinction statement, analytic-boundary statement, and resulting
@@ -267,6 +301,45 @@ theorem finite_extinction_input_of_smoothability_and_boundary_surgery_packages_e
           ⟨_manifoldEvidence, _n, _package, _packageStatement,
             _analyticBoundary, finiteExtinction⟩
         exact finiteExtinction) := by
+  apply Subsingleton.elim
+
+/--
+The boundary-carrying smoothability/surgery package route supplies the named
+universal finite-extinction boundary used by the final completion target.
+-/
+theorem universalFiniteExtinctionStatement_of_smoothability_and_boundary_surgery_packages
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω,
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+    UniversalFiniteExtinctionStatement.{u} :=
+  finite_extinction_input_of_smoothability_and_boundary_surgery_packages
+    smoothabilityPackage surgeryPackages
+
+/--
+The boundary-carrying smoothability/surgery universal finite-extinction
+boundary is exactly the finite-extinction family projected from the named
+boundary payload.
+-/
+theorem universalFiniteExtinctionStatement_of_smoothability_and_boundary_surgery_packages_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω,
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+    universalFiniteExtinctionStatement_of_smoothability_and_boundary_surgery_packages
+        smoothabilityPackage surgeryPackages =
+      finite_extinction_input_of_smoothability_and_boundary_surgery_packages
+        smoothabilityPackage surgeryPackages := by
   apply Subsingleton.elim
 
 /--
