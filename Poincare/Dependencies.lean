@@ -491,6 +491,49 @@ theorem smoothabilityPackage_of_poincareProofDependencies_to_structural_projecti
   apply Subsingleton.elim
 
 /--
+The aggregate dependency package exposes the smoothability bridge-tail payload
+carried by its stored smoothability package.
+-/
+theorem smoothability_bridge_tail_payload_of_poincareProofDependencies_package_projection
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+    ∃ smoothDerivationStatement :
+      SmoothStructureDerivationStatement M smoothStructure,
+    ∃ manifoldEvidence : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ bridgeDerivation :
+      HasSmoothabilityBridgeDerivation
+        M smoothStructure smoothDerivationStatement manifoldEvidence,
+    ∃ modelCompatibility :
+      HasSmoothManifoldModelCompatibility
+        M smoothStructure smoothDerivationStatement manifoldEvidence
+        bridgeDerivation,
+      HasSmoothChartCompatibility
+        M smoothStructure smoothDerivationStatement manifoldEvidence
+        bridgeDerivation modelCompatibility :=
+  smoothability_bridge_tail_payload_of_subobligations_payload M
+    (smoothability_subobligations_of_smoothability_package
+      dependencies.smoothability M)
+
+/--
+The aggregate dependency bridge-tail payload is the generic tail projection
+applied to the stored smoothability package's sub-obligation payload.
+-/
+theorem smoothability_bridge_tail_payload_of_poincareProofDependencies_package_projection_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    smoothability_bridge_tail_payload_of_poincareProofDependencies_package_projection
+        dependencies M =
+      smoothability_bridge_tail_payload_of_subobligations_payload M
+        (smoothability_subobligations_of_smoothability_package
+          dependencies.smoothability M) :=
+  rfl
+
+/--
 Project the universal finite-extinction surgery package family from the
 aggregate dependency package.
 -/
@@ -822,6 +865,49 @@ theorem smoothabilityPackage_of_poincareProofDependenciesWithEquationBoundary_to
       smoothability_of_poincareProofDependenciesWithEquationBoundary
         dependencies := by
   apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency package exposes the smoothability
+bridge-tail payload carried by its stored smoothability package.
+-/
+theorem smoothability_bridge_tail_payload_of_poincareProofDependenciesWithEquationBoundary_package_projection
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+    ∃ smoothDerivationStatement :
+      SmoothStructureDerivationStatement M smoothStructure,
+    ∃ manifoldEvidence : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ bridgeDerivation :
+      HasSmoothabilityBridgeDerivation
+        M smoothStructure smoothDerivationStatement manifoldEvidence,
+    ∃ modelCompatibility :
+      HasSmoothManifoldModelCompatibility
+        M smoothStructure smoothDerivationStatement manifoldEvidence
+        bridgeDerivation,
+      HasSmoothChartCompatibility
+        M smoothStructure smoothDerivationStatement manifoldEvidence
+        bridgeDerivation modelCompatibility :=
+  smoothability_bridge_tail_payload_of_subobligations_payload M
+    (smoothability_subobligations_of_smoothability_package
+      dependencies.smoothability M)
+
+/--
+The strengthened aggregate dependency bridge-tail payload is the generic tail
+projection applied to the stored smoothability package's sub-obligation payload.
+-/
+theorem smoothability_bridge_tail_payload_of_poincareProofDependenciesWithEquationBoundary_package_projection_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    smoothability_bridge_tail_payload_of_poincareProofDependenciesWithEquationBoundary_package_projection
+        dependencies M =
+      smoothability_bridge_tail_payload_of_subobligations_payload M
+        (smoothability_subobligations_of_smoothability_package
+          dependencies.smoothability M) :=
+  rfl
 
 /--
 Project the universal boundary-carrying surgery package family from the
