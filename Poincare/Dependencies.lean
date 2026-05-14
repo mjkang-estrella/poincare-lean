@@ -54,6 +54,109 @@ structure PoincareProofDependenciesWithEquationBoundary where
   /-- Completed post-extinction topological extraction package. -/
   topology : ExtinctionTopologyExtractionPackage.{u}
 
+/-- Project the smoothability bridge from the aggregate dependency package. -/
+theorem smoothability_of_poincareProofDependencies
+    (dependencies : PoincareProofDependencies.{u}) :
+    SmoothabilityPackage.{u} :=
+  dependencies.smoothability
+
+/-- The aggregate smoothability projection is the stored smoothability field. -/
+@[simp] theorem smoothability_of_poincareProofDependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    smoothability_of_poincareProofDependencies dependencies =
+      dependencies.smoothability :=
+  rfl
+
+/-- Project the surgery family from the aggregate dependency package. -/
+theorem surgery_of_poincareProofDependencies
+    (dependencies : PoincareProofDependencies.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M) :=
+  dependencies.surgery
+
+/-- The aggregate surgery projection is the stored surgery field. -/
+@[simp] theorem surgery_of_poincareProofDependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    surgery_of_poincareProofDependencies dependencies =
+      dependencies.surgery :=
+  rfl
+
+/-- Project the topology-extraction package from the aggregate dependencies. -/
+theorem topology_of_poincareProofDependencies
+    (dependencies : PoincareProofDependencies.{u}) :
+    ExtinctionTopologyExtractionPackage.{u} :=
+  dependencies.topology
+
+/-- The aggregate topology projection is the stored topology field. -/
+@[simp] theorem topology_of_poincareProofDependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topology_of_poincareProofDependencies dependencies =
+      dependencies.topology :=
+  rfl
+
+/--
+Project the smoothability bridge from the strengthened equation-boundary
+aggregate dependency package.
+-/
+theorem smoothability_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    SmoothabilityPackage.{u} :=
+  dependencies.smoothability
+
+/--
+The strengthened aggregate smoothability projection is the stored
+smoothability field.
+-/
+@[simp] theorem smoothability_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    smoothability_of_poincareProofDependenciesWithEquationBoundary dependencies =
+      dependencies.smoothability :=
+  rfl
+
+/--
+Project the boundary-carrying surgery family from the strengthened aggregate
+dependency package.
+-/
+theorem surgery_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        Nonempty
+          (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :=
+  dependencies.surgery
+
+/--
+The strengthened aggregate surgery projection is the stored surgery field.
+-/
+@[simp] theorem surgery_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgery_of_poincareProofDependenciesWithEquationBoundary dependencies =
+      dependencies.surgery :=
+  rfl
+
+/--
+Project the topology-extraction package from the strengthened aggregate
+dependency package.
+-/
+theorem topology_of_poincareProofDependenciesWithEquationBoundary
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ExtinctionTopologyExtractionPackage.{u} :=
+  dependencies.topology
+
+/--
+The strengthened aggregate topology projection is the stored topology field.
+-/
+@[simp] theorem topology_of_poincareProofDependenciesWithEquationBoundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    topology_of_poincareProofDependenciesWithEquationBoundary dependencies =
+      dependencies.topology :=
+  rfl
+
 /--
 Forget explicit equation boundaries from the strengthened dependency package,
 recovering the ordinary aggregate dependencies consumed by the existing final
@@ -82,6 +185,66 @@ theorem dependencies_of_equation_boundary_dependencies_eq
              ⟨payload.1,
                surgery_package_of_equation_boundary_surgery_package payload.2⟩)
          topology := dependencies.topology } : PoincareProofDependencies.{u}) :=
+  rfl
+
+/--
+Forgetting equation boundaries preserves the smoothability package exactly.
+-/
+@[simp] theorem smoothability_of_dependencies_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    smoothability_of_poincareProofDependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) =
+      smoothability_of_poincareProofDependenciesWithEquationBoundary
+        dependencies :=
+  rfl
+
+/--
+Forgetting equation boundaries preserves the topology-extraction package
+exactly.
+-/
+@[simp] theorem topology_of_dependencies_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    topology_of_poincareProofDependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) =
+      topology_of_poincareProofDependenciesWithEquationBoundary
+        dependencies :=
+  rfl
+
+/--
+Forgetting equation boundaries sends the strengthened surgery family to the
+ordinary family obtained by forgetting each selected package's equation
+boundary.
+-/
+theorem surgery_of_dependencies_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    surgery_of_poincareProofDependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) =
+      fun M => (surgery_of_poincareProofDependenciesWithEquationBoundary
+        dependencies M).map
+          (fun payload =>
+            ⟨payload.1,
+              surgery_package_of_equation_boundary_surgery_package
+                payload.2⟩) :=
+  rfl
+
+/--
+Applying the forgotten surgery family at a target manifold is definitionally
+the nonempty image of the strengthened family under the package-forgetting map.
+-/
+theorem surgery_of_dependencies_of_equation_boundary_dependencies_apply_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    surgery_of_poincareProofDependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) M =
+      (surgery_of_poincareProofDependenciesWithEquationBoundary
+        dependencies M).map
+          (fun payload =>
+            ⟨payload.1,
+              surgery_package_of_equation_boundary_surgery_package
+                payload.2⟩) :=
   rfl
 
 /--
