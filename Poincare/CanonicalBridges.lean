@@ -339,6 +339,32 @@ theorem canonical_completion_payload_of_completion_certificate_of_remaining_depe
   apply Subsingleton.elim
 
 /--
+The remaining-dependency certificate project payload agrees with the
+package-level Poincare payload assembled from the same smoothability and
+surgery families.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_remaining_dependency_package_to_smoothability_surgery_packages_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_completion_payload_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_package dependencies) =
+      poincare_conjecture_payload_of_smoothability_and_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency certificate reserved endpoint payload agrees with the
+package-level Poincare payload assembled from the same smoothability and
+surgery families.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_of_remaining_dependency_package_to_smoothability_surgery_packages_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_conjecture_payload_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_package dependencies) =
+      poincare_conjecture_payload_of_smoothability_and_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
 The remaining-dependency certificate canonical target agrees with the
 package-level canonical completion target assembled from the same smoothability
 and surgery families.
@@ -348,6 +374,32 @@ theorem canonical_completion_target_of_completion_certificate_of_remaining_depen
     canonical_completion_target_of_completion_certificate
         (completion_certificate_of_remaining_dependency_package dependencies) =
       canonical_completion_target_of_smoothability_and_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency certificate project target agrees with the
+package-level Poincare endpoint assembled from the same smoothability and
+surgery families.
+-/
+theorem target_statement_of_completion_certificate_of_remaining_dependency_package_to_smoothability_surgery_packages_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    target_statement_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_package dependencies) =
+      poincare_conjecture_of_smoothability_and_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency certificate reserved theorem endpoint agrees with the
+package-level Poincare endpoint assembled from the same smoothability and
+surgery families.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_package_to_smoothability_surgery_packages_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_conjecture_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_package dependencies) =
+      poincare_conjecture_of_smoothability_and_surgery_packages
         dependencies.smoothability dependencies.surgery := by
   apply Subsingleton.elim
 
@@ -421,6 +473,32 @@ theorem canonical_completion_payload_of_completion_certificate_of_poincareProofD
   apply Subsingleton.elim
 
 /--
+The aggregate dependency certificate project payload agrees with the
+package-level Poincare payload assembled from the same smoothability and
+surgery families.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_to_smoothability_surgery_packages_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies dependencies) =
+      poincare_conjecture_payload_of_smoothability_and_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency certificate reserved endpoint payload agrees with the
+package-level Poincare payload assembled from the same smoothability and
+surgery families.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_to_smoothability_surgery_packages_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_payload_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies dependencies) =
+      poincare_conjecture_payload_of_smoothability_and_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency certificate canonical target agrees with the
 package-level canonical completion target assembled from the same smoothability
 and surgery families.
@@ -430,6 +508,32 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     canonical_completion_target_of_completion_certificate
         (completion_certificate_of_poincareProofDependencies dependencies) =
       canonical_completion_target_of_smoothability_and_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency certificate project target agrees with the
+package-level Poincare endpoint assembled from the same smoothability and
+surgery families.
+-/
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_to_smoothability_surgery_packages_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies dependencies) =
+      poincare_conjecture_of_smoothability_and_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency certificate reserved theorem endpoint agrees with the
+package-level Poincare endpoint assembled from the same smoothability and
+surgery families.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_to_smoothability_surgery_packages_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies dependencies) =
+      poincare_conjecture_of_smoothability_and_surgery_packages
         dependencies.smoothability dependencies.surgery := by
   apply Subsingleton.elim
 
