@@ -1450,6 +1450,60 @@ theorem poincare_full_assembly_payload_of_equation_boundary_dependencies_eq
   apply Subsingleton.elim
 
 /--
+The smoothability component consumed by the strengthened aggregate
+full-assembly payload is the structural smoothability projection of the
+strengthened aggregate dependencies.
+-/
+theorem smoothability_of_poincare_full_assembly_payload_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    (by
+      rcases
+          poincare_full_assembly_payload_of_equation_boundary_dependencies
+            dependencies with
+        ⟨smoothabilityPackage, _surgeryPackages, _topologyPackage,
+          _finiteExtinction, _extractSphere, _target⟩
+      exact smoothabilityPackage) =
+      smoothability_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The boundary-carrying surgery-family component consumed by the strengthened
+aggregate full-assembly payload is the structural surgery projection of the
+strengthened aggregate dependencies.
+-/
+theorem surgery_of_poincare_full_assembly_payload_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    (by
+      rcases
+          poincare_full_assembly_payload_of_equation_boundary_dependencies
+            dependencies with
+        ⟨_smoothabilityPackage, surgeryPackages, _topologyPackage,
+          _finiteExtinction, _extractSphere, _target⟩
+      exact surgeryPackages) =
+      surgery_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The topology-extraction component consumed by the strengthened aggregate
+full-assembly payload is the structural topology projection of the strengthened
+aggregate dependencies.
+-/
+theorem topology_of_poincare_full_assembly_payload_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    (by
+      rcases
+          poincare_full_assembly_payload_of_equation_boundary_dependencies
+            dependencies with
+        ⟨_smoothabilityPackage, _surgeryPackages, topologyPackage,
+          _finiteExtinction, _extractSphere, _target⟩
+      exact topologyPackage) =
+      topology_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 Forgetting the boundary-carrying surgery family in the strengthened full
 assembly payload recovers the ordinary aggregate full assembly payload shape.
 -/
