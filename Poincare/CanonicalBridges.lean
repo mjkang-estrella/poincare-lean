@@ -176,6 +176,98 @@ theorem completion_certificate_of_canonical_statement_payload
     dependencies, target, criterion⟩
 
 /--
+A remaining-dependency package together with the named universal finite
+extinction input constructs the checked completion certificate through the
+finite-extinction-only canonical target.
+-/
+theorem completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+    (dependencies : RemainingDependencyPackage.{u})
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    PoincareCompletionCertificate.{u} := by
+  let target : canonicalCompletionTarget.{u} :=
+    canonical_completion_target_of_universalFiniteExtinctionStatement
+      finiteExtinction
+  exact ⟨canonicalCompletionTheoremName, rfl, dependencies, target,
+    fun witness =>
+      completion_criterion_of_canonical_completion_target witness target⟩
+
+/--
+The universal finite-extinction certificate constructor is the literal
+completion certificate assembled from the finite-extinction-only canonical
+target and its criterion.
+-/
+theorem completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+        dependencies finiteExtinction =
+      (by
+        let target : canonicalCompletionTarget.{u} :=
+          canonical_completion_target_of_universalFiniteExtinctionStatement
+            finiteExtinction
+        exact ⟨canonicalCompletionTheoremName, rfl, dependencies, target,
+          fun witness =>
+            completion_criterion_of_canonical_completion_target
+              witness target⟩) := by
+  apply Subsingleton.elim
+
+/--
+The universal finite-extinction certificate has exactly the
+finite-extinction-only canonical target as its certificate target.
+-/
+theorem completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_target_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    canonical_completion_target_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+          dependencies finiteExtinction) =
+      canonical_completion_target_of_universalFiniteExtinctionStatement
+        finiteExtinction := by
+  apply Subsingleton.elim
+
+/--
+The universal finite-extinction certificate exposes the same Poincare endpoint
+as the named universal finite-extinction route.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    poincare_conjecture_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+          dependencies finiteExtinction) =
+      poincare_conjecture_of_universalFiniteExtinctionStatement
+        finiteExtinction := by
+  apply Subsingleton.elim
+
+/--
+The universal finite-extinction certificate payload is the canonical payload
+obtained directly from the named universal finite-extinction input.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    canonical_completion_payload_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+          dependencies finiteExtinction) =
+      canonical_completion_payload_of_universalFiniteExtinctionStatement
+        finiteExtinction := by
+  apply Subsingleton.elim
+
+/--
+The universal finite-extinction certificate's reserved-name payload is the
+finite-extinction-only reserved-name payload.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    poincare_conjecture_payload_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+          dependencies finiteExtinction) =
+      poincare_conjecture_payload_of_universalFiniteExtinctionStatement
+        finiteExtinction := by
+  apply Subsingleton.elim
+
+/--
 The checked completion certificate is equivalent to a literal reserved-name
 artifact payload that also records the canonical topological statement.
 -/
