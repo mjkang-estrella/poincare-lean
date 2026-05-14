@@ -303,6 +303,103 @@ theorem equation_boundary_dependencies_of_dependencies_and_verification_family_e
   rfl
 
 /--
+The verification-family lift preserves the aggregate smoothability component.
+-/
+@[simp] theorem smoothability_of_equation_boundary_dependencies_of_dependencies_and_verification_family_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    smoothability_of_poincareProofDependenciesWithEquationBoundary
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) =
+      smoothability_of_poincareProofDependencies dependencies :=
+  rfl
+
+/--
+The verification-family lift maps the aggregate surgery family by attaching
+the supplied equation verification to each selected surgery package.
+-/
+theorem surgery_of_equation_boundary_dependencies_of_dependencies_and_verification_family_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    surgery_of_poincareProofDependenciesWithEquationBoundary
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) =
+      fun M => (surgery_of_poincareProofDependencies dependencies M).map
+        (fun payload =>
+          ⟨payload.1,
+            surgery_package_with_equation_boundary_of_ricci_flow_equation_verification
+              payload.2
+              (verificationFamily M payload)⟩) :=
+  rfl
+
+/--
+Applying the lifted surgery family at a target manifold is the nonempty image
+of the ordinary surgery family under the equation-verification constructor.
+-/
+theorem surgery_of_equation_boundary_dependencies_of_dependencies_and_verification_family_apply_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2)))
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    surgery_of_poincareProofDependenciesWithEquationBoundary
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) M =
+      (surgery_of_poincareProofDependencies dependencies M).map
+        (fun payload =>
+          ⟨payload.1,
+            surgery_package_with_equation_boundary_of_ricci_flow_equation_verification
+              payload.2
+              (verificationFamily M payload)⟩) :=
+  rfl
+
+/--
+The verification-family lift preserves the aggregate topology-extraction
+component.
+-/
+@[simp] theorem topology_of_equation_boundary_dependencies_of_dependencies_and_verification_family_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (verificationFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    topology_of_poincareProofDependenciesWithEquationBoundary
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) =
+      topology_of_poincareProofDependencies dependencies :=
+  rfl
+
+/--
 The aggregate package exposes exactly its three outstanding component inputs:
 smoothability, the target-family surgery package, and topology extraction.
 -/
@@ -345,6 +442,16 @@ theorem smoothabilityPackage_of_poincareProofDependencies_eq
   apply Subsingleton.elim
 
 /--
+The older aggregate smoothability projection name agrees with the structural
+projection name.
+-/
+theorem smoothabilityPackage_of_poincareProofDependencies_to_structural_projection_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    smoothabilityPackage_of_poincareProofDependencies dependencies =
+      smoothability_of_poincareProofDependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
 Project the universal finite-extinction surgery package family from the
 aggregate dependency package.
 -/
@@ -366,6 +473,16 @@ theorem surgeryPackages_of_poincareProofDependencies_eq
       dependencies.surgery := by
   apply Subsingleton.elim
 
+/--
+The older aggregate surgery-family projection name agrees with the structural
+projection name.
+-/
+theorem surgeryPackages_of_poincareProofDependencies_to_structural_projection_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    surgeryPackages_of_poincareProofDependencies dependencies =
+      surgery_of_poincareProofDependencies dependencies := by
+  apply Subsingleton.elim
+
 /-- Project the topology extraction obligation from the aggregate dependency package. -/
 theorem topologyExtractionPackage_of_poincareProofDependencies
     (dependencies : PoincareProofDependencies.{u}) :
@@ -379,6 +496,16 @@ theorem topologyExtractionPackage_of_poincareProofDependencies_eq
     (dependencies : PoincareProofDependencies.{u}) :
     topologyExtractionPackage_of_poincareProofDependencies dependencies =
       dependencies.topology := by
+  apply Subsingleton.elim
+
+/--
+The older aggregate topology projection name agrees with the structural
+projection name.
+-/
+theorem topologyExtractionPackage_of_poincareProofDependencies_to_structural_projection_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topologyExtractionPackage_of_poincareProofDependencies dependencies =
+      topology_of_poincareProofDependencies dependencies := by
   apply Subsingleton.elim
 
 /--
@@ -535,6 +662,18 @@ theorem smoothabilityPackage_of_poincareProofDependenciesWithEquationBoundary_eq
   apply Subsingleton.elim
 
 /--
+The older strengthened smoothability projection name agrees with the structural
+projection name.
+-/
+theorem smoothabilityPackage_of_poincareProofDependenciesWithEquationBoundary_to_structural_projection_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    smoothabilityPackage_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      smoothability_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 Project the universal boundary-carrying surgery package family from the
 strengthened aggregate dependency package.
 -/
@@ -560,6 +699,18 @@ theorem boundarySurgeryPackages_of_poincareProofDependenciesWithEquationBoundary
   apply Subsingleton.elim
 
 /--
+The older strengthened boundary-surgery projection name agrees with the
+structural projection name.
+-/
+theorem boundarySurgeryPackages_of_poincareProofDependenciesWithEquationBoundary_to_structural_projection_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    boundarySurgeryPackages_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      surgery_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
 Project the topology extraction obligation from the strengthened aggregate
 dependency package.
 -/
@@ -577,6 +728,18 @@ theorem topologyExtractionPackage_of_poincareProofDependenciesWithEquationBounda
     topologyExtractionPackage_of_poincareProofDependenciesWithEquationBoundary
         dependencies =
       dependencies.topology := by
+  apply Subsingleton.elim
+
+/--
+The older strengthened topology projection name agrees with the structural
+projection name.
+-/
+theorem topologyExtractionPackage_of_poincareProofDependenciesWithEquationBoundary_to_structural_projection_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    topologyExtractionPackage_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      topology_of_poincareProofDependenciesWithEquationBoundary
+        dependencies := by
   apply Subsingleton.elim
 
 /--
