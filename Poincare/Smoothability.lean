@@ -3371,4 +3371,18 @@ theorem smoothability_subobligations_of_smoothability_package_eq
         (smooth_chart_compatibility_of_smoothability_package package M) := by
   apply Subsingleton.elim
 
+/--
+The direct package-level sub-obligation payload is the final component of the
+richer bridge payload exposing manifold evidence and compatibility
+certificates.
+-/
+theorem smoothability_subobligations_of_smoothability_package_to_bridge_payload_eq
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    smoothability_subobligations_of_smoothability_package package M =
+      (smoothability_bridge_payload_of_smoothability_package package M).2.2.2.2 := by
+  apply Subsingleton.elim
+
 end Poincare
