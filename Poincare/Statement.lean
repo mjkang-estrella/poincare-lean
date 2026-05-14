@@ -79,6 +79,58 @@ theorem threeSphere_chartedSpace_eq :
       (inferInstance : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere) :=
   rfl
 
+/--
+The ambient vector space for `ThreeSphere` has the finrank required by
+mathlib's `stereographic' 3` chart constructor.
+-/
+instance threeSphere_stereographic_finrank_fact :
+    Fact (Module.finrank ℝ (EuclideanSpace ℝ (Fin 4)) = 3 + 1) :=
+  ⟨by simp [EuclideanSpace]⟩
+
+/--
+The stereographic chart at a point of the standard `ThreeSphere` identifies
+its source, the punctured sphere away from that point, with `ℝ³`.
+-/
+noncomputable def threeSphere_stereographic_source_homeomorph
+    (v : ThreeSphere) :
+    (stereographic' 3 v).source ≃ₜ EuclideanSpace ℝ (Fin 3) :=
+  (stereographic' 3 v).toHomeomorphSourceTarget.trans
+    ((Homeomorph.setCongr (stereographic'_target v)).trans
+      (Homeomorph.Set.univ (EuclideanSpace ℝ (Fin 3))))
+
+/--
+The stereographic source homeomorphism is exactly the source-target
+homeomorphism of the stereographic chart followed by the target-universe
+identification.
+-/
+theorem threeSphere_stereographic_source_homeomorph_eq
+    (v : ThreeSphere) :
+    threeSphere_stereographic_source_homeomorph v =
+      (stereographic' 3 v).toHomeomorphSourceTarget.trans
+        ((Homeomorph.setCongr (stereographic'_target v)).trans
+          (Homeomorph.Set.univ (EuclideanSpace ℝ (Fin 3)))) :=
+  rfl
+
+/--
+Each stereographic source of `ThreeSphere` is simply connected, because it is
+homeomorphic to the contractible Euclidean space `ℝ³`.
+-/
+theorem threeSphere_stereographic_source_simplyConnectedSpace
+    (v : ThreeSphere) :
+    SimplyConnectedSpace (stereographic' 3 v).source :=
+  (threeSphere_stereographic_source_homeomorph v).toHomotopyEquiv.simplyConnectedSpace
+
+/--
+The simple-connectedness witness for a stereographic source is obtained by
+transporting the Euclidean-space witness across the stereographic
+homeomorphism.
+-/
+theorem threeSphere_stereographic_source_simplyConnectedSpace_eq
+    (v : ThreeSphere) :
+    threeSphere_stereographic_source_simplyConnectedSpace v =
+      (threeSphere_stereographic_source_homeomorph v).toHomotopyEquiv.simplyConnectedSpace := by
+  apply Subsingleton.elim
+
 /-- The target 3-sphere carries the expected smooth manifold structure. -/
 theorem threeSphere_smoothManifold :
     IsManifold (𝓡 3) ∞ ThreeSphere :=
