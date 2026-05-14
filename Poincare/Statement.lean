@@ -2797,6 +2797,99 @@ theorem threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenLoopStat
   funext h
   apply Subsingleton.elim
 
+/--
+A full stereographic Van Kampen reduction proof supplies full
+loop-nullhomotopy on `S^3`.
+-/
+theorem threeSphere_loopNullhomotopyStatement_of_stereographicVanKampenReductionStatement
+    (h : ThreeSphereStereographicVanKampenReductionStatement) :
+    ThreeSphereLoopNullhomotopyStatement :=
+  threeSphere_loopNullhomotopyStatement_of_stereographicVanKampenLoopStatement
+    (threeSphere_stereographicVanKampenLoopStatement_iff_reductionStatement.mpr h)
+
+/-- The stereographic-reduction-to-full-loop route projects the loop component. -/
+theorem threeSphere_loopNullhomotopyStatement_of_stereographicVanKampenReductionStatement_eq :
+    threeSphere_loopNullhomotopyStatement_of_stereographicVanKampenReductionStatement =
+      (fun h : ThreeSphereStereographicVanKampenReductionStatement =>
+        threeSphere_loopNullhomotopyStatement_of_stereographicVanKampenLoopStatement
+          (threeSphere_stereographicVanKampenLoopStatement_iff_reductionStatement.mpr h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- A full stereographic Van Kampen reduction proof supplies path-homotopy uniqueness on `S^3`. -/
+theorem threeSphere_pathHomotopyStatement_of_stereographicVanKampenReductionStatement
+    (h : ThreeSphereStereographicVanKampenReductionStatement) :
+    ThreeSpherePathHomotopyStatement :=
+  threeSphere_pathHomotopyStatement_of_stereographicVanKampenLoopStatement
+    (threeSphere_stereographicVanKampenLoopStatement_iff_reductionStatement.mpr h)
+
+/-- The stereographic-reduction-to-path route projects the loop component. -/
+theorem threeSphere_pathHomotopyStatement_of_stereographicVanKampenReductionStatement_eq :
+    threeSphere_pathHomotopyStatement_of_stereographicVanKampenReductionStatement =
+      (fun h : ThreeSphereStereographicVanKampenReductionStatement =>
+        (threeSphere_pathHomotopyStatement_of_stereographicVanKampenLoopStatement
+          (threeSphere_stereographicVanKampenLoopStatement_iff_reductionStatement.mpr h) :
+            ThreeSpherePathHomotopyStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+A full stereographic Van Kampen reduction proof supplies path-quotient
+uniqueness on `S^3`.
+-/
+theorem threeSphere_pathQuotientSubsingletonStatement_of_stereographicVanKampenReductionStatement
+    (h : ThreeSphereStereographicVanKampenReductionStatement) :
+    ThreeSpherePathQuotientSubsingletonStatement :=
+  threeSphere_pathQuotientSubsingletonStatement_of_stereographicVanKampenLoopStatement
+    (threeSphere_stereographicVanKampenLoopStatement_iff_reductionStatement.mpr h)
+
+/-- The stereographic-reduction-to-path-quotient route projects the loop component. -/
+theorem threeSphere_pathQuotientSubsingletonStatement_of_stereographicVanKampenReductionStatement_eq :
+    threeSphere_pathQuotientSubsingletonStatement_of_stereographicVanKampenReductionStatement =
+      (fun h : ThreeSphereStereographicVanKampenReductionStatement =>
+        (threeSphere_pathQuotientSubsingletonStatement_of_stereographicVanKampenLoopStatement
+          (threeSphere_stereographicVanKampenLoopStatement_iff_reductionStatement.mpr h) :
+            ThreeSpherePathQuotientSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+A full stereographic Van Kampen reduction proof supplies fundamental-group
+triviality on `S^3`.
+-/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenReductionStatement
+    (h : ThreeSphereStereographicVanKampenReductionStatement) :
+    ThreeSphereFundamentalGroupSubsingletonStatement :=
+  threeSphere_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenLoopStatement
+    (threeSphere_stereographicVanKampenLoopStatement_iff_reductionStatement.mpr h)
+
+/-- The stereographic-reduction-to-fundamental-group route projects the loop component. -/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenReductionStatement_eq :
+    threeSphere_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenReductionStatement =
+      (fun h : ThreeSphereStereographicVanKampenReductionStatement =>
+        (threeSphere_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenLoopStatement
+          (threeSphere_stereographicVanKampenLoopStatement_iff_reductionStatement.mpr h) :
+            ThreeSphereFundamentalGroupSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/-- A full stereographic Van Kampen reduction proof supplies the `π₁` formulation on `S^3`. -/
+theorem threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenReductionStatement
+    (h : ThreeSphereStereographicVanKampenReductionStatement) :
+    ThreeSpherePiOneSubsingletonStatement :=
+  threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenLoopStatement
+    (threeSphere_stereographicVanKampenLoopStatement_iff_reductionStatement.mpr h)
+
+/-- The stereographic-reduction-to-`π₁` route projects the loop component. -/
+theorem threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenReductionStatement_eq :
+    threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenReductionStatement =
+      (fun h : ThreeSphereStereographicVanKampenReductionStatement =>
+        (threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenLoopStatement
+          (threeSphere_stereographicVanKampenLoopStatement_iff_reductionStatement.mpr h) :
+            ThreeSpherePiOneSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
 /-- North-pole based loop-nullhomotopy supplies path-homotopy uniqueness on `S^3`. -/
 theorem threeSphere_pathHomotopyStatement_of_northPoleLoopNullhomotopyStatement
     (h : ThreeSphereNorthPoleLoopNullhomotopyStatement) :
