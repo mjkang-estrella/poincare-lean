@@ -322,6 +322,76 @@ theorem poincare_conjecture_payload_of_universalFiniteExtinctionStatement_eq
   apply Subsingleton.elim
 
 /--
+The named universal finite-extinction input also discharges the explicit
+universe-indexed completion criterion through the reserved endpoint payload.
+-/
+theorem completion_criterion_of_universalFiniteExtinctionStatement
+    (witness : Type u)
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    CompletionCriterionAtUniverse witness := by
+  rcases
+      poincare_conjecture_payload_of_universalFiniteExtinctionStatement
+        finiteExtinction with
+    ⟨_target, criterion⟩
+  exact criterion witness
+
+/--
+The universal finite-extinction completion criterion is exactly the criterion
+component extracted from the named reserved endpoint payload.
+-/
+theorem completion_criterion_of_universalFiniteExtinctionStatement_eq
+    (witness : Type u)
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    completion_criterion_of_universalFiniteExtinctionStatement
+        witness finiteExtinction =
+      (by
+        rcases
+            poincare_conjecture_payload_of_universalFiniteExtinctionStatement
+              finiteExtinction with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The named universal finite-extinction input exposes the reserved endpoint and
+all universe-indexed completion criteria as one payload.
+-/
+theorem universalFiniteExtinctionStatement_completion_payload
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  ⟨poincare_conjecture_of_universalFiniteExtinctionStatement finiteExtinction,
+    fun witness =>
+      completion_criterion_of_universalFiniteExtinctionStatement
+        witness finiteExtinction⟩
+
+/--
+The universal finite-extinction completion payload is exactly the reserved
+endpoint paired with the named universal finite-extinction criterion
+projection.
+-/
+theorem universalFiniteExtinctionStatement_completion_payload_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    universalFiniteExtinctionStatement_completion_payload finiteExtinction =
+      ⟨poincare_conjecture_of_universalFiniteExtinctionStatement
+          finiteExtinction,
+        fun witness =>
+          completion_criterion_of_universalFiniteExtinctionStatement
+            witness finiteExtinction⟩ := by
+  apply Subsingleton.elim
+
+/--
+The explicit universal finite-extinction completion payload agrees with the
+reserved endpoint payload.
+-/
+theorem universalFiniteExtinctionStatement_completion_payload_to_reserved_payload_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    universalFiniteExtinctionStatement_completion_payload finiteExtinction =
+      poincare_conjecture_payload_of_universalFiniteExtinctionStatement
+        finiteExtinction := by
+  apply Subsingleton.elim
+
+/--
 Conversely, a proof of the project target supplies the theorem-shaped
 post-extinction extraction interface. The extinction input is unused because
 the target already gives the homeomorphism conclusion for every closed simply
