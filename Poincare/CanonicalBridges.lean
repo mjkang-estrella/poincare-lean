@@ -268,6 +268,35 @@ theorem poincare_conjecture_payload_of_completion_certificate_of_remaining_depen
   apply Subsingleton.elim
 
 /--
+The existing remaining-dependency completion certificate factors through the
+named universal finite-extinction boundary exposed by the remaining dependency
+package.
+-/
+theorem completion_certificate_of_remaining_dependency_package_to_universalFiniteExtinctionStatement_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    completion_certificate_of_remaining_dependency_package dependencies =
+      completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+        dependencies
+        (universalFiniteExtinctionStatement_of_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency completion certificate factors through the named
+universal finite-extinction boundary exposed by the aggregate dependency
+package.
+-/
+theorem completion_certificate_of_poincareProofDependencies_to_universalFiniteExtinctionStatement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    completion_certificate_of_poincareProofDependencies dependencies =
+      completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies)
+        (universalFiniteExtinctionStatement_of_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The checked completion certificate is equivalent to a literal reserved-name
 artifact payload that also records the canonical topological statement.
 -/
