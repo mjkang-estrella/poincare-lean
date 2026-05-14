@@ -222,6 +222,35 @@ theorem threeSphere_stereographic_antipodal_sources_cover_eq
         · exact Or.inl hx) := by
   apply Subsingleton.elim
 
+/--
+The overlap of two antipodal stereographic sources is the complement of the two
+excluded antipodal points.
+-/
+theorem threeSphere_stereographic_antipodal_sources_inter
+    (v : ThreeSphere) :
+    (stereographic' 3 v).source ∩ (stereographic' 3 (-v)).source =
+      ({v} ∪ {-v})ᶜ := by
+  rw [threeSphere_stereographic_source_eq_compl_singleton,
+    threeSphere_stereographic_source_eq_compl_singleton]
+  ext x
+  simp only [Set.mem_inter_iff, Set.mem_compl_iff, Set.mem_singleton_iff,
+    Set.mem_union, not_or]
+
+/--
+The antipodal-source overlap statement is exactly the complement-of-two-points
+description obtained from the two stereographic source descriptions.
+-/
+theorem threeSphere_stereographic_antipodal_sources_inter_eq
+    (v : ThreeSphere) :
+    threeSphere_stereographic_antipodal_sources_inter v =
+      (by
+        rw [threeSphere_stereographic_source_eq_compl_singleton,
+          threeSphere_stereographic_source_eq_compl_singleton]
+        ext x
+        simp only [Set.mem_inter_iff, Set.mem_compl_iff, Set.mem_singleton_iff,
+          Set.mem_union, not_or]) := by
+  apply Subsingleton.elim
+
 /-- The target 3-sphere carries the expected smooth manifold structure. -/
 theorem threeSphere_smoothManifold :
     IsManifold (𝓡 3) ∞ ThreeSphere :=
