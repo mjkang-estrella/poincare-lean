@@ -378,6 +378,59 @@ theorem canonical_completion_target_of_completion_certificate_of_remaining_depen
   apply Subsingleton.elim
 
 /--
+The smoothability/surgery package route exposes the canonical topological
+3-sphere statement through its named canonical completion target.
+-/
+theorem canonical_three_sphere_statement_of_smoothability_and_surgery_packages
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) :=
+  canonical_three_sphere_statement_of_canonical_completion_target
+    (canonical_completion_target_of_smoothability_and_surgery_packages
+      smoothabilityPackage surgeryPackages)
+
+/--
+The smoothability/surgery canonical topological statement is exactly the
+canonical-statement projection from its package-level canonical completion
+target.
+-/
+theorem canonical_three_sphere_statement_of_smoothability_and_surgery_packages_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+    canonical_three_sphere_statement_of_smoothability_and_surgery_packages
+        smoothabilityPackage surgeryPackages =
+      canonical_three_sphere_statement_of_canonical_completion_target
+        (canonical_completion_target_of_smoothability_and_surgery_packages
+          smoothabilityPackage surgeryPackages) := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency certificate canonical topological statement agrees
+with the package-level canonical topological statement assembled from the same
+smoothability and surgery families.
+-/
+theorem canonical_three_sphere_statement_of_completion_certificate_of_remaining_dependency_package_to_smoothability_surgery_packages_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_package dependencies) =
+      canonical_three_sphere_statement_of_smoothability_and_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
 The remaining-dependency certificate project target agrees with the
 package-level Poincare endpoint assembled from the same smoothability and
 surgery families.
@@ -508,6 +561,19 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     canonical_completion_target_of_completion_certificate
         (completion_certificate_of_poincareProofDependencies dependencies) =
       canonical_completion_target_of_smoothability_and_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency certificate canonical topological statement agrees
+with the package-level canonical topological statement assembled from the same
+smoothability and surgery families.
+-/
+theorem canonical_three_sphere_statement_of_completion_certificate_of_poincareProofDependencies_to_smoothability_surgery_packages_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies dependencies) =
+      canonical_three_sphere_statement_of_smoothability_and_surgery_packages
         dependencies.smoothability dependencies.surgery := by
   apply Subsingleton.elim
 
