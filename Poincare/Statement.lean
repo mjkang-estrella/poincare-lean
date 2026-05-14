@@ -585,6 +585,50 @@ theorem threeSphere_northChartImage_compl_southPole_pathConnectedSpace_eq :
         threeSphere_southPole_northChartImage := by
   apply Subsingleton.elim
 
+/--
+Inside the north-pole stereographic source, the north/south overlap is exactly
+the complement of the south-pole source point.
+-/
+theorem threeSphere_northSource_southSource_preimage_eq_compl_southPole :
+    {p : (stereographic' 3 threeSphere_northPole).source |
+        (p : ThreeSphere) ∈ (stereographic' 3 (-threeSphere_northPole)).source} =
+      {threeSphere_southPoleInNorthSource}ᶜ := by
+  ext p
+  simp only [Set.mem_setOf_eq, Set.mem_compl_iff, Set.mem_singleton_iff]
+  have hmem :
+      ((p : ThreeSphere) ∈ (stereographic' 3 (-threeSphere_northPole)).source) ↔
+        (p : ThreeSphere) ≠ -threeSphere_northPole := by
+    rw [threeSphere_stereographic_source_eq_compl_singleton]
+    simp
+  rw [hmem]
+  constructor
+  · intro hp hsub
+    exact hp (congrArg Subtype.val hsub)
+  · intro hp hval
+    exact hp (Subtype.ext hval)
+
+/--
+The north-source description of the north/south overlap is obtained by rewriting
+the south-pole stereographic source as the complement of the south pole.
+-/
+theorem threeSphere_northSource_southSource_preimage_eq_compl_southPole_eq :
+    threeSphere_northSource_southSource_preimage_eq_compl_southPole =
+      (by
+        ext p
+        simp only [Set.mem_setOf_eq, Set.mem_compl_iff, Set.mem_singleton_iff]
+        have hmem :
+            ((p : ThreeSphere) ∈ (stereographic' 3 (-threeSphere_northPole)).source) ↔
+              (p : ThreeSphere) ≠ -threeSphere_northPole := by
+          rw [threeSphere_stereographic_source_eq_compl_singleton]
+          simp
+        rw [hmem]
+        constructor
+        · intro hp hsub
+          exact hp (congrArg Subtype.val hsub)
+        · intro hp hval
+          exact hp (Subtype.ext hval)) := by
+  apply Subsingleton.elim
+
 /-- The target 3-sphere is path-connected as a subset of Euclidean space. -/
 theorem threeSphere_isPathConnected_set :
     IsPathConnected (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) := by
