@@ -10591,6 +10591,18 @@ theorem universalFiniteExtinctionStatement_of_dependencies_to_package_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level universal finite-extinction boundary is the package-level
+universal finite-extinction route obtained from the dependency package's
+smoothability and surgery families.
+-/
+theorem universalFiniteExtinctionStatement_of_dependencies_to_smoothability_surgery_packages_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    universalFiniteExtinctionStatement_of_dependencies dependencies =
+      universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
 The strengthened dependency package supplies finite extinction by installing
 its smoothability bridge and extracting the witness from the named
 equation-boundary verification payload.
@@ -10728,6 +10740,19 @@ theorem universalFiniteExtinctionStatement_of_equation_boundary_dependencies_to_
         dependencies =
       universalFiniteExtinctionStatement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency universal finite-extinction boundary is the
+boundary-carrying package-level universal finite-extinction route obtained from
+the strengthened dependency package's smoothability and surgery families.
+-/
+theorem universalFiniteExtinctionStatement_of_equation_boundary_dependencies_to_smoothability_boundary_surgery_packages_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    universalFiniteExtinctionStatement_of_equation_boundary_dependencies
+        dependencies =
+      universalFiniteExtinctionStatement_of_smoothability_and_boundary_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
   apply Subsingleton.elim
 
 /--
