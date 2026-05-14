@@ -2275,6 +2275,23 @@ theorem poincare_conjecture_payload_of_dependencies_eq
   apply Subsingleton.elim
 
 /--
+The aggregate reserved-endpoint payload can also be routed through the
+finite-extinction-only endpoint, because the current Ricci-flow interface
+discharges the post-extinction extractor by eliminating extinction witnesses.
+-/
+theorem poincare_conjecture_payload_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_payload_of_dependencies dependencies =
+      (by
+        rcases poincare_assembly_inputs_payload_of_aggregate_dependencies
+            dependencies with
+          ⟨finiteExtinction, _extractSphere⟩
+        exact
+          poincare_conjecture_payload_of_finite_extinction
+            finiteExtinction) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency package is sufficient for the reserved conditional
 endpoint. This theorem still requires the full aggregate dependency package; it
 does not provide an unconditional `poincare_conjecture`.
@@ -2297,6 +2314,22 @@ theorem poincare_conjecture_of_dependencies_eq
         rcases poincare_conjecture_payload_of_dependencies dependencies with
           ⟨target, _criterion⟩
         exact target) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate reserved endpoint also factors through the finite-extinction-only
+endpoint after projecting finite extinction from the aggregate dependency
+package.
+-/
+theorem poincare_conjecture_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_of_dependencies dependencies =
+      (by
+        rcases poincare_assembly_inputs_payload_of_aggregate_dependencies
+            dependencies with
+          ⟨finiteExtinction, _extractSphere⟩
+        exact
+          poincare_conjecture_of_finite_extinction finiteExtinction) := by
   apply Subsingleton.elim
 
 /--
@@ -2420,6 +2453,23 @@ theorem poincare_conjecture_payload_of_equation_boundary_dependencies_to_finite_
   apply Subsingleton.elim
 
 /--
+The strengthened aggregate reserved-endpoint payload can also bypass the stored
+topology extractor and use the finite-extinction-only endpoint.
+-/
+theorem poincare_conjecture_payload_of_equation_boundary_dependencies_to_finite_extinction_only_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_conjecture_payload_of_equation_boundary_dependencies
+        dependencies =
+      (by
+        let finiteExtinction :=
+          finite_extinction_input_of_smoothability_and_boundary_surgery_packages
+            dependencies.smoothability dependencies.surgery
+        exact
+          poincare_conjecture_payload_of_finite_extinction
+            finiteExtinction) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate dependency package is sufficient for the reserved
 conditional endpoint after forgetting equation-boundary data.
 -/
@@ -2472,6 +2522,22 @@ theorem poincare_conjecture_of_equation_boundary_dependencies_to_finite_extincti
         exact
           poincare_conjecture_of_extinction_and_extraction
             finiteExtinction extractSphere) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate reserved endpoint also factors through the
+finite-extinction-only endpoint after projecting the boundary finite-extinction
+input.
+-/
+theorem poincare_conjecture_of_equation_boundary_dependencies_to_finite_extinction_only_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_conjecture_of_equation_boundary_dependencies dependencies =
+      (by
+        let finiteExtinction :=
+          finite_extinction_input_of_smoothability_and_boundary_surgery_packages
+            dependencies.smoothability dependencies.surgery
+        exact
+          poincare_conjecture_of_finite_extinction finiteExtinction) := by
   apply Subsingleton.elim
 
 /--
