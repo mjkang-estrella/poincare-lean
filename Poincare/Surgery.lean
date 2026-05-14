@@ -9937,6 +9937,72 @@ surgery package's analytic-boundary statement.
   rfl
 
 /--
+A strengthened surgery package exposes the analytic derivation stack behind
+its equation-boundary analytic foundation statement.
+-/
+theorem analytic_derivation_of_surgery_package_with_equation_boundary
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    AnalyticFoundationDerivationStatement
+      (ricci_flow_data_of_surgery_package
+        (surgery_package_of_equation_boundary_surgery_package package)) :=
+  analytic_foundation_derivation_of_with_equation_boundary
+    (analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+      package)
+
+/--
+The strengthened surgery-package analytic derivation projection is exactly the
+generic derivation projection applied to its analytic-boundary statement.
+-/
+@[simp] theorem analytic_derivation_of_surgery_package_with_equation_boundary_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    analytic_derivation_of_surgery_package_with_equation_boundary
+        package =
+      analytic_foundation_derivation_of_with_equation_boundary
+        (analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+          package) :=
+  rfl
+
+/--
+The combined surgery-level derivation-and-boundary payload carries the same
+analytic derivation as the direct strengthened surgery-package projection.
+-/
+theorem analytic_derivation_of_surgery_package_with_equation_boundary_from_derivation_and_boundary_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    analytic_derivation_of_surgery_package_with_equation_boundary
+        package =
+      (analytic_derivation_and_boundary_payload_of_surgery_package_with_equation_boundary
+        package).1 := by
+  apply Subsingleton.elim
+
+/--
+The combined surgery-level derivation-and-boundary payload carries the same
+equation-boundary payload as the direct strengthened surgery-package projection.
+-/
+theorem equation_boundary_payload_of_surgery_package_with_equation_boundary_from_derivation_and_boundary_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    equation_boundary_payload_of_surgery_package_with_equation_boundary_analytic_statement
+        package =
+      (analytic_derivation_and_boundary_payload_of_surgery_package_with_equation_boundary
+        package).2 := by
+  apply Subsingleton.elim
+
+/--
 An ordinary surgery package plus an explicit Ricci-flow equation verification
 supplies the strengthened analytic-boundary statement for the package's
 projected Ricci-flow data.
