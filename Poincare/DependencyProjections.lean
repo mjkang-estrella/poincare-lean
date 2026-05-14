@@ -2072,6 +2072,34 @@ theorem surgery_packages_with_equation_boundary_of_dependencies_and_verification
   apply Subsingleton.elim
 
 /--
+The projection-module boundary surgery family for a verification-family lift is
+the structural surgery projection of the lifted dependency package.
+-/
+theorem surgery_packages_with_equation_boundary_of_dependencies_and_verification_family_to_structural_projection_eq :
+    surgery_packages_with_equation_boundary_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      surgery_of_poincareProofDependenciesWithEquationBoundary
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+The projection-module boundary surgery family for a verification-family lift is
+the ordinary surgery family mapped through the equation-verification
+constructor.
+-/
+theorem surgery_packages_with_equation_boundary_of_dependencies_and_verification_family_to_lifted_surgery_eq :
+    surgery_packages_with_equation_boundary_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      fun M => (surgery_of_poincareProofDependencies dependencies M).map
+        (fun payload =>
+          ⟨payload.1,
+            surgery_package_with_equation_boundary_of_ricci_flow_equation_verification
+              payload.2
+              (verificationFamily M payload)⟩) := by
+  apply Subsingleton.elim
+
+/--
 Forgetting boundary data from the verification-family lift recovers the
 ordinary surgery package family.
 -/
@@ -2105,6 +2133,16 @@ theorem surgery_packages_of_dependencies_and_verification_family_to_dependencies
     surgery_packages_of_dependencies_and_verification_family
         dependencies verificationFamily =
       surgery_packages_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The projection-module ordinary surgery family for a verification-family lift is
+the structural ordinary surgery projection of the original dependencies.
+-/
+theorem surgery_packages_of_dependencies_and_verification_family_to_structural_projection_eq :
+    surgery_packages_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      surgery_of_poincareProofDependencies dependencies := by
   apply Subsingleton.elim
 
 /--
