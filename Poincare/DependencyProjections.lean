@@ -3081,6 +3081,27 @@ theorem equation_boundary_payload_statements_of_equation_boundary_verification_p
   apply Subsingleton.elim
 
 /--
+The verification-payload equation-boundary payload family is the
+equation-boundary projection of its analytic-boundary statement family.
+-/
+theorem equation_boundary_payload_statements_of_equation_boundary_verification_payload_to_analytic_boundary_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    equation_boundary_payload_statements_of_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload
+              payload M with
+          ⟨n, flow, analyticBoundary⟩
+        exact
+          ⟨n, flow,
+            equation_boundary_payload_of_analytic_foundation_with_equation_boundary
+              analyticBoundary⟩) := by
+  apply Subsingleton.elim
+
+/--
 A verification payload's analytic-boundary statement family exposes both the
 analytic derivation stack and the concrete equation-boundary payload for each
 target manifold.
@@ -3150,6 +3171,27 @@ theorem analytic_derivation_and_boundary_payload_statements_of_equation_boundary
   apply Subsingleton.elim
 
 /--
+The verification-payload derivation-and-boundary family is the
+derivation/boundary projection of its analytic-boundary statement family.
+-/
+theorem analytic_derivation_and_boundary_payload_statements_of_equation_boundary_verification_payload_to_analytic_boundary_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    analytic_derivation_and_boundary_payload_statements_of_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload
+              payload M with
+          ⟨n, flow, analyticBoundary⟩
+        exact
+          ⟨n, flow,
+            analytic_foundation_derivation_and_boundary_payload_of_with_equation_boundary
+              analyticBoundary⟩) := by
+  apply Subsingleton.elim
+
+/--
 A verification payload's derivation-and-boundary family forgets to the
 analytic derivation statement family for each target manifold.
 -/
@@ -3175,6 +3217,46 @@ The verification-payload analytic derivation family is the forgetful projection
 of the named derivation-and-boundary family.
 -/
 theorem analytic_derivation_statements_of_equation_boundary_verification_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    analytic_derivation_statements_of_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            analytic_derivation_and_boundary_payload_statements_of_equation_boundary_verification_payload
+              payload M with
+          ⟨n, flow, derivation, _boundaryPayload⟩
+        exact ⟨n, flow, derivation⟩) := by
+  apply Subsingleton.elim
+
+/--
+The verification-payload analytic derivation family is the analytic derivation
+projection of its analytic-boundary statement family.
+-/
+theorem analytic_derivation_statements_of_equation_boundary_verification_payload_to_analytic_boundary_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    analytic_derivation_statements_of_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload
+              payload M with
+          ⟨n, flow, analyticBoundary⟩
+        rcases
+            analytic_foundation_derivation_and_boundary_payload_of_with_equation_boundary
+              analyticBoundary with
+          ⟨derivation, _boundaryPayload⟩
+        exact ⟨n, flow, derivation⟩) := by
+  apply Subsingleton.elim
+
+/--
+The verification-payload analytic derivation family is the forgetful
+projection of its derivation-and-boundary payload route.
+-/
+theorem analytic_derivation_statements_of_equation_boundary_verification_payload_to_derivation_and_boundary_payload_eq
     {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
     (payload : EquationBoundaryVerificationPayload dependencies) :
     analytic_derivation_statements_of_equation_boundary_verification_payload
