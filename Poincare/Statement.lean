@@ -950,6 +950,27 @@ theorem threeSphere_simplyConnectedSpace_of_stereographicVanKampenLoopStatement_
   apply Subsingleton.elim
 
 /--
+A supplied simple-connectedness instance gives the stereographic Van Kampen
+loop obligation at the explicit equatorial overlap basepoint.
+-/
+theorem threeSphere_stereographicVanKampenLoopStatement_of_simplyConnectedSpace
+    [SimplyConnectedSpace ThreeSphere] :
+    ThreeSphereStereographicVanKampenLoopStatement :=
+  threeSphere_simplyConnectedSpace_iff_stereographicVanKampenLoopStatement.mp
+    inferInstance
+
+/--
+The simple-connectedness-to-stereographic-loop route is the forward projection
+of the named stereographic Van Kampen equivalence.
+-/
+theorem threeSphere_stereographicVanKampenLoopStatement_of_simplyConnectedSpace_eq
+    [SimplyConnectedSpace ThreeSphere] :
+    threeSphere_stereographicVanKampenLoopStatement_of_simplyConnectedSpace =
+      threeSphere_simplyConnectedSpace_iff_stereographicVanKampenLoopStatement.mp
+        inferInstance := by
+  apply Subsingleton.elim
+
+/--
 A stereographic Van Kampen loop proof supplies the full target-prerequisite
 tuple for the standard 3-sphere.
 -/
