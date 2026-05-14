@@ -1273,6 +1273,91 @@ theorem smoothabilitySubobligationsPayload_eq
   rfl
 
 /--
+The full smoothability sub-obligation payload exposes the smooth-structure
+tail used by the bridge layer: a smooth structure, its derivation statement,
+the resulting surgery-model manifold evidence, the bridge derivation, and the
+model/chart compatibility certificates.
+-/
+theorem smoothability_bridge_tail_payload_of_subobligations_payload
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (payload : SmoothabilitySubobligationsPayload M) :
+    ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+    ∃ smoothDerivationStatement :
+      SmoothStructureDerivationStatement M smoothStructure,
+    ∃ manifoldEvidence : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ bridgeDerivation :
+      HasSmoothabilityBridgeDerivation
+        M smoothStructure smoothDerivationStatement manifoldEvidence,
+    ∃ modelCompatibility :
+      HasSmoothManifoldModelCompatibility
+        M smoothStructure smoothDerivationStatement manifoldEvidence
+        bridgeDerivation,
+      HasSmoothChartCompatibility
+        M smoothStructure smoothDerivationStatement manifoldEvidence
+        bridgeDerivation modelCompatibility := by
+  rcases payload with
+    ⟨localCharts, locallyFiniteCoverRefinement, simplicialComplex,
+      compatibleChartTriangulations, triangulation, simplicialApproximation,
+      starNeighborhoodBasis, barycentricSubdivision,
+      regularNeighborhoodCompatibility, triangulationLocalFiniteness,
+      linkCompatibility, plManifoldRecognition, triangulationHomeomorphism,
+      moiseCompatibility, triangulationUniqueness, hauptvermutungDimensionThree,
+      plStructure, plTransitionCompatibility, plAtlas, plManifoldAtlas,
+      plCollarNeighborhoodCompatibility, plHomeomorphismCompatibility,
+      plAtlasMaximality, plSmoothingExistence,
+      plSmoothingObstructionVanishing, plMicrobundleSmoothing, plSmoothing,
+      plSmoothingCompatibility, plSmoothingUniqueness,
+      plSmoothingLocalModelCompatibility, smoothStructure,
+      smoothAtlasConstruction, smoothAtlasPLCompatibility,
+      smoothAtlasMaximality, smoothAtlasUniqueness, smoothStructureUniqueness,
+      smoothTransitionCompatibility, smoothAtlasTransitionSmoothness,
+      smoothDerivation, smoothDerivationStatement, manifoldEvidence,
+      bridgeDerivation, modelCompatibility, chartCompatibility⟩
+  exact
+    ⟨smoothStructure, smoothDerivationStatement, manifoldEvidence,
+      bridgeDerivation, modelCompatibility, chartCompatibility⟩
+
+/--
+Projecting the bridge-tail payload from the full smoothability sub-obligation
+payload is exactly the final smooth-structure, manifold, and compatibility
+segment of that payload.
+-/
+theorem smoothability_bridge_tail_payload_of_subobligations_payload_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (payload : SmoothabilitySubobligationsPayload M) :
+    smoothability_bridge_tail_payload_of_subobligations_payload M payload =
+      (by
+        rcases payload with
+          ⟨localCharts, locallyFiniteCoverRefinement, simplicialComplex,
+            compatibleChartTriangulations, triangulation,
+            simplicialApproximation, starNeighborhoodBasis,
+            barycentricSubdivision, regularNeighborhoodCompatibility,
+            triangulationLocalFiniteness, linkCompatibility,
+            plManifoldRecognition, triangulationHomeomorphism,
+            moiseCompatibility, triangulationUniqueness,
+            hauptvermutungDimensionThree, plStructure,
+            plTransitionCompatibility, plAtlas, plManifoldAtlas,
+            plCollarNeighborhoodCompatibility, plHomeomorphismCompatibility,
+            plAtlasMaximality, plSmoothingExistence,
+            plSmoothingObstructionVanishing, plMicrobundleSmoothing,
+            plSmoothing, plSmoothingCompatibility, plSmoothingUniqueness,
+            plSmoothingLocalModelCompatibility, smoothStructure,
+            smoothAtlasConstruction, smoothAtlasPLCompatibility,
+            smoothAtlasMaximality, smoothAtlasUniqueness,
+            smoothStructureUniqueness, smoothTransitionCompatibility,
+            smoothAtlasTransitionSmoothness, _smoothDerivation,
+            smoothDerivationStatement, manifoldEvidence, bridgeDerivation,
+            modelCompatibility, chartCompatibility⟩
+        exact
+          ⟨smoothStructure, smoothDerivationStatement, manifoldEvidence,
+            bridgeDerivation, modelCompatibility, chartCompatibility⟩) := by
+  apply Subsingleton.elim
+
+/--
 The smooth-structure derivation statement exposes the full Moise, PL,
 smoothing, smooth-atlas, and bridge compatibility sub-obligation stack.
 -/
