@@ -611,6 +611,69 @@ theorem poincareProofDependencies_of_components_payload_eq :
   apply Subsingleton.elim
 
 /--
+The component-payload constructor installs the supplied smoothability
+component as the structural aggregate smoothability projection.
+-/
+theorem smoothability_of_poincareProofDependencies_of_components_payload_eq
+    (payload :
+      ∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+        ExtinctionTopologyExtractionPackage.{u}) :
+    smoothability_of_poincareProofDependencies
+        (poincareProofDependencies_of_components_payload payload) =
+      (by
+        rcases payload with ⟨smoothability, _surgery, _topology⟩
+        exact smoothability) := by
+  apply Subsingleton.elim
+
+/--
+The component-payload constructor installs the supplied surgery-family
+component as the structural aggregate surgery projection.
+-/
+theorem surgery_of_poincareProofDependencies_of_components_payload_eq
+    (payload :
+      ∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+        ExtinctionTopologyExtractionPackage.{u}) :
+    surgery_of_poincareProofDependencies
+        (poincareProofDependencies_of_components_payload payload) =
+      (by
+        rcases payload with ⟨_smoothability, surgery, _topology⟩
+        exact surgery) := by
+  apply Subsingleton.elim
+
+/--
+The component-payload constructor installs the supplied topology component as
+the structural aggregate topology projection.
+-/
+theorem topology_of_poincareProofDependencies_of_components_payload_eq
+    (payload :
+      ∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+        ExtinctionTopologyExtractionPackage.{u}) :
+    topology_of_poincareProofDependencies
+        (poincareProofDependencies_of_components_payload payload) =
+      (by
+        rcases payload with ⟨_smoothability, _surgery, topology⟩
+        exact topology) := by
+  apply Subsingleton.elim
+
+/--
 Projecting the component payload from the aggregate package reconstructed from
 that payload returns the original component payload.
 -/
@@ -953,6 +1016,80 @@ theorem poincareProofDependenciesWithEquationBoundary_of_components_payload_eq :
                surgery := surgery
                topology := topology } :
               PoincareProofDependenciesWithEquationBoundary.{u})) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened component-payload constructor installs the supplied
+smoothability component as the structural strengthened smoothability
+projection.
+-/
+theorem smoothability_of_poincareProofDependenciesWithEquationBoundary_of_components_payload_eq
+    (payload :
+      ∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty
+              (Σ n : ℕ∞ω,
+                FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+        ExtinctionTopologyExtractionPackage.{u}) :
+    smoothability_of_poincareProofDependenciesWithEquationBoundary
+        (poincareProofDependenciesWithEquationBoundary_of_components_payload
+          payload) =
+      (by
+        rcases payload with ⟨smoothability, _surgery, _topology⟩
+        exact smoothability) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened component-payload constructor installs the supplied
+boundary-carrying surgery-family component as the structural strengthened
+surgery projection.
+-/
+theorem surgery_of_poincareProofDependenciesWithEquationBoundary_of_components_payload_eq
+    (payload :
+      ∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty
+              (Σ n : ℕ∞ω,
+                FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+        ExtinctionTopologyExtractionPackage.{u}) :
+    surgery_of_poincareProofDependenciesWithEquationBoundary
+        (poincareProofDependenciesWithEquationBoundary_of_components_payload
+          payload) =
+      (by
+        rcases payload with ⟨_smoothability, surgery, _topology⟩
+        exact surgery) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened component-payload constructor installs the supplied topology
+component as the structural strengthened topology projection.
+-/
+theorem topology_of_poincareProofDependenciesWithEquationBoundary_of_components_payload_eq
+    (payload :
+      ∃ _smoothability : SmoothabilityPackage.{u},
+      ∃ _surgery :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty
+              (Σ n : ℕ∞ω,
+                FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+        ExtinctionTopologyExtractionPackage.{u}) :
+    topology_of_poincareProofDependenciesWithEquationBoundary
+        (poincareProofDependenciesWithEquationBoundary_of_components_payload
+          payload) =
+      (by
+        rcases payload with ⟨_smoothability, _surgery, topology⟩
+        exact topology) := by
   apply Subsingleton.elim
 
 /--
