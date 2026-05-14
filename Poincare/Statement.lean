@@ -131,6 +131,97 @@ theorem threeSphere_stereographic_source_simplyConnectedSpace_eq
       (threeSphere_stereographic_source_homeomorph v).toHomotopyEquiv.simplyConnectedSpace := by
   apply Subsingleton.elim
 
+/--
+The source of the stereographic chart at `v` is the complement of the point
+`v`.
+-/
+theorem threeSphere_stereographic_source_eq_compl_singleton
+    (v : ThreeSphere) :
+    (stereographic' 3 v).source = {v}ᶜ :=
+  stereographic'_source v
+
+/--
+The source-complement statement is exactly mathlib's stereographic-source
+description.
+-/
+theorem threeSphere_stereographic_source_eq_compl_singleton_eq
+    (v : ThreeSphere) :
+    threeSphere_stereographic_source_eq_compl_singleton v =
+      stereographic'_source v := by
+  apply Subsingleton.elim
+
+/--
+The stereographic sources at antipodal points cover the whole `ThreeSphere`.
+-/
+theorem threeSphere_stereographic_antipodal_sources_cover
+    (v : ThreeSphere) :
+    (stereographic' 3 v).source ∪ (stereographic' 3 (-v)).source =
+      Set.univ := by
+  rw [threeSphere_stereographic_source_eq_compl_singleton,
+    threeSphere_stereographic_source_eq_compl_singleton]
+  ext x
+  simp only [Set.mem_union, Set.mem_compl_iff, Set.mem_singleton_iff,
+    Set.mem_univ, iff_true]
+  by_cases hx : x = v
+  · right
+    intro hxneg
+    have hv : (v : EuclideanSpace ℝ (Fin 4)) = -(v : EuclideanSpace ℝ (Fin 4)) := by
+      exact congrArg Subtype.val (hx.symm.trans hxneg)
+    have hvzero : (v : EuclideanSpace ℝ (Fin 4)) = 0 := by
+      have hsum :
+          (v : EuclideanSpace ℝ (Fin 4)) + (v : EuclideanSpace ℝ (Fin 4)) =
+            0 := by
+        nth_rewrite 2 [hv]
+        exact add_neg_cancel _
+      have htwo : (2 : ℝ) • (v : EuclideanSpace ℝ (Fin 4)) = 0 := by
+        simpa [two_smul] using hsum
+      exact (smul_eq_zero.mp htwo).resolve_left (by norm_num)
+    have hvnorm : ‖(v : EuclideanSpace ℝ (Fin 4))‖ = 1 :=
+      norm_eq_of_mem_sphere v
+    have : (0 : ℝ) = 1 := by
+      rw [← hvnorm, hvzero, norm_zero]
+    norm_num at this
+  · exact Or.inl hx
+
+/--
+The antipodal-source cover statement is exactly the complement-of-singleton
+description of the two stereographic sources.
+-/
+theorem threeSphere_stereographic_antipodal_sources_cover_eq
+    (v : ThreeSphere) :
+    threeSphere_stereographic_antipodal_sources_cover v =
+      (by
+        rw [threeSphere_stereographic_source_eq_compl_singleton,
+          threeSphere_stereographic_source_eq_compl_singleton]
+        ext x
+        simp only [Set.mem_union, Set.mem_compl_iff, Set.mem_singleton_iff,
+          Set.mem_univ, iff_true]
+        by_cases hx : x = v
+        · right
+          intro hxneg
+          have hv :
+              (v : EuclideanSpace ℝ (Fin 4)) =
+                -(v : EuclideanSpace ℝ (Fin 4)) := by
+            exact congrArg Subtype.val (hx.symm.trans hxneg)
+          have hvzero : (v : EuclideanSpace ℝ (Fin 4)) = 0 := by
+            have hsum :
+                (v : EuclideanSpace ℝ (Fin 4)) +
+                    (v : EuclideanSpace ℝ (Fin 4)) =
+                  0 := by
+              nth_rewrite 2 [hv]
+              exact add_neg_cancel _
+            have htwo :
+                (2 : ℝ) • (v : EuclideanSpace ℝ (Fin 4)) = 0 := by
+              simpa [two_smul] using hsum
+            exact (smul_eq_zero.mp htwo).resolve_left (by norm_num)
+          have hvnorm : ‖(v : EuclideanSpace ℝ (Fin 4))‖ = 1 :=
+            norm_eq_of_mem_sphere v
+          have : (0 : ℝ) = 1 := by
+            rw [← hvnorm, hvzero, norm_zero]
+          norm_num at this
+        · exact Or.inl hx) := by
+  apply Subsingleton.elim
+
 /-- The target 3-sphere carries the expected smooth manifold structure. -/
 theorem threeSphere_smoothManifold :
     IsManifold (𝓡 3) ∞ ThreeSphere :=
