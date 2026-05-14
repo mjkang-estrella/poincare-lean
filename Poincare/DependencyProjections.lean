@@ -3532,6 +3532,26 @@ theorem analytic_derivation_and_boundary_payload_statements_of_dependencies_eq
   apply Subsingleton.elim
 
 /--
+The named dependency derivation-and-boundary family is the derivation/boundary
+projection of the named analytic-boundary statement family.
+-/
+theorem analytic_derivation_and_boundary_payload_statements_of_dependencies_to_analytic_boundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    analytic_derivation_and_boundary_payload_statements_of_dependencies
+        dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            analytic_foundation_with_equation_boundary_statements_of_dependencies
+              dependencies M with
+          ⟨n, flow, analyticBoundary⟩
+        exact
+          ⟨n, flow,
+            analytic_foundation_derivation_and_boundary_payload_of_with_equation_boundary
+              analyticBoundary⟩) := by
+  apply Subsingleton.elim
+
+/--
 The named dependency derivation-and-boundary family is reconstructed from the
 named verification payload.
 -/
@@ -3570,6 +3590,42 @@ The strengthened dependency analytic derivation family is the forgetful
 projection of its named derivation-and-boundary family.
 -/
 theorem analytic_derivation_statements_of_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    analytic_derivation_statements_of_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            analytic_derivation_and_boundary_payload_statements_of_dependencies
+              dependencies M with
+          ⟨n, flow, derivation, _boundaryPayload⟩
+        exact ⟨n, flow, derivation⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency analytic derivation family is the analytic
+derivation projection of the named analytic-boundary statement family.
+-/
+theorem analytic_derivation_statements_of_dependencies_to_analytic_boundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    analytic_derivation_statements_of_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            analytic_foundation_with_equation_boundary_statements_of_dependencies
+              dependencies M with
+          ⟨n, flow, analyticBoundary⟩
+        rcases
+            analytic_foundation_derivation_and_boundary_payload_of_with_equation_boundary
+              analyticBoundary with
+          ⟨derivation, _boundaryPayload⟩
+        exact ⟨n, flow, derivation⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency analytic derivation family is the forgetful
+projection of its named derivation-and-boundary payload route.
+-/
+theorem analytic_derivation_statements_of_dependencies_to_derivation_and_boundary_payload_eq
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     analytic_derivation_statements_of_dependencies dependencies =
       (by
