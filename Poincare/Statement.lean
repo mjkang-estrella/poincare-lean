@@ -722,6 +722,155 @@ theorem threeSphere_stereographicOverlapPackage_eq :
         northOverlapModelPathConnected := threeSphere_northSourceOverlap_pathConnectedSpace } := by
   rfl
 
+/--
+The actual north/south chart-overlap subtype is homeomorphic to the
+north-source complement model used above.
+-/
+noncomputable def threeSphere_actualOverlap_homeomorph_northSourceOverlap :
+    (((stereographic' 3 threeSphere_northPole).source ∩
+      (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere) ≃ₜ
+      ({threeSphere_southPoleInNorthSource}ᶜ :
+        Set (stereographic' 3 threeSphere_northPole).source) where
+  toFun p :=
+    ⟨⟨p.1, p.2.1⟩, by
+      rw [Set.mem_compl_iff]
+      intro h
+      have hsouth : (p : ThreeSphere) ∈
+          (stereographic' 3 (-threeSphere_northPole)).source := p.2.2
+      have hsouth_ne : (p : ThreeSphere) ≠ -threeSphere_northPole := by
+        simpa [threeSphere_stereographic_source_eq_compl_singleton] using hsouth
+      have hpoint :
+          (⟨p.1, p.2.1⟩ :
+            (stereographic' 3 threeSphere_northPole).source) =
+            threeSphere_southPoleInNorthSource := by
+        simpa using h
+      exact hsouth_ne (Subtype.ext_iff.mp hpoint)⟩
+  invFun p :=
+    ⟨p.1.1, by
+      constructor
+      · exact p.1.2
+      · rw [threeSphere_stereographic_source_eq_compl_singleton]
+        intro h
+        exact p.2 (Subtype.ext h)⟩
+  left_inv p := by
+    ext
+    rfl
+  right_inv p := by
+    ext
+    rfl
+  continuous_toFun := by
+    continuity
+  continuous_invFun := by
+    continuity
+
+/--
+The actual-to-model overlap homeomorphism is the identity on underlying points,
+with source-membership and south-pole-exclusion proofs transported between the
+two subtype presentations.
+-/
+theorem threeSphere_actualOverlap_homeomorph_northSourceOverlap_eq :
+    threeSphere_actualOverlap_homeomorph_northSourceOverlap =
+      { toFun := fun p =>
+          ⟨⟨p.1, p.2.1⟩, by
+            rw [Set.mem_compl_iff]
+            intro h
+            have hsouth : (p : ThreeSphere) ∈
+                (stereographic' 3 (-threeSphere_northPole)).source := p.2.2
+            have hsouth_ne : (p : ThreeSphere) ≠ -threeSphere_northPole := by
+              simpa [threeSphere_stereographic_source_eq_compl_singleton] using hsouth
+            have hpoint :
+                (⟨p.1, p.2.1⟩ :
+                  (stereographic' 3 threeSphere_northPole).source) =
+                  threeSphere_southPoleInNorthSource := by
+              simpa using h
+            exact hsouth_ne (Subtype.ext_iff.mp hpoint)⟩
+        invFun := fun p =>
+          ⟨p.1.1, by
+            constructor
+            · exact p.1.2
+            · rw [threeSphere_stereographic_source_eq_compl_singleton]
+              intro h
+              exact p.2 (Subtype.ext h)⟩
+        left_inv := by
+          intro p
+          ext
+          rfl
+        right_inv := by
+          intro p
+          ext
+          rfl
+        continuous_toFun := by
+          continuity
+        continuous_invFun := by
+          continuity } := by
+  rfl
+
+/--
+The actual north/south stereographic overlap is path-connected, transported
+from the north-source complement model.
+-/
+theorem threeSphere_actualOverlap_pathConnectedSpace :
+    PathConnectedSpace
+      (((stereographic' 3 threeSphere_northPole).source ∩
+        (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere) := by
+  letI : PathConnectedSpace
+      ({threeSphere_southPoleInNorthSource}ᶜ :
+        Set (stereographic' 3 threeSphere_northPole).source) :=
+    threeSphere_northSourceOverlap_pathConnectedSpace
+  exact
+    threeSphere_actualOverlap_homeomorph_northSourceOverlap.symm.surjective.pathConnectedSpace
+      threeSphere_actualOverlap_homeomorph_northSourceOverlap.symm.continuous
+
+/--
+The actual-overlap path-connectedness witness is the transported
+north-source-model witness.
+-/
+theorem threeSphere_actualOverlap_pathConnectedSpace_eq :
+    threeSphere_actualOverlap_pathConnectedSpace =
+      (by
+        letI : PathConnectedSpace
+            ({threeSphere_southPoleInNorthSource}ᶜ :
+              Set (stereographic' 3 threeSphere_northPole).source) :=
+          threeSphere_northSourceOverlap_pathConnectedSpace
+        exact
+          threeSphere_actualOverlap_homeomorph_northSourceOverlap.symm.surjective.pathConnectedSpace
+            threeSphere_actualOverlap_homeomorph_northSourceOverlap.symm.continuous) := by
+  apply Subsingleton.elim
+
+/--
+Fully bridged north/south stereographic cover data, including the model
+homeomorphism and the resulting path-connectedness of the actual chart overlap.
+-/
+structure ThreeSphereStereographicCoverOverlapPackage where
+  overlapPackage : ThreeSphereStereographicOverlapPackage
+  actualOverlapHomeomorph :
+    (((stereographic' 3 threeSphere_northPole).source ∩
+      (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere) ≃ₜ
+      ({threeSphere_southPoleInNorthSource}ᶜ :
+        Set (stereographic' 3 threeSphere_northPole).source)
+  actualOverlapPathConnected :
+    PathConnectedSpace
+      (((stereographic' 3 threeSphere_northPole).source ∩
+        (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere)
+
+/--
+Concrete fully bridged stereographic cover-overlap package for the standard
+3-sphere.
+-/
+noncomputable def threeSphere_stereographicCoverOverlapPackage :
+    ThreeSphereStereographicCoverOverlapPackage where
+  overlapPackage := threeSphere_stereographicOverlapPackage
+  actualOverlapHomeomorph := threeSphere_actualOverlap_homeomorph_northSourceOverlap
+  actualOverlapPathConnected := threeSphere_actualOverlap_pathConnectedSpace
+
+/-- The fully bridged cover-overlap package is assembled from the named witnesses. -/
+theorem threeSphere_stereographicCoverOverlapPackage_eq :
+    threeSphere_stereographicCoverOverlapPackage =
+      { overlapPackage := threeSphere_stereographicOverlapPackage
+        actualOverlapHomeomorph := threeSphere_actualOverlap_homeomorph_northSourceOverlap
+        actualOverlapPathConnected := threeSphere_actualOverlap_pathConnectedSpace } := by
+  rfl
+
 /-- The target 3-sphere is path-connected as a subset of Euclidean space. -/
 theorem threeSphere_isPathConnected_set :
     IsPathConnected (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) := by
