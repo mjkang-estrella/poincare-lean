@@ -326,6 +326,32 @@ theorem completion_certificate_of_remaining_dependency_package_to_smoothability_
   apply Subsingleton.elim
 
 /--
+The remaining-dependency certificate canonical payload agrees with the
+package-level canonical completion payload assembled from the same
+smoothability and surgery families.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_remaining_dependency_package_to_smoothability_surgery_packages_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_payload_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_package dependencies) =
+      canonical_completion_payload_of_smoothability_and_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency certificate canonical target agrees with the
+package-level canonical completion target assembled from the same smoothability
+and surgery families.
+-/
+theorem canonical_completion_target_of_completion_certificate_of_remaining_dependency_package_to_smoothability_surgery_packages_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_target_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_package dependencies) =
+      canonical_completion_target_of_smoothability_and_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency completion certificate factors through the named
 universal finite-extinction boundary exposed by the aggregate dependency
 package.
@@ -353,6 +379,32 @@ theorem completion_certificate_of_poincareProofDependencies_to_smoothability_sur
           dependencies)
         (universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
           dependencies.smoothability dependencies.surgery) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency certificate canonical payload agrees with the
+package-level canonical completion payload assembled from the same
+smoothability and surgery families.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_to_smoothability_surgery_packages_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_payload_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies dependencies) =
+      canonical_completion_payload_of_smoothability_and_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency certificate canonical target agrees with the
+package-level canonical completion target assembled from the same smoothability
+and surgery families.
+-/
+theorem canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_to_smoothability_surgery_packages_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_target_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies dependencies) =
+      canonical_completion_target_of_smoothability_and_surgery_packages
+        dependencies.smoothability dependencies.surgery := by
   apply Subsingleton.elim
 
 /--
