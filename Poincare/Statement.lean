@@ -150,6 +150,19 @@ theorem threeSphere_stereographic_source_eq_compl_singleton_eq
       stereographic'_source v := by
   apply Subsingleton.elim
 
+/-- A stereographic source is an open subset of the target sphere. -/
+theorem threeSphere_stereographic_source_isOpen
+    (v : ThreeSphere) :
+    IsOpen (stereographic' 3 v).source :=
+  (stereographic' 3 v).open_source
+
+/-- The openness witness for a stereographic source is the open-source field of the chart. -/
+theorem threeSphere_stereographic_source_isOpen_eq
+    (v : ThreeSphere) :
+    threeSphere_stereographic_source_isOpen v =
+      (stereographic' 3 v).open_source := by
+  apply Subsingleton.elim
+
 /--
 The stereographic sources at antipodal points cover the whole `ThreeSphere`.
 -/
@@ -249,6 +262,24 @@ theorem threeSphere_stereographic_antipodal_sources_inter_eq
         ext x
         simp only [Set.mem_inter_iff, Set.mem_compl_iff, Set.mem_singleton_iff,
           Set.mem_union, not_or]) := by
+  apply Subsingleton.elim
+
+/-- The overlap of two antipodal stereographic sources is open. -/
+theorem threeSphere_stereographic_antipodal_sources_inter_isOpen
+    (v : ThreeSphere) :
+    IsOpen ((stereographic' 3 v).source ∩ (stereographic' 3 (-v)).source) :=
+  (threeSphere_stereographic_source_isOpen v).inter
+    (threeSphere_stereographic_source_isOpen (-v))
+
+/--
+The openness witness for the antipodal-source overlap is the intersection of
+the two stereographic open-source witnesses.
+-/
+theorem threeSphere_stereographic_antipodal_sources_inter_isOpen_eq
+    (v : ThreeSphere) :
+    threeSphere_stereographic_antipodal_sources_inter_isOpen v =
+      (threeSphere_stereographic_source_isOpen v).inter
+        (threeSphere_stereographic_source_isOpen (-v)) := by
   apply Subsingleton.elim
 
 /-- The target 3-sphere carries the expected smooth manifold structure. -/
