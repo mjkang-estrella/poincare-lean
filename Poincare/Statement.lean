@@ -1035,6 +1035,91 @@ theorem threeSphere_homotopy_prerequisites_of_stereographicVanKampenLoopStatemen
   funext h
   apply Subsingleton.elim
 
+/--
+The target-prerequisite payload for the standard sphere is equivalent to the
+stereographic Van Kampen loop obligation: all other target-prerequisite
+components are already named, and the payload's simple-connectedness component
+recovers the stereographic loop obligation.
+-/
+theorem threeSphere_target_prerequisites_iff_stereographicVanKampenLoopStatement :
+    (∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere) ↔
+      ThreeSphereStereographicVanKampenLoopStatement := by
+  constructor
+  · intro h
+    rcases h with
+      ⟨_t2, _charted, simplyConnected, _compact, _smooth, _path,
+        _connected, _nonempty⟩
+    letI : SimplyConnectedSpace ThreeSphere := simplyConnected
+    exact threeSphere_stereographicVanKampenLoopStatement_of_simplyConnectedSpace
+  · exact threeSphere_target_prerequisites_of_stereographicVanKampenLoopStatement
+
+/--
+The target-prerequisite/stereographic-loop equivalence is obtained by projecting
+simple-connectedness out of the payload in one direction and using the named
+stereographic target-prerequisite route in the other.
+-/
+theorem threeSphere_target_prerequisites_iff_stereographicVanKampenLoopStatement_eq :
+    threeSphere_target_prerequisites_iff_stereographicVanKampenLoopStatement =
+      (by
+        constructor
+        · intro h
+          rcases h with
+            ⟨_t2, _charted, simplyConnected, _compact, _smooth, _path,
+              _connected, _nonempty⟩
+          letI : SimplyConnectedSpace ThreeSphere := simplyConnected
+          exact threeSphere_stereographicVanKampenLoopStatement_of_simplyConnectedSpace
+        · exact threeSphere_target_prerequisites_of_stereographicVanKampenLoopStatement) := by
+  apply Subsingleton.elim
+
+/--
+The homotopy-prerequisite payload for the standard sphere is equivalent to the
+stereographic Van Kampen loop obligation.
+-/
+theorem threeSphere_homotopy_prerequisites_iff_stereographicVanKampenLoopStatement :
+    (∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere) ↔
+      ThreeSphereStereographicVanKampenLoopStatement := by
+  constructor
+  · intro h
+    rcases h with
+      ⟨_t2, _charted, simplyConnected, _compact, _smooth, _path, _locPath,
+        _connected, _nonempty⟩
+    letI : SimplyConnectedSpace ThreeSphere := simplyConnected
+    exact threeSphere_stereographicVanKampenLoopStatement_of_simplyConnectedSpace
+  · exact threeSphere_homotopy_prerequisites_of_stereographicVanKampenLoopStatement
+
+/--
+The homotopy-prerequisite/stereographic-loop equivalence is obtained by
+projecting simple-connectedness out of the payload in one direction and using
+the named stereographic homotopy-prerequisite route in the other.
+-/
+theorem threeSphere_homotopy_prerequisites_iff_stereographicVanKampenLoopStatement_eq :
+    threeSphere_homotopy_prerequisites_iff_stereographicVanKampenLoopStatement =
+      (by
+        constructor
+        · intro h
+          rcases h with
+            ⟨_t2, _charted, simplyConnected, _compact, _smooth, _path, _locPath,
+              _connected, _nonempty⟩
+          letI : SimplyConnectedSpace ThreeSphere := simplyConnected
+          exact threeSphere_stereographicVanKampenLoopStatement_of_simplyConnectedSpace
+        · exact threeSphere_homotopy_prerequisites_of_stereographicVanKampenLoopStatement) := by
+  apply Subsingleton.elim
+
 /-- A supplied simple-connectedness instance gives based loop-nullhomotopy at any basepoint. -/
 theorem threeSphere_basedLoopNullhomotopyStatement_of_simplyConnectedSpace
     (basepoint : ThreeSphere) [SimplyConnectedSpace ThreeSphere] :
