@@ -11459,6 +11459,17 @@ theorem finite_extinction_of_equation_boundary_dependencies_to_forgetful_depende
   apply Subsingleton.elim
 
 /--
+The strengthened dependency finite-extinction theorem also follows the
+ordinary package route after forgetting equation-boundary data.
+-/
+theorem finite_extinction_of_equation_boundary_dependencies_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    finite_extinction_of_equation_boundary_dependencies dependencies =
+      finite_extinction_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
 A strengthened dependency package supplies the named universal finite-extinction
 boundary used by the finite-extinction-only completion route.
 -/
@@ -11483,6 +11494,18 @@ The strengthened dependency universal finite-extinction boundary agrees with
 the ordinary dependency universal boundary after forgetting equation data.
 -/
 theorem universalFiniteExtinctionStatement_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    universalFiniteExtinctionStatement_of_equation_boundary_dependencies
+        dependencies =
+      universalFiniteExtinctionStatement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency universal finite-extinction boundary also follows
+the ordinary package route after forgetting equation-boundary data.
+-/
+theorem universalFiniteExtinctionStatement_of_equation_boundary_dependencies_to_package_eq
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     universalFiniteExtinctionStatement_of_equation_boundary_dependencies
         dependencies =
@@ -11736,6 +11759,22 @@ theorem topology_extraction_derivation_payload_of_equation_boundary_dependencies
         dependencies =
       topology_extraction_derivation_payload_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency extraction/derivation payload also follows the
+ordinary package route after forgetting equation-boundary data.
+-/
+theorem topology_extraction_derivation_payload_of_equation_boundary_dependencies_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    topology_extraction_derivation_payload_of_equation_boundary_dependencies
+        dependencies =
+      (by
+        rcases
+            topology_extraction_derivation_payload_of_equation_boundary_dependencies
+              dependencies with
+          ⟨extractSphere, derivation⟩
+        exact ⟨extractSphere, derivation⟩) := by
   apply Subsingleton.elim
 
 /--
