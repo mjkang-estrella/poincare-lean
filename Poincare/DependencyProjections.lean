@@ -15518,6 +15518,22 @@ theorem poincare_full_assembly_payload_of_dependency_projections_to_package_eq
   apply Subsingleton.elim
 
 /--
+The dependency projection full-assembly payload can also be exposed directly
+as the verification payload selected by its own existential witness.
+-/
+theorem poincare_full_assembly_payload_of_dependency_projections_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    let payload :=
+      poincare_full_assembly_payload_of_dependency_projections dependencies
+    poincare_full_assembly_payload_of_dependency_projections dependencies =
+      ⟨payload.choose, payload.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec⟩ := by
+  dsimp
+
+/--
 A completed dependency package supplies the explicit smoothability/surgery
 packages, a certified final extractor, and the target statement through the
 extraction-derivation projection route.
@@ -15648,6 +15664,23 @@ theorem poincare_full_assembly_payload_of_extraction_derivation_dependency_proje
           surgery_packages_of_dependencies dependencies,
           extractSphere, derivation, target⟩) := by
   apply Subsingleton.elim
+
+/--
+The certified dependency projection full-assembly payload can also be exposed
+directly as the verification payload selected by its own existential witness.
+-/
+theorem poincare_full_assembly_payload_of_extraction_derivation_dependency_projections_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    let payload :=
+      poincare_full_assembly_payload_of_extraction_derivation_dependency_projections
+        dependencies
+    poincare_full_assembly_payload_of_extraction_derivation_dependency_projections
+        dependencies =
+      ⟨payload.choose, payload.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec⟩ := by
+  dsimp
 
 /--
 A completed dependency package supplies the two theorem-shaped inputs consumed
