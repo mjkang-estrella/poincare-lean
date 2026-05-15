@@ -11430,6 +11430,21 @@ theorem smoothability_subobligations_payload_of_dependencies_to_package_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level smoothability sub-obligation payload also exposes a direct
+verification-payload route.
+-/
+theorem smoothability_subobligations_payload_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    let payload := smoothability_subobligations_payload_of_dependencies
+      dependencies M
+    smoothability_subobligations_payload_of_dependencies dependencies M =
+      payload := by
+  dsimp
+
+/--
 A completed dependency package supplies the full smoothability bridge
 sub-obligation stack for any target topological 3-manifold.
 -/
@@ -11623,6 +11638,22 @@ theorem smoothability_bridge_tail_payload_of_dependencies_to_package_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level smoothability bridge-tail payload also exposes a direct
+verification-payload route through the named dependency-level sub-obligation
+payload.
+-/
+theorem smoothability_bridge_tail_payload_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    smoothability_bridge_tail_payload_of_dependencies dependencies M =
+      smoothability_bridge_tail_payload_of_subobligations_payload M
+        (smoothability_subobligations_payload_of_dependencies
+          dependencies M) :=
+  rfl
+
+/--
 The dependency-level smoothability sub-obligation stack agrees with the direct
 smoothability-package sub-obligation bridge.
 -/
@@ -11634,6 +11665,19 @@ theorem smoothability_subobligations_of_dependencies_to_package_eq
     smoothability_subobligations_of_dependencies dependencies M =
       smoothability_subobligations_of_smoothability_package
         dependencies.smoothability M := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level smoothability sub-obligation stack also exposes a direct
+verification-payload route through the named dependency-level payload.
+-/
+theorem smoothability_subobligations_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    smoothability_subobligations_of_dependencies dependencies M =
+      smoothability_subobligations_payload_of_dependencies dependencies M := by
   apply Subsingleton.elim
 
 /--
