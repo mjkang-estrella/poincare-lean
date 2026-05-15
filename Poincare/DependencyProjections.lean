@@ -17244,6 +17244,19 @@ theorem canonical_three_sphere_statement_of_dependency_projections_to_package_eq
             dependencies.topology)) := by
   apply Subsingleton.elim
 
+/--
+The dependency projection canonical statement can also be exposed directly
+through the target selected by the projection completion verification payload.
+-/
+theorem canonical_three_sphere_statement_of_dependency_projections_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    let payload :=
+      poincare_completion_payload_of_dependency_projections dependencies
+    canonical_three_sphere_statement_of_dependency_projections dependencies =
+      canonical_three_sphere_statement_of_poincare_statement
+        payload.choose := by
+  apply Subsingleton.elim
+
 section VerificationFamilyProjectionCanonicalStatements
 
 variable (dependencies : PoincareProofDependencies.{u})
@@ -17317,6 +17330,20 @@ theorem canonical_three_sphere_statement_of_dependency_projections_and_verificat
         dependencies verificationFamily =
       canonical_three_sphere_statement_of_dependency_projections
         dependencies := by
+  apply Subsingleton.elim
+
+/--
+The verification-family canonical statement can also be exposed directly
+through the target selected by its completion verification payload.
+-/
+theorem canonical_three_sphere_statement_of_dependency_projections_and_verification_family_to_direct_verification_payload_eq :
+    let payload :=
+      poincare_completion_payload_of_dependency_projections_and_verification_family
+        dependencies verificationFamily
+    canonical_three_sphere_statement_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      canonical_three_sphere_statement_of_poincare_statement
+        payload.choose := by
   apply Subsingleton.elim
 
 end VerificationFamilyProjectionCanonicalStatements
@@ -17429,6 +17456,21 @@ theorem canonical_three_sphere_statement_of_extraction_derivation_dependency_pro
   apply Subsingleton.elim
 
 /--
+The certified dependency projection canonical statement can also be exposed
+directly through the target selected by its completion verification payload.
+-/
+theorem canonical_three_sphere_statement_of_extraction_derivation_dependency_projections_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    let payload :=
+      poincare_completion_payload_of_extraction_derivation_dependency_projections
+        dependencies
+    canonical_three_sphere_statement_of_extraction_derivation_dependency_projections
+        dependencies =
+      canonical_three_sphere_statement_of_poincare_statement
+        payload.choose := by
+  apply Subsingleton.elim
+
+/--
 The lifted-homeomorphism projection route exposes the canonical mathlib-shaped
 topological 3-sphere statement.
 -/
@@ -17516,6 +17558,22 @@ theorem canonical_three_sphere_statement_of_lifted_homeomorphism_derivation_depe
   apply Subsingleton.elim
 
 /--
+The lifted-homeomorphism dependency projection canonical statement can also be
+exposed directly through the target selected by its completion verification
+payload.
+-/
+theorem canonical_three_sphere_statement_of_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    let payload :=
+      poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies
+    canonical_three_sphere_statement_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      canonical_three_sphere_statement_of_poincare_statement
+        payload.choose := by
+  apply Subsingleton.elim
+
+/--
 Forgetting the lifted certificate in the lifted-homeomorphism canonical route
 recovers the ordinary certified extraction-derivation canonical route.
 -/
@@ -17583,6 +17641,21 @@ theorem canonical_three_sphere_statement_of_equation_boundary_dependency_project
           (finite_extinction_of_equation_boundary_dependencies dependencies)
           (extinction_implies_sphere_of_topology_package
             dependencies.topology)) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened equation-boundary canonical statement can also be exposed
+directly through the target selected by its completion verification payload.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_dependency_projections_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    let payload :=
+      poincare_completion_payload_of_equation_boundary_dependency_projections
+        dependencies
+    canonical_three_sphere_statement_of_equation_boundary_dependency_projections
+        dependencies =
+      canonical_three_sphere_statement_of_poincare_statement
+        payload.choose := by
   apply Subsingleton.elim
 
 /--
@@ -17729,6 +17802,22 @@ theorem canonical_three_sphere_statement_of_equation_boundary_extraction_derivat
   apply Subsingleton.elim
 
 /--
+The strengthened certified equation-boundary canonical statement can also be
+exposed directly through the target selected by its completion verification
+payload.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    let payload :=
+      poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies
+    canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      canonical_three_sphere_statement_of_poincare_statement
+        payload.choose := by
+  apply Subsingleton.elim
+
+/--
 Forgetting equation-boundary data in the strengthened certified canonical
 statement recovers the ordinary certified projection canonical statement.
 -/
@@ -17840,6 +17929,21 @@ theorem canonical_three_sphere_statement_of_equation_boundary_lifted_homeomorphi
             (poincare_statement_of_finite_extinction_and_extraction_derivation
               (finite_extinction_of_equation_boundary_dependencies dependencies)
               extractSphere derivation)) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism canonical statement can also be exposed
+directly through the target selected by its completion verification payload.
+-/
+theorem canonical_three_sphere_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    let payload :=
+      poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies
+    canonical_three_sphere_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      canonical_three_sphere_statement_of_poincare_statement
+        payload.choose := by
   apply Subsingleton.elim
 
 /--
