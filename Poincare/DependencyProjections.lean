@@ -15760,6 +15760,18 @@ theorem poincare_completion_payload_of_dependency_projections_to_package_eq
           dependencies.topology) := by
   apply Subsingleton.elim
 
+/--
+The dependency projection completion payload can also be exposed directly as
+the verification payload selected by its own existential witness.
+-/
+theorem poincare_completion_payload_of_dependency_projections_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    let payload :=
+      poincare_completion_payload_of_dependency_projections dependencies
+    poincare_completion_payload_of_dependency_projections dependencies =
+      ⟨payload.choose, payload.choose_spec⟩ := by
+  dsimp
+
 section VerificationFamilyProjectionCompletionPayloads
 
 variable (dependencies : PoincareProofDependencies.{u})
@@ -15935,6 +15947,20 @@ theorem poincare_completion_payload_of_extraction_derivation_dependency_projecti
   apply Subsingleton.elim
 
 /--
+The certified dependency projection completion payload can also be exposed
+directly as the verification payload selected by its own existential witness.
+-/
+theorem poincare_completion_payload_of_extraction_derivation_dependency_projections_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    let payload :=
+      poincare_completion_payload_of_extraction_derivation_dependency_projections
+        dependencies
+    poincare_completion_payload_of_extraction_derivation_dependency_projections
+        dependencies =
+      ⟨payload.choose, payload.choose_spec⟩ := by
+  dsimp
+
+/--
 The lifted-homeomorphism projection route exposes the local target and
 universe-indexed completion criterion as one payload.
 -/
@@ -16025,6 +16051,21 @@ theorem poincare_completion_payload_of_lifted_homeomorphism_derivation_dependenc
   apply Subsingleton.elim
 
 /--
+The lifted-homeomorphism dependency projection completion payload can also be
+exposed directly as the verification payload selected by its own existential
+witness.
+-/
+theorem poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    let payload :=
+      poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies
+    poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      ⟨payload.choose, payload.choose_spec⟩ := by
+  dsimp
+
+/--
 Forgetting the lifted certificate in the lifted-homeomorphism completion
 payload recovers the ordinary certified extraction-derivation completion
 payload.
@@ -16092,6 +16133,20 @@ theorem poincare_completion_payload_of_equation_boundary_dependency_projections_
       poincare_completion_payload_of_dependency_projections
         (dependencies_of_equation_boundary_dependencies dependencies) := by
   apply Subsingleton.elim
+
+/--
+The strengthened dependency projection completion payload can also be exposed
+directly as the verification payload selected by its own existential witness.
+-/
+theorem poincare_completion_payload_of_equation_boundary_dependency_projections_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    let payload :=
+      poincare_completion_payload_of_equation_boundary_dependency_projections
+        dependencies
+    poincare_completion_payload_of_equation_boundary_dependency_projections
+        dependencies =
+      ⟨payload.choose, payload.choose_spec⟩ := by
+  dsimp
 
 /--
 Forgetting equation-boundary data in the strengthened projection completion
@@ -16236,6 +16291,20 @@ theorem poincare_completion_payload_of_equation_boundary_extraction_derivation_d
   apply Subsingleton.elim
 
 /--
+The strengthened certified projection completion payload can also be exposed
+directly as the verification payload selected by its own existential witness.
+-/
+theorem poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    let payload :=
+      poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies
+    poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      ⟨payload.choose, payload.choose_spec⟩ := by
+  dsimp
+
+/--
 The strengthened certified projection completion payload agrees with projecting
 the target and criterion from the direct boundary-package certified route.
 -/
@@ -16336,6 +16405,21 @@ theorem poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_de
             (finite_extinction_of_equation_boundary_dependencies dependencies)
             extractSphere derivation) := by
   apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism projection completion payload can also
+be exposed directly as the verification payload selected by its own
+existential witness.
+-/
+theorem poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    let payload :=
+      poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies
+    poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      ⟨payload.choose, payload.choose_spec⟩ := by
+  dsimp
 
 /--
 Forgetting equation-boundary data in the strengthened lifted-homeomorphism
