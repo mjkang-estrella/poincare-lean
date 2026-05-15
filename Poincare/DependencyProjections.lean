@@ -16515,6 +16515,18 @@ theorem poincare_statement_of_dependency_projections_to_package_eq
           dependencies.topology) := by
   apply Subsingleton.elim
 
+/--
+The dependency projection Poincare statement can also be exposed directly as
+the target selected by its completion verification payload.
+-/
+theorem poincare_statement_of_dependency_projections_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    let payload :=
+      poincare_completion_payload_of_dependency_projections dependencies
+    poincare_statement_of_dependency_projections dependencies =
+      payload.choose := by
+  apply Subsingleton.elim
+
 section VerificationFamilyProjectionStatements
 
 variable (dependencies : PoincareProofDependencies.{u})
@@ -16688,6 +16700,20 @@ theorem poincare_statement_of_extraction_derivation_dependency_projections_to_pa
   apply Subsingleton.elim
 
 /--
+The certified dependency projection Poincare statement can also be exposed
+directly as the target selected by its completion verification payload.
+-/
+theorem poincare_statement_of_extraction_derivation_dependency_projections_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    let payload :=
+      poincare_completion_payload_of_extraction_derivation_dependency_projections
+        dependencies
+    poincare_statement_of_extraction_derivation_dependency_projections
+        dependencies =
+      payload.choose := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency package also proves the Poincare target through the
 lifted-homeomorphism certified projection payload.
 -/
@@ -16776,6 +16802,20 @@ theorem poincare_statement_of_lifted_homeomorphism_derivation_dependency_project
   apply Subsingleton.elim
 
 /--
+The lifted-homeomorphism dependency projection Poincare statement can also be
+exposed directly as the target selected by its completion verification payload.
+-/
+theorem poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    let payload :=
+      poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies
+    poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      payload.choose := by
+  apply Subsingleton.elim
+
+/--
 Forgetting the lifted certificate in the lifted-homeomorphism Poincare
 statement route recovers the ordinary certified extraction-derivation Poincare
 statement route.
@@ -16844,6 +16884,20 @@ theorem poincare_statement_of_equation_boundary_dependency_projections_to_packag
         (finite_extinction_of_equation_boundary_dependencies dependencies)
         (extinction_implies_sphere_of_topology_package
           dependencies.topology) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency projection Poincare statement can also be exposed
+directly as the target selected by its completion verification payload.
+-/
+theorem poincare_statement_of_equation_boundary_dependency_projections_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    let payload :=
+      poincare_completion_payload_of_equation_boundary_dependency_projections
+        dependencies
+    poincare_statement_of_equation_boundary_dependency_projections
+        dependencies =
+      payload.choose := by
   apply Subsingleton.elim
 
 /--
@@ -16981,6 +17035,20 @@ theorem poincare_statement_of_equation_boundary_extraction_derivation_dependency
   apply Subsingleton.elim
 
 /--
+The strengthened certified projection Poincare statement can also be exposed
+directly as the target selected by its completion verification payload.
+-/
+theorem poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    let payload :=
+      poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies
+    poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      payload.choose := by
+  apply Subsingleton.elim
+
+/--
 The strengthened certified projection Poincare statement agrees with the direct
 boundary-package certified extraction-derivation statement route.
 -/
@@ -17070,6 +17138,20 @@ theorem poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_
           poincare_statement_of_finite_extinction_and_extraction_derivation
             (finite_extinction_of_equation_boundary_dependencies dependencies)
             extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism Poincare statement can also be exposed
+directly as the target selected by its completion verification payload.
+-/
+theorem poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    let payload :=
+      poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies
+    poincare_statement_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies =
+      payload.choose := by
   apply Subsingleton.elim
 
 /--
