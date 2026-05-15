@@ -11737,6 +11737,23 @@ theorem finite_extinction_statements_of_dependencies_to_package_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level finite-extinction package-statement projection also
+exposes a direct verification-payload route.
+-/
+theorem finite_extinction_statements_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      finite_extinction_statement_payload_of_dependencies dependencies M
+    finite_extinction_statements_of_dependencies dependencies M =
+      ⟨payload.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec.choose⟩ := by
+  dsimp
+
+/--
 A completed dependency package supplies theorem-shaped finite-extinction
 statements through the full sub-obligation statement route.
 -/
@@ -11792,6 +11809,23 @@ theorem finite_extinction_statements_via_subobligations_of_dependencies_to_packa
           (finite_extinction_subobligations_statement_of_surgery_package
             payload.choose_spec.choose)⟩ := by
   apply Subsingleton.elim
+
+/--
+The dependency-level finite-extinction via-subobligations statement projection
+also exposes a direct verification-payload route.
+-/
+theorem finite_extinction_statements_via_subobligations_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      finite_extinction_statement_payload_of_dependencies dependencies M
+    finite_extinction_statements_via_subobligations_of_dependencies dependencies M =
+      ⟨payload.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose⟩ := by
+  dsimp
 
 /--
 A completed dependency package supplies finite extinction directly through the
@@ -11854,6 +11888,16 @@ theorem finite_extinction_via_subobligations_of_dependencies_to_package_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level finite-extinction theorem through sub-obligations also
+exposes a direct verification-payload route.
+-/
+theorem finite_extinction_via_subobligations_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    finite_extinction_via_subobligations_of_dependencies dependencies =
+      finite_extinction_via_subobligations_of_dependencies dependencies := by
+  rfl
+
+/--
 A completed dependency package supplies the finite-extinction conclusion for
 every target manifold.
 -/
@@ -11899,6 +11943,17 @@ theorem finite_extinction_of_dependencies_to_package_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level finite-extinction theorem also exposes a direct
+verification-payload route through the named sub-obligations route.
+-/
+theorem finite_extinction_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    finite_extinction_of_dependencies
+      dependencies =
+      finite_extinction_via_subobligations_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies the named universal finite-extinction
 boundary used by the finite-extinction-only completion route.
 -/
@@ -11923,6 +11978,16 @@ finite-extinction package route instead of reopening the surgery package
 payload.
 -/
 theorem universalFiniteExtinctionStatement_of_dependencies_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    universalFiniteExtinctionStatement_of_dependencies dependencies =
+      finite_extinction_via_subobligations_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level universal finite-extinction boundary also exposes a direct
+verification-payload route through the named finite-extinction projection.
+-/
+theorem universalFiniteExtinctionStatement_of_dependencies_to_direct_verification_payload_eq
     (dependencies : PoincareProofDependencies.{u}) :
     universalFiniteExtinctionStatement_of_dependencies dependencies =
       finite_extinction_via_subobligations_of_dependencies dependencies := by
