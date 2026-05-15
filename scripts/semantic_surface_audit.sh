@@ -53,6 +53,22 @@ append_certificate_route_projection_contract_checks() {
 #check Poincare.topology_spherical_homeomorphism_lift_statement_of_equation_boundary_dependencies_to_package_eq
 #check Poincare.topology_lifted_homeomorphism_derivation_statement_of_equation_boundary_dependencies_to_statement_eq
 #check Poincare.topology_lifted_homeomorphism_derivation_statement_of_equation_boundary_dependencies_to_package_eq
+#check Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies_to_statement_eq
+#check Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies_to_package_eq
+#check Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies_to_statement_eq
+#check Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies_to_package_eq
+#check Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
+#check Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_package_eq
+#check Poincare.poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
+#check Poincare.poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_package_eq
+#check Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
+#check Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_package_eq
+#check Poincare.canonical_three_sphere_statement_of_dependency_projections_and_verification_family_to_statement_eq
+#check Poincare.canonical_three_sphere_statement_of_dependency_projections_and_verification_family_to_package_eq
+#check Poincare.completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_to_statement_eq
+#check Poincare.completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_to_package_eq
+#check Poincare.poincare_conjecture_of_poincareProofDependencies_to_statement_eq
+#check Poincare.poincare_conjecture_of_poincareProofDependencies_to_package_eq
 #check Poincare.completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_finite_extinction_eq
 #check Poincare.completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_package_eq
 #check Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_finite_extinction_eq
@@ -18109,7 +18125,7 @@ projection_equation_boundary_extraction_derivation_target_payload_count=$(
   rg -c '\bpoincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_equation_boundary_extraction_derivation_target_payload_count" != "9" ]; then
+if [ "$projection_equation_boundary_extraction_derivation_target_payload_count" != "10" ]; then
   echo "FAIL: equation-boundary certified projection completion routes should consume the boundary certified target payload"
   rg -n '\bpoincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/DependencyProjections.lean || true
@@ -18131,7 +18147,7 @@ projection_equation_boundary_extraction_derivation_completion_payload_count=$(
   rg -c '\bpoincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_equation_boundary_extraction_derivation_completion_payload_count" != "11" ]; then
+if [ "$projection_equation_boundary_extraction_derivation_completion_payload_count" != "12" ]; then
   echo "FAIL: equation-boundary certified projection statement and criterion routes should consume the boundary certified completion payload"
   rg -n '\bpoincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/DependencyProjections.lean || true
@@ -18186,7 +18202,7 @@ projection_equation_boundary_extraction_derivation_completion_criterion_count=$(
   rg -c '\bcompletion_criterion_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/DependencyProjections.lean || true
 )
-if [ "$projection_equation_boundary_extraction_derivation_completion_criterion_count" != "7" ]; then
+if [ "$projection_equation_boundary_extraction_derivation_completion_criterion_count" != "8" ]; then
   echo "FAIL: equation-boundary certified projection criterion endpoints should expose theorem, equality, statement, finite-extinction, forgetful, and boundary routes"
   rg -n '\bcompletion_criterion_of_equation_boundary_extraction_derivation_dependency_projections\b' \
     Poincare/DependencyProjections.lean || true

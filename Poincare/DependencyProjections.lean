@@ -12292,6 +12292,20 @@ theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_depende
         (dependencies_of_equation_boundary_dependencies dependencies) := by
   apply Subsingleton.elim
 
+/--
+The strengthened dependency projection assembly-input payload also follows the
+ordinary package route after forgetting equation-boundary data.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies
+        dependencies =
+      ⟨finite_extinction_of_dependencies
+          (dependencies_of_equation_boundary_dependencies dependencies),
+        extinction_implies_sphere_of_topology_package
+          (dependencies_of_equation_boundary_dependencies dependencies).topology⟩ := by
+  apply Subsingleton.elim
+
 section VerificationFamilyProjectionAssemblyInputs
 
 variable (dependencies : PoincareProofDependencies.{u})
@@ -13305,6 +13319,24 @@ theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_extract
   apply Subsingleton.elim
 
 /--
+The strengthened certified projection assembly-input payload also follows the
+ordinary certified package route after forgetting equation-boundary data.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      (by
+        rcases
+            topology_extraction_derivation_payload_of_equation_boundary_dependencies
+              dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          ⟨finite_extinction_of_equation_boundary_dependencies dependencies,
+            extractSphere, derivation⟩) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened projection route also exposes boundary finite extinction
 together with the final extractor, its full topology derivation certificate,
 and the lifted homeomorphism derivation certificate.
@@ -14083,6 +14115,29 @@ theorem poincare_target_payload_of_equation_boundary_extraction_derivation_depen
         dependencies =
       poincare_target_payload_of_extraction_derivation_dependency_projections
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified projection target payload also follows the ordinary
+certified package route after forgetting equation-boundary data.
+-/
+theorem poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_target_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      (by
+        let finiteExtinction :=
+          finite_extinction_of_equation_boundary_dependencies dependencies
+        rcases
+            topology_extraction_derivation_payload_of_equation_boundary_dependencies
+              dependencies with
+          ⟨extractSphere, derivation⟩
+        rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+            finiteExtinction extractSphere derivation with
+          ⟨target, criterion⟩
+        exact
+          ⟨finiteExtinction, extractSphere, derivation, target,
+            criterion⟩) := by
   apply Subsingleton.elim
 
 /--
@@ -15049,6 +15104,25 @@ theorem poincare_completion_payload_of_equation_boundary_extraction_derivation_d
   apply Subsingleton.elim
 
 /--
+The strengthened certified projection completion payload also follows the
+ordinary certified package route after forgetting equation-boundary data.
+-/
+theorem poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            topology_extraction_derivation_payload_of_equation_boundary_dependencies
+              dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened certified projection completion payload agrees with projecting
 the target and criterion from the direct boundary-package certified route.
 -/
@@ -15691,6 +15765,25 @@ theorem poincare_statement_of_equation_boundary_extraction_derivation_dependency
   apply Subsingleton.elim
 
 /--
+The strengthened certified projection Poincare statement also follows the
+ordinary certified package route after forgetting equation-boundary data.
+-/
+theorem poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_statement_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies =
+      (by
+        rcases
+            topology_extraction_derivation_payload_of_equation_boundary_dependencies
+              dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          poincare_statement_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened certified projection Poincare statement agrees with the direct
 boundary-package certified extraction-derivation statement route.
 -/
@@ -15930,6 +16023,17 @@ Forgetting the verification-family lift recovers the ordinary dependency
 projection canonical statement.
 -/
 theorem canonical_three_sphere_statement_of_dependency_projections_and_verification_family_to_dependencies_eq :
+    canonical_three_sphere_statement_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      canonical_three_sphere_statement_of_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+The verification-family canonical topological statement also follows the
+ordinary dependency package route after forgetting the verification-family lift.
+-/
+theorem canonical_three_sphere_statement_of_dependency_projections_and_verification_family_to_package_eq :
     canonical_three_sphere_statement_of_dependency_projections_and_verification_family
         dependencies verificationFamily =
       canonical_three_sphere_statement_of_dependency_projections
@@ -17022,6 +17126,27 @@ theorem completion_criterion_of_equation_boundary_extraction_derivation_dependen
       completion_criterion_of_extraction_derivation_dependency_projections
         witness
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened certified equation-boundary completion criterion also follows
+the ordinary certified package route after forgetting equation-boundary data.
+-/
+theorem completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_to_package_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections
+        witness dependencies =
+      (by
+        rcases
+            topology_extraction_derivation_payload_of_equation_boundary_dependencies
+              dependencies with
+          ⟨extractSphere, derivation⟩
+        rcases poincare_payload_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_equation_boundary_dependencies dependencies)
+            extractSphere derivation with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
   apply Subsingleton.elim
 
 /--
