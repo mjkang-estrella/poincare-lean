@@ -6338,6 +6338,23 @@ theorem topology_classification_payload_of_dependencies_to_package_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level topology classification payload also agrees with the
+direct verification payload selected by the dependency-level statement payload.
+-/
+theorem topology_classification_payload_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    let payload :=
+      topology_classification_payload_of_dependencies dependencies M
+        extinction
+    topology_classification_payload_of_dependencies dependencies M extinction =
+      payload := by
+  dsimp
+
+/--
 A completed dependency package supplies post-extinction topology decomposition
 for any finite-extinction input.
 -/
@@ -8630,6 +8647,17 @@ theorem topology_extraction_payload_of_dependencies_to_package_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level topology extraction payload also agrees with the direct
+verification payload selected from itself.
+-/
+theorem topology_extraction_payload_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    let payload := topology_extraction_payload_of_dependencies dependencies
+    topology_extraction_payload_of_dependencies dependencies =
+      ⟨payload.choose, payload.choose_spec⟩ := by
+  dsimp
+
+/--
 A completed dependency package extracts the theorem-shaped topology statement,
 its final homeomorphism, the full classification sub-obligation stack, the
 simply-connected recognition statement, the spherical trivial-quotient
@@ -8701,6 +8729,32 @@ theorem topology_extraction_statement_payload_of_dependencies_to_package_eq
       topology_extraction_statement_payload_of_topology_package
         dependencies.topology M extinction := by
   apply Subsingleton.elim
+
+/--
+The dependency-level fixed-extinction topology payload also agrees with the
+direct verification payload selected from itself.
+-/
+theorem topology_extraction_statement_payload_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    let payload :=
+      topology_extraction_statement_payload_of_dependencies
+        dependencies M extinction
+    topology_extraction_statement_payload_of_dependencies
+      dependencies M extinction =
+      ⟨payload.choose,
+        payload.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec⟩ := by
+  dsimp
 
 /--
 A completed dependency package supplies the full post-extinction classification
@@ -8889,6 +8943,23 @@ theorem topology_classification_subobligations_of_dependencies_to_package_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level topology classification sub-obligation projection also
+agrees with the direct verification payload selected by the classification
+payload.
+-/
+theorem topology_classification_subobligations_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_classification_subobligations_of_dependencies
+        dependencies M extinction =
+      topology_classification_payload_of_dependencies
+        dependencies M extinction := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies the simply-connected recognition
 substatement through the stored topology package.
 -/
@@ -8932,6 +9003,23 @@ theorem topology_simply_connected_recognition_statement_of_dependencies_to_packa
         dependencies M extinction =
       topology_simply_connected_recognition_statement_of_topology_package
         dependencies.topology M extinction := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level simply-connected recognition substatement also agrees with
+the direct verification payload selected by the dependency-level statement
+payload.
+-/
+theorem topology_simply_connected_recognition_statement_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_simply_connected_recognition_statement_of_dependencies
+        dependencies M extinction =
+      (topology_extraction_statement_payload_of_dependencies
+        dependencies M extinction).choose_spec.choose_spec.choose_spec.choose_spec.choose := by
   apply Subsingleton.elim
 
 /--
@@ -8981,6 +9069,23 @@ theorem topology_spherical_trivial_quotient_statement_of_dependencies_to_package
   apply Subsingleton.elim
 
 /--
+The dependency-level spherical trivial-quotient substatement also agrees with
+the direct verification payload selected by the dependency-level statement
+payload.
+-/
+theorem topology_spherical_trivial_quotient_statement_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_trivial_quotient_statement_of_dependencies
+        dependencies M extinction =
+      (topology_extraction_statement_payload_of_dependencies
+        dependencies M extinction).choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies the spherical homeomorphism-lift
 substatement through the stored topology package.
 -/
@@ -9024,6 +9129,23 @@ theorem topology_spherical_homeomorphism_lift_statement_of_dependencies_to_packa
         dependencies M extinction =
       topology_spherical_homeomorphism_lift_statement_of_topology_package
         dependencies.topology M extinction := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level spherical homeomorphism-lift substatement also agrees with
+the direct verification payload selected by the dependency-level statement
+payload.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_homeomorphism_lift_statement_of_dependencies
+        dependencies M extinction =
+      (topology_extraction_statement_payload_of_dependencies
+        dependencies M extinction).choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose := by
   apply Subsingleton.elim
 
 /--
@@ -9082,6 +9204,25 @@ theorem topology_derivation_statement_payload_of_dependencies_to_package_eq
         (extinction_topology_extraction_statement_of_topology_package
           dependencies.topology)
         M extinction := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level topology derivation payload also agrees with the direct
+verification payload selected by the dependency-level statement payload.
+-/
+theorem topology_derivation_statement_payload_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    let payload :=
+      topology_extraction_statement_payload_of_dependencies
+        dependencies M extinction
+    topology_derivation_statement_payload_of_dependencies
+      dependencies M extinction =
+      ⟨payload.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose⟩ := by
   apply Subsingleton.elim
 
 /--
