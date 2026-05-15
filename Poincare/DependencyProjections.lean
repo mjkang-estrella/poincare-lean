@@ -4531,6 +4531,27 @@ theorem analytic_foundation_subobligations_of_dependencies_to_package_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level analytic sub-obligation projection also agrees with the
+direct verification payload selected by the projected analytic package.
+-/
+theorem analytic_foundation_subobligations_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      analytic_foundation_statement_payload_of_dependencies dependencies M
+    analytic_foundation_subobligations_of_dependencies dependencies M =
+      ⟨payload.choose,
+        ricci_flow_data_of_analytic_foundation_package
+          payload.choose_spec.choose,
+        analytic_foundation_subobligations_of_analytic_foundation_package
+          payload.choose_spec.choose⟩ :=
+  analytic_foundation_subobligations_of_dependencies_to_package_eq
+    dependencies M
+
+/--
 A completed dependency package supplies Ricci-flow-with-surgery construction
 packages for every target manifold.
 -/
@@ -4770,6 +4791,26 @@ theorem surgery_construction_subobligations_of_dependencies_to_package_eq
         surgery_construction_subobligations_of_construction_package
           payload.choose_spec.choose_spec.choose⟩ := by
   apply Subsingleton.elim
+
+/--
+The dependency-level surgery-construction sub-obligation projection also
+agrees with the direct verification payload selected by the projected
+construction package.
+-/
+theorem surgery_construction_subobligations_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      surgery_construction_statement_payload_of_dependencies dependencies M
+    surgery_construction_subobligations_of_dependencies dependencies M =
+      ⟨payload.choose, payload.choose_spec.choose,
+        surgery_construction_subobligations_of_construction_package
+          payload.choose_spec.choose_spec.choose⟩ :=
+  surgery_construction_subobligations_of_dependencies_to_package_eq
+    dependencies M
 
 /--
 A completed dependency package exposes the Perelman-control payload through the
@@ -5054,6 +5095,25 @@ theorem perelman_subobligations_of_dependencies_to_package_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level full Perelman sub-obligation projection also agrees with
+the direct verification payload selected by the projected control package.
+-/
+theorem perelman_subobligations_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      perelman_control_statement_payload_of_dependencies dependencies M
+    perelman_subobligations_of_dependencies dependencies M =
+      ⟨payload.choose, payload.choose_spec.choose,
+        perelman_subobligations_of_package
+          payload.choose_spec.choose_spec.choose⟩ :=
+  perelman_subobligations_of_dependencies_to_package_eq
+    dependencies M
+
+/--
 A completed dependency package supplies the Perelman monotonicity and blow-up
 analysis inputs that feed no-local-collapsing and canonical neighborhoods.
 -/
@@ -5109,6 +5169,26 @@ theorem perelman_monotonicity_blowup_subobligations_of_dependencies_to_package_e
         perelman_monotonicity_blowup_subobligations_of_package
           payload.choose_spec.choose_spec.choose⟩ := by
   apply Subsingleton.elim
+
+/--
+The dependency-level Perelman monotonicity/blow-up projection also agrees with
+the direct verification payload selected by the projected control package.
+-/
+theorem perelman_monotonicity_blowup_subobligations_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      perelman_control_statement_payload_of_dependencies dependencies M
+    perelman_monotonicity_blowup_subobligations_of_dependencies
+        dependencies M =
+      ⟨payload.choose, payload.choose_spec.choose,
+        perelman_monotonicity_blowup_subobligations_of_package
+          payload.choose_spec.choose_spec.choose⟩ :=
+  perelman_monotonicity_blowup_subobligations_of_dependencies_to_package_eq
+    dependencies M
 
 /--
 A completed dependency package exposes the finite-extinction width/full
