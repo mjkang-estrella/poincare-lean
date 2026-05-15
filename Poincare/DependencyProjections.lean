@@ -12144,6 +12144,24 @@ theorem finite_extinction_of_equation_boundary_dependencies_to_package_eq
   apply Subsingleton.elim
 
 /--
+The strengthened dependency finite-extinction theorem also exposes a direct
+verification-payload route through the named verification payload.
+-/
+theorem finite_extinction_of_equation_boundary_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    finite_extinction_of_equation_boundary_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _
+        letI : IsManifold ThreeManifoldModelWithCorners 1 M :=
+          smoothability_bridge_of_dependencies
+            (dependencies_of_equation_boundary_dependencies dependencies) M
+        exact
+          finite_extinction_of_equation_boundary_verification_payload
+            (equation_boundary_verification_payload_of_dependencies
+              dependencies) M) := by
+  apply Subsingleton.elim
+
+/--
 A strengthened dependency package supplies the named universal finite-extinction
 boundary used by the finite-extinction-only completion route.
 -/
@@ -12185,6 +12203,18 @@ theorem universalFiniteExtinctionStatement_of_equation_boundary_dependencies_to_
         dependencies =
       universalFiniteExtinctionStatement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency universal finite-extinction boundary also exposes a
+direct verification-payload route through the strengthened finite-extinction
+projection.
+-/
+theorem universalFiniteExtinctionStatement_of_equation_boundary_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    universalFiniteExtinctionStatement_of_equation_boundary_dependencies
+        dependencies =
+      finite_extinction_of_equation_boundary_dependencies dependencies := by
   apply Subsingleton.elim
 
 /--
@@ -12233,6 +12263,18 @@ theorem extinction_extraction_of_dependencies_to_package_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level final extractor also exposes a direct verification-payload
+route through the named dependency-level extraction payload.
+-/
+theorem extinction_extraction_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    let payload := topology_extraction_payload_of_dependencies dependencies
+    extinction_extraction_of_dependencies
+      dependencies =
+      payload.choose_spec := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies a final extractor paired with the
 post-extinction topology derivation certificate for that extractor.
 -/
@@ -12265,6 +12307,20 @@ theorem topology_extraction_derivation_payload_of_dependencies_to_package_eq
       topology_extraction_derivation_payload_of_topology_package
         dependencies.topology := by
   apply Subsingleton.elim
+
+/--
+The dependency-level extraction/derivation payload also exposes a direct
+verification-payload route selected from itself.
+-/
+theorem topology_extraction_derivation_payload_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    let payload :=
+      topology_extraction_derivation_payload_of_dependencies
+        dependencies
+    topology_extraction_derivation_payload_of_dependencies
+      dependencies =
+      ⟨payload.choose, payload.choose_spec⟩ := by
+  dsimp
 
 /--
 The dependency-level final extractor agrees with the extractor mediated by the
@@ -12323,6 +12379,20 @@ theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_dependenc
       topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
         dependencies.topology := by
   apply Subsingleton.elim
+
+/--
+The dependency-level lifted-homeomorphism extraction payload also exposes a
+direct verification-payload route selected from itself.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    let payload :=
+      topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies
+        dependencies
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies
+        dependencies =
+      payload := by
+  dsimp
 
 /--
 The dependency-level lifted-homeomorphism extraction payload is the forward
