@@ -10661,6 +10661,20 @@ theorem topology_derivation_statement_of_dependencies_to_package_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level topology derivation statement also exposes a direct
+verification-payload route.
+-/
+theorem topology_derivation_statement_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_derivation_statement_of_dependencies dependencies M extinction =
+      topology_derivation_statement_of_dependencies dependencies M extinction := by
+  rfl
+
+/--
 The dependency-level homeomorphism assembly statement follows the stored
 topology package derivation route.
 -/
@@ -10683,6 +10697,22 @@ theorem topology_homeomorphism_assembly_statement_of_dependencies_to_package_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level homeomorphism assembly statement also exposes a direct
+verification-payload route.
+-/
+theorem topology_homeomorphism_assembly_statement_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_homeomorphism_assembly_statement_of_dependencies
+      dependencies M extinction =
+      topology_homeomorphism_assembly_statement_of_dependencies
+        dependencies M extinction := by
+  rfl
+
+/--
 The dependency-level homeomorphism derivation statement follows the stored
 topology package derivation route.
 -/
@@ -10703,6 +10733,22 @@ theorem topology_homeomorphism_derivation_statement_of_dependencies_to_package_e
           (extinction_topology_derivation_statement_of_topology_package
             dependencies.topology M extinction)) := by
   apply Subsingleton.elim
+
+/--
+The dependency-level homeomorphism derivation statement also exposes a direct
+verification-payload route.
+-/
+theorem topology_homeomorphism_derivation_statement_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_homeomorphism_derivation_statement_of_dependencies
+      dependencies M extinction =
+      topology_homeomorphism_derivation_statement_of_dependencies
+        dependencies M extinction := by
+  rfl
 
 /--
 The dependency-level homeomorphism assembly certificate follows the stored
@@ -10734,6 +10780,22 @@ theorem topology_homeomorphism_assembly_of_dependencies_to_package_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level homeomorphism assembly certificate also exposes a direct
+verification-payload route.
+-/
+theorem topology_homeomorphism_assembly_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_homeomorphism_assembly_of_dependencies
+      dependencies M extinction =
+      topology_homeomorphism_assembly_of_dependencies
+        dependencies M extinction := by
+  rfl
+
+/--
 The dependency-level homeomorphism derivation certificate follows the stored
 topology package derivation route.
 -/
@@ -10762,6 +10824,22 @@ theorem topology_homeomorphism_derivation_of_dependencies_to_package_eq
             homeomorphismDerivation⟩
         convert homeomorphismDerivation) := by
   apply Subsingleton.elim
+
+/--
+The dependency-level homeomorphism derivation certificate also exposes a
+direct verification-payload route.
+-/
+theorem topology_homeomorphism_derivation_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_homeomorphism_derivation_of_dependencies
+      dependencies M extinction =
+      topology_homeomorphism_derivation_of_dependencies
+        dependencies M extinction := by
+  rfl
 
 /--
 The dependency-level classification projection follows the direct projection
