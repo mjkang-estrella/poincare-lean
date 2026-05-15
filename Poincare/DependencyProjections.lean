@@ -18043,6 +18043,18 @@ theorem completion_criterion_of_dependency_projections_to_package_eq
         exact criterion witness) := by
   apply Subsingleton.elim
 
+/--
+The dependency projection completion criterion can also be exposed directly
+from the criterion component of its completion verification payload.
+-/
+theorem completion_criterion_of_dependency_projections_to_direct_verification_payload_eq
+    (witness : Type u) (dependencies : PoincareProofDependencies.{u}) :
+    let payload :=
+      poincare_completion_payload_of_dependency_projections dependencies
+    completion_criterion_of_dependency_projections witness dependencies =
+      payload.choose_spec witness := by
+  apply Subsingleton.elim
+
 section VerificationFamilyProjectionCriteria
 
 variable (witness : Type u)
@@ -18222,6 +18234,20 @@ theorem completion_criterion_of_extraction_derivation_dependency_projections_to_
   apply Subsingleton.elim
 
 /--
+The certified dependency projection completion criterion can also be exposed
+directly from the criterion component of its completion verification payload.
+-/
+theorem completion_criterion_of_extraction_derivation_dependency_projections_to_direct_verification_payload_eq
+    (witness : Type u) (dependencies : PoincareProofDependencies.{u}) :
+    let payload :=
+      poincare_completion_payload_of_extraction_derivation_dependency_projections
+        dependencies
+    completion_criterion_of_extraction_derivation_dependency_projections
+        witness dependencies =
+      payload.choose_spec witness := by
+  apply Subsingleton.elim
+
+/--
 The lifted-homeomorphism projection route also discharges the explicit
 universe-indexed completion criterion.
 -/
@@ -18310,6 +18336,21 @@ theorem completion_criterion_of_lifted_homeomorphism_derivation_dependency_proje
   apply Subsingleton.elim
 
 /--
+The lifted-homeomorphism dependency projection completion criterion can also
+be exposed directly from the criterion component of its completion verification
+payload.
+-/
+theorem completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
+    (witness : Type u) (dependencies : PoincareProofDependencies.{u}) :
+    let payload :=
+      poincare_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies
+    completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections
+        witness dependencies =
+      payload.choose_spec witness := by
+  apply Subsingleton.elim
+
+/--
 Forgetting the lifted certificate in the lifted-homeomorphism completion
 criterion recovers the certified extraction-derivation completion criterion.
 -/
@@ -18383,6 +18424,21 @@ theorem completion_criterion_of_equation_boundary_dependency_projections_to_pack
         witness dependencies =
       completion_criterion_of_dependency_projections witness
         (dependencies_of_equation_boundary_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened equation-boundary completion criterion can also be exposed
+directly from the criterion component of its completion verification payload.
+-/
+theorem completion_criterion_of_equation_boundary_dependency_projections_to_direct_verification_payload_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    let payload :=
+      poincare_completion_payload_of_equation_boundary_dependency_projections
+        dependencies
+    completion_criterion_of_equation_boundary_dependency_projections
+        witness dependencies =
+      payload.choose_spec witness := by
   apply Subsingleton.elim
 
 /--
@@ -18533,6 +18589,22 @@ theorem completion_criterion_of_equation_boundary_extraction_derivation_dependen
   apply Subsingleton.elim
 
 /--
+The strengthened certified equation-boundary completion criterion can also be
+exposed directly from the criterion component of its completion verification
+payload.
+-/
+theorem completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections_to_direct_verification_payload_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    let payload :=
+      poincare_completion_payload_of_equation_boundary_extraction_derivation_dependency_projections
+        dependencies
+    completion_criterion_of_equation_boundary_extraction_derivation_dependency_projections
+        witness dependencies =
+      payload.choose_spec witness := by
+  apply Subsingleton.elim
+
+/--
 The strengthened certified projection completion criterion agrees with the
 direct boundary-package certified extraction-derivation statement route.
 -/
@@ -18632,6 +18704,21 @@ theorem completion_criterion_of_equation_boundary_lifted_homeomorphism_derivatio
             extractSphere derivation with
           ⟨_target, criterion⟩
         exact criterion witness) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism completion criterion can also be exposed
+directly from the criterion component of its completion verification payload.
+-/
+theorem completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    let payload :=
+      poincare_completion_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        dependencies
+    completion_criterion_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+        witness dependencies =
+      payload.choose_spec witness := by
   apply Subsingleton.elim
 
 /--
