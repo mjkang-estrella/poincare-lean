@@ -13111,6 +13111,18 @@ theorem poincare_projection_assembly_inputs_payload_of_dependencies_to_package_e
   apply Subsingleton.elim
 
 /--
+The dependency projection assembly-input payload can also be exposed directly
+as the verification payload selected by its own existential witness.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    let payload :=
+      poincare_projection_assembly_inputs_payload_of_dependencies dependencies
+    poincare_projection_assembly_inputs_payload_of_dependencies dependencies =
+      ⟨payload.choose, payload.choose_spec⟩ := by
+  dsimp
+
+/--
 A strengthened dependency package supplies the finite-extinction input through
 its boundary route and the topology-extraction input through the forgetful
 topology package.
@@ -13193,6 +13205,20 @@ theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_depende
         extinction_implies_sphere_of_topology_package
           (dependencies_of_equation_boundary_dependencies dependencies).topology⟩ := by
   apply Subsingleton.elim
+
+/--
+The strengthened projection assembly-input payload can also be exposed
+directly as the verification payload selected by its own existential witness.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    let payload :=
+      poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies
+        dependencies
+    poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies
+        dependencies =
+      ⟨payload.choose, payload.choose_spec⟩ := by
+  dsimp
 
 section VerificationFamilyProjectionAssemblyInputs
 
@@ -13399,6 +13425,21 @@ theorem poincare_projection_assembly_inputs_payload_of_extraction_derivation_dep
         exact ⟨finite_extinction_of_dependencies dependencies, extractSphere,
           derivation⟩) := by
   apply Subsingleton.elim
+
+/--
+The certified dependency projection assembly-input payload can also be exposed
+directly as the verification payload selected by its own existential witness.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    let payload :=
+      poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies
+        dependencies
+    poincare_projection_assembly_inputs_payload_of_extraction_derivation_dependencies
+        dependencies =
+      ⟨payload.choose, payload.choose_spec.choose,
+        payload.choose_spec.choose_spec⟩ := by
+  dsimp
 
 /--
 The dependency-level final extractor is the extractor component carried by the
@@ -14059,6 +14100,23 @@ theorem poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_deri
   apply Subsingleton.elim
 
 /--
+The lifted-homeomorphism dependency projection assembly-input payload can also
+be exposed directly as the verification payload selected by its own
+existential witness.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    let payload :=
+      poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies
+        dependencies
+    poincare_projection_assembly_inputs_payload_of_lifted_homeomorphism_derivation_dependencies
+        dependencies =
+      ⟨payload.choose, payload.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec⟩ := by
+  dsimp
+
+/--
 Forgetting the lifted certificate in the lifted-homeomorphism projection
 assembly-input payload recovers the ordinary certified extraction-derivation
 assembly-input payload.
@@ -14225,6 +14283,22 @@ theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_extract
   apply Subsingleton.elim
 
 /--
+The strengthened certified projection assembly-input payload can also be
+exposed directly as the verification payload selected by its own existential
+witness.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    let payload :=
+      poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies
+    poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      ⟨payload.choose, payload.choose_spec.choose,
+        payload.choose_spec.choose_spec⟩ := by
+  dsimp
+
+/--
 The strengthened projection route also exposes boundary finite extinction
 together with the final extractor, its full topology derivation certificate,
 and the lifted homeomorphism derivation certificate.
@@ -14317,6 +14391,23 @@ theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_
           ⟨finite_extinction_of_equation_boundary_dependencies dependencies,
             extractSphere, derivation, liftedDerivation⟩) := by
   apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism projection assembly-input payload can
+also be exposed directly as the verification payload selected by its own
+existential witness.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    let payload :=
+      poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies
+        dependencies
+    poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies
+        dependencies =
+      ⟨payload.choose, payload.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec⟩ := by
+  dsimp
 
 /--
 Forgetting equation-boundary data in the strengthened lifted-homeomorphism
