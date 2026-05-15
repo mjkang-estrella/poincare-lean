@@ -12078,6 +12078,97 @@ theorem topology_lifted_homeomorphism_derivation_statement_of_equation_boundary_
   apply Subsingleton.elim
 
 /--
+The strengthened dependency final extractor also follows the stored
+topology-package route after forgetting equation-boundary data.
+-/
+theorem extinction_extraction_of_equation_boundary_dependencies_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    extinction_extraction_of_equation_boundary_dependencies dependencies =
+      extinction_implies_sphere_of_topology_package
+        (dependencies_of_equation_boundary_dependencies dependencies).topology := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism extraction payload also follows the
+stored topology-package route after forgetting equation-boundary data.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_boundary_dependencies_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_boundary_dependencies
+        dependencies =
+      topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+        (dependencies_of_equation_boundary_dependencies dependencies).topology := by
+  apply Subsingleton.elim
+
+/--
+The strengthened simply-connected recognition statement also follows the
+stored topology-package route after forgetting equation-boundary data.
+-/
+theorem topology_simply_connected_recognition_statement_of_equation_boundary_dependencies_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_simply_connected_recognition_statement_of_equation_boundary_dependencies
+        dependencies M extinction =
+      topology_simply_connected_recognition_statement_of_topology_package
+        (dependencies_of_equation_boundary_dependencies dependencies).topology
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
+The strengthened spherical trivial-quotient statement also follows the stored
+topology-package route after forgetting equation-boundary data.
+-/
+theorem topology_spherical_trivial_quotient_statement_of_equation_boundary_dependencies_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_trivial_quotient_statement_of_equation_boundary_dependencies
+        dependencies M extinction =
+      topology_spherical_trivial_quotient_statement_of_topology_package
+        (dependencies_of_equation_boundary_dependencies dependencies).topology
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
+The strengthened spherical homeomorphism-lift statement also follows the
+stored topology-package route after forgetting equation-boundary data.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_of_equation_boundary_dependencies_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_homeomorphism_lift_statement_of_equation_boundary_dependencies
+        dependencies M extinction =
+      topology_spherical_homeomorphism_lift_statement_of_topology_package
+        (dependencies_of_equation_boundary_dependencies dependencies).topology
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted homeomorphism derivation statement also follows the
+stored topology-package route after forgetting equation-boundary data.
+-/
+theorem topology_lifted_homeomorphism_derivation_statement_of_equation_boundary_dependencies_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_lifted_homeomorphism_derivation_statement_of_equation_boundary_dependencies
+        dependencies M extinction =
+      topology_lifted_homeomorphism_derivation_statement_of_topology_package
+        (dependencies_of_equation_boundary_dependencies dependencies).topology
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies the two theorem-shaped inputs consumed
 by the final finite-extinction/topology-extraction assembly theorem through the
 projection route.
