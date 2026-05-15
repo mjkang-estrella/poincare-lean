@@ -5423,6 +5423,27 @@ theorem finite_extinction_width_statements_of_dependencies_to_package_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level finite-extinction width-statement projection also agrees
+with the direct verification payload selected by the aggregate dependencies.
+-/
+theorem finite_extinction_width_statements_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      finite_extinction_subobligations_statement_payload_of_dependencies
+        dependencies M
+    finite_extinction_width_statements_of_dependencies dependencies M =
+      ⟨payload.choose,
+        payload.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec.choose⟩ := by
+  dsimp
+
+/--
 A completed dependency package supplies theorem-shaped full finite-extinction
 sub-obligation statements for every target manifold.
 -/
@@ -5487,6 +5508,27 @@ theorem finite_extinction_subobligations_statements_of_dependencies_to_package_e
         finite_extinction_subobligations_statement_of_surgery_package
           payload.choose_spec.choose⟩ := by
   apply Subsingleton.elim
+
+/--
+The dependency-level finite-extinction full-statement projection also agrees
+with the direct verification payload selected by the aggregate dependencies.
+-/
+theorem finite_extinction_subobligations_statements_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      finite_extinction_subobligations_statement_payload_of_dependencies
+        dependencies M
+    finite_extinction_subobligations_statements_of_dependencies dependencies M =
+      ⟨payload.choose,
+        payload.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose⟩ := by
+  dsimp
 
 /--
 A completed dependency package exposes the final finite-extinction statement
@@ -5694,6 +5736,30 @@ theorem finite_extinction_statement_payload_of_dependencies_to_package_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level finite-extinction statement payload also agrees with the
+direct verification payload selected by the aggregate dependencies.
+-/
+theorem finite_extinction_statement_payload_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      finite_extinction_statement_payload_of_dependencies dependencies M
+    finite_extinction_statement_payload_of_dependencies dependencies M =
+      ⟨payload.choose,
+        payload.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec⟩ := by
+  dsimp
+
+/--
 A completed dependency package supplies the full local surgery derivation stack
 for finite extinction.
 -/
@@ -5757,6 +5823,26 @@ theorem finite_extinction_derivation_stack_of_dependencies_to_package_eq
           (finite_extinction_subobligations_statement_of_surgery_package
             payload.choose_spec.choose)⟩ := by
   apply Subsingleton.elim
+
+/--
+The dependency-level finite-extinction derivation stack also agrees with the
+direct verification payload selected by the aggregate dependencies.
+-/
+theorem finite_extinction_derivation_stack_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      finite_extinction_statement_payload_of_dependencies dependencies M
+    finite_extinction_derivation_stack_of_dependencies dependencies M =
+      ⟨payload.choose,
+        payload.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose⟩ := by
+  dsimp
 
 /--
 A completed dependency package supplies the finite-extinction topological and
@@ -5922,6 +6008,28 @@ theorem finite_extinction_width_subobligations_of_dependencies_to_package_eq
         finite_extinction_width_subobligations_of_surgery_package
           payload.choose_spec.choose⟩ := by
   apply Subsingleton.elim
+
+/--
+The dependency-level finite-extinction width sub-obligation projection also
+agrees with the direct verification payload selected by the aggregate
+dependencies.
+-/
+theorem finite_extinction_width_subobligations_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      finite_extinction_subobligations_statement_payload_of_dependencies
+        dependencies M
+    finite_extinction_width_subobligations_of_dependencies dependencies M =
+      ⟨payload.choose,
+        payload.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose⟩ := by
+  dsimp
 
 /--
 A completed dependency package supplies the named finite-extinction
@@ -6133,6 +6241,28 @@ theorem finite_extinction_subobligations_of_dependencies_to_package_eq
         finite_extinction_subobligations_of_surgery_package
           payload.choose_spec.choose⟩ := by
   apply Subsingleton.elim
+
+/--
+The dependency-level finite-extinction full sub-obligation projection also
+agrees with the direct verification payload selected by the aggregate
+dependencies.
+-/
+theorem finite_extinction_subobligations_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    let payload :=
+      finite_extinction_subobligations_statement_payload_of_dependencies
+        dependencies M
+    finite_extinction_subobligations_of_dependencies dependencies M =
+      ⟨payload.choose,
+        payload.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose⟩ := by
+  dsimp
 
 /-- A completed dependency package supplies the topology extraction package. -/
 theorem topology_package_of_dependencies
