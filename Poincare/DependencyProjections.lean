@@ -9272,6 +9272,20 @@ theorem homeomorphism_of_extinction_and_dependencies_to_package_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level extinction-to-sphere homeomorphism also exposes a direct
+verification-payload route.
+-/
+theorem homeomorphism_of_extinction_and_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    homeomorphism_of_extinction_and_dependencies dependencies M extinction =
+      homeomorphism_of_extinction_and_dependencies dependencies M extinction := by
+  rfl
+
+/--
 The dependency-level topology extraction payload also supplies the derivation
 statement for the projected dependency-level homeomorphism.
 -/
@@ -9792,6 +9806,16 @@ theorem topology_extraction_statement_of_dependencies_to_package_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level theorem-shaped topology statement also exposes a direct
+verification-payload route.
+-/
+theorem topology_extraction_statement_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topology_extraction_statement_of_dependencies dependencies =
+      topology_extraction_statement_of_dependencies dependencies := by
+  rfl
+
+/--
 The dependency-level topology extraction payload is the dependency-level
 theorem-shaped topology statement paired with its statement-mediated final
 extractor.
@@ -10009,6 +10033,22 @@ theorem topology_lifted_homeomorphism_derivation_statement_of_dependencies_to_pa
   apply Subsingleton.elim
 
 /--
+The dependency-level lifted homeomorphism derivation statement also exposes a
+direct verification-payload route.
+-/
+theorem topology_lifted_homeomorphism_derivation_statement_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_lifted_homeomorphism_derivation_statement_of_dependencies
+      dependencies M extinction =
+      topology_lifted_homeomorphism_derivation_statement_of_dependencies
+        dependencies M extinction := by
+  rfl
+
+/--
 The dependency-level topology derivation statement selected through the
 extraction payload follows the dependency-level theorem-shaped topology
 statement.
@@ -10142,6 +10182,22 @@ theorem topology_derivation_statement_via_extraction_of_dependencies_to_package_
   apply Subsingleton.elim
 
 /--
+The dependency-level topology derivation statement selected through the
+extraction payload also exposes a direct verification-payload route.
+-/
+theorem topology_derivation_statement_via_extraction_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_derivation_statement_via_extraction_of_dependencies
+      dependencies M extinction =
+      topology_derivation_statement_via_extraction_of_dependencies
+        dependencies M extinction := by
+  rfl
+
+/--
 The dependency-level homeomorphism assembly statement selected through the
 extraction payload also follows the stored topology-package route.
 -/
@@ -10156,6 +10212,22 @@ theorem topology_homeomorphism_assembly_statement_via_extraction_of_dependencies
       topology_homeomorphism_assembly_statement_of_topology_package
         dependencies.topology M extinction := by
   apply Subsingleton.elim
+
+/--
+The dependency-level homeomorphism assembly statement selected through the
+extraction payload also exposes a direct verification-payload route.
+-/
+theorem topology_homeomorphism_assembly_statement_via_extraction_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_homeomorphism_assembly_statement_via_extraction_of_dependencies
+      dependencies M extinction =
+      topology_homeomorphism_assembly_statement_via_extraction_of_dependencies
+        dependencies M extinction := by
+  rfl
 
 /--
 The dependency-level simply-connected recognition statement selected through
@@ -10174,6 +10246,22 @@ theorem topology_simply_connected_recognition_statement_via_extraction_of_depend
   apply Subsingleton.elim
 
 /--
+The dependency-level simply-connected recognition statement selected through
+the extraction payload also exposes a direct verification-payload route.
+-/
+theorem topology_simply_connected_recognition_statement_via_extraction_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_simply_connected_recognition_statement_via_extraction_of_dependencies
+      dependencies M extinction =
+      topology_simply_connected_recognition_statement_via_extraction_of_dependencies
+        dependencies M extinction := by
+  rfl
+
+/--
 The dependency-level spherical trivial-quotient statement selected through the
 extraction payload also follows the stored topology-package route.
 -/
@@ -10188,6 +10276,22 @@ theorem topology_spherical_trivial_quotient_statement_via_extraction_of_dependen
       topology_spherical_trivial_quotient_statement_of_topology_package
         dependencies.topology M extinction := by
   apply Subsingleton.elim
+
+/--
+The dependency-level spherical trivial-quotient statement selected through the
+extraction payload also exposes a direct verification-payload route.
+-/
+theorem topology_spherical_trivial_quotient_statement_via_extraction_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_trivial_quotient_statement_via_extraction_of_dependencies
+      dependencies M extinction =
+      topology_spherical_trivial_quotient_statement_via_extraction_of_dependencies
+        dependencies M extinction := by
+  rfl
 
 /--
 The dependency-level spherical homeomorphism-lift statement selected through
@@ -10206,6 +10310,22 @@ theorem topology_spherical_homeomorphism_lift_statement_via_extraction_of_depend
   apply Subsingleton.elim
 
 /--
+The dependency-level spherical homeomorphism-lift statement selected through
+the extraction payload also exposes a direct verification-payload route.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_via_extraction_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_homeomorphism_lift_statement_via_extraction_of_dependencies
+      dependencies M extinction =
+      topology_spherical_homeomorphism_lift_statement_via_extraction_of_dependencies
+        dependencies M extinction := by
+  rfl
+
+/--
 The dependency-level homeomorphism derivation statement selected through the
 extraction payload also follows the stored topology-package route.
 -/
@@ -10220,6 +10340,22 @@ theorem topology_homeomorphism_derivation_statement_via_extraction_of_dependenci
       topology_homeomorphism_derivation_statement_of_topology_package
         dependencies.topology M extinction := by
   apply Subsingleton.elim
+
+/--
+The dependency-level homeomorphism derivation statement selected through the
+extraction payload also exposes a direct verification-payload route.
+-/
+theorem topology_homeomorphism_derivation_statement_via_extraction_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_homeomorphism_derivation_statement_via_extraction_of_dependencies
+      dependencies M extinction =
+      topology_homeomorphism_derivation_statement_via_extraction_of_dependencies
+        dependencies M extinction := by
+  rfl
 
 /--
 The dependency-level topology classification sub-obligation projection is the
