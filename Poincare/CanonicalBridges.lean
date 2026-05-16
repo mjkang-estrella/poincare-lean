@@ -616,6 +616,48 @@ theorem completion_certificate_of_poincareProofDependencies_to_universalFiniteEx
   apply Subsingleton.elim
 
 /--
+The aggregate dependency certificate canonical payload agrees with the named
+universal finite-extinction canonical payload projected from the same
+dependencies.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_to_universalFiniteExtinctionStatement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_payload_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies dependencies) =
+      canonical_completion_payload_of_universalFiniteExtinctionStatement
+        (universalFiniteExtinctionStatement_of_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency certificate project payload agrees with the named
+universal finite-extinction project payload projected from the same
+dependencies.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_to_universalFiniteExtinctionStatement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies dependencies) =
+      poincare_payload_of_universalFiniteExtinctionStatement
+        (universalFiniteExtinctionStatement_of_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency certificate project statement agrees with the named
+universal finite-extinction project statement projected from the same
+dependencies.
+-/
+theorem target_statement_of_completion_certificate_of_poincareProofDependencies_to_universalFiniteExtinctionStatement_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    target_statement_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies dependencies) =
+      poincare_statement_of_universalFiniteExtinctionStatement
+        (universalFiniteExtinctionStatement_of_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency completion certificate also factors through the
 package-level universal finite-extinction route assembled from the same
 smoothability and surgery families.

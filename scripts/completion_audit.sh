@@ -2522,6 +2522,14 @@ check_decl "remaining dependency plus named universal finite-extinction certific
   '^theorem canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_to_project_payload_eq\b' Poincare/CanonicalBridges.lean
 check_decl "remaining dependency plus named universal finite-extinction certificate project payload equality contract is declared" \
   '^theorem poincare_completion_payload_of_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_to_project_payload_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependencies certificate to named universal finite-extinction factorization equality contract is declared" \
+  '^theorem completion_certificate_of_poincareProofDependencies_to_universalFiniteExtinctionStatement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependencies certificate canonical payload to named universal finite-extinction equality contract is declared" \
+  '^theorem canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_to_universalFiniteExtinctionStatement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependencies certificate project payload to named universal finite-extinction equality contract is declared" \
+  '^theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDependencies_to_universalFiniteExtinctionStatement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "aggregate dependencies certificate project statement to named universal finite-extinction equality contract is declared" \
+  '^theorem target_statement_of_completion_certificate_of_poincareProofDependencies_to_universalFiniteExtinctionStatement_eq\b' Poincare/CanonicalBridges.lean
 check_decl "completion certificate canonical statement payload equivalence is declared" \
   '^theorem poincareCompletionCertificate_iff_canonical_statement_payload\b' Poincare/CanonicalBridges.lean
 check_decl "completion certificate aggregate canonical statement payload is declared" \
