@@ -648,6 +648,29 @@ theorem externalBlocker_statementAdapters_nonempty_iff_mathlibProofWanted_eq :
   apply Subsingleton.elim
 
 /--
+An external blocker has exactly the full statement-adapter ledger iff it is the
+mathlib 3D Poincare proof-wanted blocker.
+-/
+theorem externalBlocker_statementAdapters_eq_adapterLedger_iff_mathlibProofWanted
+    (blocker : ExternalFormalizationBlocker) :
+    statementAdaptersBlockedByExternalBlocker blocker =
+        mathlibPoincareStatementAdapterLedger ↔
+      blocker =
+        ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted := by
+  cases blocker <;> simp [statementAdaptersBlockedByExternalBlocker,
+    mathlibPoincareStatementAdapterLedger]
+
+/-- The full-adapter-ledger blocker characterization is the blocker case split. -/
+theorem externalBlocker_statementAdapters_eq_adapterLedger_iff_mathlibProofWanted_eq :
+    externalBlocker_statementAdapters_eq_adapterLedger_iff_mathlibProofWanted =
+      (by
+        intro blocker
+        cases blocker <;> simp [statementAdaptersBlockedByExternalBlocker,
+          mathlibPoincareStatementAdapterLedger]) := by
+  funext blocker
+  apply Subsingleton.elim
+
+/--
 Map each external audit blocker to the dependency milestones it prevents from
 being discharged unconditionally.
 -/
@@ -782,6 +805,29 @@ theorem externalBlocker_statementAdapters_nonempty_iff_blocks_dependencyMileston
       (by
         intro blocker
         rw [externalBlocker_statementAdapters_nonempty_iff_mathlibProofWanted,
+          externalBlocker_blocks_dependencyMilestoneLedger_iff_mathlibProofWanted]) := by
+  funext blocker
+  apply Subsingleton.elim
+
+/--
+Having exactly the full statement-adapter ledger is equivalent to blocking the
+whole dependency milestone ledger.
+-/
+theorem externalBlocker_statementAdapters_eq_adapterLedger_iff_blocks_dependencyMilestoneLedger
+    (blocker : ExternalFormalizationBlocker) :
+    statementAdaptersBlockedByExternalBlocker blocker =
+        mathlibPoincareStatementAdapterLedger ↔
+      dependencyMilestonesBlockedByExternalBlocker blocker =
+        dependencyMilestoneLedger := by
+  rw [externalBlocker_statementAdapters_eq_adapterLedger_iff_mathlibProofWanted,
+    externalBlocker_blocks_dependencyMilestoneLedger_iff_mathlibProofWanted]
+
+/-- The full-adapter/whole-ledger bridge is the shared mathlib characterization. -/
+theorem externalBlocker_statementAdapters_eq_adapterLedger_iff_blocks_dependencyMilestoneLedger_eq :
+    externalBlocker_statementAdapters_eq_adapterLedger_iff_blocks_dependencyMilestoneLedger =
+      (by
+        intro blocker
+        rw [externalBlocker_statementAdapters_eq_adapterLedger_iff_mathlibProofWanted,
           externalBlocker_blocks_dependencyMilestoneLedger_iff_mathlibProofWanted]) := by
   funext blocker
   apply Subsingleton.elim
