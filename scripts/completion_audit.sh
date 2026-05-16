@@ -1023,6 +1023,10 @@ check_decl "Ricci-flow interface named universal finite-extinction local payload
   '^theorem poincare_payload_of_universalFiniteExtinctionStatement_eq\b' Poincare/RicciFlowInterface.lean
 check_decl "Ricci-flow interface named universal finite-extinction local payload reserved-route compatibility is declared" \
   '^theorem poincare_payload_of_universalFiniteExtinctionStatement_to_reserved_payload_eq\b' Poincare/RicciFlowInterface.lean
+check_decl "Ricci-flow interface named universal finite-extinction canonical statement route is declared" \
+  '^theorem canonical_three_sphere_statement_of_universalFiniteExtinctionStatement\b' Poincare/RicciFlowInterface.lean
+check_decl "Ricci-flow interface named universal finite-extinction canonical statement equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_of_universalFiniteExtinctionStatement_eq\b' Poincare/RicciFlowInterface.lean
 check_decl "topological statement shape contract is declared" \
   '^theorem poincareConjectureStatement_eq\b' Poincare/Statement.lean
 check_decl "topological statement iff contract is declared" \
