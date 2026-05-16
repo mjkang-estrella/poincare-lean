@@ -16272,6 +16272,35 @@ universe u
 
 #check Poincare.externalBlocker_packageLayer_mem_iff_milestone_layer_image_eq
 
+#check (Poincare.externalBlocker_milestone_component_mem_dependencyComponentSlots :
+  ∀ (blocker : Poincare.ExternalFormalizationBlocker)
+      {milestone : Poincare.DependencyMilestone},
+    milestone ∈ Poincare.dependencyMilestonesBlockedByExternalBlocker blocker →
+      Poincare.dependencyComponentForMilestone milestone ∈
+        Poincare.dependencyComponentSlotsBlockedByExternalBlocker blocker)
+
+#check Poincare.externalBlocker_milestone_component_mem_dependencyComponentSlots_eq
+
+#check (Poincare.externalBlocker_componentSlot_mem_milestone_component_image :
+  ∀ (blocker : Poincare.ExternalFormalizationBlocker)
+      {slot : Poincare.DependencyComponentSlot},
+    slot ∈ Poincare.dependencyComponentSlotsBlockedByExternalBlocker blocker →
+      ∃ milestone : Poincare.DependencyMilestone,
+        milestone ∈ Poincare.dependencyMilestonesBlockedByExternalBlocker blocker ∧
+          Poincare.dependencyComponentForMilestone milestone = slot)
+
+#check Poincare.externalBlocker_componentSlot_mem_milestone_component_image_eq
+
+#check (Poincare.externalBlocker_componentSlot_mem_iff_milestone_component_image :
+  ∀ (blocker : Poincare.ExternalFormalizationBlocker)
+      (slot : Poincare.DependencyComponentSlot),
+    slot ∈ Poincare.dependencyComponentSlotsBlockedByExternalBlocker blocker ↔
+      ∃ milestone : Poincare.DependencyMilestone,
+        milestone ∈ Poincare.dependencyMilestonesBlockedByExternalBlocker blocker ∧
+          Poincare.dependencyComponentForMilestone milestone = slot)
+
+#check Poincare.externalBlocker_componentSlot_mem_iff_milestone_component_image_eq
+
 #check (Poincare.externalBlocker_componentSlot_mem_packageLayer_component_image :
   ∀ (blocker : Poincare.ExternalFormalizationBlocker)
       {slot : Poincare.DependencyComponentSlot},

@@ -3171,6 +3171,93 @@ theorem dependencyComponentSlotsBlockedByExternalBlocker_eq :
   rfl
 
 /--
+Every milestone named by an external blocker maps to a component slot named by
+the same blocker.
+-/
+theorem externalBlocker_milestone_component_mem_dependencyComponentSlots
+    (blocker : ExternalFormalizationBlocker) {milestone : DependencyMilestone} :
+    milestone ∈ dependencyMilestonesBlockedByExternalBlocker blocker →
+      dependencyComponentForMilestone milestone ∈
+        dependencyComponentSlotsBlockedByExternalBlocker blocker := by
+  intro h
+  rw [dependencyComponentSlotsBlockedByExternalBlocker_eq]
+  exact List.mem_map.mpr ⟨milestone, h, rfl⟩
+
+/--
+The theorem mapping externally blocked milestones into blocked component slots
+is exactly the forward `List.mem_map` route.
+-/
+theorem externalBlocker_milestone_component_mem_dependencyComponentSlots_eq :
+    externalBlocker_milestone_component_mem_dependencyComponentSlots =
+      (by
+        intro blocker milestone h
+        rw [dependencyComponentSlotsBlockedByExternalBlocker_eq]
+        exact List.mem_map.mpr ⟨milestone, h, rfl⟩) := by
+  funext blocker milestone
+  apply Subsingleton.elim
+
+/--
+Every component slot named by an external blocker has a blocked milestone
+witness mapping to that slot.
+-/
+theorem externalBlocker_componentSlot_mem_milestone_component_image
+    (blocker : ExternalFormalizationBlocker) {slot : DependencyComponentSlot} :
+    slot ∈ dependencyComponentSlotsBlockedByExternalBlocker blocker →
+      ∃ milestone : DependencyMilestone,
+        milestone ∈ dependencyMilestonesBlockedByExternalBlocker blocker ∧
+          dependencyComponentForMilestone milestone = slot := by
+  intro h
+  rw [dependencyComponentSlotsBlockedByExternalBlocker_eq] at h
+  exact List.mem_map.mp h
+
+/--
+The theorem witnessing blocked component slots by blocked milestones is exactly
+the reverse `List.mem_map` route after the blocker-to-component-slot definition.
+-/
+theorem externalBlocker_componentSlot_mem_milestone_component_image_eq :
+    externalBlocker_componentSlot_mem_milestone_component_image =
+      (by
+        intro blocker slot h
+        rw [dependencyComponentSlotsBlockedByExternalBlocker_eq] at h
+        exact List.mem_map.mp h) := by
+  funext blocker slot
+  apply Subsingleton.elim
+
+/--
+A component slot is named by an external blocker exactly when it is the
+component image of a milestone named by that same blocker.
+-/
+theorem externalBlocker_componentSlot_mem_iff_milestone_component_image
+    (blocker : ExternalFormalizationBlocker) (slot : DependencyComponentSlot) :
+    slot ∈ dependencyComponentSlotsBlockedByExternalBlocker blocker ↔
+      ∃ milestone : DependencyMilestone,
+        milestone ∈ dependencyMilestonesBlockedByExternalBlocker blocker ∧
+          dependencyComponentForMilestone milestone = slot := by
+  constructor
+  · exact externalBlocker_componentSlot_mem_milestone_component_image blocker
+  · rintro ⟨milestone, hMilestone, hSlot⟩
+    simpa [hSlot] using
+      externalBlocker_milestone_component_mem_dependencyComponentSlots
+        blocker hMilestone
+
+/--
+The component-slot/milestone image iff is the pair of the two `List.mem_map`
+routes.
+-/
+theorem externalBlocker_componentSlot_mem_iff_milestone_component_image_eq :
+    externalBlocker_componentSlot_mem_iff_milestone_component_image =
+      (by
+        intro blocker slot
+        constructor
+        · exact externalBlocker_componentSlot_mem_milestone_component_image blocker
+        · rintro ⟨milestone, hMilestone, hSlot⟩
+          simpa [hSlot] using
+            externalBlocker_milestone_component_mem_dependencyComponentSlots
+              blocker hMilestone) := by
+  funext blocker slot
+  apply Subsingleton.elim
+
+/--
 The external-blocker-to-component-slot map is also the blocker-to-package-layer
 map followed by the package-layer-to-component fold.
 -/

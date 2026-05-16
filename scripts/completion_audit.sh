@@ -148,6 +148,7 @@ if rg -q '^def dependencyPackageLayersBlockedByExternalBlocker\b' Poincare/Depen
     rg -q '^theorem externalBlocker_milestone_layer_mem_dependencyPackageLayers\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_packageLayer_mem_iff_milestone_layer_image\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^def dependencyComponentSlotsBlockedByExternalBlocker\b' Poincare/DependencyCrosswalk.lean &&
+    rg -q '^theorem externalBlocker_componentSlot_mem_iff_milestone_component_image\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem dependencyComponentSlotsBlockedByExternalBlocker_eq_package_layer_map\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_blocks_dependencyComponentSlots_iff_mathlibProofWanted\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_statementAdapters_nonempty_iff_blocks_dependencyComponentSlots\b' Poincare/DependencyCrosswalk.lean &&
@@ -9518,6 +9519,18 @@ check_decl "external blocker package-layer milestone image iff bridge is declare
   '^theorem externalBlocker_packageLayer_mem_iff_milestone_layer_image\b' Poincare/DependencyCrosswalk.lean
 check_decl "external blocker package-layer milestone image iff bridge equality contract is declared" \
   '^theorem externalBlocker_packageLayer_mem_iff_milestone_layer_image_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "external blocker milestone component-slot membership bridge is declared" \
+  '^theorem externalBlocker_milestone_component_mem_dependencyComponentSlots\b' Poincare/DependencyCrosswalk.lean
+check_decl "external blocker milestone component-slot membership bridge equality contract is declared" \
+  '^theorem externalBlocker_milestone_component_mem_dependencyComponentSlots_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "external blocker component-slot milestone witness bridge is declared" \
+  '^theorem externalBlocker_componentSlot_mem_milestone_component_image\b' Poincare/DependencyCrosswalk.lean
+check_decl "external blocker component-slot milestone witness bridge equality contract is declared" \
+  '^theorem externalBlocker_componentSlot_mem_milestone_component_image_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "external blocker component-slot milestone image iff bridge is declared" \
+  '^theorem externalBlocker_componentSlot_mem_iff_milestone_component_image\b' Poincare/DependencyCrosswalk.lean
+check_decl "external blocker component-slot milestone image iff bridge equality contract is declared" \
+  '^theorem externalBlocker_componentSlot_mem_iff_milestone_component_image_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "external blocker component-slot map factors through package layers" \
   '^theorem dependencyComponentSlotsBlockedByExternalBlocker_eq_package_layer_map\b' Poincare/DependencyCrosswalk.lean
 check_decl "external blocker component-slot map package-layer factorization equality contract is declared" \
@@ -35095,6 +35108,12 @@ open scoped Manifold ContDiff
 #check Poincare.externalBlocker_packageLayer_mem_milestone_layer_image_eq
 #check Poincare.externalBlocker_packageLayer_mem_iff_milestone_layer_image
 #check Poincare.externalBlocker_packageLayer_mem_iff_milestone_layer_image_eq
+#check Poincare.externalBlocker_milestone_component_mem_dependencyComponentSlots
+#check Poincare.externalBlocker_milestone_component_mem_dependencyComponentSlots_eq
+#check Poincare.externalBlocker_componentSlot_mem_milestone_component_image
+#check Poincare.externalBlocker_componentSlot_mem_milestone_component_image_eq
+#check Poincare.externalBlocker_componentSlot_mem_iff_milestone_component_image
+#check Poincare.externalBlocker_componentSlot_mem_iff_milestone_component_image_eq
 #check Poincare.dependencyComponentSlotsBlockedByExternalBlocker_eq_package_layer_map
 #check Poincare.dependencyComponentSlotsBlockedByExternalBlocker_eq_package_layer_map_eq
 #check Poincare.externalBlocker_packageLayer_component_mem_dependencyComponentSlots
