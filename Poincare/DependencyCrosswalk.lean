@@ -1531,6 +1531,55 @@ theorem poincareProofDependencies_iff_package_layer_requirements_eq :
   apply Subsingleton.elim
 
 /--
+The component-slot and package-layer requirement payloads are equivalent routes
+to the same aggregate dependency package.
+-/
+theorem component_requirements_iff_package_layer_requirements :
+    (∃ _smoothability :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+    ∃ _surgery :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) ↔
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage := by
+  constructor
+  · intro payload
+    exact
+      dependency_package_layer_requirements_payload_of_dependencies
+        (poincareProofDependencies_of_component_requirements_payload payload)
+  · intro payload
+    exact
+      dependency_component_requirements_payload_of_dependencies
+        (poincareProofDependencies_of_package_layer_requirements_payload payload)
+
+/--
+The component/package-layer payload bridge is exactly the pair of constructors
+through the aggregate dependency package.
+-/
+theorem component_requirements_iff_package_layer_requirements_eq :
+    component_requirements_iff_package_layer_requirements.{u} =
+      ⟨ (fun payload =>
+          dependency_package_layer_requirements_payload_of_dependencies
+            (poincareProofDependencies_of_component_requirements_payload
+              payload))
+      , (fun payload =>
+          dependency_component_requirements_payload_of_dependencies
+            (poincareProofDependencies_of_package_layer_requirements_payload
+              payload)) ⟩ := by
+  apply Subsingleton.elim
+
+/--
 The proposition represented by the concrete package layer assigned to a
 milestone.
 -/
