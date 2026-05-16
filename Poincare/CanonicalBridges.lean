@@ -226,6 +226,20 @@ theorem completion_certificate_of_remaining_dependency_and_universalFiniteExtinc
   apply Subsingleton.elim
 
 /--
+The universal finite-extinction certificate exposes the same canonical
+topological statement as the named universal finite-extinction route.
+-/
+theorem canonical_three_sphere_statement_of_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+          dependencies finiteExtinction) =
+      canonical_three_sphere_statement_of_universalFiniteExtinctionStatement
+        finiteExtinction := by
+  apply Subsingleton.elim
+
+/--
 The universal finite-extinction certificate exposes the same Poincare endpoint
 as the named universal finite-extinction route.
 -/
@@ -338,6 +352,23 @@ theorem completion_criterion_of_completion_certificate_of_remaining_dependency_a
           dependencies finiteExtinction) =
       completion_criterion_of_universalFiniteExtinctionStatement
         witness finiteExtinction := by
+  apply Subsingleton.elim
+
+/--
+The universal finite-extinction certificate canonical criterion is the
+criterion projection from the named universal finite-extinction canonical
+target.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_eq
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackage.{u})
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+        (completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+          dependencies finiteExtinction) =
+      completion_criterion_of_canonical_completion_target witness
+        (canonical_completion_target_of_universalFiniteExtinctionStatement
+          finiteExtinction) := by
   apply Subsingleton.elim
 
 /--
