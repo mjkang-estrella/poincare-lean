@@ -159,13 +159,15 @@ if rg -q '^def dependencyPackageLayersBlockedByExternalBlocker\b' Poincare/Depen
     rg -q '^theorem externalBlocker_componentSlot_mem_packageLayer_component_image\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_componentSlot_mem_iff_packageLayer_component_image\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_componentSlot_milestone_image_iff_packageLayer_image\b' Poincare/DependencyCrosswalk.lean &&
+    rg -q '^theorem dependencyPackageLayerRequirement_of_componentRequirement\b' Poincare/DependencyCrosswalk.lean &&
+    rg -q '^theorem dependencyMilestoneRequirement_of_componentRequirement\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem component_requirements_iff_package_layer_requirements\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem package_layer_requirements_iff_milestone_requirements\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem component_requirements_iff_milestone_requirements\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_componentSlots_mem_dependencyLedgerComponentSlots\b' Poincare/DependencyCrosswalk.lean; then
-  echo "PASS: dependency crosswalk maps external blockers to package layers and component slots with whole-image characterizations plus nonempty/full-ledger adapter, whole-ledger, blocker milestone/package/component image iff bridges, package-to-component image bridges, and component/package/milestone payload bridges"
+  echo "PASS: dependency crosswalk maps external blockers to package layers and component slots with whole-image characterizations plus nonempty/full-ledger adapter, whole-ledger, blocker milestone/package/component image iff bridges, package-to-component image bridges, component-carried requirement bridges, and component/package/milestone payload bridges"
 else
-  echo "FAIL: dependency crosswalk does not map external blockers to package/component surfaces with whole-image characterizations plus nonempty/full-ledger adapter, whole-ledger, blocker milestone/package/component image iff bridges, package-to-component image bridges, and component/package/milestone payload bridges"
+  echo "FAIL: dependency crosswalk does not map external blockers to package/component surfaces with whole-image characterizations plus nonempty/full-ledger adapter, whole-ledger, blocker milestone/package/component image iff bridges, package-to-component image bridges, component-carried requirement bridges, and component/package/milestone payload bridges"
   status=1
 fi
 
@@ -9312,6 +9314,10 @@ check_decl "dependency package-layer requirements projection theorem is declared
   '^theorem dependencyPackageLayerRequirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency package-layer requirements generic projection equality contract is declared" \
   '^theorem dependencyPackageLayerRequirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "component-carried package-layer requirement bridge is declared" \
+  '^theorem dependencyPackageLayerRequirement_of_componentRequirement\b' Poincare/DependencyCrosswalk.lean
+check_decl "component-carried package-layer requirement bridge equality contract is declared" \
+  '^theorem dependencyPackageLayerRequirement_of_componentRequirement_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "strengthened dependency package-layer requirements projection theorem is declared" \
   '^theorem dependencyPackageLayerRequirement_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean
 check_decl "strengthened dependency package-layer requirements projection equality contract is declared" \
@@ -9414,6 +9420,10 @@ check_decl "topology-extraction milestone requirement theorem equality contract 
   '^theorem dependencyMilestoneRequirement_extinctionToSphereHomeomorphism_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency milestone requirements projection theorem is declared" \
   '^theorem dependencyMilestoneRequirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "component-carried milestone requirement bridge is declared" \
+  '^theorem dependencyMilestoneRequirement_of_componentRequirement\b' Poincare/DependencyCrosswalk.lean
+check_decl "component-carried milestone requirement bridge equality contract is declared" \
+  '^theorem dependencyMilestoneRequirement_of_componentRequirement_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "strengthened dependency milestone requirements projection theorem is declared" \
   '^theorem dependencyMilestoneRequirement_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean
 check_decl "smoothability milestone dependency projection theorem is declared" \
@@ -26021,6 +26031,8 @@ open scoped Manifold ContDiff
 #check Poincare.dependencyPackageLayerRequirement_finiteExtinctionPackage
 #check Poincare.dependencyPackageLayerRequirement_topologyPackage
 #check Poincare.dependencyPackageLayerRequirement_of_dependencies
+#check Poincare.dependencyPackageLayerRequirement_of_componentRequirement
+#check Poincare.dependencyPackageLayerRequirement_of_componentRequirement_eq
 #check Poincare.smoothabilityPackage_requirement_of_dependencies
 #check Poincare.analyticFoundationPackage_requirement_of_dependencies
 #check Poincare.surgeryPackage_requirement_of_dependencies
@@ -26057,6 +26069,8 @@ open scoped Manifold ContDiff
 #check Poincare.dependencyMilestoneRequirement_finiteExtinction
 #check Poincare.dependencyMilestoneRequirement_extinctionToSphereHomeomorphism
 #check Poincare.dependencyMilestoneRequirement_of_dependencies
+#check Poincare.dependencyMilestoneRequirement_of_componentRequirement
+#check Poincare.dependencyMilestoneRequirement_of_componentRequirement_eq
 #check Poincare.smoothabilityBridge_requirement_of_dependencies
 #check Poincare.ricciFlowAnalyticFoundation_requirement_of_dependencies
 #check Poincare.ricciFlowWithSurgery_requirement_of_dependencies
@@ -34997,6 +35011,14 @@ open scoped Manifold ContDiff
   ∀ (dependencies : Poincare.PoincareProofDependencies)
     (milestone : Poincare.DependencyMilestone),
       Poincare.dependencyMilestoneRequirement milestone)
+
+#check (Poincare.dependencyMilestoneRequirement_of_componentRequirement :
+  ∀ milestone : Poincare.DependencyMilestone,
+    Poincare.dependencyComponentRequirement
+        (Poincare.dependencyComponentForMilestone milestone) →
+      Poincare.dependencyMilestoneRequirement milestone)
+
+#check Poincare.dependencyMilestoneRequirement_of_componentRequirement_eq
 
 #check (Poincare.smoothabilityBridge_requirement_of_dependencies :
   Poincare.PoincareProofDependencies →

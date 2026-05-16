@@ -16606,6 +16606,12 @@ universe u
 #check Poincare.dependencyPackageLayerRequirement_finiteExtinctionPackage_eq
 #check Poincare.dependencyPackageLayerRequirement_topologyPackage_eq
 #check Poincare.dependencyPackageLayerRequirement_of_dependencies_eq
+#check (Poincare.dependencyPackageLayerRequirement_of_componentRequirement :
+  ∀ layer : Poincare.DependencyPackageLayer,
+    Poincare.dependencyComponentRequirement
+        (Poincare.dependencyComponentForPackageLayer layer) →
+      Poincare.dependencyPackageLayerRequirement layer)
+#check Poincare.dependencyPackageLayerRequirement_of_componentRequirement_eq
 #check Poincare.dependencyPackageLayerRequirement_of_equation_boundary_dependencies
 #check Poincare.dependencyPackageLayerRequirement_of_equation_boundary_dependencies_eq
 #check Poincare.smoothabilityPackage_requirement_of_dependencies_eq
@@ -16747,6 +16753,14 @@ universe u
   ∀ (dependencies : Poincare.PoincareProofDependencies)
     (milestone : Poincare.DependencyMilestone),
       Poincare.dependencyMilestoneRequirement milestone)
+
+#check (Poincare.dependencyMilestoneRequirement_of_componentRequirement :
+  ∀ milestone : Poincare.DependencyMilestone,
+    Poincare.dependencyComponentRequirement
+        (Poincare.dependencyComponentForMilestone milestone) →
+      Poincare.dependencyMilestoneRequirement milestone)
+
+#check Poincare.dependencyMilestoneRequirement_of_componentRequirement_eq
 
 #check (Poincare.smoothabilityBridge_requirement_of_dependencies :
   Poincare.PoincareProofDependencies →

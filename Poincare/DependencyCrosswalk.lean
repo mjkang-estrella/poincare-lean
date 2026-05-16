@@ -957,6 +957,69 @@ theorem dependencyPackageLayerRequirement_of_dependencies
   · exact dependencies.smoothability
 
 /--
+The aggregate component requirement carrying a package layer is enough to
+discharge that concrete package-layer requirement.  For the surgery-carried
+layers, the finite-extinction surgery package projects to the analytic,
+construction, and Perelman-control packages.
+-/
+theorem dependencyPackageLayerRequirement_of_componentRequirement
+    (layer : DependencyPackageLayer) :
+    dependencyComponentRequirement.{u}
+        (dependencyComponentForPackageLayer layer) →
+      dependencyPackageLayerRequirement.{u} layer := by
+  cases layer
+  · intro surgeryRequirement M _ _ _ _ _ _
+    rcases surgeryRequirement M with ⟨⟨n, package⟩⟩
+    exact ⟨⟨n, analytic_foundation_of_surgery_package package⟩⟩
+  · intro surgeryRequirement M _ _ _ _ _ _
+    rcases surgeryRequirement M with ⟨⟨n, package⟩⟩
+    let flow := ricci_flow_data_of_surgery_package package
+    let constructionPackage :
+        RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow :=
+      surgery_construction_package_of_surgery_package package
+    let controlPackage :
+        PerelmanSingularityControlPackage (n := n) (M := M) flow :=
+      perelman_control_package_of_surgery_package package
+    exact ⟨n, flow, constructionPackage, controlPackage⟩
+  · intro surgeryRequirement
+    exact surgeryRequirement
+  · intro topologyRequirement
+    exact topologyRequirement
+  · intro smoothabilityRequirement
+    exact smoothabilityRequirement
+
+/--
+The component-to-package-layer requirement bridge is exactly the case split
+that projects package-layer data from the carrying component.
+-/
+theorem dependencyPackageLayerRequirement_of_componentRequirement_eq :
+    dependencyPackageLayerRequirement_of_componentRequirement.{u} =
+      (by
+        intro layer
+        cases layer
+        · intro surgeryRequirement M _ _ _ _ _ _
+          rcases surgeryRequirement M with ⟨⟨n, package⟩⟩
+          exact ⟨⟨n, analytic_foundation_of_surgery_package package⟩⟩
+        · intro surgeryRequirement M _ _ _ _ _ _
+          rcases surgeryRequirement M with ⟨⟨n, package⟩⟩
+          let flow := ricci_flow_data_of_surgery_package package
+          let constructionPackage :
+              RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow :=
+            surgery_construction_package_of_surgery_package package
+          let controlPackage :
+              PerelmanSingularityControlPackage (n := n) (M := M) flow :=
+            perelman_control_package_of_surgery_package package
+          exact ⟨n, flow, constructionPackage, controlPackage⟩
+        · intro surgeryRequirement
+          exact surgeryRequirement
+        · intro topologyRequirement
+          exact topologyRequirement
+        · intro smoothabilityRequirement
+          exact smoothabilityRequirement) := by
+  funext layer
+  cases layer <;> apply Subsingleton.elim
+
+/--
 The generic package-layer projection from dependencies is exactly the five-case
 destructor that projects the requested layer from the stored aggregate fields.
 -/
@@ -1748,6 +1811,31 @@ theorem dependencyMilestoneRequirement_of_dependencies
     dependencyMilestoneRequirement.{u} milestone := by
   cases milestone <;>
     exact dependencyPackageLayerRequirement_of_dependencies dependencies _
+
+/--
+The aggregate component requirement carrying a milestone is enough to discharge
+that milestone's concrete package-layer requirement.
+-/
+theorem dependencyMilestoneRequirement_of_componentRequirement
+    (milestone : DependencyMilestone) :
+    dependencyComponentRequirement.{u}
+        (dependencyComponentForMilestone milestone) →
+      dependencyMilestoneRequirement.{u} milestone := by
+  cases milestone <;>
+    exact dependencyPackageLayerRequirement_of_componentRequirement _
+
+/--
+The component-to-milestone requirement bridge is exactly the package-layer
+bridge at the package layer assigned to the milestone.
+-/
+theorem dependencyMilestoneRequirement_of_componentRequirement_eq :
+    dependencyMilestoneRequirement_of_componentRequirement.{u} =
+      (by
+        intro milestone
+        cases milestone <;>
+          exact dependencyPackageLayerRequirement_of_componentRequirement _) := by
+  funext milestone
+  cases milestone <;> apply Subsingleton.elim
 
 /-- Aggregate dependencies supply the smoothability milestone requirement. -/
 theorem smoothabilityBridge_requirement_of_dependencies
