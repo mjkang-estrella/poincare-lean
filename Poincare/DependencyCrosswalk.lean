@@ -3075,6 +3075,29 @@ theorem externalBlocker_blocks_dependencyMilestoneLedger_iff_blocks_dependencyCo
   apply Subsingleton.elim
 
 /--
+Reaching the whole package-layer ledger image is equivalent to reaching the
+whole component-slot ledger image.
+-/
+theorem externalBlocker_blocks_dependencyPackageLayers_iff_blocks_dependencyComponentSlots
+    (blocker : ExternalFormalizationBlocker) :
+    dependencyPackageLayersBlockedByExternalBlocker blocker =
+        dependencyMilestoneLedger.map dependencyLayerForMilestone ↔
+      dependencyComponentSlotsBlockedByExternalBlocker blocker =
+        dependencyMilestoneLedger.map dependencyComponentForMilestone := by
+  rw [externalBlocker_blocks_dependencyPackageLayers_iff_mathlibProofWanted,
+    externalBlocker_blocks_dependencyComponentSlots_iff_mathlibProofWanted]
+
+/-- The package-layer/component-slot blocker bridge is the shared mathlib characterization. -/
+theorem externalBlocker_blocks_dependencyPackageLayers_iff_blocks_dependencyComponentSlots_eq :
+    externalBlocker_blocks_dependencyPackageLayers_iff_blocks_dependencyComponentSlots =
+      (by
+        intro blocker
+        rw [externalBlocker_blocks_dependencyPackageLayers_iff_mathlibProofWanted,
+          externalBlocker_blocks_dependencyComponentSlots_iff_mathlibProofWanted]) := by
+  funext blocker
+  apply Subsingleton.elim
+
+/--
 Every component slot named by an external blocker is present in the checked
 milestone component-slot image.
 -/

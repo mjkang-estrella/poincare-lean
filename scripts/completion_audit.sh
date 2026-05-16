@@ -150,10 +150,11 @@ if rg -q '^def dependencyPackageLayersBlockedByExternalBlocker\b' Poincare/Depen
     rg -q '^theorem externalBlocker_statementAdapters_nonempty_iff_blocks_dependencyComponentSlots\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_statementAdapters_eq_adapterLedger_iff_blocks_dependencyComponentSlots\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_blocks_dependencyMilestoneLedger_iff_blocks_dependencyComponentSlots\b' Poincare/DependencyCrosswalk.lean &&
+    rg -q '^theorem externalBlocker_blocks_dependencyPackageLayers_iff_blocks_dependencyComponentSlots\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_componentSlots_mem_dependencyLedgerComponentSlots\b' Poincare/DependencyCrosswalk.lean; then
-  echo "PASS: dependency crosswalk maps external blockers to package layers and component slots with whole-image characterizations plus nonempty/full-ledger adapter and whole-ledger bridges"
+  echo "PASS: dependency crosswalk maps external blockers to package layers and component slots with whole-image characterizations plus nonempty/full-ledger adapter, whole-ledger, and package-to-component bridges"
 else
-  echo "FAIL: dependency crosswalk does not map external blockers to package/component surfaces with whole-image characterizations plus nonempty/full-ledger adapter and whole-ledger bridges"
+  echo "FAIL: dependency crosswalk does not map external blockers to package/component surfaces with whole-image characterizations plus nonempty/full-ledger adapter, whole-ledger, and package-to-component bridges"
   status=1
 fi
 
