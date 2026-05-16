@@ -10000,6 +10000,8 @@ check_decl "named universal finite-extinction topology-statement canonical compl
   '^theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_topology_extraction_statement\b' Poincare/CompletionTarget.lean
 check_decl "named universal finite-extinction topology-statement canonical completion criterion equality contract is declared" \
   '^theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_eq\b' Poincare/CompletionTarget.lean
+check_decl "named universal finite-extinction topology-statement canonical completion criterion to project payload equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_to_project_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion finite-extinction extraction-derivation payload theorem is declared" \
   '^theorem canonical_completion_payload_of_finite_extinction_and_extraction_derivation\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion finite-extinction extraction-derivation payload equality contract is declared" \
@@ -10028,6 +10030,8 @@ check_decl "named universal finite-extinction extraction-derivation canonical co
   '^theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_extraction_derivation\b' Poincare/CompletionTarget.lean
 check_decl "named universal finite-extinction extraction-derivation canonical completion criterion equality contract is declared" \
   '^theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_extraction_derivation_eq\b' Poincare/CompletionTarget.lean
+check_decl "named universal finite-extinction extraction-derivation canonical completion criterion to project payload equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_extraction_derivation_to_project_payload_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion criterion to canonical target theorem is declared" \
   '^theorem canonical_completion_target_of_completion_criterion\b' Poincare/CompletionTarget.lean
 check_decl "completion criterion to canonical target equality contract is declared" \
