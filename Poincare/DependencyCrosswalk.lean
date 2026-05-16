@@ -3837,6 +3837,59 @@ theorem externalBlocker_blockedMilestoneRequirement_of_dependencies_eq
   apply Subsingleton.elim
 
 /--
+Strengthened equation-boundary dependencies discharge every package layer named
+by an external formalization blocker after forgetting the extra boundary data.
+-/
+theorem externalBlocker_blockedPackageLayerRequirement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (blocker : ExternalFormalizationBlocker) {layer : DependencyPackageLayer}
+    (hlayer : layer ∈ dependencyPackageLayersBlockedByExternalBlocker blocker) :
+    dependencyPackageLayerRequirement.{u} layer :=
+  externalBlocker_blockedPackageLayerRequirement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+    blocker hlayer
+
+/--
+The strengthened blocker package-layer discharge route is exactly the ordinary
+blocker discharge route applied to the forgetful dependency package.
+-/
+theorem externalBlocker_blockedPackageLayerRequirement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    externalBlocker_blockedPackageLayerRequirement_of_equation_boundary_dependencies
+        dependencies =
+      externalBlocker_blockedPackageLayerRequirement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  funext blocker layer hlayer
+  apply Subsingleton.elim
+
+/--
+Strengthened equation-boundary dependencies discharge every milestone named by
+an external formalization blocker after forgetting the extra boundary data.
+-/
+theorem externalBlocker_blockedMilestoneRequirement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (blocker : ExternalFormalizationBlocker) {milestone : DependencyMilestone}
+    (hmilestone :
+      milestone ∈ dependencyMilestonesBlockedByExternalBlocker blocker) :
+    dependencyMilestoneRequirement.{u} milestone :=
+  externalBlocker_blockedMilestoneRequirement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+    blocker hmilestone
+
+/--
+The strengthened blocker milestone discharge route is exactly the ordinary
+blocker discharge route applied to the forgetful dependency package.
+-/
+theorem externalBlocker_blockedMilestoneRequirement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    externalBlocker_blockedMilestoneRequirement_of_equation_boundary_dependencies
+        dependencies =
+      externalBlocker_blockedMilestoneRequirement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  funext blocker milestone hmilestone
+  apply Subsingleton.elim
+
+/--
 Every component slot named by an external blocker is present in the checked
 milestone component-slot image.
 -/
