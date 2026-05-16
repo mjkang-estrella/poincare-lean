@@ -144,14 +144,16 @@ if rg -q '^def dependencyPackageLayersBlockedByExternalBlocker\b' Poincare/Depen
     rg -q '^theorem externalBlocker_blocks_dependencyPackageLayers_iff_mathlibProofWanted\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_statementAdapters_nonempty_iff_blocks_dependencyPackageLayers\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_statementAdapters_eq_adapterLedger_iff_blocks_dependencyPackageLayers\b' Poincare/DependencyCrosswalk.lean &&
+    rg -q '^theorem externalBlocker_blocks_dependencyMilestoneLedger_iff_blocks_dependencyPackageLayers\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^def dependencyComponentSlotsBlockedByExternalBlocker\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_blocks_dependencyComponentSlots_iff_mathlibProofWanted\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_statementAdapters_nonempty_iff_blocks_dependencyComponentSlots\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_statementAdapters_eq_adapterLedger_iff_blocks_dependencyComponentSlots\b' Poincare/DependencyCrosswalk.lean &&
+    rg -q '^theorem externalBlocker_blocks_dependencyMilestoneLedger_iff_blocks_dependencyComponentSlots\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_componentSlots_mem_dependencyLedgerComponentSlots\b' Poincare/DependencyCrosswalk.lean; then
-  echo "PASS: dependency crosswalk maps external blockers to package layers and component slots with whole-image characterizations and nonempty/full-ledger adapter bridges"
+  echo "PASS: dependency crosswalk maps external blockers to package layers and component slots with whole-image characterizations plus nonempty/full-ledger adapter and whole-ledger bridges"
 else
-  echo "FAIL: dependency crosswalk does not map external blockers to package/component surfaces with whole-image characterizations and nonempty/full-ledger adapter bridges"
+  echo "FAIL: dependency crosswalk does not map external blockers to package/component surfaces with whole-image characterizations plus nonempty/full-ledger adapter and whole-ledger bridges"
   status=1
 fi
 

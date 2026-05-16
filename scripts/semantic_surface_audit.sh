@@ -16199,6 +16199,24 @@ universe u
 
 #check Poincare.externalBlocker_statementAdapters_eq_adapterLedger_iff_blocks_dependencyComponentSlots_eq
 
+#check (Poincare.externalBlocker_blocks_dependencyMilestoneLedger_iff_blocks_dependencyPackageLayers :
+  ∀ blocker : Poincare.ExternalFormalizationBlocker,
+    Poincare.dependencyMilestonesBlockedByExternalBlocker blocker =
+        Poincare.dependencyMilestoneLedger ↔
+      Poincare.dependencyPackageLayersBlockedByExternalBlocker blocker =
+        Poincare.dependencyMilestoneLedger.map Poincare.dependencyLayerForMilestone)
+
+#check Poincare.externalBlocker_blocks_dependencyMilestoneLedger_iff_blocks_dependencyPackageLayers_eq
+
+#check (Poincare.externalBlocker_blocks_dependencyMilestoneLedger_iff_blocks_dependencyComponentSlots :
+  ∀ blocker : Poincare.ExternalFormalizationBlocker,
+    Poincare.dependencyMilestonesBlockedByExternalBlocker blocker =
+        Poincare.dependencyMilestoneLedger ↔
+      Poincare.dependencyComponentSlotsBlockedByExternalBlocker blocker =
+        Poincare.dependencyMilestoneLedger.map Poincare.dependencyComponentForMilestone)
+
+#check Poincare.externalBlocker_blocks_dependencyMilestoneLedger_iff_blocks_dependencyComponentSlots_eq
+
 #check Poincare.dependencyLayerForMilestone_eq
 
 #check (Poincare.dependencyLayerForMilestone_smoothabilityBridge :
@@ -18956,7 +18974,7 @@ if [ "$finite_extinction_derivation_statement_route_count" != "5" ]; then
   exit 1
 fi
 
-echo "SEMANTIC SURFACE: conditional theorem types, projection lemmas, target contracts, mathlib-shaped adapters, adapter-target/project-target statements, blocker/project-target endpoints, blocker adapter nonempty/full-ledger characterizations, whole-ledger/package-layer/component-slot blocker characterizations, adapter-to-whole-image bridges, and ledger crosswalk/package-layer/component-slot/milestone-requirement route check"
+echo "SEMANTIC SURFACE: conditional theorem types, projection lemmas, target contracts, mathlib-shaped adapters, adapter-target/project-target statements, blocker/project-target endpoints, blocker adapter nonempty/full-ledger characterizations, whole-ledger/package-layer/component-slot blocker characterizations, adapter-to-whole-image and whole-ledger-to-image bridges, and ledger crosswalk/package-layer/component-slot/milestone-requirement route check"
 
 rm -rf "$check_dir"
 check_dir=
