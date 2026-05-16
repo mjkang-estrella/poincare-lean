@@ -630,6 +630,21 @@ theorem completion_criterion_of_completion_certificate_of_remaining_dependency_p
   apply Subsingleton.elim
 
 /--
+The remaining-dependency certificate completion criterion agrees with the
+named universal finite-extinction completion criterion exposed by the same
+remaining dependency package.
+-/
+theorem completion_criterion_of_completion_certificate_of_remaining_dependency_package_to_universalFiniteExtinctionStatement_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    completion_criterion_of_completion_certificate witness
+        (completion_certificate_of_remaining_dependency_package dependencies) =
+      completion_criterion_of_universalFiniteExtinctionStatement
+        witness
+        (universalFiniteExtinctionStatement_of_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The remaining-dependency certificate canonical criterion agrees with the
 package-level canonical criterion assembled from the same smoothability and
 surgery families.
@@ -640,6 +655,22 @@ theorem canonical_completion_criterion_of_completion_certificate_of_remaining_de
         (completion_certificate_of_remaining_dependency_package dependencies) =
       canonical_completion_criterion_of_smoothability_and_surgery_packages
         witness dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency certificate canonical criterion agrees with the named
+universal finite-extinction canonical criterion exposed by the same remaining
+dependency package.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_package_to_universalFiniteExtinctionStatement_eq
+    (witness : Type u) (dependencies : RemainingDependencyPackage.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+        (completion_certificate_of_remaining_dependency_package dependencies) =
+      completion_criterion_of_canonical_completion_target
+        witness
+        (canonical_completion_target_of_universalFiniteExtinctionStatement
+          (universalFiniteExtinctionStatement_of_remaining_dependency_package
+          dependencies)) := by
   apply Subsingleton.elim
 
 /--
@@ -697,6 +728,35 @@ theorem target_statement_of_completion_certificate_of_poincareProofDependencies_
       poincare_statement_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_dependencies
           dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency certificate completion criterion agrees with the named
+universal finite-extinction completion criterion projected from the same
+dependencies.
+-/
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependencies_to_universalFiniteExtinctionStatement_eq
+    (witness : Type u) (dependencies : PoincareProofDependencies.{u}) :
+    completion_criterion_of_completion_certificate witness
+        (completion_certificate_of_poincareProofDependencies dependencies) =
+      completion_criterion_of_universalFiniteExtinctionStatement
+        witness
+        (universalFiniteExtinctionStatement_of_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate dependency certificate canonical criterion agrees with the named
+universal finite-extinction canonical criterion projected from the same
+dependencies.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_to_universalFiniteExtinctionStatement_eq
+    (witness : Type u) (dependencies : PoincareProofDependencies.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+        (completion_certificate_of_poincareProofDependencies dependencies) =
+      completion_criterion_of_canonical_completion_target
+        witness
+        (canonical_completion_target_of_universalFiniteExtinctionStatement
+          (universalFiniteExtinctionStatement_of_dependencies dependencies)) := by
   apply Subsingleton.elim
 
 /--
@@ -991,6 +1051,41 @@ theorem canonical_completion_criterion_of_completion_certificate_of_equation_bou
   apply Subsingleton.elim
 
 /--
+The strengthened remaining-dependency certificate completion criterion agrees
+with the named universal finite-extinction completion criterion projected from
+the same boundary-aware remaining-dependency package.
+-/
+theorem completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_universalFiniteExtinctionStatement_eq
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_criterion_of_completion_certificate witness
+        (completion_certificate_of_equation_boundary_remaining_dependency_package
+          dependencies) =
+      completion_criterion_of_universalFiniteExtinctionStatement
+        witness
+        (universalFiniteExtinctionStatement_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-dependency certificate canonical criterion agrees
+with the named universal finite-extinction canonical criterion projected from
+the same boundary-aware remaining-dependency package.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_universalFiniteExtinctionStatement_eq
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+        (completion_certificate_of_equation_boundary_remaining_dependency_package
+          dependencies) =
+      completion_criterion_of_canonical_completion_target
+        witness
+        (canonical_completion_target_of_universalFiniteExtinctionStatement
+          (universalFiniteExtinctionStatement_of_equation_boundary_remaining_dependency_package
+          dependencies)) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened aggregate dependency certificate canonical payload agrees
 with the boundary-carrying package-level canonical completion payload.
 -/
@@ -1139,6 +1234,41 @@ theorem canonical_completion_criterion_of_completion_certificate_of_poincareProo
           dependencies) =
       canonical_completion_criterion_of_smoothability_and_boundary_surgery_packages
         witness dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency certificate completion criterion agrees
+with the named universal finite-extinction completion criterion projected from
+the same boundary-aware dependencies.
+-/
+theorem completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_universalFiniteExtinctionStatement_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_criterion_of_completion_certificate witness
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies) =
+      completion_criterion_of_universalFiniteExtinctionStatement
+        witness
+        (universalFiniteExtinctionStatement_of_equation_boundary_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened aggregate dependency certificate canonical criterion agrees
+with the named universal finite-extinction canonical criterion projected from
+the same boundary-aware dependencies.
+-/
+theorem canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_universalFiniteExtinctionStatement_eq
+    (witness : Type u)
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonical_completion_criterion_of_completion_certificate witness
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies) =
+      completion_criterion_of_canonical_completion_target
+        witness
+        (canonical_completion_target_of_universalFiniteExtinctionStatement
+          (universalFiniteExtinctionStatement_of_equation_boundary_dependencies
+          dependencies)) := by
   apply Subsingleton.elim
 
 /--
