@@ -1845,6 +1845,26 @@ theorem canonical_three_sphere_statement_of_completion_certificate_eq
   apply Subsingleton.elim
 
 /--
+The canonical topological statement projected from a completion certificate is
+the same endpoint as the generic project target statement projection.
+-/
+theorem canonical_three_sphere_statement_of_completion_certificate_to_target_statement_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate certificate =
+      target_statement_of_completion_certificate certificate := by
+  apply Subsingleton.elim
+
+/--
+The canonical topological statement projected from a completion certificate is
+the same endpoint as the reserved-name Poincare bridge projection.
+-/
+theorem canonical_three_sphere_statement_of_completion_certificate_to_poincare_conjecture_eq
+    (certificate : PoincareCompletionCertificate.{u}) :
+    canonical_three_sphere_statement_of_completion_certificate certificate =
+      poincare_conjecture_of_completion_certificate certificate := by
+  apply Subsingleton.elim
+
+/--
 The canonical-statement certificate payload is the record assembled from the
 certificate projections.
 -/
