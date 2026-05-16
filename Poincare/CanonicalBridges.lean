@@ -658,6 +658,38 @@ theorem target_statement_of_completion_certificate_of_poincareProofDependencies_
   apply Subsingleton.elim
 
 /--
+The boundary remaining-dependency completion certificate factors through the
+named universal finite-extinction boundary exposed by the same
+boundary-aware remaining-dependency package.
+-/
+theorem completion_certificate_of_equation_boundary_remaining_dependency_package_to_universalFiniteExtinctionStatement_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    completion_certificate_of_equation_boundary_remaining_dependency_package
+        dependencies =
+      completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies)
+        (universalFiniteExtinctionStatement_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The boundary aggregate dependency completion certificate factors through the
+named universal finite-extinction boundary exposed by the same
+boundary-aware aggregate package.
+-/
+theorem completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_universalFiniteExtinctionStatement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+        dependencies =
+      completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+        (remaining_dependency_package_of_equation_boundary_remaining_dependency_package
+          dependencies)
+        (universalFiniteExtinctionStatement_of_equation_boundary_dependencies
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The aggregate dependency completion certificate also factors through the
 package-level universal finite-extinction route assembled from the same
 smoothability and surgery families.
