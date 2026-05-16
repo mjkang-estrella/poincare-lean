@@ -527,6 +527,28 @@ theorem poincare_statement_iff_extinction_extraction_eq
   apply Subsingleton.elim
 
 /--
+For the named universal finite-extinction input, the project target is
+equivalent to the post-extinction topology extraction theorem.
+-/
+theorem poincare_statement_iff_extinction_extraction_of_universalFiniteExtinctionStatement
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    PoincareConjectureStatement.{u} ↔
+      ExtinctionImpliesSphereStatement.{u} :=
+  poincare_statement_iff_extinction_extraction finiteExtinction
+
+/--
+The named universal finite-extinction project-target equivalence is exactly
+the raw finite-extinction project-target equivalence under the named remaining
+input statement.
+-/
+theorem poincare_statement_iff_extinction_extraction_of_universalFiniteExtinctionStatement_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    poincare_statement_iff_extinction_extraction_of_universalFiniteExtinctionStatement
+        finiteExtinction =
+      poincare_statement_iff_extinction_extraction finiteExtinction := by
+  apply Subsingleton.elim
+
+/--
 Finite extinction plus the topological extraction theorem exposes the local
 target and the explicit completion criterion as one payload.
 -/

@@ -1920,6 +1920,10 @@ check_decl "finite-extinction equivalence to extraction theorem is declared" \
   '^theorem poincare_statement_iff_extinction_extraction\b' Poincare/RicciFlowInterface.lean
 check_decl "finite-extinction equivalence to extraction equality contract is declared" \
   '^theorem poincare_statement_iff_extinction_extraction_eq\b' Poincare/RicciFlowInterface.lean
+check_decl "named universal finite-extinction equivalence to extraction theorem is declared" \
+  '^theorem poincare_statement_iff_extinction_extraction_of_universalFiniteExtinctionStatement\b' Poincare/RicciFlowInterface.lean
+check_decl "named universal finite-extinction equivalence equality contract is declared" \
+  '^theorem poincare_statement_iff_extinction_extraction_of_universalFiniteExtinctionStatement_eq\b' Poincare/RicciFlowInterface.lean
 check_decl "finite-extinction/extraction canonical statement theorem is declared" \
   '^theorem canonical_three_sphere_statement_of_extinction_and_extraction\b' Poincare/RicciFlowInterface.lean
 check_decl "finite-extinction/extraction canonical statement equality contract is declared" \
