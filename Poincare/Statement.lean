@@ -4012,6 +4012,32 @@ theorem threeSphere_homotopy_prerequisites_of_northPoleLoopNullhomotopyStatement
   apply Subsingleton.elim
 
 /--
+The stereographic Van Kampen target-prerequisite route agrees with first
+transferring the equatorial loop-nullhomotopy obligation to the north-pole
+based formulation.
+-/
+theorem threeSphere_target_prerequisites_of_stereographicVanKampenLoopStatement_northPole_route_eq :
+    threeSphere_target_prerequisites_of_stereographicVanKampenLoopStatement =
+      (fun h : ThreeSphereStereographicVanKampenLoopStatement =>
+        threeSphere_target_prerequisites_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_stereographicVanKampenLoopStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The stereographic Van Kampen homotopy-prerequisite route agrees with first
+transferring the equatorial loop-nullhomotopy obligation to the north-pole
+based formulation.
+-/
+theorem threeSphere_homotopy_prerequisites_of_stereographicVanKampenLoopStatement_northPole_route_eq :
+    threeSphere_homotopy_prerequisites_of_stereographicVanKampenLoopStatement =
+      (fun h : ThreeSphereStereographicVanKampenLoopStatement =>
+        threeSphere_homotopy_prerequisites_of_northPoleLoopNullhomotopyStatement
+          (threeSphere_northPoleLoopNullhomotopyStatement_of_stereographicVanKampenLoopStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The concrete path-homotopy obligation supplies the full target prerequisite
 payload by converting path-homotopy directly to simple-connectedness.
 -/
