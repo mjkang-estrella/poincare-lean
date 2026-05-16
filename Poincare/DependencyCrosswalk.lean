@@ -3035,6 +3035,65 @@ theorem externalBlocker_blocks_dependencyMilestoneLedger_iff_blocks_dependencyPa
   apply Subsingleton.elim
 
 /--
+Every package layer named by an external blocker has a blocked milestone witness
+mapping to that layer.
+-/
+theorem externalBlocker_packageLayer_mem_milestone_layer_image
+    (blocker : ExternalFormalizationBlocker) {layer : DependencyPackageLayer} :
+    layer ∈ dependencyPackageLayersBlockedByExternalBlocker blocker →
+      ∃ milestone : DependencyMilestone,
+        milestone ∈ dependencyMilestonesBlockedByExternalBlocker blocker ∧
+          dependencyLayerForMilestone milestone = layer := by
+  intro h
+  rw [dependencyPackageLayersBlockedByExternalBlocker_eq] at h
+  exact List.mem_map.mp h
+
+/--
+The theorem witnessing blocked package layers by blocked milestones is exactly
+the reverse `List.mem_map` route after the blocker-to-package-layer definition.
+-/
+theorem externalBlocker_packageLayer_mem_milestone_layer_image_eq :
+    externalBlocker_packageLayer_mem_milestone_layer_image =
+      (by
+        intro blocker layer h
+        rw [dependencyPackageLayersBlockedByExternalBlocker_eq] at h
+        exact List.mem_map.mp h) := by
+  funext blocker layer
+  apply Subsingleton.elim
+
+/--
+A package layer is named by an external blocker exactly when it is the layer
+image of a milestone named by that same blocker.
+-/
+theorem externalBlocker_packageLayer_mem_iff_milestone_layer_image
+    (blocker : ExternalFormalizationBlocker) (layer : DependencyPackageLayer) :
+    layer ∈ dependencyPackageLayersBlockedByExternalBlocker blocker ↔
+      ∃ milestone : DependencyMilestone,
+        milestone ∈ dependencyMilestonesBlockedByExternalBlocker blocker ∧
+          dependencyLayerForMilestone milestone = layer := by
+  constructor
+  · exact externalBlocker_packageLayer_mem_milestone_layer_image blocker
+  · rintro ⟨milestone, hMilestone, hLayer⟩
+    rw [dependencyPackageLayersBlockedByExternalBlocker_eq]
+    exact List.mem_map.mpr ⟨milestone, hMilestone, hLayer⟩
+
+/--
+The package-layer/milestone image iff is the pair of the two `List.mem_map`
+routes.
+-/
+theorem externalBlocker_packageLayer_mem_iff_milestone_layer_image_eq :
+    externalBlocker_packageLayer_mem_iff_milestone_layer_image =
+      (by
+        intro blocker layer
+        constructor
+        · exact externalBlocker_packageLayer_mem_milestone_layer_image blocker
+        · rintro ⟨milestone, hMilestone, hLayer⟩
+          rw [dependencyPackageLayersBlockedByExternalBlocker_eq]
+          exact List.mem_map.mpr ⟨milestone, hMilestone, hLayer⟩) := by
+  funext blocker layer
+  apply Subsingleton.elim
+
+/--
 Every package layer named by an external blocker is present in the checked
 milestone package-layer image.
 -/
