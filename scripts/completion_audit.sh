@@ -9864,6 +9864,10 @@ check_decl "canonical completion target iff extinction-extraction theorem is dec
   '^theorem canonicalCompletionTarget_iff_extinction_extraction\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion target iff extinction-extraction equality contract is declared" \
   '^theorem canonicalCompletionTarget_iff_extinction_extraction_eq\b' Poincare/CompletionTarget.lean
+check_decl "named universal finite-extinction canonical completion target iff extinction-extraction theorem is declared" \
+  '^theorem canonicalCompletionTarget_iff_extinction_extraction_of_universalFiniteExtinctionStatement\b' Poincare/CompletionTarget.lean
+check_decl "named universal finite-extinction canonical completion target iff extinction-extraction equality contract is declared" \
+  '^theorem canonicalCompletionTarget_iff_extinction_extraction_of_universalFiniteExtinctionStatement_eq\b' Poincare/CompletionTarget.lean
 check_decl "canonical target to completion criterion theorem is declared" \
   '^theorem completion_criterion_of_canonical_completion_target\b' Poincare/CompletionTarget.lean
 check_decl "canonical target to completion criterion equality contract is declared" \
