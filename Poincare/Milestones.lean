@@ -742,6 +742,28 @@ theorem ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface_blocks_surgeryMilest
   rfl
 
 /--
+An external blocker blocks the entire dependency milestone ledger exactly when
+it is the mathlib 3D Poincare proof-wanted shortcut.
+-/
+theorem externalBlocker_blocks_dependencyMilestoneLedger_iff_mathlibProofWanted
+    (blocker : ExternalFormalizationBlocker) :
+    dependencyMilestonesBlockedByExternalBlocker blocker = dependencyMilestoneLedger ↔
+      blocker =
+        ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted := by
+  cases blocker <;> simp [dependencyMilestonesBlockedByExternalBlocker,
+    dependencyMilestoneLedger]
+
+/-- The whole-ledger blocker characterization is the blocker case split. -/
+theorem externalBlocker_blocks_dependencyMilestoneLedger_iff_mathlibProofWanted_eq :
+    externalBlocker_blocks_dependencyMilestoneLedger_iff_mathlibProofWanted =
+      (by
+        intro blocker
+        cases blocker <;> simp [dependencyMilestonesBlockedByExternalBlocker,
+          dependencyMilestoneLedger]) := by
+  funext blocker
+  apply Subsingleton.elim
+
+/--
 Every milestone named by an external blocker is one of the checked dependency
 milestones.
 -/
