@@ -35376,9 +35376,9 @@ EOF
 append_certificate_route_projection_contract_checks "$dependency_contract_check"
 
 if lake env lean "$dependency_contract_check" >/dev/null 2>&1; then
-  echo "PASS: Lean confirms projection lemmas, target contracts, aggregate dependency contracts, ledger crosswalk with package layers/component slots, and milestone-requirement routes"
+  echo "PASS: Lean confirms projection lemmas, target contracts, aggregate dependency contracts, adapter-target statements, ledger crosswalk with package layers/component slots, and milestone-requirement routes"
 else
-  echo "FAIL: Lean cannot confirm projection lemmas, target contracts, aggregate dependency contracts, ledger crosswalk with package layers/component slots, and milestone-requirement routes"
+  echo "FAIL: Lean cannot confirm projection lemmas, target contracts, aggregate dependency contracts, adapter-target statements, ledger crosswalk with package layers/component slots, and milestone-requirement routes"
   lake env lean "$dependency_contract_check" || true
   status=1
 fi

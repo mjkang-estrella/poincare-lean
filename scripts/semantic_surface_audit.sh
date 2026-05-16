@@ -18809,7 +18809,7 @@ if [ "$finite_extinction_derivation_statement_route_count" != "5" ]; then
   exit 1
 fi
 
-echo "SEMANTIC SURFACE: conditional theorem types, projection lemmas, target contracts, mathlib-shaped adapters, and ledger crosswalk/package-layer/component-slot/milestone-requirement route check"
+echo "SEMANTIC SURFACE: conditional theorem types, projection lemmas, target contracts, mathlib-shaped adapters, adapter-target statements, and ledger crosswalk/package-layer/component-slot/milestone-requirement route check"
 
 rm -rf "$check_dir"
 check_dir=
