@@ -935,12 +935,16 @@ check_decl "target sphere target prerequisites from north-pole loop equality con
   '^theorem threeSphere_target_prerequisites_of_northPoleLoopNullhomotopyStatement_eq\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites north-pole loop-route compatibility is declared" \
   '^theorem threeSphere_target_prerequisites_of_northPoleLoopNullhomotopyStatement_loop_route_eq\b' Poincare/Statement.lean
+check_decl "target sphere target prerequisites north-pole stereographic-route compatibility is declared" \
+  '^theorem threeSphere_target_prerequisites_of_northPoleLoopNullhomotopyStatement_stereographic_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites from north-pole loop theorem is declared" \
   '^theorem threeSphere_homotopy_prerequisites_of_northPoleLoopNullhomotopyStatement\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites from north-pole loop equality contract is declared" \
   '^theorem threeSphere_homotopy_prerequisites_of_northPoleLoopNullhomotopyStatement_eq\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites north-pole loop-route compatibility is declared" \
   '^theorem threeSphere_homotopy_prerequisites_of_northPoleLoopNullhomotopyStatement_loop_route_eq\b' Poincare/Statement.lean
+check_decl "target sphere homotopy prerequisites north-pole stereographic-route compatibility is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_northPoleLoopNullhomotopyStatement_stereographic_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites from stereographic loop theorem is declared" \
   '^theorem threeSphere_target_prerequisites_of_stereographicVanKampenLoopStatement\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites from stereographic loop equality contract is declared" \
