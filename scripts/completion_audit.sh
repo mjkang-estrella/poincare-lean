@@ -126,11 +126,12 @@ if rg -q '^inductive ExternalFormalizationBlocker\b' Poincare/Milestones.lean &&
     rg -q '^theorem externalBlocker_statementAdapters_mem_adapterLedger\b' Poincare/Milestones.lean &&
     rg -q '^theorem mathlibThreeDimensionalPoincareProofWanted_blocks_topologicalProjectTarget\b' Poincare/Milestones.lean &&
     rg -q '^theorem mathlibThreeDimensionalPoincareProofWanted_blocks_smoothProjectTarget\b' Poincare/Milestones.lean &&
+    rg -q '^theorem externalBlocker_statementAdapters_nonempty_iff_mathlibProofWanted\b' Poincare/Milestones.lean &&
     rg -q '^def dependencyMilestonesBlockedByExternalBlocker\b' Poincare/Milestones.lean &&
     rg -q '^theorem externalBlocker_milestones_mem_dependencyMilestoneLedger\b' Poincare/Milestones.lean; then
-  echo "PASS: Lean milestone ledger records external formalization blockers plus statement-adapter, adapter-target/project-target endpoints, and milestone maps"
+  echo "PASS: Lean milestone ledger records external formalization blockers plus statement-adapter, adapter-target/project-target endpoints, blocker adapter nonempty characterization, and milestone maps"
 else
-  echo "FAIL: Lean milestone ledger does not record the external blocker statement-adapter/adapter-target/project-target endpoint/milestone surface"
+  echo "FAIL: Lean milestone ledger does not record the external blocker statement-adapter/adapter-target/project-target endpoint/nonempty-characterization/milestone surface"
   status=1
 fi
 

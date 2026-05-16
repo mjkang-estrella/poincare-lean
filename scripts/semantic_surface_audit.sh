@@ -16100,6 +16100,15 @@ universe u
 
 #check Poincare.mathlibThreeDimensionalPoincareProofWanted_blocks_smoothProjectTarget_eq
 
+#check (Poincare.externalBlocker_statementAdapters_nonempty_iff_mathlibProofWanted :
+  ∀ blocker : Poincare.ExternalFormalizationBlocker,
+    (∃ adapter : Poincare.MathlibPoincareStatementAdapter,
+        adapter ∈ Poincare.statementAdaptersBlockedByExternalBlocker blocker) ↔
+      blocker =
+        Poincare.ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted)
+
+#check Poincare.externalBlocker_statementAdapters_nonempty_iff_mathlibProofWanted_eq
+
 #check Poincare.dependencyLayerForMilestone_eq
 
 #check (Poincare.dependencyLayerForMilestone_smoothabilityBridge :
@@ -18857,7 +18866,7 @@ if [ "$finite_extinction_derivation_statement_route_count" != "5" ]; then
   exit 1
 fi
 
-echo "SEMANTIC SURFACE: conditional theorem types, projection lemmas, target contracts, mathlib-shaped adapters, adapter-target/project-target statements, blocker/project-target endpoints, and ledger crosswalk/package-layer/component-slot/milestone-requirement route check"
+echo "SEMANTIC SURFACE: conditional theorem types, projection lemmas, target contracts, mathlib-shaped adapters, adapter-target/project-target statements, blocker/project-target endpoints, blocker adapter nonempty characterization, and ledger crosswalk/package-layer/component-slot/milestone-requirement route check"
 
 rm -rf "$check_dir"
 check_dir=

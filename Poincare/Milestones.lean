@@ -625,6 +625,29 @@ theorem mathlibThreeDimensionalPoincareProofWanted_blocks_smoothProjectTarget_eq
   apply Subsingleton.elim
 
 /--
+An external blocker has statement-adapter endpoints exactly when it is the
+mathlib 3D Poincare proof-wanted blocker.
+-/
+theorem externalBlocker_statementAdapters_nonempty_iff_mathlibProofWanted
+    (blocker : ExternalFormalizationBlocker) :
+    (∃ adapter : MathlibPoincareStatementAdapter,
+        adapter ∈ statementAdaptersBlockedByExternalBlocker blocker) ↔
+      blocker =
+        ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted := by
+  cases blocker <;> simp [statementAdaptersBlockedByExternalBlocker,
+    mathlibPoincareStatementAdapterLedger]
+
+/-- The nonempty-adapter blocker characterization is the blocker case split. -/
+theorem externalBlocker_statementAdapters_nonempty_iff_mathlibProofWanted_eq :
+    externalBlocker_statementAdapters_nonempty_iff_mathlibProofWanted =
+      (by
+        intro blocker
+        cases blocker <;> simp [statementAdaptersBlockedByExternalBlocker,
+          mathlibPoincareStatementAdapterLedger]) := by
+  funext blocker
+  apply Subsingleton.elim
+
+/--
 Map each external audit blocker to the dependency milestones it prevents from
 being discharged unconditionally.
 -/
