@@ -16321,6 +16321,18 @@ universe u
 
 #check Poincare.externalBlocker_componentSlot_mem_iff_packageLayer_component_image_eq
 
+#check (Poincare.externalBlocker_componentSlot_milestone_image_iff_packageLayer_image :
+  ∀ (blocker : Poincare.ExternalFormalizationBlocker)
+      (slot : Poincare.DependencyComponentSlot),
+    (∃ milestone : Poincare.DependencyMilestone,
+        milestone ∈ Poincare.dependencyMilestonesBlockedByExternalBlocker blocker ∧
+          Poincare.dependencyComponentForMilestone milestone = slot) ↔
+      ∃ layer : Poincare.DependencyPackageLayer,
+        layer ∈ Poincare.dependencyPackageLayersBlockedByExternalBlocker blocker ∧
+          Poincare.dependencyComponentForPackageLayer layer = slot)
+
+#check Poincare.externalBlocker_componentSlot_milestone_image_iff_packageLayer_image_eq
+
 #check Poincare.dependencyLayerForMilestone_eq
 
 #check (Poincare.dependencyLayerForMilestone_smoothabilityBridge :

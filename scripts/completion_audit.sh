@@ -158,6 +158,7 @@ if rg -q '^def dependencyPackageLayersBlockedByExternalBlocker\b' Poincare/Depen
     rg -q '^theorem externalBlocker_packageLayer_component_mem_dependencyComponentSlots\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_componentSlot_mem_packageLayer_component_image\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_componentSlot_mem_iff_packageLayer_component_image\b' Poincare/DependencyCrosswalk.lean &&
+    rg -q '^theorem externalBlocker_componentSlot_milestone_image_iff_packageLayer_image\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem component_requirements_iff_package_layer_requirements\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem package_layer_requirements_iff_milestone_requirements\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem component_requirements_iff_milestone_requirements\b' Poincare/DependencyCrosswalk.lean &&
@@ -9547,6 +9548,10 @@ check_decl "external blocker component-slot package-layer image iff bridge is de
   '^theorem externalBlocker_componentSlot_mem_iff_packageLayer_component_image\b' Poincare/DependencyCrosswalk.lean
 check_decl "external blocker component-slot package-layer image iff bridge equality contract is declared" \
   '^theorem externalBlocker_componentSlot_mem_iff_packageLayer_component_image_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "external blocker component-slot milestone/package witness equivalence is declared" \
+  '^theorem externalBlocker_componentSlot_milestone_image_iff_packageLayer_image\b' Poincare/DependencyCrosswalk.lean
+check_decl "external blocker component-slot milestone/package witness equivalence equality contract is declared" \
+  '^theorem externalBlocker_componentSlot_milestone_image_iff_packageLayer_image_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency component requirements payload theorem is declared" \
   '^theorem dependency_component_requirements_payload_of_dependencies\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency component requirements payload equality contract is declared" \
@@ -35122,6 +35127,8 @@ open scoped Manifold ContDiff
 #check Poincare.externalBlocker_componentSlot_mem_packageLayer_component_image_eq
 #check Poincare.externalBlocker_componentSlot_mem_iff_packageLayer_component_image
 #check Poincare.externalBlocker_componentSlot_mem_iff_packageLayer_component_image_eq
+#check Poincare.externalBlocker_componentSlot_milestone_image_iff_packageLayer_image
+#check Poincare.externalBlocker_componentSlot_milestone_image_iff_packageLayer_image_eq
 
 #check (Poincare.dependency_ledger_has_component_slots :
     Poincare.dependencyMilestoneLedger.map

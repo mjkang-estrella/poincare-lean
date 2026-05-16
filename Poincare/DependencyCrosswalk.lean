@@ -3539,6 +3539,34 @@ theorem externalBlocker_componentSlot_mem_iff_packageLayer_component_image_eq :
   apply Subsingleton.elim
 
 /--
+The milestone-component and package-layer-component witness descriptions of a
+blocked component slot are equivalent for each external blocker.
+-/
+theorem externalBlocker_componentSlot_milestone_image_iff_packageLayer_image
+    (blocker : ExternalFormalizationBlocker) (slot : DependencyComponentSlot) :
+    (∃ milestone : DependencyMilestone,
+        milestone ∈ dependencyMilestonesBlockedByExternalBlocker blocker ∧
+          dependencyComponentForMilestone milestone = slot) ↔
+      ∃ layer : DependencyPackageLayer,
+        layer ∈ dependencyPackageLayersBlockedByExternalBlocker blocker ∧
+          dependencyComponentForPackageLayer layer = slot := by
+  rw [← externalBlocker_componentSlot_mem_iff_milestone_component_image,
+    externalBlocker_componentSlot_mem_iff_packageLayer_component_image]
+
+/--
+The component-slot witness-form equivalence is exactly the route through the
+shared component-slot membership proposition.
+-/
+theorem externalBlocker_componentSlot_milestone_image_iff_packageLayer_image_eq :
+    externalBlocker_componentSlot_milestone_image_iff_packageLayer_image =
+      (by
+        intro blocker slot
+        rw [← externalBlocker_componentSlot_mem_iff_milestone_component_image,
+          externalBlocker_componentSlot_mem_iff_packageLayer_component_image]) := by
+  funext blocker slot
+  apply Subsingleton.elim
+
+/--
 Every component slot named by an external blocker is present in the checked
 milestone component-slot image.
 -/
