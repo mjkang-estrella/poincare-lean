@@ -3303,6 +3303,33 @@ theorem externalBlocker_packageLayer_component_mem_dependencyComponentSlots_eq :
   apply Subsingleton.elim
 
 /--
+Every component slot named by an external blocker has a blocked package-layer
+witness mapping to that slot.
+-/
+theorem externalBlocker_componentSlot_mem_packageLayer_component_image
+    (blocker : ExternalFormalizationBlocker) {slot : DependencyComponentSlot} :
+    slot ∈ dependencyComponentSlotsBlockedByExternalBlocker blocker →
+      ∃ layer : DependencyPackageLayer,
+        layer ∈ dependencyPackageLayersBlockedByExternalBlocker blocker ∧
+          dependencyComponentForPackageLayer layer = slot := by
+  intro h
+  rw [dependencyComponentSlotsBlockedByExternalBlocker_eq_package_layer_map] at h
+  exact List.mem_map.mp h
+
+/--
+The theorem witnessing blocked component slots by blocked package layers is
+exactly the reverse `List.mem_map` route after the map factorization.
+-/
+theorem externalBlocker_componentSlot_mem_packageLayer_component_image_eq :
+    externalBlocker_componentSlot_mem_packageLayer_component_image =
+      (by
+        intro blocker slot h
+        rw [dependencyComponentSlotsBlockedByExternalBlocker_eq_package_layer_map] at h
+        exact List.mem_map.mp h) := by
+  funext blocker slot
+  apply Subsingleton.elim
+
+/--
 Every component slot named by an external blocker is present in the checked
 milestone component-slot image.
 -/
