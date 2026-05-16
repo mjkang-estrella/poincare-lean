@@ -3035,6 +3035,32 @@ theorem externalBlocker_blocks_dependencyMilestoneLedger_iff_blocks_dependencyPa
   apply Subsingleton.elim
 
 /--
+Every milestone named by an external blocker maps to a package layer named by
+the same blocker.
+-/
+theorem externalBlocker_milestone_layer_mem_dependencyPackageLayers
+    (blocker : ExternalFormalizationBlocker) {milestone : DependencyMilestone} :
+    milestone ∈ dependencyMilestonesBlockedByExternalBlocker blocker →
+      dependencyLayerForMilestone milestone ∈
+        dependencyPackageLayersBlockedByExternalBlocker blocker := by
+  intro h
+  rw [dependencyPackageLayersBlockedByExternalBlocker_eq]
+  exact List.mem_map.mpr ⟨milestone, h, rfl⟩
+
+/--
+The theorem mapping externally blocked milestones into blocked package layers is
+exactly the forward `List.mem_map` route.
+-/
+theorem externalBlocker_milestone_layer_mem_dependencyPackageLayers_eq :
+    externalBlocker_milestone_layer_mem_dependencyPackageLayers =
+      (by
+        intro blocker milestone h
+        rw [dependencyPackageLayersBlockedByExternalBlocker_eq]
+        exact List.mem_map.mpr ⟨milestone, h, rfl⟩) := by
+  funext blocker milestone
+  apply Subsingleton.elim
+
+/--
 Every package layer named by an external blocker has a blocked milestone witness
 mapping to that layer.
 -/
@@ -3074,8 +3100,9 @@ theorem externalBlocker_packageLayer_mem_iff_milestone_layer_image
   constructor
   · exact externalBlocker_packageLayer_mem_milestone_layer_image blocker
   · rintro ⟨milestone, hMilestone, hLayer⟩
-    rw [dependencyPackageLayersBlockedByExternalBlocker_eq]
-    exact List.mem_map.mpr ⟨milestone, hMilestone, hLayer⟩
+    simpa [hLayer] using
+      externalBlocker_milestone_layer_mem_dependencyPackageLayers
+        blocker hMilestone
 
 /--
 The package-layer/milestone image iff is the pair of the two `List.mem_map`
@@ -3088,8 +3115,9 @@ theorem externalBlocker_packageLayer_mem_iff_milestone_layer_image_eq :
         constructor
         · exact externalBlocker_packageLayer_mem_milestone_layer_image blocker
         · rintro ⟨milestone, hMilestone, hLayer⟩
-          rw [dependencyPackageLayersBlockedByExternalBlocker_eq]
-          exact List.mem_map.mpr ⟨milestone, hMilestone, hLayer⟩) := by
+          simpa [hLayer] using
+            externalBlocker_milestone_layer_mem_dependencyPackageLayers
+              blocker hMilestone) := by
   funext blocker layer
   apply Subsingleton.elim
 

@@ -16243,6 +16243,15 @@ universe u
 
 #check Poincare.externalBlocker_packageLayer_component_mem_dependencyComponentSlots_eq
 
+#check (Poincare.externalBlocker_milestone_layer_mem_dependencyPackageLayers :
+  ∀ (blocker : Poincare.ExternalFormalizationBlocker)
+      {milestone : Poincare.DependencyMilestone},
+    milestone ∈ Poincare.dependencyMilestonesBlockedByExternalBlocker blocker →
+      Poincare.dependencyLayerForMilestone milestone ∈
+        Poincare.dependencyPackageLayersBlockedByExternalBlocker blocker)
+
+#check Poincare.externalBlocker_milestone_layer_mem_dependencyPackageLayers_eq
+
 #check (Poincare.externalBlocker_packageLayer_mem_milestone_layer_image :
   ∀ (blocker : Poincare.ExternalFormalizationBlocker)
       {layer : Poincare.DependencyPackageLayer},

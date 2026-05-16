@@ -145,6 +145,7 @@ if rg -q '^def dependencyPackageLayersBlockedByExternalBlocker\b' Poincare/Depen
     rg -q '^theorem externalBlocker_statementAdapters_nonempty_iff_blocks_dependencyPackageLayers\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_statementAdapters_eq_adapterLedger_iff_blocks_dependencyPackageLayers\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_blocks_dependencyMilestoneLedger_iff_blocks_dependencyPackageLayers\b' Poincare/DependencyCrosswalk.lean &&
+    rg -q '^theorem externalBlocker_milestone_layer_mem_dependencyPackageLayers\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_packageLayer_mem_iff_milestone_layer_image\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^def dependencyComponentSlotsBlockedByExternalBlocker\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem dependencyComponentSlotsBlockedByExternalBlocker_eq_package_layer_map\b' Poincare/DependencyCrosswalk.lean &&
@@ -9505,6 +9506,10 @@ check_decl "dependency component/milestone requirements bridge is declared" \
   '^theorem component_requirements_iff_milestone_requirements\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency component/milestone requirements bridge equality contract is declared" \
   '^theorem component_requirements_iff_milestone_requirements_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "external blocker milestone package-layer membership bridge is declared" \
+  '^theorem externalBlocker_milestone_layer_mem_dependencyPackageLayers\b' Poincare/DependencyCrosswalk.lean
+check_decl "external blocker milestone package-layer membership bridge equality contract is declared" \
+  '^theorem externalBlocker_milestone_layer_mem_dependencyPackageLayers_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "external blocker package-layer milestone witness bridge is declared" \
   '^theorem externalBlocker_packageLayer_mem_milestone_layer_image\b' Poincare/DependencyCrosswalk.lean
 check_decl "external blocker package-layer milestone witness bridge equality contract is declared" \
@@ -35084,6 +35089,8 @@ open scoped Manifold ContDiff
 #check Poincare.package_layer_requirements_iff_milestone_requirements_eq
 #check Poincare.component_requirements_iff_milestone_requirements
 #check Poincare.component_requirements_iff_milestone_requirements_eq
+#check Poincare.externalBlocker_milestone_layer_mem_dependencyPackageLayers
+#check Poincare.externalBlocker_milestone_layer_mem_dependencyPackageLayers_eq
 #check Poincare.externalBlocker_packageLayer_mem_milestone_layer_image
 #check Poincare.externalBlocker_packageLayer_mem_milestone_layer_image_eq
 #check Poincare.externalBlocker_packageLayer_mem_iff_milestone_layer_image
