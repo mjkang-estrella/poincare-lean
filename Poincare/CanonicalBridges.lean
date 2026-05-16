@@ -21922,6 +21922,61 @@ theorem poincare_conjecture_of_completion_certificate_of_lifted_homeomorphism_de
   apply Subsingleton.elim
 
 /--
+The lifted-homeomorphism derivation dependency projection reserved endpoint is
+the finite-extinction route through the direct extraction-derivation payload.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_conjecture_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          poincare_statement_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+The direct verification-payload route has the same reserved endpoint as the
+finite-extinction route for lifted-homeomorphism dependency projections.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_conjecture_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact
+          poincare_statement_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) :=
+  poincare_conjecture_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+    dependencies
+
+/--
+The lifted-homeomorphism derivation dependency projection reserved endpoint is
+the package-projected finite-extinction route.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_conjecture_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation⟩
+        exact
+          canonical_completion_target_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies dependencies)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
 Forgetting the lifted-homeomorphism derivation projection down to the extraction
 derivation route preserves the reserved endpoint.
 -/
@@ -22484,6 +22539,70 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
       poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections
         (remainingDependencyPackage_iff_poincareProofDependencies.mpr
           dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate lifted-homeomorphism derivation projection reserved endpoint is
+the finite-extinction route through the direct extraction-derivation payload.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+      dependencies =
+      (by
+        let remaining : RemainingDependencyPackage.{u} :=
+          remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies
+        rcases topology_extraction_derivation_payload_of_dependencies
+            remaining with
+          ⟨extractSphere, derivation⟩
+        exact
+          poincare_statement_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies remaining)
+            extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate direct verification-payload route has the same reserved endpoint
+as the finite-extinction route for lifted-homeomorphism projections.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+      dependencies =
+      (by
+        let remaining : RemainingDependencyPackage.{u} :=
+          remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies
+        rcases topology_extraction_derivation_payload_of_dependencies
+            remaining with
+          ⟨extractSphere, derivation⟩
+        exact
+          poincare_statement_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies remaining)
+            extractSphere derivation) :=
+  poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_finite_extinction_eq
+    dependencies
+
+/--
+The aggregate lifted-homeomorphism derivation projection reserved endpoint is
+the package-projected finite-extinction route after forgetting the aggregate.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_package_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+      dependencies =
+      (by
+        let remaining : RemainingDependencyPackage.{u} :=
+          remainingDependencyPackage_iff_poincareProofDependencies.mpr
+            dependencies
+        rcases topology_extraction_derivation_payload_of_topology_package
+            remaining.topology with
+          ⟨extractSphere, derivation⟩
+        exact
+          poincare_statement_of_finite_extinction_and_extraction_derivation
+            (finite_extinction_of_dependencies remaining)
+            extractSphere derivation) := by
   apply Subsingleton.elim
 
 /--
