@@ -276,6 +276,171 @@ theorem externalFormalizationBlockerLedger_mem_eq :
   apply Subsingleton.elim
 
 /--
+Statement-adapter surfaces that match the upstream 3D Poincare statement shapes.
+
+These are data labels for the local adapters in `Poincare.Statement`; they are
+not theorem claims and do not import the unavailable upstream shortcut names.
+-/
+inductive MathlibPoincareStatementAdapter where
+  /-- Adapter for `MathlibTopologicalPoincareThreeStatement`. -/
+  | topologicalThreeSphere
+  /-- Adapter for `MathlibSmoothPoincareThreeStatement`. -/
+  | smoothThreeSphere
+  deriving DecidableEq, Repr
+
+/-- The checked ledger of mathlib-shaped statement adapters. -/
+def mathlibPoincareStatementAdapterLedger :
+    List MathlibPoincareStatementAdapter :=
+  [ MathlibPoincareStatementAdapter.topologicalThreeSphere
+  , MathlibPoincareStatementAdapter.smoothThreeSphere
+  ]
+
+/-- The adapter ledger is exactly the topological and smooth 3-sphere adapters. -/
+theorem mathlibPoincareStatementAdapterLedger_eq :
+    mathlibPoincareStatementAdapterLedger =
+      [ MathlibPoincareStatementAdapter.topologicalThreeSphere
+      , MathlibPoincareStatementAdapter.smoothThreeSphere
+      ] :=
+  rfl
+
+/-- The adapter ledger has exactly two entries. -/
+theorem mathlibPoincareStatementAdapterLedger_length :
+    mathlibPoincareStatementAdapterLedger.length = 2 :=
+  rfl
+
+/-- The adapter-ledger length theorem is the direct `rfl` proof. -/
+theorem mathlibPoincareStatementAdapterLedger_length_eq :
+    mathlibPoincareStatementAdapterLedger_length =
+      (rfl : mathlibPoincareStatementAdapterLedger.length = 2) := by
+  apply Subsingleton.elim
+
+/-- The adapter ledger contains no duplicate adapter labels. -/
+theorem mathlibPoincareStatementAdapterLedger_nodup :
+    mathlibPoincareStatementAdapterLedger.Nodup := by
+  decide
+
+/-- The adapter-ledger no-duplicate theorem is the direct decidable proof. -/
+theorem mathlibPoincareStatementAdapterLedger_nodup_eq :
+    mathlibPoincareStatementAdapterLedger_nodup =
+      (by decide : mathlibPoincareStatementAdapterLedger.Nodup) := by
+  apply Subsingleton.elim
+
+/-- The adapter ledger contains exactly the two mathlib-shaped adapter labels. -/
+theorem mathlibPoincareStatementAdapterLedger_mem
+    (adapter : MathlibPoincareStatementAdapter) :
+    adapter ∈ mathlibPoincareStatementAdapterLedger ↔
+      adapter = MathlibPoincareStatementAdapter.topologicalThreeSphere ∨
+      adapter = MathlibPoincareStatementAdapter.smoothThreeSphere := by
+  cases adapter <;> simp [mathlibPoincareStatementAdapterLedger]
+
+/-- The adapter-ledger membership theorem is exactly the two-case split. -/
+theorem mathlibPoincareStatementAdapterLedger_mem_eq :
+    mathlibPoincareStatementAdapterLedger_mem =
+      (by
+        intro adapter
+        cases adapter <;> simp [mathlibPoincareStatementAdapterLedger]) := by
+  funext adapter
+  apply Subsingleton.elim
+
+/--
+Map each external blocker to the local mathlib-shaped statement adapters whose
+eventual theorem route it blocks.
+-/
+def statementAdaptersBlockedByExternalBlocker :
+    ExternalFormalizationBlocker → List MathlibPoincareStatementAdapter
+  | ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted =>
+      mathlibPoincareStatementAdapterLedger
+  | ExternalFormalizationBlocker.ricciSpecificGeometrySurface =>
+      []
+  | ExternalFormalizationBlocker.ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface =>
+      []
+
+/-- The blocker-to-adapter map is exactly the audit-derived case split. -/
+theorem statementAdaptersBlockedByExternalBlocker_eq :
+    statementAdaptersBlockedByExternalBlocker =
+      (fun
+        | ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted =>
+            mathlibPoincareStatementAdapterLedger
+        | ExternalFormalizationBlocker.ricciSpecificGeometrySurface =>
+            []
+        | ExternalFormalizationBlocker.ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface =>
+            []) :=
+  rfl
+
+/-- The mathlib shortcut blocker covers both local statement adapters. -/
+theorem mathlibThreeDimensionalPoincareProofWanted_blocks_statementAdapters :
+    statementAdaptersBlockedByExternalBlocker
+        ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted =
+      mathlibPoincareStatementAdapterLedger :=
+  rfl
+
+/-- The mathlib shortcut-to-adapter theorem is the direct `rfl` proof. -/
+theorem mathlibThreeDimensionalPoincareProofWanted_blocks_statementAdapters_eq :
+    mathlibThreeDimensionalPoincareProofWanted_blocks_statementAdapters =
+      (rfl :
+        statementAdaptersBlockedByExternalBlocker
+            ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted =
+          mathlibPoincareStatementAdapterLedger) :=
+  rfl
+
+/-- The Ricci-specific geometry blocker does not name a statement adapter. -/
+theorem ricciSpecificGeometrySurface_blocks_no_statementAdapters :
+    statementAdaptersBlockedByExternalBlocker
+        ExternalFormalizationBlocker.ricciSpecificGeometrySurface = [] :=
+  rfl
+
+/-- The Ricci-specific no-adapter theorem is the direct `rfl` proof. -/
+theorem ricciSpecificGeometrySurface_blocks_no_statementAdapters_eq :
+    ricciSpecificGeometrySurface_blocks_no_statementAdapters =
+      (rfl :
+        statementAdaptersBlockedByExternalBlocker
+            ExternalFormalizationBlocker.ricciSpecificGeometrySurface = []) :=
+  rfl
+
+/-- The surgery-side blocker does not name a statement adapter. -/
+theorem ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface_blocks_no_statementAdapters :
+    statementAdaptersBlockedByExternalBlocker
+        ExternalFormalizationBlocker.ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface =
+      [] :=
+  rfl
+
+/-- The surgery-side no-adapter theorem is the direct `rfl` proof. -/
+theorem ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface_blocks_no_statementAdapters_eq :
+    ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface_blocks_no_statementAdapters =
+      (rfl :
+        statementAdaptersBlockedByExternalBlocker
+            ExternalFormalizationBlocker.ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface =
+          []) :=
+  rfl
+
+/--
+Every statement adapter named by an external blocker is one of the checked
+mathlib-shaped adapter labels.
+-/
+theorem externalBlocker_statementAdapters_mem_adapterLedger
+    (blocker : ExternalFormalizationBlocker)
+    {adapter : MathlibPoincareStatementAdapter} :
+    adapter ∈ statementAdaptersBlockedByExternalBlocker blocker →
+      adapter ∈ mathlibPoincareStatementAdapterLedger := by
+  cases blocker <;> cases adapter <;> simp
+    [statementAdaptersBlockedByExternalBlocker,
+      mathlibPoincareStatementAdapterLedger]
+
+/--
+The theorem asserting that externally blocked statement adapters are ledger
+adapters is exactly the blocker/adapter case split.
+-/
+theorem externalBlocker_statementAdapters_mem_adapterLedger_eq :
+    externalBlocker_statementAdapters_mem_adapterLedger =
+      (by
+        intro blocker adapter
+        cases blocker <;> cases adapter <;> simp
+          [statementAdaptersBlockedByExternalBlocker,
+            mathlibPoincareStatementAdapterLedger]) := by
+  funext blocker adapter
+  apply Subsingleton.elim
+
+/--
 Map each external audit blocker to the dependency milestones it prevents from
 being discharged unconditionally.
 -/

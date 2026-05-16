@@ -15981,6 +15981,55 @@ universe u
 
 #check Poincare.dependencyMilestoneLedger_nodup_eq
 
+#check (Poincare.mathlibPoincareStatementAdapterLedger_eq :
+  Poincare.mathlibPoincareStatementAdapterLedger =
+    [ Poincare.MathlibPoincareStatementAdapter.topologicalThreeSphere
+    , Poincare.MathlibPoincareStatementAdapter.smoothThreeSphere
+    ])
+
+#check (Poincare.mathlibPoincareStatementAdapterLedger_length :
+  Poincare.mathlibPoincareStatementAdapterLedger.length = 2)
+
+#check Poincare.mathlibPoincareStatementAdapterLedger_length_eq
+
+#check (Poincare.mathlibPoincareStatementAdapterLedger_nodup :
+  Poincare.mathlibPoincareStatementAdapterLedger.Nodup)
+
+#check Poincare.mathlibPoincareStatementAdapterLedger_nodup_eq
+
+#check (Poincare.mathlibPoincareStatementAdapterLedger_mem :
+  ∀ adapter : Poincare.MathlibPoincareStatementAdapter,
+    adapter ∈ Poincare.mathlibPoincareStatementAdapterLedger ↔
+      adapter = Poincare.MathlibPoincareStatementAdapter.topologicalThreeSphere ∨
+      adapter = Poincare.MathlibPoincareStatementAdapter.smoothThreeSphere)
+
+#check Poincare.mathlibPoincareStatementAdapterLedger_mem_eq
+
+#check (Poincare.statementAdaptersBlockedByExternalBlocker_eq :
+  Poincare.statementAdaptersBlockedByExternalBlocker =
+    (fun
+      | Poincare.ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted =>
+          Poincare.mathlibPoincareStatementAdapterLedger
+      | Poincare.ExternalFormalizationBlocker.ricciSpecificGeometrySurface =>
+          []
+      | Poincare.ExternalFormalizationBlocker.ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface =>
+          []))
+
+#check (Poincare.mathlibThreeDimensionalPoincareProofWanted_blocks_statementAdapters :
+  Poincare.statementAdaptersBlockedByExternalBlocker
+      Poincare.ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted =
+    Poincare.mathlibPoincareStatementAdapterLedger)
+
+#check Poincare.mathlibThreeDimensionalPoincareProofWanted_blocks_statementAdapters_eq
+
+#check (Poincare.externalBlocker_statementAdapters_mem_adapterLedger :
+  ∀ (blocker : Poincare.ExternalFormalizationBlocker)
+    {adapter : Poincare.MathlibPoincareStatementAdapter},
+    adapter ∈ Poincare.statementAdaptersBlockedByExternalBlocker blocker →
+      adapter ∈ Poincare.mathlibPoincareStatementAdapterLedger)
+
+#check Poincare.externalBlocker_statementAdapters_mem_adapterLedger_eq
+
 #check Poincare.dependencyLayerForMilestone_eq
 
 #check (Poincare.dependencyLayerForMilestone_smoothabilityBridge :

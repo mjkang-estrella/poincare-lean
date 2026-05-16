@@ -114,11 +114,14 @@ check_present "Shape contract audit" "scripts/shape_contract_audit.sh"
 if rg -q '^inductive ExternalFormalizationBlocker\b' Poincare/Milestones.lean &&
     rg -q '^def externalFormalizationBlockerLedger\b' Poincare/Milestones.lean &&
     rg -q '^theorem externalFormalizationBlockerLedger_length\b' Poincare/Milestones.lean &&
+    rg -q '^def mathlibPoincareStatementAdapterLedger\b' Poincare/Milestones.lean &&
+    rg -q '^def statementAdaptersBlockedByExternalBlocker\b' Poincare/Milestones.lean &&
+    rg -q '^theorem externalBlocker_statementAdapters_mem_adapterLedger\b' Poincare/Milestones.lean &&
     rg -q '^def dependencyMilestonesBlockedByExternalBlocker\b' Poincare/Milestones.lean &&
     rg -q '^theorem externalBlocker_milestones_mem_dependencyMilestoneLedger\b' Poincare/Milestones.lean; then
-  echo "PASS: Lean milestone ledger records external formalization blockers and their milestone map"
+  echo "PASS: Lean milestone ledger records external formalization blockers plus statement-adapter and milestone maps"
 else
-  echo "FAIL: Lean milestone ledger does not record the external blocker-to-milestone surface"
+  echo "FAIL: Lean milestone ledger does not record the external blocker statement-adapter/milestone surface"
   status=1
 fi
 
