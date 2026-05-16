@@ -21909,6 +21909,30 @@ theorem poincare_conjecture_of_completion_certificate_of_lifted_homeomorphism_de
           dependencies) := by
   apply Subsingleton.elim
 
+/--
+The lifted-homeomorphism derivation dependency projection reserved endpoint is
+the named lifted-homeomorphism route.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_lifted_route_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_conjecture_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the lifted-homeomorphism derivation projection down to the extraction
+derivation route preserves the reserved endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+    (dependencies : RemainingDependencyPackage.{u}) :
+    poincare_conjecture_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
+      dependencies =
+      poincare_statement_of_extraction_derivation_dependency_projections
+        dependencies := by
+  apply Subsingleton.elim
+
 theorem target_statement_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
     (dependencies : RemainingDependencyPackage.{u}) :
     PoincareConjectureStatement.{u} :=
@@ -22446,6 +22470,32 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
       dependencies =
       target_statement_of_completion_certificate
         (completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The aggregate lifted-homeomorphism derivation projection reserved endpoint is
+the named remaining-package lifted route after forgetting the aggregate package.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_lifted_route_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+      dependencies =
+      poincare_statement_of_lifted_homeomorphism_derivation_dependency_projections
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the aggregate lifted-homeomorphism derivation projection down to the
+extraction-derivation route preserves the reserved endpoint.
+-/
+theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_extraction_derivation_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_conjecture_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+      dependencies =
+      poincare_statement_of_extraction_derivation_dependency_projections
+        (remainingDependencyPackage_iff_poincareProofDependencies.mpr
           dependencies) := by
   apply Subsingleton.elim
 
