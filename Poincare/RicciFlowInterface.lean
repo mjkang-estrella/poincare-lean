@@ -270,6 +270,37 @@ theorem poincare_conjecture_of_universalFiniteExtinctionStatement_eq
   apply Subsingleton.elim
 
 /--
+The named universal finite-extinction input exposes the local Poincare target
+through the finite-extinction-only local statement route.
+-/
+theorem poincare_statement_of_universalFiniteExtinctionStatement
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_finite_extinction finiteExtinction
+
+/--
+The named universal finite-extinction local statement route is exactly the
+finite-extinction-only local statement route under the named remaining input
+statement.
+-/
+theorem poincare_statement_of_universalFiniteExtinctionStatement_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    poincare_statement_of_universalFiniteExtinctionStatement finiteExtinction =
+      poincare_statement_of_finite_extinction finiteExtinction := by
+  apply Subsingleton.elim
+
+/--
+The named universal finite-extinction local statement route agrees with the
+reserved universal-finite-extinction endpoint for the same input.
+-/
+theorem poincare_statement_of_universalFiniteExtinctionStatement_to_reserved_endpoint_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    poincare_statement_of_universalFiniteExtinctionStatement finiteExtinction =
+      poincare_conjecture_of_universalFiniteExtinctionStatement
+        finiteExtinction := by
+  apply Subsingleton.elim
+
+/--
 Finite extinction plus the post-extinction topological extraction theorem
 exposes the reserved endpoint together with the explicit completion criterion.
 This names the final conditional route through
@@ -597,6 +628,37 @@ theorem poincare_payload_of_finite_extinction_to_reserved_payload_eq
           FiniteExtinctionByRicciFlowWithSurgery M) :
     poincare_payload_of_finite_extinction finiteExtinction =
       poincare_conjecture_payload_of_finite_extinction finiteExtinction := by
+  apply Subsingleton.elim
+
+/--
+The named universal finite-extinction input exposes the local target and the
+explicit completion criterion through the local finite-extinction payload.
+-/
+theorem poincare_payload_of_universalFiniteExtinctionStatement
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_payload_of_finite_extinction finiteExtinction
+
+/--
+The named universal finite-extinction local payload is exactly the
+finite-extinction-only local payload under the named remaining input statement.
+-/
+theorem poincare_payload_of_universalFiniteExtinctionStatement_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    poincare_payload_of_universalFiniteExtinctionStatement finiteExtinction =
+      poincare_payload_of_finite_extinction finiteExtinction := by
+  apply Subsingleton.elim
+
+/--
+The named universal finite-extinction local payload agrees with the reserved
+universal-finite-extinction payload for the same input.
+-/
+theorem poincare_payload_of_universalFiniteExtinctionStatement_to_reserved_payload_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    poincare_payload_of_universalFiniteExtinctionStatement finiteExtinction =
+      poincare_conjecture_payload_of_universalFiniteExtinctionStatement
+        finiteExtinction := by
   apply Subsingleton.elim
 
 /--
