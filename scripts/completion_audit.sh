@@ -910,6 +910,18 @@ check_decl "target statement completion payload iff theorem is declared" \
   '^theorem poincareConjectureStatement_iff_poincare_completion_payload\b' Poincare/Statement.lean
 check_decl "target statement completion payload iff equality contract is declared" \
   '^theorem poincareConjectureStatement_iff_poincare_completion_payload_eq\b' Poincare/Statement.lean
+check_decl "mathlib-shaped topological statement is declared" \
+  '^def MathlibTopologicalPoincareThreeStatement\b' Poincare/Statement.lean
+check_decl "mathlib-shaped topological statement equality contract is declared" \
+  '^theorem mathlibTopologicalPoincareThreeStatement_eq\b' Poincare/Statement.lean
+check_decl "target statement mathlib-shaped topological iff is declared" \
+  '^theorem poincareConjectureStatement_iff_mathlibTopologicalPoincareThreeStatement\b' Poincare/Statement.lean
+check_decl "target statement mathlib-shaped topological iff equality contract is declared" \
+  '^theorem poincareConjectureStatement_iff_mathlibTopologicalPoincareThreeStatement_eq\b' Poincare/Statement.lean
+check_decl "mathlib-shaped topological statement to target adapter is declared" \
+  '^theorem poincareConjectureStatement_of_mathlibTopologicalPoincareThreeStatement\b' Poincare/Statement.lean
+check_decl "target to mathlib-shaped topological statement adapter is declared" \
+  '^theorem mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement\b' Poincare/Statement.lean
 check_decl "completion criterion to target statement theorem is declared" \
   '^theorem poincareConjectureStatement_of_completionCriterionAtUniverse\b' Poincare/Statement.lean
 check_decl "completion criterion to target statement equality contract is declared" \
@@ -928,6 +940,18 @@ check_decl "smooth statement iff contract is declared" \
   '^theorem smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_statement\b' Poincare/Statement.lean
 check_decl "smooth statement iff equality contract is declared" \
   '^theorem smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_statement_eq\b' Poincare/Statement.lean
+check_decl "mathlib-shaped smooth statement is declared" \
+  '^def MathlibSmoothPoincareThreeStatement\b' Poincare/Statement.lean
+check_decl "mathlib-shaped smooth statement equality contract is declared" \
+  '^theorem mathlibSmoothPoincareThreeStatement_eq\b' Poincare/Statement.lean
+check_decl "smooth statement mathlib-shaped iff is declared" \
+  '^theorem smoothPoincareConjectureStatement_iff_mathlibSmoothPoincareThreeStatement\b' Poincare/Statement.lean
+check_decl "smooth statement mathlib-shaped iff equality contract is declared" \
+  '^theorem smoothPoincareConjectureStatement_iff_mathlibSmoothPoincareThreeStatement_eq\b' Poincare/Statement.lean
+check_decl "mathlib-shaped smooth statement to smooth target adapter is declared" \
+  '^theorem smoothPoincareConjectureStatement_of_mathlibSmoothPoincareThreeStatement\b' Poincare/Statement.lean
+check_decl "smooth target to mathlib-shaped smooth statement adapter is declared" \
+  '^theorem mathlibSmoothPoincareThreeStatement_of_smoothPoincareConjectureStatement\b' Poincare/Statement.lean
 check_decl "3-manifold model alias is declared" \
   '^abbrev ThreeManifoldModel\b' Poincare/Surgery.lean
 check_decl "3-manifold model alias equality contract is declared" \
@@ -26783,6 +26807,30 @@ open scoped Manifold ContDiff
   Poincare.poincareConjectureStatement_iff_canonical_three_sphere_statement =
     Iff.rfl)
 
+#check (Poincare.mathlibTopologicalPoincareThreeStatement_eq :
+  Poincare.MathlibTopologicalPoincareThreeStatement =
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty
+          (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))))
+
+#check (Poincare.poincareConjectureStatement_iff_mathlibTopologicalPoincareThreeStatement :
+  Poincare.PoincareConjectureStatement ↔
+    Poincare.MathlibTopologicalPoincareThreeStatement)
+
+#check (Poincare.poincareConjectureStatement_iff_mathlibTopologicalPoincareThreeStatement_eq :
+  Poincare.poincareConjectureStatement_iff_mathlibTopologicalPoincareThreeStatement =
+    Iff.rfl)
+
+#check (Poincare.poincareConjectureStatement_of_mathlibTopologicalPoincareThreeStatement :
+  Poincare.MathlibTopologicalPoincareThreeStatement →
+    Poincare.PoincareConjectureStatement)
+
+#check (Poincare.mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement :
+  Poincare.PoincareConjectureStatement →
+    Poincare.MathlibTopologicalPoincareThreeStatement)
+
 #check (Poincare.smoothPoincareConjectureStatement_eq :
   Poincare.SmoothPoincareConjectureStatement =
     (∀ (M : Type) [TopologicalSpace M] [T2Space M]
@@ -26802,6 +26850,32 @@ open scoped Manifold ContDiff
 #check (Poincare.smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_statement_eq :
   Poincare.smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_statement =
     Iff.rfl)
+
+#check (Poincare.mathlibSmoothPoincareThreeStatement_eq :
+  Poincare.MathlibSmoothPoincareThreeStatement =
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty
+          (M ≃ₘ⟮𝓡 3, 𝓡 3⟯
+            Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))))
+
+#check (Poincare.smoothPoincareConjectureStatement_iff_mathlibSmoothPoincareThreeStatement :
+  Poincare.SmoothPoincareConjectureStatement ↔
+    Poincare.MathlibSmoothPoincareThreeStatement)
+
+#check (Poincare.smoothPoincareConjectureStatement_iff_mathlibSmoothPoincareThreeStatement_eq :
+  Poincare.smoothPoincareConjectureStatement_iff_mathlibSmoothPoincareThreeStatement =
+    Iff.rfl)
+
+#check (Poincare.smoothPoincareConjectureStatement_of_mathlibSmoothPoincareThreeStatement :
+  Poincare.MathlibSmoothPoincareThreeStatement →
+    Poincare.SmoothPoincareConjectureStatement)
+
+#check (Poincare.mathlibSmoothPoincareThreeStatement_of_smoothPoincareConjectureStatement :
+  Poincare.SmoothPoincareConjectureStatement →
+    Poincare.MathlibSmoothPoincareThreeStatement)
 
 #check (Poincare.PoincareProofDependencies.smoothability :
   Poincare.PoincareProofDependencies →
