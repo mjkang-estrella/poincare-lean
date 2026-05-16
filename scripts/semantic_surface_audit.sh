@@ -18558,7 +18558,7 @@ canonical_payload_bridge_count=$(
   rg -c '\bcanonical_completion_payload_of_poincare_completion_payload\b' \
     Poincare/CompletionTarget.lean || true
 )
-if [ "$canonical_payload_bridge_count" != "60" ]; then
+if [ "$canonical_payload_bridge_count" != "62" ]; then
   echo "FAIL: canonical route payloads and the canonical/project payload iff should consume the shared Poincare-completion bridge"
   rg -n '\bcanonical_completion_payload_of_poincare_completion_payload\b' \
     Poincare/CompletionTarget.lean || true
