@@ -9988,14 +9988,26 @@ check_decl "canonical completion finite-extinction extraction-derivation payload
   '^theorem canonical_completion_payload_of_finite_extinction_and_extraction_derivation\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion finite-extinction extraction-derivation payload equality contract is declared" \
   '^theorem canonical_completion_payload_of_finite_extinction_and_extraction_derivation_eq\b' Poincare/CompletionTarget.lean
+check_decl "named universal finite-extinction extraction-derivation canonical completion payload theorem is declared" \
+  '^theorem canonical_completion_payload_of_universalFiniteExtinctionStatement_and_extraction_derivation\b' Poincare/CompletionTarget.lean
+check_decl "named universal finite-extinction extraction-derivation canonical completion payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_universalFiniteExtinctionStatement_and_extraction_derivation_eq\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion finite-extinction extraction-derivation target theorem is declared" \
   '^theorem canonical_completion_target_of_finite_extinction_and_extraction_derivation\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion finite-extinction extraction-derivation target equality contract is declared" \
   '^theorem canonical_completion_target_of_finite_extinction_and_extraction_derivation_eq\b' Poincare/CompletionTarget.lean
+check_decl "named universal finite-extinction extraction-derivation canonical completion target theorem is declared" \
+  '^theorem canonical_completion_target_of_universalFiniteExtinctionStatement_and_extraction_derivation\b' Poincare/CompletionTarget.lean
+check_decl "named universal finite-extinction extraction-derivation canonical completion target equality contract is declared" \
+  '^theorem canonical_completion_target_of_universalFiniteExtinctionStatement_and_extraction_derivation_eq\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion finite-extinction extraction-derivation criterion theorem is declared" \
   '^theorem canonical_completion_criterion_of_finite_extinction_and_extraction_derivation\b' Poincare/CompletionTarget.lean
 check_decl "canonical completion finite-extinction extraction-derivation criterion equality contract is declared" \
   '^theorem canonical_completion_criterion_of_finite_extinction_and_extraction_derivation_eq\b' Poincare/CompletionTarget.lean
+check_decl "named universal finite-extinction extraction-derivation canonical completion criterion theorem is declared" \
+  '^theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_extraction_derivation\b' Poincare/CompletionTarget.lean
+check_decl "named universal finite-extinction extraction-derivation canonical completion criterion equality contract is declared" \
+  '^theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_extraction_derivation_eq\b' Poincare/CompletionTarget.lean
 check_decl "completion criterion to canonical target theorem is declared" \
   '^theorem canonical_completion_target_of_completion_criterion\b' Poincare/CompletionTarget.lean
 check_decl "completion criterion to canonical target equality contract is declared" \
