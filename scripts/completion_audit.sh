@@ -993,6 +993,18 @@ check_decl "target sphere homotopy prerequisites path-quotient path-route compat
   '^theorem threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_path_route_eq\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites path-quotient loop-route compatibility is declared" \
   '^theorem threeSphere_homotopy_prerequisites_of_pathQuotientSubsingletonStatement_loop_route_eq\b' Poincare/Statement.lean
+check_decl "Ricci-flow interface extinction/extraction local payload route is declared" \
+  '^theorem poincare_payload_of_extinction_and_extraction\b' Poincare/RicciFlowInterface.lean
+check_decl "Ricci-flow interface extinction/extraction local payload equality contract is declared" \
+  '^theorem poincare_payload_of_extinction_and_extraction_eq\b' Poincare/RicciFlowInterface.lean
+check_decl "Ricci-flow interface extinction/extraction local payload reserved-route compatibility is declared" \
+  '^theorem poincare_payload_of_extinction_and_extraction_to_reserved_payload_eq\b' Poincare/RicciFlowInterface.lean
+check_decl "Ricci-flow interface finite-extinction local payload route is declared" \
+  '^theorem poincare_payload_of_finite_extinction\b' Poincare/RicciFlowInterface.lean
+check_decl "Ricci-flow interface finite-extinction local payload equality contract is declared" \
+  '^theorem poincare_payload_of_finite_extinction_eq\b' Poincare/RicciFlowInterface.lean
+check_decl "Ricci-flow interface finite-extinction local payload reserved-route compatibility is declared" \
+  '^theorem poincare_payload_of_finite_extinction_to_reserved_payload_eq\b' Poincare/RicciFlowInterface.lean
 check_decl "topological statement shape contract is declared" \
   '^theorem poincareConjectureStatement_eq\b' Poincare/Statement.lean
 check_decl "topological statement iff contract is declared" \

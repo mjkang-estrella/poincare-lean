@@ -489,6 +489,23 @@ theorem poincare_payload_of_extinction_and_extraction_eq
   apply Subsingleton.elim
 
 /--
+The local extinction/extraction payload agrees with the reserved endpoint
+payload for the same two mathematical inputs.
+-/
+theorem poincare_payload_of_extinction_and_extraction_to_reserved_payload_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    poincare_payload_of_extinction_and_extraction
+        finiteExtinction extractSphere =
+      poincare_conjecture_payload_of_extinction_and_extraction
+        finiteExtinction extractSphere := by
+  apply Subsingleton.elim
+
+/--
 Universal finite extinction alone exposes the local target and the explicit
 completion criterion under the current empty extinction-interface encoding.
 -/
@@ -524,6 +541,20 @@ theorem poincare_payload_of_finite_extinction_eq
             extinctionImpliesSphereStatement_of_finiteExtinctionByRicciFlowWithSurgery
         exact poincare_completion_payload_of_poincareConjectureStatement
           target) := by
+  apply Subsingleton.elim
+
+/--
+The local finite-extinction-only payload agrees with the reserved endpoint
+payload for the same universal finite-extinction input.
+-/
+theorem poincare_payload_of_finite_extinction_to_reserved_payload_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M) :
+    poincare_payload_of_finite_extinction finiteExtinction =
+      poincare_conjecture_payload_of_finite_extinction finiteExtinction := by
   apply Subsingleton.elim
 
 /--
