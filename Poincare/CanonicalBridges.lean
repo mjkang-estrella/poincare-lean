@@ -779,6 +779,21 @@ theorem canonical_completion_payload_of_completion_certificate_of_equation_bound
   apply Subsingleton.elim
 
 /--
+The strengthened remaining-dependency certificate canonical payload agrees
+with the named universal finite-extinction canonical payload projected from
+the same boundary-aware remaining-dependency package.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_universalFiniteExtinctionStatement_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    canonical_completion_payload_of_completion_certificate
+        (completion_certificate_of_equation_boundary_remaining_dependency_package
+          dependencies) =
+      canonical_completion_payload_of_universalFiniteExtinctionStatement
+        (universalFiniteExtinctionStatement_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened remaining-dependency certificate project payload agrees with
 the boundary-carrying package-level Poincare payload.
 -/
@@ -789,6 +804,21 @@ theorem poincare_completion_payload_of_completion_certificate_of_equation_bounda
           dependencies) =
       poincare_conjecture_payload_of_smoothability_and_boundary_surgery_packages
         dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-dependency certificate project payload agrees with
+the named universal finite-extinction project payload projected from the same
+boundary-aware remaining-dependency package.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_universalFiniteExtinctionStatement_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    poincare_completion_payload_of_completion_certificate
+        (completion_certificate_of_equation_boundary_remaining_dependency_package
+          dependencies) =
+      poincare_payload_of_universalFiniteExtinctionStatement
+        (universalFiniteExtinctionStatement_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
   apply Subsingleton.elim
 
 /--
@@ -828,6 +858,21 @@ theorem target_statement_of_completion_certificate_of_equation_boundary_remainin
           dependencies) =
       poincare_conjecture_of_smoothability_and_boundary_surgery_packages
         dependencies.smoothability dependencies.surgery := by
+  apply Subsingleton.elim
+
+/--
+The strengthened remaining-dependency certificate project target agrees with
+the named universal finite-extinction project statement projected from the same
+boundary-aware remaining-dependency package.
+-/
+theorem target_statement_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_universalFiniteExtinctionStatement_eq
+    (dependencies : RemainingDependencyPackageWithEquationBoundary.{u}) :
+    target_statement_of_completion_certificate
+        (completion_certificate_of_equation_boundary_remaining_dependency_package
+          dependencies) =
+      poincare_statement_of_universalFiniteExtinctionStatement
+        (universalFiniteExtinctionStatement_of_equation_boundary_remaining_dependency_package
+          dependencies) := by
   apply Subsingleton.elim
 
 /--
