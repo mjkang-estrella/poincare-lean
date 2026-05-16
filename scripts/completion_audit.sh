@@ -999,6 +999,12 @@ check_decl "Ricci-flow interface extinction/extraction local payload equality co
   '^theorem poincare_payload_of_extinction_and_extraction_eq\b' Poincare/RicciFlowInterface.lean
 check_decl "Ricci-flow interface extinction/extraction local payload reserved-route compatibility is declared" \
   '^theorem poincare_payload_of_extinction_and_extraction_to_reserved_payload_eq\b' Poincare/RicciFlowInterface.lean
+check_decl "Ricci-flow interface finite-extinction local statement route is declared" \
+  '^theorem poincare_statement_of_finite_extinction\b' Poincare/RicciFlowInterface.lean
+check_decl "Ricci-flow interface finite-extinction local statement equality contract is declared" \
+  '^theorem poincare_statement_of_finite_extinction_eq\b' Poincare/RicciFlowInterface.lean
+check_decl "Ricci-flow interface finite-extinction local statement reserved-endpoint compatibility is declared" \
+  '^theorem poincare_statement_of_finite_extinction_to_reserved_endpoint_eq\b' Poincare/RicciFlowInterface.lean
 check_decl "Ricci-flow interface finite-extinction local payload route is declared" \
   '^theorem poincare_payload_of_finite_extinction\b' Poincare/RicciFlowInterface.lean
 check_decl "Ricci-flow interface finite-extinction local payload equality contract is declared" \

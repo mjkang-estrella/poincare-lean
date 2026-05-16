@@ -139,6 +139,38 @@ theorem poincare_statement_of_extinction_and_extraction_eq
   apply Subsingleton.elim
 
 /--
+Universal finite extinction alone exposes the local Poincare target under the
+current empty extinction-interface encoding.
+-/
+theorem poincare_statement_of_finite_extinction
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_extinction_and_extraction
+    finiteExtinction
+    extinctionImpliesSphereStatement_of_finiteExtinctionByRicciFlowWithSurgery
+
+/--
+The finite-extinction-only local statement route is exactly the
+extinction/extraction route with the extractor obtained by eliminating the
+current extinction predicate.
+-/
+theorem poincare_statement_of_finite_extinction_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M) :
+    poincare_statement_of_finite_extinction finiteExtinction =
+      poincare_statement_of_extinction_and_extraction
+        finiteExtinction
+        extinctionImpliesSphereStatement_of_finiteExtinctionByRicciFlowWithSurgery := by
+  apply Subsingleton.elim
+
+/--
 The reserved final theorem endpoint follows once the two core mathematical
 inputs are supplied: finite extinction for every target 3-manifold and the
 post-extinction sphere extraction theorem.
@@ -202,6 +234,20 @@ theorem poincare_conjecture_of_finite_extinction_eq
       poincare_conjecture_of_extinction_and_extraction
         finiteExtinction
         extinctionImpliesSphereStatement_of_finiteExtinctionByRicciFlowWithSurgery := by
+  apply Subsingleton.elim
+
+/--
+The local finite-extinction-only statement route agrees with the reserved
+finite-extinction endpoint for the same universal finite-extinction input.
+-/
+theorem poincare_statement_of_finite_extinction_to_reserved_endpoint_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M) :
+    poincare_statement_of_finite_extinction finiteExtinction =
+      poincare_conjecture_of_finite_extinction finiteExtinction := by
   apply Subsingleton.elim
 
 /--
@@ -518,14 +564,12 @@ theorem poincare_payload_of_finite_extinction
     ∃ _target : PoincareConjectureStatement.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
   let target : PoincareConjectureStatement.{u} :=
-    poincare_statement_of_extinction_and_extraction
-      finiteExtinction
-      extinctionImpliesSphereStatement_of_finiteExtinctionByRicciFlowWithSurgery
+    poincare_statement_of_finite_extinction finiteExtinction
   exact poincare_completion_payload_of_poincareConjectureStatement target
 
 /--
 The finite-extinction-only local payload is the project completion payload
-constructed from the named finite-extinction-only target.
+constructed from the named finite-extinction-only local target.
 -/
 theorem poincare_payload_of_finite_extinction_eq
     (finiteExtinction :
@@ -536,9 +580,7 @@ theorem poincare_payload_of_finite_extinction_eq
     poincare_payload_of_finite_extinction finiteExtinction =
       (by
         let target : PoincareConjectureStatement.{u} :=
-          poincare_statement_of_extinction_and_extraction
-            finiteExtinction
-            extinctionImpliesSphereStatement_of_finiteExtinctionByRicciFlowWithSurgery
+          poincare_statement_of_finite_extinction finiteExtinction
         exact poincare_completion_payload_of_poincareConjectureStatement
           target) := by
   apply Subsingleton.elim
