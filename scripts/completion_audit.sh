@@ -154,13 +154,14 @@ if rg -q '^def dependencyPackageLayersBlockedByExternalBlocker\b' Poincare/Depen
     rg -q '^theorem externalBlocker_blocks_dependencyPackageLayers_iff_blocks_dependencyComponentSlots\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_packageLayer_component_mem_dependencyComponentSlots\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_componentSlot_mem_packageLayer_component_image\b' Poincare/DependencyCrosswalk.lean &&
+    rg -q '^theorem externalBlocker_componentSlot_mem_iff_packageLayer_component_image\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem component_requirements_iff_package_layer_requirements\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem package_layer_requirements_iff_milestone_requirements\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem component_requirements_iff_milestone_requirements\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_componentSlots_mem_dependencyLedgerComponentSlots\b' Poincare/DependencyCrosswalk.lean; then
-  echo "PASS: dependency crosswalk maps external blockers to package layers and component slots with whole-image characterizations plus nonempty/full-ledger adapter, whole-ledger, blocker package-to-component maps and bidirectional membership, package-to-component image bridges, and component/package/milestone payload bridges"
+  echo "PASS: dependency crosswalk maps external blockers to package layers and component slots with whole-image characterizations plus nonempty/full-ledger adapter, whole-ledger, blocker package-to-component maps and image iff, package-to-component image bridges, and component/package/milestone payload bridges"
 else
-  echo "FAIL: dependency crosswalk does not map external blockers to package/component surfaces with whole-image characterizations plus nonempty/full-ledger adapter, whole-ledger, blocker package-to-component maps and bidirectional membership, package-to-component image bridges, and component/package/milestone payload bridges"
+  echo "FAIL: dependency crosswalk does not map external blockers to package/component surfaces with whole-image characterizations plus nonempty/full-ledger adapter, whole-ledger, blocker package-to-component maps and image iff, package-to-component image bridges, and component/package/milestone payload bridges"
   status=1
 fi
 
@@ -9515,6 +9516,10 @@ check_decl "external blocker component-slot package-layer witness bridge is decl
   '^theorem externalBlocker_componentSlot_mem_packageLayer_component_image\b' Poincare/DependencyCrosswalk.lean
 check_decl "external blocker component-slot package-layer witness bridge equality contract is declared" \
   '^theorem externalBlocker_componentSlot_mem_packageLayer_component_image_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "external blocker component-slot package-layer image iff bridge is declared" \
+  '^theorem externalBlocker_componentSlot_mem_iff_packageLayer_component_image\b' Poincare/DependencyCrosswalk.lean
+check_decl "external blocker component-slot package-layer image iff bridge equality contract is declared" \
+  '^theorem externalBlocker_componentSlot_mem_iff_packageLayer_component_image_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency component requirements payload theorem is declared" \
   '^theorem dependency_component_requirements_payload_of_dependencies\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency component requirements payload equality contract is declared" \
@@ -35076,6 +35081,8 @@ open scoped Manifold ContDiff
 #check Poincare.externalBlocker_packageLayer_component_mem_dependencyComponentSlots_eq
 #check Poincare.externalBlocker_componentSlot_mem_packageLayer_component_image
 #check Poincare.externalBlocker_componentSlot_mem_packageLayer_component_image_eq
+#check Poincare.externalBlocker_componentSlot_mem_iff_packageLayer_component_image
+#check Poincare.externalBlocker_componentSlot_mem_iff_packageLayer_component_image_eq
 
 #check (Poincare.dependency_ledger_has_component_slots :
     Poincare.dependencyMilestoneLedger.map

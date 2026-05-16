@@ -3330,6 +3330,41 @@ theorem externalBlocker_componentSlot_mem_packageLayer_component_image_eq :
   apply Subsingleton.elim
 
 /--
+A component slot is named by an external blocker exactly when it is the
+component image of a package layer named by that same blocker.
+-/
+theorem externalBlocker_componentSlot_mem_iff_packageLayer_component_image
+    (blocker : ExternalFormalizationBlocker) (slot : DependencyComponentSlot) :
+    slot ∈ dependencyComponentSlotsBlockedByExternalBlocker blocker ↔
+      ∃ layer : DependencyPackageLayer,
+        layer ∈ dependencyPackageLayersBlockedByExternalBlocker blocker ∧
+          dependencyComponentForPackageLayer layer = slot := by
+  constructor
+  · exact externalBlocker_componentSlot_mem_packageLayer_component_image blocker
+  · rintro ⟨layer, hLayer, hSlot⟩
+    simpa [hSlot] using
+      externalBlocker_packageLayer_component_mem_dependencyComponentSlots
+        blocker hLayer
+
+/--
+The component-slot/package-layer image iff is the pair of the two membership
+bridges.
+-/
+theorem externalBlocker_componentSlot_mem_iff_packageLayer_component_image_eq :
+    externalBlocker_componentSlot_mem_iff_packageLayer_component_image =
+      (by
+        intro blocker slot
+        constructor
+        · exact externalBlocker_componentSlot_mem_packageLayer_component_image
+            blocker
+        · rintro ⟨layer, hLayer, hSlot⟩
+          simpa [hSlot] using
+            externalBlocker_packageLayer_component_mem_dependencyComponentSlots
+              blocker hLayer) := by
+  funext blocker slot
+  apply Subsingleton.elim
+
+/--
 Every component slot named by an external blocker is present in the checked
 milestone component-slot image.
 -/
