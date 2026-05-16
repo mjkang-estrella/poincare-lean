@@ -176,6 +176,67 @@ theorem completion_certificate_of_canonical_statement_payload
     dependencies, target, criterion⟩
 
 /--
+The canonical-statement artifact payload also packages directly as an inhabited
+completion-certificate proposition.
+-/
+theorem nonempty_completion_certificate_of_canonical_statement_payload
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        RemainingDependencyPackage.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    Nonempty PoincareCompletionCertificate.{u} :=
+  nonempty_completion_certificate_of_completion_certificate
+    (completion_certificate_of_canonical_statement_payload payload)
+
+/--
+The nonempty certificate package from a canonical-statement payload is the
+package containing the canonical-statement certificate constructor.
+-/
+theorem nonempty_completion_certificate_of_canonical_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        RemainingDependencyPackage.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    nonempty_completion_certificate_of_canonical_statement_payload payload =
+      nonempty_completion_certificate_of_completion_certificate
+        (completion_certificate_of_canonical_statement_payload payload) := by
+  apply Subsingleton.elim
+
+/--
+Reducing the final theorem through the nonempty canonical-statement payload
+package agrees with projecting the constructed certificate directly.
+-/
+theorem poincare_conjecture_of_nonempty_completion_certificate_of_canonical_statement_payload_eq
+    (payload :
+      ∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        RemainingDependencyPackage.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincare_conjecture_of_nonempty_completion_certificate
+        (nonempty_completion_certificate_of_canonical_statement_payload
+          payload) =
+      poincare_conjecture_of_completion_certificate
+        (completion_certificate_of_canonical_statement_payload payload) := by
+  apply Subsingleton.elim
+
+/--
 A remaining-dependency package together with the named universal finite
 extinction input constructs the checked completion certificate through the
 finite-extinction-only canonical target.
