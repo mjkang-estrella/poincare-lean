@@ -240,6 +240,20 @@ theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_an
   apply Subsingleton.elim
 
 /--
+The universal finite-extinction certificate exposes the same project statement
+as the named universal finite-extinction project route.
+-/
+theorem target_statement_of_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_to_project_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    target_statement_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+          dependencies finiteExtinction) =
+      poincare_statement_of_universalFiniteExtinctionStatement
+        finiteExtinction := by
+  apply Subsingleton.elim
+
+/--
 The universal finite-extinction certificate payload is the canonical payload
 obtained directly from the named universal finite-extinction input.
 -/
@@ -264,6 +278,35 @@ theorem canonical_completion_payload_of_completion_certificate_of_remaining_depe
         (completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
           dependencies finiteExtinction) =
       universalFiniteExtinctionStatement_completion_payload
+        finiteExtinction := by
+  apply Subsingleton.elim
+
+/--
+The universal finite-extinction certificate canonical payload is the canonical
+conversion of the named universal finite-extinction project payload.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_to_project_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    canonical_completion_payload_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+          dependencies finiteExtinction) =
+      canonical_completion_payload_of_poincare_completion_payload
+        (poincare_payload_of_universalFiniteExtinctionStatement
+          finiteExtinction) := by
+  apply Subsingleton.elim
+
+/--
+The universal finite-extinction certificate project payload is the named
+universal finite-extinction project payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_to_project_payload_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    poincare_completion_payload_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+          dependencies finiteExtinction) =
+      poincare_payload_of_universalFiniteExtinctionStatement
         finiteExtinction := by
   apply Subsingleton.elim
 

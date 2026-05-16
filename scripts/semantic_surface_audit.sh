@@ -18569,7 +18569,7 @@ canonical_statement_payload_bridge_count=$(
   rg -c 'canonical_completion_payload_of_poincare_completion_payload' \
     Poincare/CanonicalBridges.lean || true
 )
-if [ "$canonical_statement_payload_bridge_count" != "26" ]; then
+if [ "$canonical_statement_payload_bridge_count" != "27" ]; then
   echo "FAIL: canonical statement, smooth certificate, and packaged smooth bridges should consume the shared Poincare-completion bridge"
   rg -n 'canonical_completion_payload_of_poincare_completion_payload' \
     Poincare/CanonicalBridges.lean || true

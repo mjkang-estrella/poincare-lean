@@ -2510,6 +2510,18 @@ check_decl "completion certificate canonical statement payload is declared" \
   '^theorem poincareCompletionCertificate_canonical_statement_payload\b' Poincare/CanonicalBridges.lean
 check_decl "completion certificate canonical statement payload constructor is declared" \
   '^theorem completion_certificate_of_canonical_statement_payload\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency plus named universal finite-extinction certificate constructor is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency plus named universal finite-extinction certificate target equality contract is declared" \
+  '^theorem completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_target_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency plus named universal finite-extinction certificate project statement equality contract is declared" \
+  '^theorem target_statement_of_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_to_project_statement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency plus named universal finite-extinction certificate canonical payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency plus named universal finite-extinction certificate canonical payload to project payload equality contract is declared" \
+  '^theorem canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_to_project_payload_eq\b' Poincare/CanonicalBridges.lean
+check_decl "remaining dependency plus named universal finite-extinction certificate project payload equality contract is declared" \
+  '^theorem poincare_completion_payload_of_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_to_project_payload_eq\b' Poincare/CanonicalBridges.lean
 check_decl "completion certificate canonical statement payload equivalence is declared" \
   '^theorem poincareCompletionCertificate_iff_canonical_statement_payload\b' Poincare/CanonicalBridges.lean
 check_decl "completion certificate aggregate canonical statement payload is declared" \
