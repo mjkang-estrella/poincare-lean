@@ -3790,6 +3790,53 @@ theorem externalBlocker_blockedComponentSlot_milestoneRequirement_of_dependencie
   apply Subsingleton.elim
 
 /--
+Aggregate dependencies discharge every package layer named by an external
+formalization blocker.
+-/
+theorem externalBlocker_blockedPackageLayerRequirement_of_dependencies
+    (dependencies : PoincareProofDependencies.{u})
+    (blocker : ExternalFormalizationBlocker) {layer : DependencyPackageLayer}
+    (_hlayer : layer ∈ dependencyPackageLayersBlockedByExternalBlocker blocker) :
+    dependencyPackageLayerRequirement.{u} layer :=
+  dependencyPackageLayerRequirement_of_dependencies dependencies layer
+
+/--
+The blocker package-layer discharge route is exactly the aggregate dependency
+package-layer projection, with blocker membership recorded only as provenance.
+-/
+theorem externalBlocker_blockedPackageLayerRequirement_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    externalBlocker_blockedPackageLayerRequirement_of_dependencies dependencies =
+      (fun _blocker layer _hlayer =>
+        dependencyPackageLayerRequirement_of_dependencies dependencies layer) := by
+  funext blocker layer hlayer
+  apply Subsingleton.elim
+
+/--
+Aggregate dependencies discharge every milestone named by an external
+formalization blocker.
+-/
+theorem externalBlocker_blockedMilestoneRequirement_of_dependencies
+    (dependencies : PoincareProofDependencies.{u})
+    (blocker : ExternalFormalizationBlocker) {milestone : DependencyMilestone}
+    (_hmilestone :
+      milestone ∈ dependencyMilestonesBlockedByExternalBlocker blocker) :
+    dependencyMilestoneRequirement.{u} milestone :=
+  dependencyMilestoneRequirement_of_dependencies dependencies milestone
+
+/--
+The blocker milestone discharge route is exactly the aggregate dependency
+milestone projection, with blocker membership recorded only as provenance.
+-/
+theorem externalBlocker_blockedMilestoneRequirement_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    externalBlocker_blockedMilestoneRequirement_of_dependencies dependencies =
+      (fun _blocker milestone _hmilestone =>
+        dependencyMilestoneRequirement_of_dependencies dependencies milestone) := by
+  funext blocker milestone hmilestone
+  apply Subsingleton.elim
+
+/--
 Every component slot named by an external blocker is present in the checked
 milestone component-slot image.
 -/
