@@ -2620,6 +2620,56 @@ theorem package_layer_requirements_iff_milestone_requirements_eq :
               payload)) ⟩ := by
   apply Subsingleton.elim
 
+/--
+The component-slot and milestone requirement payloads are equivalent routes to
+the same aggregate dependency package.
+-/
+theorem component_requirements_iff_milestone_requirements :
+    (∃ _smoothability :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+    ∃ _surgery :
+      dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+      dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) ↔
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism := by
+  constructor
+  · intro payload
+    exact
+      dependency_milestone_requirements_payload_of_dependencies
+        (poincareProofDependencies_of_component_requirements_payload payload)
+  · intro payload
+    exact
+      dependency_component_requirements_payload_of_dependencies
+        (poincareProofDependencies_of_milestone_requirements_payload payload)
+
+/--
+The component/milestone payload bridge is exactly the pair of constructors
+through the aggregate dependency package.
+-/
+theorem component_requirements_iff_milestone_requirements_eq :
+    component_requirements_iff_milestone_requirements.{u} =
+      ⟨ (fun payload =>
+          dependency_milestone_requirements_payload_of_dependencies
+            (poincareProofDependencies_of_component_requirements_payload
+              payload))
+      , (fun payload =>
+          dependency_component_requirements_payload_of_dependencies
+            (poincareProofDependencies_of_milestone_requirements_payload
+              payload)) ⟩ := by
+  apply Subsingleton.elim
+
 /-- The smoothability milestone is discharged by the smoothability package layer. -/
 theorem dependencyLayerForMilestone_smoothabilityBridge :
     dependencyLayerForMilestone DependencyMilestone.smoothabilityBridge =
