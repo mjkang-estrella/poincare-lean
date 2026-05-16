@@ -649,6 +649,50 @@ check_decl "target sphere based-loop from simple-connectedness theorem is declar
   '^theorem threeSphere_basedLoopNullhomotopyStatement_of_simplyConnectedSpace\b' Poincare/Statement.lean
 check_decl "target sphere based-loop from simple-connectedness equality contract is declared" \
   '^theorem threeSphere_basedLoopNullhomotopyStatement_of_simplyConnectedSpace_eq\b' Poincare/Statement.lean
+check_decl "target sphere north-pole loop-nullhomotopy statement is declared" \
+  '^def ThreeSphereNorthPoleLoopNullhomotopyStatement\b' Poincare/Statement.lean
+check_decl "target sphere north-pole loop-nullhomotopy statement equality contract is declared" \
+  '^theorem threeSphereNorthPoleLoopNullhomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere north-pole simple-connectedness equivalence is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_iff_northPoleLoopNullhomotopyStatement\b' Poincare/Statement.lean
+check_decl "target sphere north-pole simple-connectedness equivalence equality contract is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_iff_northPoleLoopNullhomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere simple-connectedness from north-pole loop theorem is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_of_northPoleLoopNullhomotopyStatement\b' Poincare/Statement.lean
+check_decl "target sphere simple-connectedness from north-pole loop equality contract is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_of_northPoleLoopNullhomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere north-pole loop from simple-connectedness theorem is declared" \
+  '^theorem threeSphere_northPoleLoopNullhomotopyStatement_of_simplyConnectedSpace\b' Poincare/Statement.lean
+check_decl "target sphere north-pole loop from simple-connectedness equality contract is declared" \
+  '^theorem threeSphere_northPoleLoopNullhomotopyStatement_of_simplyConnectedSpace_eq\b' Poincare/Statement.lean
+check_decl "target sphere stereographic Van Kampen loop statement is declared" \
+  '^def ThreeSphereStereographicVanKampenLoopStatement\b' Poincare/Statement.lean
+check_decl "target sphere stereographic Van Kampen loop statement equality contract is declared" \
+  '^theorem threeSphereStereographicVanKampenLoopStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere stereographic loop simple-connectedness equivalence is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_iff_stereographicVanKampenLoopStatement\b' Poincare/Statement.lean
+check_decl "target sphere stereographic loop simple-connectedness equivalence equality contract is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_iff_stereographicVanKampenLoopStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere simple-connectedness from stereographic loop theorem is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_of_stereographicVanKampenLoopStatement\b' Poincare/Statement.lean
+check_decl "target sphere simple-connectedness from stereographic loop equality contract is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_of_stereographicVanKampenLoopStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere stereographic loop from simple-connectedness theorem is declared" \
+  '^theorem threeSphere_stereographicVanKampenLoopStatement_of_simplyConnectedSpace\b' Poincare/Statement.lean
+check_decl "target sphere stereographic loop from simple-connectedness equality contract is declared" \
+  '^theorem threeSphere_stereographicVanKampenLoopStatement_of_simplyConnectedSpace_eq\b' Poincare/Statement.lean
+check_decl "target sphere north-pole loop from stereographic loop theorem is declared" \
+  '^theorem threeSphere_northPoleLoopNullhomotopyStatement_of_stereographicVanKampenLoopStatement\b' Poincare/Statement.lean
+check_decl "target sphere north-pole loop from stereographic loop equality contract is declared" \
+  '^theorem threeSphere_northPoleLoopNullhomotopyStatement_of_stereographicVanKampenLoopStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere stereographic loop from north-pole loop theorem is declared" \
+  '^theorem threeSphere_stereographicVanKampenLoopStatement_of_northPoleLoopNullhomotopyStatement\b' Poincare/Statement.lean
+check_decl "target sphere stereographic loop from north-pole loop equality contract is declared" \
+  '^theorem threeSphere_stereographicVanKampenLoopStatement_of_northPoleLoopNullhomotopyStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere north-pole stereographic loop equivalence is declared" \
+  '^theorem threeSphere_northPoleLoopNullhomotopyStatement_iff_stereographicVanKampenLoopStatement\b' Poincare/Statement.lean
+check_decl "target sphere north-pole stereographic loop equivalence equality contract is declared" \
+  '^theorem threeSphere_northPoleLoopNullhomotopyStatement_iff_stereographicVanKampenLoopStatement_eq\b' Poincare/Statement.lean
 check_decl "target sphere loop-nullhomotopy from based-loop theorem is declared" \
   '^theorem threeSphere_loopNullhomotopyStatement_of_basedLoopNullhomotopyStatement\b' Poincare/Statement.lean
 check_decl "target sphere loop-nullhomotopy from based-loop equality contract is declared" \

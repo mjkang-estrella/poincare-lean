@@ -1706,6 +1706,76 @@ theorem threeSphere_stereographicVanKampenLoopStatement_of_simplyConnectedSpace_
   apply Subsingleton.elim
 
 /--
+The equatorial stereographic Van Kampen loop obligation supplies the north-pole
+based loop-nullhomotopy obligation by first reconstructing simple-connectedness
+and then changing basepoint.
+-/
+theorem threeSphere_northPoleLoopNullhomotopyStatement_of_stereographicVanKampenLoopStatement
+    (h : ThreeSphereStereographicVanKampenLoopStatement) :
+    ThreeSphereNorthPoleLoopNullhomotopyStatement := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_stereographicVanKampenLoopStatement h
+  exact threeSphere_northPoleLoopNullhomotopyStatement_of_simplyConnectedSpace
+
+/--
+The stereographic-loop-to-north-pole-loop route factors through the named
+simple-connectedness reconstruction and the north-pole projection.
+-/
+theorem threeSphere_northPoleLoopNullhomotopyStatement_of_stereographicVanKampenLoopStatement_eq :
+    threeSphere_northPoleLoopNullhomotopyStatement_of_stereographicVanKampenLoopStatement =
+      (fun h : ThreeSphereStereographicVanKampenLoopStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_stereographicVanKampenLoopStatement h
+        threeSphere_northPoleLoopNullhomotopyStatement_of_simplyConnectedSpace) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The north-pole based loop-nullhomotopy obligation supplies the equatorial
+stereographic Van Kampen loop obligation by reconstructing simple-connectedness
+and then projecting to the equatorial basepoint.
+-/
+theorem threeSphere_stereographicVanKampenLoopStatement_of_northPoleLoopNullhomotopyStatement
+    (h : ThreeSphereNorthPoleLoopNullhomotopyStatement) :
+    ThreeSphereStereographicVanKampenLoopStatement := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_northPoleLoopNullhomotopyStatement h
+  exact threeSphere_stereographicVanKampenLoopStatement_of_simplyConnectedSpace
+
+/--
+The north-pole-loop-to-stereographic-loop route factors through the named
+north-pole simple-connectedness reconstruction and the stereographic projection.
+-/
+theorem threeSphere_stereographicVanKampenLoopStatement_of_northPoleLoopNullhomotopyStatement_eq :
+    threeSphere_stereographicVanKampenLoopStatement_of_northPoleLoopNullhomotopyStatement =
+      (fun h : ThreeSphereNorthPoleLoopNullhomotopyStatement =>
+        letI : SimplyConnectedSpace ThreeSphere :=
+          threeSphere_simplyConnectedSpace_of_northPoleLoopNullhomotopyStatement h
+        threeSphere_stereographicVanKampenLoopStatement_of_simplyConnectedSpace) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The north-pole and equatorial stereographic based-loop formulations of the
+remaining simple-connectedness obligation are equivalent.
+-/
+theorem threeSphere_northPoleLoopNullhomotopyStatement_iff_stereographicVanKampenLoopStatement :
+    ThreeSphereNorthPoleLoopNullhomotopyStatement ↔
+      ThreeSphereStereographicVanKampenLoopStatement :=
+  ⟨threeSphere_stereographicVanKampenLoopStatement_of_northPoleLoopNullhomotopyStatement,
+    threeSphere_northPoleLoopNullhomotopyStatement_of_stereographicVanKampenLoopStatement⟩
+
+/--
+The north-pole/stereographic loop equivalence is exactly the two named
+basepoint-transfer routes.
+-/
+theorem threeSphere_northPoleLoopNullhomotopyStatement_iff_stereographicVanKampenLoopStatement_eq :
+    threeSphere_northPoleLoopNullhomotopyStatement_iff_stereographicVanKampenLoopStatement =
+      ⟨threeSphere_stereographicVanKampenLoopStatement_of_northPoleLoopNullhomotopyStatement,
+        threeSphere_northPoleLoopNullhomotopyStatement_of_stereographicVanKampenLoopStatement⟩ :=
+  rfl
+
+/--
 A supplied simple-connectedness instance gives the full stereographic Van
 Kampen reduction statement.
 -/
