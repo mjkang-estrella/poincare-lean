@@ -3083,6 +3083,26 @@ theorem dependencyComponentSlotsBlockedByExternalBlocker_eq :
           dependencyComponentForMilestone :=
   rfl
 
+/--
+The external-blocker-to-component-slot map is also the blocker-to-package-layer
+map followed by the package-layer-to-component fold.
+-/
+theorem dependencyComponentSlotsBlockedByExternalBlocker_eq_package_layer_map :
+    dependencyComponentSlotsBlockedByExternalBlocker =
+      fun blocker =>
+        (dependencyPackageLayersBlockedByExternalBlocker blocker).map
+          dependencyComponentForPackageLayer := by
+  funext blocker
+  cases blocker <;> rfl
+
+/-- The blocker component-slot/package-layer bridge is the blocker case split. -/
+theorem dependencyComponentSlotsBlockedByExternalBlocker_eq_package_layer_map_eq :
+    dependencyComponentSlotsBlockedByExternalBlocker_eq_package_layer_map =
+      (by
+        funext blocker
+        cases blocker <;> rfl) := by
+  apply Subsingleton.elim
+
 /-- The mathlib shortcut blocker covers the whole component-slot ledger image. -/
 theorem mathlibThreeDimensionalPoincareProofWanted_blocks_dependencyComponentSlots :
     dependencyComponentSlotsBlockedByExternalBlocker

@@ -16136,6 +16136,14 @@ universe u
 
 #check Poincare.externalBlocker_blocks_dependencyComponentSlots_iff_mathlibProofWanted_eq
 
+#check (Poincare.dependencyComponentSlotsBlockedByExternalBlocker_eq_package_layer_map :
+  Poincare.dependencyComponentSlotsBlockedByExternalBlocker =
+    fun blocker =>
+      (Poincare.dependencyPackageLayersBlockedByExternalBlocker blocker).map
+        Poincare.dependencyComponentForPackageLayer)
+
+#check Poincare.dependencyComponentSlotsBlockedByExternalBlocker_eq_package_layer_map_eq
+
 #check (Poincare.externalBlocker_statementAdapters_nonempty_iff_blocks_dependencyMilestoneLedger :
   ∀ blocker : Poincare.ExternalFormalizationBlocker,
     (∃ adapter : Poincare.MathlibPoincareStatementAdapter,
@@ -18989,7 +18997,7 @@ if [ "$finite_extinction_derivation_statement_route_count" != "5" ]; then
   exit 1
 fi
 
-echo "SEMANTIC SURFACE: conditional theorem types, projection lemmas, target contracts, mathlib-shaped adapters, adapter-target/project-target statements, blocker/project-target endpoints, blocker adapter nonempty/full-ledger characterizations, whole-ledger/package-layer/component-slot blocker characterizations, adapter-to-whole-image, whole-ledger-to-image, package-to-component image bridges, component/package/milestone payload bridges, and ledger crosswalk/package-layer/component-slot/milestone-requirement route check"
+echo "SEMANTIC SURFACE: conditional theorem types, projection lemmas, target contracts, mathlib-shaped adapters, adapter-target/project-target statements, blocker/project-target endpoints, blocker adapter nonempty/full-ledger characterizations, whole-ledger/package-layer/component-slot blocker characterizations, adapter-to-whole-image, whole-ledger-to-image, blocker package-to-component maps, package-to-component image bridges, component/package/milestone payload bridges, and ledger crosswalk/package-layer/component-slot/milestone-requirement route check"
 
 rm -rf "$check_dir"
 check_dir=
