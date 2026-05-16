@@ -11,6 +11,8 @@ import Poincare.Statement
 
 namespace Poincare
 
+universe u
+
 /-- Named missing dependency layers for a future proof. -/
 inductive DependencyMilestone where
   /--
@@ -341,6 +343,59 @@ theorem mathlibPoincareStatementAdapterLedger_mem_eq :
         cases adapter <;> simp [mathlibPoincareStatementAdapterLedger]) := by
   funext adapter
   apply Subsingleton.elim
+
+/--
+The actual local proposition represented by each mathlib-shaped statement
+adapter label.
+-/
+def mathlibPoincareStatementAdapterStatement :
+    MathlibPoincareStatementAdapter → Prop
+  | MathlibPoincareStatementAdapter.topologicalThreeSphere =>
+      MathlibTopologicalPoincareThreeStatement.{u}
+  | MathlibPoincareStatementAdapter.smoothThreeSphere =>
+      MathlibSmoothPoincareThreeStatement.{u}
+
+/-- The adapter-to-statement map is exactly the local statement case split. -/
+theorem mathlibPoincareStatementAdapterStatement_eq :
+    mathlibPoincareStatementAdapterStatement.{u} =
+      (fun
+        | MathlibPoincareStatementAdapter.topologicalThreeSphere =>
+            MathlibTopologicalPoincareThreeStatement.{u}
+        | MathlibPoincareStatementAdapter.smoothThreeSphere =>
+            MathlibSmoothPoincareThreeStatement.{u}) :=
+  rfl
+
+/-- The topological adapter names the local topological mathlib-shaped statement. -/
+theorem mathlibPoincareStatementAdapterStatement_topologicalThreeSphere :
+    mathlibPoincareStatementAdapterStatement.{u}
+        MathlibPoincareStatementAdapter.topologicalThreeSphere =
+      MathlibTopologicalPoincareThreeStatement.{u} :=
+  rfl
+
+/-- The topological adapter statement theorem is the direct `rfl` proof. -/
+theorem mathlibPoincareStatementAdapterStatement_topologicalThreeSphere_eq :
+    mathlibPoincareStatementAdapterStatement_topologicalThreeSphere =
+      (rfl :
+        mathlibPoincareStatementAdapterStatement.{u}
+            MathlibPoincareStatementAdapter.topologicalThreeSphere =
+          MathlibTopologicalPoincareThreeStatement.{u}) :=
+  rfl
+
+/-- The smooth adapter names the local smooth mathlib-shaped statement. -/
+theorem mathlibPoincareStatementAdapterStatement_smoothThreeSphere :
+    mathlibPoincareStatementAdapterStatement.{u}
+        MathlibPoincareStatementAdapter.smoothThreeSphere =
+      MathlibSmoothPoincareThreeStatement.{u} :=
+  rfl
+
+/-- The smooth adapter statement theorem is the direct `rfl` proof. -/
+theorem mathlibPoincareStatementAdapterStatement_smoothThreeSphere_eq :
+    mathlibPoincareStatementAdapterStatement_smoothThreeSphere =
+      (rfl :
+        mathlibPoincareStatementAdapterStatement.{u}
+            MathlibPoincareStatementAdapter.smoothThreeSphere =
+          MathlibSmoothPoincareThreeStatement.{u}) :=
+  rfl
 
 /--
 Map each external blocker to the local mathlib-shaped statement adapters whose

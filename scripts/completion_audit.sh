@@ -115,6 +115,7 @@ if rg -q '^inductive ExternalFormalizationBlocker\b' Poincare/Milestones.lean &&
     rg -q '^def externalFormalizationBlockerLedger\b' Poincare/Milestones.lean &&
     rg -q '^theorem externalFormalizationBlockerLedger_length\b' Poincare/Milestones.lean &&
     rg -q '^def mathlibPoincareStatementAdapterLedger\b' Poincare/Milestones.lean &&
+    rg -q '^def mathlibPoincareStatementAdapterStatement\b' Poincare/Milestones.lean &&
     rg -q '^def statementAdaptersBlockedByExternalBlocker\b' Poincare/Milestones.lean &&
     rg -q '^theorem externalBlocker_statementAdapters_mem_adapterLedger\b' Poincare/Milestones.lean &&
     rg -q '^def dependencyMilestonesBlockedByExternalBlocker\b' Poincare/Milestones.lean &&

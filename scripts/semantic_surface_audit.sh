@@ -16005,6 +16005,28 @@ universe u
 
 #check Poincare.mathlibPoincareStatementAdapterLedger_mem_eq
 
+#check (Poincare.mathlibPoincareStatementAdapterStatement_eq :
+  Poincare.mathlibPoincareStatementAdapterStatement.{u} =
+    (fun
+      | Poincare.MathlibPoincareStatementAdapter.topologicalThreeSphere =>
+          Poincare.MathlibTopologicalPoincareThreeStatement.{u}
+      | Poincare.MathlibPoincareStatementAdapter.smoothThreeSphere =>
+          Poincare.MathlibSmoothPoincareThreeStatement.{u}))
+
+#check (Poincare.mathlibPoincareStatementAdapterStatement_topologicalThreeSphere :
+  Poincare.mathlibPoincareStatementAdapterStatement.{u}
+      Poincare.MathlibPoincareStatementAdapter.topologicalThreeSphere =
+    Poincare.MathlibTopologicalPoincareThreeStatement.{u})
+
+#check Poincare.mathlibPoincareStatementAdapterStatement_topologicalThreeSphere_eq
+
+#check (Poincare.mathlibPoincareStatementAdapterStatement_smoothThreeSphere :
+  Poincare.mathlibPoincareStatementAdapterStatement.{u}
+      Poincare.MathlibPoincareStatementAdapter.smoothThreeSphere =
+    Poincare.MathlibSmoothPoincareThreeStatement.{u})
+
+#check Poincare.mathlibPoincareStatementAdapterStatement_smoothThreeSphere_eq
+
 #check (Poincare.statementAdaptersBlockedByExternalBlocker_eq :
   Poincare.statementAdaptersBlockedByExternalBlocker =
     (fun
