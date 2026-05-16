@@ -26372,6 +26372,17 @@ theorem poincare_statement_of_finite_extinction_and_topology_extraction_statemen
       topologyStatement)
 
 /--
+The named universal finite-extinction input plus the stronger topology
+extraction statement is enough to discharge the project target.
+-/
+theorem poincare_statement_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_finite_extinction_and_topology_extraction_statement
+    finiteExtinction topologyStatement
+
+/--
 The topology-extraction route to the project target is the existing
 finite-extinction/extraction assembly applied to the statement-mediated final
 extractor.
@@ -26388,6 +26399,20 @@ theorem poincare_statement_of_finite_extinction_and_topology_extraction_statemen
       poincare_statement_of_extinction_and_extraction finiteExtinction
         (extinction_implies_sphere_of_topology_extraction_statement
           topologyStatement) := by
+  apply Subsingleton.elim
+
+/--
+The named universal finite-extinction topology-statement project target route
+is the raw finite-extinction topology-statement route under the named remaining
+input statement.
+-/
+theorem poincare_statement_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    poincare_statement_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+        finiteExtinction topologyStatement =
+      poincare_statement_of_finite_extinction_and_topology_extraction_statement
+        finiteExtinction topologyStatement := by
   apply Subsingleton.elim
 
 /--
@@ -26408,6 +26433,18 @@ theorem poincare_payload_of_finite_extinction_and_topology_extraction_statement
       finiteExtinction topologyStatement)
 
 /--
+The named universal finite-extinction input plus the stronger topology
+extraction statement exposes the target and completion criterion payload.
+-/
+theorem poincare_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_payload_of_finite_extinction_and_topology_extraction_statement
+    finiteExtinction topologyStatement
+
+/--
 The topology-extraction project payload is the statement-layer completion
 payload of the named topology-extraction target route.
 -/
@@ -26423,6 +26460,20 @@ theorem poincare_payload_of_finite_extinction_and_topology_extraction_statement_
       poincare_completion_payload_of_poincareConjectureStatement
         (poincare_statement_of_finite_extinction_and_topology_extraction_statement
           finiteExtinction topologyStatement) := by
+  apply Subsingleton.elim
+
+/--
+The named universal finite-extinction topology-statement project payload route
+is the raw finite-extinction topology-statement route under the named remaining
+input statement.
+-/
+theorem poincare_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    poincare_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+        finiteExtinction topologyStatement =
+      poincare_payload_of_finite_extinction_and_topology_extraction_statement
+        finiteExtinction topologyStatement := by
   apply Subsingleton.elim
 
 /--
@@ -26447,6 +26498,20 @@ theorem poincare_statement_of_finite_extinction_and_extraction_derivation
         extractSphere derivation)
 
 /--
+The named universal finite-extinction input plus a final extractor and its
+topology derivation certificate is enough to discharge the project target.
+-/
+theorem poincare_statement_of_universalFiniteExtinctionStatement_and_extraction_derivation
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u})
+    (derivation :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_finite_extinction_and_extraction_derivation
+    finiteExtinction extractSphere derivation
+
+/--
 The extractor-plus-derivation route to the project target factors through the
 named topology-extraction statement constructor.
 -/
@@ -26466,6 +26531,23 @@ theorem poincare_statement_of_finite_extinction_and_extraction_derivation_eq
         finiteExtinction
         (extinction_topology_extraction_statement_of_extraction_and_derivation
           extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+The named universal finite-extinction extraction-derivation project target route
+is the raw finite-extinction extraction-derivation route under the named
+remaining input statement.
+-/
+theorem poincare_statement_of_universalFiniteExtinctionStatement_and_extraction_derivation_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u})
+    (derivation :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere) :
+    poincare_statement_of_universalFiniteExtinctionStatement_and_extraction_derivation
+        finiteExtinction extractSphere derivation =
+      poincare_statement_of_finite_extinction_and_extraction_derivation
+        finiteExtinction extractSphere derivation := by
   apply Subsingleton.elim
 
 /--
@@ -26490,6 +26572,21 @@ theorem poincare_payload_of_finite_extinction_and_extraction_derivation
       finiteExtinction extractSphere derivation)
 
 /--
+The named universal finite-extinction input plus a final extractor and its
+topology derivation certificate exposes the project target payload.
+-/
+theorem poincare_payload_of_universalFiniteExtinctionStatement_and_extraction_derivation
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u})
+    (derivation :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_payload_of_finite_extinction_and_extraction_derivation
+    finiteExtinction extractSphere derivation
+
+/--
 The extractor-plus-derivation project payload is the statement-layer completion
 payload of the named extractor-plus-derivation target route.
 -/
@@ -26508,6 +26605,23 @@ theorem poincare_payload_of_finite_extinction_and_extraction_derivation_eq
       poincare_completion_payload_of_poincareConjectureStatement
         (poincare_statement_of_finite_extinction_and_extraction_derivation
           finiteExtinction extractSphere derivation) := by
+  apply Subsingleton.elim
+
+/--
+The named universal finite-extinction extraction-derivation project payload
+route is the raw finite-extinction extraction-derivation route under the named
+remaining input statement.
+-/
+theorem poincare_payload_of_universalFiniteExtinctionStatement_and_extraction_derivation_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u})
+    (derivation :
+      ExtinctionTopologyDerivationForExtractionStatement.{u}
+        extractSphere) :
+    poincare_payload_of_universalFiniteExtinctionStatement_and_extraction_derivation
+        finiteExtinction extractSphere derivation =
+      poincare_payload_of_finite_extinction_and_extraction_derivation
+        finiteExtinction extractSphere derivation := by
   apply Subsingleton.elim
 
 /--

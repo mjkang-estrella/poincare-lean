@@ -5281,12 +5281,20 @@ check_decl "topology extraction iff extraction plus derivation equality contract
   '^theorem extinction_topology_extraction_statement_iff_extraction_with_derivation_eq\b' Poincare/TopologyExtraction.lean
 check_decl "finite-extinction plus topology extraction assembly theorem is declared" \
   '^theorem poincare_statement_of_finite_extinction_and_topology_extraction_statement\b' Poincare/TopologyExtraction.lean
+check_decl "named universal finite-extinction plus topology extraction assembly theorem is declared" \
+  '^theorem poincare_statement_of_universalFiniteExtinctionStatement_and_topology_extraction_statement\b' Poincare/TopologyExtraction.lean
 check_decl "finite-extinction plus topology extraction payload theorem is declared" \
   '^theorem poincare_payload_of_finite_extinction_and_topology_extraction_statement\b' Poincare/TopologyExtraction.lean
+check_decl "named universal finite-extinction plus topology extraction payload theorem is declared" \
+  '^theorem poincare_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement\b' Poincare/TopologyExtraction.lean
 check_decl "finite-extinction plus extraction-derivation assembly theorem is declared" \
   '^theorem poincare_statement_of_finite_extinction_and_extraction_derivation\b' Poincare/TopologyExtraction.lean
+check_decl "named universal finite-extinction plus extraction-derivation assembly theorem is declared" \
+  '^theorem poincare_statement_of_universalFiniteExtinctionStatement_and_extraction_derivation\b' Poincare/TopologyExtraction.lean
 check_decl "finite-extinction plus extraction-derivation payload theorem is declared" \
   '^theorem poincare_payload_of_finite_extinction_and_extraction_derivation\b' Poincare/TopologyExtraction.lean
+check_decl "named universal finite-extinction plus extraction-derivation payload theorem is declared" \
+  '^theorem poincare_payload_of_universalFiniteExtinctionStatement_and_extraction_derivation\b' Poincare/TopologyExtraction.lean
 check_decl "topology package extraction payload bridge is declared" \
   '^theorem topology_extraction_payload_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology package extraction payload equality contract is declared" \
@@ -5358,9 +5366,13 @@ for topology_statement_route_contract in \
   extinction_implies_sphere_of_extinction_topology_extraction_statement_of_extraction_and_derivation_eq \
   extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation_eq \
   poincare_statement_of_finite_extinction_and_topology_extraction_statement_eq \
+  poincare_statement_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_eq \
   poincare_payload_of_finite_extinction_and_topology_extraction_statement_eq \
+  poincare_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_eq \
   poincare_statement_of_finite_extinction_and_extraction_derivation_eq \
+  poincare_statement_of_universalFiniteExtinctionStatement_and_extraction_derivation_eq \
   poincare_payload_of_finite_extinction_and_extraction_derivation_eq \
+  poincare_payload_of_universalFiniteExtinctionStatement_and_extraction_derivation_eq \
   topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package_eq \
   topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package_to_derivation_payload_eq \
   topology_extraction_statement_payload_of_topology_package_eq \
