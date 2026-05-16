@@ -565,6 +565,66 @@ theorem externalBlocker_statementAdapters_mem_adapterLedger_eq :
   apply Subsingleton.elim
 
 /--
+The mathlib proof-wanted blocker reaches the topological project target through
+the checked topological statement adapter.
+-/
+theorem mathlibThreeDimensionalPoincareProofWanted_blocks_topologicalProjectTarget :
+    MathlibPoincareStatementAdapter.topologicalThreeSphere ∈
+        statementAdaptersBlockedByExternalBlocker
+          ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted ∧
+      mathlibPoincareStatementAdapterProjectTarget.{u}
+          MathlibPoincareStatementAdapter.topologicalThreeSphere =
+        PoincareConjectureStatement.{u} := by
+  simp [statementAdaptersBlockedByExternalBlocker,
+    mathlibPoincareStatementAdapterLedger,
+    mathlibPoincareStatementAdapterProjectTarget]
+
+/-- The topological blocker/project-target theorem is the direct simplification. -/
+theorem mathlibThreeDimensionalPoincareProofWanted_blocks_topologicalProjectTarget_eq :
+    mathlibThreeDimensionalPoincareProofWanted_blocks_topologicalProjectTarget =
+      (by
+        simp [statementAdaptersBlockedByExternalBlocker,
+          mathlibPoincareStatementAdapterLedger,
+          mathlibPoincareStatementAdapterProjectTarget] :
+        MathlibPoincareStatementAdapter.topologicalThreeSphere ∈
+            statementAdaptersBlockedByExternalBlocker
+              ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted ∧
+          mathlibPoincareStatementAdapterProjectTarget.{u}
+              MathlibPoincareStatementAdapter.topologicalThreeSphere =
+            PoincareConjectureStatement.{u}) := by
+  apply Subsingleton.elim
+
+/--
+The mathlib proof-wanted blocker reaches the smooth project target through the
+checked smooth statement adapter.
+-/
+theorem mathlibThreeDimensionalPoincareProofWanted_blocks_smoothProjectTarget :
+    MathlibPoincareStatementAdapter.smoothThreeSphere ∈
+        statementAdaptersBlockedByExternalBlocker
+          ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted ∧
+      mathlibPoincareStatementAdapterProjectTarget.{u}
+          MathlibPoincareStatementAdapter.smoothThreeSphere =
+        SmoothPoincareConjectureStatement.{u} := by
+  simp [statementAdaptersBlockedByExternalBlocker,
+    mathlibPoincareStatementAdapterLedger,
+    mathlibPoincareStatementAdapterProjectTarget]
+
+/-- The smooth blocker/project-target theorem is the direct simplification. -/
+theorem mathlibThreeDimensionalPoincareProofWanted_blocks_smoothProjectTarget_eq :
+    mathlibThreeDimensionalPoincareProofWanted_blocks_smoothProjectTarget =
+      (by
+        simp [statementAdaptersBlockedByExternalBlocker,
+          mathlibPoincareStatementAdapterLedger,
+          mathlibPoincareStatementAdapterProjectTarget] :
+        MathlibPoincareStatementAdapter.smoothThreeSphere ∈
+            statementAdaptersBlockedByExternalBlocker
+              ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted ∧
+          mathlibPoincareStatementAdapterProjectTarget.{u}
+              MathlibPoincareStatementAdapter.smoothThreeSphere =
+            SmoothPoincareConjectureStatement.{u}) := by
+  apply Subsingleton.elim
+
+/--
 Map each external audit blocker to the dependency milestones it prevents from
 being discharged unconditionally.
 -/

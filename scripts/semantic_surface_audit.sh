@@ -16080,6 +16080,26 @@ universe u
 
 #check Poincare.externalBlocker_statementAdapters_mem_adapterLedger_eq
 
+#check (Poincare.mathlibThreeDimensionalPoincareProofWanted_blocks_topologicalProjectTarget :
+  Poincare.MathlibPoincareStatementAdapter.topologicalThreeSphere ∈
+      Poincare.statementAdaptersBlockedByExternalBlocker
+        Poincare.ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted ∧
+    Poincare.mathlibPoincareStatementAdapterProjectTarget.{u}
+        Poincare.MathlibPoincareStatementAdapter.topologicalThreeSphere =
+      Poincare.PoincareConjectureStatement.{u})
+
+#check Poincare.mathlibThreeDimensionalPoincareProofWanted_blocks_topologicalProjectTarget_eq
+
+#check (Poincare.mathlibThreeDimensionalPoincareProofWanted_blocks_smoothProjectTarget :
+  Poincare.MathlibPoincareStatementAdapter.smoothThreeSphere ∈
+      Poincare.statementAdaptersBlockedByExternalBlocker
+        Poincare.ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted ∧
+    Poincare.mathlibPoincareStatementAdapterProjectTarget.{u}
+        Poincare.MathlibPoincareStatementAdapter.smoothThreeSphere =
+      Poincare.SmoothPoincareConjectureStatement.{u})
+
+#check Poincare.mathlibThreeDimensionalPoincareProofWanted_blocks_smoothProjectTarget_eq
+
 #check Poincare.dependencyLayerForMilestone_eq
 
 #check (Poincare.dependencyLayerForMilestone_smoothabilityBridge :
@@ -18837,7 +18857,7 @@ if [ "$finite_extinction_derivation_statement_route_count" != "5" ]; then
   exit 1
 fi
 
-echo "SEMANTIC SURFACE: conditional theorem types, projection lemmas, target contracts, mathlib-shaped adapters, adapter-target/project-target statements, and ledger crosswalk/package-layer/component-slot/milestone-requirement route check"
+echo "SEMANTIC SURFACE: conditional theorem types, projection lemmas, target contracts, mathlib-shaped adapters, adapter-target/project-target statements, blocker/project-target endpoints, and ledger crosswalk/package-layer/component-slot/milestone-requirement route check"
 
 rm -rf "$check_dir"
 check_dir=
