@@ -2703,4 +2703,215 @@ theorem dependency_ledger_component_slot_mem_eq :
   funext slot
   apply Subsingleton.elim
 
+/--
+Map each external blocker through the checked milestone ledger into the concrete
+package layers it prevents from becoming unconditional.
+-/
+def dependencyPackageLayersBlockedByExternalBlocker :
+    ExternalFormalizationBlocker → List DependencyPackageLayer :=
+  fun blocker =>
+    (dependencyMilestonesBlockedByExternalBlocker blocker).map
+      dependencyLayerForMilestone
+
+/--
+The external-blocker-to-package-layer map is exactly the blocker-to-milestone
+map followed by the milestone-to-layer map.
+-/
+theorem dependencyPackageLayersBlockedByExternalBlocker_eq :
+    dependencyPackageLayersBlockedByExternalBlocker =
+      fun blocker =>
+        (dependencyMilestonesBlockedByExternalBlocker blocker).map
+          dependencyLayerForMilestone :=
+  rfl
+
+/-- The mathlib shortcut blocker covers the whole package-layer ledger image. -/
+theorem mathlibThreeDimensionalPoincareProofWanted_blocks_dependencyPackageLayers :
+    dependencyPackageLayersBlockedByExternalBlocker
+        ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted =
+      dependencyMilestoneLedger.map dependencyLayerForMilestone :=
+  rfl
+
+/-- The mathlib package-layer blocker theorem is the direct `rfl` proof. -/
+theorem mathlibThreeDimensionalPoincareProofWanted_blocks_dependencyPackageLayers_eq :
+    mathlibThreeDimensionalPoincareProofWanted_blocks_dependencyPackageLayers =
+      (rfl :
+        dependencyPackageLayersBlockedByExternalBlocker
+            ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted =
+          dependencyMilestoneLedger.map dependencyLayerForMilestone) :=
+  rfl
+
+/-- The Ricci-specific geometry blocker lands on the analytic package layer. -/
+theorem ricciSpecificGeometrySurface_blocks_analyticFoundationPackage :
+    dependencyPackageLayersBlockedByExternalBlocker
+        ExternalFormalizationBlocker.ricciSpecificGeometrySurface =
+      [DependencyPackageLayer.analyticFoundationPackage] :=
+  rfl
+
+/-- The Ricci-specific package-layer blocker theorem is the direct `rfl` proof. -/
+theorem ricciSpecificGeometrySurface_blocks_analyticFoundationPackage_eq :
+    ricciSpecificGeometrySurface_blocks_analyticFoundationPackage =
+      (rfl :
+        dependencyPackageLayersBlockedByExternalBlocker
+            ExternalFormalizationBlocker.ricciSpecificGeometrySurface =
+          [DependencyPackageLayer.analyticFoundationPackage]) :=
+  rfl
+
+/--
+The surgery-side blocker lands on the surgery and finite-extinction package
+layers, with both surgery-side milestones retaining their ledger entries.
+-/
+theorem ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface_blocks_surgeryPackageLayers :
+    dependencyPackageLayersBlockedByExternalBlocker
+        ExternalFormalizationBlocker.ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface =
+      [ DependencyPackageLayer.surgeryPackage
+      , DependencyPackageLayer.surgeryPackage
+      , DependencyPackageLayer.finiteExtinctionPackage
+      ] :=
+  rfl
+
+/-- The surgery-side package-layer blocker theorem is the direct `rfl` proof. -/
+theorem ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface_blocks_surgeryPackageLayers_eq :
+    ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface_blocks_surgeryPackageLayers =
+      (rfl :
+        dependencyPackageLayersBlockedByExternalBlocker
+            ExternalFormalizationBlocker.ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface =
+          [ DependencyPackageLayer.surgeryPackage
+          , DependencyPackageLayer.surgeryPackage
+          , DependencyPackageLayer.finiteExtinctionPackage
+          ]) :=
+  rfl
+
+/--
+Every package layer named by an external blocker is present in the checked
+milestone package-layer image.
+-/
+theorem externalBlocker_packageLayers_mem_dependencyLedgerPackageLayers
+    (blocker : ExternalFormalizationBlocker) {layer : DependencyPackageLayer} :
+    layer ∈ dependencyPackageLayersBlockedByExternalBlocker blocker →
+      layer ∈ dependencyMilestoneLedger.map dependencyLayerForMilestone := by
+  cases blocker <;> cases layer <;> simp
+    [dependencyPackageLayersBlockedByExternalBlocker,
+      dependencyMilestonesBlockedByExternalBlocker,
+      dependencyMilestoneLedger, dependencyLayerForMilestone]
+
+/--
+The theorem asserting that externally blocked package layers are ledger package
+layers is exactly the blocker/layer case split.
+-/
+theorem externalBlocker_packageLayers_mem_dependencyLedgerPackageLayers_eq :
+    externalBlocker_packageLayers_mem_dependencyLedgerPackageLayers =
+      (by
+        intro blocker layer
+        cases blocker <;> cases layer <;> simp
+          [dependencyPackageLayersBlockedByExternalBlocker,
+            dependencyMilestonesBlockedByExternalBlocker,
+            dependencyMilestoneLedger, dependencyLayerForMilestone]) := by
+  funext blocker layer
+  apply Subsingleton.elim
+
+/--
+Map each external blocker through the checked milestone ledger into the
+aggregate component slots it prevents from becoming unconditional.
+-/
+def dependencyComponentSlotsBlockedByExternalBlocker :
+    ExternalFormalizationBlocker → List DependencyComponentSlot :=
+  fun blocker =>
+    (dependencyMilestonesBlockedByExternalBlocker blocker).map
+      dependencyComponentForMilestone
+
+/--
+The external-blocker-to-component-slot map is exactly the blocker-to-milestone
+map followed by the milestone-to-component map.
+-/
+theorem dependencyComponentSlotsBlockedByExternalBlocker_eq :
+    dependencyComponentSlotsBlockedByExternalBlocker =
+      fun blocker =>
+        (dependencyMilestonesBlockedByExternalBlocker blocker).map
+          dependencyComponentForMilestone :=
+  rfl
+
+/-- The mathlib shortcut blocker covers the whole component-slot ledger image. -/
+theorem mathlibThreeDimensionalPoincareProofWanted_blocks_dependencyComponentSlots :
+    dependencyComponentSlotsBlockedByExternalBlocker
+        ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted =
+      dependencyMilestoneLedger.map dependencyComponentForMilestone :=
+  rfl
+
+/-- The mathlib component-slot blocker theorem is the direct `rfl` proof. -/
+theorem mathlibThreeDimensionalPoincareProofWanted_blocks_dependencyComponentSlots_eq :
+    mathlibThreeDimensionalPoincareProofWanted_blocks_dependencyComponentSlots =
+      (rfl :
+        dependencyComponentSlotsBlockedByExternalBlocker
+            ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted =
+          dependencyMilestoneLedger.map dependencyComponentForMilestone) :=
+  rfl
+
+/-- The Ricci-specific geometry blocker lands on the surgery component slot. -/
+theorem ricciSpecificGeometrySurface_blocks_surgeryComponentSlot :
+    dependencyComponentSlotsBlockedByExternalBlocker
+        ExternalFormalizationBlocker.ricciSpecificGeometrySurface =
+      [DependencyComponentSlot.surgeryComponent] :=
+  rfl
+
+/-- The Ricci-specific component-slot blocker theorem is the direct `rfl` proof. -/
+theorem ricciSpecificGeometrySurface_blocks_surgeryComponentSlot_eq :
+    ricciSpecificGeometrySurface_blocks_surgeryComponentSlot =
+      (rfl :
+        dependencyComponentSlotsBlockedByExternalBlocker
+            ExternalFormalizationBlocker.ricciSpecificGeometrySurface =
+          [DependencyComponentSlot.surgeryComponent]) :=
+  rfl
+
+/-- The surgery-side blocker lands on the surgery component slot entries. -/
+theorem ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface_blocks_surgeryComponentSlots :
+    dependencyComponentSlotsBlockedByExternalBlocker
+        ExternalFormalizationBlocker.ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface =
+      [ DependencyComponentSlot.surgeryComponent
+      , DependencyComponentSlot.surgeryComponent
+      , DependencyComponentSlot.surgeryComponent
+      ] :=
+  rfl
+
+/-- The surgery-side component-slot blocker theorem is the direct `rfl` proof. -/
+theorem ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface_blocks_surgeryComponentSlots_eq :
+    ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface_blocks_surgeryComponentSlots =
+      (rfl :
+        dependencyComponentSlotsBlockedByExternalBlocker
+            ExternalFormalizationBlocker.ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface =
+          [ DependencyComponentSlot.surgeryComponent
+          , DependencyComponentSlot.surgeryComponent
+          , DependencyComponentSlot.surgeryComponent
+          ]) :=
+  rfl
+
+/--
+Every component slot named by an external blocker is present in the checked
+milestone component-slot image.
+-/
+theorem externalBlocker_componentSlots_mem_dependencyLedgerComponentSlots
+    (blocker : ExternalFormalizationBlocker) {slot : DependencyComponentSlot} :
+    slot ∈ dependencyComponentSlotsBlockedByExternalBlocker blocker →
+      slot ∈ dependencyMilestoneLedger.map dependencyComponentForMilestone := by
+  cases blocker <;> cases slot <;> simp
+    [dependencyComponentSlotsBlockedByExternalBlocker,
+      dependencyMilestonesBlockedByExternalBlocker,
+      dependencyMilestoneLedger, dependencyLayerForMilestone,
+      dependencyComponentForPackageLayer, dependencyComponentForMilestone]
+
+/--
+The theorem asserting that externally blocked component slots are ledger
+component slots is exactly the blocker/slot case split.
+-/
+theorem externalBlocker_componentSlots_mem_dependencyLedgerComponentSlots_eq :
+    externalBlocker_componentSlots_mem_dependencyLedgerComponentSlots =
+      (by
+        intro blocker slot
+        cases blocker <;> cases slot <;> simp
+          [dependencyComponentSlotsBlockedByExternalBlocker,
+            dependencyMilestonesBlockedByExternalBlocker,
+            dependencyMilestoneLedger, dependencyLayerForMilestone,
+            dependencyComponentForPackageLayer, dependencyComponentForMilestone]) := by
+  funext blocker slot
+  apply Subsingleton.elim
+
 end Poincare

@@ -122,6 +122,16 @@ else
   status=1
 fi
 
+if rg -q '^def dependencyPackageLayersBlockedByExternalBlocker\b' Poincare/DependencyCrosswalk.lean &&
+    rg -q '^theorem externalBlocker_packageLayers_mem_dependencyLedgerPackageLayers\b' Poincare/DependencyCrosswalk.lean &&
+    rg -q '^def dependencyComponentSlotsBlockedByExternalBlocker\b' Poincare/DependencyCrosswalk.lean &&
+    rg -q '^theorem externalBlocker_componentSlots_mem_dependencyLedgerComponentSlots\b' Poincare/DependencyCrosswalk.lean; then
+  echo "PASS: dependency crosswalk maps external blockers to package layers and component slots"
+else
+  echo "FAIL: dependency crosswalk does not map external blockers to package/component surfaces"
+  status=1
+fi
+
 if rg -q '^- Completion: not achieved$' CURRENT_STATUS.md &&
     rg -q '^- Axiom footprint audit status: 0$' CURRENT_STATUS.md &&
     rg -q '^- Shape contract audit status: 0$' CURRENT_STATUS.md &&
