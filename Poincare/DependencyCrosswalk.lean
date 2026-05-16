@@ -3655,6 +3655,81 @@ theorem externalBlocker_componentSlot_milestone_image_iff_packageLayer_image_eq 
   apply Subsingleton.elim
 
 /--
+A blocked component slot whose component requirement has been discharged yields
+a blocked package layer whose concrete package-layer requirement is discharged.
+-/
+theorem externalBlocker_blockedComponentRequirement_to_packageLayerRequirement
+    (blocker : ExternalFormalizationBlocker) (slot : DependencyComponentSlot)
+    (hslot : slot ∈ dependencyComponentSlotsBlockedByExternalBlocker blocker)
+    (hrequirement : dependencyComponentRequirement.{u} slot) :
+    ∃ layer : DependencyPackageLayer,
+      layer ∈ dependencyPackageLayersBlockedByExternalBlocker blocker ∧
+        dependencyPackageLayerRequirement.{u} layer := by
+  rcases externalBlocker_componentSlot_mem_packageLayer_component_image
+      blocker (slot := slot) hslot with
+    ⟨layer, hmem, hcomponent⟩
+  exact
+    ⟨layer, hmem,
+      dependencyPackageLayerRequirement_of_componentRequirement layer
+        (by simpa [hcomponent] using hrequirement)⟩
+
+/--
+The blocker component-slot to package-layer requirement bridge is exactly the
+package-layer witness route followed by the component-carried requirement
+bridge.
+-/
+theorem externalBlocker_blockedComponentRequirement_to_packageLayerRequirement_eq :
+    externalBlocker_blockedComponentRequirement_to_packageLayerRequirement.{u} =
+      (by
+        intro blocker slot hslot hrequirement
+        rcases externalBlocker_componentSlot_mem_packageLayer_component_image
+            blocker (slot := slot) hslot with
+          ⟨layer, hmem, hcomponent⟩
+        exact
+          ⟨layer, hmem,
+            dependencyPackageLayerRequirement_of_componentRequirement layer
+              (by simpa [hcomponent] using hrequirement)⟩) := by
+  funext blocker slot hslot hrequirement
+  apply Subsingleton.elim
+
+/--
+A blocked component slot whose component requirement has been discharged yields
+a blocked milestone whose concrete milestone requirement is discharged.
+-/
+theorem externalBlocker_blockedComponentRequirement_to_milestoneRequirement
+    (blocker : ExternalFormalizationBlocker) (slot : DependencyComponentSlot)
+    (hslot : slot ∈ dependencyComponentSlotsBlockedByExternalBlocker blocker)
+    (hrequirement : dependencyComponentRequirement.{u} slot) :
+    ∃ milestone : DependencyMilestone,
+      milestone ∈ dependencyMilestonesBlockedByExternalBlocker blocker ∧
+        dependencyMilestoneRequirement.{u} milestone := by
+  rcases externalBlocker_componentSlot_mem_milestone_component_image
+      blocker (slot := slot) hslot with
+    ⟨milestone, hmem, hcomponent⟩
+  exact
+    ⟨milestone, hmem,
+      dependencyMilestoneRequirement_of_componentRequirement milestone
+        (by simpa [hcomponent] using hrequirement)⟩
+
+/--
+The blocker component-slot to milestone requirement bridge is exactly the
+milestone witness route followed by the component-carried requirement bridge.
+-/
+theorem externalBlocker_blockedComponentRequirement_to_milestoneRequirement_eq :
+    externalBlocker_blockedComponentRequirement_to_milestoneRequirement.{u} =
+      (by
+        intro blocker slot hslot hrequirement
+        rcases externalBlocker_componentSlot_mem_milestone_component_image
+            blocker (slot := slot) hslot with
+          ⟨milestone, hmem, hcomponent⟩
+        exact
+          ⟨milestone, hmem,
+            dependencyMilestoneRequirement_of_componentRequirement milestone
+              (by simpa [hcomponent] using hrequirement)⟩) := by
+  funext blocker slot hslot hrequirement
+  apply Subsingleton.elim
+
+/--
 Every component slot named by an external blocker is present in the checked
 milestone component-slot image.
 -/

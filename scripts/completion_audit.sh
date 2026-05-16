@@ -161,13 +161,15 @@ if rg -q '^def dependencyPackageLayersBlockedByExternalBlocker\b' Poincare/Depen
     rg -q '^theorem externalBlocker_componentSlot_milestone_image_iff_packageLayer_image\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem dependencyPackageLayerRequirement_of_componentRequirement\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem dependencyMilestoneRequirement_of_componentRequirement\b' Poincare/DependencyCrosswalk.lean &&
+    rg -q '^theorem externalBlocker_blockedComponentRequirement_to_packageLayerRequirement\b' Poincare/DependencyCrosswalk.lean &&
+    rg -q '^theorem externalBlocker_blockedComponentRequirement_to_milestoneRequirement\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem component_requirements_iff_package_layer_requirements\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem package_layer_requirements_iff_milestone_requirements\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem component_requirements_iff_milestone_requirements\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_componentSlots_mem_dependencyLedgerComponentSlots\b' Poincare/DependencyCrosswalk.lean; then
-  echo "PASS: dependency crosswalk maps external blockers to package layers and component slots with whole-image characterizations plus nonempty/full-ledger adapter, whole-ledger, blocker milestone/package/component image iff bridges, package-to-component image bridges, component-carried requirement bridges, and component/package/milestone payload bridges"
+  echo "PASS: dependency crosswalk maps external blockers to package layers and component slots with whole-image characterizations plus nonempty/full-ledger adapter, whole-ledger, blocker milestone/package/component image iff bridges, package-to-component image bridges, component-carried requirement bridges, blocker requirement witness bridges, and component/package/milestone payload bridges"
 else
-  echo "FAIL: dependency crosswalk does not map external blockers to package/component surfaces with whole-image characterizations plus nonempty/full-ledger adapter, whole-ledger, blocker milestone/package/component image iff bridges, package-to-component image bridges, component-carried requirement bridges, and component/package/milestone payload bridges"
+  echo "FAIL: dependency crosswalk does not map external blockers to package/component surfaces with whole-image characterizations plus nonempty/full-ledger adapter, whole-ledger, blocker milestone/package/component image iff bridges, package-to-component image bridges, component-carried requirement bridges, blocker requirement witness bridges, and component/package/milestone payload bridges"
   status=1
 fi
 
@@ -9562,6 +9564,14 @@ check_decl "external blocker component-slot milestone/package witness equivalenc
   '^theorem externalBlocker_componentSlot_milestone_image_iff_packageLayer_image\b' Poincare/DependencyCrosswalk.lean
 check_decl "external blocker component-slot milestone/package witness equivalence equality contract is declared" \
   '^theorem externalBlocker_componentSlot_milestone_image_iff_packageLayer_image_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "external blocker component requirement package-layer witness bridge is declared" \
+  '^theorem externalBlocker_blockedComponentRequirement_to_packageLayerRequirement\b' Poincare/DependencyCrosswalk.lean
+check_decl "external blocker component requirement package-layer witness bridge equality contract is declared" \
+  '^theorem externalBlocker_blockedComponentRequirement_to_packageLayerRequirement_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "external blocker component requirement milestone witness bridge is declared" \
+  '^theorem externalBlocker_blockedComponentRequirement_to_milestoneRequirement\b' Poincare/DependencyCrosswalk.lean
+check_decl "external blocker component requirement milestone witness bridge equality contract is declared" \
+  '^theorem externalBlocker_blockedComponentRequirement_to_milestoneRequirement_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency component requirements payload theorem is declared" \
   '^theorem dependency_component_requirements_payload_of_dependencies\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency component requirements payload equality contract is declared" \
@@ -35151,6 +35161,10 @@ open scoped Manifold ContDiff
 #check Poincare.externalBlocker_componentSlot_mem_iff_packageLayer_component_image_eq
 #check Poincare.externalBlocker_componentSlot_milestone_image_iff_packageLayer_image
 #check Poincare.externalBlocker_componentSlot_milestone_image_iff_packageLayer_image_eq
+#check Poincare.externalBlocker_blockedComponentRequirement_to_packageLayerRequirement
+#check Poincare.externalBlocker_blockedComponentRequirement_to_packageLayerRequirement_eq
+#check Poincare.externalBlocker_blockedComponentRequirement_to_milestoneRequirement
+#check Poincare.externalBlocker_blockedComponentRequirement_to_milestoneRequirement_eq
 
 #check (Poincare.dependency_ledger_has_component_slots :
     Poincare.dependencyMilestoneLedger.map
