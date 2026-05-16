@@ -165,6 +165,8 @@ if rg -q '^def dependencyPackageLayersBlockedByExternalBlocker\b' Poincare/Depen
     rg -q '^theorem externalBlocker_blockedComponentRequirement_to_milestoneRequirement\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_blockedComponentSlot_packageLayerRequirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_blockedComponentSlot_milestoneRequirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean &&
+    rg -q '^theorem externalBlocker_blockedComponentSlot_packageLayerRequirement_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean &&
+    rg -q '^theorem externalBlocker_blockedComponentSlot_milestoneRequirement_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_blockedPackageLayerRequirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_blockedMilestoneRequirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_blockedPackageLayerRequirement_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean &&
@@ -173,9 +175,9 @@ if rg -q '^def dependencyPackageLayersBlockedByExternalBlocker\b' Poincare/Depen
     rg -q '^theorem package_layer_requirements_iff_milestone_requirements\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem component_requirements_iff_milestone_requirements\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_componentSlots_mem_dependencyLedgerComponentSlots\b' Poincare/DependencyCrosswalk.lean; then
-  echo "PASS: dependency crosswalk maps external blockers to package layers and component slots with whole-image characterizations plus nonempty/full-ledger adapter, whole-ledger, blocker milestone/package/component image iff bridges, package-to-component image bridges, component-carried requirement bridges, blocker requirement witness bridges, aggregate-dependency blocker witness bridges, ordinary and strengthened universal blocker discharge routes, and component/package/milestone payload bridges"
+  echo "PASS: dependency crosswalk maps external blockers to package layers and component slots with whole-image characterizations plus nonempty/full-ledger adapter, whole-ledger, blocker milestone/package/component image iff bridges, package-to-component image bridges, component-carried requirement bridges, blocker requirement witness bridges, ordinary and strengthened component-slot witness bridges, ordinary and strengthened universal blocker discharge routes, and component/package/milestone payload bridges"
 else
-  echo "FAIL: dependency crosswalk does not map external blockers to package/component surfaces with whole-image characterizations plus nonempty/full-ledger adapter, whole-ledger, blocker milestone/package/component image iff bridges, package-to-component image bridges, component-carried requirement bridges, blocker requirement witness bridges, aggregate-dependency blocker witness bridges, ordinary and strengthened universal blocker discharge routes, and component/package/milestone payload bridges"
+  echo "FAIL: dependency crosswalk does not map external blockers to package/component surfaces with whole-image characterizations plus nonempty/full-ledger adapter, whole-ledger, blocker milestone/package/component image iff bridges, package-to-component image bridges, component-carried requirement bridges, blocker requirement witness bridges, ordinary and strengthened component-slot witness bridges, ordinary and strengthened universal blocker discharge routes, and component/package/milestone payload bridges"
   status=1
 fi
 
@@ -9586,6 +9588,14 @@ check_decl "external blocker aggregate dependency milestone witness bridge is de
   '^theorem externalBlocker_blockedComponentSlot_milestoneRequirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
 check_decl "external blocker aggregate dependency milestone witness bridge equality contract is declared" \
   '^theorem externalBlocker_blockedComponentSlot_milestoneRequirement_of_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "external blocker strengthened component-slot package-layer witness bridge is declared" \
+  '^theorem externalBlocker_blockedComponentSlot_packageLayerRequirement_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "external blocker strengthened component-slot package-layer witness bridge equality contract is declared" \
+  '^theorem externalBlocker_blockedComponentSlot_packageLayerRequirement_of_equation_boundary_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
+check_decl "external blocker strengthened component-slot milestone witness bridge is declared" \
+  '^theorem externalBlocker_blockedComponentSlot_milestoneRequirement_of_equation_boundary_dependencies\b' Poincare/DependencyCrosswalk.lean
+check_decl "external blocker strengthened component-slot milestone witness bridge equality contract is declared" \
+  '^theorem externalBlocker_blockedComponentSlot_milestoneRequirement_of_equation_boundary_dependencies_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "external blocker universal package-layer discharge route is declared" \
   '^theorem externalBlocker_blockedPackageLayerRequirement_of_dependencies\b' Poincare/DependencyCrosswalk.lean
 check_decl "external blocker universal package-layer discharge route equality contract is declared" \
@@ -35199,6 +35209,10 @@ open scoped Manifold ContDiff
 #check Poincare.externalBlocker_blockedComponentSlot_packageLayerRequirement_of_dependencies_eq
 #check Poincare.externalBlocker_blockedComponentSlot_milestoneRequirement_of_dependencies
 #check Poincare.externalBlocker_blockedComponentSlot_milestoneRequirement_of_dependencies_eq
+#check Poincare.externalBlocker_blockedComponentSlot_packageLayerRequirement_of_equation_boundary_dependencies
+#check Poincare.externalBlocker_blockedComponentSlot_packageLayerRequirement_of_equation_boundary_dependencies_eq
+#check Poincare.externalBlocker_blockedComponentSlot_milestoneRequirement_of_equation_boundary_dependencies
+#check Poincare.externalBlocker_blockedComponentSlot_milestoneRequirement_of_equation_boundary_dependencies_eq
 #check Poincare.externalBlocker_blockedPackageLayerRequirement_of_dependencies
 #check Poincare.externalBlocker_blockedPackageLayerRequirement_of_dependencies_eq
 #check Poincare.externalBlocker_blockedMilestoneRequirement_of_dependencies

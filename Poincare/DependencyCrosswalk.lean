@@ -3790,6 +3790,62 @@ theorem externalBlocker_blockedComponentSlot_milestoneRequirement_of_dependencie
   apply Subsingleton.elim
 
 /--
+Strengthened equation-boundary dependencies turn any blocked component slot into
+a blocked package-layer witness after forgetting the extra boundary data.
+-/
+theorem externalBlocker_blockedComponentSlot_packageLayerRequirement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (blocker : ExternalFormalizationBlocker) (slot : DependencyComponentSlot)
+    (hslot : slot ∈ dependencyComponentSlotsBlockedByExternalBlocker blocker) :
+    ∃ layer : DependencyPackageLayer,
+      layer ∈ dependencyPackageLayersBlockedByExternalBlocker blocker ∧
+        dependencyPackageLayerRequirement.{u} layer :=
+  externalBlocker_blockedComponentSlot_packageLayerRequirement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+    blocker slot hslot
+
+/--
+The strengthened component-slot to package-layer blocker witness is exactly the
+ordinary witness route applied to the forgetful dependency package.
+-/
+theorem externalBlocker_blockedComponentSlot_packageLayerRequirement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    externalBlocker_blockedComponentSlot_packageLayerRequirement_of_equation_boundary_dependencies
+        dependencies =
+      externalBlocker_blockedComponentSlot_packageLayerRequirement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  funext blocker slot hslot
+  apply Subsingleton.elim
+
+/--
+Strengthened equation-boundary dependencies turn any blocked component slot into
+a blocked milestone witness after forgetting the extra boundary data.
+-/
+theorem externalBlocker_blockedComponentSlot_milestoneRequirement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (blocker : ExternalFormalizationBlocker) (slot : DependencyComponentSlot)
+    (hslot : slot ∈ dependencyComponentSlotsBlockedByExternalBlocker blocker) :
+    ∃ milestone : DependencyMilestone,
+      milestone ∈ dependencyMilestonesBlockedByExternalBlocker blocker ∧
+        dependencyMilestoneRequirement.{u} milestone :=
+  externalBlocker_blockedComponentSlot_milestoneRequirement_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+    blocker slot hslot
+
+/--
+The strengthened component-slot to milestone blocker witness is exactly the
+ordinary witness route applied to the forgetful dependency package.
+-/
+theorem externalBlocker_blockedComponentSlot_milestoneRequirement_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    externalBlocker_blockedComponentSlot_milestoneRequirement_of_equation_boundary_dependencies
+        dependencies =
+      externalBlocker_blockedComponentSlot_milestoneRequirement_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies) := by
+  funext blocker slot hslot
+  apply Subsingleton.elim
+
+/--
 Aggregate dependencies discharge every package layer named by an external
 formalization blocker.
 -/
