@@ -1928,6 +1928,10 @@ check_decl "finite-extinction canonical statement equivalence to extraction theo
   '^theorem canonical_three_sphere_statement_iff_extinction_extraction\b' Poincare/RicciFlowInterface.lean
 check_decl "finite-extinction canonical statement equivalence equality contract is declared" \
   '^theorem canonical_three_sphere_statement_iff_extinction_extraction_eq\b' Poincare/RicciFlowInterface.lean
+check_decl "named universal finite-extinction canonical statement equivalence to extraction theorem is declared" \
+  '^theorem canonical_three_sphere_statement_iff_extinction_extraction_of_universalFiniteExtinctionStatement\b' Poincare/RicciFlowInterface.lean
+check_decl "named universal finite-extinction canonical statement equivalence equality contract is declared" \
+  '^theorem canonical_three_sphere_statement_iff_extinction_extraction_of_universalFiniteExtinctionStatement_eq\b' Poincare/RicciFlowInterface.lean
 check_decl "smooth-to-topological assembly theorem is declared" \
   '^theorem poincare_statement_of_smooth_statement\b' Poincare/Assembly.lean
 check_decl "canonical topological reserved final theorem gate is declared" \

@@ -806,4 +806,31 @@ theorem canonical_three_sphere_statement_iff_extinction_extraction_eq
             finiteExtinction extractSphere) := by
   apply Subsingleton.elim
 
+/--
+For the named universal finite-extinction input, the canonical mathlib-shaped
+topological 3-sphere statement is equivalent to the post-extinction topology
+extraction theorem.
+-/
+theorem canonical_three_sphere_statement_iff_extinction_extraction_of_universalFiniteExtinctionStatement
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) ↔
+      ExtinctionImpliesSphereStatement.{u} :=
+  canonical_three_sphere_statement_iff_extinction_extraction finiteExtinction
+
+/--
+The named universal finite-extinction canonical equivalence is exactly the raw
+finite-extinction canonical equivalence under the named remaining input
+statement.
+-/
+theorem canonical_three_sphere_statement_iff_extinction_extraction_of_universalFiniteExtinctionStatement_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    canonical_three_sphere_statement_iff_extinction_extraction_of_universalFiniteExtinctionStatement
+        finiteExtinction =
+      canonical_three_sphere_statement_iff_extinction_extraction
+        finiteExtinction := by
+  apply Subsingleton.elim
+
 end Poincare
