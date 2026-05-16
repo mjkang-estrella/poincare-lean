@@ -1725,6 +1725,30 @@ set_option linter.unusedVariables false
   Poincare.poincareConjectureStatement_iff_canonical_three_sphere_statement =
     Iff.rfl)
 
+#check (Poincare.mathlibTopologicalPoincareThreeStatement_eq :
+  Poincare.MathlibTopologicalPoincareThreeStatement =
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty
+          (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))))
+
+#check (Poincare.poincareConjectureStatement_iff_mathlibTopologicalPoincareThreeStatement :
+  Poincare.PoincareConjectureStatement ↔
+    Poincare.MathlibTopologicalPoincareThreeStatement)
+
+#check (Poincare.poincareConjectureStatement_iff_mathlibTopologicalPoincareThreeStatement_eq :
+  Poincare.poincareConjectureStatement_iff_mathlibTopologicalPoincareThreeStatement =
+    Iff.rfl)
+
+#check (Poincare.poincareConjectureStatement_of_mathlibTopologicalPoincareThreeStatement :
+  Poincare.MathlibTopologicalPoincareThreeStatement →
+    Poincare.PoincareConjectureStatement)
+
+#check (Poincare.mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement :
+  Poincare.PoincareConjectureStatement →
+    Poincare.MathlibTopologicalPoincareThreeStatement)
+
 #check (Poincare.smoothPoincareConjectureStatement_eq :
   Poincare.SmoothPoincareConjectureStatement =
     (∀ (M : Type) [TopologicalSpace M] [T2Space M]
@@ -1744,6 +1768,32 @@ set_option linter.unusedVariables false
 #check (Poincare.smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_statement_eq :
   Poincare.smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_statement =
     Iff.rfl)
+
+#check (Poincare.mathlibSmoothPoincareThreeStatement_eq :
+  Poincare.MathlibSmoothPoincareThreeStatement =
+    (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty
+          (M ≃ₘ⟮𝓡 3, 𝓡 3⟯
+            Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))))
+
+#check (Poincare.smoothPoincareConjectureStatement_iff_mathlibSmoothPoincareThreeStatement :
+  Poincare.SmoothPoincareConjectureStatement ↔
+    Poincare.MathlibSmoothPoincareThreeStatement)
+
+#check (Poincare.smoothPoincareConjectureStatement_iff_mathlibSmoothPoincareThreeStatement_eq :
+  Poincare.smoothPoincareConjectureStatement_iff_mathlibSmoothPoincareThreeStatement =
+    Iff.rfl)
+
+#check (Poincare.smoothPoincareConjectureStatement_of_mathlibSmoothPoincareThreeStatement :
+  Poincare.MathlibSmoothPoincareThreeStatement →
+    Poincare.SmoothPoincareConjectureStatement)
+
+#check (Poincare.mathlibSmoothPoincareThreeStatement_of_smoothPoincareConjectureStatement :
+  Poincare.SmoothPoincareConjectureStatement →
+    Poincare.MathlibSmoothPoincareThreeStatement)
 
 #check (Poincare.homeomorph_of_diffeomorph_three_sphere :
   ∀ {M : Type} [TopologicalSpace M]
@@ -18688,7 +18738,7 @@ if [ "$finite_extinction_derivation_statement_route_count" != "5" ]; then
   exit 1
 fi
 
-echo "SEMANTIC SURFACE: conditional theorem types, projection lemmas, target contracts, and ledger crosswalk/package-layer/component-slot/milestone-requirement route check"
+echo "SEMANTIC SURFACE: conditional theorem types, projection lemmas, target contracts, mathlib-shaped adapters, and ledger crosswalk/package-layer/component-slot/milestone-requirement route check"
 
 rm -rf "$check_dir"
 check_dir=
