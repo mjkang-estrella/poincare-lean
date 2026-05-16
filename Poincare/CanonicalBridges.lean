@@ -273,6 +273,47 @@ theorem completion_certificate_of_remaining_dependency_and_universalFiniteExtinc
   apply Subsingleton.elim
 
 /--
+The finite-extinction certificate constructor immediately gives an inhabited
+completion-certificate proposition.
+-/
+theorem nonempty_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+    (dependencies : RemainingDependencyPackage.{u})
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    Nonempty PoincareCompletionCertificate.{u} :=
+  nonempty_completion_certificate_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+      dependencies finiteExtinction)
+
+/--
+The nonempty package from the finite-extinction certificate constructor is the
+package containing that constructor's checked certificate.
+-/
+theorem nonempty_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    nonempty_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+        dependencies finiteExtinction =
+      nonempty_completion_certificate_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+          dependencies finiteExtinction) := by
+  apply Subsingleton.elim
+
+/--
+Reducing the final theorem through the nonempty finite-extinction certificate
+package agrees with projecting that checked certificate directly.
+-/
+theorem poincare_conjecture_of_nonempty_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    poincare_conjecture_of_nonempty_completion_certificate
+        (nonempty_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+          dependencies finiteExtinction) =
+      poincare_conjecture_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+          dependencies finiteExtinction) := by
+  apply Subsingleton.elim
+
+/--
 The universal finite-extinction certificate has exactly the
 finite-extinction-only canonical target as its certificate target.
 -/
