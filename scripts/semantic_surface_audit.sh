@@ -16027,6 +16027,34 @@ universe u
 
 #check Poincare.mathlibPoincareStatementAdapterStatement_smoothThreeSphere_eq
 
+#check (Poincare.mathlibPoincareStatementAdapterProjectTarget_eq :
+  Poincare.mathlibPoincareStatementAdapterProjectTarget.{u} =
+    (fun
+      | Poincare.MathlibPoincareStatementAdapter.topologicalThreeSphere =>
+          Poincare.PoincareConjectureStatement.{u}
+      | Poincare.MathlibPoincareStatementAdapter.smoothThreeSphere =>
+          Poincare.SmoothPoincareConjectureStatement.{u}))
+
+#check (Poincare.mathlibPoincareStatementAdapterStatement_iff_projectTarget :
+  ∀ adapter : Poincare.MathlibPoincareStatementAdapter,
+    Poincare.mathlibPoincareStatementAdapterStatement.{u} adapter ↔
+      Poincare.mathlibPoincareStatementAdapterProjectTarget.{u} adapter)
+
+#check Poincare.mathlibPoincareStatementAdapterStatement_iff_projectTarget_eq
+
+#check (Poincare.projectTarget_of_mathlibPoincareStatementAdapterStatement :
+  ∀ {adapter : Poincare.MathlibPoincareStatementAdapter},
+    Poincare.mathlibPoincareStatementAdapterStatement.{u} adapter →
+      Poincare.mathlibPoincareStatementAdapterProjectTarget.{u} adapter)
+
+#check (Poincare.mathlibPoincareStatementAdapterStatement_of_projectTarget :
+  ∀ {adapter : Poincare.MathlibPoincareStatementAdapter},
+    Poincare.mathlibPoincareStatementAdapterProjectTarget.{u} adapter →
+      Poincare.mathlibPoincareStatementAdapterStatement.{u} adapter)
+
+#check Poincare.projectTarget_of_mathlibPoincareStatementAdapterStatement_eq
+#check Poincare.mathlibPoincareStatementAdapterStatement_of_projectTarget_eq
+
 #check (Poincare.statementAdaptersBlockedByExternalBlocker_eq :
   Poincare.statementAdaptersBlockedByExternalBlocker =
     (fun
@@ -18809,7 +18837,7 @@ if [ "$finite_extinction_derivation_statement_route_count" != "5" ]; then
   exit 1
 fi
 
-echo "SEMANTIC SURFACE: conditional theorem types, projection lemmas, target contracts, mathlib-shaped adapters, adapter-target statements, and ledger crosswalk/package-layer/component-slot/milestone-requirement route check"
+echo "SEMANTIC SURFACE: conditional theorem types, projection lemmas, target contracts, mathlib-shaped adapters, adapter-target/project-target statements, and ledger crosswalk/package-layer/component-slot/milestone-requirement route check"
 
 rm -rf "$check_dir"
 check_dir=

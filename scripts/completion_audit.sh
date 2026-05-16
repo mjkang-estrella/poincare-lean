@@ -118,13 +118,17 @@ if rg -q '^inductive ExternalFormalizationBlocker\b' Poincare/Milestones.lean &&
     rg -q '^def mathlibPoincareStatementAdapterStatement\b' Poincare/Milestones.lean &&
     rg -q '^theorem mathlibPoincareStatementAdapterStatement_topologicalThreeSphere\b' Poincare/Milestones.lean &&
     rg -q '^theorem mathlibPoincareStatementAdapterStatement_smoothThreeSphere\b' Poincare/Milestones.lean &&
+    rg -q '^def mathlibPoincareStatementAdapterProjectTarget\b' Poincare/Milestones.lean &&
+    rg -q '^theorem mathlibPoincareStatementAdapterStatement_iff_projectTarget\b' Poincare/Milestones.lean &&
+    rg -q '^theorem projectTarget_of_mathlibPoincareStatementAdapterStatement\b' Poincare/Milestones.lean &&
+    rg -q '^theorem mathlibPoincareStatementAdapterStatement_of_projectTarget\b' Poincare/Milestones.lean &&
     rg -q '^def statementAdaptersBlockedByExternalBlocker\b' Poincare/Milestones.lean &&
     rg -q '^theorem externalBlocker_statementAdapters_mem_adapterLedger\b' Poincare/Milestones.lean &&
     rg -q '^def dependencyMilestonesBlockedByExternalBlocker\b' Poincare/Milestones.lean &&
     rg -q '^theorem externalBlocker_milestones_mem_dependencyMilestoneLedger\b' Poincare/Milestones.lean; then
-  echo "PASS: Lean milestone ledger records external formalization blockers plus statement-adapter, adapter-target, and milestone maps"
+  echo "PASS: Lean milestone ledger records external formalization blockers plus statement-adapter, adapter-target/project-target, and milestone maps"
 else
-  echo "FAIL: Lean milestone ledger does not record the external blocker statement-adapter/adapter-target/milestone surface"
+  echo "FAIL: Lean milestone ledger does not record the external blocker statement-adapter/adapter-target/project-target/milestone surface"
   status=1
 fi
 
@@ -35376,9 +35380,9 @@ EOF
 append_certificate_route_projection_contract_checks "$dependency_contract_check"
 
 if lake env lean "$dependency_contract_check" >/dev/null 2>&1; then
-  echo "PASS: Lean confirms projection lemmas, target contracts, aggregate dependency contracts, adapter-target statements, ledger crosswalk with package layers/component slots, and milestone-requirement routes"
+  echo "PASS: Lean confirms projection lemmas, target contracts, aggregate dependency contracts, adapter-target/project-target statements, ledger crosswalk with package layers/component slots, and milestone-requirement routes"
 else
-  echo "FAIL: Lean cannot confirm projection lemmas, target contracts, aggregate dependency contracts, adapter-target statements, ledger crosswalk with package layers/component slots, and milestone-requirement routes"
+  echo "FAIL: Lean cannot confirm projection lemmas, target contracts, aggregate dependency contracts, adapter-target/project-target statements, ledger crosswalk with package layers/component slots, and milestone-requirement routes"
   lake env lean "$dependency_contract_check" || true
   status=1
 fi

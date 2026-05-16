@@ -398,6 +398,75 @@ theorem mathlibPoincareStatementAdapterStatement_smoothThreeSphere_eq :
   rfl
 
 /--
+The project target proposition corresponding to each mathlib-shaped statement
+adapter.
+-/
+def mathlibPoincareStatementAdapterProjectTarget :
+    MathlibPoincareStatementAdapter → Prop
+  | MathlibPoincareStatementAdapter.topologicalThreeSphere =>
+      PoincareConjectureStatement.{u}
+  | MathlibPoincareStatementAdapter.smoothThreeSphere =>
+      SmoothPoincareConjectureStatement.{u}
+
+/-- The adapter-to-project-target map is exactly the local target case split. -/
+theorem mathlibPoincareStatementAdapterProjectTarget_eq :
+    mathlibPoincareStatementAdapterProjectTarget.{u} =
+      (fun
+        | MathlibPoincareStatementAdapter.topologicalThreeSphere =>
+            PoincareConjectureStatement.{u}
+        | MathlibPoincareStatementAdapter.smoothThreeSphere =>
+            SmoothPoincareConjectureStatement.{u}) :=
+  rfl
+
+/-- Each mathlib-shaped adapter statement is equivalent to its project target. -/
+theorem mathlibPoincareStatementAdapterStatement_iff_projectTarget
+    (adapter : MathlibPoincareStatementAdapter) :
+    mathlibPoincareStatementAdapterStatement.{u} adapter ↔
+      mathlibPoincareStatementAdapterProjectTarget.{u} adapter := by
+  cases adapter <;> exact Iff.rfl
+
+/-- The adapter statement/project-target iff is exactly the adapter case split. -/
+theorem mathlibPoincareStatementAdapterStatement_iff_projectTarget_eq :
+    mathlibPoincareStatementAdapterStatement_iff_projectTarget.{u} =
+      (by
+        intro adapter
+        cases adapter <;> exact Iff.rfl) := by
+  funext adapter
+  apply Subsingleton.elim
+
+/-- A proof of an adapter statement gives the corresponding project target. -/
+theorem projectTarget_of_mathlibPoincareStatementAdapterStatement
+    {adapter : MathlibPoincareStatementAdapter}
+    (h : mathlibPoincareStatementAdapterStatement.{u} adapter) :
+    mathlibPoincareStatementAdapterProjectTarget.{u} adapter :=
+  (mathlibPoincareStatementAdapterStatement_iff_projectTarget adapter).1 h
+
+/-- A proof of a project target gives the corresponding adapter statement. -/
+theorem mathlibPoincareStatementAdapterStatement_of_projectTarget
+    {adapter : MathlibPoincareStatementAdapter}
+    (h : mathlibPoincareStatementAdapterProjectTarget.{u} adapter) :
+    mathlibPoincareStatementAdapterStatement.{u} adapter :=
+  (mathlibPoincareStatementAdapterStatement_iff_projectTarget adapter).2 h
+
+/-- The adapter-statement-to-project-target route is propositionally direct. -/
+theorem projectTarget_of_mathlibPoincareStatementAdapterStatement_eq
+    {adapter : MathlibPoincareStatementAdapter}
+    (h : mathlibPoincareStatementAdapterStatement.{u} adapter) :
+    projectTarget_of_mathlibPoincareStatementAdapterStatement h =
+      (by
+        cases adapter <;> exact h) := by
+  cases adapter <;> apply Subsingleton.elim
+
+/-- The project-target-to-adapter-statement route is propositionally direct. -/
+theorem mathlibPoincareStatementAdapterStatement_of_projectTarget_eq
+    {adapter : MathlibPoincareStatementAdapter}
+    (h : mathlibPoincareStatementAdapterProjectTarget.{u} adapter) :
+    mathlibPoincareStatementAdapterStatement_of_projectTarget h =
+      (by
+        cases adapter <;> exact h) := by
+  cases adapter <;> apply Subsingleton.elim
+
+/--
 Map each external blocker to the local mathlib-shaped statement adapters whose
 eventual theorem route it blocks.
 -/
