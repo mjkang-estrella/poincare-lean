@@ -111,6 +111,17 @@ check_present "Progress report" "POINCARE_FORMALIZATION_REPORT.md"
 check_present "Generated current status" "CURRENT_STATUS.md"
 check_present "Shape contract audit" "scripts/shape_contract_audit.sh"
 
+if rg -q '^inductive ExternalFormalizationBlocker\b' Poincare/Milestones.lean &&
+    rg -q '^def externalFormalizationBlockerLedger\b' Poincare/Milestones.lean &&
+    rg -q '^theorem externalFormalizationBlockerLedger_length\b' Poincare/Milestones.lean &&
+    rg -q '^def dependencyMilestonesBlockedByExternalBlocker\b' Poincare/Milestones.lean &&
+    rg -q '^theorem externalBlocker_milestones_mem_dependencyMilestoneLedger\b' Poincare/Milestones.lean; then
+  echo "PASS: Lean milestone ledger records external formalization blockers and their milestone map"
+else
+  echo "FAIL: Lean milestone ledger does not record the external blocker-to-milestone surface"
+  status=1
+fi
+
 if rg -q '^- Completion: not achieved$' CURRENT_STATUS.md &&
     rg -q '^- Axiom footprint audit status: 0$' CURRENT_STATUS.md &&
     rg -q '^- Shape contract audit status: 0$' CURRENT_STATUS.md &&
