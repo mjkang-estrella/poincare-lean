@@ -129,22 +129,25 @@ if rg -q '^inductive ExternalFormalizationBlocker\b' Poincare/Milestones.lean &&
     rg -q '^theorem externalBlocker_statementAdapters_nonempty_iff_mathlibProofWanted\b' Poincare/Milestones.lean &&
     rg -q '^def dependencyMilestonesBlockedByExternalBlocker\b' Poincare/Milestones.lean &&
     rg -q '^theorem externalBlocker_blocks_dependencyMilestoneLedger_iff_mathlibProofWanted\b' Poincare/Milestones.lean &&
+    rg -q '^theorem externalBlocker_statementAdapters_nonempty_iff_blocks_dependencyMilestoneLedger\b' Poincare/Milestones.lean &&
     rg -q '^theorem externalBlocker_milestones_mem_dependencyMilestoneLedger\b' Poincare/Milestones.lean; then
-  echo "PASS: Lean milestone ledger records external formalization blockers plus statement-adapter, adapter-target/project-target endpoints, blocker adapter nonempty characterization, whole-ledger blocker characterization, and milestone maps"
+  echo "PASS: Lean milestone ledger records external formalization blockers plus statement-adapter, adapter-target/project-target endpoints, blocker adapter nonempty characterization, whole-ledger blocker characterization, adapter-to-ledger bridge, and milestone maps"
 else
-  echo "FAIL: Lean milestone ledger does not record the external blocker statement-adapter/adapter-target/project-target endpoint/nonempty-characterization/whole-ledger/milestone surface"
+  echo "FAIL: Lean milestone ledger does not record the external blocker statement-adapter/adapter-target/project-target endpoint/nonempty-characterization/whole-ledger/adapter-ledger bridge/milestone surface"
   status=1
 fi
 
 if rg -q '^def dependencyPackageLayersBlockedByExternalBlocker\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_packageLayers_mem_dependencyLedgerPackageLayers\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_blocks_dependencyPackageLayers_iff_mathlibProofWanted\b' Poincare/DependencyCrosswalk.lean &&
+    rg -q '^theorem externalBlocker_statementAdapters_nonempty_iff_blocks_dependencyPackageLayers\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^def dependencyComponentSlotsBlockedByExternalBlocker\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_blocks_dependencyComponentSlots_iff_mathlibProofWanted\b' Poincare/DependencyCrosswalk.lean &&
+    rg -q '^theorem externalBlocker_statementAdapters_nonempty_iff_blocks_dependencyComponentSlots\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_componentSlots_mem_dependencyLedgerComponentSlots\b' Poincare/DependencyCrosswalk.lean; then
-  echo "PASS: dependency crosswalk maps external blockers to package layers and component slots with whole-image characterizations"
+  echo "PASS: dependency crosswalk maps external blockers to package layers and component slots with whole-image characterizations and adapter bridges"
 else
-  echo "FAIL: dependency crosswalk does not map external blockers to package/component surfaces with whole-image characterizations"
+  echo "FAIL: dependency crosswalk does not map external blockers to package/component surfaces with whole-image characterizations and adapter bridges"
   status=1
 fi
 

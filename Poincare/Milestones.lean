@@ -764,6 +764,29 @@ theorem externalBlocker_blocks_dependencyMilestoneLedger_iff_mathlibProofWanted_
   apply Subsingleton.elim
 
 /--
+Having statement-adapter endpoints is equivalent to blocking the whole
+dependency milestone ledger.
+-/
+theorem externalBlocker_statementAdapters_nonempty_iff_blocks_dependencyMilestoneLedger
+    (blocker : ExternalFormalizationBlocker) :
+    (∃ adapter : MathlibPoincareStatementAdapter,
+        adapter ∈ statementAdaptersBlockedByExternalBlocker blocker) ↔
+      dependencyMilestonesBlockedByExternalBlocker blocker =
+        dependencyMilestoneLedger := by
+  rw [externalBlocker_statementAdapters_nonempty_iff_mathlibProofWanted,
+    externalBlocker_blocks_dependencyMilestoneLedger_iff_mathlibProofWanted]
+
+/-- The adapter/whole-ledger bridge is the shared mathlib-blocker characterization. -/
+theorem externalBlocker_statementAdapters_nonempty_iff_blocks_dependencyMilestoneLedger_eq :
+    externalBlocker_statementAdapters_nonempty_iff_blocks_dependencyMilestoneLedger =
+      (by
+        intro blocker
+        rw [externalBlocker_statementAdapters_nonempty_iff_mathlibProofWanted,
+          externalBlocker_blocks_dependencyMilestoneLedger_iff_mathlibProofWanted]) := by
+  funext blocker
+  apply Subsingleton.elim
+
+/--
 Every milestone named by an external blocker is one of the checked dependency
 milestones.
 -/

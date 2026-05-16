@@ -2807,6 +2807,29 @@ theorem externalBlocker_blocks_dependencyPackageLayers_iff_mathlibProofWanted_eq
   apply Subsingleton.elim
 
 /--
+Having statement-adapter endpoints is equivalent to reaching the whole
+package-layer ledger image.
+-/
+theorem externalBlocker_statementAdapters_nonempty_iff_blocks_dependencyPackageLayers
+    (blocker : ExternalFormalizationBlocker) :
+    (∃ adapter : MathlibPoincareStatementAdapter,
+        adapter ∈ statementAdaptersBlockedByExternalBlocker blocker) ↔
+      dependencyPackageLayersBlockedByExternalBlocker blocker =
+        dependencyMilestoneLedger.map dependencyLayerForMilestone := by
+  rw [externalBlocker_statementAdapters_nonempty_iff_mathlibProofWanted,
+    externalBlocker_blocks_dependencyPackageLayers_iff_mathlibProofWanted]
+
+/-- The adapter/package-layer bridge is the shared mathlib-blocker characterization. -/
+theorem externalBlocker_statementAdapters_nonempty_iff_blocks_dependencyPackageLayers_eq :
+    externalBlocker_statementAdapters_nonempty_iff_blocks_dependencyPackageLayers =
+      (by
+        intro blocker
+        rw [externalBlocker_statementAdapters_nonempty_iff_mathlibProofWanted,
+          externalBlocker_blocks_dependencyPackageLayers_iff_mathlibProofWanted]) := by
+  funext blocker
+  apply Subsingleton.elim
+
+/--
 Every package layer named by an external blocker is present in the checked
 milestone package-layer image.
 -/
@@ -2933,6 +2956,29 @@ theorem externalBlocker_blocks_dependencyComponentSlots_iff_mathlibProofWanted_e
           dependencyMilestonesBlockedByExternalBlocker, dependencyMilestoneLedger,
           dependencyLayerForMilestone, dependencyComponentForPackageLayer,
           dependencyComponentForMilestone]) := by
+  funext blocker
+  apply Subsingleton.elim
+
+/--
+Having statement-adapter endpoints is equivalent to reaching the whole
+component-slot ledger image.
+-/
+theorem externalBlocker_statementAdapters_nonempty_iff_blocks_dependencyComponentSlots
+    (blocker : ExternalFormalizationBlocker) :
+    (∃ adapter : MathlibPoincareStatementAdapter,
+        adapter ∈ statementAdaptersBlockedByExternalBlocker blocker) ↔
+      dependencyComponentSlotsBlockedByExternalBlocker blocker =
+        dependencyMilestoneLedger.map dependencyComponentForMilestone := by
+  rw [externalBlocker_statementAdapters_nonempty_iff_mathlibProofWanted,
+    externalBlocker_blocks_dependencyComponentSlots_iff_mathlibProofWanted]
+
+/-- The adapter/component-slot bridge is the shared mathlib-blocker characterization. -/
+theorem externalBlocker_statementAdapters_nonempty_iff_blocks_dependencyComponentSlots_eq :
+    externalBlocker_statementAdapters_nonempty_iff_blocks_dependencyComponentSlots =
+      (by
+        intro blocker
+        rw [externalBlocker_statementAdapters_nonempty_iff_mathlibProofWanted,
+          externalBlocker_blocks_dependencyComponentSlots_iff_mathlibProofWanted]) := by
   funext blocker
   apply Subsingleton.elim
 
