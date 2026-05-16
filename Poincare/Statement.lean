@@ -4288,6 +4288,68 @@ theorem poincareConjectureStatement_iff_canonical_three_sphere_statement :
   Iff.rfl
 
 /--
+The mathlib-shaped topological 3D Poincare statement, written with the literal
+unit sphere model from `Mathlib.Geometry.Manifold.PoincareConjecture`.
+-/
+def MathlibTopologicalPoincareThreeStatement : Prop :=
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty
+        (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))
+
+/-- The mathlib-shaped topological statement expands to the literal sphere model. -/
+theorem mathlibTopologicalPoincareThreeStatement_eq :
+    MathlibTopologicalPoincareThreeStatement.{u} =
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty
+            (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) :=
+  rfl
+
+/--
+The project target is exactly the mathlib-shaped topological statement after
+unfolding the local `ThreeSphere` abbreviation.
+-/
+theorem poincareConjectureStatement_iff_mathlibTopologicalPoincareThreeStatement :
+    PoincareConjectureStatement.{u} ↔
+      MathlibTopologicalPoincareThreeStatement.{u} :=
+  Iff.rfl
+
+/-- The project/mathlib-shaped topological iff is the direct definitional iff. -/
+theorem poincareConjectureStatement_iff_mathlibTopologicalPoincareThreeStatement_eq :
+    poincareConjectureStatement_iff_mathlibTopologicalPoincareThreeStatement =
+      (Iff.rfl :
+        PoincareConjectureStatement.{u} ↔
+          MathlibTopologicalPoincareThreeStatement.{u}) := by
+  apply Subsingleton.elim
+
+/-- The topological mathlib-shaped statement gives the project target. -/
+theorem poincareConjectureStatement_of_mathlibTopologicalPoincareThreeStatement
+    (h : MathlibTopologicalPoincareThreeStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  h
+
+/-- The project target gives the topological mathlib-shaped statement. -/
+theorem mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+    (h : PoincareConjectureStatement.{u}) :
+    MathlibTopologicalPoincareThreeStatement.{u} :=
+  h
+
+/-- The topological mathlib-shaped-to-project adapter is the identity route. -/
+theorem poincareConjectureStatement_of_mathlibTopologicalPoincareThreeStatement_eq :
+    poincareConjectureStatement_of_mathlibTopologicalPoincareThreeStatement =
+      (fun h : MathlibTopologicalPoincareThreeStatement.{u} => h) :=
+  rfl
+
+/-- The project-to-topological mathlib-shaped adapter is the identity route. -/
+theorem mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement_eq :
+    mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement =
+      (fun h : PoincareConjectureStatement.{u} => h) :=
+  rfl
+
+/--
 The smooth 3-dimensional Poincare statement, also already represented in
 mathlib's canonical statement file as a proof-wanted declaration.
 -/
@@ -4320,6 +4382,72 @@ theorem smoothPoincareConjectureStatement_iff_canonical_smooth_three_sphere_stat
         [SimplyConnectedSpace M] [CompactSpace M],
           Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :=
   Iff.rfl
+
+/--
+The mathlib-shaped smooth 3D Poincare statement, written with the literal unit
+sphere model from `Mathlib.Geometry.Manifold.PoincareConjecture`.
+-/
+def MathlibSmoothPoincareThreeStatement : Prop :=
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [IsManifold (𝓡 3) ∞ M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty
+        (M ≃ₘ⟮𝓡 3, 𝓡 3⟯
+          Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))
+
+/-- The mathlib-shaped smooth statement expands to the literal sphere model. -/
+theorem mathlibSmoothPoincareThreeStatement_eq :
+    MathlibSmoothPoincareThreeStatement.{u} =
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [IsManifold (𝓡 3) ∞ M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty
+            (M ≃ₘ⟮𝓡 3, 𝓡 3⟯
+              Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) :=
+  rfl
+
+/--
+The project smooth target is exactly the mathlib-shaped smooth statement after
+unfolding the local `ThreeSphere` abbreviation.
+-/
+theorem smoothPoincareConjectureStatement_iff_mathlibSmoothPoincareThreeStatement :
+    SmoothPoincareConjectureStatement.{u} ↔
+      MathlibSmoothPoincareThreeStatement.{u} :=
+  Iff.rfl
+
+/-- The project/mathlib-shaped smooth iff is the direct definitional iff. -/
+theorem smoothPoincareConjectureStatement_iff_mathlibSmoothPoincareThreeStatement_eq :
+    smoothPoincareConjectureStatement_iff_mathlibSmoothPoincareThreeStatement =
+      (Iff.rfl :
+        SmoothPoincareConjectureStatement.{u} ↔
+          MathlibSmoothPoincareThreeStatement.{u}) := by
+  apply Subsingleton.elim
+
+/-- The smooth mathlib-shaped statement gives the project smooth target. -/
+theorem smoothPoincareConjectureStatement_of_mathlibSmoothPoincareThreeStatement
+    (h : MathlibSmoothPoincareThreeStatement.{u}) :
+    SmoothPoincareConjectureStatement.{u} :=
+  h
+
+/-- The project smooth target gives the smooth mathlib-shaped statement. -/
+theorem mathlibSmoothPoincareThreeStatement_of_smoothPoincareConjectureStatement
+    (h : SmoothPoincareConjectureStatement.{u}) :
+    MathlibSmoothPoincareThreeStatement.{u} :=
+  h
+
+/-- The smooth mathlib-shaped-to-project adapter is the identity route. -/
+theorem smoothPoincareConjectureStatement_of_mathlibSmoothPoincareThreeStatement_eq :
+    smoothPoincareConjectureStatement_of_mathlibSmoothPoincareThreeStatement =
+      (fun h : MathlibSmoothPoincareThreeStatement.{u} => h) :=
+  rfl
+
+/-- The project-to-smooth mathlib-shaped adapter is the identity route. -/
+theorem mathlibSmoothPoincareThreeStatement_of_smoothPoincareConjectureStatement_eq :
+    mathlibSmoothPoincareThreeStatement_of_smoothPoincareConjectureStatement =
+      (fun h : SmoothPoincareConjectureStatement.{u} => h) :=
+  rfl
 
 /--
 The project is complete only if there is a proof of the target statement.
