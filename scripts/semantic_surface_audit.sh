@@ -16761,6 +16761,8 @@ universe u
 #check Poincare.dependency_milestone_requirements_payload_of_dependencies_and_verification_family_to_dependencies_eq
 #check Poincare.poincareProofDependencies_of_milestone_requirements_payload_of_dependencies_and_verification_family_eq
 #check Poincare.poincareProofDependencies_iff_milestone_requirements_eq
+#check Poincare.package_layer_requirements_iff_milestone_requirements
+#check Poincare.package_layer_requirements_iff_milestone_requirements_eq
 
 #check (Poincare.dependency_ledger_has_component_slots :
     Poincare.dependencyMilestoneLedger.map
@@ -18985,7 +18987,7 @@ if [ "$finite_extinction_derivation_statement_route_count" != "5" ]; then
   exit 1
 fi
 
-echo "SEMANTIC SURFACE: conditional theorem types, projection lemmas, target contracts, mathlib-shaped adapters, adapter-target/project-target statements, blocker/project-target endpoints, blocker adapter nonempty/full-ledger characterizations, whole-ledger/package-layer/component-slot blocker characterizations, adapter-to-whole-image, whole-ledger-to-image, package-to-component image bridges, component/package payload bridges, and ledger crosswalk/package-layer/component-slot/milestone-requirement route check"
+echo "SEMANTIC SURFACE: conditional theorem types, projection lemmas, target contracts, mathlib-shaped adapters, adapter-target/project-target statements, blocker/project-target endpoints, blocker adapter nonempty/full-ledger characterizations, whole-ledger/package-layer/component-slot blocker characterizations, adapter-to-whole-image, whole-ledger-to-image, package-to-component image bridges, component/package and package/milestone payload bridges, and ledger crosswalk/package-layer/component-slot/milestone-requirement route check"
 
 rm -rf "$check_dir"
 check_dir=
