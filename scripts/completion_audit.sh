@@ -138,11 +138,13 @@ fi
 
 if rg -q '^def dependencyPackageLayersBlockedByExternalBlocker\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_packageLayers_mem_dependencyLedgerPackageLayers\b' Poincare/DependencyCrosswalk.lean &&
+    rg -q '^theorem externalBlocker_blocks_dependencyPackageLayers_iff_mathlibProofWanted\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^def dependencyComponentSlotsBlockedByExternalBlocker\b' Poincare/DependencyCrosswalk.lean &&
+    rg -q '^theorem externalBlocker_blocks_dependencyComponentSlots_iff_mathlibProofWanted\b' Poincare/DependencyCrosswalk.lean &&
     rg -q '^theorem externalBlocker_componentSlots_mem_dependencyLedgerComponentSlots\b' Poincare/DependencyCrosswalk.lean; then
-  echo "PASS: dependency crosswalk maps external blockers to package layers and component slots"
+  echo "PASS: dependency crosswalk maps external blockers to package layers and component slots with whole-image characterizations"
 else
-  echo "FAIL: dependency crosswalk does not map external blockers to package/component surfaces"
+  echo "FAIL: dependency crosswalk does not map external blockers to package/component surfaces with whole-image characterizations"
   status=1
 fi
 

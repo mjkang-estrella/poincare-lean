@@ -2782,6 +2782,31 @@ theorem ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface_blocks_surgeryPackag
   rfl
 
 /--
+An external blocker reaches the whole package-layer ledger image exactly when
+it is the mathlib 3D Poincare proof-wanted shortcut.
+-/
+theorem externalBlocker_blocks_dependencyPackageLayers_iff_mathlibProofWanted
+    (blocker : ExternalFormalizationBlocker) :
+    dependencyPackageLayersBlockedByExternalBlocker blocker =
+        dependencyMilestoneLedger.map dependencyLayerForMilestone ↔
+      blocker =
+        ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted := by
+  cases blocker <;> simp [dependencyPackageLayersBlockedByExternalBlocker,
+    dependencyMilestonesBlockedByExternalBlocker, dependencyMilestoneLedger,
+    dependencyLayerForMilestone]
+
+/-- The whole package-layer blocker characterization is the blocker case split. -/
+theorem externalBlocker_blocks_dependencyPackageLayers_iff_mathlibProofWanted_eq :
+    externalBlocker_blocks_dependencyPackageLayers_iff_mathlibProofWanted =
+      (by
+        intro blocker
+        cases blocker <;> simp [dependencyPackageLayersBlockedByExternalBlocker,
+          dependencyMilestonesBlockedByExternalBlocker, dependencyMilestoneLedger,
+          dependencyLayerForMilestone]) := by
+  funext blocker
+  apply Subsingleton.elim
+
+/--
 Every package layer named by an external blocker is present in the checked
 milestone package-layer image.
 -/
@@ -2883,6 +2908,33 @@ theorem ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface_blocks_surgeryCompon
           , DependencyComponentSlot.surgeryComponent
           ]) :=
   rfl
+
+/--
+An external blocker reaches the whole component-slot ledger image exactly when
+it is the mathlib 3D Poincare proof-wanted shortcut.
+-/
+theorem externalBlocker_blocks_dependencyComponentSlots_iff_mathlibProofWanted
+    (blocker : ExternalFormalizationBlocker) :
+    dependencyComponentSlotsBlockedByExternalBlocker blocker =
+        dependencyMilestoneLedger.map dependencyComponentForMilestone ↔
+      blocker =
+        ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted := by
+  cases blocker <;> simp [dependencyComponentSlotsBlockedByExternalBlocker,
+    dependencyMilestonesBlockedByExternalBlocker, dependencyMilestoneLedger,
+    dependencyLayerForMilestone, dependencyComponentForPackageLayer,
+    dependencyComponentForMilestone]
+
+/-- The whole component-slot blocker characterization is the blocker case split. -/
+theorem externalBlocker_blocks_dependencyComponentSlots_iff_mathlibProofWanted_eq :
+    externalBlocker_blocks_dependencyComponentSlots_iff_mathlibProofWanted =
+      (by
+        intro blocker
+        cases blocker <;> simp [dependencyComponentSlotsBlockedByExternalBlocker,
+          dependencyMilestonesBlockedByExternalBlocker, dependencyMilestoneLedger,
+          dependencyLayerForMilestone, dependencyComponentForPackageLayer,
+          dependencyComponentForMilestone]) := by
+  funext blocker
+  apply Subsingleton.elim
 
 /--
 Every component slot named by an external blocker is present in the checked
