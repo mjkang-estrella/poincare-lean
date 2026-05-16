@@ -3730,6 +3730,66 @@ theorem externalBlocker_blockedComponentRequirement_to_milestoneRequirement_eq :
   apply Subsingleton.elim
 
 /--
+Aggregate dependencies discharge a blocked component slot by producing a
+blocked package-layer witness whose concrete package-layer requirement holds.
+-/
+theorem externalBlocker_blockedComponentSlot_packageLayerRequirement_of_dependencies
+    (dependencies : PoincareProofDependencies.{u})
+    (blocker : ExternalFormalizationBlocker) (slot : DependencyComponentSlot)
+    (hslot : slot ∈ dependencyComponentSlotsBlockedByExternalBlocker blocker) :
+    ∃ layer : DependencyPackageLayer,
+      layer ∈ dependencyPackageLayersBlockedByExternalBlocker blocker ∧
+        dependencyPackageLayerRequirement.{u} layer :=
+  externalBlocker_blockedComponentRequirement_to_packageLayerRequirement
+    blocker slot hslot
+    (dependencyComponentRequirement_of_dependencies dependencies slot)
+
+/--
+The aggregate-dependency package-layer blocker witness is exactly the
+component-slot requirement projection followed by the blocker witness bridge.
+-/
+theorem externalBlocker_blockedComponentSlot_packageLayerRequirement_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    externalBlocker_blockedComponentSlot_packageLayerRequirement_of_dependencies
+        dependencies =
+      (fun blocker slot hslot =>
+        externalBlocker_blockedComponentRequirement_to_packageLayerRequirement
+          blocker slot hslot
+          (dependencyComponentRequirement_of_dependencies dependencies slot)) := by
+  funext blocker slot hslot
+  apply Subsingleton.elim
+
+/--
+Aggregate dependencies discharge a blocked component slot by producing a
+blocked milestone witness whose concrete milestone requirement holds.
+-/
+theorem externalBlocker_blockedComponentSlot_milestoneRequirement_of_dependencies
+    (dependencies : PoincareProofDependencies.{u})
+    (blocker : ExternalFormalizationBlocker) (slot : DependencyComponentSlot)
+    (hslot : slot ∈ dependencyComponentSlotsBlockedByExternalBlocker blocker) :
+    ∃ milestone : DependencyMilestone,
+      milestone ∈ dependencyMilestonesBlockedByExternalBlocker blocker ∧
+        dependencyMilestoneRequirement.{u} milestone :=
+  externalBlocker_blockedComponentRequirement_to_milestoneRequirement
+    blocker slot hslot
+    (dependencyComponentRequirement_of_dependencies dependencies slot)
+
+/--
+The aggregate-dependency milestone blocker witness is exactly the component-slot
+requirement projection followed by the blocker witness bridge.
+-/
+theorem externalBlocker_blockedComponentSlot_milestoneRequirement_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    externalBlocker_blockedComponentSlot_milestoneRequirement_of_dependencies
+        dependencies =
+      (fun blocker slot hslot =>
+        externalBlocker_blockedComponentRequirement_to_milestoneRequirement
+          blocker slot hslot
+          (dependencyComponentRequirement_of_dependencies dependencies slot)) := by
+  funext blocker slot hslot
+  apply Subsingleton.elim
+
+/--
 Every component slot named by an external blocker is present in the checked
 milestone component-slot image.
 -/
