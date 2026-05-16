@@ -190,4 +190,207 @@ theorem dependencyMilestoneLedger_nodup_eq :
       (by decide : dependencyMilestoneLedger.Nodup) := by
   apply Subsingleton.elim
 
+/--
+External formalization blockers reported by the completion audit.
+
+These are data labels, not propositions and not assumptions. They record the
+remaining upstream/library surfaces that must become theorem-producing Lean
+developments before the local conditional assembly can be replaced by an
+unconditional proof.
+-/
+inductive ExternalFormalizationBlocker where
+  /--
+  Mathlib's canonical 3D Poincare shortcut statements are still marked as
+  requested-but-unproved upstream, so the project cannot close by importing
+  those names.
+  -/
+  | mathlibThreeDimensionalPoincareProofWanted
+  /--
+  Ricci-specific Riemannian geometry declarations needed by the analytic
+  foundation are not available as reusable mathlib theorem surfaces.
+  -/
+  | ricciSpecificGeometrySurface
+  /--
+  Ricci flow with surgery, Perelman control, and finite-extinction declarations
+  are not available as reusable mathlib theorem surfaces.
+  -/
+  | ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface
+  deriving DecidableEq, Repr
+
+/-- The checked ledger of current external formalization blockers. -/
+def externalFormalizationBlockerLedger : List ExternalFormalizationBlocker :=
+  [ ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted
+  , ExternalFormalizationBlocker.ricciSpecificGeometrySurface
+  , ExternalFormalizationBlocker.ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface
+  ]
+
+/-- The external blocker ledger is exactly the three-entry audit-blocker list. -/
+theorem externalFormalizationBlockerLedger_eq :
+    externalFormalizationBlockerLedger =
+      [ ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted
+      , ExternalFormalizationBlocker.ricciSpecificGeometrySurface
+      , ExternalFormalizationBlocker.ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface
+      ] :=
+  rfl
+
+/-- The external blocker ledger has exactly three entries. -/
+theorem externalFormalizationBlockerLedger_length :
+    externalFormalizationBlockerLedger.length = 3 :=
+  rfl
+
+/-- The external-blocker ledger length theorem is the direct `rfl` proof. -/
+theorem externalFormalizationBlockerLedger_length_eq :
+    externalFormalizationBlockerLedger_length =
+      (rfl : externalFormalizationBlockerLedger.length = 3) := by
+  apply Subsingleton.elim
+
+/-- The external blocker ledger contains no duplicate blocker labels. -/
+theorem externalFormalizationBlockerLedger_nodup :
+    externalFormalizationBlockerLedger.Nodup := by
+  decide
+
+/-- The external-blocker no-duplicate theorem is the direct decidable proof. -/
+theorem externalFormalizationBlockerLedger_nodup_eq :
+    externalFormalizationBlockerLedger_nodup =
+      (by decide : externalFormalizationBlockerLedger.Nodup) := by
+  apply Subsingleton.elim
+
+/-- The external blocker ledger contains exactly the audit-blocker labels. -/
+theorem externalFormalizationBlockerLedger_mem
+    (blocker : ExternalFormalizationBlocker) :
+    blocker ∈ externalFormalizationBlockerLedger ↔
+      blocker =
+        ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted ∨
+      blocker = ExternalFormalizationBlocker.ricciSpecificGeometrySurface ∨
+      blocker =
+        ExternalFormalizationBlocker.ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface := by
+  cases blocker <;> simp [externalFormalizationBlockerLedger]
+
+/-- The external-blocker membership theorem is exactly the three-case split. -/
+theorem externalFormalizationBlockerLedger_mem_eq :
+    externalFormalizationBlockerLedger_mem =
+      (by
+        intro blocker
+        cases blocker <;> simp [externalFormalizationBlockerLedger]) := by
+  funext blocker
+  apply Subsingleton.elim
+
+/--
+Map each external audit blocker to the dependency milestones it prevents from
+being discharged unconditionally.
+-/
+def dependencyMilestonesBlockedByExternalBlocker :
+    ExternalFormalizationBlocker → List DependencyMilestone
+  | ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted =>
+      dependencyMilestoneLedger
+  | ExternalFormalizationBlocker.ricciSpecificGeometrySurface =>
+      [ DependencyMilestone.ricciFlowAnalyticFoundation ]
+  | ExternalFormalizationBlocker.ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface =>
+      [ DependencyMilestone.ricciFlowWithSurgery
+      , DependencyMilestone.perelmanSingularityControl
+      , DependencyMilestone.finiteExtinction
+      ]
+
+/--
+The external-blocker-to-milestone map is exactly the explicit audit-derived
+case split.
+-/
+theorem dependencyMilestonesBlockedByExternalBlocker_eq :
+    dependencyMilestonesBlockedByExternalBlocker =
+      (fun
+        | ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted =>
+            dependencyMilestoneLedger
+        | ExternalFormalizationBlocker.ricciSpecificGeometrySurface =>
+            [ DependencyMilestone.ricciFlowAnalyticFoundation ]
+        | ExternalFormalizationBlocker.ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface =>
+            [ DependencyMilestone.ricciFlowWithSurgery
+            , DependencyMilestone.perelmanSingularityControl
+            , DependencyMilestone.finiteExtinction
+            ]) :=
+  rfl
+
+/--
+The mathlib shortcut blocker covers every dependency milestone, because relying
+on that shortcut would bypass the whole local proof program.
+-/
+theorem mathlibThreeDimensionalPoincareProofWanted_blocks_dependencyMilestoneLedger :
+    dependencyMilestonesBlockedByExternalBlocker
+        ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted =
+      dependencyMilestoneLedger :=
+  rfl
+
+/-- The mathlib shortcut blocker route is the direct `rfl` proof. -/
+theorem mathlibThreeDimensionalPoincareProofWanted_blocks_dependencyMilestoneLedger_eq :
+    mathlibThreeDimensionalPoincareProofWanted_blocks_dependencyMilestoneLedger =
+      (rfl :
+        dependencyMilestonesBlockedByExternalBlocker
+            ExternalFormalizationBlocker.mathlibThreeDimensionalPoincareProofWanted =
+          dependencyMilestoneLedger) :=
+  rfl
+
+/-- The Ricci-specific geometry blocker is the analytic-foundation milestone. -/
+theorem ricciSpecificGeometrySurface_blocks_analyticFoundation :
+    dependencyMilestonesBlockedByExternalBlocker
+        ExternalFormalizationBlocker.ricciSpecificGeometrySurface =
+      [DependencyMilestone.ricciFlowAnalyticFoundation] :=
+  rfl
+
+/-- The Ricci-specific geometry blocker route is the direct `rfl` proof. -/
+theorem ricciSpecificGeometrySurface_blocks_analyticFoundation_eq :
+    ricciSpecificGeometrySurface_blocks_analyticFoundation =
+      (rfl :
+        dependencyMilestonesBlockedByExternalBlocker
+            ExternalFormalizationBlocker.ricciSpecificGeometrySurface =
+          [DependencyMilestone.ricciFlowAnalyticFoundation]) :=
+  rfl
+
+/--
+The Ricci-flow-with-surgery/Perelman/finite-extinction blocker covers the three
+surgery-side milestones it names.
+-/
+theorem ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface_blocks_surgeryMilestones :
+    dependencyMilestonesBlockedByExternalBlocker
+        ExternalFormalizationBlocker.ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface =
+      [ DependencyMilestone.ricciFlowWithSurgery
+      , DependencyMilestone.perelmanSingularityControl
+      , DependencyMilestone.finiteExtinction
+      ] :=
+  rfl
+
+/-- The surgery-side external blocker route is the direct `rfl` proof. -/
+theorem ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface_blocks_surgeryMilestones_eq :
+    ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface_blocks_surgeryMilestones =
+      (rfl :
+        dependencyMilestonesBlockedByExternalBlocker
+            ExternalFormalizationBlocker.ricciFlowWithSurgeryPerelmanFiniteExtinctionSurface =
+          [ DependencyMilestone.ricciFlowWithSurgery
+          , DependencyMilestone.perelmanSingularityControl
+          , DependencyMilestone.finiteExtinction
+          ]) :=
+  rfl
+
+/--
+Every milestone named by an external blocker is one of the checked dependency
+milestones.
+-/
+theorem externalBlocker_milestones_mem_dependencyMilestoneLedger
+    (blocker : ExternalFormalizationBlocker) {milestone : DependencyMilestone} :
+    milestone ∈ dependencyMilestonesBlockedByExternalBlocker blocker →
+      milestone ∈ dependencyMilestoneLedger := by
+  cases blocker <;> cases milestone <;> simp [dependencyMilestonesBlockedByExternalBlocker,
+    dependencyMilestoneLedger]
+
+/--
+The theorem asserting that externally blocked milestones are ledger milestones
+is exactly the three-case blocker split.
+-/
+theorem externalBlocker_milestones_mem_dependencyMilestoneLedger_eq :
+    externalBlocker_milestones_mem_dependencyMilestoneLedger =
+      (by
+        intro blocker milestone
+        cases blocker <;> cases milestone <;> simp [dependencyMilestonesBlockedByExternalBlocker,
+          dependencyMilestoneLedger]) := by
+  funext blocker milestone
+  apply Subsingleton.elim
+
 end Poincare
