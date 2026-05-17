@@ -3,6 +3,86 @@
 This directory is a starting scaffold for a Lean formalization project targeting the
 Poincare Conjecture. It is not a completed proof.
 
+## Dependency graph
+
+The scaffold is currently organizing the target theorem into checked dependency
+interfaces and route contracts. The graph below is a high-level map of the
+formalization boundary: solid arrows indicate packaged Lean routes that are
+being pinned by definitions, projections, equality contracts, and audits; the
+red nodes are mathematical inputs that remain unavailable as completed Lean
+proofs.
+
+```mermaid
+flowchart TD
+  theorem["reserved theorem gate<br/>Poincare.poincare_conjecture"]
+  statement["PoincareConjectureStatement"]
+  completion["CompletionCriterionAtUniverse"]
+  certificate["PoincareCompletionCertificate"]
+  aggregate["PoincareProofDependencies"]
+  remaining["RemainingDependencyPackage"]
+
+  theorem --> statement
+  certificate --> theorem
+  completion --> statement
+  aggregate --> completion
+  remaining --> aggregate
+  remaining --> certificate
+
+  smoothPkg["SmoothabilityPackage"]
+  surgeryPkg["Finite-extinction / surgery package"]
+  topologyPkg["TopologyExtractionPackage"]
+
+  smoothPkg --> remaining
+  surgeryPkg --> remaining
+  topologyPkg --> remaining
+
+  smoothBridge["smoothability bridge<br/>topological target from smooth target"]
+  smoothManifold["C-infinity smooth-manifold statement"]
+  moise["Moise / PL / smoothing inputs"]
+
+  moise --> smoothManifold
+  smoothManifold --> smoothBridge
+  smoothBridge --> smoothPkg
+
+  analytic["analytic foundation<br/>Ricci equation boundary"]
+  shortTime["short-time Ricci flow"]
+  continuation["continuation / blow-up criteria"]
+  surgery["Ricci flow with surgery"]
+  perelman["Perelman control / canonical neighborhoods"]
+  finiteExt["finite extinction"]
+
+  analytic --> surgeryPkg
+  shortTime --> surgeryPkg
+  continuation --> surgeryPkg
+  perelman --> surgery
+  surgery --> finiteExt
+  finiteExt --> surgeryPkg
+
+  classification["3-manifold topology classification"]
+  extraction["extinction-to-sphere extraction"]
+  homeomorphism["homeomorphism / diffeomorphism endpoint bridges"]
+
+  classification --> extraction
+  finiteExt --> extraction
+  extraction --> topologyPkg
+  homeomorphism --> topologyPkg
+
+  mathlibGap["external mathlib / missing formalization gaps"]
+  mathlibGap --> moise
+  mathlibGap --> analytic
+  mathlibGap --> surgery
+  mathlibGap --> perelman
+  mathlibGap --> classification
+
+  classDef missing fill:#ffe8e8,stroke:#c2410c,color:#7c2d12
+  class mathlibGap,moise,analytic,surgery,perelman,classification missing
+```
+
+At this stage the repository is mostly advancing the middle of this graph:
+the package surfaces, projection routes, certificate routes, equality contracts,
+and audit gates. The final reserved theorem is intentionally absent until the
+red external mathematical inputs are supplied by actual Lean proofs.
+
 The current artifact is intentionally conservative:
 
 - `Poincare/Statement.lean` records the intended theorem boundary and the missing
@@ -2173,7 +2253,7 @@ lake build
 ```
 
 Current result: `lake build` completed successfully with Lean `v4.30.0-rc2`
-and 2856 jobs.
+and 2869 jobs.
 
 The broader scaffold audit is:
 
@@ -2198,7 +2278,10 @@ Ricci-flow and Poincare-statement gaps and runs
 references to mathlib's Poincare shortcut names while they remain
 `proof_wanted`, `scripts/semantic_surface_audit.sh`,
 which asks Lean to typecheck the main conditional theorem surfaces and
-lower-level package projection lemmas, and
+lower-level package projection lemmas and now fails unless every strict
+parser-visible declaration in `Poincare.lean` and `Poincare/*.lean` has an
+explicit `#check Poincare.<name>` line in the semantic audit surface and no
+generated explicit check names are stale, and
 `scripts/root_import_audit.sh`, which verifies that `Poincare.lean` imports every
 local Lean module under `Poincare/` and exposes the canonical target contracts
 plus the canonical assembly bridges and projection-based dependency assembly
@@ -2228,6 +2311,9 @@ package-layer, component-slot, and milestone-requirement links, the root module 
 canonical target contracts,
 canonical assembly bridges, and projection-based dependency
 assembly, the canonical theorem-name declaration and `rfl` contract are present,
+the completion audit surface explicitly `#check`s every strict parser-visible
+declaration in `Poincare.lean` and `Poincare/*.lean` and rejects stale explicit
+`#check` names that no longer correspond to parser-visible declarations,
 the local proof-bearing assembly surface has only the standard mathlib axiom
 footprint, no local declaration claims `PoincareProofDependencies`,
 `CURRENT_STATUS.md` records the incomplete completion-audit state, the reserved
