@@ -19336,6 +19336,61 @@ set_option linter.unusedVariables false
     Poincare.ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement)
 #check Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_stereographicVanKampenPiOneSubsingletonStatement_eq
 
+#check (Poincare.threeSphere_stereographicVanKampenLoopStatement_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+    Poincare.ThreeSphereStereographicVanKampenLoopStatement)
+#check Poincare.threeSphere_stereographicVanKampenLoopStatement_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+    Poincare.ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement)
+#check Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+    Poincare.ThreeSphereStereographicVanKampenConclusionStatement)
+#check Poincare.threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.threeSphere_stereographicVanKampenReductionStatement_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+    Poincare.ThreeSphereStereographicVanKampenReductionStatement)
+#check Poincare.threeSphere_stereographicVanKampenReductionStatement_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.threeSphere_simplyConnectedSpace_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+    SimplyConnectedSpace Poincare.ThreeSphere)
+#check Poincare.threeSphere_simplyConnectedSpace_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+    Poincare.ThreeSpherePiOneSubsingletonStatement)
+#check Poincare.threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.threeSphere_target_prerequisites_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+  ∃ _t2 : T2Space Poincare.ThreeSphere,
+  ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) Poincare.ThreeSphere,
+  ∃ _simplyConnected : SimplyConnectedSpace Poincare.ThreeSphere,
+  ∃ _compact : CompactSpace Poincare.ThreeSphere,
+  ∃ _smooth : IsManifold (𝓡 3) ∞ Poincare.ThreeSphere,
+  ∃ _path : PathConnectedSpace Poincare.ThreeSphere,
+  ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
+    Nonempty Poincare.ThreeSphere)
+#check Poincare.threeSphere_target_prerequisites_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+  ∃ _t2 : T2Space Poincare.ThreeSphere,
+  ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) Poincare.ThreeSphere,
+  ∃ _simplyConnected : SimplyConnectedSpace Poincare.ThreeSphere,
+  ∃ _compact : CompactSpace Poincare.ThreeSphere,
+  ∃ _smooth : IsManifold (𝓡 3) ∞ Poincare.ThreeSphere,
+  ∃ _path : PathConnectedSpace Poincare.ThreeSphere,
+  ∃ _locPath : LocPathConnectedSpace Poincare.ThreeSphere,
+  ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
+    Nonempty Poincare.ThreeSphere)
+#check Poincare.threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen_eq
+
 #check (Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_stereographicVanKampenLoopStatement :
   Poincare.ThreeSphereStereographicVanKampenLoopStatement →
     Poincare.ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement)
@@ -19405,6 +19460,22 @@ set_option linter.unusedVariables false
 #check Poincare.twoSetOpenCoverVanKampenPiOneSubsingletonStatement_eq
 #check Poincare.threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
 #check Poincare.threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_stereographicVanKampenLoopStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_stereographicVanKampenLoopStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_stereographicVanKampenReductionStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_stereographicVanKampenReductionStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_simplyConnectedSpace_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_simplyConnectedSpace_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_target_prerequisites_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_target_prerequisites_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen_eq
 #check Poincare.ThreeSphereStereographicContractibleCoverInputsStatement
 #check Poincare.threeSphereStereographicContractibleCoverInputsStatement_eq
 #check Poincare.threeSphere_stereographicCoverOverlapPackage_contractibleCoverInputs

@@ -1759,6 +1759,38 @@ check_decl "target sphere finite concat collapse from stereographic Van Kampen p
   '^theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_stereographicVanKampenPiOneSubsingletonStatement\b' Poincare/Statement.lean
 check_decl "target sphere finite concat collapse from stereographic Van Kampen pi-one equality contract is declared" \
   '^theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_stereographicVanKampenPiOneSubsingletonStatement_eq\b' Poincare/Statement.lean
+check_decl "target sphere stereographic loop from two-set Van Kampen theorem is declared" \
+  '^theorem threeSphere_stereographicVanKampenLoopStatement_of_twoSetOpenCoverVanKampen\b' Poincare/Statement.lean
+check_decl "target sphere stereographic loop from two-set Van Kampen equality contract is declared" \
+  '^theorem threeSphere_stereographicVanKampenLoopStatement_of_twoSetOpenCoverVanKampen_eq\b' Poincare/Statement.lean
+check_decl "target sphere finite concat collapse from two-set Van Kampen theorem is declared" \
+  '^theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_twoSetOpenCoverVanKampen\b' Poincare/Statement.lean
+check_decl "target sphere finite concat collapse from two-set Van Kampen equality contract is declared" \
+  '^theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_twoSetOpenCoverVanKampen_eq\b' Poincare/Statement.lean
+check_decl "target sphere stereographic conclusion from two-set Van Kampen theorem is declared" \
+  '^theorem threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen\b' Poincare/Statement.lean
+check_decl "target sphere stereographic conclusion from two-set Van Kampen equality contract is declared" \
+  '^theorem threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen_eq\b' Poincare/Statement.lean
+check_decl "target sphere stereographic reduction from two-set Van Kampen theorem is declared" \
+  '^theorem threeSphere_stereographicVanKampenReductionStatement_of_twoSetOpenCoverVanKampen\b' Poincare/Statement.lean
+check_decl "target sphere stereographic reduction from two-set Van Kampen equality contract is declared" \
+  '^theorem threeSphere_stereographicVanKampenReductionStatement_of_twoSetOpenCoverVanKampen_eq\b' Poincare/Statement.lean
+check_decl "target sphere simple-connectedness from two-set Van Kampen theorem is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_of_twoSetOpenCoverVanKampen\b' Poincare/Statement.lean
+check_decl "target sphere simple-connectedness from two-set Van Kampen equality contract is declared" \
+  '^theorem threeSphere_simplyConnectedSpace_of_twoSetOpenCoverVanKampen_eq\b' Poincare/Statement.lean
+check_decl "target sphere pi-one from two-set Van Kampen theorem is declared" \
+  '^theorem threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen\b' Poincare/Statement.lean
+check_decl "target sphere pi-one from two-set Van Kampen equality contract is declared" \
+  '^theorem threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq\b' Poincare/Statement.lean
+check_decl "target sphere target prerequisites from two-set Van Kampen theorem is declared" \
+  '^theorem threeSphere_target_prerequisites_of_twoSetOpenCoverVanKampen\b' Poincare/Statement.lean
+check_decl "target sphere target prerequisites from two-set Van Kampen equality contract is declared" \
+  '^theorem threeSphere_target_prerequisites_of_twoSetOpenCoverVanKampen_eq\b' Poincare/Statement.lean
+check_decl "target sphere homotopy prerequisites from two-set Van Kampen theorem is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen\b' Poincare/Statement.lean
+check_decl "target sphere homotopy prerequisites from two-set Van Kampen equality contract is declared" \
+  '^theorem threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen_eq\b' Poincare/Statement.lean
 check_decl "target sphere finite concat collapse from stereographic loop theorem is declared" \
   '^theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_stereographicVanKampenLoopStatement\b' Poincare/Statement.lean
 check_decl "target sphere finite concat collapse from stereographic loop equality contract is declared" \
@@ -22589,6 +22621,22 @@ append_certificate_route_projection_contract_checks() {
 #check Poincare.twoSetOpenCoverVanKampenPiOneSubsingletonStatement_eq
 #check Poincare.threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
 #check Poincare.threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_stereographicVanKampenLoopStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_stereographicVanKampenLoopStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_stereographicVanKampenReductionStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_stereographicVanKampenReductionStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_simplyConnectedSpace_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_simplyConnectedSpace_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_target_prerequisites_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_target_prerequisites_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen_eq
 #check Poincare.ThreeSphereStereographicContractibleCoverInputsStatement
 #check Poincare.threeSphereStereographicContractibleCoverInputsStatement_eq
 #check Poincare.threeSphere_stereographicCoverOverlapPackage_contractibleCoverInputs
@@ -22748,12 +22796,18 @@ append_certificate_route_projection_contract_checks() {
 #check Poincare.threeSphere_piOneSubsingletonStatement_of_basedPiOneSubsingleton_eq
 #check Poincare.threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenPiOneSubsingletonStatement
 #check Poincare.threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenPiOneSubsingletonStatement_eq
+#check Poincare.threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
 #check Poincare.threeSphere_simplyConnectedSpace_of_stereographicVanKampenPiOneSubsingletonStatement
 #check Poincare.threeSphere_simplyConnectedSpace_of_stereographicVanKampenPiOneSubsingletonStatement_eq
+#check Poincare.threeSphere_simplyConnectedSpace_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_simplyConnectedSpace_of_twoSetOpenCoverVanKampen_eq
 #check Poincare.threeSphere_stereographicVanKampenConclusionStatement_of_equatorPiOneSubsingleton
 #check Poincare.threeSphere_stereographicVanKampenConclusionStatement_of_equatorPiOneSubsingleton_eq
 #check Poincare.threeSphere_stereographicVanKampenConclusionStatement_of_stereographicVanKampenPiOneSubsingletonStatement
 #check Poincare.threeSphere_stereographicVanKampenConclusionStatement_of_stereographicVanKampenPiOneSubsingletonStatement_eq
+#check Poincare.threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen_eq
 #check Poincare.threeSphere_stereographicVanKampenLoopStatement_of_equatorPiOneSubsingleton
 #check Poincare.threeSphere_stereographicVanKampenLoopStatement_of_equatorPiOneSubsingleton_eq
 #check Poincare.threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatQuotientStatement_and_finiteConcatCollapseStatement
@@ -22762,8 +22816,12 @@ append_certificate_route_projection_contract_checks() {
 #check Poincare.threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatCollapseStatement_eq
 #check Poincare.threeSphere_stereographicVanKampenLoopStatement_of_stereographicVanKampenPiOneSubsingletonStatement
 #check Poincare.threeSphere_stereographicVanKampenLoopStatement_of_stereographicVanKampenPiOneSubsingletonStatement_eq
+#check Poincare.threeSphere_stereographicVanKampenLoopStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_stereographicVanKampenLoopStatement_of_twoSetOpenCoverVanKampen_eq
 #check Poincare.threeSphere_stereographicVanKampenReductionStatement_of_stereographicVanKampenPiOneSubsingletonStatement
 #check Poincare.threeSphere_stereographicVanKampenReductionStatement_of_stereographicVanKampenPiOneSubsingletonStatement_eq
+#check Poincare.threeSphere_stereographicVanKampenReductionStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_stereographicVanKampenReductionStatement_of_twoSetOpenCoverVanKampen_eq
 #check Poincare.threeSphere_homotopy_prerequisites_iff_stereographicVanKampenLoopStatement
 #check Poincare.threeSphere_homotopy_prerequisites_iff_stereographicVanKampenLoopStatement_eq
 #check Poincare.threeSphere_homotopy_prerequisites_iff_stereographicVanKampenReductionStatement
@@ -52716,6 +52774,61 @@ open scoped Manifold ContDiff
   Poincare.ThreeSphereStereographicVanKampenPiOneSubsingletonStatement →
     Poincare.ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement)
 #check Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_stereographicVanKampenPiOneSubsingletonStatement_eq
+
+#check (Poincare.threeSphere_stereographicVanKampenLoopStatement_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+    Poincare.ThreeSphereStereographicVanKampenLoopStatement)
+#check Poincare.threeSphere_stereographicVanKampenLoopStatement_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+    Poincare.ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement)
+#check Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+    Poincare.ThreeSphereStereographicVanKampenConclusionStatement)
+#check Poincare.threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.threeSphere_stereographicVanKampenReductionStatement_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+    Poincare.ThreeSphereStereographicVanKampenReductionStatement)
+#check Poincare.threeSphere_stereographicVanKampenReductionStatement_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.threeSphere_simplyConnectedSpace_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+    SimplyConnectedSpace Poincare.ThreeSphere)
+#check Poincare.threeSphere_simplyConnectedSpace_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+    Poincare.ThreeSpherePiOneSubsingletonStatement)
+#check Poincare.threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.threeSphere_target_prerequisites_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+  ∃ _t2 : T2Space Poincare.ThreeSphere,
+  ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) Poincare.ThreeSphere,
+  ∃ _simplyConnected : SimplyConnectedSpace Poincare.ThreeSphere,
+  ∃ _compact : CompactSpace Poincare.ThreeSphere,
+  ∃ _smooth : IsManifold (𝓡 3) ∞ Poincare.ThreeSphere,
+  ∃ _path : PathConnectedSpace Poincare.ThreeSphere,
+  ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
+    Nonempty Poincare.ThreeSphere)
+#check Poincare.threeSphere_target_prerequisites_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+  ∃ _t2 : T2Space Poincare.ThreeSphere,
+  ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) Poincare.ThreeSphere,
+  ∃ _simplyConnected : SimplyConnectedSpace Poincare.ThreeSphere,
+  ∃ _compact : CompactSpace Poincare.ThreeSphere,
+  ∃ _smooth : IsManifold (𝓡 3) ∞ Poincare.ThreeSphere,
+  ∃ _path : PathConnectedSpace Poincare.ThreeSphere,
+  ∃ _locPath : LocPathConnectedSpace Poincare.ThreeSphere,
+  ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
+    Nonempty Poincare.ThreeSphere)
+#check Poincare.threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen_eq
 
 #check (Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_stereographicVanKampenLoopStatement :
   Poincare.ThreeSphereStereographicVanKampenLoopStatement →

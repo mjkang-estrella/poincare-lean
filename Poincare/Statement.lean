@@ -4953,6 +4953,214 @@ theorem threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenPiOneSub
   apply Subsingleton.elim
 
 /--
+The general two-set Van Kampen `π₁` contract supplies the concrete equatorial
+loop-nullhomotopy obligation for the stereographic cover.
+-/
+theorem threeSphere_stereographicVanKampenLoopStatement_of_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0}) :
+    ThreeSphereStereographicVanKampenLoopStatement :=
+  threeSphere_stereographicVanKampenLoopStatement_of_stereographicVanKampenPiOneSubsingletonStatement
+    (threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
+      hVK)
+
+/--
+The two-set Van Kampen route to the stereographic loop obligation is the
+specialization to the concrete stereographic `π₁` output followed by the
+fixed-basepoint `π₁` bridge.
+-/
+theorem threeSphere_stereographicVanKampenLoopStatement_of_twoSetOpenCoverVanKampen_eq :
+    threeSphere_stereographicVanKampenLoopStatement_of_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        threeSphere_stereographicVanKampenLoopStatement_of_stereographicVanKampenPiOneSubsingletonStatement
+          (threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
+            hVK)) := by
+  funext hVK
+  apply Subsingleton.elim
+
+/--
+The general two-set Van Kampen `π₁` contract collapses the finite-concat
+representatives by first specializing to the stereographic `π₁` output.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0}) :
+    ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement :=
+  threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_stereographicVanKampenPiOneSubsingletonStatement
+    (threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
+      hVK)
+
+/--
+The two-set Van Kampen route to finite-concat collapse is the concrete `π₁`
+specialization followed by the stereographic `π₁` collapse bridge.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_twoSetOpenCoverVanKampen_eq :
+    threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_stereographicVanKampenPiOneSubsingletonStatement
+          (threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
+            hVK)) := by
+  funext hVK
+  apply Subsingleton.elim
+
+/--
+The general two-set Van Kampen `π₁` contract supplies the concrete stereographic
+Van Kampen conclusion contract.
+-/
+theorem threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0}) :
+    ThreeSphereStereographicVanKampenConclusionStatement :=
+  threeSphere_stereographicVanKampenConclusionStatement_of_stereographicVanKampenPiOneSubsingletonStatement
+    (threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
+      hVK)
+
+/--
+The two-set Van Kampen route to the concrete conclusion contract factors through
+the stereographic `π₁` output surface.
+-/
+theorem threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen_eq :
+    threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        threeSphere_stereographicVanKampenConclusionStatement_of_stereographicVanKampenPiOneSubsingletonStatement
+          (threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
+            hVK)) := by
+  funext hVK
+  apply Subsingleton.elim
+
+/--
+The general two-set Van Kampen `π₁` contract supplies the full stereographic
+reduction package.
+-/
+theorem threeSphere_stereographicVanKampenReductionStatement_of_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0}) :
+    ThreeSphereStereographicVanKampenReductionStatement :=
+  threeSphere_stereographicVanKampenReductionStatement_of_stereographicVanKampenPiOneSubsingletonStatement
+    (threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
+      hVK)
+
+/--
+The two-set Van Kampen route to the reduction package factors through the
+stereographic `π₁` output surface.
+-/
+theorem threeSphere_stereographicVanKampenReductionStatement_of_twoSetOpenCoverVanKampen_eq :
+    threeSphere_stereographicVanKampenReductionStatement_of_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        threeSphere_stereographicVanKampenReductionStatement_of_stereographicVanKampenPiOneSubsingletonStatement
+          (threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
+            hVK)) := by
+  funext hVK
+  apply Subsingleton.elim
+
+/--
+The general two-set Van Kampen `π₁` contract supplies simple-connectedness of
+the standard sphere through the concrete stereographic route.
+-/
+theorem threeSphere_simplyConnectedSpace_of_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0}) :
+    SimplyConnectedSpace ThreeSphere :=
+  threeSphere_simplyConnectedSpace_of_stereographicVanKampenPiOneSubsingletonStatement
+    (threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
+      hVK)
+
+/--
+The two-set Van Kampen route to simple-connectedness factors through the
+stereographic `π₁` output surface.
+-/
+theorem threeSphere_simplyConnectedSpace_of_twoSetOpenCoverVanKampen_eq :
+    threeSphere_simplyConnectedSpace_of_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        threeSphere_simplyConnectedSpace_of_stereographicVanKampenPiOneSubsingletonStatement
+          (threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
+            hVK)) := by
+  funext hVK
+  apply Subsingleton.elim
+
+/--
+The general two-set Van Kampen `π₁` contract supplies the global `π₁`
+subsingleton formulation for the standard sphere.
+-/
+theorem threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0}) :
+    ThreeSpherePiOneSubsingletonStatement :=
+  threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenPiOneSubsingletonStatement
+    (threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
+      hVK)
+
+/--
+The two-set Van Kampen route to global `π₁` triviality factors through the
+stereographic `π₁` output surface.
+-/
+theorem threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq :
+    threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenPiOneSubsingletonStatement
+          (threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
+            hVK)) := by
+  funext hVK
+  apply Subsingleton.elim
+
+/--
+The general two-set Van Kampen `π₁` contract supplies the target-prerequisite
+payload for the standard sphere.
+-/
+theorem threeSphere_target_prerequisites_of_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0}) :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere :=
+  threeSphere_target_prerequisites_of_stereographicVanKampenConclusionStatement
+    (threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen
+      hVK)
+
+/--
+The two-set Van Kampen route to target prerequisites factors through the
+concrete stereographic conclusion contract.
+-/
+theorem threeSphere_target_prerequisites_of_twoSetOpenCoverVanKampen_eq :
+    threeSphere_target_prerequisites_of_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        threeSphere_target_prerequisites_of_stereographicVanKampenConclusionStatement
+          (threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen
+            hVK)) := by
+  funext hVK
+  apply Subsingleton.elim
+
+/--
+The general two-set Van Kampen `π₁` contract supplies the homotopy-prerequisite
+payload for the standard sphere.
+-/
+theorem threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0}) :
+    ∃ _t2 : T2Space ThreeSphere,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+    ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+    ∃ _compact : CompactSpace ThreeSphere,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+    ∃ _path : PathConnectedSpace ThreeSphere,
+    ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+    ∃ _connected : ConnectedSpace ThreeSphere,
+      Nonempty ThreeSphere :=
+  threeSphere_homotopy_prerequisites_of_stereographicVanKampenConclusionStatement
+    (threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen
+      hVK)
+
+/--
+The two-set Van Kampen route to homotopy prerequisites factors through the
+concrete stereographic conclusion contract.
+-/
+theorem threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen_eq :
+    threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        threeSphere_homotopy_prerequisites_of_stereographicVanKampenConclusionStatement
+          (threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen
+            hVK)) := by
+  funext hVK
+  apply Subsingleton.elim
+
+/--
 The `π₁` and fundamental-group formulations are equivalent through mathlib's
 `π₁`/fundamental-group equivalence.
 -/
