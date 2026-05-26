@@ -313,6 +313,32 @@ theorem canonical_completion_payload_of_universalFiniteExtinctionStatement_to_in
       finiteExtinction
 
 /--
+The named universal finite-extinction input discharges the universe-indexed
+completion criterion through its canonical target.
+-/
+theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement
+    (witness : Type u)
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    CompletionCriterionAtUniverse witness :=
+  completion_criterion_of_canonical_completion_target witness
+    (canonical_completion_target_of_universalFiniteExtinctionStatement
+      finiteExtinction)
+
+/--
+The named universal finite-extinction criterion route is the criterion
+projection from its canonical target.
+-/
+theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement_eq
+    (witness : Type u)
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    canonical_completion_criterion_of_universalFiniteExtinctionStatement
+        witness finiteExtinction =
+      completion_criterion_of_canonical_completion_target witness
+        (canonical_completion_target_of_universalFiniteExtinctionStatement
+          finiteExtinction) := by
+  apply Subsingleton.elim
+
+/--
 The smoothability/surgery package route supplies the canonical completion
 target through its named universal finite-extinction boundary.
 -/
@@ -1394,6 +1420,56 @@ theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement_and
     witness finiteExtinction extractSphere
 
 /--
+Finite extinction plus extinction compactification recognition exposes the
+canonical completion target and criterion payload.
+-/
+theorem canonical_completion_payload_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
+    ∃ _target : canonicalCompletionTarget.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  canonical_completion_payload_of_poincare_completion_payload
+    (poincare_payload_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+      finiteExtinction recognize)
+
+/--
+Finite extinction plus extinction compactification recognition proves the
+canonical completion target through the project payload.
+-/
+theorem canonical_completion_target_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
+    canonicalCompletionTarget.{u} :=
+  canonicalCompletionTarget_of_poincare_completion_payload
+    (poincare_payload_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+      finiteExtinction recognize)
+
+/--
+Finite extinction plus extinction compactification recognition discharges the
+universe-indexed completion criterion through the canonical payload.
+-/
+theorem canonical_completion_criterion_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+    (witness : Type u)
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
+    CompletionCriterionAtUniverse witness :=
+  completion_criterion_of_canonical_completion_payload witness
+    (canonical_completion_payload_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+      finiteExtinction recognize)
+
+/--
 The named universal finite-extinction input plus extinction compactification
 recognition exposes the canonical completion target and criterion payload.
 -/
@@ -1402,9 +1478,8 @@ theorem canonical_completion_payload_of_universalFiniteExtinctionStatement_and_e
     (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
     ∃ _target : canonicalCompletionTarget.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
-  canonical_completion_payload_of_poincare_completion_payload
-    (poincare_payload_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
-      finiteExtinction recognize)
+  canonical_completion_payload_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+    finiteExtinction recognize
 
 /--
 The named universal finite-extinction input plus extinction compactification
@@ -1415,9 +1490,8 @@ theorem canonical_completion_target_of_universalFiniteExtinctionStatement_and_ex
     (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
     (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
     canonicalCompletionTarget.{u} :=
-  canonicalCompletionTarget_of_poincare_completion_payload
-    (poincare_payload_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
-      finiteExtinction recognize)
+  canonical_completion_target_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+    finiteExtinction recognize
 
 /--
 The named universal finite-extinction input plus extinction compactification
@@ -1429,9 +1503,8 @@ theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement_and
     (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
     (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
     CompletionCriterionAtUniverse witness :=
-  completion_criterion_of_canonical_completion_payload witness
-    (canonical_completion_payload_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
-      finiteExtinction recognize)
+  canonical_completion_criterion_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+    witness finiteExtinction recognize
 
 /--
 Universal finite extinction plus the theorem-shaped topology extraction
@@ -1526,6 +1599,50 @@ theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement_and
     CompletionCriterionAtUniverse witness :=
   canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
     witness finiteExtinction topologyStatement
+
+/--
+Universal finite extinction plus the theorem-shaped topology extraction
+statement can be routed through named one-point compactification recognition to
+expose the canonical completion target and explicit criterion payload.
+-/
+theorem canonical_completion_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_via_extinctionOnePointThreeSpaceRecognitionStatement
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    ∃ _target : canonicalCompletionTarget.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  canonical_completion_payload_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
+    finiteExtinction
+    (extinctionOnePointThreeSpaceRecognitionStatement_of_topology_extraction_statement
+      topologyStatement)
+
+/--
+Universal finite extinction plus the theorem-shaped topology extraction
+statement can be routed through named one-point compactification recognition to
+prove the canonical completion target.
+-/
+theorem canonical_completion_target_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_via_extinctionOnePointThreeSpaceRecognitionStatement
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    canonicalCompletionTarget.{u} :=
+  canonical_completion_target_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
+    finiteExtinction
+    (extinctionOnePointThreeSpaceRecognitionStatement_of_topology_extraction_statement
+      topologyStatement)
+
+/--
+Universal finite extinction plus the theorem-shaped topology extraction
+statement can be routed through named one-point compactification recognition to
+discharge the universe-indexed canonical completion criterion.
+-/
+theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_via_extinctionOnePointThreeSpaceRecognitionStatement
+    (witness : Type u)
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    CompletionCriterionAtUniverse witness :=
+  canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
+    witness finiteExtinction
+    (extinctionOnePointThreeSpaceRecognitionStatement_of_topology_extraction_statement
+      topologyStatement)
 
 /--
 Universal finite extinction plus a final extractor and its topology derivation
@@ -1703,17 +1820,98 @@ theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement_and
   apply Subsingleton.elim
 
 /--
+The finite-extinction recognition canonical payload is obtained through the
+shared project-to-canonical completion payload bridge.
+-/
+theorem canonical_completion_payload_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
+    canonical_completion_payload_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+        finiteExtinction recognize =
+      canonical_completion_payload_of_poincare_completion_payload
+        (poincare_payload_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+          finiteExtinction recognize) := by
+  apply Subsingleton.elim
+
+/--
+The finite-extinction recognition canonical target is obtained from the named
+project-layer recognition payload.
+-/
+theorem canonical_completion_target_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
+    canonical_completion_target_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+        finiteExtinction recognize =
+      canonicalCompletionTarget_of_poincare_completion_payload
+        (poincare_payload_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+          finiteExtinction recognize) := by
+  apply Subsingleton.elim
+
+/--
+The finite-extinction recognition canonical criterion is the criterion
+projection from its canonical payload.
+-/
+theorem canonical_completion_criterion_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement_eq
+    (witness : Type u)
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
+    canonical_completion_criterion_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+        witness finiteExtinction recognize =
+      completion_criterion_of_canonical_completion_payload witness
+        (canonical_completion_payload_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+          finiteExtinction recognize) := by
+  apply Subsingleton.elim
+
+/--
 The named universal finite-extinction extinction-recognition canonical payload
-is the canonical conversion of the named project-layer recognition payload.
+is the raw finite-extinction recognition canonical payload under the named
+remaining input statement.
 -/
 theorem canonical_completion_payload_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement_eq
     (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
     (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
     canonical_completion_payload_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
         finiteExtinction recognize =
-      canonical_completion_payload_of_poincare_completion_payload
-        (poincare_payload_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
-          finiteExtinction recognize) := by
+      canonical_completion_payload_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+        finiteExtinction recognize := by
+  apply Subsingleton.elim
+
+/--
+The named universal finite-extinction recognition canonical payload agrees with
+the raw finite-extinction recognition canonical payload under the named input.
+-/
+theorem canonical_completion_payload_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement_to_finite_extinction_recognition_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
+    canonical_completion_payload_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
+        finiteExtinction recognize =
+      canonical_completion_payload_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+        finiteExtinction recognize := by
+  apply Subsingleton.elim
+
+/--
+The named universal finite-extinction recognition canonical payload agrees with
+the existing universal finite-extinction canonical payload.
+-/
+theorem canonical_completion_payload_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement_universal_route_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
+    canonical_completion_payload_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
+        finiteExtinction recognize =
+      canonical_completion_payload_of_universalFiniteExtinctionStatement
+        finiteExtinction := by
   apply Subsingleton.elim
 
 /--
@@ -1755,9 +1953,34 @@ theorem canonical_completion_target_of_universalFiniteExtinctionStatement_and_ex
     (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
     canonical_completion_target_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
         finiteExtinction recognize =
-      canonicalCompletionTarget_of_poincare_completion_payload
-        (poincare_payload_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
-          finiteExtinction recognize) := by
+      canonical_completion_target_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+        finiteExtinction recognize := by
+  apply Subsingleton.elim
+
+/--
+The named universal finite-extinction recognition canonical target agrees with
+the raw finite-extinction recognition canonical target under the named input.
+-/
+theorem canonical_completion_target_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement_to_finite_extinction_recognition_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
+    canonical_completion_target_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
+        finiteExtinction recognize =
+      canonical_completion_target_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+        finiteExtinction recognize := by
+  apply Subsingleton.elim
+
+/--
+The named universal finite-extinction recognition canonical target agrees with
+the existing universal finite-extinction canonical target.
+-/
+theorem canonical_completion_target_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement_universal_route_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
+    canonical_completion_target_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
+        finiteExtinction recognize =
+      canonical_completion_target_of_universalFiniteExtinctionStatement
+        finiteExtinction := by
   apply Subsingleton.elim
 
 /--
@@ -1798,9 +2021,36 @@ theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement_and
     (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
     canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
         witness finiteExtinction recognize =
-      completion_criterion_of_canonical_completion_payload witness
-        (canonical_completion_payload_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
-          finiteExtinction recognize) := by
+      canonical_completion_criterion_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+        witness finiteExtinction recognize := by
+  apply Subsingleton.elim
+
+/--
+The named universal finite-extinction recognition canonical criterion agrees
+with the raw finite-extinction recognition criterion under the named input.
+-/
+theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement_to_finite_extinction_recognition_eq
+    (witness : Type u)
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
+    canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
+        witness finiteExtinction recognize =
+      canonical_completion_criterion_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+        witness finiteExtinction recognize := by
+  apply Subsingleton.elim
+
+/--
+The named universal finite-extinction recognition canonical criterion agrees
+with the existing universal finite-extinction canonical criterion.
+-/
+theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement_universal_route_eq
+    (witness : Type u)
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
+    canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
+        witness finiteExtinction recognize =
+      canonical_completion_criterion_of_universalFiniteExtinctionStatement
+        witness finiteExtinction := by
   apply Subsingleton.elim
 
 /--
@@ -1907,6 +2157,19 @@ theorem canonical_completion_payload_of_universalFiniteExtinctionStatement_and_t
       finiteExtinction topologyStatement
 
 /--
+The topology-extraction canonical payload route through named one-point
+recognition agrees with the direct topology-extraction canonical payload route.
+-/
+theorem canonical_completion_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_via_extinctionOnePointThreeSpaceRecognitionStatement_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    canonical_completion_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_via_extinctionOnePointThreeSpaceRecognitionStatement
+        finiteExtinction topologyStatement =
+      canonical_completion_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+        finiteExtinction topologyStatement := by
+  apply Subsingleton.elim
+
+/--
 The finite-extinction/topology-statement target projection destructures the
 named canonical payload.
 -/
@@ -1968,6 +2231,19 @@ theorem canonical_completion_target_of_universalFiniteExtinctionStatement_and_to
   exact
     canonical_completion_target_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_to_project_statement_eq
       finiteExtinction topologyStatement
+
+/--
+The topology-extraction canonical target route through named one-point
+recognition agrees with the direct topology-extraction canonical target route.
+-/
+theorem canonical_completion_target_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_via_extinctionOnePointThreeSpaceRecognitionStatement_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    canonical_completion_target_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_via_extinctionOnePointThreeSpaceRecognitionStatement
+        finiteExtinction topologyStatement =
+      canonical_completion_target_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+        finiteExtinction topologyStatement := by
+  apply Subsingleton.elim
 
 /--
 The finite-extinction/topology-statement criterion projection destructures the
@@ -2046,6 +2322,21 @@ theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement_and
   exact
     canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_to_project_payload_eq
       witness finiteExtinction topologyStatement
+
+/--
+The topology-extraction canonical criterion route through named one-point
+recognition agrees with the direct topology-extraction canonical criterion
+route.
+-/
+theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_via_extinctionOnePointThreeSpaceRecognitionStatement_eq
+    (witness : Type u)
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_via_extinctionOnePointThreeSpaceRecognitionStatement
+        witness finiteExtinction topologyStatement =
+      canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+        witness finiteExtinction topologyStatement := by
+  apply Subsingleton.elim
 
 /--
 The finite-extinction/certified-extraction canonical payload is obtained through

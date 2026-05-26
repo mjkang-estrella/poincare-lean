@@ -27822,6 +27822,30 @@ theorem extinction_implies_sphere_of_topology_extraction_statement_eq
   apply Subsingleton.elim
 
 /--
+The theorem-shaped topology extraction statement supplies the named one-point
+compactification recognition interface after extinction.
+-/
+theorem extinctionOnePointThreeSpaceRecognitionStatement_of_topology_extraction_statement
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    ExtinctionOnePointThreeSpaceRecognitionStatement.{u} :=
+  extinctionOnePointThreeSpaceRecognitionStatement_of_extinctionImpliesSphereStatement
+    (extinction_implies_sphere_of_topology_extraction_statement
+      topologyStatement)
+
+/--
+The topology-extraction-to-one-point-recognition bridge is the reverse
+extinction-recognition route applied to the extracted sphere interface.
+-/
+theorem extinctionOnePointThreeSpaceRecognitionStatement_of_topology_extraction_statement_eq
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    extinctionOnePointThreeSpaceRecognitionStatement_of_topology_extraction_statement
+        topologyStatement =
+      extinctionOnePointThreeSpaceRecognitionStatement_of_extinctionImpliesSphereStatement
+        (extinction_implies_sphere_of_topology_extraction_statement
+          topologyStatement) := by
+  apply Subsingleton.elim
+
+/--
 If a finite-extinction-to-sphere extractor is accompanied by derivation evidence
 for the homeomorphism it returns, then it upgrades to the stronger topology
 extraction statement.
@@ -28162,6 +28186,61 @@ theorem poincare_payload_of_universalFiniteExtinctionStatement_and_topology_extr
     poincare_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
         finiteExtinction topologyStatement =
       poincare_payload_of_finite_extinction_and_topology_extraction_statement
+        finiteExtinction topologyStatement := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction plus the stronger topology extraction statement can
+be routed through the named one-point compactification recognition interface to
+discharge the project target.
+-/
+theorem poincare_statement_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_via_extinctionOnePointThreeSpaceRecognitionStatement
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
+    finiteExtinction
+    (extinctionOnePointThreeSpaceRecognitionStatement_of_topology_extraction_statement
+      topologyStatement)
+
+/--
+The topology-extraction target route through named one-point recognition agrees
+with the direct topology-extraction project route.
+-/
+theorem poincare_statement_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_via_extinctionOnePointThreeSpaceRecognitionStatement_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    poincare_statement_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_via_extinctionOnePointThreeSpaceRecognitionStatement
+        finiteExtinction topologyStatement =
+      poincare_statement_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+        finiteExtinction topologyStatement := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction plus the stronger topology extraction statement can
+be routed through named one-point recognition to expose the project completion
+payload.
+-/
+theorem poincare_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_via_extinctionOnePointThreeSpaceRecognitionStatement
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_payload_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
+    finiteExtinction
+    (extinctionOnePointThreeSpaceRecognitionStatement_of_topology_extraction_statement
+      topologyStatement)
+
+/--
+The topology-extraction payload route through named one-point recognition agrees
+with the direct topology-extraction project payload route.
+-/
+theorem poincare_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_via_extinctionOnePointThreeSpaceRecognitionStatement_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    poincare_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_via_extinctionOnePointThreeSpaceRecognitionStatement
+        finiteExtinction topologyStatement =
+      poincare_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
         finiteExtinction topologyStatement := by
   apply Subsingleton.elim
 
