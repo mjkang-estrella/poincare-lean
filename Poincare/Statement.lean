@@ -4760,6 +4760,41 @@ theorem threeSphere_stereographicVanKampenLoopStatement_of_equatorPiOneSubsingle
   apply Subsingleton.elim
 
 /--
+Triviality of `π₁` at the equatorial overlap point collapses every finite
+source-contained representative by first converting it to based-loop
+nullhomotopy and then to global path-quotient uniqueness.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_equatorPiOneSubsingleton
+    (h : Subsingleton (HomotopyGroup.Pi 1 ThreeSphere threeSphere_equatorPoint)) :
+    ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement
+      ((threeSphere_basedPiOneSubsingleton_iff_basedLoopNullhomotopyStatement
+        threeSphere_equatorPoint).mp h)
+  exact
+    threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_pathQuotientSubsingletonStatement
+      threeSphere_pathQuotientSubsingletonStatement_of_simplyConnectedSpace
+
+/--
+The equatorial `π₁`-to-finite-concat-collapse route is the fixed-basepoint
+`π₁` bridge followed by the simple-connectedness and path-quotient collapse
+routes.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_equatorPiOneSubsingleton_eq :
+    threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_equatorPiOneSubsingleton =
+      (fun h : Subsingleton (HomotopyGroup.Pi 1 ThreeSphere threeSphere_equatorPoint) =>
+        by
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement
+            ((threeSphere_basedPiOneSubsingleton_iff_basedLoopNullhomotopyStatement
+              threeSphere_equatorPoint).mp h)
+          exact
+            threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_pathQuotientSubsingletonStatement
+              threeSphere_pathQuotientSubsingletonStatement_of_simplyConnectedSpace) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 Triviality of `π₁` at the equatorial overlap point supplies the stereographic
 Van Kampen conclusion contract.
 -/
@@ -4799,6 +4834,29 @@ theorem threeSphere_stereographicVanKampenLoopStatement_of_stereographicVanKampe
     threeSphere_stereographicVanKampenLoopStatement_of_stereographicVanKampenPiOneSubsingletonStatement =
       (fun h : ThreeSphereStereographicVanKampenPiOneSubsingletonStatement =>
         threeSphere_stereographicVanKampenLoopStatement_of_equatorPiOneSubsingleton
+          (h threeSphere_stereographicCoverOverlapPackage_vanKampenInputs)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+A stereographic Van Kampen `π₁` computation collapses every finite-concat
+representative by evaluating the computation at the concrete cover inputs.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_stereographicVanKampenPiOneSubsingletonStatement
+    (h : ThreeSphereStereographicVanKampenPiOneSubsingletonStatement) :
+    ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement :=
+  threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_equatorPiOneSubsingleton
+    (h threeSphere_stereographicCoverOverlapPackage_vanKampenInputs)
+
+/--
+The Van-Kampen-`π₁`-to-finite-concat-collapse route evaluates the `π₁`
+conclusion at the concrete stereographic inputs and then uses the equatorial
+`π₁` collapse bridge.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_stereographicVanKampenPiOneSubsingletonStatement_eq :
+    threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_stereographicVanKampenPiOneSubsingletonStatement =
+      (fun h : ThreeSphereStereographicVanKampenPiOneSubsingletonStatement =>
+        threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_equatorPiOneSubsingleton
           (h threeSphere_stereographicCoverOverlapPackage_vanKampenInputs)) := by
   funext h
   apply Subsingleton.elim
@@ -5219,6 +5277,51 @@ theorem threeSphere_pathQuotientSubsingletonStatement_of_stereographicVanKampenL
   apply Subsingleton.elim
 
 /--
+A stereographic Van Kampen loop proof collapses the finite-concat
+representatives by converting the loop-nullhomotopy proof to global
+path-quotient uniqueness.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_stereographicVanKampenLoopStatement
+    (h : ThreeSphereStereographicVanKampenLoopStatement) :
+    ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement :=
+  threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_pathQuotientSubsingletonStatement
+    (threeSphere_pathQuotientSubsingletonStatement_of_stereographicVanKampenLoopStatement h)
+
+/--
+The stereographic-loop-to-finite-concat-collapse route factors through the
+stereographic-loop-to-path-quotient route.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_stereographicVanKampenLoopStatement_eq :
+    threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_stereographicVanKampenLoopStatement =
+      (fun h : ThreeSphereStereographicVanKampenLoopStatement =>
+        threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_pathQuotientSubsingletonStatement
+          (threeSphere_pathQuotientSubsingletonStatement_of_stereographicVanKampenLoopStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+Finite-concat collapse and the stereographic Van Kampen loop obligation are
+equivalent: collapse gives loop nullhomotopy through the verified finite-concat
+quotient statement, and loop nullhomotopy gives collapse through path quotients.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_iff_stereographicVanKampenLoopStatement :
+    ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement ↔
+      ThreeSphereStereographicVanKampenLoopStatement :=
+  ⟨threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatCollapseStatement,
+    threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_stereographicVanKampenLoopStatement⟩
+
+/--
+The finite-concat-collapse/stereographic-loop equivalence is the pair of named
+conversion routes through finite-concat quotienting and path-quotient
+uniqueness.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_iff_stereographicVanKampenLoopStatement_eq :
+    threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_iff_stereographicVanKampenLoopStatement =
+      ⟨threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatCollapseStatement,
+        threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_stereographicVanKampenLoopStatement⟩ := by
+  apply Subsingleton.elim
+
+/--
 The stereographic Van Kampen loop obligation is equivalent to global
 path-homotopy quotient uniqueness: the reverse direction uses finite-concat
 collapse, while the forward direction uses the equatorial based-loop quotient
@@ -5239,6 +5342,49 @@ theorem threeSphere_stereographicVanKampenLoopStatement_iff_pathQuotientSubsingl
     threeSphere_stereographicVanKampenLoopStatement_iff_pathQuotientSubsingletonStatement =
       ⟨threeSphere_pathQuotientSubsingletonStatement_of_stereographicVanKampenLoopStatement,
         threeSphere_stereographicVanKampenLoopStatement_of_pathQuotientSubsingletonStatement⟩ := by
+  apply Subsingleton.elim
+
+/--
+Finite-concat collapse is equivalent to global path-homotopy quotient
+uniqueness via the stereographic Van Kampen loop obligation.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_iff_pathQuotientSubsingletonStatement :
+    ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement ↔
+      ThreeSpherePathQuotientSubsingletonStatement :=
+  threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_iff_stereographicVanKampenLoopStatement.trans
+    threeSphere_stereographicVanKampenLoopStatement_iff_pathQuotientSubsingletonStatement
+
+/--
+The finite-concat-collapse/path-quotient equivalence factors through the
+finite-concat-collapse/stereographic-loop equivalence and the
+stereographic-loop/path-quotient equivalence.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_iff_pathQuotientSubsingletonStatement_eq :
+    threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_iff_pathQuotientSubsingletonStatement =
+      threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_iff_stereographicVanKampenLoopStatement.trans
+        threeSphere_stereographicVanKampenLoopStatement_iff_pathQuotientSubsingletonStatement := by
+  apply Subsingleton.elim
+
+/--
+A full stereographic Van Kampen reduction proof collapses the finite-concat
+representatives by projecting its loop component.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_stereographicVanKampenReductionStatement
+    (h : ThreeSphereStereographicVanKampenReductionStatement) :
+    ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement :=
+  threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_stereographicVanKampenLoopStatement
+    (threeSphere_stereographicVanKampenLoopStatement_iff_reductionStatement.mpr h)
+
+/--
+The reduction-to-finite-concat-collapse route projects the loop component and
+then uses the stereographic-loop-to-collapse route.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_stereographicVanKampenReductionStatement_eq :
+    threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_stereographicVanKampenReductionStatement =
+      (fun h : ThreeSphereStereographicVanKampenReductionStatement =>
+        threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_stereographicVanKampenLoopStatement
+          (threeSphere_stereographicVanKampenLoopStatement_iff_reductionStatement.mpr h)) := by
+  funext h
   apply Subsingleton.elim
 
 /-- A stereographic Van Kampen loop proof supplies fundamental-group triviality on `S^3`. -/
