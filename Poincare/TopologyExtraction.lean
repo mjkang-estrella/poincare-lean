@@ -3652,6 +3652,151 @@ theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingleton
   apply Subsingleton.elim
 
 /--
+The general two-set Van Kampen `π₁` contract supplies simple-connectedness for
+the one-point compactification model through the standard-sphere `π₁` route.
+-/
+theorem onePoint_threeSpace_simplyConnectedSpace_of_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0}) :
+    SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+  onePoint_threeSpace_simplyConnectedSpace_of_threeSpherePiOneSubsingletonStatement
+    (threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK)
+
+/--
+The two-set Van Kampen simple-connectedness route for the one-point model
+factors through transported standard-sphere `π₁` triviality.
+-/
+theorem onePoint_threeSpace_simplyConnectedSpace_of_twoSetOpenCoverVanKampen_eq :
+    onePoint_threeSpace_simplyConnectedSpace_of_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        onePoint_threeSpace_simplyConnectedSpace_of_threeSpherePiOneSubsingletonStatement
+          (threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK)) := by
+  funext hVK
+  apply Subsingleton.elim
+
+/--
+The general two-set Van Kampen `π₁` contract supplies loop-nullhomotopy for the
+one-point compactification model through transported standard-sphere `π₁`.
+-/
+theorem onePoint_threeSpace_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0}) :
+    OnePointThreeSpaceLoopNullhomotopyStatement :=
+  onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement
+    (threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK)
+
+/--
+The two-set Van Kampen loop-nullhomotopy route for the one-point model factors
+through the standard-sphere `π₁` endpoint.
+-/
+theorem onePoint_threeSpace_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen_eq :
+    onePoint_threeSpace_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        (onePoint_threeSpace_loopNullhomotopyStatement_of_threeSpherePiOneSubsingletonStatement
+          (threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK) :
+          OnePointThreeSpaceLoopNullhomotopyStatement)) := by
+  funext hVK
+  apply Subsingleton.elim
+
+/--
+The general two-set Van Kampen `π₁` contract supplies path-homotopy uniqueness
+for the one-point compactification model through transported `π₁` triviality.
+-/
+theorem onePoint_threeSpace_pathHomotopyStatement_of_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0}) :
+    OnePointThreeSpacePathHomotopyStatement :=
+  onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePiOneSubsingletonStatement
+    (threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK)
+
+/--
+The two-set Van Kampen path-homotopy route for the one-point model factors
+through the standard-sphere `π₁` endpoint.
+-/
+theorem onePoint_threeSpace_pathHomotopyStatement_of_twoSetOpenCoverVanKampen_eq :
+    onePoint_threeSpace_pathHomotopyStatement_of_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        (onePoint_threeSpace_pathHomotopyStatement_of_threeSpherePiOneSubsingletonStatement
+          (threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK) :
+          OnePointThreeSpacePathHomotopyStatement)) := by
+  funext hVK
+  apply Subsingleton.elim
+
+/--
+The general two-set Van Kampen `π₁` contract supplies path-quotient uniqueness
+for the one-point compactification model through transported `π₁` triviality.
+-/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0}) :
+    OnePointThreeSpacePathQuotientSubsingletonStatement :=
+  onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement
+    (threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK)
+
+/--
+The two-set Van Kampen path-quotient route for the one-point model factors
+through the standard-sphere `π₁` endpoint.
+-/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq :
+    onePoint_threeSpace_pathQuotientSubsingletonStatement_of_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        (onePoint_threeSpace_pathQuotientSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement
+          (threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK) :
+          OnePointThreeSpacePathQuotientSubsingletonStatement)) := by
+  funext hVK
+  apply Subsingleton.elim
+
+/--
+The general two-set Van Kampen `π₁` contract supplies the one-point
+compactification `π₁` formulation through transported standard-sphere `π₁`.
+-/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0}) :
+    OnePointThreeSpacePiOneSubsingletonStatement :=
+  onePoint_threeSpace_piOneSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement
+    (threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK)
+
+/--
+The two-set Van Kampen `π₁` route for the one-point model factors through the
+standard-sphere `π₁` endpoint.
+-/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq :
+    onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        (onePoint_threeSpace_piOneSubsingletonStatement_of_threeSpherePiOneSubsingletonStatement
+          (threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK) :
+          OnePointThreeSpacePiOneSubsingletonStatement)) := by
+  funext hVK
+  apply Subsingleton.elim
+
+/--
+The general two-set Van Kampen `π₁` contract supplies the full
+homotopy/manifold prerequisite payload for the one-point compactification model.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0}) :
+    ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+  onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingletonStatement
+    (threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK)
+
+/--
+The two-set Van Kampen homotopy/manifold prerequisite route for the one-point
+model factors through the standard-sphere `π₁` endpoint.
+-/
+theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_twoSetOpenCoverVanKampen_eq :
+    onePoint_threeSpace_homotopy_manifold_prerequisites_of_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        onePoint_threeSpace_homotopy_manifold_prerequisites_of_piOneSubsingletonStatement
+          (threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK)) := by
+  funext hVK
+  apply Subsingleton.elim
+
+/--
 The compactification model's own based loop-nullhomotopy obligation directly
 supplies the full compactification homotopy/manifold prerequisite payload.
 -/

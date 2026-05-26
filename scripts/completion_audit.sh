@@ -1803,6 +1803,10 @@ check_decl "target sphere fundamental group from two-set Van Kampen theorem is d
   '^theorem threeSphere_fundamentalGroupSubsingletonStatement_of_twoSetOpenCoverVanKampen\b' Poincare/Statement.lean
 check_decl "target sphere fundamental group from two-set Van Kampen equality contract is declared" \
   '^theorem threeSphere_fundamentalGroupSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq\b' Poincare/Statement.lean
+check_decl "target sphere north-pole loop-nullhomotopy from two-set Van Kampen theorem is declared" \
+  '^theorem threeSphere_northPoleLoopNullhomotopyStatement_of_twoSetOpenCoverVanKampen\b' Poincare/Statement.lean
+check_decl "target sphere north-pole loop-nullhomotopy from two-set Van Kampen equality contract is declared" \
+  '^theorem threeSphere_northPoleLoopNullhomotopyStatement_of_twoSetOpenCoverVanKampen_eq\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites from two-set Van Kampen theorem is declared" \
   '^theorem threeSphere_target_prerequisites_of_twoSetOpenCoverVanKampen\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites from two-set Van Kampen equality contract is declared" \
@@ -1811,6 +1815,30 @@ check_decl "target sphere homotopy prerequisites from two-set Van Kampen theorem
   '^theorem threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen\b' Poincare/Statement.lean
 check_decl "target sphere homotopy prerequisites from two-set Van Kampen equality contract is declared" \
   '^theorem threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen_eq\b' Poincare/Statement.lean
+check_decl "one-point simple-connectedness from two-set Van Kampen theorem is declared" \
+  '^theorem onePoint_threeSpace_simplyConnectedSpace_of_twoSetOpenCoverVanKampen\b' Poincare/TopologyExtraction.lean
+check_decl "one-point simple-connectedness from two-set Van Kampen equality contract is declared" \
+  '^theorem onePoint_threeSpace_simplyConnectedSpace_of_twoSetOpenCoverVanKampen_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point loop-nullhomotopy from two-set Van Kampen theorem is declared" \
+  '^theorem onePoint_threeSpace_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen\b' Poincare/TopologyExtraction.lean
+check_decl "one-point loop-nullhomotopy from two-set Van Kampen equality contract is declared" \
+  '^theorem onePoint_threeSpace_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point path-homotopy from two-set Van Kampen theorem is declared" \
+  '^theorem onePoint_threeSpace_pathHomotopyStatement_of_twoSetOpenCoverVanKampen\b' Poincare/TopologyExtraction.lean
+check_decl "one-point path-homotopy from two-set Van Kampen equality contract is declared" \
+  '^theorem onePoint_threeSpace_pathHomotopyStatement_of_twoSetOpenCoverVanKampen_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point path quotient from two-set Van Kampen theorem is declared" \
+  '^theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_twoSetOpenCoverVanKampen\b' Poincare/TopologyExtraction.lean
+check_decl "one-point path quotient from two-set Van Kampen equality contract is declared" \
+  '^theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point pi-one from two-set Van Kampen theorem is declared" \
+  '^theorem onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen\b' Poincare/TopologyExtraction.lean
+check_decl "one-point pi-one from two-set Van Kampen equality contract is declared" \
+  '^theorem onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq\b' Poincare/TopologyExtraction.lean
+check_decl "one-point homotopy-manifold prerequisites from two-set Van Kampen theorem is declared" \
+  '^theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_twoSetOpenCoverVanKampen\b' Poincare/TopologyExtraction.lean
+check_decl "one-point homotopy-manifold prerequisites from two-set Van Kampen equality contract is declared" \
+  '^theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_twoSetOpenCoverVanKampen_eq\b' Poincare/TopologyExtraction.lean
 check_decl "target sphere finite concat collapse from stereographic loop theorem is declared" \
   '^theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_stereographicVanKampenLoopStatement\b' Poincare/Statement.lean
 check_decl "target sphere finite concat collapse from stereographic loop equality contract is declared" \
@@ -22663,10 +22691,24 @@ append_certificate_route_projection_contract_checks() {
 #check Poincare.threeSphere_pathQuotientSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
 #check Poincare.threeSphere_fundamentalGroupSubsingletonStatement_of_twoSetOpenCoverVanKampen
 #check Poincare.threeSphere_fundamentalGroupSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_northPoleLoopNullhomotopyStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_northPoleLoopNullhomotopyStatement_of_twoSetOpenCoverVanKampen_eq
 #check Poincare.threeSphere_target_prerequisites_of_twoSetOpenCoverVanKampen
 #check Poincare.threeSphere_target_prerequisites_of_twoSetOpenCoverVanKampen_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen
 #check Poincare.threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.onePoint_threeSpace_simplyConnectedSpace_of_twoSetOpenCoverVanKampen
+#check Poincare.onePoint_threeSpace_simplyConnectedSpace_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.onePoint_threeSpace_pathHomotopyStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.onePoint_threeSpace_pathHomotopyStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.onePoint_threeSpace_pathQuotientSubsingletonStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.onePoint_threeSpace_pathQuotientSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_twoSetOpenCoverVanKampen
+#check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_twoSetOpenCoverVanKampen_eq
 #check Poincare.ThreeSphereStereographicContractibleCoverInputsStatement
 #check Poincare.threeSphereStereographicContractibleCoverInputsStatement_eq
 #check Poincare.threeSphere_stereographicCoverOverlapPackage_contractibleCoverInputs
@@ -22838,6 +22880,8 @@ append_certificate_route_projection_contract_checks() {
 #check Poincare.threeSphere_pathHomotopyStatement_of_twoSetOpenCoverVanKampen_eq
 #check Poincare.threeSphere_pathQuotientSubsingletonStatement_of_twoSetOpenCoverVanKampen
 #check Poincare.threeSphere_pathQuotientSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_northPoleLoopNullhomotopyStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_northPoleLoopNullhomotopyStatement_of_twoSetOpenCoverVanKampen_eq
 #check Poincare.threeSphere_simplyConnectedSpace_of_stereographicVanKampenPiOneSubsingletonStatement
 #check Poincare.threeSphere_simplyConnectedSpace_of_stereographicVanKampenPiOneSubsingletonStatement_eq
 #check Poincare.threeSphere_simplyConnectedSpace_of_twoSetOpenCoverVanKampen
@@ -52870,6 +52914,11 @@ open scoped Manifold ContDiff
     Poincare.ThreeSphereFundamentalGroupSubsingletonStatement)
 #check Poincare.threeSphere_fundamentalGroupSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
 
+#check (Poincare.threeSphere_northPoleLoopNullhomotopyStatement_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+    Poincare.ThreeSphereNorthPoleLoopNullhomotopyStatement)
+#check Poincare.threeSphere_northPoleLoopNullhomotopyStatement_of_twoSetOpenCoverVanKampen_eq
+
 #check (Poincare.threeSphere_target_prerequisites_of_twoSetOpenCoverVanKampen :
   Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
   ∃ _t2 : T2Space Poincare.ThreeSphere,
@@ -52894,6 +52943,45 @@ open scoped Manifold ContDiff
   ∃ _connected : ConnectedSpace Poincare.ThreeSphere,
     Nonempty Poincare.ThreeSphere)
 #check Poincare.threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.onePoint_threeSpace_simplyConnectedSpace_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+    SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))))
+#check Poincare.onePoint_threeSpace_simplyConnectedSpace_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+    Poincare.OnePointThreeSpaceLoopNullhomotopyStatement)
+#check Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.onePoint_threeSpace_pathHomotopyStatement_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+    Poincare.OnePointThreeSpacePathHomotopyStatement)
+#check Poincare.onePoint_threeSpace_pathHomotopyStatement_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.onePoint_threeSpace_pathQuotientSubsingletonStatement_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+    Poincare.OnePointThreeSpacePathQuotientSubsingletonStatement)
+#check Poincare.onePoint_threeSpace_pathQuotientSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+    Poincare.OnePointThreeSpacePiOneSubsingletonStatement)
+#check Poincare.onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+  ∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+  ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+    (OnePoint (EuclideanSpace ℝ (Fin 3))),
+  ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+  ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+  ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+  ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+  ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+  ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+    Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3))))
+#check Poincare.onePoint_threeSpace_homotopy_manifold_prerequisites_of_twoSetOpenCoverVanKampen_eq
 
 #check (Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_stereographicVanKampenLoopStatement :
   Poincare.ThreeSphereStereographicVanKampenLoopStatement →

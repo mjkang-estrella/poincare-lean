@@ -6095,6 +6095,28 @@ theorem threeSphere_northPoleLoopNullhomotopyStatement_of_piOneSubsingletonState
   apply Subsingleton.elim
 
 /--
+The general two-set Van Kampen `π₁` contract supplies north-pole based
+loop-nullhomotopy on the standard sphere through the concrete `π₁` route.
+-/
+theorem threeSphere_northPoleLoopNullhomotopyStatement_of_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0}) :
+    ThreeSphereNorthPoleLoopNullhomotopyStatement :=
+  threeSphere_northPoleLoopNullhomotopyStatement_of_piOneSubsingletonStatement
+    (threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK)
+
+/--
+The two-set Van Kampen route to north-pole based loop-nullhomotopy factors
+through the standard-sphere `π₁` endpoint.
+-/
+theorem threeSphere_northPoleLoopNullhomotopyStatement_of_twoSetOpenCoverVanKampen_eq :
+    threeSphere_northPoleLoopNullhomotopyStatement_of_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        threeSphere_northPoleLoopNullhomotopyStatement_of_piOneSubsingletonStatement
+          (threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK)) := by
+  funext hVK
+  apply Subsingleton.elim
+
+/--
 The concrete loop-nullhomotopy obligation supplies the full target prerequisite
 payload for applying the project statement to the standard sphere.
 -/
