@@ -1783,6 +1783,26 @@ check_decl "target sphere pi-one from two-set Van Kampen theorem is declared" \
   '^theorem threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen\b' Poincare/Statement.lean
 check_decl "target sphere pi-one from two-set Van Kampen equality contract is declared" \
   '^theorem threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq\b' Poincare/Statement.lean
+check_decl "target sphere equator pi-one from two-set Van Kampen theorem is declared" \
+  '^theorem threeSphere_equatorPiOneSubsingleton_of_twoSetOpenCoverVanKampen\b' Poincare/Statement.lean
+check_decl "target sphere equator pi-one from two-set Van Kampen equality contract is declared" \
+  '^theorem threeSphere_equatorPiOneSubsingleton_of_twoSetOpenCoverVanKampen_eq\b' Poincare/Statement.lean
+check_decl "target sphere loop-nullhomotopy from two-set Van Kampen theorem is declared" \
+  '^theorem threeSphere_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen\b' Poincare/Statement.lean
+check_decl "target sphere loop-nullhomotopy from two-set Van Kampen equality contract is declared" \
+  '^theorem threeSphere_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen_eq\b' Poincare/Statement.lean
+check_decl "target sphere path-homotopy from two-set Van Kampen theorem is declared" \
+  '^theorem threeSphere_pathHomotopyStatement_of_twoSetOpenCoverVanKampen\b' Poincare/Statement.lean
+check_decl "target sphere path-homotopy from two-set Van Kampen equality contract is declared" \
+  '^theorem threeSphere_pathHomotopyStatement_of_twoSetOpenCoverVanKampen_eq\b' Poincare/Statement.lean
+check_decl "target sphere path quotient from two-set Van Kampen theorem is declared" \
+  '^theorem threeSphere_pathQuotientSubsingletonStatement_of_twoSetOpenCoverVanKampen\b' Poincare/Statement.lean
+check_decl "target sphere path quotient from two-set Van Kampen equality contract is declared" \
+  '^theorem threeSphere_pathQuotientSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq\b' Poincare/Statement.lean
+check_decl "target sphere fundamental group from two-set Van Kampen theorem is declared" \
+  '^theorem threeSphere_fundamentalGroupSubsingletonStatement_of_twoSetOpenCoverVanKampen\b' Poincare/Statement.lean
+check_decl "target sphere fundamental group from two-set Van Kampen equality contract is declared" \
+  '^theorem threeSphere_fundamentalGroupSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites from two-set Van Kampen theorem is declared" \
   '^theorem threeSphere_target_prerequisites_of_twoSetOpenCoverVanKampen\b' Poincare/Statement.lean
 check_decl "target sphere target prerequisites from two-set Van Kampen equality contract is declared" \
@@ -22633,6 +22653,16 @@ append_certificate_route_projection_contract_checks() {
 #check Poincare.threeSphere_simplyConnectedSpace_of_twoSetOpenCoverVanKampen_eq
 #check Poincare.threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
 #check Poincare.threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_equatorPiOneSubsingleton_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_equatorPiOneSubsingleton_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_pathHomotopyStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_pathHomotopyStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_pathQuotientSubsingletonStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_pathQuotientSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_fundamentalGroupSubsingletonStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_fundamentalGroupSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
 #check Poincare.threeSphere_target_prerequisites_of_twoSetOpenCoverVanKampen
 #check Poincare.threeSphere_target_prerequisites_of_twoSetOpenCoverVanKampen_eq
 #check Poincare.threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen
@@ -22786,6 +22816,8 @@ append_certificate_route_projection_contract_checks() {
 #check Poincare.threeSphere_fundamentalGroupSubsingletonStatement_of_simplyConnectedSpace_eq
 #check Poincare.threeSphere_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenConclusionStatement
 #check Poincare.threeSphere_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenConclusionStatement_eq
+#check Poincare.threeSphere_fundamentalGroupSubsingletonStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_fundamentalGroupSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
 #check Poincare.threeSphere_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenLoopStatement
 #check Poincare.threeSphere_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenLoopStatement_eq
 #check Poincare.threeSphere_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenReductionStatement
@@ -22798,6 +22830,14 @@ append_certificate_route_projection_contract_checks() {
 #check Poincare.threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenPiOneSubsingletonStatement_eq
 #check Poincare.threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
 #check Poincare.threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_equatorPiOneSubsingleton_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_equatorPiOneSubsingleton_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_pathHomotopyStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_pathHomotopyStatement_of_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_pathQuotientSubsingletonStatement_of_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_pathQuotientSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
 #check Poincare.threeSphere_simplyConnectedSpace_of_stereographicVanKampenPiOneSubsingletonStatement
 #check Poincare.threeSphere_simplyConnectedSpace_of_stereographicVanKampenPiOneSubsingletonStatement_eq
 #check Poincare.threeSphere_simplyConnectedSpace_of_twoSetOpenCoverVanKampen
@@ -52804,6 +52844,31 @@ open scoped Manifold ContDiff
   Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
     Poincare.ThreeSpherePiOneSubsingletonStatement)
 #check Poincare.threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.threeSphere_equatorPiOneSubsingleton_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+    Subsingleton (HomotopyGroup.Pi 1 Poincare.ThreeSphere Poincare.threeSphere_equatorPoint))
+#check Poincare.threeSphere_equatorPiOneSubsingleton_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.threeSphere_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+    Poincare.ThreeSphereLoopNullhomotopyStatement)
+#check Poincare.threeSphere_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.threeSphere_pathHomotopyStatement_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+    Poincare.ThreeSpherePathHomotopyStatement)
+#check Poincare.threeSphere_pathHomotopyStatement_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.threeSphere_pathQuotientSubsingletonStatement_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+    Poincare.ThreeSpherePathQuotientSubsingletonStatement)
+#check Poincare.threeSphere_pathQuotientSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
+
+#check (Poincare.threeSphere_fundamentalGroupSubsingletonStatement_of_twoSetOpenCoverVanKampen :
+  Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →
+    Poincare.ThreeSphereFundamentalGroupSubsingletonStatement)
+#check Poincare.threeSphere_fundamentalGroupSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
 
 #check (Poincare.threeSphere_target_prerequisites_of_twoSetOpenCoverVanKampen :
   Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} →

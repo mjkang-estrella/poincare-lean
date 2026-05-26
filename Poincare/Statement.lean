@@ -5834,6 +5834,124 @@ theorem threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenConclusi
   funext h
   apply Subsingleton.elim
 
+/--
+The general two-set Van Kampen `π₁` contract supplies the fixed equatorial
+`π₁` triviality conclusion for the concrete stereographic cover.
+-/
+theorem threeSphere_equatorPiOneSubsingleton_of_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0}) :
+    Subsingleton (HomotopyGroup.Pi 1 ThreeSphere threeSphere_equatorPoint) :=
+  (threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
+    hVK) threeSphere_stereographicCoverOverlapPackage_vanKampenInputs
+
+/--
+The two-set Van Kampen route to fixed equatorial `π₁` triviality specializes the
+general theorem to the verified stereographic input package.
+-/
+theorem threeSphere_equatorPiOneSubsingleton_of_twoSetOpenCoverVanKampen_eq :
+    threeSphere_equatorPiOneSubsingleton_of_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        (threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
+          hVK) threeSphere_stereographicCoverOverlapPackage_vanKampenInputs) := by
+  funext hVK
+  apply Subsingleton.elim
+
+/--
+The general two-set Van Kampen `π₁` contract supplies full loop-nullhomotopy on
+the standard sphere through the concrete stereographic conclusion route.
+-/
+theorem threeSphere_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0}) :
+    ThreeSphereLoopNullhomotopyStatement :=
+  threeSphere_loopNullhomotopyStatement_of_stereographicVanKampenConclusionStatement
+    (threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen
+      hVK)
+
+/--
+The two-set Van Kampen route to full loop-nullhomotopy factors through the
+concrete stereographic conclusion contract.
+-/
+theorem threeSphere_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen_eq :
+    threeSphere_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        (threeSphere_loopNullhomotopyStatement_of_stereographicVanKampenConclusionStatement
+          (threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen
+            hVK) : ThreeSphereLoopNullhomotopyStatement)) := by
+  funext hVK
+  apply Subsingleton.elim
+
+/--
+The general two-set Van Kampen `π₁` contract supplies path-homotopy uniqueness
+on the standard sphere through the concrete stereographic conclusion route.
+-/
+theorem threeSphere_pathHomotopyStatement_of_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0}) :
+    ThreeSpherePathHomotopyStatement :=
+  threeSphere_pathHomotopyStatement_of_stereographicVanKampenConclusionStatement
+    (threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen
+      hVK)
+
+/--
+The two-set Van Kampen route to path-homotopy uniqueness factors through the
+concrete stereographic conclusion contract.
+-/
+theorem threeSphere_pathHomotopyStatement_of_twoSetOpenCoverVanKampen_eq :
+    threeSphere_pathHomotopyStatement_of_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        (threeSphere_pathHomotopyStatement_of_stereographicVanKampenConclusionStatement
+          (threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen
+            hVK) : ThreeSpherePathHomotopyStatement)) := by
+  funext hVK
+  apply Subsingleton.elim
+
+/--
+The general two-set Van Kampen `π₁` contract supplies path-homotopy quotient
+uniqueness on the standard sphere through the concrete stereographic conclusion.
+-/
+theorem threeSphere_pathQuotientSubsingletonStatement_of_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0}) :
+    ThreeSpherePathQuotientSubsingletonStatement :=
+  threeSphere_pathQuotientSubsingletonStatement_of_stereographicVanKampenConclusionStatement
+    (threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen
+      hVK)
+
+/--
+The two-set Van Kampen route to path-quotient uniqueness factors through the
+concrete stereographic conclusion contract.
+-/
+theorem threeSphere_pathQuotientSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq :
+    threeSphere_pathQuotientSubsingletonStatement_of_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        (threeSphere_pathQuotientSubsingletonStatement_of_stereographicVanKampenConclusionStatement
+          (threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen
+            hVK) : ThreeSpherePathQuotientSubsingletonStatement)) := by
+  funext hVK
+  apply Subsingleton.elim
+
+/--
+The general two-set Van Kampen `π₁` contract supplies fundamental-group
+triviality on the standard sphere through the concrete stereographic conclusion.
+-/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0}) :
+    ThreeSphereFundamentalGroupSubsingletonStatement :=
+  threeSphere_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenConclusionStatement
+    (threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen
+      hVK)
+
+/--
+The two-set Van Kampen route to fundamental-group triviality factors through the
+concrete stereographic conclusion contract.
+-/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq :
+    threeSphere_fundamentalGroupSubsingletonStatement_of_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        (threeSphere_fundamentalGroupSubsingletonStatement_of_stereographicVanKampenConclusionStatement
+          (threeSphere_stereographicVanKampenConclusionStatement_of_twoSetOpenCoverVanKampen
+            hVK) : ThreeSphereFundamentalGroupSubsingletonStatement)) := by
+  funext hVK
+  apply Subsingleton.elim
+
 /-- North-pole based loop-nullhomotopy supplies path-homotopy uniqueness on `S^3`. -/
 theorem threeSphere_pathHomotopyStatement_of_northPoleLoopNullhomotopyStatement
     (h : ThreeSphereNorthPoleLoopNullhomotopyStatement) :
