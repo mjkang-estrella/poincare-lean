@@ -4223,6 +4223,60 @@ theorem threeSphere_pathQuotientSubsingletonStatement_of_simplyConnectedSpace_eq
   apply Subsingleton.elim
 
 /--
+Global path-homotopy quotient uniqueness collapses every finite-concat
+representative of an equatorial loop to the stationary representative.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_pathQuotientSubsingletonStatement
+    (h : ThreeSpherePathQuotientSubsingletonStatement) :
+    ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement := by
+  intro γ N t h0 h1 _hsegment
+  exact (h ((γ ∘ t) 0) ((γ ∘ t) (Fin.last N))).elim
+    (Path.Homotopic.Quotient.mk
+      (Path.concat (γ ∘ t) (fun k => γ.subpath (t k.castSucc) (t k.succ))))
+    (Path.Homotopic.Quotient.mk
+      ((Path.refl threeSphere_equatorPoint).cast (by simp [h0]) (by simp [h1])))
+
+/--
+The path-quotient-to-finite-concat-collapse route is quotient subsingleton
+elimination between the finite-concat representative and the stationary loop.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_pathQuotientSubsingletonStatement_eq :
+    threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_pathQuotientSubsingletonStatement =
+      (fun h : ThreeSpherePathQuotientSubsingletonStatement =>
+        by
+          intro γ N t h0 h1 _hsegment
+          exact (h ((γ ∘ t) 0) ((γ ∘ t) (Fin.last N))).elim
+            (Path.Homotopic.Quotient.mk
+              (Path.concat (γ ∘ t) (fun k => γ.subpath (t k.castSucc) (t k.succ))))
+            (Path.Homotopic.Quotient.mk
+              ((Path.refl threeSphere_equatorPoint).cast
+                (by simp [h0]) (by simp [h1])))) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+Global path-homotopy quotient uniqueness supplies the stereographic Van Kampen
+loop obligation through the finite-concat collapse route.
+-/
+theorem threeSphere_stereographicVanKampenLoopStatement_of_pathQuotientSubsingletonStatement
+    (h : ThreeSpherePathQuotientSubsingletonStatement) :
+    ThreeSphereStereographicVanKampenLoopStatement :=
+  threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatCollapseStatement
+    (threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_pathQuotientSubsingletonStatement h)
+
+/--
+The path-quotient-to-Van-Kampen-loop route factors through the finite-concat
+collapse statement.
+-/
+theorem threeSphere_stereographicVanKampenLoopStatement_of_pathQuotientSubsingletonStatement_eq :
+    threeSphere_stereographicVanKampenLoopStatement_of_pathQuotientSubsingletonStatement =
+      (fun h : ThreeSpherePathQuotientSubsingletonStatement =>
+        threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatCollapseStatement
+          (threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_of_pathQuotientSubsingletonStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 Path-homotopy uniqueness gives quotient uniqueness through the named
 simple-connectedness criterion.
 -/
@@ -5162,6 +5216,29 @@ theorem threeSphere_pathQuotientSubsingletonStatement_of_stereographicVanKampenL
           (basepoint := threeSphere_equatorPoint) h :
             ThreeSpherePathQuotientSubsingletonStatement)) := by
   funext h
+  apply Subsingleton.elim
+
+/--
+The stereographic Van Kampen loop obligation is equivalent to global
+path-homotopy quotient uniqueness: the reverse direction uses finite-concat
+collapse, while the forward direction uses the equatorial based-loop quotient
+criterion.
+-/
+theorem threeSphere_stereographicVanKampenLoopStatement_iff_pathQuotientSubsingletonStatement :
+    ThreeSphereStereographicVanKampenLoopStatement ↔
+      ThreeSpherePathQuotientSubsingletonStatement :=
+  ⟨threeSphere_pathQuotientSubsingletonStatement_of_stereographicVanKampenLoopStatement,
+    threeSphere_stereographicVanKampenLoopStatement_of_pathQuotientSubsingletonStatement⟩
+
+/--
+The stereographic-loop/path-quotient equivalence is the pair of named
+conversion routes through based-loop quotient uniqueness and finite-concat
+collapse.
+-/
+theorem threeSphere_stereographicVanKampenLoopStatement_iff_pathQuotientSubsingletonStatement_eq :
+    threeSphere_stereographicVanKampenLoopStatement_iff_pathQuotientSubsingletonStatement =
+      ⟨threeSphere_pathQuotientSubsingletonStatement_of_stereographicVanKampenLoopStatement,
+        threeSphere_stereographicVanKampenLoopStatement_of_pathQuotientSubsingletonStatement⟩ := by
   apply Subsingleton.elim
 
 /-- A stereographic Van Kampen loop proof supplies fundamental-group triviality on `S^3`. -/
