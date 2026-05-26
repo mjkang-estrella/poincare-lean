@@ -9323,6 +9323,61 @@ theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStat
   funext hPi recognize
   apply Subsingleton.elim
 
+/--
+The general two-set Van Kampen `π₁` contract plus one-point recognition supplies
+the one-point compactification self-homeomorphism endpoint.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0})
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ
+      (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+  onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement
+    (onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK)
+    recognize
+
+/--
+The two-set Van Kampen recognition self route factors through the one-point
+`π₁` endpoint transported from the standard sphere.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen_eq :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement
+            (onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK)
+            recognize) := by
+  funext hVK recognize
+  apply Subsingleton.elim
+
+/--
+The two-set Van Kampen recognition self route also agrees with first extracting
+the one-point loop-nullhomotopy endpoint.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen_loop_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen hVK)
+            recognize) := by
+  funext hVK recognize
+  apply Subsingleton.elim
+
+/--
+The two-set Van Kampen recognition self route also agrees with first extracting
+the north-pole based loop-nullhomotopy endpoint.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen_northPole_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_twoSetOpenCoverVanKampen hVK)
+            recognize) := by
+  funext hVK recognize
+  apply Subsingleton.elim
+
 /-- The local based-loop universal-recognition self route agrees with the north-pole route. -/
 theorem onePoint_threeSpace_self_homeomorph_of_onePointThreeSpaceRecognitionStatement_and_onePointBasedLoopNullhomotopyStatement_northPole_route_eq
     (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
@@ -10406,6 +10461,60 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognit
               (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement hPi))
             recognize) := by
   funext hPi recognize
+  apply Subsingleton.elim
+
+/--
+The general two-set Van Kampen `π₁` contract plus one-point recognition supplies
+the concrete one-point compactification-to-`ThreeSphere` homeomorphism endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0})
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement
+    (onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK)
+    recognize
+
+/--
+The two-set Van Kampen recognition target route factors through the one-point
+`π₁` endpoint transported from the standard sphere.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement
+            (onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK)
+            recognize) := by
+  funext hVK recognize
+  apply Subsingleton.elim
+
+/--
+The two-set Van Kampen recognition target route also agrees with first
+extracting the one-point loop-nullhomotopy endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen_loop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen hVK)
+            recognize) := by
+  funext hVK recognize
+  apply Subsingleton.elim
+
+/--
+The two-set Van Kampen recognition target route also agrees with first
+extracting the north-pole based loop-nullhomotopy endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen_northPole_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_twoSetOpenCoverVanKampen hVK)
+            recognize) := by
+  funext hVK recognize
   apply Subsingleton.elim
 
 /-- The local based-loop universal-recognition target route agrees with the north-pole route. -/
@@ -11523,6 +11632,88 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpace
               (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement hPi))
             recognize) := by
   funext hPi recognize
+  apply Subsingleton.elim
+
+/--
+The general two-set Van Kampen `π₁` contract plus one-point recognition packages
+the compactification homotopy/manifold prerequisites with the target
+homeomorphism endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0})
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) :=
+  ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_twoSetOpenCoverVanKampen
+      hVK,
+    onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen
+      hVK recognize⟩
+
+/--
+The two-set Van Kampen recognition payload route pairs the transported
+one-point prerequisite payload with the direct target endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          ⟨onePoint_threeSpace_homotopy_manifold_prerequisites_of_twoSetOpenCoverVanKampen
+              hVK,
+            onePoint_threeSpace_homeomorph_threeSphere_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen
+              hVK recognize⟩) := by
+  funext hVK recognize
+  apply Subsingleton.elim
+
+/--
+The two-set Van Kampen recognition payload route agrees with first extracting
+the one-point `π₁` endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen_onePoint_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement
+            (onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK)
+            recognize) := by
+  funext hVK recognize
+  apply Subsingleton.elim
+
+/--
+The two-set Van Kampen recognition payload route agrees with first extracting
+the one-point loop-nullhomotopy endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen_loop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_onePointLoopNullhomotopyStatement
+            (onePoint_threeSpace_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen hVK)
+            recognize) := by
+  funext hVK recognize
+  apply Subsingleton.elim
+
+/--
+The two-set Van Kampen recognition payload route agrees with first extracting
+the north-pole based loop-nullhomotopy endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen_northPole_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        fun recognize : OnePointThreeSpaceRecognitionStatement.{0} =>
+          onePoint_threeSpace_homeomorph_threeSphere_payload_of_onePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+            (threeSphere_northPoleLoopNullhomotopyStatement_of_twoSetOpenCoverVanKampen hVK)
+            recognize) := by
+  funext hVK recognize
   apply Subsingleton.elim
 
 /-- The local based-loop universal-recognition payload agrees with the north-pole payload route. -/
