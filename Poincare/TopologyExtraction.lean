@@ -552,6 +552,83 @@ theorem poincare_payload_of_finite_extinction_and_extinctionOnePointThreeSpaceRe
         finiteExtinction recognize := by
   apply Subsingleton.elim
 
+/--
+The named universal finite-extinction input plus extinction compactification
+recognition discharges the project target statement through the
+finite-extinction recognition route.
+-/
+theorem poincare_statement_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+    finiteExtinction recognize
+
+/--
+The universal finite-extinction/extinction-recognition target route is the
+finite-extinction recognition target route under the named universal input.
+-/
+theorem poincare_statement_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement_eq :
+    poincare_statement_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement =
+      (fun finiteExtinction : UniversalFiniteExtinctionStatement.{u} =>
+        fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u} =>
+          poincare_statement_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+            finiteExtinction recognize) := by
+  funext finiteExtinction recognize
+  apply Subsingleton.elim
+
+/--
+The universal finite-extinction/extinction-recognition target route agrees
+with the existing universal finite-extinction target route.
+-/
+theorem poincare_statement_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement_universal_route_eq :
+    poincare_statement_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement =
+      (fun finiteExtinction : UniversalFiniteExtinctionStatement.{u} =>
+        fun _recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u} =>
+          poincare_statement_of_universalFiniteExtinctionStatement
+            finiteExtinction) := by
+  funext finiteExtinction recognize
+  apply Subsingleton.elim
+
+/--
+The named universal finite-extinction input plus extinction compactification
+recognition exposes the project completion payload through the
+finite-extinction recognition payload route.
+-/
+theorem poincare_payload_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_payload_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+    finiteExtinction recognize
+
+/--
+The universal finite-extinction/extinction-recognition payload route is the
+finite-extinction recognition payload route under the named universal input.
+-/
+theorem poincare_payload_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement_eq :
+    poincare_payload_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement =
+      (fun finiteExtinction : UniversalFiniteExtinctionStatement.{u} =>
+        fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u} =>
+          poincare_payload_of_finite_extinction_and_extinctionOnePointThreeSpaceRecognitionStatement
+            finiteExtinction recognize) := by
+  funext finiteExtinction recognize
+  apply Subsingleton.elim
+
+/--
+The universal finite-extinction/extinction-recognition payload route agrees
+with the existing universal finite-extinction payload route.
+-/
+theorem poincare_payload_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement_universal_route_eq :
+    poincare_payload_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement =
+      (fun finiteExtinction : UniversalFiniteExtinctionStatement.{u} =>
+        fun _recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u} =>
+          poincare_payload_of_universalFiniteExtinctionStatement
+            finiteExtinction) := by
+  funext finiteExtinction recognize
+  apply Subsingleton.elim
+
 /-- The one-point compactification model is Hausdorff. -/
 theorem onePoint_threeSpace_t2Space :
     T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
