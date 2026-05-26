@@ -1747,6 +1747,41 @@ theorem poincare_statement_of_surgery_and_topology_packages_via_extinctionOnePoi
   apply Subsingleton.elim
 
 /--
+The package-level one-point recognition statement route agrees with the
+ordinary package statement route.
+-/
+theorem poincare_statement_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement_to_package_route_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    poincare_statement_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement
+      smoothabilityPackage surgeryPackages topologyPackage =
+      poincare_statement_of_surgery_and_topology_packages
+        smoothabilityPackage surgeryPackages topologyPackage := by
+  apply Subsingleton.elim
+
+theorem poincare_statement_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement_to_package_route
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    poincare_statement_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement
+      smoothabilityPackage surgeryPackages topologyPackage =
+      poincare_statement_of_surgery_and_topology_packages
+        smoothabilityPackage surgeryPackages topologyPackage :=
+  poincare_statement_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement_to_package_route_eq
+    smoothabilityPackage surgeryPackages topologyPackage
+
+/--
 The package-level one-point recognition route exposes the project completion
 payload through its named Poincare statement endpoint.
 -/
@@ -1784,6 +1819,41 @@ theorem poincare_completion_payload_of_surgery_and_topology_packages_via_extinct
         (poincare_statement_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement
           smoothabilityPackage surgeryPackages topologyPackage) := by
   apply Subsingleton.elim
+
+/--
+The package-level one-point recognition completion payload agrees with the
+ordinary package completion payload route.
+-/
+theorem poincare_completion_payload_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement_to_package_route_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    poincare_completion_payload_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement
+      smoothabilityPackage surgeryPackages topologyPackage =
+      poincare_completion_payload_of_surgery_and_topology_packages
+        smoothabilityPackage surgeryPackages topologyPackage := by
+  apply Subsingleton.elim
+
+theorem poincare_completion_payload_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement_to_package_route
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    poincare_completion_payload_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement
+      smoothabilityPackage surgeryPackages topologyPackage =
+      poincare_completion_payload_of_surgery_and_topology_packages
+        smoothabilityPackage surgeryPackages topologyPackage :=
+  poincare_completion_payload_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement_to_package_route_eq
+    smoothabilityPackage surgeryPackages topologyPackage
 
 /--
 If the smoothability and surgery package route is available and a final
