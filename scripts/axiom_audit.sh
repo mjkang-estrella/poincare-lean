@@ -10,14 +10,940 @@ check_dir=
 check_file=
 output_file=
 normalized_file=
+theorem_names=
+theorem_names_file=
+constructor_surface_dir=
+payload_route_parity_dir=
 
 cleanup() {
   if [ -n "$check_dir" ]; then
     rm -rf "$check_dir"
   fi
+  if [ -n "$theorem_names_file" ]; then
+    rm -f "$theorem_names_file"
+  fi
+  if [ -n "$constructor_surface_dir" ]; then
+    rm -rf "$constructor_surface_dir"
+  fi
+  if [ -n "$payload_route_parity_dir" ]; then
+    rm -rf "$payload_route_parity_dir"
+  fi
 }
 
 trap cleanup EXIT
+
+theorem_names_file=$(mktemp "${TMPDIR:-/tmp}/poincare-axiom-theorems.$$-XXXXXX")
+awk '/^theorem / {print $2}' Poincare.lean Poincare/*.lean | sort -u > "$theorem_names_file"
+theorem_names=$(cat "$theorem_names_file")
+
+has_theorem() {
+  rg -qx "$1" "$theorem_names_file"
+}
+
+is_general_route_exception() {
+  case "$1" in
+    *poincare_conjecture*) return 0 ;;
+    *_of_remaining_dependency_and_packaged_smooth_statement) return 0 ;;
+    *_of_remaining_dependency_and_packaged_smooth_statement_to_*) return 0 ;;
+    *_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement) return 0 ;;
+    *_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_*) return 0 ;;
+    *_of_remaining_dependency_and_packaged_reverse_canonical_smooth_three_sphere_statement) return 0 ;;
+    *_of_remaining_dependency_and_packaged_reverse_canonical_smooth_three_sphere_statement_to_*) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+check_route_counterpart() {
+  source_suffix=$1
+  target_suffix=$2
+  label=$3
+  printf '%s\n' "$theorem_names" | while IFS= read -r name; do
+    case "$name" in
+      *"$source_suffix")
+        is_general_route_exception "$name" && continue
+        target=${name%"$source_suffix"}"$target_suffix"
+        if ! has_theorem "$target"; then
+          echo "FAIL: axiom audit route counterpart missing for ${label}: ${name} lacks ${target}"
+          exit 1
+        fi
+        ;;
+    esac
+  done
+}
+
+check_route_counterpart "_to_boundary_route_eq" "_to_package_eq" "boundary route package"
+check_route_counterpart "_to_boundary_route_eq" "_to_direct_verification_payload_eq" "boundary route direct payload"
+check_route_counterpart "_to_boundary_route_eq" "_to_finite_extinction_eq" "boundary route finite extinction"
+check_route_counterpart "_to_extraction_derivation_eq" "_to_statement_eq" "extraction derivation statement"
+check_route_counterpart "_to_extraction_derivation_eq" "_to_finite_extinction_eq" "extraction derivation finite extinction"
+check_route_counterpart "_to_extraction_derivation_eq" "_to_package_eq" "extraction derivation package"
+check_route_counterpart "_to_extraction_derivation_eq" "_to_direct_verification_payload_eq" "extraction derivation direct payload"
+check_route_counterpart "_to_remaining_dependency_eq" "_to_package_eq" "remaining dependency package"
+check_route_counterpart "_to_remaining_dependency_eq" "_to_direct_verification_payload_eq" "remaining dependency direct payload"
+check_route_counterpart "_to_remaining_dependency_eq" "_to_finite_extinction_eq" "remaining dependency finite extinction"
+check_route_counterpart "_to_forgetful_dependencies_eq" "_to_package_eq" "forgetful dependencies package"
+check_route_counterpart "_to_forgetful_dependencies_eq" "_to_direct_verification_payload_eq" "forgetful dependencies direct payload"
+check_route_counterpart "_to_forgetful_dependencies_eq" "_to_finite_extinction_eq" "forgetful dependencies finite extinction"
+check_route_counterpart "_to_boundary_certificate_eq" "_to_package_eq" "boundary certificate package"
+check_route_counterpart "_to_boundary_certificate_eq" "_to_direct_verification_payload_eq" "boundary certificate direct payload"
+check_route_counterpart "_to_boundary_certificate_eq" "_to_finite_extinction_eq" "boundary certificate finite extinction"
+check_route_counterpart "_to_boundary_certificate_eq" "_to_remaining_dependency_eq" "boundary certificate remaining dependency"
+check_route_counterpart "_to_projected_dependency_eq" "_to_package_eq" "projected dependency package"
+check_route_counterpart "_to_projected_dependency_eq" "_to_direct_verification_payload_eq" "projected dependency direct payload"
+check_route_counterpart "_to_projected_dependency_eq" "_to_finite_extinction_eq" "projected dependency finite extinction"
+echo "PASS: generalized route counterparts are present in axiom audit surface"
+
+check_route_base_endpoint() {
+  source_suffix=$1
+  label=$2
+  printf '%s\n' "$theorem_names" | while IFS= read -r name; do
+    case "$name" in
+      *"$source_suffix")
+        is_general_route_exception "$name" && continue
+        base=${name%"_eq"}
+        if ! has_theorem "$base"; then
+          echo "FAIL: axiom audit route base endpoint missing for ${label}: ${name} lacks ${base}"
+          exit 1
+        fi
+        ;;
+    esac
+  done
+}
+
+check_route_base_endpoint "_to_projected_dependency_eq" "projected dependency"
+echo "PASS: projected-dependency route equality contracts expose direct endpoint names in axiom audit surface"
+
+check_route_base_endpoint_for_prefix() {
+  source_suffix=$1
+  name_prefix=$2
+  label=$3
+  printf '%s\n' "$theorem_names" | while IFS= read -r name; do
+    case "$name" in
+      "$name_prefix""$source_suffix")
+        base=${name%"_eq"}
+        if ! has_theorem "$base"; then
+          echo "FAIL: axiom audit route base endpoint missing for ${label}: ${name} lacks ${base}"
+          exit 1
+        fi
+        ;;
+    esac
+  done
+}
+
+for route_suffix in \
+  _to_direct_verification_payload_eq \
+  _to_remaining_dependency_eq \
+  _to_boundary_certificate_eq \
+  _to_surgery_derivative_payload_eq \
+  _to_pointwise_equation_payload_eq \
+  _to_direct_pointwise_equation_payload_eq \
+  _to_analytic_boundary_eq \
+  _to_derivation_and_boundary_payload_eq \
+  _to_finite_extinction_eq \
+  _to_package_eq
+do
+  check_route_base_endpoint_for_prefix "$route_suffix" \
+    "analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload" \
+    "CompletionTarget boundary-aware analytic-foundation certificate route"
+done
+echo "PASS: CompletionTarget boundary-aware analytic-foundation certificate route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_suffix in \
+  _to_direct_verification_payload_eq \
+  _to_remaining_dependency_eq \
+  _to_boundary_certificate_eq \
+  _to_analytic_boundary_eq \
+  _to_derivation_and_boundary_payload_eq \
+  _to_pointwise_equation_payload_eq \
+  _to_direct_pointwise_equation_payload_eq \
+  _to_finite_extinction_eq \
+  _to_package_eq
+do
+  check_route_base_endpoint_for_prefix "$route_suffix" \
+    "analytic_derivation_and_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload" \
+    "CompletionTarget boundary-aware analytic derivation-boundary payload certificate route"
+done
+echo "PASS: CompletionTarget boundary-aware analytic derivation-boundary payload certificate route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_suffix in \
+  _to_direct_verification_payload_eq \
+  _to_remaining_dependency_eq \
+  _to_boundary_certificate_eq \
+  _to_analytic_boundary_eq \
+  _to_derivation_and_boundary_payload_eq \
+  _to_pointwise_equation_payload_eq \
+  _to_direct_pointwise_equation_payload_eq \
+  _to_finite_extinction_eq \
+  _to_package_eq
+do
+  check_route_base_endpoint_for_prefix "$route_suffix" \
+    "analytic_derivation_statements_of_completion_certificate_with_equation_boundary_verification_payload" \
+    "CompletionTarget boundary-aware analytic derivation certificate route"
+done
+echo "PASS: CompletionTarget boundary-aware analytic derivation certificate route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_suffix in \
+  _to_direct_verification_payload_eq \
+  _to_projected_dependency_eq \
+  _to_remaining_dependency_eq \
+  _to_equation_boundary_remaining_dependency_eq \
+  _to_boundary_certificate_eq \
+  _to_pointwise_equation_payload_eq \
+  _to_derivative_payload_eq \
+  _to_direct_pointwise_equation_payload_eq \
+  _to_analytic_boundary_eq \
+  _to_derivation_and_boundary_payload_eq \
+  _to_surgery_derivative_payload_eq \
+  _to_boundary_payload_eq \
+  _to_finite_extinction_eq \
+  _to_package_eq
+do
+  check_route_base_endpoint_for_prefix "$route_suffix" \
+    "finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload" \
+    "CompletionTarget boundary-aware finite-extinction certificate route"
+done
+echo "PASS: CompletionTarget boundary-aware finite-extinction certificate route equality contracts expose direct endpoint names in axiom audit surface"
+
+
+for route_prefix in \
+  canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate \
+  canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload \
+  canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction \
+  canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_package \
+  canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_project_criterion \
+  canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency \
+  canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_target_statement \
+  canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate \
+  canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload \
+  canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction \
+  canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_package \
+  canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_project_payload \
+  canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency \
+  canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_target_statement \
+  canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate \
+  canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload \
+  canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction \
+  canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload_to_package \
+  canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload_to_poincare_conjecture \
+  canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency \
+  canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload_to_target_statement \
+  completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate \
+  completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload \
+  completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction \
+  completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_package \
+  completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency \
+  completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_target_statement \
+  poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate \
+  poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_canonical_payload \
+  poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload \
+  poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction \
+  poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_package \
+  poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_poincare_conjecture_payload \
+  poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency \
+  poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_target_statement \
+  poincare_conjecture_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate \
+  poincare_conjecture_of_completion_certificate_with_equation_boundary_verification_payload_to_canonical_target \
+  poincare_conjecture_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload \
+  poincare_conjecture_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction \
+  poincare_conjecture_of_completion_certificate_with_equation_boundary_verification_payload_to_package \
+  poincare_conjecture_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency \
+  poincare_conjecture_of_completion_certificate_with_equation_boundary_verification_payload_to_target_statement \
+  poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate \
+  poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload \
+  poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction \
+  poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_package \
+  poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_project_payload \
+  poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency \
+  target_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate \
+  target_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_canonical_target \
+  target_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload \
+  target_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction \
+  target_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_package \
+  target_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_poincare_conjecture \
+  target_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency
+do
+  check_route_base_endpoint_for_prefix "_eq" "$route_prefix" \
+    "CompletionTarget top-level boundary-aware completion-certificate projection route"
+done
+echo "PASS: CompletionTarget top-level boundary-aware completion-certificate projection route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_prefix in \
+  completion_certificate_of_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload \
+  completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload \
+  completion_certificate_of_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+do
+  check_route_base_endpoint_for_prefix "_eq" "$route_prefix" \
+    "CompletionTarget boundary-aware checked-certificate payload projection route"
+done
+echo "PASS: CompletionTarget boundary-aware checked-certificate payload projection route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_prefix in \
+  poincareCompletionCertificate_literal_payload_of_completion_certificate_of_literal_payload \
+  poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_literal_payload \
+  completion_certificate_of_literal_payload_of_completion_certificate
+do
+  check_route_base_endpoint_for_prefix "_eq" "$route_prefix" \
+    "CompletionTarget literal-payload checked-certificate bootstrap route"
+done
+echo "PASS: CompletionTarget literal-payload checked-certificate bootstrap route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_prefix in \
+  completion_certificate_of_remaining_dependency_and_poincare_payload_of_completion_certificate \
+  completion_certificate_of_remaining_dependency_and_canonical_payload_of_completion_certificate \
+  completion_certificate_of_remaining_dependency_and_target_statement_of_completion_certificate \
+  completion_certificate_of_remaining_dependency_and_canonical_target_of_completion_certificate \
+  completion_certificate_of_remaining_dependency_and_completion_criterion_of_completion_certificate
+do
+  check_route_base_endpoint_for_prefix "_eq" "$route_prefix" \
+    "CompletionTarget remaining-dependency checked-certificate field reconstruction route"
+done
+echo "PASS: CompletionTarget remaining-dependency checked-certificate field reconstruction route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_suffix in \
+  _to_finite_extinction_eq \
+  _to_package_eq \
+  _to_direct_verification_payload_eq \
+  _to_boundary_route_eq \
+  _to_remaining_dependency_eq
+do
+  check_route_base_endpoint_for_prefix "$route_suffix" \
+    "completion_certificate_of_equation_boundary_remaining_dependency_package" \
+    "CompletionTarget strengthened remaining-package checked-certificate route"
+done
+echo "PASS: CompletionTarget strengthened remaining-package checked-certificate route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_suffix in \
+  _to_component_requirements_eq \
+  _to_package_layer_requirements_eq \
+  _to_milestone_requirements_eq \
+  _to_component_extraction_derivation_requirements_eq \
+  _to_package_layer_extraction_derivation_requirements_eq \
+  _to_milestone_extraction_derivation_requirements_eq \
+  _to_aggregate_extraction_derivation_dependencies_eq \
+  _to_dependency_projections_eq \
+  _to_extraction_derivation_dependency_projections_eq \
+  _to_lifted_homeomorphism_derivation_dependency_projections_eq \
+  _to_forgetful_dependencies_eq
+do
+  check_route_base_endpoint_for_prefix "$route_suffix" \
+    "completion_certificate_of_equation_boundary_remaining_dependency_package" \
+    "CompletionTarget strengthened remaining-package requirement/projection checked-certificate route"
+done
+echo "PASS: CompletionTarget strengthened remaining-package requirement/projection checked-certificate route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_suffix in \
+  _to_remaining_dependency_eq \
+  _to_dependency_projections_eq \
+  _to_extraction_derivation_dependency_projections_eq \
+  _to_finite_extinction_eq \
+  _to_package_eq \
+  _to_direct_verification_payload_eq \
+  _to_forgetful_dependencies_eq
+do
+  check_route_base_endpoint_for_prefix "$route_suffix" \
+    "completion_certificate_of_component_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package" \
+    "CompletionTarget strengthened remaining-package component-requirements payload checked-certificate route"
+done
+echo "PASS: CompletionTarget strengthened remaining-package component-requirements payload checked-certificate route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_suffix in \
+  _to_remaining_dependency_eq \
+  _to_dependency_projections_eq \
+  _to_extraction_derivation_dependency_projections_eq \
+  _to_finite_extinction_eq \
+  _to_package_eq \
+  _to_direct_verification_payload_eq \
+  _to_forgetful_dependencies_eq
+do
+  check_route_base_endpoint_for_prefix "$route_suffix" \
+    "completion_certificate_of_package_layer_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package" \
+    "CompletionTarget strengthened remaining-package package-layer requirements payload checked-certificate route"
+done
+echo "PASS: CompletionTarget strengthened remaining-package package-layer requirements payload checked-certificate route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_suffix in \
+  _to_remaining_dependency_eq \
+  _to_dependency_projections_eq \
+  _to_extraction_derivation_dependency_projections_eq \
+  _to_finite_extinction_eq \
+  _to_package_eq \
+  _to_direct_verification_payload_eq \
+  _to_forgetful_dependencies_eq
+do
+  check_route_base_endpoint_for_prefix "$route_suffix" \
+    "completion_certificate_of_milestone_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package" \
+    "CompletionTarget strengthened remaining-package milestone requirements payload checked-certificate route"
+done
+echo "PASS: CompletionTarget strengthened remaining-package milestone requirements payload checked-certificate route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_suffix in \
+  _to_remaining_dependency_eq \
+  _to_finite_extinction_eq \
+  _to_dependency_projections_eq \
+  _to_direct_verification_payload_eq \
+  _to_package_eq \
+  _to_extraction_derivation_dependency_projections_eq \
+  _to_lifted_homeomorphism_derivation_dependency_projections_eq \
+  _to_forgetful_dependencies_eq
+do
+  check_route_base_endpoint_for_prefix "$route_suffix" \
+    "completion_certificate_of_component_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload" \
+    "CompletionTarget strengthened remaining-package boundary-target component-requirements payload checked-certificate route"
+done
+echo "PASS: CompletionTarget strengthened remaining-package boundary-target component-requirements payload checked-certificate route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_suffix in \
+  _to_remaining_dependency_eq \
+  _to_finite_extinction_eq \
+  _to_dependency_projections_eq \
+  _to_direct_verification_payload_eq \
+  _to_package_eq \
+  _to_extraction_derivation_dependency_projections_eq \
+  _to_lifted_homeomorphism_derivation_dependency_projections_eq \
+  _to_forgetful_dependencies_eq
+do
+  check_route_base_endpoint_for_prefix "$route_suffix" \
+    "completion_certificate_of_package_layer_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload" \
+    "CompletionTarget strengthened remaining-package boundary-target package-layer requirements payload checked-certificate route"
+done
+echo "PASS: CompletionTarget strengthened remaining-package boundary-target package-layer requirements payload checked-certificate route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_suffix in \
+  _to_remaining_dependency_eq \
+  _to_finite_extinction_eq \
+  _to_dependency_projections_eq \
+  _to_direct_verification_payload_eq \
+  _to_package_eq \
+  _to_extraction_derivation_dependency_projections_eq \
+  _to_lifted_homeomorphism_derivation_dependency_projections_eq \
+  _to_forgetful_dependencies_eq
+do
+  check_route_base_endpoint_for_prefix "$route_suffix" \
+    "completion_certificate_of_milestone_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload" \
+    "CompletionTarget strengthened remaining-package boundary-target milestone requirements payload checked-certificate route"
+done
+echo "PASS: CompletionTarget strengthened remaining-package boundary-target milestone requirements payload checked-certificate route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_suffix in \
+  _to_remaining_dependency_eq \
+  _to_finite_extinction_eq \
+  _to_dependency_projections_eq \
+  _to_direct_verification_payload_eq \
+  _to_package_eq \
+  _to_extraction_derivation_dependency_projections_eq \
+  _to_lifted_homeomorphism_derivation_dependency_projections_eq \
+  _to_forgetful_dependencies_eq
+do
+  check_route_base_endpoint_for_prefix "$route_suffix" \
+    "completion_certificate_of_component_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload" \
+    "CompletionTarget strengthened remaining-package boundary-target component extraction-derivation requirements payload checked-certificate route"
+done
+echo "PASS: CompletionTarget strengthened remaining-package boundary-target component extraction-derivation requirements payload checked-certificate route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_suffix in \
+  _to_remaining_dependency_eq \
+  _to_finite_extinction_eq \
+  _to_dependency_projections_eq \
+  _to_direct_verification_payload_eq \
+  _to_package_eq \
+  _to_extraction_derivation_dependency_projections_eq \
+  _to_lifted_homeomorphism_derivation_dependency_projections_eq \
+  _to_forgetful_dependencies_eq
+do
+  check_route_base_endpoint_for_prefix "$route_suffix" \
+    "completion_certificate_of_package_layer_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload" \
+    "CompletionTarget strengthened remaining-package boundary-target package-layer extraction-derivation requirements payload checked-certificate route"
+done
+echo "PASS: CompletionTarget strengthened remaining-package boundary-target package-layer extraction-derivation requirements payload checked-certificate route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_suffix in \
+  _to_remaining_dependency_eq \
+  _to_finite_extinction_eq \
+  _to_dependency_projections_eq \
+  _to_direct_verification_payload_eq \
+  _to_package_eq \
+  _to_extraction_derivation_dependency_projections_eq \
+  _to_lifted_homeomorphism_derivation_dependency_projections_eq \
+  _to_forgetful_dependencies_eq
+do
+  check_route_base_endpoint_for_prefix "$route_suffix" \
+    "completion_certificate_of_milestone_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload" \
+    "CompletionTarget strengthened remaining-package boundary-target milestone extraction-derivation requirements payload checked-certificate route"
+done
+echo "PASS: CompletionTarget strengthened remaining-package boundary-target milestone extraction-derivation requirements payload checked-certificate route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_suffix in \
+  _to_projected_dependency_eq \
+  _to_boundary_certificate_eq \
+  _to_remaining_dependency_eq \
+  _to_finite_extinction_eq \
+  _to_package_eq \
+  _to_direct_verification_payload_eq
+do
+  check_route_base_endpoint_for_prefix "$route_suffix" \
+    "poincareCompletionCertificate_theoremName_payload_of_completion_certificate_with_equation_boundary_verification_payload" \
+    "CompletionTarget boundary-aware theorem-name constructor payload route"
+done
+echo "PASS: CompletionTarget boundary-aware theorem-name constructor payload route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_suffix in \
+  _to_projected_dependency_eq \
+  _to_boundary_certificate_eq \
+  _to_remaining_dependency_eq \
+  _to_finite_extinction_eq \
+  _to_package_eq \
+  _to_direct_verification_payload_eq
+do
+  check_route_base_endpoint_for_prefix "$route_suffix" \
+    "poincareCompletionCertificate_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload" \
+    "CompletionTarget boundary-aware literal-payload constructor payload route"
+done
+echo "PASS: CompletionTarget boundary-aware literal-payload constructor payload route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_suffix in \
+  _to_projected_dependency_eq \
+  _to_boundary_certificate_eq \
+  _to_remaining_dependency_eq \
+  _to_finite_extinction_eq \
+  _to_package_eq \
+  _to_direct_verification_payload_eq \
+  _to_forgetful_dependencies_eq
+do
+  check_route_base_endpoint_for_prefix "$route_suffix" \
+    "poincareCompletionCertificate_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload" \
+    "CompletionTarget boundary-aware project-statement constructor payload route"
+done
+echo "PASS: CompletionTarget boundary-aware project-statement constructor payload route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_suffix in \
+  _to_projected_dependency_eq \
+  _to_boundary_certificate_eq \
+  _to_remaining_dependency_eq \
+  _to_finite_extinction_eq \
+  _to_package_eq \
+  _to_direct_verification_payload_eq \
+  _to_forgetful_dependencies_eq
+do
+  check_route_base_endpoint_for_prefix "$route_suffix" \
+    "poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload" \
+    "CompletionTarget boundary-aware aggregate-dependency constructor payload route"
+done
+echo "PASS: CompletionTarget boundary-aware aggregate-dependency constructor payload route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_suffix in \
+  _to_projected_dependency_eq \
+  _to_boundary_certificate_eq \
+  _to_remaining_dependency_eq \
+  _to_finite_extinction_eq \
+  _to_package_eq \
+  _to_direct_verification_payload_eq
+do
+  check_route_base_endpoint_for_prefix "$route_suffix" \
+    "completion_certificate_of_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload" \
+    "CompletionTarget boundary-aware literal-payload constructor route"
+done
+echo "PASS: CompletionTarget boundary-aware literal-payload constructor route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_suffix in \
+  _to_projected_dependency_eq \
+  _to_boundary_certificate_eq \
+  _to_remaining_dependency_eq \
+  _to_finite_extinction_eq \
+  _to_package_eq \
+  _to_direct_verification_payload_eq \
+  _to_forgetful_dependencies_eq
+do
+  check_route_base_endpoint_for_prefix "$route_suffix" \
+    "completion_certificate_of_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload" \
+    "CompletionTarget boundary-aware project-statement constructor route"
+done
+echo "PASS: CompletionTarget boundary-aware project-statement constructor route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_suffix in \
+  _to_projected_dependency_eq \
+  _to_boundary_certificate_eq \
+  _to_remaining_dependency_eq \
+  _to_finite_extinction_eq \
+  _to_package_eq \
+  _to_direct_verification_payload_eq \
+  _to_forgetful_dependencies_eq
+do
+  check_route_base_endpoint_for_prefix "$route_suffix" \
+    "completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload" \
+    "CompletionTarget boundary-aware aggregate-dependency payload constructor route"
+done
+echo "PASS: CompletionTarget boundary-aware aggregate-dependency payload constructor route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_suffix in \
+  _to_direct_verification_payload_eq \
+  _to_remaining_dependency_eq \
+  _to_boundary_certificate_eq \
+  _to_analytic_boundary_eq \
+  _to_derivation_and_boundary_payload_eq \
+  _to_derivative_payload_eq \
+  _to_verification_payload_eq \
+  _to_pointwise_equation_payload_eq \
+  _to_direct_pointwise_equation_payload_eq \
+  _to_finite_extinction_eq \
+  _to_package_eq
+do
+  check_route_base_endpoint_for_prefix "$route_suffix" \
+    "equation_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload" \
+    "CompletionTarget boundary-aware equation-boundary payload certificate route"
+done
+echo "PASS: CompletionTarget boundary-aware equation-boundary payload certificate route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_prefix in \
+  poincare_statement_of_finite_extinction \
+  poincare_statement_of_universalFiniteExtinctionStatement
+do
+  check_route_base_endpoint_for_prefix "_to_reserved_endpoint_eq" "$route_prefix" "RicciFlowInterface reserved endpoint"
+done
+for route_prefix in \
+  universalFiniteExtinctionStatement_completion_payload \
+  poincare_payload_of_extinction_and_extraction \
+  poincare_payload_of_finite_extinction \
+  poincare_payload_of_universalFiniteExtinctionStatement
+do
+  check_route_base_endpoint_for_prefix "_to_reserved_payload_eq" "$route_prefix" "RicciFlowInterface reserved payload"
+done
+echo "PASS: RicciFlowInterface reserved route equality contracts expose direct endpoint names in axiom audit surface"
+
+for route_prefix in \
+  poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation \
+  poincare_target_payload_of_surgery_and_topology_package_extraction_derivation \
+  poincare_completion_payload_of_surgery_and_topology_package_extraction_derivation \
+  poincare_statement_of_surgery_and_topology_package_extraction_derivation \
+  canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation
+do
+  check_route_base_endpoint_for_prefix "_to_extraction_derivation_eq" "$route_prefix" "FullAssembly certified extraction derivation"
+  check_route_base_endpoint_for_prefix "_to_statement_eq" "$route_prefix" "FullAssembly certified extraction statement"
+done
+echo "PASS: FullAssembly certified extraction route equality contracts expose direct endpoint names in axiom audit surface"
+for route_prefix in \
+  poincare_assembly_inputs_payload_of_surgery_and_topology_packages \
+  poincare_target_payload_of_surgery_and_topology_packages \
+  poincare_completion_payload_of_surgery_and_topology_packages \
+  poincare_statement_of_surgery_and_topology_packages \
+  canonical_three_sphere_statement_of_surgery_and_topology_packages
+do
+  check_route_base_endpoint_for_prefix "_to_extraction_statement_eq" "$route_prefix" "FullAssembly package extraction statement"
+done
+echo "PASS: FullAssembly package extraction statement route equality contracts expose direct endpoint names in axiom audit surface"
+for route_prefix in \
+  poincare_completion_payload_of_surgery_and_topology_packages \
+  poincare_statement_of_surgery_and_topology_packages \
+  poincare_statement_of_boundary_surgery_and_topology_packages \
+  canonical_three_sphere_statement_of_surgery_and_topology_packages \
+  canonical_three_sphere_statement_of_boundary_surgery_and_topology_packages
+do
+  check_route_base_endpoint_for_prefix "_to_topology_package_extraction_derivation_eq" "$route_prefix" "FullAssembly package topology extraction derivation"
+done
+echo "PASS: FullAssembly package topology extraction-derivation route equality contracts expose direct endpoint names in axiom audit surface"
+for route_prefix in \
+  poincare_statement_of_boundary_surgery_and_topology_packages \
+  poincare_statement_of_boundary_surgery_and_topology_package_extraction_derivation \
+  canonical_three_sphere_statement_of_boundary_surgery_and_topology_package_extraction_derivation
+do
+  check_route_base_endpoint_for_prefix "_to_boundary_input_route_eq" "$route_prefix" "FullAssembly boundary input route"
+done
+echo "PASS: FullAssembly boundary input route equality contracts expose direct endpoint names in axiom audit surface"
+check_route_base_endpoint_for_prefix "_to_statement_eq" "extinction_implies_sphere_of_topology_package" "topology package statement"
+echo "PASS: topology-package statement route equality contract exposes direct endpoint name in axiom audit surface"
+check_route_base_endpoint_for_prefix "_to_extraction_statement_projections_eq" "topology_extraction_statement_payload_of_topology_package" "topology package extraction-statement projections"
+check_route_base_endpoint_for_prefix "_to_extraction_statement_payload_eq" "topology_extraction_statement_payload_of_topology_package" "topology package extraction-statement payload"
+check_route_base_endpoint_for_prefix "_to_lifted_derivation_projections_eq" "topology_extraction_statement_payload_of_extraction_statement" "topology extraction-statement lifted derivation projections"
+check_route_base_endpoint_for_prefix "_to_lifted_derivation_projections_eq" "topology_extraction_statement_payload_of_topology_package" "topology package lifted derivation projections"
+echo "PASS: topology-package extraction statement payload route equality contracts expose direct endpoint names in axiom audit surface"
+check_route_base_endpoint_for_prefix "_to_bridge_payload_eq" "smoothability_subobligations_of_smoothability_package" "smoothability subobligations bridge payload"
+echo "PASS: smoothability subobligation bridge payload route equality contract exposes direct endpoint name in axiom audit surface"
+
+check_route_suffix_counterpart() {
+  source_suffix=$1
+  target_suffix=$2
+  label=$3
+  printf '%s\n' "$theorem_names" | while IFS= read -r name; do
+    case "$name" in
+      *"$source_suffix")
+        is_general_route_exception "$name" && continue
+        target=${name%"$source_suffix"}"$target_suffix"
+        if ! has_theorem "$target"; then
+          echo "FAIL: axiom audit suffix counterpart missing for ${label}: ${name} lacks ${target}"
+          exit 1
+        fi
+        ;;
+    esac
+  done
+}
+
+check_route_suffix_counterpart "_to_direct_verification_payload_eq" "_to_package_eq" "direct-verification package"
+check_route_suffix_counterpart "_to_package_eq" "_to_direct_verification_payload_eq" "package direct-verification"
+check_route_suffix_counterpart "_to_statement_eq" "_to_package_eq" "statement package"
+check_route_suffix_counterpart "_to_statement_eq" "_to_direct_verification_payload_eq" "statement direct-verification"
+check_route_suffix_counterpart "_to_finite_extinction_eq" "_to_package_eq" "finite-extinction package"
+check_route_suffix_counterpart "_to_finite_extinction_eq" "_to_direct_verification_payload_eq" "finite-extinction direct-verification"
+check_route_suffix_counterpart "_to_lifted_route_eq" "_to_package_eq" "lifted route package"
+check_route_suffix_counterpart "_to_lifted_route_eq" "_to_direct_verification_payload_eq" "lifted route direct-verification"
+check_route_suffix_counterpart "_to_lifted_route_eq" "_to_finite_extinction_eq" "lifted route finite-extinction"
+check_route_suffix_counterpart "_to_lifted_route_eq" "_to_boundary_route_eq" "lifted route boundary"
+echo "PASS: route suffix counterparts are present in axiom audit surface"
+
+check_route_suffix_clique_counterparts() {
+  label=$1
+  name_pattern=$2
+  shift 2
+  for source_suffix in "$@"; do
+    for target_suffix in "$@"; do
+      if [ "$source_suffix" != "$target_suffix" ]; then
+        printf '%s\n' "$theorem_names" | while IFS= read -r name; do
+          case "$name" in
+            $name_pattern*"$source_suffix")
+              is_general_route_exception "$name" && continue
+              target=${name%"$source_suffix"}"$target_suffix"
+              if ! has_theorem "$target"; then
+                echo "FAIL: axiom audit suffix counterpart missing for ${label}: ${name} lacks ${target}"
+                exit 1
+              fi
+              ;;
+          esac
+        done
+      fi
+    done
+  done
+}
+
+check_route_suffix_clique_counterparts \
+  "equation-boundary payload route cluster" \
+  "analytic_derivation_and_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload" \
+  "_to_analytic_boundary_eq" \
+  "_to_derivation_and_boundary_payload_eq" \
+  "_to_direct_pointwise_equation_payload_eq" \
+  "_to_pointwise_equation_payload_eq"
+echo "PASS: equation-boundary payload route cluster counterparts are present in axiom audit surface"
+
+check_payload_route_parity() {
+  family=$1
+  theorem_name_routes="$payload_route_parity_dir/theoremName.routes"
+  family_routes="$payload_route_parity_dir/${family}.routes"
+  constructor_routes="$payload_route_parity_dir/${family}.constructor.routes"
+  missing_theorem_name="$payload_route_parity_dir/${family}.missing-theorem-name"
+  missing_family="$payload_route_parity_dir/${family}.missing-family"
+  missing_constructor="$payload_route_parity_dir/${family}.missing-constructor"
+
+  sed -n 's/^poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_\(.*\)_eq$/\1/p' \
+    "$theorem_names_file" | sort -u > "$theorem_name_routes"
+  sed -n "s/^poincareCompletionCertificate_${family}_payload_of_completion_certificate_of_\\(.*\\)_eq$/\\1/p" \
+    "$theorem_names_file" | sort -u > "$family_routes"
+  {
+    sed -n "s/^completion_certificate_of_${family}_payload_of_\\(.*\\)_eq$/\\1/p" \
+      "$theorem_names_file"
+    sed -n "s/^completion_certificate_of_${family}_payload_of_completion_certificate_of_\\(.*\\)_eq$/\\1/p" \
+      "$theorem_names_file"
+  } | sort -u > "$constructor_routes"
+
+  comm -13 "$theorem_name_routes" "$family_routes" > "$missing_theorem_name"
+  comm -23 "$theorem_name_routes" "$family_routes" > "$missing_family"
+  comm -23 "$family_routes" "$constructor_routes" > "$missing_constructor"
+
+  if [ -s "$missing_theorem_name" ]; then
+    echo "FAIL: axiom audit ${family} payload routes without theorem-name counterparts"
+    sed 's/^/MISSING: /' "$missing_theorem_name"
+    exit 1
+  else
+    echo "PASS: axiom audit ${family} payload routes have theorem-name counterparts"
+  fi
+
+  if [ -s "$missing_family" ]; then
+    echo "FAIL: axiom audit theorem-name payload routes without ${family} counterparts"
+    sed 's/^/MISSING: /' "$missing_family"
+    exit 1
+  else
+    echo "PASS: axiom audit theorem-name payload routes have ${family} counterparts"
+  fi
+
+  if [ -s "$missing_constructor" ]; then
+    echo "FAIL: axiom audit ${family} payload routes without constructor counterparts"
+    sed 's/^/MISSING: /' "$missing_constructor"
+    exit 1
+  else
+    echo "PASS: axiom audit ${family} payload routes have constructor counterparts"
+  fi
+}
+
+check_boundary_payload_route_parity() {
+  family=$1
+  theorem_name_routes="$payload_route_parity_dir/boundary.theoremName.routes"
+  family_routes="$payload_route_parity_dir/boundary.${family}.routes"
+  constructor_routes="$payload_route_parity_dir/boundary.${family}.constructor.routes"
+  missing_theorem_name="$payload_route_parity_dir/boundary.${family}.missing-theorem-name"
+  missing_family="$payload_route_parity_dir/boundary.${family}.missing-family"
+  missing_constructor="$payload_route_parity_dir/boundary.${family}.missing-constructor"
+
+  sed -n 's/^poincareCompletionCertificate_theoremName_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_\(.*\)_eq$/\1/p' \
+    "$theorem_names_file" | sort -u > "$theorem_name_routes"
+  sed -n "s/^poincareCompletionCertificate_${family}_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_\\(.*\\)_eq$/\\1/p" \
+    "$theorem_names_file" | sort -u > "$family_routes"
+  {
+    sed -n "s/^completion_certificate_of_${family}_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_\\(.*\\)_eq$/\\1/p" \
+      "$theorem_names_file"
+    sed -n "s/^completion_certificate_of_${family}_payload_of_poincareCompletionCertificate_${family}_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_\\(.*\\)_eq$/\\1/p" \
+      "$theorem_names_file"
+  } | sort -u > "$constructor_routes"
+
+  comm -13 "$theorem_name_routes" "$family_routes" > "$missing_theorem_name"
+  comm -23 "$theorem_name_routes" "$family_routes" > "$missing_family"
+  comm -23 "$family_routes" "$constructor_routes" > "$missing_constructor"
+
+  if [ -s "$missing_theorem_name" ]; then
+    echo "FAIL: axiom audit boundary-aware ${family} payload routes without theorem-name counterparts"
+    sed 's/^/MISSING: /' "$missing_theorem_name"
+    exit 1
+  else
+    echo "PASS: axiom audit boundary-aware ${family} payload routes have theorem-name counterparts"
+  fi
+
+  if [ -s "$missing_family" ]; then
+    echo "FAIL: axiom audit boundary-aware theorem-name payload routes without ${family} counterparts"
+    sed 's/^/MISSING: /' "$missing_family"
+    exit 1
+  else
+    echo "PASS: axiom audit boundary-aware theorem-name payload routes have ${family} counterparts"
+  fi
+
+  if [ -s "$missing_constructor" ]; then
+    echo "FAIL: axiom audit boundary-aware ${family} payload routes without constructor counterparts"
+    sed 's/^/MISSING: /' "$missing_constructor"
+    exit 1
+  else
+    echo "PASS: axiom audit boundary-aware ${family} payload routes have constructor counterparts"
+  fi
+}
+
+payload_route_parity_dir=$(mktemp -d "${TMPDIR:-/tmp}/poincare-axiom-payload-route-parity.$$-XXXXXX")
+for payload_family in literal canonical_statement aggregate_canonical_statement aggregate_dependency project_statement; do
+  check_payload_route_parity "$payload_family"
+  check_boundary_payload_route_parity "$payload_family"
+done
+
+constructor_surface_dir=$(mktemp -d "${TMPDIR:-/tmp}/poincare-axiom-constructor-surface.$$-XXXXXX")
+ordinary_constructors="$constructor_surface_dir/ordinary-constructors"
+boundary_constructors="$constructor_surface_dir/boundary-constructors"
+constructor_missing="$constructor_surface_dir/missing"
+
+perl -0ne 'while (/^theorem\s+(completion_certificate_of_[A-Za-z0-9_]+)\b(.*?)(?=^theorem\s+|\z)/msg) { my ($n,$b)=($1,$2); next if $n =~ /_eq$/; next if $n =~ /_of_completion_certificate(?:_|$)/; next unless $b =~ /:\s*PoincareCompletionCertificate\.\{u\}/s; print "$n\n"; }' \
+  Poincare/CompletionTarget.lean | sort -u > "$ordinary_constructors"
+
+if [ ! -s "$ordinary_constructors" ]; then
+  echo "FAIL: axiom audit found no completion certificate constructors"
+  exit 1
+fi
+
+check_constructor_endpoint_family() {
+  prefix=$1
+  suffix=$2
+  label=$3
+  : > "$constructor_missing"
+  while IFS= read -r constructor; do
+    route=${constructor#completion_certificate_of_}
+    endpoint="${prefix}${route}${suffix}"
+    if ! has_theorem "$endpoint"; then
+      echo "$constructor lacks $endpoint" >> "$constructor_missing"
+    fi
+  done < "$ordinary_constructors"
+  if [ -s "$constructor_missing" ]; then
+    echo "FAIL: axiom audit completion certificate constructors missing ${label}"
+    sed 's/^/MISSING: /' "$constructor_missing"
+    exit 1
+  else
+    echo "PASS: axiom audit completion certificate constructors expose ${label}"
+  fi
+}
+
+check_constructor_endpoint_family "poincare_conjecture_of_completion_certificate_of_" "" "reserved-theorem endpoints"
+check_constructor_endpoint_family "poincare_conjecture_payload_of_completion_certificate_of_" "" "reserved-payload endpoints"
+check_constructor_endpoint_family "target_statement_of_completion_certificate_of_" "" "target-statement endpoints"
+check_constructor_endpoint_family "canonical_completion_payload_of_completion_certificate_of_" "" "canonical-payload endpoints"
+check_constructor_endpoint_family "poincare_completion_payload_of_completion_certificate_of_" "" "project-payload endpoints"
+check_constructor_endpoint_family "canonical_completion_target_of_completion_certificate_of_" "" "canonical-target endpoints"
+check_constructor_endpoint_family "completion_criterion_of_completion_certificate_of_" "" "completion-criterion endpoints"
+check_constructor_endpoint_family "canonical_completion_criterion_of_completion_certificate_of_" "" "canonical-criterion endpoints"
+check_constructor_endpoint_family "poincare_full_assembly_payload_of_completion_certificate_of_" "" "full-assembly endpoints"
+check_constructor_endpoint_family "poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_" "" "certified full-assembly endpoints"
+for payload_family in theoremName literal canonical_statement aggregate_canonical_statement aggregate_dependency project_statement; do
+  check_constructor_endpoint_family "poincareCompletionCertificate_${payload_family}_payload_of_completion_certificate_of_" "_eq" "${payload_family} payload routes"
+done
+
+perl -0ne 'while (/^theorem\s+(completion_certificate_with_equation_boundary_verification_payload_of_[A-Za-z0-9_]+)\b(.*?)(?=^theorem\s+|\z)/msg) { my ($n,$b)=($1,$2); next if $n =~ /_eq$/; next unless $b =~ /:\s*PoincareCompletionCertificateWithEquationBoundaryVerificationPayload\.\{u\}/s; print "$n\n"; }' \
+  Poincare/CompletionTarget.lean Poincare/CanonicalBridges.lean |
+  sort -u > "$boundary_constructors"
+
+if [ ! -s "$boundary_constructors" ]; then
+  echo "FAIL: axiom audit found no boundary-aware completion certificate constructors"
+  exit 1
+fi
+
+check_boundary_constructor_endpoint_family() {
+  endpoint_family=$1
+  : > "$constructor_missing"
+  while IFS= read -r constructor; do
+    route=${constructor#completion_certificate_with_equation_boundary_verification_payload_of_}
+    endpoint="${endpoint_family}_of_${route}"
+    if ! has_theorem "$endpoint"; then
+      echo "$constructor lacks $endpoint" >> "$constructor_missing"
+    fi
+  done < "$boundary_constructors"
+  if [ -s "$constructor_missing" ]; then
+    echo "FAIL: axiom audit boundary-aware constructors missing ${endpoint_family}"
+    sed 's/^/MISSING: /' "$constructor_missing"
+    exit 1
+  else
+    echo "PASS: axiom audit boundary-aware constructors expose ${endpoint_family}"
+  fi
+}
+
+for endpoint_family in \
+    poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload \
+    target_statement_of_completion_certificate_with_equation_boundary_verification_payload \
+    canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload \
+    canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload \
+    poincare_conjecture_of_completion_certificate_with_equation_boundary_verification_payload \
+    poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload \
+    completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload \
+    canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload \
+    poincare_full_assembly_payload_of_completion_certificate_with_equation_boundary_verification_payload \
+    poincare_full_assembly_payload_of_completion_certificate_with_equation_boundary_verification_payload_extraction_derivation \
+    analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload \
+      equation_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload \
+    analytic_derivation_and_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload \
+    analytic_derivation_statements_of_completion_certificate_with_equation_boundary_verification_payload \
+    canonical_three_sphere_statement_of_completion_certificate_with_equation_boundary_verification_payload \
+    poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload \
+    poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload; do
+  check_boundary_constructor_endpoint_family "$endpoint_family"
+done
+
+check_boundary_constructor_payload_eq_family() {
+  payload_family=$1
+  : > "$constructor_missing"
+  while IFS= read -r constructor; do
+    route=${constructor#completion_certificate_with_equation_boundary_verification_payload_of_}
+    endpoint="poincareCompletionCertificate_${payload_family}_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_${route}_eq"
+    if ! has_theorem "$endpoint"; then
+      echo "$constructor lacks $endpoint" >> "$constructor_missing"
+    fi
+  done < "$boundary_constructors"
+  if [ -s "$constructor_missing" ]; then
+    echo "FAIL: axiom audit boundary-aware constructors missing ${payload_family} payload equality routes"
+    sed 's/^/MISSING: /' "$constructor_missing"
+    exit 1
+  else
+    echo "PASS: axiom audit boundary-aware constructors expose ${payload_family} payload equality routes"
+  fi
+}
+
+for payload_family in theoremName literal canonical_statement aggregate_canonical_statement aggregate_dependency project_statement; do
+  check_boundary_constructor_payload_eq_family "$payload_family"
+done
 
 check_dir=$(mktemp -d "${TMPDIR:-/tmp}/poincare-axiom-audit.$$-XXXXXX")
 check_file="$check_dir/check.lean"
@@ -34,6 +960,13 @@ append_certificate_route_projection_axiom_checks() {
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_finite_extinction_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_finite_extinction
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_package_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_package
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_remaining_dependency
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_direct_verification_payload
 #print axioms Poincare.poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_finite_extinction_eq
 #print axioms Poincare.poincareCompletionCertificate_literal_payload_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_finite_extinction_eq
 #print axioms Poincare.poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_finite_extinction_eq
@@ -46,17 +979,41 @@ append_certificate_route_projection_axiom_checks() {
 #print axioms Poincare.completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_finite_extinction_eq
 #print axioms Poincare.completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_finite_extinction_eq
 #print axioms Poincare.poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+#print axioms Poincare.poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
 #print axioms Poincare.poincareCompletionCertificate_literal_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.poincareCompletionCertificate_literal_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+#print axioms Poincare.poincareCompletionCertificate_literal_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
 #print axioms Poincare.poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+#print axioms Poincare.poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
 #print axioms Poincare.poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+#print axioms Poincare.poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
 #print axioms Poincare.completion_certificate_of_literal_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.completion_certificate_of_literal_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+#print axioms Poincare.completion_certificate_of_literal_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
 #print axioms Poincare.completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+#print axioms Poincare.completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
 #print axioms Poincare.completion_certificate_of_project_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.completion_certificate_of_project_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+#print axioms Poincare.completion_certificate_of_project_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
 #print axioms Poincare.canonical_three_sphere_statement_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_three_sphere_statement_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+#print axioms Poincare.canonical_three_sphere_statement_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
 #print axioms Poincare.poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+#print axioms Poincare.poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
 #print axioms Poincare.poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+#print axioms Poincare.poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
 #print axioms Poincare.completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+#print axioms Poincare.completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
 #print axioms Poincare.completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+#print axioms Poincare.completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_poincare_payload_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_remaining_dependency_and_canonical_payload_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_remaining_dependency_and_target_statement_eq
@@ -162,7 +1119,11 @@ append_certificate_route_projection_axiom_checks() {
 #print axioms Poincare.target_statement_of_completion_certificate_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_extraction_derivation_dependency_projections_to_statement_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_extraction_derivation_dependency_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_extraction_derivation_dependency_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_extraction_derivation_dependency_projections_to_extraction_derivation_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_extraction_derivation_dependency_projections_to_package_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_extraction_derivation_dependency_projections_to_package_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_poincareProofDependencies_component_requirements_eq
@@ -942,6 +1903,16 @@ import Poincare
 #print axioms Poincare.onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement_eq
 #print axioms Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_simplyConnectedSpace
 #print axioms Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_simplyConnectedSpace_eq
+#print axioms Poincare.onePoint_threeSpace_basedPathQuotientSubsingleton_iff_basedLoopNullhomotopyStatement
+#print axioms Poincare.onePoint_threeSpace_basedPathQuotientSubsingleton_iff_basedLoopNullhomotopyStatement_eq
+#print axioms Poincare.onePoint_threeSpace_basedPathQuotientSubsingleton_iff_threeSphereNorthPoleLoopNullhomotopyStatement
+#print axioms Poincare.onePoint_threeSpace_basedPathQuotientSubsingleton_iff_threeSphereNorthPoleLoopNullhomotopyStatement_eq
+#print axioms Poincare.onePoint_threeSpace_basedFundamentalGroupSubsingleton_iff_basedLoopNullhomotopyStatement
+#print axioms Poincare.onePoint_threeSpace_basedFundamentalGroupSubsingleton_iff_basedLoopNullhomotopyStatement_eq
+#print axioms Poincare.onePoint_threeSpace_basedPiOneSubsingleton_iff_basedLoopNullhomotopyStatement
+#print axioms Poincare.onePoint_threeSpace_basedPiOneSubsingleton_iff_basedLoopNullhomotopyStatement_eq
+#print axioms Poincare.onePoint_threeSpace_basedPiOneSubsingleton_iff_threeSphereNorthPoleLoopNullhomotopyStatement
+#print axioms Poincare.onePoint_threeSpace_basedPiOneSubsingleton_iff_threeSphereNorthPoleLoopNullhomotopyStatement_eq
 #print axioms Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement
 #print axioms Poincare.onePoint_threeSpace_loopNullhomotopyStatement_of_threeSphereLoopNullhomotopyStatement_eq
 #print axioms Poincare.threeSphereLoopNullhomotopyStatement_of_onePoint_threeSpace_loopNullhomotopyStatement
@@ -1470,6 +2441,8 @@ import Poincare
 #print axioms Poincare.spherical_homeomorphism_lift_of_topology_package_eq
 #print axioms Poincare.homeomorphism_of_topology_package
 #print axioms Poincare.homeomorphism_of_topology_package_eq
+#print axioms Poincare.onePointThreeSpaceRecognitionStatement_of_finite_extinction_and_topology_package
+#print axioms Poincare.onePointThreeSpaceRecognitionStatement_of_finite_extinction_and_topology_package_eq
 #print axioms Poincare.extinction_homeomorphism_assembly_of_topology_package
 #print axioms Poincare.extinction_homeomorphism_assembly_of_topology_package_eq
 #print axioms Poincare.extinction_homeomorphism_derivation_of_topology_package
@@ -1508,6 +2481,9 @@ import Poincare
 #print axioms Poincare.topology_simply_connected_recognition_statement_of_derivation_statement_eq
 #print axioms Poincare.topology_homeomorphism_assembly_statement_of_derivation_statement
 #print axioms Poincare.topology_homeomorphism_assembly_statement_of_derivation_statement_eq
+#print axioms Poincare.topology_homeomorphism_assembly_statement_of_derivation_statement_derivation_route_eq
+#print axioms Poincare.topology_homeomorphism_assembly_statement_of_homeomorphism_derivation_statement
+#print axioms Poincare.topology_homeomorphism_assembly_statement_of_homeomorphism_derivation_statement_eq
 #print axioms Poincare.topology_homeomorphism_derivation_statement_of_derivation_statement
 #print axioms Poincare.topology_homeomorphism_derivation_statement_of_derivation_statement_eq
 #print axioms Poincare.topology_spherical_trivial_quotient_statement_of_derivation_statement
@@ -1520,6 +2496,8 @@ import Poincare
 #print axioms Poincare.topology_lifted_homeomorphism_derivation_for_extraction_statement_of_derivation_for_extraction_statement_eq
 #print axioms Poincare.topology_spherical_homeomorphism_lift_statement_of_lifted_homeomorphism_derivation_statement
 #print axioms Poincare.topology_spherical_homeomorphism_lift_statement_of_lifted_homeomorphism_derivation_statement_eq
+#print axioms Poincare.topology_spherical_trivial_quotient_statement_of_lifted_homeomorphism_derivation_statement
+#print axioms Poincare.topology_spherical_trivial_quotient_statement_of_lifted_homeomorphism_derivation_statement_eq
 #print axioms Poincare.topology_homeomorphism_assembly_statement_of_lifted_homeomorphism_derivation_statement
 #print axioms Poincare.topology_homeomorphism_assembly_statement_of_lifted_homeomorphism_derivation_statement_eq
 #print axioms Poincare.topology_homeomorphism_derivation_statement_of_lifted_homeomorphism_derivation_statement
@@ -1529,6 +2507,8 @@ import Poincare
 #print axioms Poincare.topology_homeomorphism_derivation_statement_of_derivation_statement_lifted_derivation_route_eq
 #print axioms Poincare.topology_simply_connected_recognition_statement_of_spherical_trivial_quotient_statement
 #print axioms Poincare.topology_simply_connected_recognition_statement_of_spherical_trivial_quotient_statement_eq
+#print axioms Poincare.topology_simply_connected_recognition_statement_of_lifted_homeomorphism_derivation_statement
+#print axioms Poincare.topology_simply_connected_recognition_statement_of_lifted_homeomorphism_derivation_statement_eq
 #print axioms Poincare.topology_simply_connected_recognition_statement_of_derivation_statement_trivial_quotient_route_eq
 #print axioms Poincare.topology_simply_connected_recognition_statement_of_spherical_homeomorphism_lift_statement
 #print axioms Poincare.topology_simply_connected_recognition_statement_of_spherical_homeomorphism_lift_statement_eq
@@ -1539,9 +2519,21 @@ import Poincare
 #print axioms Poincare.topology_spherical_trivial_quotient_statement_of_homeomorphism_assembly_statement
 #print axioms Poincare.topology_spherical_trivial_quotient_statement_of_homeomorphism_assembly_statement_eq
 #print axioms Poincare.topology_spherical_trivial_quotient_statement_of_derivation_statement_assembly_route_eq
+#print axioms Poincare.topology_simply_connected_recognition_statement_of_homeomorphism_assembly_statement
+#print axioms Poincare.topology_simply_connected_recognition_statement_of_homeomorphism_assembly_statement_eq
+#print axioms Poincare.topology_simply_connected_recognition_statement_of_derivation_statement_assembly_route_eq
 #print axioms Poincare.topology_spherical_trivial_quotient_statement_of_homeomorphism_derivation_statement
 #print axioms Poincare.topology_spherical_trivial_quotient_statement_of_homeomorphism_derivation_statement_eq
 #print axioms Poincare.topology_spherical_trivial_quotient_statement_of_derivation_statement_derivation_route_eq
+#print axioms Poincare.topology_homeomorphism_assembly_statement_of_derivation_statement_derivation_route_eq
+#print axioms Poincare.topology_homeomorphism_assembly_statement_of_lifted_homeomorphism_derivation_statement_derivation_route_eq
+#print axioms Poincare.topology_spherical_trivial_quotient_statement_of_lifted_homeomorphism_derivation_statement_derivation_route_eq
+#print axioms Poincare.topology_simply_connected_recognition_statement_of_homeomorphism_derivation_statement
+#print axioms Poincare.topology_simply_connected_recognition_statement_of_homeomorphism_derivation_statement_eq
+#print axioms Poincare.topology_simply_connected_recognition_statement_of_lifted_homeomorphism_derivation_statement_derivation_route_eq
+#print axioms Poincare.topology_simply_connected_recognition_statement_of_derivation_statement_derivation_route_eq
+#print axioms Poincare.topology_simply_connected_recognition_statement_of_derivation_statement_lifted_derivation_route_eq
+#print axioms Poincare.topology_spherical_trivial_quotient_statement_of_derivation_statement_lifted_derivation_route_eq
 #print axioms Poincare.extinction_topology_extraction_statement_of_topology_package
 #print axioms Poincare.topology_derivation_statement_payload_of_extraction_statement
 #print axioms Poincare.homeomorphism_of_topology_extraction_statement
@@ -1592,12 +2584,16 @@ import Poincare
 #print axioms Poincare.topology_spherical_homeomorphism_lift_statement_of_extraction_statement_eq
 #print axioms Poincare.topology_lifted_homeomorphism_derivation_statement_of_extraction_statement_eq
 #print axioms Poincare.topology_extraction_statement_payload_of_extraction_statement_eq
+#print axioms Poincare.topology_extraction_statement_payload_of_extraction_statement_to_lifted_derivation_projections
+#print axioms Poincare.topology_extraction_statement_payload_of_extraction_statement_to_lifted_derivation_projections_eq
 #print axioms Poincare.topology_simply_connected_recognition_statement_of_topology_package_eq
 #print axioms Poincare.topology_homeomorphism_assembly_statement_of_topology_package_eq
 #print axioms Poincare.topology_homeomorphism_derivation_statement_of_topology_package_eq
 #print axioms Poincare.topology_spherical_trivial_quotient_statement_of_topology_package_eq
 #print axioms Poincare.topology_spherical_homeomorphism_lift_statement_of_topology_package_eq
 #print axioms Poincare.topology_lifted_homeomorphism_derivation_statement_of_topology_package_eq
+#print axioms Poincare.topology_lifted_homeomorphism_derivation_for_homeomorphism_of_topology_package
+#print axioms Poincare.topology_lifted_homeomorphism_derivation_for_homeomorphism_of_topology_package_eq
 #print axioms Poincare.topology_classification_subobligations_of_extinction_topology_extraction_statement_of_topology_package_eq
 #print axioms Poincare.topology_simply_connected_recognition_statement_of_extinction_topology_extraction_statement_of_topology_package_eq
 #print axioms Poincare.topology_homeomorphism_assembly_statement_of_extinction_topology_extraction_statement_of_topology_package_eq
@@ -1605,8 +2601,12 @@ import Poincare
 #print axioms Poincare.topology_spherical_trivial_quotient_statement_of_extinction_topology_extraction_statement_of_topology_package_eq
 #print axioms Poincare.topology_spherical_homeomorphism_lift_statement_of_extinction_topology_extraction_statement_of_topology_package_eq
 #print axioms Poincare.topology_lifted_homeomorphism_derivation_statement_of_extinction_topology_extraction_statement_of_topology_package_eq
+#print axioms Poincare.topology_extraction_statement_payload_of_topology_package_to_extraction_statement_projections
 #print axioms Poincare.topology_extraction_statement_payload_of_topology_package_to_extraction_statement_projections_eq
+#print axioms Poincare.topology_extraction_statement_payload_of_topology_package_to_extraction_statement_payload
 #print axioms Poincare.topology_extraction_statement_payload_of_topology_package_to_extraction_statement_payload_eq
+#print axioms Poincare.topology_extraction_statement_payload_of_topology_package_to_lifted_derivation_projections
+#print axioms Poincare.topology_extraction_statement_payload_of_topology_package_to_lifted_derivation_projections_eq
 #print axioms Poincare.extinction_implies_sphere_of_topology_extraction_statement_eq
 #print axioms Poincare.extinction_topology_extraction_statement_of_extraction_and_derivation_eq
 #print axioms Poincare.topology_derivation_statement_payload_of_extinction_topology_extraction_statement_of_extraction_and_derivation_eq
@@ -1619,6 +2619,8 @@ import Poincare
 #print axioms Poincare.poincare_payload_of_finite_extinction_and_extraction_derivation_eq
 #print axioms Poincare.topology_extraction_statement_payload_of_topology_package_eq
 #print axioms Poincare.extinction_implies_sphere_of_topology_package_to_statement_eq
+#print axioms Poincare.extinction_implies_sphere_of_topology_package_to_package_eq
+#print axioms Poincare.extinction_implies_sphere_of_topology_package_to_direct_verification_payload_eq
 #print axioms Poincare.moise_local_charts_of_smoothability_package
 #print axioms Poincare.moise_local_charts_of_smoothability_package_eq
 #print axioms Poincare.moise_locally_finite_cover_refinement_of_smoothability_package
@@ -2669,6 +3671,160 @@ import Poincare
 #print axioms Poincare.threeSphere_simplyConnectedSpace_of_loopNullhomotopyStatement_eq
 #print axioms Poincare.threeSphere_loopNullhomotopyStatement_of_simplyConnectedSpace
 #print axioms Poincare.threeSphere_loopNullhomotopyStatement_of_simplyConnectedSpace_eq
+#print axioms Poincare.threeSphere_basedPathQuotientSubsingleton_iff_basedLoopNullhomotopyStatement
+#print axioms Poincare.threeSphere_basedPathQuotientSubsingleton_iff_basedLoopNullhomotopyStatement_eq
+#print axioms Poincare.threeSphere_pathQuotientSubsingletonStatement_of_basedPathQuotientSubsingleton
+#print axioms Poincare.threeSphere_pathQuotientSubsingletonStatement_of_basedPathQuotientSubsingleton_eq
+#print axioms Poincare.threeSphere_basedFundamentalGroupSubsingleton_iff_basedLoopNullhomotopyStatement
+#print axioms Poincare.threeSphere_basedFundamentalGroupSubsingleton_iff_basedLoopNullhomotopyStatement_eq
+#print axioms Poincare.threeSphere_fundamentalGroupSubsingletonStatement_of_basedFundamentalGroupSubsingleton
+#print axioms Poincare.threeSphere_fundamentalGroupSubsingletonStatement_of_basedFundamentalGroupSubsingleton_eq
+#print axioms Poincare.threeSphere_basedPiOneSubsingleton_iff_basedLoopNullhomotopyStatement
+#print axioms Poincare.threeSphere_basedPiOneSubsingleton_iff_basedLoopNullhomotopyStatement_eq
+#print axioms Poincare.threeSphere_piOneSubsingletonStatement_of_basedPiOneSubsingleton
+#print axioms Poincare.threeSphere_piOneSubsingletonStatement_of_basedPiOneSubsingleton_eq
+#print axioms Poincare.threeSphere_stereographicVanKampenLoopStatement_of_equatorPiOneSubsingleton
+#print axioms Poincare.threeSphere_stereographicVanKampenLoopStatement_of_equatorPiOneSubsingleton_eq
+#print axioms Poincare.threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatQuotientStatement_and_finiteConcatCollapseStatement
+#print axioms Poincare.threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatQuotientStatement_and_finiteConcatCollapseStatement_eq
+#print axioms Poincare.threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatCollapseStatement
+#print axioms Poincare.threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatCollapseStatement_eq
+#print axioms Poincare.threeSphere_stereographicVanKampenConclusionStatement_of_equatorPiOneSubsingleton
+#print axioms Poincare.threeSphere_stereographicVanKampenConclusionStatement_of_equatorPiOneSubsingleton_eq
+#print axioms Poincare.ThreeSphereStereographicVanKampenPiOneSubsingletonStatement
+#print axioms Poincare.threeSphereStereographicVanKampenPiOneSubsingletonStatement_eq
+#print axioms Poincare.TwoSetOpenCoverVanKampenPiOneSubsingletonStatement
+#print axioms Poincare.twoSetOpenCoverVanKampenPiOneSubsingletonStatement_eq
+#print axioms Poincare.threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
+#print axioms Poincare.threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq
+#print axioms Poincare.ThreeSphereStereographicContractibleCoverInputsStatement
+#print axioms Poincare.threeSphereStereographicContractibleCoverInputsStatement_eq
+#print axioms Poincare.threeSphere_stereographicCoverOverlapPackage_contractibleCoverInputs
+#print axioms Poincare.threeSphere_stereographicCoverOverlapPackage_contractibleCoverInputs_eq
+#print axioms Poincare.threeSphere_stereographicContractibleCoverInputs_vanKampenInputs
+#print axioms Poincare.threeSphere_stereographicContractibleCoverInputs_vanKampenInputs_eq
+#print axioms Poincare.threeSphere_mem_stereographic_antipodal_source_or
+#print axioms Poincare.threeSphere_mem_stereographic_antipodal_source_or_eq
+#print axioms Poincare.threeSphere_path_mem_stereographic_antipodal_source_or
+#print axioms Poincare.threeSphere_path_mem_stereographic_antipodal_source_or_eq
+#print axioms Poincare.threeSphere_path_northSource_preimage_isOpen
+#print axioms Poincare.threeSphere_path_northSource_preimage_isOpen_eq
+#print axioms Poincare.threeSphere_path_southSource_preimage_isOpen
+#print axioms Poincare.threeSphere_path_southSource_preimage_isOpen_eq
+#print axioms Poincare.threeSphere_path_stereographicSource_preimage_cover
+#print axioms Poincare.threeSphere_path_stereographicSource_preimage_cover_eq
+#print axioms Poincare.threeSphere_path_stereographicSource_preimage_subdivision
+#print axioms Poincare.threeSphere_path_stereographicSource_preimage_subdivision_eq
+#print axioms Poincare.ThreeSphereStereographicPathCoverStatement
+#print axioms Poincare.threeSphereStereographicPathCoverStatement_eq
+#print axioms Poincare.threeSphere_stereographicPathCoverStatement
+#print axioms Poincare.threeSphere_stereographicPathCoverStatement_eq
+#print axioms Poincare.ThreeSphereStereographicPathSubdivisionStatement
+#print axioms Poincare.threeSphereStereographicPathSubdivisionStatement_eq
+#print axioms Poincare.threeSphere_stereographicPathSubdivisionStatement
+#print axioms Poincare.threeSphere_stereographicPathSubdivisionStatement_eq
+#print axioms Poincare.ThreeSphereStereographicEquatorLoopSubdivisionStatement
+#print axioms Poincare.threeSphereStereographicEquatorLoopSubdivisionStatement_eq
+#print axioms Poincare.threeSphere_stereographicEquatorLoopSubdivisionStatement_of_pathSubdivisionStatement
+#print axioms Poincare.threeSphere_stereographicEquatorLoopSubdivisionStatement_of_pathSubdivisionStatement_eq
+#print axioms Poincare.threeSphere_stereographicEquatorLoopSubdivisionStatement
+#print axioms Poincare.threeSphere_stereographicEquatorLoopSubdivisionStatement_eq
+#print axioms Poincare.ThreeSphereStereographicEquatorLoopContainedSegmentSubdivisionStatement
+#print axioms Poincare.threeSphereStereographicEquatorLoopContainedSegmentSubdivisionStatement_eq
+#print axioms Poincare.threeSphere_stereographicEquatorLoopContainedSegmentSubdivisionStatement_of_equatorLoopSubdivisionStatement
+#print axioms Poincare.threeSphere_stereographicEquatorLoopContainedSegmentSubdivisionStatement_of_equatorLoopSubdivisionStatement_eq
+#print axioms Poincare.threeSphere_stereographicEquatorLoopContainedSegmentSubdivisionStatement
+#print axioms Poincare.threeSphere_stereographicEquatorLoopContainedSegmentSubdivisionStatement_eq
+#print axioms Poincare.ThreeSphereStereographicEquatorLoopSubpathSegmentRangeStatement
+#print axioms Poincare.threeSphereStereographicEquatorLoopSubpathSegmentRangeStatement_eq
+#print axioms Poincare.threeSphere_stereographicEquatorLoopSubpathSegmentRangeStatement_of_containedSegmentSubdivisionStatement
+#print axioms Poincare.threeSphere_stereographicEquatorLoopSubpathSegmentRangeStatement_of_containedSegmentSubdivisionStatement_eq
+#print axioms Poincare.threeSphere_stereographicEquatorLoopSubpathSegmentRangeStatement
+#print axioms Poincare.threeSphere_stereographicEquatorLoopSubpathSegmentRangeStatement_eq
+#print axioms Poincare.ThreeSphereStereographicEquatorLoopFiniteConcatSubpathStatement
+#print axioms Poincare.threeSphereStereographicEquatorLoopFiniteConcatSubpathStatement_eq
+#print axioms Poincare.threeSphere_stereographicEquatorLoopFiniteConcatSubpathStatement_of_subpathSegmentRangeStatement
+#print axioms Poincare.threeSphere_stereographicEquatorLoopFiniteConcatSubpathStatement_of_subpathSegmentRangeStatement_eq
+#print axioms Poincare.threeSphere_stereographicEquatorLoopFiniteConcatSubpathStatement
+#print axioms Poincare.threeSphere_stereographicEquatorLoopFiniteConcatSubpathStatement_eq
+#print axioms Poincare.ThreeSphereStereographicEquatorLoopFiniteConcatLoopStatement
+#print axioms Poincare.threeSphereStereographicEquatorLoopFiniteConcatLoopStatement_eq
+#print axioms Poincare.threeSphere_stereographicEquatorLoopFiniteConcatLoopStatement_of_finiteConcatSubpathStatement
+#print axioms Poincare.threeSphere_stereographicEquatorLoopFiniteConcatLoopStatement_of_finiteConcatSubpathStatement_eq
+#print axioms Poincare.threeSphere_stereographicEquatorLoopFiniteConcatLoopStatement
+#print axioms Poincare.threeSphere_stereographicEquatorLoopFiniteConcatLoopStatement_eq
+#print axioms Poincare.ThreeSphereStereographicEquatorLoopFiniteConcatQuotientStatement
+#print axioms Poincare.threeSphereStereographicEquatorLoopFiniteConcatQuotientStatement_eq
+#print axioms Poincare.threeSphere_stereographicEquatorLoopFiniteConcatQuotientStatement_of_finiteConcatLoopStatement
+#print axioms Poincare.threeSphere_stereographicEquatorLoopFiniteConcatQuotientStatement_of_finiteConcatLoopStatement_eq
+#print axioms Poincare.threeSphere_stereographicEquatorLoopFiniteConcatQuotientStatement
+#print axioms Poincare.threeSphere_stereographicEquatorLoopFiniteConcatQuotientStatement_eq
+#print axioms Poincare.ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement
+#print axioms Poincare.threeSphereStereographicEquatorLoopFiniteConcatCollapseStatement_eq
+#print axioms Poincare.threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatQuotientStatement_and_finiteConcatCollapseStatement
+#print axioms Poincare.threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatQuotientStatement_and_finiteConcatCollapseStatement_eq
+#print axioms Poincare.threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatCollapseStatement
+#print axioms Poincare.threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatCollapseStatement_eq
+#print axioms Poincare.threeSphere_actualOverlap_isPathConnected
+#print axioms Poincare.threeSphere_actualOverlap_isPathConnected_eq
+#print axioms Poincare.threeSphere_northSouthPole_compl_isPathConnected
+#print axioms Poincare.threeSphere_northSouthPole_compl_isPathConnected_eq
+#print axioms Poincare.threeSphere_stereographic_source_contractibleSpace
+#print axioms Poincare.threeSphere_stereographic_source_contractibleSpace_eq
+#print axioms Poincare.threeSphere_stereographic_source_simplyConnectedSpace_of_contractibleSpace
+#print axioms Poincare.threeSphere_stereographic_source_simplyConnectedSpace_of_contractibleSpace_eq
+#print axioms Poincare.threeSphere_stereographic_source_piOneSubsingleton
+#print axioms Poincare.threeSphere_stereographic_source_piOneSubsingleton_eq
+#print axioms Poincare.ThreeSphereStereographicSourcePiOneSubsingletonStatement
+#print axioms Poincare.threeSphereStereographicSourcePiOneSubsingletonStatement_eq
+#print axioms Poincare.threeSphere_stereographicSourcePiOneSubsingletonStatement
+#print axioms Poincare.threeSphere_stereographicSourcePiOneSubsingletonStatement_eq
+#print axioms Poincare.threeSphere_equatorPoint_mem_northPole_stereographic_source
+#print axioms Poincare.threeSphere_equatorPoint_mem_northPole_stereographic_source_eq
+#print axioms Poincare.threeSphere_equatorPoint_mem_southPole_stereographic_source
+#print axioms Poincare.threeSphere_equatorPoint_mem_southPole_stereographic_source_eq
+#print axioms Poincare.threeSphere_equatorPointInNorthSource
+#print axioms Poincare.threeSphere_equatorPointInNorthSource_eq
+#print axioms Poincare.threeSphere_equatorPointInSouthSource
+#print axioms Poincare.threeSphere_equatorPointInSouthSource_eq
+#print axioms Poincare.threeSphere_equatorPointInActualOverlap
+#print axioms Poincare.threeSphere_equatorPointInActualOverlap_eq
+#print axioms Poincare.threeSphere_actualOverlap_nonempty
+#print axioms Poincare.threeSphere_actualOverlap_nonempty_eq
+#print axioms Poincare.threeSphere_northSource_equatorPiOneSubsingleton
+#print axioms Poincare.threeSphere_northSource_equatorPiOneSubsingleton_eq
+#print axioms Poincare.threeSphere_southSource_equatorPiOneSubsingleton
+#print axioms Poincare.threeSphere_southSource_equatorPiOneSubsingleton_eq
+#print axioms Poincare.ThreeSphereStereographicEquatorSourcePiOneSubsingletonStatement
+#print axioms Poincare.threeSphereStereographicEquatorSourcePiOneSubsingletonStatement_eq
+#print axioms Poincare.threeSphere_stereographicEquatorSourcePiOneSubsingletonStatement_of_sourcePiOneSubsingletonStatement
+#print axioms Poincare.threeSphere_stereographicEquatorSourcePiOneSubsingletonStatement_of_sourcePiOneSubsingletonStatement_eq
+#print axioms Poincare.threeSphere_stereographicEquatorSourcePiOneSubsingletonStatement
+#print axioms Poincare.threeSphere_stereographicEquatorSourcePiOneSubsingletonStatement_eq
+#print axioms Poincare.ThreeSphereStereographicVanKampenPiOneInputsStatement
+#print axioms Poincare.threeSphereStereographicVanKampenPiOneInputsStatement_eq
+#print axioms Poincare.threeSphere_stereographicVanKampenPiOneInputsStatement
+#print axioms Poincare.threeSphere_stereographicVanKampenPiOneInputsStatement_eq
+#print axioms Poincare.threeSphere_stereographicVanKampenInputsStatement_of_vanKampenPiOneInputsStatement
+#print axioms Poincare.threeSphere_stereographicVanKampenInputsStatement_of_vanKampenPiOneInputsStatement_eq
+#print axioms Poincare.threeSphere_stereographicSourcePiOneSubsingletonStatement_of_vanKampenPiOneInputsStatement
+#print axioms Poincare.threeSphere_stereographicSourcePiOneSubsingletonStatement_of_vanKampenPiOneInputsStatement_eq
+#print axioms Poincare.threeSphere_stereographicEquatorSourcePiOneSubsingletonStatement_of_vanKampenPiOneInputsStatement
+#print axioms Poincare.threeSphere_stereographicEquatorSourcePiOneSubsingletonStatement_of_vanKampenPiOneInputsStatement_eq
+#print axioms Poincare.threeSphere_stereographicVanKampenLoopStatement_of_stereographicVanKampenPiOneSubsingletonStatement
+#print axioms Poincare.threeSphere_stereographicVanKampenLoopStatement_of_stereographicVanKampenPiOneSubsingletonStatement_eq
+#print axioms Poincare.threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatQuotientStatement_and_finiteConcatCollapseStatement
+#print axioms Poincare.threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatQuotientStatement_and_finiteConcatCollapseStatement_eq
+#print axioms Poincare.threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatCollapseStatement
+#print axioms Poincare.threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatCollapseStatement_eq
+#print axioms Poincare.threeSphere_stereographicVanKampenConclusionStatement_of_stereographicVanKampenPiOneSubsingletonStatement
+#print axioms Poincare.threeSphere_stereographicVanKampenConclusionStatement_of_stereographicVanKampenPiOneSubsingletonStatement_eq
+#print axioms Poincare.threeSphere_stereographicVanKampenReductionStatement_of_stereographicVanKampenPiOneSubsingletonStatement
+#print axioms Poincare.threeSphere_stereographicVanKampenReductionStatement_of_stereographicVanKampenPiOneSubsingletonStatement_eq
+#print axioms Poincare.threeSphere_simplyConnectedSpace_of_stereographicVanKampenPiOneSubsingletonStatement
+#print axioms Poincare.threeSphere_simplyConnectedSpace_of_stereographicVanKampenPiOneSubsingletonStatement_eq
+#print axioms Poincare.threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenPiOneSubsingletonStatement
+#print axioms Poincare.threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenPiOneSubsingletonStatement_eq
 #print axioms Poincare.ThreeSpherePathHomotopyStatement
 #print axioms Poincare.threeSpherePathHomotopyStatement_eq
 #print axioms Poincare.threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement
@@ -2767,6 +3923,22 @@ import Poincare
 #print axioms Poincare.canonical_completion_criterion_of_canonical_completion_payload_eq
 #print axioms Poincare.canonicalCompletionTarget_iff_canonical_completion_payload
 #print axioms Poincare.canonicalCompletionTarget_iff_canonical_completion_payload_eq
+#print axioms Poincare.canonical_completion_target_of_universalFiniteExtinctionStatement_to_reserved_eq
+#print axioms Poincare.canonical_completion_target_of_universalFiniteExtinctionStatement_to_reserved
+#print axioms Poincare.canonical_completion_target_of_universalFiniteExtinctionStatement_to_project_statement_eq
+#print axioms Poincare.canonical_completion_target_of_universalFiniteExtinctionStatement_to_project_statement
+#print axioms Poincare.canonical_completion_payload_of_universalFiniteExtinctionStatement_to_interface_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_universalFiniteExtinctionStatement_to_interface_payload
+#print axioms Poincare.canonical_completion_payload_of_universalFiniteExtinctionStatement_to_project_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_universalFiniteExtinctionStatement_to_project_payload
+#print axioms Poincare.canonical_completion_criterion_of_universalFiniteExtinctionStatement_to_project_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_universalFiniteExtinctionStatement_to_project_payload
+#print axioms Poincare.canonical_completion_target_of_smoothability_and_boundary_surgery_packages_to_ordinary_route_eq
+#print axioms Poincare.canonical_completion_target_of_smoothability_and_boundary_surgery_packages_to_ordinary_route
+#print axioms Poincare.canonical_completion_payload_of_smoothability_and_boundary_surgery_packages_to_ordinary_route_eq
+#print axioms Poincare.canonical_completion_payload_of_smoothability_and_boundary_surgery_packages_to_ordinary_route
+#print axioms Poincare.canonical_completion_criterion_of_smoothability_and_boundary_surgery_packages_to_ordinary_route_eq
+#print axioms Poincare.canonical_completion_criterion_of_smoothability_and_boundary_surgery_packages_to_ordinary_route
 #print axioms Poincare.completionCriterionAtUniverse_iff_canonical_completion_payload
 #print axioms Poincare.completionCriterionAtUniverse_iff_canonical_completion_payload_eq
 #print axioms Poincare.poincare_completion_payload_of_canonical_completion_payload
@@ -2785,16 +3957,28 @@ import Poincare
 #print axioms Poincare.canonical_completion_criterion_of_extinction_and_extraction_eq
 #print axioms Poincare.canonical_completion_payload_of_finite_extinction_and_topology_extraction_statement
 #print axioms Poincare.canonical_completion_payload_of_finite_extinction_and_topology_extraction_statement_eq
+#print axioms Poincare.canonical_completion_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_to_project_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_to_project_payload
 #print axioms Poincare.canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
 #print axioms Poincare.canonical_completion_target_of_finite_extinction_and_topology_extraction_statement_eq
+#print axioms Poincare.canonical_completion_target_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_to_project_statement_eq
+#print axioms Poincare.canonical_completion_target_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_to_project_statement
 #print axioms Poincare.canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement
 #print axioms Poincare.canonical_completion_criterion_of_finite_extinction_and_topology_extraction_statement_eq
+#print axioms Poincare.canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_to_project_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_topology_extraction_statement_to_project_payload
 #print axioms Poincare.canonical_completion_payload_of_finite_extinction_and_extraction_derivation
 #print axioms Poincare.canonical_completion_payload_of_finite_extinction_and_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_payload_of_universalFiniteExtinctionStatement_and_extraction_derivation_to_project_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_universalFiniteExtinctionStatement_and_extraction_derivation_to_project_payload
 #print axioms Poincare.canonical_completion_target_of_finite_extinction_and_extraction_derivation
 #print axioms Poincare.canonical_completion_target_of_finite_extinction_and_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_target_of_universalFiniteExtinctionStatement_and_extraction_derivation_to_project_statement_eq
+#print axioms Poincare.canonical_completion_target_of_universalFiniteExtinctionStatement_and_extraction_derivation_to_project_statement
 #print axioms Poincare.canonical_completion_criterion_of_finite_extinction_and_extraction_derivation
 #print axioms Poincare.canonical_completion_criterion_of_finite_extinction_and_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_extraction_derivation_to_project_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_extraction_derivation_to_project_payload
 #print axioms Poincare.poincare_statement_of_canonical_three_sphere_statement
 #print axioms Poincare.poincare_payload_of_canonical_three_sphere_statement
 #print axioms Poincare.completion_criterion_of_canonical_three_sphere_statement
@@ -3016,7 +4200,9 @@ import Poincare
 #print axioms Poincare.topology_classification_subobligations_of_extinction_topology_extraction_statement_of_topology_package_eq
 #print axioms Poincare.topology_homeomorphism_assembly_statement_of_extinction_topology_extraction_statement_of_topology_package_eq
 #print axioms Poincare.topology_homeomorphism_derivation_statement_of_extinction_topology_extraction_statement_of_topology_package_eq
+#print axioms Poincare.topology_extraction_statement_payload_of_topology_package_to_extraction_statement_projections
 #print axioms Poincare.topology_extraction_statement_payload_of_topology_package_to_extraction_statement_projections_eq
+#print axioms Poincare.topology_extraction_statement_payload_of_topology_package_to_extraction_statement_payload
 #print axioms Poincare.topology_extraction_statement_payload_of_topology_package_to_extraction_statement_payload_eq
 #print axioms Poincare.extinction_implies_sphere_of_topology_extraction_statement_eq
 #print axioms Poincare.extinction_topology_extraction_statement_of_extraction_and_derivation_eq
@@ -3030,6 +4216,8 @@ import Poincare
 #print axioms Poincare.poincare_payload_of_finite_extinction_and_extraction_derivation_eq
 #print axioms Poincare.topology_extraction_statement_payload_of_topology_package_eq
 #print axioms Poincare.extinction_implies_sphere_of_topology_package_to_statement_eq
+#print axioms Poincare.extinction_implies_sphere_of_topology_package_to_package_eq
+#print axioms Poincare.extinction_implies_sphere_of_topology_package_to_direct_verification_payload_eq
 #print axioms Poincare.extinction_surgery_trace_reconstruction_of_topology_package_eq
 #print axioms Poincare.extinction_surgery_trace_handle_cancellation_of_topology_package_eq
 #print axioms Poincare.extinction_component_classification_of_topology_package_eq
@@ -3145,6 +4333,17 @@ import Poincare
 #print axioms Poincare.canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation
 #print axioms Poincare.canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation_eq
 #print axioms Poincare.canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation_to_extraction_derivation_eq
+#print axioms Poincare.poincare_assembly_inputs_payload_of_surgery_and_topology_package_extraction_derivation_to_direct_verification_payload_eq
+#print axioms Poincare.poincare_target_payload_of_surgery_and_topology_package_extraction_derivation_to_direct_verification_payload_eq
+#print axioms Poincare.poincare_completion_payload_of_surgery_and_topology_package_extraction_derivation_to_finite_extinction_eq
+#print axioms Poincare.poincare_completion_payload_of_surgery_and_topology_package_extraction_derivation_to_package_eq
+#print axioms Poincare.poincare_completion_payload_of_surgery_and_topology_package_extraction_derivation_to_direct_verification_payload_eq
+#print axioms Poincare.poincare_statement_of_surgery_and_topology_package_extraction_derivation_to_finite_extinction_eq
+#print axioms Poincare.poincare_statement_of_surgery_and_topology_package_extraction_derivation_to_package_eq
+#print axioms Poincare.poincare_statement_of_surgery_and_topology_package_extraction_derivation_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation_to_finite_extinction_eq
+#print axioms Poincare.canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation_to_package_eq
+#print axioms Poincare.canonical_three_sphere_statement_of_surgery_and_topology_package_extraction_derivation_to_direct_verification_payload_eq
 #print axioms Poincare.canonical_three_sphere_statement_of_surgery_and_topology_packages_to_topology_package_extraction_derivation_eq
 #print axioms Poincare.canonical_three_sphere_statement_of_boundary_surgery_and_topology_packages
 #print axioms Poincare.canonical_three_sphere_statement_of_boundary_surgery_and_topology_packages_eq
@@ -3163,22 +4362,30 @@ import Poincare
 #print axioms Poincare.poincare_target_payload_of_aggregate_extraction_derivation_dependencies
 #print axioms Poincare.poincare_target_payload_of_aggregate_extraction_derivation_dependencies_eq
 #print axioms Poincare.poincare_target_payload_of_aggregate_extraction_derivation_dependencies_to_finite_extinction_eq
+#print axioms Poincare.poincare_target_payload_of_aggregate_extraction_derivation_dependencies_to_package_eq
+#print axioms Poincare.poincare_target_payload_of_aggregate_extraction_derivation_dependencies_to_direct_verification_payload_eq
 #print axioms Poincare.poincare_target_payload_of_equation_boundary_dependencies
 #print axioms Poincare.poincare_target_payload_of_equation_boundary_dependencies_eq
 #print axioms Poincare.poincare_target_payload_of_equation_boundary_dependencies_to_forgetful_dependencies
 #print axioms Poincare.poincare_target_payload_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
 #print axioms Poincare.poincare_target_payload_of_equation_boundary_dependencies_to_finite_extinction_eq
+#print axioms Poincare.poincare_target_payload_of_equation_boundary_dependencies_to_package_eq
+#print axioms Poincare.poincare_target_payload_of_equation_boundary_dependencies_to_direct_verification_payload_eq
 #print axioms Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies
 #print axioms Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies_eq
 #print axioms Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies
 #print axioms Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
 #print axioms Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
 #print axioms Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies_to_finite_extinction_eq
+#print axioms Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies_to_package_eq
+#print axioms Poincare.poincare_target_payload_of_equation_boundary_extraction_derivation_dependencies_to_direct_verification_payload_eq
 #print axioms Poincare.poincare_full_assembly_payload_of_dependencies
 #print axioms Poincare.poincare_full_assembly_payload_of_dependencies_eq
 #print axioms Poincare.poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies
 #print axioms Poincare.poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies_eq
 #print axioms Poincare.poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies_to_finite_extinction_eq
+#print axioms Poincare.poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies_to_package_eq
+#print axioms Poincare.poincare_full_assembly_payload_of_aggregate_extraction_derivation_dependencies_to_direct_verification_payload_eq
 #print axioms Poincare.poincare_full_assembly_payload_of_equation_boundary_dependencies
 #print axioms Poincare.poincare_full_assembly_payload_of_equation_boundary_dependencies_eq
 #print axioms Poincare.poincare_full_assembly_payload_of_equation_boundary_dependencies_to_forgetful_dependencies
@@ -3186,6 +4393,8 @@ import Poincare
 #print axioms Poincare.poincare_full_assembly_payload_of_equation_boundary_dependencies_to_forgetful_boundary_route_eq
 #print axioms Poincare.poincare_full_assembly_payload_of_equation_boundary_dependencies_to_boundary_route_eq
 #print axioms Poincare.poincare_full_assembly_payload_of_equation_boundary_dependencies_to_finite_extinction_eq
+#print axioms Poincare.poincare_full_assembly_payload_of_equation_boundary_dependencies_to_package_eq
+#print axioms Poincare.poincare_full_assembly_payload_of_equation_boundary_dependencies_to_direct_verification_payload_eq
 #print axioms Poincare.poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies
 #print axioms Poincare.poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_eq
 #print axioms Poincare.poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies
@@ -3193,6 +4402,8 @@ import Poincare
 #print axioms Poincare.poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_boundary_route_eq
 #print axioms Poincare.poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
 #print axioms Poincare.poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_finite_extinction_eq
+#print axioms Poincare.poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_package_eq
+#print axioms Poincare.poincare_full_assembly_payload_of_equation_boundary_extraction_derivation_dependencies_to_direct_verification_payload_eq
 #print axioms Poincare.poincare_assembly_payload_of_dependencies
 #print axioms Poincare.poincare_assembly_payload_of_dependencies_eq
 #print axioms Poincare.poincare_completion_payload_of_dependencies
@@ -3211,14 +4422,20 @@ import Poincare
 #print axioms Poincare.poincare_completion_payload_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
 #print axioms Poincare.poincare_completion_payload_of_equation_boundary_dependencies_to_boundary_route_eq
 #print axioms Poincare.poincare_completion_payload_of_equation_boundary_dependencies_to_finite_extinction_eq
+#print axioms Poincare.poincare_completion_payload_of_equation_boundary_dependencies_to_package_eq
+#print axioms Poincare.poincare_completion_payload_of_equation_boundary_dependencies_to_direct_verification_payload_eq
 #print axioms Poincare.poincare_completion_payload_of_aggregate_extraction_derivation_dependencies
 #print axioms Poincare.poincare_completion_payload_of_aggregate_extraction_derivation_dependencies_eq
 #print axioms Poincare.poincare_completion_payload_of_aggregate_extraction_derivation_dependencies_to_finite_extinction_eq
+#print axioms Poincare.poincare_completion_payload_of_aggregate_extraction_derivation_dependencies_to_package_eq
+#print axioms Poincare.poincare_completion_payload_of_aggregate_extraction_derivation_dependencies_to_direct_verification_payload_eq
 #print axioms Poincare.poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies
 #print axioms Poincare.poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies_eq
 #print axioms Poincare.poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
 #print axioms Poincare.poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
 #print axioms Poincare.poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies_to_finite_extinction_eq
+#print axioms Poincare.poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies_to_package_eq
+#print axioms Poincare.poincare_completion_payload_of_equation_boundary_extraction_derivation_dependencies_to_direct_verification_payload_eq
 #print axioms Poincare.poincare_statement_of_dependencies
 #print axioms Poincare.poincare_statement_of_dependencies_eq
 #print axioms Poincare.poincare_statement_of_equation_boundary_dependencies
@@ -3226,14 +4443,20 @@ import Poincare
 #print axioms Poincare.poincare_statement_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
 #print axioms Poincare.poincare_statement_of_equation_boundary_dependencies_to_boundary_route_eq
 #print axioms Poincare.poincare_statement_of_equation_boundary_dependencies_to_finite_extinction_eq
+#print axioms Poincare.poincare_statement_of_equation_boundary_dependencies_to_package_eq
+#print axioms Poincare.poincare_statement_of_equation_boundary_dependencies_to_direct_verification_payload_eq
 #print axioms Poincare.poincare_statement_of_aggregate_extraction_derivation_dependencies
 #print axioms Poincare.poincare_statement_of_aggregate_extraction_derivation_dependencies_eq
 #print axioms Poincare.poincare_statement_of_aggregate_extraction_derivation_dependencies_to_finite_extinction_eq
+#print axioms Poincare.poincare_statement_of_aggregate_extraction_derivation_dependencies_to_package_eq
+#print axioms Poincare.poincare_statement_of_aggregate_extraction_derivation_dependencies_to_direct_verification_payload_eq
 #print axioms Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependencies
 #print axioms Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependencies_eq
 #print axioms Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
 #print axioms Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
 #print axioms Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependencies_to_finite_extinction_eq
+#print axioms Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependencies_to_package_eq
+#print axioms Poincare.poincare_statement_of_equation_boundary_extraction_derivation_dependencies_to_direct_verification_payload_eq
 #print axioms Poincare.completion_criterion_of_dependencies
 #print axioms Poincare.completion_criterion_of_dependencies_eq
 #print axioms Poincare.canonical_three_sphere_statement_of_equation_boundary_dependencies
@@ -3241,27 +4464,39 @@ import Poincare
 #print axioms Poincare.canonical_three_sphere_statement_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
 #print axioms Poincare.canonical_three_sphere_statement_of_equation_boundary_dependencies_to_boundary_route_eq
 #print axioms Poincare.canonical_three_sphere_statement_of_equation_boundary_dependencies_to_finite_extinction_eq
+#print axioms Poincare.canonical_three_sphere_statement_of_equation_boundary_dependencies_to_package_eq
+#print axioms Poincare.canonical_three_sphere_statement_of_equation_boundary_dependencies_to_direct_verification_payload_eq
 #print axioms Poincare.canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies
 #print axioms Poincare.canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies_eq
 #print axioms Poincare.canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies_to_finite_extinction_eq
+#print axioms Poincare.canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies_to_package_eq
+#print axioms Poincare.canonical_three_sphere_statement_of_aggregate_extraction_derivation_dependencies_to_direct_verification_payload_eq
 #print axioms Poincare.canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependencies
 #print axioms Poincare.canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependencies_eq
 #print axioms Poincare.canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
 #print axioms Poincare.canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
 #print axioms Poincare.canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependencies_to_finite_extinction_eq
+#print axioms Poincare.canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependencies_to_package_eq
+#print axioms Poincare.canonical_three_sphere_statement_of_equation_boundary_extraction_derivation_dependencies_to_direct_verification_payload_eq
 #print axioms Poincare.completion_criterion_of_equation_boundary_dependencies
 #print axioms Poincare.completion_criterion_of_equation_boundary_dependencies_eq
 #print axioms Poincare.completion_criterion_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
 #print axioms Poincare.completion_criterion_of_equation_boundary_dependencies_to_boundary_route_eq
 #print axioms Poincare.completion_criterion_of_equation_boundary_dependencies_to_finite_extinction_eq
+#print axioms Poincare.completion_criterion_of_equation_boundary_dependencies_to_package_eq
+#print axioms Poincare.completion_criterion_of_equation_boundary_dependencies_to_direct_verification_payload_eq
 #print axioms Poincare.completion_criterion_of_aggregate_extraction_derivation_dependencies
 #print axioms Poincare.completion_criterion_of_aggregate_extraction_derivation_dependencies_eq
 #print axioms Poincare.completion_criterion_of_aggregate_extraction_derivation_dependencies_to_finite_extinction_eq
+#print axioms Poincare.completion_criterion_of_aggregate_extraction_derivation_dependencies_to_package_eq
+#print axioms Poincare.completion_criterion_of_aggregate_extraction_derivation_dependencies_to_direct_verification_payload_eq
 #print axioms Poincare.completion_criterion_of_equation_boundary_extraction_derivation_dependencies
 #print axioms Poincare.completion_criterion_of_equation_boundary_extraction_derivation_dependencies_eq
 #print axioms Poincare.completion_criterion_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
 #print axioms Poincare.completion_criterion_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
 #print axioms Poincare.completion_criterion_of_equation_boundary_extraction_derivation_dependencies_to_finite_extinction_eq
+#print axioms Poincare.completion_criterion_of_equation_boundary_extraction_derivation_dependencies_to_package_eq
+#print axioms Poincare.completion_criterion_of_equation_boundary_extraction_derivation_dependencies_to_direct_verification_payload_eq
 #print axioms Poincare.poincare_completion_payload_of_component_extraction_derivation_requirements
 #print axioms Poincare.canonical_completion_payload_of_component_extraction_derivation_requirements
 #print axioms Poincare.canonical_completion_target_of_component_extraction_derivation_requirements
@@ -3441,6 +4676,9 @@ import Poincare
 #print axioms Poincare.ricci_flow_equation_evidence_of_dependencies_eq
 #print axioms Poincare.analytic_foundation_subobligations_of_dependencies
 #print axioms Poincare.analytic_foundation_subobligations_of_dependencies_eq
+#print axioms Poincare.analytic_foundation_subobligations_of_dependencies_to_package_eq
+#print axioms Poincare.analytic_foundation_subobligations_of_dependencies_to_direct_verification_payload_eq
+#print axioms Poincare.analytic_foundation_subobligations_of_dependencies_to_finite_extinction_eq
 #print axioms Poincare.surgery_construction_packages_of_dependencies
 #print axioms Poincare.surgery_construction_packages_of_dependencies_eq
 #print axioms Poincare.RicciFlowWithSurgeryConstructionSubobligationsPayload
@@ -3616,11 +4854,17 @@ import Poincare
 #print axioms Poincare.canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections_eq
 #print axioms Poincare.canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
 #print axioms Poincare.canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
 #print axioms Poincare.canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
 #print axioms Poincare.canonical_completion_payload_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
 #print axioms Poincare.canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
 #print axioms Poincare.canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
 #print axioms Poincare.canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
 #print axioms Poincare.canonical_completion_criterion_of_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
 #print axioms Poincare.canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections
 #print axioms Poincare.canonical_completion_target_of_lifted_homeomorphism_derivation_dependency_projections_eq
@@ -3689,9 +4933,12 @@ import Poincare
 #print axioms Poincare.remaining_dependency_package_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
 #print axioms Poincare.remaining_dependency_package_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
 #print axioms Poincare.remaining_dependency_package_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_eq
@@ -3704,9 +4951,12 @@ import Poincare
 #print axioms Poincare.target_statement_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_eq
@@ -3714,9 +4964,12 @@ import Poincare
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
 #print axioms Poincare.completion_certificate_of_lifted_homeomorphism_derivation_dependency_projections_of_completion_certificate_eq
@@ -3888,6 +5141,22 @@ import Poincare
 #print axioms Poincare.topology_homeomorphism_derivation_of_dependencies_to_statement_eq
 #print axioms Poincare.topology_extraction_statement_payload_of_dependencies_to_extraction_statement_projections_eq
 #print axioms Poincare.topology_extraction_statement_payload_of_dependencies_to_extraction_statement_payload_eq
+#print axioms Poincare.topology_extraction_statement_payload_of_dependencies_to_lifted_derivation_projections
+#print axioms Poincare.topology_extraction_statement_payload_of_dependencies_to_lifted_derivation_projections_eq
+#print axioms Poincare.topology_extraction_statement_payload_of_equation_boundary_dependencies
+#print axioms Poincare.topology_extraction_statement_payload_of_equation_boundary_dependencies_eq
+#print axioms Poincare.topology_extraction_statement_payload_of_equation_boundary_dependencies_to_direct_verification_payload_eq
+#print axioms Poincare.topology_extraction_statement_payload_of_equation_boundary_dependencies_to_finite_extinction_eq
+#print axioms Poincare.topology_extraction_statement_payload_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
+#print axioms Poincare.topology_extraction_statement_payload_of_equation_boundary_dependencies_to_lifted_derivation_projections
+#print axioms Poincare.topology_extraction_statement_payload_of_equation_boundary_dependencies_to_lifted_derivation_projections_eq
+#print axioms Poincare.topology_extraction_statement_payload_of_equation_boundary_dependencies_to_package_eq
+#print axioms Poincare.topology_extraction_statement_payload_of_dependencies_and_verification_family
+#print axioms Poincare.topology_extraction_statement_payload_of_dependencies_and_verification_family_eq
+#print axioms Poincare.topology_extraction_statement_payload_of_dependencies_and_verification_family_to_dependencies_eq
+#print axioms Poincare.topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_and_verification_family
+#print axioms Poincare.topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_and_verification_family_eq
+#print axioms Poincare.topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_and_verification_family_to_dependencies_eq
 #print axioms Poincare.topology_classification_subobligations_of_dependencies_to_package_derivation_eq
 #print axioms Poincare.topology_simply_connected_recognition_statement_of_dependencies_to_package_derivation_eq
 #print axioms Poincare.topology_spherical_trivial_quotient_statement_of_dependencies_to_package_derivation_eq
@@ -3997,6 +5266,7 @@ import Poincare
 #print axioms Poincare.topology_extraction_derivation_payload_of_equation_boundary_dependencies
 #print axioms Poincare.topology_extraction_derivation_payload_of_equation_boundary_dependencies_eq
 #print axioms Poincare.topology_extraction_derivation_payload_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
+#print axioms Poincare.topology_extraction_derivation_payload_of_equation_boundary_dependencies_to_statement_eq
 #print axioms Poincare.topology_simply_connected_recognition_statement_of_equation_boundary_dependencies
 #print axioms Poincare.topology_simply_connected_recognition_statement_of_equation_boundary_dependencies_eq
 #print axioms Poincare.topology_simply_connected_recognition_statement_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
@@ -4019,6 +5289,7 @@ import Poincare
 #print axioms Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies_eq
 #print axioms Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies_to_finite_extinction_eq
 #print axioms Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies_to_package_eq
+#print axioms Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies_to_boundary_route_eq
 #print axioms Poincare.poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
 #print axioms Poincare.poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
 #print axioms Poincare.poincare_target_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
@@ -4096,6 +5367,11 @@ import Poincare
 #print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route_eq
@@ -4103,10 +5379,22 @@ import Poincare
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_statement
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_finite_extinction
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_package
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_remaining_dependency
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload
 #print axioms Poincare.poincare_full_assembly_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_forgetful_boundary_route_eq
 #print axioms Poincare.poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_forgetful_boundary_route_eq
 #print axioms Poincare.completion_certificate_of_equation_boundary_remaining_dependency_package_to_lifted_homeomorphism_derivation_dependency_projections_eq
@@ -4128,12 +5416,21 @@ import Poincare
 #print axioms Poincare.poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_boundary_route_eq
 #print axioms Poincare.completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_boundary_route_eq
 #print axioms Poincare.completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_boundary_route_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_boundary_route_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_remaining_dependency_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_boundary_route_eq
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_direct_verification_payload_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_boundary_route_eq
+#print axioms Poincare.target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_direct_verification_payload_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_boundary_route_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_direct_verification_payload_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_boundary_route_eq
+#print axioms Poincare.completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_boundary_route_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_direct_verification_payload_eq
 #print axioms Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies
 #print axioms Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies_eq
 #print axioms Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies_to_verification_payload_eq
@@ -4144,6 +5441,7 @@ import Poincare
 #print axioms Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies_to_statement_eq
 #print axioms Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies_to_finite_extinction_eq
 #print axioms Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies_to_forgetful_dependencies_eq
+#print axioms Poincare.poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
 #print axioms Poincare.poincare_target_payload_of_equation_boundary_dependency_projections
 #print axioms Poincare.poincare_target_payload_of_equation_boundary_dependency_projections_eq
 #print axioms Poincare.poincare_target_payload_of_equation_boundary_dependency_projections_to_topology_statement_eq
@@ -4236,6 +5534,16 @@ import Poincare
 #print axioms Poincare.topology_homeomorphism_derivation_of_dependencies_to_statement_eq
 #print axioms Poincare.topology_extraction_statement_payload_of_dependencies_to_extraction_statement_projections_eq
 #print axioms Poincare.topology_extraction_statement_payload_of_dependencies_to_extraction_statement_payload_eq
+#print axioms Poincare.topology_extraction_statement_payload_of_dependencies_to_lifted_derivation_projections
+#print axioms Poincare.topology_extraction_statement_payload_of_dependencies_to_lifted_derivation_projections_eq
+#print axioms Poincare.topology_extraction_statement_payload_of_equation_boundary_dependencies
+#print axioms Poincare.topology_extraction_statement_payload_of_equation_boundary_dependencies_eq
+#print axioms Poincare.topology_extraction_statement_payload_of_equation_boundary_dependencies_to_direct_verification_payload_eq
+#print axioms Poincare.topology_extraction_statement_payload_of_equation_boundary_dependencies_to_finite_extinction_eq
+#print axioms Poincare.topology_extraction_statement_payload_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
+#print axioms Poincare.topology_extraction_statement_payload_of_equation_boundary_dependencies_to_lifted_derivation_projections
+#print axioms Poincare.topology_extraction_statement_payload_of_equation_boundary_dependencies_to_lifted_derivation_projections_eq
+#print axioms Poincare.topology_extraction_statement_payload_of_equation_boundary_dependencies_to_package_eq
 #print axioms Poincare.topology_classification_subobligations_of_dependencies_to_package_derivation_eq
 #print axioms Poincare.topology_derivation_statement_of_dependencies_to_package_eq
 #print axioms Poincare.topology_homeomorphism_assembly_statement_of_dependencies_to_package_eq
@@ -4546,8 +5854,11 @@ import Poincare
 #print axioms Poincare.canonical_completion_criterion_of_surgery_and_topology_extraction_statement
 #print axioms Poincare.canonical_completion_criterion_of_surgery_and_topology_extraction_statement_eq
 #print axioms Poincare.canonical_completion_payload_of_surgery_and_topology_packages_to_extraction_statement_eq
+#print axioms Poincare.canonical_completion_payload_of_surgery_and_topology_packages_to_extraction_statement
 #print axioms Poincare.canonical_completion_target_of_surgery_and_topology_packages_to_extraction_statement_eq
+#print axioms Poincare.canonical_completion_target_of_surgery_and_topology_packages_to_extraction_statement
 #print axioms Poincare.canonical_completion_criterion_of_surgery_and_topology_packages_to_extraction_statement_eq
+#print axioms Poincare.canonical_completion_criterion_of_surgery_and_topology_packages_to_extraction_statement
 #print axioms Poincare.canonical_completion_payload_of_surgery_and_extraction_derivation
 #print axioms Poincare.canonical_completion_payload_of_surgery_and_extraction_derivation_eq
 #print axioms Poincare.canonical_completion_target_of_surgery_and_extraction_derivation
@@ -4561,11 +5872,47 @@ import Poincare
 #print axioms Poincare.canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation
 #print axioms Poincare.canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation_eq
 #print axioms Poincare.canonical_completion_payload_of_surgery_and_topology_package_extraction_derivation_to_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_payload_of_surgery_and_topology_package_extraction_derivation_to_extraction_derivation
+#print axioms Poincare.canonical_completion_payload_of_surgery_and_topology_package_extraction_derivation_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_payload_of_surgery_and_topology_package_extraction_derivation_to_finite_extinction
+#print axioms Poincare.canonical_completion_payload_of_surgery_and_topology_package_extraction_derivation_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_surgery_and_topology_package_extraction_derivation_to_direct_verification_payload
+#print axioms Poincare.canonical_completion_payload_of_surgery_and_topology_package_extraction_derivation_to_package_eq
+#print axioms Poincare.canonical_completion_payload_of_surgery_and_topology_package_extraction_derivation_to_package
+#print axioms Poincare.canonical_completion_payload_of_surgery_and_topology_package_extraction_derivation_to_statement_eq
+#print axioms Poincare.canonical_completion_payload_of_surgery_and_topology_package_extraction_derivation_to_statement
+#print axioms Poincare.canonical_completion_payload_of_surgery_and_topology_package_extraction_derivation_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_payload_of_surgery_and_topology_package_extraction_derivation_to_remaining_dependency
 #print axioms Poincare.canonical_completion_target_of_surgery_and_topology_package_extraction_derivation_to_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_target_of_surgery_and_topology_package_extraction_derivation_to_extraction_derivation
+#print axioms Poincare.canonical_completion_target_of_surgery_and_topology_package_extraction_derivation_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_target_of_surgery_and_topology_package_extraction_derivation_to_finite_extinction
+#print axioms Poincare.canonical_completion_target_of_surgery_and_topology_package_extraction_derivation_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_surgery_and_topology_package_extraction_derivation_to_direct_verification_payload
+#print axioms Poincare.canonical_completion_target_of_surgery_and_topology_package_extraction_derivation_to_package_eq
+#print axioms Poincare.canonical_completion_target_of_surgery_and_topology_package_extraction_derivation_to_package
+#print axioms Poincare.canonical_completion_target_of_surgery_and_topology_package_extraction_derivation_to_statement_eq
+#print axioms Poincare.canonical_completion_target_of_surgery_and_topology_package_extraction_derivation_to_statement
+#print axioms Poincare.canonical_completion_target_of_surgery_and_topology_package_extraction_derivation_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_target_of_surgery_and_topology_package_extraction_derivation_to_remaining_dependency
 #print axioms Poincare.canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation_to_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation_to_extraction_derivation
+#print axioms Poincare.canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation_to_finite_extinction
+#print axioms Poincare.canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation_to_direct_verification_payload
+#print axioms Poincare.canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation_to_package_eq
+#print axioms Poincare.canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation_to_package
+#print axioms Poincare.canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation_to_statement_eq
+#print axioms Poincare.canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation_to_statement
+#print axioms Poincare.canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_surgery_and_topology_package_extraction_derivation_to_remaining_dependency
 #print axioms Poincare.canonical_completion_payload_of_surgery_and_topology_packages_to_topology_package_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_payload_of_surgery_and_topology_packages_to_topology_package_extraction_derivation
 #print axioms Poincare.canonical_completion_target_of_surgery_and_topology_packages_to_topology_package_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_target_of_surgery_and_topology_packages_to_topology_package_extraction_derivation
 #print axioms Poincare.canonical_completion_criterion_of_surgery_and_topology_packages_to_topology_package_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_criterion_of_surgery_and_topology_packages_to_topology_package_extraction_derivation
 #print axioms Poincare.poincare_completion_payload_of_component_requirements
 #print axioms Poincare.poincare_completion_payload_of_component_requirements_eq
 #print axioms Poincare.poincare_statement_of_component_requirements
@@ -4577,9 +5924,11 @@ import Poincare
 #print axioms Poincare.canonical_completion_target_of_component_requirements
 #print axioms Poincare.canonical_completion_target_of_component_requirements_eq
 #print axioms Poincare.canonical_completion_target_of_component_requirements_to_project_statement_eq
+#print axioms Poincare.canonical_completion_target_of_component_requirements_to_project_statement
 #print axioms Poincare.canonical_completion_criterion_of_component_requirements
 #print axioms Poincare.canonical_completion_criterion_of_component_requirements_eq
 #print axioms Poincare.canonical_completion_criterion_of_component_requirements_to_project_criterion_eq
+#print axioms Poincare.canonical_completion_criterion_of_component_requirements_to_project_criterion
 #print axioms Poincare.canonical_three_sphere_statement_of_component_requirements
 #print axioms Poincare.canonical_three_sphere_statement_of_component_requirements_eq
 #print axioms Poincare.poincare_completion_payload_of_component_extraction_derivation_requirements
@@ -5292,6 +6641,10 @@ import Poincare
 #print axioms Poincare.canonical_completion_criterion_of_dependency_projections
 #print axioms Poincare.canonical_completion_criterion_of_dependency_projections_eq
 #print axioms Poincare.canonical_completion_criterion_of_dependency_projections_to_project_criterion_eq
+#print axioms Poincare.canonical_completion_criterion_of_dependency_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_dependency_projections_to_package_eq
+#print axioms Poincare.canonical_completion_criterion_of_dependency_projections_to_remaining_dependency_eq
 #print axioms Poincare.canonical_completion_payload_of_dependency_projections_to_topology_statement_eq
 #print axioms Poincare.canonical_completion_target_of_dependency_projections_to_topology_statement_eq
 #print axioms Poincare.canonical_completion_criterion_of_dependency_projections_to_topology_statement_eq
@@ -5581,11 +6934,18 @@ import Poincare
 #print axioms Poincare.completion_certificate_of_equation_boundary_remaining_dependency_package_to_dependency_projections_eq
 #print axioms Poincare.completion_certificate_of_equation_boundary_remaining_dependency_package_to_extraction_derivation_dependency_projections_eq
 #print axioms Poincare.remaining_dependency_package_of_completion_certificate_of_equation_boundary_remaining_dependency_package_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_package_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_forgetful_dependencies_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_dependency_projections_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_extraction_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_lifted_homeomorphism_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_smoothability_boundary_surgery_packages_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_universalFiniteExtinctionStatement_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_finite_extinction_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_package_eq
@@ -5597,6 +6957,13 @@ import Poincare
 #print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_forgetful_dependencies_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_dependency_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_extraction_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_lifted_homeomorphism_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_smoothability_boundary_surgery_packages_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_universalFiniteExtinctionStatement_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_package_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq
@@ -5606,11 +6973,19 @@ import Poincare
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_package_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_forgetful_dependencies_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_package_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_remaining_dependency_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_forgetful_dependencies_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_boundary_route_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_dependency_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_extraction_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_lifted_homeomorphism_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_smoothability_boundary_surgery_packages_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_universalFiniteExtinctionStatement_eq
 #print axioms Poincare.completion_certificate_of_poincareProofDependenciesWithEquationBoundary
 #print axioms Poincare.completion_certificate_of_poincareProofDependenciesWithEquationBoundary_eq
 #print axioms Poincare.completion_certificate_of_poincareProofDependencies_and_verification_family_to_finite_extinction_eq
@@ -5646,21 +7021,42 @@ import Poincare
 #print axioms Poincare.completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_remaining_dependency_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_to_package_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_to_package_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_to_package_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_to_package_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_to_package_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_to_package_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_to_finite_extinction_eq
@@ -5671,36 +7067,66 @@ import Poincare
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_to_boundary_certificate
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_to_boundary_certificate_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_to_boundary_certificate_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_to_boundary_certificate_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_to_boundary_certificate
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_to_boundary_certificate_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_to_boundary_certificate_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_to_boundary_certificate
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_to_boundary_certificate_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_to_boundary_certificate_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_to_boundary_certificate
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_to_boundary_certificate_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_to_boundary_certificate_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_to_boundary_certificate_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_to_boundary_certificate
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_to_boundary_certificate_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_to_boundary_certificate_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_to_boundary_certificate
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_to_boundary_certificate_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_to_boundary_certificate
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_to_boundary_certificate_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_to_boundary_certificate_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_to_boundary_certificate_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_to_boundary_certificate
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_to_boundary_certificate_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_to_boundary_certificate_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_to_boundary_certificate
 #print axioms Poincare.target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_package_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_to_package_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_package_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_package_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_to_package_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_package_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_eq
@@ -5714,25 +7140,49 @@ import Poincare
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_package_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_to_package_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_package_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_boundary_certificate
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_boundary_certificate_eq
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_boundary_certificate
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_boundary_certificate_eq
+#print axioms Poincare.target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_boundary_certificate
 #print axioms Poincare.target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_boundary_certificate_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_boundary_certificate
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_boundary_certificate_eq
+#print axioms Poincare.completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_boundary_certificate
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_boundary_certificate_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_boundary_certificate
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_boundary_certificate_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_to_boundary_certificate
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_to_boundary_certificate_eq
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_to_boundary_certificate
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_to_boundary_certificate_eq
+#print axioms Poincare.target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_to_boundary_certificate
 #print axioms Poincare.target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_to_boundary_certificate_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_to_boundary_certificate
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_to_boundary_certificate_eq
+#print axioms Poincare.completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_to_boundary_certificate
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_to_boundary_certificate_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_to_boundary_certificate
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_project_statement_to_boundary_certificate_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_boundary_certificate
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_boundary_certificate_eq
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_boundary_certificate
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_boundary_certificate_eq
+#print axioms Poincare.target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_boundary_certificate
 #print axioms Poincare.target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_boundary_certificate_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_boundary_certificate
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_boundary_certificate_eq
+#print axioms Poincare.completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_boundary_certificate
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_boundary_certificate_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_boundary_certificate
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_boundary_certificate_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_to_remaining_dependency_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_to_remaining_dependency_eq
@@ -5772,10 +7222,16 @@ import Poincare
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_completion_criterion_to_remaining_dependency_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_to_remaining_dependency_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_canonical_target_to_package_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_to_remaining_dependency_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_project_statement_to_package_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_to_remaining_dependency_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_extraction_derivation_completion_criterion_to_package_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_forgetful_dependencies_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_forgetful_dependencies_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_extraction_derivation_canonical_target_to_remaining_dependency_eq
@@ -5989,7 +7445,14 @@ import Poincare
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_eq
 #print axioms Poincare.poincareProofDependencies_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_eq
 #print axioms Poincare.remaining_dependency_package_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_projections_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_extraction_derivation_projections_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_lifted_homeomorphism_derivation_projections_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_smoothability_boundary_surgery_packages_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_universalFiniteExtinctionStatement_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_package_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies_eq
@@ -6004,7 +7467,14 @@ import Poincare
 #print axioms Poincare.target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_package_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_extraction_derivation_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_lifted_homeomorphism_derivation_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_smoothability_boundary_surgery_packages_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_universalFiniteExtinctionStatement_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_package_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies_eq
@@ -6014,7 +7484,14 @@ import Poincare
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_package_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_extraction_derivation_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_lifted_homeomorphism_derivation_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_smoothability_boundary_surgery_packages_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_universalFiniteExtinctionStatement_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_package_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies_eq
@@ -6310,16 +7787,20 @@ import Poincare
 #print axioms Poincare.equation_boundary_verification_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_payload_eq
 #print axioms Poincare.equation_boundary_verification_payload_for_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.equation_boundary_verification_payload_for_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq
+#print axioms Poincare.equation_boundary_verification_payload_for_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.ricci_flow_equation_boundary_packages_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload_eq
+#print axioms Poincare.ricci_flow_equation_boundary_packages_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.ricci_flow_equation_boundary_packages_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
 #print axioms Poincare.ricci_flow_equation_boundary_packages_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.ricci_flow_equation_boundary_packages_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload_eq
+#print axioms Poincare.equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
 #print axioms Poincare.equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_surgery_derivative_payload_eq
 #print axioms Poincare.equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload_eq
+#print axioms Poincare.equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
 #print axioms Poincare.equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq
@@ -6327,6 +7808,7 @@ import Poincare
 #print axioms Poincare.equation_boundary_direct_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload
 #print axioms Poincare.equation_boundary_direct_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_eq
 #print axioms Poincare.equation_boundary_direct_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload_eq
+#print axioms Poincare.equation_boundary_direct_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.equation_boundary_direct_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
 #print axioms Poincare.equation_boundary_direct_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.equation_boundary_direct_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq
@@ -6334,12 +7816,14 @@ import Poincare
 #print axioms Poincare.equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_pointwise_equation_payload_eq
 #print axioms Poincare.equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_pointwise_equation_payload_eq
 #print axioms Poincare.surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload_eq
+#print axioms Poincare.surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
 #print axioms Poincare.surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.surgery_package_with_equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload
 #print axioms Poincare.surgery_package_with_equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_eq
 #print axioms Poincare.surgery_package_with_equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload_eq
+#print axioms Poincare.surgery_package_with_equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.surgery_package_with_equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
 #print axioms Poincare.surgery_package_with_equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.surgery_package_with_equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq
@@ -6347,6 +7831,7 @@ import Poincare
 #print axioms Poincare.surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_pointwise_equation_payload_eq
 #print axioms Poincare.surgery_package_with_equation_boundary_derivative_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_pointwise_equation_payload_eq
 #print axioms Poincare.surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload_eq
+#print axioms Poincare.surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
 #print axioms Poincare.surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq
@@ -6368,16 +7853,114 @@ import Poincare
 #print axioms Poincare.surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_equation_boundary_verification_payload_eq
 #print axioms Poincare.surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_eq
 #print axioms Poincare.surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+#print axioms Poincare.analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload
 #print axioms Poincare.analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload_eq
+#print axioms Poincare.analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency
 #print axioms Poincare.analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq
+#print axioms Poincare.analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate
 #print axioms Poincare.analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq
+#print axioms Poincare.analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_surgery_derivative_payload
 #print axioms Poincare.analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_surgery_derivative_payload_eq
+#print axioms Poincare.analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_pointwise_equation_payload
 #print axioms Poincare.analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_pointwise_equation_payload_eq
+#print axioms Poincare.analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_pointwise_equation_payload
 #print axioms Poincare.analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_pointwise_equation_payload_eq
+#print axioms Poincare.analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_analytic_boundary
+#print axioms Poincare.analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_derivation_and_boundary_payload
+#print axioms Poincare.analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction
+#print axioms Poincare.analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_package
+#print axioms Poincare.analytic_derivation_and_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload
+#print axioms Poincare.analytic_derivation_and_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency
+#print axioms Poincare.analytic_derivation_and_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate
+#print axioms Poincare.analytic_derivation_and_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_analytic_boundary
+#print axioms Poincare.analytic_derivation_and_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_derivation_and_boundary_payload
+#print axioms Poincare.analytic_derivation_and_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_pointwise_equation_payload
+#print axioms Poincare.analytic_derivation_and_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_pointwise_equation_payload
+#print axioms Poincare.analytic_derivation_and_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction
+#print axioms Poincare.analytic_derivation_and_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_package
+#print axioms Poincare.analytic_derivation_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload
+#print axioms Poincare.analytic_derivation_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency
+#print axioms Poincare.analytic_derivation_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate
+#print axioms Poincare.analytic_derivation_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_analytic_boundary
+#print axioms Poincare.analytic_derivation_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_derivation_and_boundary_payload
+#print axioms Poincare.analytic_derivation_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_pointwise_equation_payload
+#print axioms Poincare.analytic_derivation_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_pointwise_equation_payload
+#print axioms Poincare.analytic_derivation_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction
+#print axioms Poincare.analytic_derivation_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_package
+#print axioms Poincare.finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload
+#print axioms Poincare.finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency
+#print axioms Poincare.finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_equation_boundary_remaining_dependency
+#print axioms Poincare.finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate
+#print axioms Poincare.finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_pointwise_equation_payload
+#print axioms Poincare.finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_derivative_payload
+#print axioms Poincare.finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_pointwise_equation_payload
+#print axioms Poincare.finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_analytic_boundary
+#print axioms Poincare.finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_derivation_and_boundary_payload
+#print axioms Poincare.finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_surgery_derivative_payload
+#print axioms Poincare.finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_payload
+#print axioms Poincare.finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction
+#print axioms Poincare.finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_package
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_package
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_project_criterion
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_target_statement
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_package
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_project_payload
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_target_statement
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload_to_package
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload_to_poincare_conjecture
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload_to_target_statement
+#print axioms Poincare.completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate
+#print axioms Poincare.completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload
+#print axioms Poincare.completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction
+#print axioms Poincare.completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_package
+#print axioms Poincare.completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency
+#print axioms Poincare.completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_target_statement
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_canonical_payload
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_package
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_poincare_conjecture_payload
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_target_statement
+#print axioms Poincare.target_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate
+#print axioms Poincare.target_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_canonical_target
+#print axioms Poincare.target_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload
+#print axioms Poincare.target_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction
+#print axioms Poincare.target_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_package
+#print axioms Poincare.target_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_poincare_conjecture
+#print axioms Poincare.target_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency
+#print axioms Poincare.equation_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload
+#print axioms Poincare.equation_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency
+#print axioms Poincare.equation_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate
+#print axioms Poincare.equation_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_analytic_boundary
+#print axioms Poincare.equation_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_derivation_and_boundary_payload
+#print axioms Poincare.equation_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_derivative_payload
+#print axioms Poincare.equation_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_verification_payload
+#print axioms Poincare.equation_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_pointwise_equation_payload
+#print axioms Poincare.equation_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_pointwise_equation_payload
+#print axioms Poincare.equation_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction
+#print axioms Poincare.equation_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_package
+#print axioms Poincare.equation_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload
 #print axioms Poincare.finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_eq
 #print axioms Poincare.finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload_eq
+#print axioms Poincare.finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
 #print axioms Poincare.finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq
@@ -6394,8 +7977,20 @@ import Poincare
 #print axioms Poincare.surgery_package_with_equation_boundary_pointwise_equation_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.surgery_package_with_equation_boundary_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction_eq
+#print axioms Poincare.analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_package_eq
 #print axioms Poincare.equation_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction_eq
+#print axioms Poincare.analytic_derivation_and_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload_eq
 #print axioms Poincare.analytic_derivation_and_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction_eq
+#print axioms Poincare.analytic_derivation_and_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_package_eq
+#print axioms Poincare.analytic_derivation_and_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.analytic_derivation_and_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.analytic_derivation_and_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq
+#print axioms Poincare.analytic_derivation_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload_eq
+#print axioms Poincare.analytic_derivation_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction_eq
+#print axioms Poincare.analytic_derivation_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_package_eq
+#print axioms Poincare.analytic_derivation_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.analytic_derivation_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.analytic_derivation_statements_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_eq
 #print axioms Poincare.finite_extinction_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_eq
@@ -6413,6 +8008,15 @@ import Poincare
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_project_criterion_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_target_statement_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_target_statement_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.target_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.target_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq
@@ -6492,7 +8096,9 @@ import Poincare
 #print axioms Poincare.poincare_full_assembly_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_forgetful_dependencies_eq
 #print axioms Poincare.poincare_full_assembly_payload_of_completion_certificate_with_equation_boundary_verification_payload_extraction_derivation_of_poincareProofDependencies_and_verification_family_to_forgetful_dependencies_eq
 #print axioms Poincare.poincare_full_assembly_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.poincare_full_assembly_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.poincare_full_assembly_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_equation_boundary_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.poincare_full_assembly_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_boundary_certificate_eq
@@ -6513,20 +8119,28 @@ import Poincare
 #print axioms Poincare.poincare_full_assembly_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_remaining_dependency_eq
 #print axioms Poincare.poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies_eq
 #print axioms Poincare.poincare_full_assembly_payload_of_completion_certificate_extraction_derivation_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_remaining_dependency_eq
+#print axioms Poincare.poincareCompletionCertificate_theoremName_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.poincareCompletionCertificate_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.poincareCompletionCertificate_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_forgetful_dependencies_eq
 #print axioms Poincare.poincareCompletionCertificate_literal_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.poincareCompletionCertificate_literal_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.poincareCompletionCertificate_literal_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.poincareCompletionCertificate_literal_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.poincareCompletionCertificate_literal_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_forgetful_dependencies_eq
 #print axioms Poincare.poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_forgetful_dependencies_eq
 #print axioms Poincare.poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_forgetful_dependencies_eq
@@ -6622,20 +8236,166 @@ import Poincare
 #print axioms Poincare.poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_forgetful_dependencies_eq
 #print axioms Poincare.poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_forgetful_dependencies_eq
 #print axioms Poincare.poincareCompletionCertificate_project_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies_eq
+#print axioms Poincare.poincareCompletionCertificate_theoremName_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.poincareCompletionCertificate_theoremName_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate
+#print axioms Poincare.poincareCompletionCertificate_theoremName_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency
+#print axioms Poincare.poincareCompletionCertificate_theoremName_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction
+#print axioms Poincare.poincareCompletionCertificate_theoremName_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_package
+#print axioms Poincare.poincareCompletionCertificate_theoremName_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload
+#print axioms Poincare.poincareCompletionCertificate_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.poincareCompletionCertificate_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate
+#print axioms Poincare.poincareCompletionCertificate_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency
+#print axioms Poincare.poincareCompletionCertificate_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction
+#print axioms Poincare.poincareCompletionCertificate_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_package
+#print axioms Poincare.poincareCompletionCertificate_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload
+#print axioms Poincare.poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate
+#print axioms Poincare.poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency
+#print axioms Poincare.poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction
+#print axioms Poincare.poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_package
+#print axioms Poincare.poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload
+#print axioms Poincare.poincareCompletionCertificate_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_forgetful_dependencies
+#print axioms Poincare.poincareCompletionCertificate_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.poincareCompletionCertificate_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate
+#print axioms Poincare.poincareCompletionCertificate_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency
+#print axioms Poincare.poincareCompletionCertificate_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction
+#print axioms Poincare.poincareCompletionCertificate_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_package
+#print axioms Poincare.poincareCompletionCertificate_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload
+#print axioms Poincare.poincareCompletionCertificate_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_forgetful_dependencies
 #print axioms Poincare.completion_certificate_of_literal_payload_of_completion_certificate_of_equation_boundary_verification_payload_eq
 #print axioms Poincare.completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_verification_payload_eq
 #print axioms Poincare.completion_certificate_of_project_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_eq
+#print axioms Poincare.completion_certificate_of_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.completion_certificate_of_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload
+#print axioms Poincare.completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload
+#print axioms Poincare.completion_certificate_of_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+#print axioms Poincare.poincareCompletionCertificate_literal_payload_of_completion_certificate_of_literal_payload
+#print axioms Poincare.poincareCompletionCertificate_theoremName_payload_of_completion_certificate_of_literal_payload
+#print axioms Poincare.completion_certificate_of_literal_payload_of_completion_certificate
+#print axioms Poincare.completion_certificate_of_remaining_dependency_and_poincare_payload_of_completion_certificate
+#print axioms Poincare.completion_certificate_of_remaining_dependency_and_canonical_payload_of_completion_certificate
+#print axioms Poincare.completion_certificate_of_remaining_dependency_and_target_statement_of_completion_certificate
+#print axioms Poincare.completion_certificate_of_remaining_dependency_and_canonical_target_of_completion_certificate
+#print axioms Poincare.completion_certificate_of_remaining_dependency_and_completion_criterion_of_completion_certificate
+#print axioms Poincare.completion_certificate_of_equation_boundary_remaining_dependency_package_to_finite_extinction
+#print axioms Poincare.completion_certificate_of_equation_boundary_remaining_dependency_package_to_package
+#print axioms Poincare.completion_certificate_of_equation_boundary_remaining_dependency_package_to_direct_verification_payload
+#print axioms Poincare.completion_certificate_of_equation_boundary_remaining_dependency_package_to_boundary_route
+#print axioms Poincare.completion_certificate_of_equation_boundary_remaining_dependency_package_to_remaining_dependency
+#print axioms Poincare.completion_certificate_of_equation_boundary_remaining_dependency_package_to_component_requirements
+#print axioms Poincare.completion_certificate_of_equation_boundary_remaining_dependency_package_to_package_layer_requirements
+#print axioms Poincare.completion_certificate_of_equation_boundary_remaining_dependency_package_to_milestone_requirements
+#print axioms Poincare.completion_certificate_of_equation_boundary_remaining_dependency_package_to_component_extraction_derivation_requirements
+#print axioms Poincare.completion_certificate_of_equation_boundary_remaining_dependency_package_to_package_layer_extraction_derivation_requirements
+#print axioms Poincare.completion_certificate_of_equation_boundary_remaining_dependency_package_to_milestone_extraction_derivation_requirements
+#print axioms Poincare.completion_certificate_of_equation_boundary_remaining_dependency_package_to_aggregate_extraction_derivation_dependencies
+#print axioms Poincare.completion_certificate_of_equation_boundary_remaining_dependency_package_to_dependency_projections
+#print axioms Poincare.completion_certificate_of_equation_boundary_remaining_dependency_package_to_extraction_derivation_dependency_projections
+#print axioms Poincare.completion_certificate_of_equation_boundary_remaining_dependency_package_to_lifted_homeomorphism_derivation_dependency_projections
+#print axioms Poincare.completion_certificate_of_equation_boundary_remaining_dependency_package_to_forgetful_dependencies
+#print axioms Poincare.completion_certificate_of_component_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_remaining_dependency
+#print axioms Poincare.completion_certificate_of_component_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_dependency_projections
+#print axioms Poincare.completion_certificate_of_component_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_extraction_derivation_dependency_projections
+#print axioms Poincare.completion_certificate_of_component_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_finite_extinction
+#print axioms Poincare.completion_certificate_of_component_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_package
+#print axioms Poincare.completion_certificate_of_component_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_direct_verification_payload
+#print axioms Poincare.completion_certificate_of_component_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_forgetful_dependencies
+#print axioms Poincare.completion_certificate_of_package_layer_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_remaining_dependency
+#print axioms Poincare.completion_certificate_of_package_layer_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_dependency_projections
+#print axioms Poincare.completion_certificate_of_package_layer_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_extraction_derivation_dependency_projections
+#print axioms Poincare.completion_certificate_of_package_layer_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_finite_extinction
+#print axioms Poincare.completion_certificate_of_package_layer_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_package
+#print axioms Poincare.completion_certificate_of_package_layer_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_direct_verification_payload
+#print axioms Poincare.completion_certificate_of_package_layer_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_forgetful_dependencies
+#print axioms Poincare.completion_certificate_of_milestone_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_remaining_dependency
+#print axioms Poincare.completion_certificate_of_milestone_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_dependency_projections
+#print axioms Poincare.completion_certificate_of_milestone_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_extraction_derivation_dependency_projections
+#print axioms Poincare.completion_certificate_of_milestone_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_finite_extinction
+#print axioms Poincare.completion_certificate_of_milestone_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_package
+#print axioms Poincare.completion_certificate_of_milestone_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_direct_verification_payload
+#print axioms Poincare.completion_certificate_of_milestone_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_forgetful_dependencies
+#print axioms Poincare.completion_certificate_of_component_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_remaining_dependency
+#print axioms Poincare.completion_certificate_of_component_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_finite_extinction
+#print axioms Poincare.completion_certificate_of_component_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_dependency_projections
+#print axioms Poincare.completion_certificate_of_component_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_direct_verification_payload
+#print axioms Poincare.completion_certificate_of_component_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_package
+#print axioms Poincare.completion_certificate_of_component_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_extraction_derivation_dependency_projections
+#print axioms Poincare.completion_certificate_of_component_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_lifted_homeomorphism_derivation_dependency_projections
+#print axioms Poincare.completion_certificate_of_component_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_forgetful_dependencies
+#print axioms Poincare.completion_certificate_of_package_layer_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_remaining_dependency
+#print axioms Poincare.completion_certificate_of_package_layer_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_finite_extinction
+#print axioms Poincare.completion_certificate_of_package_layer_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_dependency_projections
+#print axioms Poincare.completion_certificate_of_package_layer_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_direct_verification_payload
+#print axioms Poincare.completion_certificate_of_package_layer_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_package
+#print axioms Poincare.completion_certificate_of_package_layer_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_extraction_derivation_dependency_projections
+#print axioms Poincare.completion_certificate_of_package_layer_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_lifted_homeomorphism_derivation_dependency_projections
+#print axioms Poincare.completion_certificate_of_package_layer_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_forgetful_dependencies
+#print axioms Poincare.completion_certificate_of_milestone_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_remaining_dependency
+#print axioms Poincare.completion_certificate_of_milestone_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_finite_extinction
+#print axioms Poincare.completion_certificate_of_milestone_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_dependency_projections
+#print axioms Poincare.completion_certificate_of_milestone_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_direct_verification_payload
+#print axioms Poincare.completion_certificate_of_milestone_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_package
+#print axioms Poincare.completion_certificate_of_milestone_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_extraction_derivation_dependency_projections
+#print axioms Poincare.completion_certificate_of_milestone_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_lifted_homeomorphism_derivation_dependency_projections
+#print axioms Poincare.completion_certificate_of_milestone_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_forgetful_dependencies
+#print axioms Poincare.completion_certificate_of_component_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_remaining_dependency
+#print axioms Poincare.completion_certificate_of_component_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_finite_extinction
+#print axioms Poincare.completion_certificate_of_component_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_dependency_projections
+#print axioms Poincare.completion_certificate_of_component_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_direct_verification_payload
+#print axioms Poincare.completion_certificate_of_component_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_package
+#print axioms Poincare.completion_certificate_of_component_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_extraction_derivation_dependency_projections
+#print axioms Poincare.completion_certificate_of_component_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_lifted_homeomorphism_derivation_dependency_projections
+#print axioms Poincare.completion_certificate_of_component_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_forgetful_dependencies
+#print axioms Poincare.completion_certificate_of_package_layer_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_remaining_dependency
+#print axioms Poincare.completion_certificate_of_package_layer_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_finite_extinction
+#print axioms Poincare.completion_certificate_of_package_layer_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_dependency_projections
+#print axioms Poincare.completion_certificate_of_package_layer_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_direct_verification_payload
+#print axioms Poincare.completion_certificate_of_package_layer_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_package
+#print axioms Poincare.completion_certificate_of_package_layer_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_extraction_derivation_dependency_projections
+#print axioms Poincare.completion_certificate_of_package_layer_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_lifted_homeomorphism_derivation_dependency_projections
+#print axioms Poincare.completion_certificate_of_package_layer_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_forgetful_dependencies
+#print axioms Poincare.completion_certificate_of_milestone_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_remaining_dependency
+#print axioms Poincare.completion_certificate_of_milestone_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_finite_extinction
+#print axioms Poincare.completion_certificate_of_milestone_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_dependency_projections
+#print axioms Poincare.completion_certificate_of_milestone_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_direct_verification_payload
+#print axioms Poincare.completion_certificate_of_milestone_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_package
+#print axioms Poincare.completion_certificate_of_milestone_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_extraction_derivation_dependency_projections
+#print axioms Poincare.completion_certificate_of_milestone_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_lifted_homeomorphism_derivation_dependency_projections
+#print axioms Poincare.completion_certificate_of_milestone_extraction_derivation_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_forgetful_dependencies
+#print axioms Poincare.completion_certificate_of_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate
+#print axioms Poincare.completion_certificate_of_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency
+#print axioms Poincare.completion_certificate_of_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction
+#print axioms Poincare.completion_certificate_of_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_package
+#print axioms Poincare.completion_certificate_of_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload
+#print axioms Poincare.completion_certificate_of_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.completion_certificate_of_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate
+#print axioms Poincare.completion_certificate_of_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency
+#print axioms Poincare.completion_certificate_of_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction
+#print axioms Poincare.completion_certificate_of_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_package
+#print axioms Poincare.completion_certificate_of_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload
+#print axioms Poincare.completion_certificate_of_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_forgetful_dependencies
+#print axioms Poincare.completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate
+#print axioms Poincare.completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency
+#print axioms Poincare.completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction
+#print axioms Poincare.completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_package
+#print axioms Poincare.completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_direct_verification_payload
+#print axioms Poincare.completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_forgetful_dependencies
+#print axioms Poincare.completion_certificate_of_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.completion_certificate_of_literal_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.completion_certificate_of_literal_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.completion_certificate_of_literal_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.completion_certificate_of_literal_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.completion_certificate_of_literal_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.completion_certificate_of_literal_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_forgetful_dependencies_eq
 #print axioms Poincare.completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.completion_certificate_of_aggregate_dependency_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_forgetful_dependencies_eq
 #print axioms Poincare.completion_certificate_of_project_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.completion_certificate_of_project_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.completion_certificate_of_project_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.completion_certificate_of_project_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.completion_certificate_of_project_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_finite_extinction_eq
@@ -6741,34 +8501,65 @@ import Poincare
 #print axioms Poincare.completion_certificate_of_project_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_finite_extinction_eq
 #print axioms Poincare.completion_certificate_of_project_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_forgetful_dependencies_eq
 #print axioms Poincare.completion_certificate_of_project_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_eq
+#print axioms Poincare.completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_package_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_finite_extinction_eq
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_to_boundary_certificate_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_to_package_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_to_finite_extinction_eq
+#print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_project_payload_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_canonical_payload_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_to_target_statement_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_verification_payload_to_target_statement_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_to_project_criterion_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_to_project_criterion_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_target_statement_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_target_statement_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_to_target_statement_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_to_target_statement_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_to_package_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.canonical_three_sphere_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.canonical_three_sphere_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction_eq
+#print axioms Poincare.canonical_three_sphere_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.canonical_three_sphere_statement_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.canonical_three_sphere_statement_of_completion_certificate_of_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.canonical_three_sphere_statement_of_completion_certificate_of_equation_boundary_verification_payload_to_finite_extinction_eq
+#print axioms Poincare.canonical_three_sphere_statement_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.canonical_three_sphere_statement_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.poincareCompletionCertificate_theoremName_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.poincareCompletionCertificate_theoremName_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.poincareCompletionCertificate_literal_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq
@@ -6790,12 +8581,18 @@ import Poincare
 #print axioms Poincare.completion_certificate_of_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.completion_certificate_of_project_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction_eq
@@ -6804,12 +8601,18 @@ import Poincare
 #print axioms Poincare.poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_forgetful_dependencies_eq
 #print axioms Poincare.completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.completion_certificate_of_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.completion_certificate_of_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.completion_certificate_of_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.completion_certificate_of_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.completion_certificate_of_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_projected_dependency
 #print axioms Poincare.completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_equation_boundary_verification_payload_to_boundary_certificate_eq
 #print axioms Poincare.completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload_to_finite_extinction_eq
@@ -6983,6 +8786,8 @@ import Poincare
 #print axioms Poincare.canonical_three_sphere_statement_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_boundary_extraction_derivation_target_payload_eq
 #print axioms Poincare.canonical_three_sphere_statement_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_boundary_route_eq
 #print axioms Poincare.canonical_three_sphere_statement_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_three_sphere_statement_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_package_eq
+#print axioms Poincare.canonical_three_sphere_statement_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_direct_verification_payload_eq
 #print axioms Poincare.canonical_three_sphere_statement_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_poincareProofDependencies_extraction_derivation_projections_eq
 #print axioms Poincare.canonical_three_sphere_statement_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_eq
 #print axioms Poincare.canonical_three_sphere_statement_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_boundary_route_eq
@@ -7447,7 +9252,9 @@ import Poincare
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_dependency_projections_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_dependency_projections_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_dependency_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_dependency_projections
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_dependency_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_dependency_projections
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_dependency_projections_eq
 #print axioms Poincare.poincareProofDependencies_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_eq
 #print axioms Poincare.remaining_dependency_package_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_eq
@@ -7457,7 +9264,12 @@ import Poincare
 #print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_boundary_route_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_package_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_remaining_dependency_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_eq
 #print axioms Poincare.completion_certificate_of_equation_boundary_dependency_projections_to_poincareProofDependenciesWithEquationBoundary_eq
 #print axioms Poincare.completion_certificate_of_equation_boundary_dependency_projections_to_boundary_target_payload_eq
@@ -7551,11 +9363,185 @@ import Poincare
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_aggregate_extraction_derivation_dependencies
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_aggregate_extraction_derivation_dependencies_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_aggregate_extraction_derivation_dependencies
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_aggregate_extraction_derivation_dependencies_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_aggregate_extraction_derivation_dependencies
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_aggregate_extraction_derivation_dependencies_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_aggregate_dependency_payload
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_aggregate_dependency_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_aggregate_dependency_payload
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_aggregate_dependency_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_aggregate_dependency_payload
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_aggregate_dependency_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_components
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_components_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_components
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_components_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_components
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_components_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_components_payload
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_components_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_components_payload
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_components_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_components_payload
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_components_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_literal_payload
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_literal_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_literal_payload
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_literal_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_literal_payload
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_literal_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_project_statement_payload
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_project_statement_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_project_statement_payload
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_project_statement_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_project_statement_payload
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_project_statement_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_component_requirements
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_component_requirements_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_component_requirements
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_component_requirements_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_component_requirements
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_component_requirements_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_component_requirements_payload
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_component_requirements_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_component_requirements_payload
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_component_requirements_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_component_requirements_payload
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_component_requirements_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_component_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_component_extraction_derivation_requirements_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_component_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_component_extraction_derivation_requirements_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_component_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_component_extraction_derivation_requirements_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_component_extraction_derivation_requirements_payload
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_component_extraction_derivation_requirements_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_component_extraction_derivation_requirements_payload
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_component_extraction_derivation_requirements_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_component_extraction_derivation_requirements_payload
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_component_extraction_derivation_requirements_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_package_layer_requirements
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_package_layer_requirements_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_package_layer_requirements
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_package_layer_requirements_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_package_layer_requirements
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_package_layer_requirements_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_package_layer_requirements_payload
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_package_layer_requirements_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_package_layer_requirements_payload
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_package_layer_requirements_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_package_layer_requirements_payload
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_package_layer_requirements_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_milestone_requirements
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_milestone_requirements_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_milestone_requirements
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_milestone_requirements_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_milestone_requirements
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_milestone_requirements_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_milestone_requirements_payload
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_milestone_requirements_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_milestone_requirements_payload
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_milestone_requirements_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_milestone_requirements_payload
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_milestone_requirements_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_package_layer_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_package_layer_extraction_derivation_requirements_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_package_layer_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_package_layer_extraction_derivation_requirements_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_package_layer_extraction_derivation_requirements_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_milestone_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_milestone_extraction_derivation_requirements_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_milestone_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_milestone_extraction_derivation_requirements_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_milestone_extraction_derivation_requirements_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_dependency_projections
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_dependency_projections_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_dependency_projections_to_topology_statement_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_dependency_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_dependency_projections_to_package_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_dependency_projections_to_remaining_dependency_eq
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_dependency_projections_to_direct_verification_payload_eq
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_dependency_projections_to_package_eq
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_dependency_projections_to_remaining_dependency_eq
+#print axioms Poincare.target_statement_of_completion_certificate_of_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.target_statement_of_completion_certificate_of_dependency_projections_to_direct_verification_payload_eq
+#print axioms Poincare.target_statement_of_completion_certificate_of_dependency_projections_to_package_eq
+#print axioms Poincare.target_statement_of_completion_certificate_of_dependency_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_dependency_projections
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_dependency_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_dependency_projections_to_topology_statement_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_dependency_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_dependency_projections_to_package_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_dependency_projections_to_remaining_dependency_eq
+#print axioms Poincare.completion_criterion_of_completion_certificate_of_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.completion_criterion_of_completion_certificate_of_dependency_projections_to_direct_verification_payload_eq
+#print axioms Poincare.completion_criterion_of_completion_certificate_of_dependency_projections_to_package_eq
+#print axioms Poincare.completion_criterion_of_completion_certificate_of_dependency_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_dependency_projections
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_dependency_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_dependency_projections_to_topology_statement_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_dependency_projections_to_topology_statement
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_dependency_projections_to_finite_extinction
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_dependency_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_dependency_projections_to_direct_verification_payload
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_dependency_projections_to_package_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_dependency_projections_to_package
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_dependency_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_dependency_projections_to_remaining_dependency
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_dependency_projections_and_verification_family
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_dependency_projections_and_verification_family_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_dependency_projections_and_verification_family_to_aggregate_certificate_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_dependency_projections_and_verification_family
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_dependency_projections_and_verification_family_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_dependency_projections_and_verification_family_to_aggregate_certificate_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_dependency_projections_and_verification_family
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_dependency_projections_and_verification_family_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_dependency_projections_and_verification_family_to_aggregate_certificate_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_extraction_derivation_dependency_projections
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_extraction_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_extraction_derivation_dependency_projections_to_statement_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_extraction_derivation_dependency_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_extraction_derivation_dependency_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_extraction_derivation_dependency_projections_to_package_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_extraction_derivation_dependency_projections_to_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_extraction_derivation_dependency_projections
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_extraction_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_extraction_derivation_dependency_projections_to_statement_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_extraction_derivation_dependency_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_extraction_derivation_dependency_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_extraction_derivation_dependency_projections_to_package_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_extraction_derivation_dependency_projections_to_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_extraction_derivation_dependency_projections
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_extraction_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_extraction_derivation_dependency_projections_to_statement_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_extraction_derivation_dependency_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_extraction_derivation_dependency_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_extraction_derivation_dependency_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_extraction_derivation_dependency_projections_to_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_extraction_derivation_dependency_projections_to_package_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_component_requirements_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_package_layer_requirements_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_milestone_requirements_eq
@@ -7563,8 +9549,199 @@ import Poincare
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_canonical_target
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_target_statement
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_to_smoothability_surgery_packages_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_to_universalFiniteExtinctionStatement_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_component_requirements
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_package_layer_requirements
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_milestone_requirements
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_projections
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_projections_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_projections_to_topology_statement_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_projections_to_package_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_projections
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_projections_to_topology_statement_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_projections_to_package_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_projections
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_projections_to_topology_statement_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_projections_to_package_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_to_statement_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_to_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_dependency_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_extraction_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_forgetful_dependencies_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_lifted_homeomorphism_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_package_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_to_package_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_to_verification_family_projection_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_to_package_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_to_verification_family_projection_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_to_package_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_to_verification_family_projection_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_and_canonical_payload
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_and_canonical_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_and_canonical_target
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_and_completion_criterion
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_and_poincare_payload
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_and_poincare_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_and_target_statement
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_component_requirements
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_package_layer_requirements
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_milestone_requirements
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_package
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_package_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_package_to_smoothability_surgery_packages_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_remaining_dependency_package_to_universalFiniteExtinctionStatement_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_target
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_target_statement
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_smooth_statement_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_smooth_three_sphere_statement_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_packaged_smooth_statement_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_to_smoothability_surgery_packages_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_to_universalFiniteExtinctionStatement_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_component_requirements
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_package_layer_requirements
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_milestone_requirements
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_to_statement_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_to_package_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_to_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_dependency_projections_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_extraction_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_forgetful_dependencies_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_lifted_homeomorphism_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_package_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_to_package_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_to_verification_family_projection_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_to_package_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_to_verification_family_projection_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_to_package_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_to_verification_family_projection_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_canonical_payload
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_canonical_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_canonical_target
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_completion_criterion
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_completion_criterion_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_poincare_payload
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_target_statement
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_smooth_statement_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_canonical_smooth_three_sphere_statement_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_packaged_smooth_statement_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_to_interface_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_to_project_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_component_requirements
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_package_layer_requirements
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_milestone_requirements
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_package
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_package_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_package_to_smoothability_surgery_packages_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_package_to_universalFiniteExtinctionStatement_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_dependency_projections
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_package_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_extraction_derivation_dependency_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_lifted_homeomorphism_derivation_dependency_projections_to_statement_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_to_finite_extinction_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_remaining_dependency_component_requirements_eq
@@ -7603,6 +9780,14 @@ import Poincare
 #print axioms Poincare.poincareCompletionCertificate_aggregate_canonical_statement_payload
 #print axioms Poincare.completion_certificate_of_aggregate_canonical_statement_payload
 #print axioms Poincare.poincareCompletionCertificate_iff_aggregate_canonical_statement_payload
+#print axioms Poincare.aggregate_canonical_statement_payload_of_canonical_statement_payload
+#print axioms Poincare.aggregate_canonical_statement_payload_of_canonical_statement_payload_eq
+#print axioms Poincare.canonical_statement_payload_of_aggregate_canonical_statement_payload
+#print axioms Poincare.canonical_statement_payload_of_aggregate_canonical_statement_payload_eq
+#print axioms Poincare.canonical_statement_payload_of_aggregate_canonical_statement_payload_of_canonical_statement_payload_eq
+#print axioms Poincare.aggregate_canonical_statement_payload_of_canonical_statement_payload_of_aggregate_canonical_statement_payload_eq
+#print axioms Poincare.canonical_statement_payload_iff_aggregate_canonical_statement_payload
+#print axioms Poincare.canonical_statement_payload_iff_aggregate_canonical_statement_payload_eq
 #print axioms Poincare.completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement
 #print axioms Poincare.poincareCompletionCertificate_iff_remainingDependencyPackage_and_canonical_three_sphere_statement
 #print axioms Poincare.completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement
@@ -7816,6 +10001,30 @@ import Poincare
 #print axioms Poincare.canonical_three_sphere_statement_of_completion_certificate_of_remaining_dependency_and_reverse_canonical_smooth_three_sphere_statement_eq
 #print axioms Poincare.canonical_three_sphere_statement_of_completion_certificate_of_poincareProofDependencies_and_reverse_canonical_smooth_three_sphere_statement_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_reverse_canonical_smooth_three_sphere_statement_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_canonical_payload
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_canonical_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_canonical_smooth_three_sphere_statement_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_canonical_target
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_canonical_target_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_canonical_three_sphere_statement_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_completion_criterion
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_completion_criterion_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_packaged_smooth_statement_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_poincare_payload
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_poincare_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_smooth_statement_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_target_statement
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_component_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_component_requirements
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_milestone_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_milestone_requirements
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_package
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_package_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_package_layer_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_package_layer_requirements
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_package_to_smoothability_surgery_packages_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_package_to_universalFiniteExtinctionStatement_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_remaining_dependency_and_reverse_canonical_smooth_three_sphere_statement_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_reverse_canonical_smooth_three_sphere_statement_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_reverse_canonical_smooth_three_sphere_statement_eq
@@ -7874,7 +10083,9 @@ import Poincare
 #print axioms Poincare.packaged_smooth_statement_payload_iff_poincareProofDependencies_remainingDependencyPackage
 #print axioms Poincare.packaged_canonical_smooth_three_sphere_statement_payload_iff_poincareProofDependencies_remainingDependencyPackage
 #print axioms Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_packaged_smooth_statement_payload_to_remaining_dependency_eq
+#print axioms Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_packaged_smooth_statement_payload_to_smoothability_package_eq
 #print axioms Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_payload_to_remaining_dependency_eq
+#print axioms Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_payload_to_smoothability_package_eq
 #print axioms Poincare.canonical_completion_target_of_remaining_dependency_and_packaged_smooth_statement_eq
 #print axioms Poincare.canonical_completion_criterion_of_remaining_dependency_and_packaged_smooth_statement_eq
 #print axioms Poincare.canonical_three_sphere_statement_of_remaining_dependency_and_packaged_smooth_statement_eq
@@ -7910,6 +10121,70 @@ import Poincare
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_remaining_dependency_and_packaged_reverse_canonical_smooth_three_sphere_statement_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_remaining_dependency_and_packaged_reverse_canonical_smooth_three_sphere_statement_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_packaged_reverse_canonical_smooth_three_sphere_statement_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_aggregate_extraction_derivation
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_canonical_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_canonical_smooth_three_sphere_statement_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_canonical_target
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_canonical_target_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_canonical_three_sphere_statement_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_completion_criterion_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_packaged_smooth_statement_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_poincare_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_smooth_statement_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_target_statement
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_to_package_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_canonical_target_to_verification_family_projection_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_to_package_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_completion_criterion_to_verification_family_projection_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_to_package_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_extraction_derivation_project_statement_to_verification_family_projection_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_dependency_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_extraction_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_forgetful_dependencies_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_lifted_homeomorphism_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_package_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_component_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_component_requirements
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_to_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_to_package_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_extraction_derivation_projections_to_statement_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_lifted_homeomorphism_derivation_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_milestone_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_milestone_requirements
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_package_layer_extraction_derivation_requirements
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_package_layer_requirements
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_to_smoothability_surgery_packages_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_to_universalFiniteExtinctionStatement_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_packaged_reverse_canonical_smooth_three_sphere_statement_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_remaining_dependency_and_packaged_reverse_canonical_smooth_three_sphere_statement_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_packaged_reverse_canonical_smooth_three_sphere_statement_eq
@@ -7940,6 +10215,7 @@ import Poincare
 #print axioms Poincare.packaged_reverse_canonical_smooth_three_sphere_statement_payload_iff_poincareProofDependencies_remainingDependencyPackage
 #print axioms Poincare.packaged_reverse_canonical_smooth_three_sphere_statement_payload_iff_poincareProofDependencies_remainingDependencyPackage_eq
 #print axioms Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_packaged_reverse_canonical_smooth_three_sphere_statement_payload_to_remaining_dependency_eq
+#print axioms Poincare.poincareCompletionCertificate_iff_poincareProofDependencies_and_packaged_reverse_canonical_smooth_three_sphere_statement_payload_to_smoothability_package_eq
 #print axioms Poincare.smoothability_package_smooth_statement_completion_payload
 #print axioms Poincare.poincare_statement_of_smoothability_package_and_smooth_statement
 #print axioms Poincare.completion_criterion_of_smoothability_package_and_smooth_statement
@@ -8217,14 +10493,39 @@ import Poincare
 #print axioms Poincare.completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_remaining_dependency_eq
 #print axioms Poincare.completion_certificate_of_aggregate_canonical_statement_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_package_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_package_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_package_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_package_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_remaining_dependency_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_package_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_remaining_dependency_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_to_finite_extinction_eq
 #print axioms Poincare.poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_remaining_dependency_package_to_finite_extinction_eq
@@ -8299,24 +10600,227 @@ import Poincare
 #print axioms Poincare.completion_certificate_of_milestone_extraction_derivation_requirements_payload_of_completion_certificate_with_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_package_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_package_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_remaining_dependency_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_package_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_package_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_remaining_dependency_eq
 #print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_finite_extinction_eq
 #print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_package_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_remaining_dependency_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_package_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_package_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_package_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_remaining_dependency_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_package_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_remaining_dependency_eq
 #print axioms Poincare.completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_eq
 #print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_package_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_remaining_dependency_eq
+-- Canonical completion certificate routes required by semantic and completion audits.
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_dependency_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_extraction_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_lifted_homeomorphism_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_dependency_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_extraction_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_lifted_homeomorphism_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_boundary_extraction_derivation_route_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_projected_dependency
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_projected_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_projected_dependency
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_verification_family_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_projected_dependency
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_projected_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_projected_dependency
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_extraction_derivation_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_lifted_homeomorphism_derivation_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_extraction_derivation_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_lifted_homeomorphism_derivation_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_aggregate_certificate_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_package_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_remaining_dependency_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_statement_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_boundary_extraction_derivation_route_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_boundary_route_eq
+#print axioms Poincare.canonical_completion_criterion_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_boundary_route_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_dependency_projections_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_extraction_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_lifted_homeomorphism_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_dependency_projections_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_extraction_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_lifted_homeomorphism_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_boundary_extraction_derivation_route_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_boundary_route_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_projected_dependency
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_projected_dependency_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_projected_dependency
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_verification_family_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_projected_dependency
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_projected_dependency_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_projected_dependency
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_extraction_derivation_projections_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_lifted_homeomorphism_derivation_projections_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_projections_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_extraction_derivation_projections_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_lifted_homeomorphism_derivation_projections_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_projections_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_aggregate_certificate_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_package_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_statement_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_boundary_extraction_derivation_route_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_boundary_route_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_boundary_route_eq
+#print axioms Poincare.canonical_completion_payload_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_dependency_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_extraction_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_lifted_homeomorphism_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_dependency_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_extraction_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_target_payload_to_lifted_homeomorphism_derivation_dependency_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_boundary_extraction_derivation_route_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_remaining_dependency_package_to_boundary_route_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_projected_dependency
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_projected_dependency_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_projected_dependency
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependencies_and_verification_family_to_verification_family_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_projected_dependency
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_projected_dependency_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_projected_dependency
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_projected_dependency
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_projected_dependency
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_projected_dependency_eq
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_projected_dependency
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_projected_dependency_eq
+#print axioms Poincare.poincare_completion_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_projected_dependency
+#print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_and_verification_payload_to_projected_dependency
+#print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_and_verification_payload_to_projected_dependency
+#print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_projected_dependency_eq
+#print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_verification_payload_of_equation_boundary_verification_payload_to_projected_dependency
+#print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_projected_dependency_eq
+#print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_projected_dependency
+#print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_projected_dependency_eq
+#print axioms Poincare.target_statement_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_projected_dependency
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_equation_boundary_verification_payload_to_poincare_conjecture_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_extraction_derivation_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_lifted_homeomorphism_derivation_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_extraction_derivation_target_payload_to_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_direct_verification_payload_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_extraction_derivation_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_lifted_homeomorphism_derivation_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_and_boundary_target_payload_to_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_aggregate_certificate_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_extraction_derivation_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_finite_extinction_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_package_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_lifted_homeomorphism_derivation_projections_to_statement_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_boundary_extraction_derivation_route_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependenciesWithEquationBoundary_to_boundary_route_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_boundary_route_eq
+#print axioms Poincare.canonical_completion_target_of_completion_certificate_of_poincareProofDependencies_and_verification_family_to_finite_extinction_eq
+
 EOF
 append_certificate_route_projection_axiom_checks "$check_file"
 

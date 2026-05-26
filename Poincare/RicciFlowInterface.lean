@@ -251,6 +251,21 @@ theorem poincare_statement_of_finite_extinction_to_reserved_endpoint_eq
   apply Subsingleton.elim
 
 /--
+The finite-extinction local statement exposes the reserved endpoint route under
+a direct endpoint name.
+-/
+theorem poincare_statement_of_finite_extinction_to_reserved_endpoint
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M) :
+    poincare_statement_of_finite_extinction finiteExtinction =
+      poincare_conjecture_of_finite_extinction finiteExtinction :=
+  poincare_statement_of_finite_extinction_to_reserved_endpoint_eq
+    finiteExtinction
+
+/--
 The current final mathematical boundary: a proof of universal finite extinction
 supplies the Poincare target through the finite-extinction-only route.
 -/
@@ -299,6 +314,18 @@ theorem poincare_statement_of_universalFiniteExtinctionStatement_to_reserved_end
       poincare_conjecture_of_universalFiniteExtinctionStatement
         finiteExtinction := by
   apply Subsingleton.elim
+
+/--
+The named universal finite-extinction local statement exposes the reserved
+endpoint route under a direct endpoint name.
+-/
+theorem poincare_statement_of_universalFiniteExtinctionStatement_to_reserved_endpoint
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    poincare_statement_of_universalFiniteExtinctionStatement finiteExtinction =
+      poincare_conjecture_of_universalFiniteExtinctionStatement
+        finiteExtinction :=
+  poincare_statement_of_universalFiniteExtinctionStatement_to_reserved_endpoint_eq
+    finiteExtinction
 
 /--
 Finite extinction plus the post-extinction topological extraction theorem
@@ -469,6 +496,18 @@ theorem universalFiniteExtinctionStatement_completion_payload_to_reserved_payloa
   apply Subsingleton.elim
 
 /--
+The explicit universal finite-extinction completion payload exposes the
+reserved payload route under a direct endpoint name.
+-/
+theorem universalFiniteExtinctionStatement_completion_payload_to_reserved_payload
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    universalFiniteExtinctionStatement_completion_payload finiteExtinction =
+      poincare_conjecture_payload_of_universalFiniteExtinctionStatement
+        finiteExtinction :=
+  universalFiniteExtinctionStatement_completion_payload_to_reserved_payload_eq
+    finiteExtinction
+
+/--
 Conversely, a proof of the project target supplies the theorem-shaped
 post-extinction extraction interface. The extinction input is unused because
 the target already gives the homeomorphism conclusion for every closed simply
@@ -605,6 +644,24 @@ theorem poincare_payload_of_extinction_and_extraction_to_reserved_payload_eq
   apply Subsingleton.elim
 
 /--
+The local extinction/extraction payload exposes the reserved payload route
+under a direct endpoint name.
+-/
+theorem poincare_payload_of_extinction_and_extraction_to_reserved_payload
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    poincare_payload_of_extinction_and_extraction
+        finiteExtinction extractSphere =
+      poincare_conjecture_payload_of_extinction_and_extraction
+        finiteExtinction extractSphere :=
+  poincare_payload_of_extinction_and_extraction_to_reserved_payload_eq
+    finiteExtinction extractSphere
+
+/--
 Universal finite extinction alone exposes the local target and the explicit
 completion criterion under the current empty extinction-interface encoding.
 -/
@@ -653,6 +710,21 @@ theorem poincare_payload_of_finite_extinction_to_reserved_payload_eq
   apply Subsingleton.elim
 
 /--
+The finite-extinction-only local payload exposes the reserved payload route
+under a direct endpoint name.
+-/
+theorem poincare_payload_of_finite_extinction_to_reserved_payload
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M) :
+    poincare_payload_of_finite_extinction finiteExtinction =
+      poincare_conjecture_payload_of_finite_extinction finiteExtinction :=
+  poincare_payload_of_finite_extinction_to_reserved_payload_eq
+    finiteExtinction
+
+/--
 The named universal finite-extinction input exposes the local target and the
 explicit completion criterion through the local finite-extinction payload.
 -/
@@ -682,6 +754,18 @@ theorem poincare_payload_of_universalFiniteExtinctionStatement_to_reserved_paylo
       poincare_conjecture_payload_of_universalFiniteExtinctionStatement
         finiteExtinction := by
   apply Subsingleton.elim
+
+/--
+The named universal finite-extinction local payload exposes the reserved
+payload route under a direct endpoint name.
+-/
+theorem poincare_payload_of_universalFiniteExtinctionStatement_to_reserved_payload
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    poincare_payload_of_universalFiniteExtinctionStatement finiteExtinction =
+      poincare_conjecture_payload_of_universalFiniteExtinctionStatement
+        finiteExtinction :=
+  poincare_payload_of_universalFiniteExtinctionStatement_to_reserved_payload_eq
+    finiteExtinction
 
 /--
 Finite extinction plus the post-extinction topological extraction theorem

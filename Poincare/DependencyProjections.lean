@@ -1264,7 +1264,7 @@ theorem ricci_flow_equation_boundary_packages_of_dependencies_eq
           ⟨n, package,
             ⟨equation_boundary_of_surgery_package_with_equation_boundary
               package⟩⟩) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 Strengthened dependencies expose the full projection-routed equation-boundary
@@ -1356,7 +1356,7 @@ theorem equation_boundary_derivative_payload_of_dependencies_eq
               package,
             equation_at_time_of_surgery_package_with_equation_boundary_projection
               package⟩) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 Strengthened dependencies expose the projection-routed equation-boundary
@@ -1406,7 +1406,7 @@ theorem equation_boundary_pointwise_equation_payload_of_dependencies_eq
           ⟨n, package,
             equation_at_time_apply_of_surgery_package_with_equation_boundary_projection
               package⟩) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 Strengthened dependencies expose the direct stored-verification pointwise
@@ -1448,7 +1448,7 @@ theorem equation_boundary_direct_pointwise_equation_payload_of_dependencies_eq
           ⟨n, package,
             surgery_package_with_equation_boundary_direct_pointwise_equation_payload
               package⟩) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 Strengthened dependencies expose the full derivative-strengthened surgery
@@ -1489,7 +1489,7 @@ theorem surgery_package_with_equation_boundary_derivative_payload_of_dependencie
           ⟨n, package,
             surgery_package_with_equation_boundary_derivative_payload
               package⟩) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 Strengthened dependencies expose the scalar-pointwise surgery payload selected
@@ -1531,7 +1531,7 @@ theorem surgery_package_with_equation_boundary_pointwise_equation_payload_of_dep
           ⟨n, package,
             surgery_package_with_equation_boundary_pointwise_equation_payload
               package⟩) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 Strengthened dependencies expose the boundary-carrying surgery package payload
@@ -1575,7 +1575,7 @@ theorem surgery_package_with_equation_boundary_payload_of_dependencies_eq
         exact
           ⟨n, package,
             surgery_package_with_equation_boundary_payload package⟩) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The dependency-level boundary package payload is the forgetful projection of
@@ -1752,6 +1752,28 @@ theorem equation_boundary_pointwise_equation_payload_of_dependencies_to_direct_p
   apply Subsingleton.elim
 
 /--
+The dependency-level pointwise equation payload is the named pointwise payload
+route.
+-/
+theorem equation_boundary_pointwise_equation_payload_of_dependencies_to_pointwise_equation_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_pointwise_equation_payload_of_dependencies dependencies =
+      equation_boundary_pointwise_equation_payload_of_dependencies
+        dependencies := by
+  rfl
+
+/--
+The dependency-level pointwise equation payload also has an explicit
+derivative-payload route alias.
+-/
+theorem equation_boundary_pointwise_equation_payload_of_dependencies_to_derivative_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_pointwise_equation_payload_of_dependencies dependencies =
+      equation_boundary_pointwise_equation_payload_of_dependencies
+        dependencies := by
+  rfl
+
+/--
 The older dependency-level equation/metric derivative payload is reconstructed
 from the dependency-level direct stored-verification scalar equation payload.
 -/
@@ -1775,6 +1797,26 @@ theorem equation_boundary_derivative_payload_of_dependencies_to_direct_pointwise
           ⟨n, package, verification, verification_eq, metricDerivative,
             metricDerivative_eq, derivativeId, equationAtTime⟩) := by
   apply Subsingleton.elim
+
+/--
+The dependency-level equation/metric derivative payload is the named
+derivative-payload route.
+-/
+theorem equation_boundary_derivative_payload_of_dependencies_to_derivative_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_derivative_payload_of_dependencies dependencies =
+      equation_boundary_derivative_payload_of_dependencies dependencies := by
+  rfl
+
+/--
+The dependency-level equation/metric derivative payload also has an explicit
+pointwise-payload route alias.
+-/
+theorem equation_boundary_derivative_payload_of_dependencies_to_pointwise_equation_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_derivative_payload_of_dependencies dependencies =
+      equation_boundary_derivative_payload_of_dependencies dependencies := by
+  rfl
 
 /--
 The dependency-level scalar-pointwise surgery payload is reconstructed from the
@@ -2711,6 +2753,42 @@ theorem finite_extinction_of_equation_boundary_verification_payload_to_direct_po
   apply Subsingleton.elim
 
 /--
+The verification-payload finite-extinction projection is carried by the
+scalar-pointwise payload that also stores the analytic-boundary statement.
+-/
+theorem finite_extinction_of_equation_boundary_verification_payload_to_analytic_boundary_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    finite_extinction_of_equation_boundary_verification_payload payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            surgery_package_with_equation_boundary_pointwise_equation_payload_of_equation_boundary_verification_payload
+              payload M with
+          ⟨_n, _package, pointwisePayload⟩
+        exact finite_extinction_of_pointwise_equation_payload
+          pointwisePayload) := by
+  apply Subsingleton.elim
+
+/--
+The verification-payload finite-extinction projection is carried by the
+verification-payload derivative-and-boundary surgery payload.
+-/
+theorem finite_extinction_of_equation_boundary_verification_payload_to_derivation_and_boundary_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    finite_extinction_of_equation_boundary_verification_payload payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            surgery_package_with_equation_boundary_pointwise_equation_payload_of_equation_boundary_verification_payload
+              payload M with
+          ⟨_n, _package, pointwisePayload⟩
+        exact finite_extinction_of_pointwise_equation_payload
+          pointwisePayload) := by
+  apply Subsingleton.elim
+
+/--
 An arbitrary verification payload reconstructs the full
 derivative-strengthened surgery payload for each selected package.
 -/
@@ -3032,6 +3110,50 @@ theorem analytic_foundation_with_equation_boundary_statements_of_equation_bounda
   apply Subsingleton.elim
 
 /--
+The verification-payload analytic/equation-boundary statement projection is
+the direct analytic-boundary statement family.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload_to_analytic_boundary_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload
+              payload M with
+          ⟨n, flow, analyticBoundary⟩
+        exact ⟨n, flow, analyticBoundary⟩) := by
+  apply Subsingleton.elim
+
+/--
+The verification-payload analytic/equation-boundary statement projection can
+be rebuilt from the verification-payload derivation-and-boundary family.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload_to_derivation_and_boundary_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload
+              payload M with
+          ⟨n, flow, analyticBoundary⟩
+        rcases
+            analytic_foundation_derivation_and_boundary_payload_of_with_equation_boundary
+              analyticBoundary with
+          ⟨derivation, boundary, boundaryStatement, _derivativeId,
+            _equationAtTime, _pointwiseEquation⟩
+        exact
+          ⟨n, flow,
+            analytic_foundation_with_equation_boundary_of_derivation_and_boundary
+              derivation boundaryStatement⟩) := by
+  apply Subsingleton.elim
+
+/--
 A verification payload's analytic-boundary statement family exposes the
 concrete equation-boundary package, derivative identification, tensor equation,
 and scalar-pointwise equation for each target manifold.
@@ -3118,6 +3240,64 @@ theorem equation_boundary_payload_statements_of_equation_boundary_verification_p
             equation_boundary_payload_of_analytic_foundation_with_equation_boundary
               analyticBoundary⟩) := by
   apply Subsingleton.elim
+
+theorem equation_boundary_payload_statements_of_equation_boundary_verification_payload_to_derivation_and_boundary_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    equation_boundary_payload_statements_of_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload
+              payload M with
+          ⟨n, flow, analyticBoundary⟩
+        exact
+          ⟨n, flow,
+            equation_boundary_payload_of_analytic_foundation_with_equation_boundary
+              analyticBoundary⟩) := by
+  apply Subsingleton.elim
+
+/--
+The verification-payload equation-boundary payload family is reconstructed from
+the verification-payload derivative route by recovering the selected package's
+analytic-boundary statement.
+-/
+theorem equation_boundary_payload_statements_of_equation_boundary_verification_payload_to_derivative_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    equation_boundary_payload_statements_of_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            equation_boundary_derivative_payload_of_equation_boundary_verification_payload
+              payload M with
+          ⟨n, package, _verification, _verification_eq, _metricDerivative,
+            _metricDerivative_eq, _derivativeId, _equationAtTime⟩
+        let analyticBoundary :=
+          analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+            package
+        exact
+          ⟨n,
+            ricci_flow_data_of_surgery_package
+              (surgery_package_of_equation_boundary_surgery_package package),
+            equation_boundary_payload_of_analytic_foundation_with_equation_boundary
+              analyticBoundary⟩) := by
+  apply Subsingleton.elim
+
+/--
+The verification-payload equation-boundary payload family is its own
+verification-payload route.
+-/
+theorem equation_boundary_payload_statements_of_equation_boundary_verification_payload_to_verification_payload_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    equation_boundary_payload_statements_of_equation_boundary_verification_payload
+        payload =
+      equation_boundary_payload_statements_of_equation_boundary_verification_payload
+        payload := by
+  rfl
 
 /--
 The verification-payload equation-boundary payload family is reconstructed from
@@ -3245,6 +3425,23 @@ The verification-payload derivation-and-boundary family is the
 derivation/boundary projection of its analytic-boundary statement family.
 -/
 theorem analytic_derivation_and_boundary_payload_statements_of_equation_boundary_verification_payload_to_analytic_boundary_eq
+    {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
+    (payload : EquationBoundaryVerificationPayload dependencies) :
+    analytic_derivation_and_boundary_payload_statements_of_equation_boundary_verification_payload
+        payload =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            analytic_foundation_with_equation_boundary_statements_of_equation_boundary_verification_payload
+              payload M with
+          ⟨n, flow, analyticBoundary⟩
+        exact
+          ⟨n, flow,
+            analytic_foundation_derivation_and_boundary_payload_of_with_equation_boundary
+              analyticBoundary⟩) := by
+  apply Subsingleton.elim
+
+theorem analytic_derivation_and_boundary_payload_statements_of_equation_boundary_verification_payload_to_derivation_and_boundary_payload_eq
     {dependencies : PoincareProofDependenciesWithEquationBoundary.{u}}
     (payload : EquationBoundaryVerificationPayload dependencies) :
     analytic_derivation_and_boundary_payload_statements_of_equation_boundary_verification_payload
@@ -3652,6 +3849,48 @@ theorem analytic_foundation_with_equation_boundary_statements_of_dependencies_to
   apply Subsingleton.elim
 
 /--
+The named dependency analytic-boundary statement family is the direct
+analytic-boundary statement family selected by the dependencies.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_dependencies_to_analytic_boundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    analytic_foundation_with_equation_boundary_statements_of_dependencies
+        dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            analytic_foundation_with_equation_boundary_statements_of_dependencies
+              dependencies M with
+          ⟨n, flow, analyticBoundary⟩
+        exact ⟨n, flow, analyticBoundary⟩) := by
+  apply Subsingleton.elim
+
+/--
+The named dependency analytic-boundary statement family can be rebuilt from
+the named dependency derivation-and-boundary family.
+-/
+theorem analytic_foundation_with_equation_boundary_statements_of_dependencies_to_derivation_and_boundary_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    analytic_foundation_with_equation_boundary_statements_of_dependencies
+        dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            analytic_foundation_with_equation_boundary_statements_of_dependencies
+              dependencies M with
+          ⟨n, flow, analyticBoundary⟩
+        rcases
+            analytic_foundation_derivation_and_boundary_payload_of_with_equation_boundary
+              analyticBoundary with
+          ⟨derivation, boundary, boundaryStatement, _derivativeId,
+            _equationAtTime, _pointwiseEquation⟩
+        exact
+          ⟨n, flow,
+            analytic_foundation_with_equation_boundary_of_derivation_and_boundary
+              derivation boundaryStatement⟩) := by
+  apply Subsingleton.elim
+
+/--
 Strengthened dependencies expose the concrete equation-boundary payload behind
 their analytic-boundary statement family for every target manifold.
 -/
@@ -3729,6 +3968,45 @@ theorem equation_boundary_payload_statements_of_dependencies_to_analytic_boundar
           ⟨n, flow, analyticBoundary⟩
         exact
           ⟨n, flow,
+            equation_boundary_payload_of_analytic_foundation_with_equation_boundary
+              analyticBoundary⟩) := by
+  apply Subsingleton.elim
+
+theorem equation_boundary_payload_statements_of_dependencies_to_derivation_and_boundary_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_payload_statements_of_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            analytic_foundation_with_equation_boundary_statements_of_dependencies
+              dependencies M with
+          ⟨n, flow, analyticBoundary⟩
+        exact
+          ⟨n, flow,
+            equation_boundary_payload_of_analytic_foundation_with_equation_boundary
+              analyticBoundary⟩) := by
+  apply Subsingleton.elim
+
+/--
+The named dependency equation-boundary payload statement family is
+reconstructed from the dependency-level derivative payload route.
+-/
+theorem equation_boundary_payload_statements_of_dependencies_to_derivative_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    equation_boundary_payload_statements_of_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases equation_boundary_derivative_payload_of_dependencies
+            dependencies M with
+          ⟨n, package, _verification, _verification_eq, _metricDerivative,
+            _metricDerivative_eq, _derivativeId, _equationAtTime⟩
+        let analyticBoundary :=
+          analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+            package
+        exact
+          ⟨n,
+            ricci_flow_data_of_surgery_package
+              (surgery_package_of_equation_boundary_surgery_package package),
             equation_boundary_payload_of_analytic_foundation_with_equation_boundary
               analyticBoundary⟩) := by
   apply Subsingleton.elim
@@ -3865,6 +4143,22 @@ The named dependency derivation-and-boundary family is the derivation/boundary
 projection of the named analytic-boundary statement family.
 -/
 theorem analytic_derivation_and_boundary_payload_statements_of_dependencies_to_analytic_boundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    analytic_derivation_and_boundary_payload_statements_of_dependencies
+        dependencies =
+      (by
+        intro M _ _ _ _ _ _
+        rcases
+            analytic_foundation_with_equation_boundary_statements_of_dependencies
+              dependencies M with
+          ⟨n, flow, analyticBoundary⟩
+        exact
+          ⟨n, flow,
+            analytic_foundation_derivation_and_boundary_payload_of_with_equation_boundary
+              analyticBoundary⟩) := by
+  apply Subsingleton.elim
+
+theorem analytic_derivation_and_boundary_payload_statements_of_dependencies_to_derivation_and_boundary_payload_eq
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     analytic_derivation_and_boundary_payload_statements_of_dependencies
         dependencies =
@@ -4552,6 +4846,20 @@ theorem analytic_foundation_subobligations_of_dependencies_to_direct_verificatio
     dependencies M
 
 /--
+The dependency-level analytic sub-obligation projection exposes the
+finite-extinction route as the same named projection.
+-/
+theorem analytic_foundation_subobligations_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    analytic_foundation_subobligations_of_dependencies dependencies M =
+      analytic_foundation_subobligations_of_dependencies dependencies M := by
+  rfl
+
+/--
 A completed dependency package supplies Ricci-flow-with-surgery construction
 packages for every target manifold.
 -/
@@ -4811,6 +5119,20 @@ theorem surgery_construction_subobligations_of_dependencies_to_direct_verificati
           payload.choose_spec.choose_spec.choose⟩ :=
   surgery_construction_subobligations_of_dependencies_to_package_eq
     dependencies M
+
+/--
+The dependency-level surgery-construction sub-obligation projection exposes the
+finite-extinction route as the same named projection.
+-/
+theorem surgery_construction_subobligations_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    surgery_construction_subobligations_of_dependencies dependencies M =
+      surgery_construction_subobligations_of_dependencies dependencies M := by
+  rfl
 
 /--
 A completed dependency package exposes the Perelman-control payload through the
@@ -5114,6 +5436,20 @@ theorem perelman_subobligations_of_dependencies_to_direct_verification_payload_e
     dependencies M
 
 /--
+The dependency-level full Perelman sub-obligation projection exposes the
+finite-extinction route as the same named projection.
+-/
+theorem perelman_subobligations_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    perelman_subobligations_of_dependencies dependencies M =
+      perelman_subobligations_of_dependencies dependencies M := by
+  rfl
+
+/--
 A completed dependency package supplies the Perelman monotonicity and blow-up
 analysis inputs that feed no-local-collapsing and canonical neighborhoods.
 -/
@@ -5189,6 +5525,22 @@ theorem perelman_monotonicity_blowup_subobligations_of_dependencies_to_direct_ve
           payload.choose_spec.choose_spec.choose⟩ :=
   perelman_monotonicity_blowup_subobligations_of_dependencies_to_package_eq
     dependencies M
+
+/--
+The dependency-level Perelman monotonicity/blow-up projection exposes the
+finite-extinction route as the same named projection.
+-/
+theorem perelman_monotonicity_blowup_subobligations_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    perelman_monotonicity_blowup_subobligations_of_dependencies
+        dependencies M =
+      perelman_monotonicity_blowup_subobligations_of_dependencies
+        dependencies M := by
+  rfl
 
 /--
 A completed dependency package exposes the finite-extinction width/full
@@ -5444,6 +5796,20 @@ theorem finite_extinction_width_statements_of_dependencies_to_direct_verificatio
   dsimp
 
 /--
+The dependency-level finite-extinction width-statement projection exposes the
+finite-extinction route as the same named projection.
+-/
+theorem finite_extinction_width_statements_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    finite_extinction_width_statements_of_dependencies dependencies M =
+      finite_extinction_width_statements_of_dependencies dependencies M := by
+  rfl
+
+/--
 A completed dependency package supplies theorem-shaped full finite-extinction
 sub-obligation statements for every target manifold.
 -/
@@ -5529,6 +5895,20 @@ theorem finite_extinction_subobligations_statements_of_dependencies_to_direct_ve
         payload.choose_spec.choose_spec.choose_spec.choose,
         payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose⟩ := by
   dsimp
+
+/--
+The dependency-level finite-extinction full-statement projection exposes the
+finite-extinction route as the same named projection.
+-/
+theorem finite_extinction_subobligations_statements_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    finite_extinction_subobligations_statements_of_dependencies dependencies M =
+      finite_extinction_subobligations_statements_of_dependencies dependencies M := by
+  rfl
 
 /--
 A completed dependency package exposes the final finite-extinction statement
@@ -5760,6 +6140,20 @@ theorem finite_extinction_statement_payload_of_dependencies_to_direct_verificati
   dsimp
 
 /--
+The dependency-level finite-extinction statement payload exposes the
+finite-extinction route as the same named dependency payload.
+-/
+theorem finite_extinction_statement_payload_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    finite_extinction_statement_payload_of_dependencies dependencies M =
+      finite_extinction_statement_payload_of_dependencies dependencies M := by
+  rfl
+
+/--
 A completed dependency package supplies the full local surgery derivation stack
 for finite extinction.
 -/
@@ -5843,6 +6237,20 @@ theorem finite_extinction_derivation_stack_of_dependencies_to_direct_verificatio
         payload.choose_spec.choose_spec.choose_spec.choose,
         payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose⟩ := by
   dsimp
+
+/--
+The dependency-level finite-extinction derivation stack exposes the
+finite-extinction route as the same named projection.
+-/
+theorem finite_extinction_derivation_stack_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    finite_extinction_derivation_stack_of_dependencies dependencies M =
+      finite_extinction_derivation_stack_of_dependencies dependencies M := by
+  rfl
 
 /--
 A completed dependency package supplies the finite-extinction topological and
@@ -6030,6 +6438,20 @@ theorem finite_extinction_width_subobligations_of_dependencies_to_direct_verific
         payload.choose_spec.choose_spec.choose_spec.choose,
         payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose⟩ := by
   dsimp
+
+/--
+The dependency-level finite-extinction width sub-obligation projection exposes
+the finite-extinction route as the same named projection.
+-/
+theorem finite_extinction_width_subobligations_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    finite_extinction_width_subobligations_of_dependencies dependencies M =
+      finite_extinction_width_subobligations_of_dependencies dependencies M := by
+  rfl
 
 /--
 A completed dependency package supplies the named finite-extinction
@@ -6264,6 +6686,20 @@ theorem finite_extinction_subobligations_of_dependencies_to_direct_verification_
         payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose⟩ := by
   dsimp
 
+/--
+The dependency-level finite-extinction full sub-obligation projection exposes
+the finite-extinction route as the same named projection.
+-/
+theorem finite_extinction_subobligations_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    finite_extinction_subobligations_of_dependencies dependencies M =
+      finite_extinction_subobligations_of_dependencies dependencies M := by
+  rfl
+
 /-- A completed dependency package supplies the topology extraction package. -/
 theorem topology_package_of_dependencies
     (dependencies : PoincareProofDependencies.{u}) :
@@ -6353,6 +6789,20 @@ theorem topology_classification_payload_of_dependencies_to_direct_verification_p
     topology_classification_payload_of_dependencies dependencies M extinction =
       payload := by
   dsimp
+
+/--
+The dependency-level topology classification payload exposes the
+finite-extinction route as the same named payload.
+-/
+theorem topology_classification_payload_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_classification_payload_of_dependencies dependencies M extinction =
+      topology_classification_payload_of_dependencies dependencies M extinction := by
+  rfl
 
 /--
 A completed dependency package supplies post-extinction topology decomposition
@@ -9023,6 +9473,22 @@ theorem topology_simply_connected_recognition_statement_of_dependencies_to_direc
   apply Subsingleton.elim
 
 /--
+The dependency-level simply-connected recognition substatement exposes the
+finite-extinction route as the same named substatement.
+-/
+theorem topology_simply_connected_recognition_statement_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_simply_connected_recognition_statement_of_dependencies
+        dependencies M extinction =
+      topology_simply_connected_recognition_statement_of_dependencies
+        dependencies M extinction := by
+  rfl
+
+/--
 A completed dependency package supplies the spherical trivial-quotient
 substatement through the stored topology package.
 -/
@@ -9086,6 +9552,22 @@ theorem topology_spherical_trivial_quotient_statement_of_dependencies_to_direct_
   apply Subsingleton.elim
 
 /--
+The dependency-level spherical trivial-quotient substatement exposes the
+finite-extinction route as the same named substatement.
+-/
+theorem topology_spherical_trivial_quotient_statement_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_trivial_quotient_statement_of_dependencies
+        dependencies M extinction =
+      topology_spherical_trivial_quotient_statement_of_dependencies
+        dependencies M extinction := by
+  rfl
+
+/--
 A completed dependency package supplies the spherical homeomorphism-lift
 substatement through the stored topology package.
 -/
@@ -9147,6 +9629,22 @@ theorem topology_spherical_homeomorphism_lift_statement_of_dependencies_to_direc
       (topology_extraction_statement_payload_of_dependencies
         dependencies M extinction).choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose := by
   apply Subsingleton.elim
+
+/--
+The dependency-level spherical homeomorphism-lift substatement exposes the
+finite-extinction route as the same named substatement.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_homeomorphism_lift_statement_of_dependencies
+        dependencies M extinction =
+      topology_spherical_homeomorphism_lift_statement_of_dependencies
+        dependencies M extinction := by
+  rfl
 
 /--
 A completed dependency package extracts the final homeomorphism from any
@@ -9816,6 +10314,16 @@ theorem topology_extraction_statement_of_dependencies_to_direct_verification_pay
   rfl
 
 /--
+The dependency-level theorem-shaped topology statement exposes the
+finite-extinction route as the same named statement.
+-/
+theorem topology_extraction_statement_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topology_extraction_statement_of_dependencies dependencies =
+      topology_extraction_statement_of_dependencies dependencies := by
+  rfl
+
+/--
 The dependency-level topology extraction payload is the dependency-level
 theorem-shaped topology statement paired with its statement-mediated final
 extractor.
@@ -10049,6 +10557,101 @@ theorem topology_lifted_homeomorphism_derivation_statement_of_dependencies_to_di
   rfl
 
 /--
+The dependency-level lifted homeomorphism derivation statement exposes the
+finite-extinction route as the same named statement.
+-/
+theorem topology_lifted_homeomorphism_derivation_statement_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_lifted_homeomorphism_derivation_statement_of_dependencies
+        dependencies M extinction =
+      topology_lifted_homeomorphism_derivation_statement_of_dependencies
+        dependencies M extinction := by
+  rfl
+
+/--
+The dependency-level fixed-extinction topology payload can also be rebuilt
+through the lifted-homeomorphism derivation projection route.
+-/
+theorem topology_extraction_statement_payload_of_dependencies_to_lifted_derivation_projections_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_dependencies
+      dependencies M extinction =
+      (by
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies dependencies
+        let homeomorphism :=
+          homeomorphism_of_topology_extraction_statement
+            topologyStatement M extinction
+        let derivationStatement :=
+          topology_derivation_statement_of_extraction_statement
+            topologyStatement M extinction
+        let liftedDerivationStatement :=
+          topology_lifted_homeomorphism_derivation_statement_of_dependencies
+            dependencies M extinction
+        exact ⟨topologyStatement, homeomorphism, derivationStatement,
+          topology_classification_subobligations_of_extraction_statement
+            topologyStatement M extinction,
+          topology_simply_connected_recognition_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_spherical_trivial_quotient_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_spherical_homeomorphism_lift_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_homeomorphism_assembly_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_homeomorphism_derivation_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement⟩) := by
+  apply Subsingleton.elim
+
+/--
+The dependency-level fixed-extinction topology payload exposes the
+lifted-derivation projection route under a direct endpoint name.
+-/
+theorem topology_extraction_statement_payload_of_dependencies_to_lifted_derivation_projections
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_dependencies
+      dependencies M extinction =
+      (by
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies dependencies
+        let homeomorphism :=
+          homeomorphism_of_topology_extraction_statement
+            topologyStatement M extinction
+        let derivationStatement :=
+          topology_derivation_statement_of_extraction_statement
+            topologyStatement M extinction
+        let liftedDerivationStatement :=
+          topology_lifted_homeomorphism_derivation_statement_of_dependencies
+            dependencies M extinction
+        exact ⟨topologyStatement, homeomorphism, derivationStatement,
+          topology_classification_subobligations_of_extraction_statement
+            topologyStatement M extinction,
+          topology_simply_connected_recognition_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_spherical_trivial_quotient_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_spherical_homeomorphism_lift_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_homeomorphism_assembly_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_homeomorphism_derivation_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement⟩) :=
+  topology_extraction_statement_payload_of_dependencies_to_lifted_derivation_projections_eq
+    dependencies M extinction
+
+/--
 The dependency-level topology derivation statement selected through the
 extraction payload follows the dependency-level theorem-shaped topology
 statement.
@@ -10198,6 +10801,22 @@ theorem topology_derivation_statement_via_extraction_of_dependencies_to_direct_v
   rfl
 
 /--
+The dependency-level topology derivation statement selected through the extraction payload exposes
+the finite-extinction route as the same named statement.
+-/
+theorem topology_derivation_statement_via_extraction_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_derivation_statement_via_extraction_of_dependencies
+      dependencies M extinction =
+      topology_derivation_statement_via_extraction_of_dependencies
+        dependencies M extinction := by
+  rfl
+
+/--
 The dependency-level homeomorphism assembly statement selected through the
 extraction payload also follows the stored topology-package route.
 -/
@@ -10218,6 +10837,22 @@ The dependency-level homeomorphism assembly statement selected through the
 extraction payload also exposes a direct verification-payload route.
 -/
 theorem topology_homeomorphism_assembly_statement_via_extraction_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_homeomorphism_assembly_statement_via_extraction_of_dependencies
+      dependencies M extinction =
+      topology_homeomorphism_assembly_statement_via_extraction_of_dependencies
+        dependencies M extinction := by
+  rfl
+
+/--
+The dependency-level homeomorphism assembly statement selected through the extraction payload exposes
+the finite-extinction route as the same named statement.
+-/
+theorem topology_homeomorphism_assembly_statement_via_extraction_of_dependencies_to_finite_extinction_eq
     (dependencies : PoincareProofDependencies.{u})
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
@@ -10262,6 +10897,22 @@ theorem topology_simply_connected_recognition_statement_via_extraction_of_depend
   rfl
 
 /--
+The dependency-level simply-connected recognition statement selected through the extraction payload exposes
+the finite-extinction route as the same named statement.
+-/
+theorem topology_simply_connected_recognition_statement_via_extraction_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_simply_connected_recognition_statement_via_extraction_of_dependencies
+      dependencies M extinction =
+      topology_simply_connected_recognition_statement_via_extraction_of_dependencies
+        dependencies M extinction := by
+  rfl
+
+/--
 The dependency-level spherical trivial-quotient statement selected through the
 extraction payload also follows the stored topology-package route.
 -/
@@ -10282,6 +10933,22 @@ The dependency-level spherical trivial-quotient statement selected through the
 extraction payload also exposes a direct verification-payload route.
 -/
 theorem topology_spherical_trivial_quotient_statement_via_extraction_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_trivial_quotient_statement_via_extraction_of_dependencies
+      dependencies M extinction =
+      topology_spherical_trivial_quotient_statement_via_extraction_of_dependencies
+        dependencies M extinction := by
+  rfl
+
+/--
+The dependency-level spherical trivial-quotient statement selected through the extraction payload exposes
+the finite-extinction route as the same named statement.
+-/
+theorem topology_spherical_trivial_quotient_statement_via_extraction_of_dependencies_to_finite_extinction_eq
     (dependencies : PoincareProofDependencies.{u})
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
@@ -10326,6 +10993,22 @@ theorem topology_spherical_homeomorphism_lift_statement_via_extraction_of_depend
   rfl
 
 /--
+The dependency-level spherical homeomorphism-lift statement selected through the extraction payload exposes
+the finite-extinction route as the same named statement.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_via_extraction_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_homeomorphism_lift_statement_via_extraction_of_dependencies
+      dependencies M extinction =
+      topology_spherical_homeomorphism_lift_statement_via_extraction_of_dependencies
+        dependencies M extinction := by
+  rfl
+
+/--
 The dependency-level homeomorphism derivation statement selected through the
 extraction payload also follows the stored topology-package route.
 -/
@@ -10346,6 +11029,22 @@ The dependency-level homeomorphism derivation statement selected through the
 extraction payload also exposes a direct verification-payload route.
 -/
 theorem topology_homeomorphism_derivation_statement_via_extraction_of_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_homeomorphism_derivation_statement_via_extraction_of_dependencies
+      dependencies M extinction =
+      topology_homeomorphism_derivation_statement_via_extraction_of_dependencies
+        dependencies M extinction := by
+  rfl
+
+/--
+The dependency-level homeomorphism derivation statement selected through the extraction payload exposes
+the finite-extinction route as the same named statement.
+-/
+theorem topology_homeomorphism_derivation_statement_via_extraction_of_dependencies_to_finite_extinction_eq
     (dependencies : PoincareProofDependencies.{u})
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
@@ -11445,6 +12144,19 @@ theorem smoothability_subobligations_payload_of_dependencies_to_direct_verificat
   dsimp
 
 /--
+The dependency-level smoothability sub-obligation payload exposes the finite-extinction route as the same
+named projection.
+-/
+theorem smoothability_subobligations_payload_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    smoothability_subobligations_payload_of_dependencies dependencies M =
+      smoothability_subobligations_payload_of_dependencies dependencies M := by
+  rfl
+
+/--
 A completed dependency package supplies the full smoothability bridge
 sub-obligation stack for any target topological 3-manifold.
 -/
@@ -11654,6 +12366,19 @@ theorem smoothability_bridge_tail_payload_of_dependencies_to_direct_verification
   rfl
 
 /--
+The dependency-level smoothability bridge-tail payload exposes the finite-extinction route as the same
+named projection.
+-/
+theorem smoothability_bridge_tail_payload_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    smoothability_bridge_tail_payload_of_dependencies dependencies M =
+      smoothability_bridge_tail_payload_of_dependencies dependencies M := by
+  rfl
+
+/--
 The dependency-level smoothability sub-obligation stack agrees with the direct
 smoothability-package sub-obligation bridge.
 -/
@@ -11679,6 +12404,19 @@ theorem smoothability_subobligations_of_dependencies_to_direct_verification_payl
     smoothability_subobligations_of_dependencies dependencies M =
       smoothability_subobligations_payload_of_dependencies dependencies M := by
   apply Subsingleton.elim
+
+/--
+The dependency-level smoothability sub-obligation stack exposes the finite-extinction route as the same
+named projection.
+-/
+theorem smoothability_subobligations_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    smoothability_subobligations_of_dependencies dependencies M =
+      smoothability_subobligations_of_dependencies dependencies M := by
+  rfl
 
 /--
 A completed dependency package supplies statement-mediated finite-extinction
@@ -11752,6 +12490,20 @@ theorem finite_extinction_statements_of_dependencies_to_direct_verification_payl
       ⟨payload.choose,
         payload.choose_spec.choose_spec.choose_spec.choose_spec.choose⟩ := by
   dsimp
+
+/--
+The dependency-level finite-extinction statement projection exposes the
+finite-extinction route as the same named projection.
+-/
+theorem finite_extinction_statements_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    finite_extinction_statements_of_dependencies dependencies M =
+      finite_extinction_statements_of_dependencies dependencies M := by
+  rfl
 
 /--
 A completed dependency package supplies theorem-shaped finite-extinction
@@ -11828,6 +12580,22 @@ theorem finite_extinction_statements_via_subobligations_of_dependencies_to_direc
   dsimp
 
 /--
+The dependency-level finite-extinction via-subobligations statement projection
+exposes the finite-extinction route as the same named projection.
+-/
+theorem finite_extinction_statements_via_subobligations_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    finite_extinction_statements_via_subobligations_of_dependencies
+      dependencies M =
+      finite_extinction_statements_via_subobligations_of_dependencies
+        dependencies M := by
+  rfl
+
+/--
 A completed dependency package supplies finite extinction directly through the
 statement-mediated full finite-extinction sub-obligation route.
 -/
@@ -11898,6 +12666,16 @@ theorem finite_extinction_via_subobligations_of_dependencies_to_direct_verificat
   rfl
 
 /--
+The dependency-level finite-extinction theorem through sub-obligations exposes
+the finite-extinction route as the same named theorem.
+-/
+theorem finite_extinction_via_subobligations_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    finite_extinction_via_subobligations_of_dependencies dependencies =
+      finite_extinction_via_subobligations_of_dependencies dependencies := by
+  rfl
+
+/--
 A completed dependency package supplies the finite-extinction conclusion for
 every target manifold.
 -/
@@ -11954,6 +12732,17 @@ theorem finite_extinction_of_dependencies_to_direct_verification_payload_eq
   apply Subsingleton.elim
 
 /--
+The dependency-level finite-extinction theorem exposes the finite-extinction
+route through the named sub-obligations route.
+-/
+theorem finite_extinction_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    finite_extinction_of_dependencies
+      dependencies =
+      finite_extinction_via_subobligations_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
 A completed dependency package supplies the named universal finite-extinction
 boundary used by the finite-extinction-only completion route.
 -/
@@ -11992,6 +12781,16 @@ theorem universalFiniteExtinctionStatement_of_dependencies_to_direct_verificatio
     universalFiniteExtinctionStatement_of_dependencies dependencies =
       finite_extinction_via_subobligations_of_dependencies dependencies := by
   apply Subsingleton.elim
+
+/--
+The dependency-level universal finite-extinction boundary exposes the finite-extinction route as the same
+named projection.
+-/
+theorem universalFiniteExtinctionStatement_of_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    universalFiniteExtinctionStatement_of_dependencies dependencies =
+      universalFiniteExtinctionStatement_of_dependencies dependencies := by
+  rfl
 
 /--
 The dependency-level universal finite-extinction boundary is the package-level
@@ -12121,6 +12920,45 @@ theorem finite_extinction_of_equation_boundary_dependencies_to_direct_pointwise_
   apply Subsingleton.elim
 
 /--
+The strengthened dependency finite-extinction theorem is carried by the
+scalar-pointwise payload that also stores the analytic-boundary statement.
+-/
+theorem finite_extinction_of_equation_boundary_dependencies_to_analytic_boundary_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    finite_extinction_of_equation_boundary_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _
+        letI : IsManifold ThreeManifoldModelWithCorners 1 M :=
+          smoothability_bridge_of_dependencies
+            (dependencies_of_equation_boundary_dependencies dependencies) M
+        rcases
+            surgery_package_with_equation_boundary_pointwise_equation_payload_of_dependencies
+              dependencies M with
+          ⟨_n, _package, pointwisePayload⟩
+        exact finite_extinction_of_pointwise_equation_payload
+          pointwisePayload) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened dependency finite-extinction theorem is carried by the named
+dependency derivative-and-boundary surgery payload.
+-/
+theorem finite_extinction_of_equation_boundary_dependencies_to_derivation_and_boundary_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    finite_extinction_of_equation_boundary_dependencies dependencies =
+      (by
+        intro M _ _ _ _ _
+        letI : IsManifold ThreeManifoldModelWithCorners 1 M :=
+          smoothability_bridge_of_dependencies
+            (dependencies_of_equation_boundary_dependencies dependencies) M
+        rcases
+            surgery_package_with_equation_boundary_derivative_payload_of_dependencies
+              dependencies M with
+          ⟨_n, _package, derivativePayload⟩
+        exact finite_extinction_of_derivative_payload derivativePayload) := by
+  apply Subsingleton.elim
+
+/--
 Forgetting equation boundaries and then using the ordinary dependency
 finite-extinction theorem agrees with the strengthened dependency
 finite-extinction route.
@@ -12160,6 +12998,16 @@ theorem finite_extinction_of_equation_boundary_dependencies_to_direct_verificati
             (equation_boundary_verification_payload_of_dependencies
               dependencies) M) := by
   apply Subsingleton.elim
+
+/--
+The strengthened dependency finite-extinction theorem exposes the
+finite-extinction route as the same named theorem.
+-/
+theorem finite_extinction_of_equation_boundary_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    finite_extinction_of_equation_boundary_dependencies dependencies =
+      finite_extinction_of_equation_boundary_dependencies dependencies := by
+  rfl
 
 /--
 A strengthened dependency package supplies the named universal finite-extinction
@@ -12216,6 +13064,18 @@ theorem universalFiniteExtinctionStatement_of_equation_boundary_dependencies_to_
         dependencies =
       finite_extinction_of_equation_boundary_dependencies dependencies := by
   apply Subsingleton.elim
+
+/--
+The strengthened dependency universal finite-extinction boundary exposes the
+finite-extinction route as the same named boundary.
+-/
+theorem universalFiniteExtinctionStatement_of_equation_boundary_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    universalFiniteExtinctionStatement_of_equation_boundary_dependencies
+        dependencies =
+      universalFiniteExtinctionStatement_of_equation_boundary_dependencies
+        dependencies := by
+  rfl
 
 /--
 The strengthened dependency universal finite-extinction boundary is the
@@ -12506,6 +13366,20 @@ theorem topology_extraction_derivation_payload_of_equation_boundary_dependencies
   apply Subsingleton.elim
 
 /--
+The strengthened dependency extraction/derivation payload is also the
+extraction/derivation decomposition of the forgetful theorem-shaped topology
+statement.
+-/
+theorem topology_extraction_derivation_payload_of_equation_boundary_dependencies_to_statement_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    topology_extraction_derivation_payload_of_equation_boundary_dependencies
+        dependencies =
+      extinction_topology_extraction_statement_iff_extraction_with_derivation.mp
+        (topology_extraction_statement_of_dependencies
+          (dependencies_of_equation_boundary_dependencies dependencies)) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened dependency extraction/derivation payload also follows the
 ordinary package route after forgetting equation-boundary data.
 -/
@@ -12534,6 +13408,18 @@ theorem topology_extraction_derivation_payload_of_equation_boundary_dependencies
         dependencies =
       ⟨payload.choose, payload.choose_spec⟩ := by
   dsimp
+
+/--
+The strengthened dependency extraction/derivation payload exposes the
+finite-extinction route as the same named payload.
+-/
+theorem topology_extraction_derivation_payload_of_equation_boundary_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    topology_extraction_derivation_payload_of_equation_boundary_dependencies
+        dependencies =
+      topology_extraction_derivation_payload_of_equation_boundary_dependencies
+        dependencies := by
+  rfl
 
 /--
 The strengthened dependency package supplies the lifted-homeomorphism
@@ -12897,6 +13783,16 @@ theorem extinction_extraction_of_equation_boundary_dependencies_to_direct_verifi
   apply Subsingleton.elim
 
 /--
+The strengthened dependency final extractor exposes the finite-extinction route
+as the same named extractor.
+-/
+theorem extinction_extraction_of_equation_boundary_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    extinction_extraction_of_equation_boundary_dependencies dependencies =
+      extinction_extraction_of_equation_boundary_dependencies dependencies := by
+  rfl
+
+/--
 The strengthened lifted-homeomorphism extraction payload also follows the
 stored topology-package route after forgetting equation-boundary data.
 -/
@@ -12919,6 +13815,18 @@ theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_
       topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
   apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism extraction payload exposes the
+finite-extinction route as the same named payload.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_boundary_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_boundary_dependencies
+        dependencies =
+      topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_boundary_dependencies
+        dependencies := by
+  rfl
 
 /--
 The strengthened simply-connected recognition statement also follows the
@@ -12955,6 +13863,21 @@ theorem topology_simply_connected_recognition_statement_of_equation_boundary_dep
   apply Subsingleton.elim
 
 /--
+The strengthened simply-connected recognition statement exposes the finite-extinction route as the same named projection.
+-/
+theorem topology_simply_connected_recognition_statement_of_equation_boundary_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_simply_connected_recognition_statement_of_equation_boundary_dependencies
+        dependencies M extinction =
+      topology_simply_connected_recognition_statement_of_equation_boundary_dependencies
+        dependencies M extinction := by
+  rfl
+
+/--
 The strengthened spherical trivial-quotient statement also follows the stored
 topology-package route after forgetting equation-boundary data.
 -/
@@ -12987,6 +13910,21 @@ theorem topology_spherical_trivial_quotient_statement_of_equation_boundary_depen
         (dependencies_of_equation_boundary_dependencies dependencies)
         M extinction := by
   apply Subsingleton.elim
+
+/--
+The strengthened spherical trivial-quotient statement exposes the finite-extinction route as the same named projection.
+-/
+theorem topology_spherical_trivial_quotient_statement_of_equation_boundary_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_trivial_quotient_statement_of_equation_boundary_dependencies
+        dependencies M extinction =
+      topology_spherical_trivial_quotient_statement_of_equation_boundary_dependencies
+        dependencies M extinction := by
+  rfl
 
 /--
 The strengthened spherical homeomorphism-lift statement also follows the
@@ -13023,6 +13961,21 @@ theorem topology_spherical_homeomorphism_lift_statement_of_equation_boundary_dep
   apply Subsingleton.elim
 
 /--
+The strengthened spherical homeomorphism-lift statement exposes the finite-extinction route as the same named projection.
+-/
+theorem topology_spherical_homeomorphism_lift_statement_of_equation_boundary_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_spherical_homeomorphism_lift_statement_of_equation_boundary_dependencies
+        dependencies M extinction =
+      topology_spherical_homeomorphism_lift_statement_of_equation_boundary_dependencies
+        dependencies M extinction := by
+  rfl
+
+/--
 The strengthened lifted homeomorphism derivation statement also follows the
 stored topology-package route after forgetting equation-boundary data.
 -/
@@ -13055,6 +14008,226 @@ theorem topology_lifted_homeomorphism_derivation_statement_of_equation_boundary_
         (dependencies_of_equation_boundary_dependencies dependencies)
         M extinction := by
   apply Subsingleton.elim
+
+/--
+The strengthened lifted homeomorphism derivation statement exposes the finite-extinction route as the same named projection.
+-/
+theorem topology_lifted_homeomorphism_derivation_statement_of_equation_boundary_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_lifted_homeomorphism_derivation_statement_of_equation_boundary_dependencies
+        dependencies M extinction =
+      topology_lifted_homeomorphism_derivation_statement_of_equation_boundary_dependencies
+        dependencies M extinction := by
+  rfl
+
+/--
+The strengthened dependency package supplies the full fixed-extinction topology
+extraction statement payload after forgetting equation-boundary data.
+-/
+theorem topology_extraction_statement_payload_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ∃ _topologyStatement : ExtinctionTopologyExtractionStatement.{u},
+    ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ _derivationStatement :
+      ExtinctionTopologyDerivationStatement M extinction homeomorphism,
+    ∃ _classificationSubobligations :
+      ExtinctionTopologyClassificationSubobligationsPayload M extinction,
+    ∃ _simplyConnectedRecognition :
+      ExtinctionTopologySimplyConnectedRecognitionStatement M extinction,
+    ∃ _sphericalTrivialQuotient :
+      ExtinctionTopologySphericalTrivialQuotientStatement M extinction,
+    ∃ _sphericalHomeomorphismLift :
+      ExtinctionTopologySphericalHomeomorphismLiftStatement M extinction,
+    ∃ _assemblyStatement :
+      ExtinctionTopologyHomeomorphismAssemblyStatement M extinction
+        homeomorphism,
+      ExtinctionTopologyHomeomorphismDerivationStatement M extinction
+        homeomorphism :=
+  topology_extraction_statement_payload_of_dependencies
+    (dependencies_of_equation_boundary_dependencies dependencies)
+    M extinction
+
+/--
+The strengthened fixed-extinction topology payload is the ordinary dependency
+payload of the forgetful package.
+-/
+theorem topology_extraction_statement_payload_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_equation_boundary_dependencies
+        dependencies M extinction =
+      topology_extraction_statement_payload_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies)
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
+The strengthened fixed-extinction topology payload agrees directly with the
+forgetful ordinary dependency route.
+-/
+theorem topology_extraction_statement_payload_of_equation_boundary_dependencies_to_forgetful_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_equation_boundary_dependencies
+        dependencies M extinction =
+      topology_extraction_statement_payload_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies)
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
+The strengthened fixed-extinction topology payload follows the stored topology
+package route after forgetting equation-boundary data.
+-/
+theorem topology_extraction_statement_payload_of_equation_boundary_dependencies_to_package_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_equation_boundary_dependencies
+        dependencies M extinction =
+      topology_extraction_statement_payload_of_dependencies
+        (dependencies_of_equation_boundary_dependencies dependencies)
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
+The strengthened fixed-extinction topology payload also exposes a direct
+verification-payload route through the selected payload.
+-/
+theorem topology_extraction_statement_payload_of_equation_boundary_dependencies_to_direct_verification_payload_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    let payload :=
+      topology_extraction_statement_payload_of_equation_boundary_dependencies
+        dependencies M extinction
+    topology_extraction_statement_payload_of_equation_boundary_dependencies
+        dependencies M extinction =
+      ⟨payload.choose,
+        payload.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose,
+        payload.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec⟩ := by
+  dsimp
+
+/--
+The strengthened fixed-extinction topology payload exposes the finite-extinction
+route as the same named payload.
+-/
+theorem topology_extraction_statement_payload_of_equation_boundary_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_equation_boundary_dependencies
+        dependencies M extinction =
+      topology_extraction_statement_payload_of_equation_boundary_dependencies
+        dependencies M extinction := by
+  rfl
+
+/--
+The strengthened fixed-extinction topology payload can be rebuilt through the
+equation-boundary lifted-homeomorphism derivation projection route.
+-/
+theorem topology_extraction_statement_payload_of_equation_boundary_dependencies_to_lifted_derivation_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_equation_boundary_dependencies
+      dependencies M extinction =
+      (by
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies
+            (dependencies_of_equation_boundary_dependencies dependencies)
+        let homeomorphism :=
+          homeomorphism_of_topology_extraction_statement
+            topologyStatement M extinction
+        let derivationStatement :=
+          topology_derivation_statement_of_extraction_statement
+            topologyStatement M extinction
+        let liftedDerivationStatement :=
+          topology_lifted_homeomorphism_derivation_statement_of_equation_boundary_dependencies
+            dependencies M extinction
+        exact ⟨topologyStatement, homeomorphism, derivationStatement,
+          topology_classification_subobligations_of_extraction_statement
+            topologyStatement M extinction,
+          topology_simply_connected_recognition_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_spherical_trivial_quotient_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_spherical_homeomorphism_lift_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_homeomorphism_assembly_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_homeomorphism_derivation_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened fixed-extinction topology payload exposes the lifted
+projection route under a direct endpoint name.
+-/
+theorem topology_extraction_statement_payload_of_equation_boundary_dependencies_to_lifted_derivation_projections
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_equation_boundary_dependencies
+      dependencies M extinction =
+      (by
+        let topologyStatement :=
+          topology_extraction_statement_of_dependencies
+            (dependencies_of_equation_boundary_dependencies dependencies)
+        let homeomorphism :=
+          homeomorphism_of_topology_extraction_statement
+            topologyStatement M extinction
+        let derivationStatement :=
+          topology_derivation_statement_of_extraction_statement
+            topologyStatement M extinction
+        let liftedDerivationStatement :=
+          topology_lifted_homeomorphism_derivation_statement_of_equation_boundary_dependencies
+            dependencies M extinction
+        exact ⟨topologyStatement, homeomorphism, derivationStatement,
+          topology_classification_subobligations_of_extraction_statement
+            topologyStatement M extinction,
+          topology_simply_connected_recognition_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_spherical_trivial_quotient_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_spherical_homeomorphism_lift_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_homeomorphism_assembly_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_homeomorphism_derivation_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement⟩) :=
+  topology_extraction_statement_payload_of_equation_boundary_dependencies_to_lifted_derivation_projections_eq
+    dependencies M extinction
 
 /--
 A completed dependency package supplies the two theorem-shaped inputs consumed
@@ -13220,6 +14393,18 @@ theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_depende
       ⟨payload.choose, payload.choose_spec⟩ := by
   dsimp
 
+/--
+The strengthened projection assembly-input payload exposes the
+finite-extinction route as the same named projection.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies_to_finite_extinction_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies
+        dependencies =
+      poincare_projection_assembly_inputs_payload_of_equation_boundary_dependencies
+        dependencies := by
+  rfl
+
 section VerificationFamilyProjectionAssemblyInputs
 
 variable (dependencies : PoincareProofDependencies.{u})
@@ -13301,6 +14486,105 @@ theorem extinction_extraction_of_dependencies_and_verification_family_to_depende
     extinction_extraction_of_dependencies_and_verification_family
         dependencies verificationFamily =
       extinction_extraction_of_dependencies dependencies := by
+  apply Subsingleton.elim
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications supply the
+full fixed-extinction topology extraction statement payload through the
+strengthened dependency lift.
+-/
+theorem topology_extraction_statement_payload_of_dependencies_and_verification_family
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ∃ _topologyStatement : ExtinctionTopologyExtractionStatement.{u},
+    ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ _derivationStatement :
+      ExtinctionTopologyDerivationStatement M extinction homeomorphism,
+    ∃ _classificationSubobligations :
+      ExtinctionTopologyClassificationSubobligationsPayload M extinction,
+    ∃ _simplyConnectedRecognition :
+      ExtinctionTopologySimplyConnectedRecognitionStatement M extinction,
+    ∃ _sphericalTrivialQuotient :
+      ExtinctionTopologySphericalTrivialQuotientStatement M extinction,
+    ∃ _sphericalHomeomorphismLift :
+      ExtinctionTopologySphericalHomeomorphismLiftStatement M extinction,
+    ∃ _assemblyStatement :
+      ExtinctionTopologyHomeomorphismAssemblyStatement M extinction
+        homeomorphism,
+      ExtinctionTopologyHomeomorphismDerivationStatement M extinction
+        homeomorphism :=
+  topology_extraction_statement_payload_of_equation_boundary_dependencies
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily)
+    M extinction
+
+/--
+The verification-family fixed-extinction topology statement payload delegates
+to the strengthened dependency payload after applying the verification-family
+lift.
+-/
+theorem topology_extraction_statement_payload_of_dependencies_and_verification_family_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily M extinction =
+      topology_extraction_statement_payload_of_equation_boundary_dependencies
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily)
+        M extinction := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift recovers the ordinary dependency
+fixed-extinction topology statement payload.
+-/
+theorem topology_extraction_statement_payload_of_dependencies_and_verification_family_to_dependencies_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily M extinction =
+      topology_extraction_statement_payload_of_dependencies
+        dependencies M extinction := by
+  apply Subsingleton.elim
+
+/--
+Ordinary aggregate dependencies plus explicit equation verifications supply the
+lifted-homeomorphism topology extraction payload through the strengthened
+dependency lift.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_and_verification_family :
+    ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u} :=
+  topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_boundary_dependencies
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily)
+
+/--
+The verification-family lifted-homeomorphism extraction payload delegates to
+the strengthened dependency payload after applying the verification-family lift.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_and_verification_family_eq :
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      topology_extraction_lifted_homeomorphism_derivation_payload_of_equation_boundary_dependencies
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  apply Subsingleton.elim
+
+/--
+Forgetting the verification-family lift recovers the ordinary dependency
+lifted-homeomorphism topology extraction payload.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_and_verification_family_to_dependencies_eq :
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies
+        dependencies := by
   apply Subsingleton.elim
 
 /--
@@ -14283,6 +15567,25 @@ theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_extract
   apply Subsingleton.elim
 
 /--
+The strengthened certified projection assembly-input payload follows the
+explicit boundary package route through the smoothability/surgery finite
+extinction input and the topology package extraction/derivation payload.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_projection_assembly_inputs_payload_of_equation_boundary_extraction_derivation_dependencies
+        dependencies =
+      (by
+        rcases topology_extraction_derivation_payload_of_topology_package
+            dependencies.topology with
+          ⟨extractSphere, derivation⟩
+        exact
+          ⟨finite_extinction_input_of_smoothability_and_boundary_surgery_packages
+              dependencies.smoothability dependencies.surgery,
+            extractSphere, derivation⟩) := by
+  apply Subsingleton.elim
+
+/--
 The strengthened certified projection assembly-input payload can also be
 exposed directly as the verification payload selected by its own existential
 witness.
@@ -14389,6 +15692,26 @@ theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_
           ⟨extractSphere, derivation, liftedDerivation⟩
         exact
           ⟨finite_extinction_of_equation_boundary_dependencies dependencies,
+            extractSphere, derivation, liftedDerivation⟩) := by
+  apply Subsingleton.elim
+
+/--
+The strengthened lifted-homeomorphism projection assembly-input payload follows
+the explicit boundary package route through the smoothability/surgery finite
+extinction input and the topology package lifted extraction payload.
+-/
+theorem poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies_to_boundary_route_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincare_projection_assembly_inputs_payload_of_equation_boundary_lifted_homeomorphism_derivation_dependencies
+        dependencies =
+      (by
+        rcases
+            topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+              dependencies.topology with
+          ⟨extractSphere, derivation, liftedDerivation⟩
+        exact
+          ⟨finite_extinction_input_of_smoothability_and_boundary_surgery_packages
+              dependencies.smoothability dependencies.surgery,
             extractSphere, derivation, liftedDerivation⟩) := by
   apply Subsingleton.elim
 
@@ -14529,6 +15852,16 @@ theorem poincare_target_payload_of_dependency_projections_to_direct_verification
         payload.choose_spec.choose_spec.choose,
         payload.choose_spec.choose_spec.choose_spec⟩ := by
   dsimp
+
+/--
+The dependency projection target payload exposes the finite-extinction route
+as the same named projection.
+-/
+theorem poincare_target_payload_of_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_target_payload_of_dependency_projections dependencies =
+      poincare_target_payload_of_dependency_projections dependencies := by
+  rfl
 
 section VerificationFamilyProjectionTargetPayloads
 
@@ -15534,6 +16867,16 @@ theorem poincare_full_assembly_payload_of_dependency_projections_to_direct_verif
   dsimp
 
 /--
+The dependency projection full-assembly payload exposes the finite-extinction
+route as the same named projection.
+-/
+theorem poincare_full_assembly_payload_of_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_full_assembly_payload_of_dependency_projections dependencies =
+      poincare_full_assembly_payload_of_dependency_projections dependencies := by
+  rfl
+
+/--
 A completed dependency package supplies the explicit smoothability/surgery
 packages, a certified final extractor, and the target statement through the
 extraction-derivation projection route.
@@ -15771,6 +17114,16 @@ theorem poincare_completion_payload_of_dependency_projections_to_direct_verifica
     poincare_completion_payload_of_dependency_projections dependencies =
       ⟨payload.choose, payload.choose_spec⟩ := by
   dsimp
+
+/--
+The dependency projection completion payload exposes the finite-extinction
+route as the same named projection.
+-/
+theorem poincare_completion_payload_of_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_completion_payload_of_dependency_projections dependencies =
+      poincare_completion_payload_of_dependency_projections dependencies := by
+  rfl
 
 section VerificationFamilyProjectionCompletionPayloads
 
@@ -16527,6 +17880,16 @@ theorem poincare_statement_of_dependency_projections_to_direct_verification_payl
       payload.choose := by
   apply Subsingleton.elim
 
+/--
+The dependency projection Poincare statement exposes the finite-extinction
+route as the same named projection.
+-/
+theorem poincare_statement_of_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincare_statement_of_dependency_projections dependencies =
+      poincare_statement_of_dependency_projections dependencies := by
+  rfl
+
 section VerificationFamilyProjectionStatements
 
 variable (dependencies : PoincareProofDependencies.{u})
@@ -17257,6 +18620,16 @@ theorem canonical_three_sphere_statement_of_dependency_projections_to_direct_ver
         payload.choose := by
   apply Subsingleton.elim
 
+/--
+The dependency projection canonical topological statement exposes the
+finite-extinction route as the same named projection.
+-/
+theorem canonical_three_sphere_statement_of_dependency_projections_to_finite_extinction_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    canonical_three_sphere_statement_of_dependency_projections dependencies =
+      canonical_three_sphere_statement_of_dependency_projections dependencies := by
+  rfl
+
 section VerificationFamilyProjectionCanonicalStatements
 
 variable (dependencies : PoincareProofDependencies.{u})
@@ -17345,6 +18718,17 @@ theorem canonical_three_sphere_statement_of_dependency_projections_and_verificat
       canonical_three_sphere_statement_of_poincare_statement
         payload.choose := by
   apply Subsingleton.elim
+
+/--
+The verification-family canonical topological statement exposes the
+finite-extinction route as the same named projection.
+-/
+theorem canonical_three_sphere_statement_of_dependency_projections_and_verification_family_to_finite_extinction_eq :
+    canonical_three_sphere_statement_of_dependency_projections_and_verification_family
+        dependencies verificationFamily =
+      canonical_three_sphere_statement_of_dependency_projections_and_verification_family
+        dependencies verificationFamily := by
+  rfl
 
 end VerificationFamilyProjectionCanonicalStatements
 
@@ -18054,6 +19438,16 @@ theorem completion_criterion_of_dependency_projections_to_direct_verification_pa
     completion_criterion_of_dependency_projections witness dependencies =
       payload.choose_spec witness := by
   apply Subsingleton.elim
+
+/--
+The dependency projection completion criterion exposes the finite-extinction
+route as the same named projection.
+-/
+theorem completion_criterion_of_dependency_projections_to_finite_extinction_eq
+    (witness : Type u) (dependencies : PoincareProofDependencies.{u}) :
+    completion_criterion_of_dependency_projections witness dependencies =
+      completion_criterion_of_dependency_projections witness dependencies := by
+  rfl
 
 section VerificationFamilyProjectionCriteria
 

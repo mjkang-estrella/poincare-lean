@@ -3470,4 +3470,18 @@ theorem smoothability_subobligations_of_smoothability_package_to_bridge_payload_
       (smoothability_bridge_payload_of_smoothability_package package M).2.2.2.2 := by
   apply Subsingleton.elim
 
+/--
+The package-level sub-obligation payload exposes the richer bridge payload
+projection under a direct endpoint name.
+-/
+theorem smoothability_subobligations_of_smoothability_package_to_bridge_payload
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    smoothability_subobligations_of_smoothability_package package M =
+      (smoothability_bridge_payload_of_smoothability_package package M).2.2.2.2 :=
+  smoothability_subobligations_of_smoothability_package_to_bridge_payload_eq
+    package M
+
 end Poincare

@@ -337,7 +337,7 @@ theorem dependencyComponentRequirement_smoothabilityComponent_eq :
         dependencyComponentRequirement.{u}
             DependencyComponentSlot.smoothabilityComponent =
           SmoothabilityPackage.{u}) := by
-  apply Subsingleton.elim
+  rfl
 
 /-- The surgery component requirement theorem is the direct `rfl` proof. -/
 theorem dependencyComponentRequirement_surgeryComponent_eq :
@@ -351,7 +351,7 @@ theorem dependencyComponentRequirement_surgeryComponent_eq :
             [IsManifold ThreeManifoldModelWithCorners 1 M],
               Nonempty (Σ n : ℕ∞ω,
                 FiniteExtinctionSurgeryPackage n M))) := by
-  apply Subsingleton.elim
+  rfl
 
 /-- The topology component requirement theorem is the direct `rfl` proof. -/
 theorem dependencyComponentRequirement_topologyComponent_eq :
@@ -360,7 +360,7 @@ theorem dependencyComponentRequirement_topologyComponent_eq :
         dependencyComponentRequirement.{u}
             DependencyComponentSlot.topologyComponent =
           ExtinctionTopologyExtractionPackage.{u}) := by
-  apply Subsingleton.elim
+  rfl
 
 /-- A completed aggregate dependency package supplies every component-slot requirement. -/
 theorem dependencyComponentRequirement_of_dependencies
@@ -385,35 +385,70 @@ theorem dependencyComponentRequirement_of_dependencies_eq
         | DependencyComponentSlot.surgeryComponent =>
             dependencies.surgery
         | DependencyComponentSlot.topologyComponent =>
-            dependencies.topology) := by
-  funext slot
-  cases slot <;> apply Subsingleton.elim
+            dependencies.topology) :=
+  rfl
 
 /--
 The generic smoothability component projection is the stored smoothability
 field.
 -/
-theorem dependencyComponentRequirement_of_dependencies_smoothabilityComponent_eq
+theorem dependencyComponentRequirement_of_dependencies_smoothabilityComponent
     (dependencies : PoincareProofDependencies.{u}) :
     dependencyComponentRequirement_of_dependencies dependencies
       DependencyComponentSlot.smoothabilityComponent =
       dependencies.smoothability :=
   rfl
 
+/--
+The generic smoothability component projection endpoint is the stored
+smoothability field.
+-/
+theorem dependencyComponentRequirement_of_dependencies_smoothabilityComponent_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependencyComponentRequirement_of_dependencies_smoothabilityComponent
+      dependencies =
+      (rfl :
+        dependencyComponentRequirement_of_dependencies dependencies
+          DependencyComponentSlot.smoothabilityComponent =
+          dependencies.smoothability) :=
+  rfl
+
 /-- The generic surgery component projection is the stored surgery field. -/
-theorem dependencyComponentRequirement_of_dependencies_surgeryComponent_eq
+theorem dependencyComponentRequirement_of_dependencies_surgeryComponent
     (dependencies : PoincareProofDependencies.{u}) :
     dependencyComponentRequirement_of_dependencies dependencies
       DependencyComponentSlot.surgeryComponent =
       dependencies.surgery :=
   rfl
 
+/-- The generic surgery component projection endpoint is the stored surgery field. -/
+theorem dependencyComponentRequirement_of_dependencies_surgeryComponent_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependencyComponentRequirement_of_dependencies_surgeryComponent
+      dependencies =
+      (rfl :
+        dependencyComponentRequirement_of_dependencies dependencies
+          DependencyComponentSlot.surgeryComponent =
+          dependencies.surgery) :=
+  rfl
+
 /-- The generic topology component projection is the stored topology field. -/
-theorem dependencyComponentRequirement_of_dependencies_topologyComponent_eq
+theorem dependencyComponentRequirement_of_dependencies_topologyComponent
     (dependencies : PoincareProofDependencies.{u}) :
     dependencyComponentRequirement_of_dependencies dependencies
       DependencyComponentSlot.topologyComponent =
       dependencies.topology :=
+  rfl
+
+/-- The generic topology component projection endpoint is the stored topology field. -/
+theorem dependencyComponentRequirement_of_dependencies_topologyComponent_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependencyComponentRequirement_of_dependencies_topologyComponent
+      dependencies =
+      (rfl :
+        dependencyComponentRequirement_of_dependencies dependencies
+          DependencyComponentSlot.topologyComponent =
+          dependencies.topology) :=
   rfl
 
 /-- Aggregate dependencies supply the smoothability component requirement. -/
@@ -472,24 +507,51 @@ theorem topologyComponent_requirement_of_dependencies_eq
   rfl
 
 /-- The named smoothability component projection is the stored smoothability field. -/
-theorem smoothabilityComponent_requirement_of_dependencies_to_field_eq
+theorem smoothabilityComponent_requirement_of_dependencies_to_field
     (dependencies : PoincareProofDependencies.{u}) :
     smoothabilityComponent_requirement_of_dependencies dependencies =
       dependencies.smoothability :=
   rfl
 
+/-- The named smoothability component field endpoint is the stored field. -/
+theorem smoothabilityComponent_requirement_of_dependencies_to_field_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    smoothabilityComponent_requirement_of_dependencies_to_field dependencies =
+      (rfl :
+        smoothabilityComponent_requirement_of_dependencies dependencies =
+          dependencies.smoothability) :=
+  rfl
+
 /-- The named surgery component projection is the stored surgery field. -/
-theorem surgeryComponent_requirement_of_dependencies_to_field_eq
+theorem surgeryComponent_requirement_of_dependencies_to_field
     (dependencies : PoincareProofDependencies.{u}) :
     surgeryComponent_requirement_of_dependencies dependencies =
       dependencies.surgery :=
   rfl
 
+/-- The named surgery component field endpoint is the stored field. -/
+theorem surgeryComponent_requirement_of_dependencies_to_field_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    surgeryComponent_requirement_of_dependencies_to_field dependencies =
+      (rfl :
+        surgeryComponent_requirement_of_dependencies dependencies =
+          dependencies.surgery) :=
+  rfl
+
 /-- The named topology component projection is the stored topology field. -/
-theorem topologyComponent_requirement_of_dependencies_to_field_eq
+theorem topologyComponent_requirement_of_dependencies_to_field
     (dependencies : PoincareProofDependencies.{u}) :
     topologyComponent_requirement_of_dependencies dependencies =
       dependencies.topology :=
+  rfl
+
+/-- The named topology component field endpoint is the stored field. -/
+theorem topologyComponent_requirement_of_dependencies_to_field_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    topologyComponent_requirement_of_dependencies_to_field dependencies =
+      (rfl :
+        topologyComponent_requirement_of_dependencies dependencies =
+          dependencies.topology) :=
   rfl
 
 /--
@@ -517,21 +579,38 @@ theorem dependency_component_requirements_payload_of_dependencies_eq
     (dependencies : PoincareProofDependencies.{u}) :
     dependency_component_requirements_payload_of_dependencies dependencies =
       ⟨dependencies.smoothability, dependencies.surgery,
-        dependencies.topology⟩ := by
-  apply Subsingleton.elim
+        dependencies.topology⟩ :=
+  rfl
 
 /--
 The aggregate dependency component-slot payload is also the tuple of the named
 component-slot projections.
 -/
-theorem dependency_component_requirements_payload_of_dependencies_to_named_projections_eq
+theorem dependency_component_requirements_payload_of_dependencies_to_named_projections
     (dependencies : PoincareProofDependencies.{u}) :
     dependency_component_requirements_payload_of_dependencies dependencies =
       ⟨ smoothabilityComponent_requirement_of_dependencies dependencies
       , surgeryComponent_requirement_of_dependencies dependencies
       , topologyComponent_requirement_of_dependencies dependencies
       ⟩ := by
-  apply Subsingleton.elim
+  rfl
+
+/--
+The aggregate dependency component-slot named-projection endpoint is the tuple
+of the named component-slot projections.
+-/
+theorem dependency_component_requirements_payload_of_dependencies_to_named_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependency_component_requirements_payload_of_dependencies_to_named_projections
+        dependencies =
+      (by
+        rfl :
+        dependency_component_requirements_payload_of_dependencies dependencies =
+          ⟨ smoothabilityComponent_requirement_of_dependencies dependencies
+          , surgeryComponent_requirement_of_dependencies dependencies
+          , topologyComponent_requirement_of_dependencies dependencies
+          ⟩) := by
+  rfl
 
 /--
 Strengthened equation-boundary dependencies supply every existing component-slot
@@ -554,8 +633,7 @@ theorem dependencyComponentRequirement_of_equation_boundary_dependencies_eq
         dependencies =
       dependencyComponentRequirement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
-  funext slot
-  apply Subsingleton.elim
+  rfl
 
 /-- Strengthened dependencies supply the smoothability component requirement. -/
 theorem smoothabilityComponent_requirement_of_equation_boundary_dependencies
@@ -592,7 +670,7 @@ theorem smoothabilityComponent_requirement_of_equation_boundary_dependencies_eq
         dependencies =
       smoothabilityComponent_requirement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The strengthened surgery component projection is the ordinary projection of
@@ -604,7 +682,7 @@ theorem surgeryComponent_requirement_of_equation_boundary_dependencies_eq
         dependencies =
       surgeryComponent_requirement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The strengthened topology component projection is the ordinary projection of
@@ -616,7 +694,7 @@ theorem topologyComponent_requirement_of_equation_boundary_dependencies_eq
         dependencies =
       topologyComponent_requirement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 Strengthened equation-boundary dependencies supply the three existing component
@@ -644,13 +722,13 @@ theorem dependency_component_requirements_payload_of_equation_boundary_dependenc
         dependencies =
       dependency_component_requirements_payload_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The strengthened dependency component payload is also the tuple of the named
 strengthened component projections.
 -/
-theorem dependency_component_requirements_payload_of_equation_boundary_dependencies_to_named_projections_eq
+theorem dependency_component_requirements_payload_of_equation_boundary_dependencies_to_named_projections
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     dependency_component_requirements_payload_of_equation_boundary_dependencies
         dependencies =
@@ -661,7 +739,28 @@ theorem dependency_component_requirements_payload_of_equation_boundary_dependenc
       , topologyComponent_requirement_of_equation_boundary_dependencies
           dependencies
       ⟩ := by
-  apply Subsingleton.elim
+  rfl
+
+/--
+The strengthened component payload named-projection endpoint is the tuple of
+the named strengthened component projections.
+-/
+theorem dependency_component_requirements_payload_of_equation_boundary_dependencies_to_named_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependency_component_requirements_payload_of_equation_boundary_dependencies_to_named_projections
+        dependencies =
+      (by
+        rfl :
+        dependency_component_requirements_payload_of_equation_boundary_dependencies
+            dependencies =
+          ⟨ smoothabilityComponent_requirement_of_equation_boundary_dependencies
+              dependencies
+          , surgeryComponent_requirement_of_equation_boundary_dependencies
+              dependencies
+          , topologyComponent_requirement_of_equation_boundary_dependencies
+              dependencies
+          ⟩) := by
+  rfl
 
 /--
 The aggregate dependency package is equivalent to exactly the three component
@@ -702,13 +801,13 @@ theorem poincareProofDependencies_of_component_requirements_payload_eq :
       (by
         rintro ⟨smoothability, surgery, topology⟩
         exact ⟨smoothability, surgery, topology⟩) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 Projecting component-slot requirements from the aggregate dependencies
 reconstructed from that payload returns the original payload.
 -/
-theorem dependency_component_requirements_payload_of_component_requirements_payload_eq
+theorem dependency_component_requirements_payload_of_component_requirements_payload
     (payload :
       ∃ _smoothability :
         dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
@@ -718,30 +817,88 @@ theorem dependency_component_requirements_payload_of_component_requirements_payl
     dependency_component_requirements_payload_of_dependencies
       (poincareProofDependencies_of_component_requirements_payload payload) =
       payload := by
-  apply Subsingleton.elim
+  rcases payload with ⟨smoothability, surgery, topology⟩
+  rfl
+
+/--
+The component-slot payload projection-after-constructor endpoint returns the
+original payload.
+-/
+theorem dependency_component_requirements_payload_of_component_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    dependency_component_requirements_payload_of_component_requirements_payload
+      payload =
+      (by
+        rcases payload with ⟨smoothability, surgery, topology⟩
+        rfl :
+        dependency_component_requirements_payload_of_dependencies
+          (poincareProofDependencies_of_component_requirements_payload payload) =
+          payload) := by
+  rfl
 
 /--
 The component-slot requirements constructor recovers any aggregate dependency
 package from its projected component-slot payload.
 -/
-theorem poincareProofDependencies_of_component_requirements_payload_of_dependencies_eq
+theorem poincareProofDependencies_of_component_requirements_payload_of_dependencies
     (dependencies : PoincareProofDependencies.{u}) :
     poincareProofDependencies_of_component_requirements_payload
       (dependency_component_requirements_payload_of_dependencies dependencies) =
       dependencies := by
-  apply Subsingleton.elim
+  cases dependencies
+  rfl
+
+/--
+The component-slot requirements constructor-after-projection endpoint recovers
+the original aggregate dependency package.
+-/
+theorem poincareProofDependencies_of_component_requirements_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareProofDependencies_of_component_requirements_payload_of_dependencies
+        dependencies =
+      (by
+        cases dependencies
+        rfl :
+        poincareProofDependencies_of_component_requirements_payload
+          (dependency_component_requirements_payload_of_dependencies
+            dependencies) =
+          dependencies) := by
+  rfl
 
 /--
 The ordinary aggregate dependency reconstructed from the strengthened
 component-slot payload is exactly the forgetful aggregate dependency package.
 -/
-theorem poincareProofDependencies_of_component_requirements_payload_of_equation_boundary_dependencies_eq
+theorem poincareProofDependencies_of_component_requirements_payload_of_equation_boundary_dependencies
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     poincareProofDependencies_of_component_requirements_payload
       (dependency_component_requirements_payload_of_equation_boundary_dependencies
         dependencies) =
       dependencies_of_equation_boundary_dependencies dependencies := by
-  apply Subsingleton.elim
+  cases dependencies
+  rfl
+
+/--
+The strengthened component-slot payload constructor endpoint reconstructs the
+forgetful aggregate dependency package.
+-/
+theorem poincareProofDependencies_of_component_requirements_payload_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareProofDependencies_of_component_requirements_payload_of_equation_boundary_dependencies
+        dependencies =
+      (by
+        cases dependencies
+        rfl :
+        poincareProofDependencies_of_component_requirements_payload
+          (dependency_component_requirements_payload_of_equation_boundary_dependencies
+            dependencies) =
+          dependencies_of_equation_boundary_dependencies dependencies) := by
+  rfl
 
 /--
 The component-slot equivalence is exactly the named forward payload projection
@@ -751,7 +908,7 @@ theorem poincareProofDependencies_iff_component_requirements_eq :
     poincareProofDependencies_iff_component_requirements.{u} =
       ⟨dependency_component_requirements_payload_of_dependencies,
         poincareProofDependencies_of_component_requirements_payload⟩ := by
-  apply Subsingleton.elim
+  rfl
 
 /-- The proposition represented by each concrete dependency package layer. -/
 def dependencyPackageLayerRequirement : DependencyPackageLayer → Prop
@@ -875,7 +1032,7 @@ theorem dependencyPackageLayerRequirement_smoothabilityPackage_eq :
         dependencyPackageLayerRequirement.{u}
             DependencyPackageLayer.smoothabilityPackage =
           SmoothabilityPackage.{u}) := by
-  apply Subsingleton.elim
+  rfl
 
 /-- The analytic package-layer requirement theorem is the direct `rfl` proof. -/
 theorem dependencyPackageLayerRequirement_analyticFoundationPackage_eq :
@@ -890,7 +1047,7 @@ theorem dependencyPackageLayerRequirement_analyticFoundationPackage_eq :
               Nonempty (Σ n : ℕ∞ω,
                 RicciFlowAnalyticFoundationPackage
                   ThreeManifoldModelWithCorners n M))) := by
-  apply Subsingleton.elim
+  rfl
 
 /-- The surgery package-layer requirement theorem is the direct `rfl` proof. -/
 theorem dependencyPackageLayerRequirement_surgeryPackage_eq :
@@ -908,7 +1065,7 @@ theorem dependencyPackageLayerRequirement_surgeryPackage_eq :
                     (n := n) (M := M) flow ∧
                   PerelmanSingularityControlPackage
                     (n := n) (M := M) flow)) := by
-  apply Subsingleton.elim
+  rfl
 
 /-- The finite-extinction package-layer requirement theorem is the direct `rfl` proof. -/
 theorem dependencyPackageLayerRequirement_finiteExtinctionPackage_eq :
@@ -922,7 +1079,7 @@ theorem dependencyPackageLayerRequirement_finiteExtinctionPackage_eq :
             [IsManifold ThreeManifoldModelWithCorners 1 M],
               Nonempty (Σ n : ℕ∞ω,
                 FiniteExtinctionSurgeryPackage n M))) := by
-  apply Subsingleton.elim
+  rfl
 
 /-- The topology package-layer requirement theorem is the direct `rfl` proof. -/
 theorem dependencyPackageLayerRequirement_topologyPackage_eq :
@@ -931,7 +1088,7 @@ theorem dependencyPackageLayerRequirement_topologyPackage_eq :
         dependencyPackageLayerRequirement.{u}
             DependencyPackageLayer.topologyPackage =
           ExtinctionTopologyExtractionPackage.{u}) := by
-  apply Subsingleton.elim
+  rfl
 
 /-- A completed aggregate dependency package supplies every package-layer requirement. -/
 theorem dependencyPackageLayerRequirement_of_dependencies
@@ -1017,7 +1174,7 @@ theorem dependencyPackageLayerRequirement_of_componentRequirement_eq :
         · intro smoothabilityRequirement
           exact smoothabilityRequirement) := by
   funext layer
-  cases layer <;> apply Subsingleton.elim
+  cases layer <;> rfl
 
 /--
 The generic package-layer projection from dependencies is exactly the five-case
@@ -1053,13 +1210,13 @@ theorem dependencyPackageLayerRequirement_of_dependencies_eq
         | DependencyPackageLayer.smoothabilityPackage =>
             dependencies.smoothability) := by
   funext layer
-  cases layer <;> apply Subsingleton.elim
+  cases layer <;> rfl
 
 /--
 The generic analytic package-layer projection is obtained from the stored
 surgery family by projecting each surgery package's analytic-foundation package.
 -/
-theorem dependencyPackageLayerRequirement_of_dependencies_analyticFoundationPackage_eq
+theorem dependencyPackageLayerRequirement_of_dependencies_analyticFoundationPackage
     (dependencies : PoincareProofDependencies.{u}) :
     dependencyPackageLayerRequirement_of_dependencies dependencies
         DependencyPackageLayer.analyticFoundationPackage =
@@ -1067,14 +1224,28 @@ theorem dependencyPackageLayerRequirement_of_dependencies_analyticFoundationPack
         intro M _ _ _ _ _ _
         rcases dependencies.surgery M with ⟨⟨n, package⟩⟩
         exact ⟨⟨n, analytic_foundation_of_surgery_package package⟩⟩) := by
-  apply Subsingleton.elim
+  rfl
+
+/--
+The generic analytic package-layer projection endpoint is the analytic package
+projected from the stored surgery family.
+-/
+theorem dependencyPackageLayerRequirement_of_dependencies_analyticFoundationPackage_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependencyPackageLayerRequirement_of_dependencies_analyticFoundationPackage
+        dependencies =
+      (by
+        exact
+          dependencyPackageLayerRequirement_of_dependencies_analyticFoundationPackage
+            dependencies) :=
+  rfl
 
 /--
 The generic surgery package-layer projection is obtained from the stored
 surgery family by unpacking each surgery package into construction and
 Perelman-control packages.
 -/
-theorem dependencyPackageLayerRequirement_of_dependencies_surgeryPackage_eq
+theorem dependencyPackageLayerRequirement_of_dependencies_surgeryPackage
     (dependencies : PoincareProofDependencies.{u}) :
     dependencyPackageLayerRequirement_of_dependencies dependencies
         DependencyPackageLayer.surgeryPackage =
@@ -1089,30 +1260,77 @@ theorem dependencyPackageLayerRequirement_of_dependencies_surgeryPackage_eq
             PerelmanSingularityControlPackage (n := n) (M := M) flow :=
           perelman_control_package_of_surgery_package package
         exact ⟨n, flow, constructionPackage, controlPackage⟩) := by
-  apply Subsingleton.elim
+  rfl
+
+/--
+The generic surgery package-layer projection endpoint is the construction plus
+Perelman-control package projected from the stored surgery family.
+-/
+theorem dependencyPackageLayerRequirement_of_dependencies_surgeryPackage_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependencyPackageLayerRequirement_of_dependencies_surgeryPackage
+        dependencies =
+      (by
+        exact
+          dependencyPackageLayerRequirement_of_dependencies_surgeryPackage
+            dependencies) :=
+  rfl
 
 /-- The generic finite-extinction package-layer projection is the stored surgery field. -/
-theorem dependencyPackageLayerRequirement_of_dependencies_finiteExtinctionPackage_eq
+theorem dependencyPackageLayerRequirement_of_dependencies_finiteExtinctionPackage
     (dependencies : PoincareProofDependencies.{u}) :
     dependencyPackageLayerRequirement_of_dependencies dependencies
         DependencyPackageLayer.finiteExtinctionPackage =
       dependencies.surgery :=
   rfl
 
+/-- The generic finite-extinction package-layer projection endpoint is the stored surgery field. -/
+theorem dependencyPackageLayerRequirement_of_dependencies_finiteExtinctionPackage_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependencyPackageLayerRequirement_of_dependencies_finiteExtinctionPackage
+        dependencies =
+      (rfl :
+        dependencyPackageLayerRequirement_of_dependencies dependencies
+          DependencyPackageLayer.finiteExtinctionPackage =
+          dependencies.surgery) :=
+  rfl
+
 /-- The generic topology package-layer projection is the stored topology field. -/
-theorem dependencyPackageLayerRequirement_of_dependencies_topologyPackage_eq
+theorem dependencyPackageLayerRequirement_of_dependencies_topologyPackage
     (dependencies : PoincareProofDependencies.{u}) :
     dependencyPackageLayerRequirement_of_dependencies dependencies
         DependencyPackageLayer.topologyPackage =
       dependencies.topology :=
   rfl
 
+/-- The generic topology package-layer projection endpoint is the stored topology field. -/
+theorem dependencyPackageLayerRequirement_of_dependencies_topologyPackage_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependencyPackageLayerRequirement_of_dependencies_topologyPackage
+        dependencies =
+      (rfl :
+        dependencyPackageLayerRequirement_of_dependencies dependencies
+          DependencyPackageLayer.topologyPackage =
+          dependencies.topology) :=
+  rfl
+
 /-- The generic smoothability package-layer projection is the stored smoothability field. -/
-theorem dependencyPackageLayerRequirement_of_dependencies_smoothabilityPackage_eq
+theorem dependencyPackageLayerRequirement_of_dependencies_smoothabilityPackage
     (dependencies : PoincareProofDependencies.{u}) :
     dependencyPackageLayerRequirement_of_dependencies dependencies
         DependencyPackageLayer.smoothabilityPackage =
       dependencies.smoothability :=
+  rfl
+
+/-- The generic smoothability package-layer projection endpoint is the stored smoothability field. -/
+theorem dependencyPackageLayerRequirement_of_dependencies_smoothabilityPackage_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependencyPackageLayerRequirement_of_dependencies_smoothabilityPackage
+        dependencies =
+      (rfl :
+        dependencyPackageLayerRequirement_of_dependencies dependencies
+          DependencyPackageLayer.smoothabilityPackage =
+          dependencies.smoothability) :=
   rfl
 
 /-- Aggregate dependencies supply the smoothability package-layer requirement. -/
@@ -1247,13 +1465,13 @@ theorem dependency_package_layer_requirements_payload_of_dependencies_eq
       , finiteExtinctionPackage_requirement_of_dependencies dependencies
       , topologyPackage_requirement_of_dependencies dependencies
       ⟩ := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The package-layer payload is also the tuple of the generic package-layer
 projections in package-layer order.
 -/
-theorem dependency_package_layer_requirements_payload_of_dependencies_to_generic_projections_eq
+theorem dependency_package_layer_requirements_payload_of_dependencies_to_generic_projections
     (dependencies : PoincareProofDependencies.{u}) :
     dependency_package_layer_requirements_payload_of_dependencies dependencies =
       ⟨ dependencyPackageLayerRequirement_of_dependencies dependencies
@@ -1267,13 +1485,38 @@ theorem dependency_package_layer_requirements_payload_of_dependencies_to_generic
       , dependencyPackageLayerRequirement_of_dependencies dependencies
           DependencyPackageLayer.topologyPackage
       ⟩ := by
-  apply Subsingleton.elim
+  rfl
+
+/--
+The package-layer generic-projection payload endpoint is the tuple of generic
+package-layer projections in package-layer order.
+-/
+theorem dependency_package_layer_requirements_payload_of_dependencies_to_generic_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependency_package_layer_requirements_payload_of_dependencies_to_generic_projections
+        dependencies =
+      (by
+        rfl :
+        dependency_package_layer_requirements_payload_of_dependencies
+            dependencies =
+          ⟨ dependencyPackageLayerRequirement_of_dependencies dependencies
+              DependencyPackageLayer.smoothabilityPackage
+          , dependencyPackageLayerRequirement_of_dependencies dependencies
+              DependencyPackageLayer.analyticFoundationPackage
+          , dependencyPackageLayerRequirement_of_dependencies dependencies
+              DependencyPackageLayer.surgeryPackage
+          , dependencyPackageLayerRequirement_of_dependencies dependencies
+              DependencyPackageLayer.finiteExtinctionPackage
+          , dependencyPackageLayerRequirement_of_dependencies dependencies
+              DependencyPackageLayer.topologyPackage
+          ⟩) := by
+  rfl
 
 /--
 The package-layer payload is also the tuple of named package-layer projections
 in package-layer order.
 -/
-theorem dependency_package_layer_requirements_payload_of_dependencies_to_named_projections_eq
+theorem dependency_package_layer_requirements_payload_of_dependencies_to_named_projections
     (dependencies : PoincareProofDependencies.{u}) :
     dependency_package_layer_requirements_payload_of_dependencies dependencies =
       ⟨ smoothabilityPackage_requirement_of_dependencies dependencies
@@ -1282,7 +1525,27 @@ theorem dependency_package_layer_requirements_payload_of_dependencies_to_named_p
       , finiteExtinctionPackage_requirement_of_dependencies dependencies
       , topologyPackage_requirement_of_dependencies dependencies
       ⟩ := by
-  apply Subsingleton.elim
+  rfl
+
+/--
+The package-layer named-projection payload endpoint is the tuple of named
+package-layer projections in package-layer order.
+-/
+theorem dependency_package_layer_requirements_payload_of_dependencies_to_named_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependency_package_layer_requirements_payload_of_dependencies_to_named_projections
+        dependencies =
+      (by
+        rfl :
+        dependency_package_layer_requirements_payload_of_dependencies
+            dependencies =
+          ⟨ smoothabilityPackage_requirement_of_dependencies dependencies
+          , analyticFoundationPackage_requirement_of_dependencies dependencies
+          , surgeryPackage_requirement_of_dependencies dependencies
+          , finiteExtinctionPackage_requirement_of_dependencies dependencies
+          , topologyPackage_requirement_of_dependencies dependencies
+          ⟩) := by
+  rfl
 
 /--
 Strengthened equation-boundary dependencies supply every existing package-layer
@@ -1305,8 +1568,7 @@ theorem dependencyPackageLayerRequirement_of_equation_boundary_dependencies_eq
         dependencies =
       dependencyPackageLayerRequirement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
-  funext layer
-  apply Subsingleton.elim
+  rfl
 
 /--
 Strengthened dependencies supply the smoothability package-layer requirement.
@@ -1370,7 +1632,7 @@ theorem smoothabilityPackage_requirement_of_equation_boundary_dependencies_eq
         dependencies =
       smoothabilityPackage_requirement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The strengthened analytic package-layer projection is the ordinary projection
@@ -1382,7 +1644,7 @@ theorem analyticFoundationPackage_requirement_of_equation_boundary_dependencies_
         dependencies =
       analyticFoundationPackage_requirement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The strengthened surgery package-layer projection is the ordinary projection
@@ -1394,7 +1656,7 @@ theorem surgeryPackage_requirement_of_equation_boundary_dependencies_eq
         dependencies =
       surgeryPackage_requirement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The strengthened finite-extinction package-layer projection is the ordinary
@@ -1406,7 +1668,7 @@ theorem finiteExtinctionPackage_requirement_of_equation_boundary_dependencies_eq
         dependencies =
       finiteExtinctionPackage_requirement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The strengthened topology package-layer projection is the ordinary projection
@@ -1418,7 +1680,7 @@ theorem topologyPackage_requirement_of_equation_boundary_dependencies_eq
         dependencies =
       topologyPackage_requirement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 Strengthened equation-boundary dependencies supply the five existing
@@ -1452,13 +1714,13 @@ theorem dependency_package_layer_requirements_payload_of_equation_boundary_depen
         dependencies =
       dependency_package_layer_requirements_payload_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The strengthened dependency package-layer payload is also the tuple of the
 named strengthened package-layer projections.
 -/
-theorem dependency_package_layer_requirements_payload_of_equation_boundary_dependencies_to_named_projections_eq
+theorem dependency_package_layer_requirements_payload_of_equation_boundary_dependencies_to_named_projections
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     dependency_package_layer_requirements_payload_of_equation_boundary_dependencies
         dependencies =
@@ -1473,7 +1735,32 @@ theorem dependency_package_layer_requirements_payload_of_equation_boundary_depen
       , topologyPackage_requirement_of_equation_boundary_dependencies
           dependencies
       ⟩ := by
-  apply Subsingleton.elim
+  rfl
+
+/--
+The strengthened package-layer named-projection payload endpoint is the tuple
+of named strengthened package-layer projections.
+-/
+theorem dependency_package_layer_requirements_payload_of_equation_boundary_dependencies_to_named_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependency_package_layer_requirements_payload_of_equation_boundary_dependencies_to_named_projections
+        dependencies =
+      (by
+        rfl :
+        dependency_package_layer_requirements_payload_of_equation_boundary_dependencies
+            dependencies =
+          ⟨ smoothabilityPackage_requirement_of_equation_boundary_dependencies
+              dependencies
+          , analyticFoundationPackage_requirement_of_equation_boundary_dependencies
+              dependencies
+          , surgeryPackage_requirement_of_equation_boundary_dependencies
+              dependencies
+          , finiteExtinctionPackage_requirement_of_equation_boundary_dependencies
+              dependencies
+          , topologyPackage_requirement_of_equation_boundary_dependencies
+              dependencies
+          ⟩) := by
+  rfl
 
 /--
 The aggregate dependency package is equivalent to its five concrete
@@ -1531,13 +1818,13 @@ theorem poincareProofDependencies_of_package_layer_requirements_payload_eq :
         rintro ⟨smoothability, _analytic, _surgery, finiteExtinction,
           topology⟩
         exact ⟨smoothability, finiteExtinction, topology⟩) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 Projecting package-layer requirements from the aggregate dependencies
 reconstructed from that payload returns the original payload.
 -/
-theorem dependency_package_layer_requirements_payload_of_package_layer_requirements_payload_eq
+theorem dependency_package_layer_requirements_payload_of_package_layer_requirements_payload
     (payload :
       ∃ _smoothability :
         dependencyPackageLayerRequirement.{u}
@@ -1560,28 +1847,94 @@ theorem dependency_package_layer_requirements_payload_of_package_layer_requireme
   apply Subsingleton.elim
 
 /--
+The package-layer payload projection-after-constructor endpoint returns the
+original payload.
+-/
+theorem dependency_package_layer_requirements_payload_of_package_layer_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    dependency_package_layer_requirements_payload_of_package_layer_requirements_payload
+        payload =
+      (by
+        apply Subsingleton.elim :
+        dependency_package_layer_requirements_payload_of_dependencies
+          (poincareProofDependencies_of_package_layer_requirements_payload
+            payload) =
+          payload) := by
+  apply Subsingleton.elim
+
+/--
 The package-layer requirements constructor recovers any aggregate dependency
 package from its projected package-layer payload.
 -/
-theorem poincareProofDependencies_of_package_layer_requirements_payload_of_dependencies_eq
+theorem poincareProofDependencies_of_package_layer_requirements_payload_of_dependencies
     (dependencies : PoincareProofDependencies.{u}) :
     poincareProofDependencies_of_package_layer_requirements_payload
       (dependency_package_layer_requirements_payload_of_dependencies
         dependencies) =
       dependencies := by
-  apply Subsingleton.elim
+  cases dependencies
+  rfl
+
+/--
+The package-layer requirements constructor-after-projection endpoint recovers
+the original aggregate dependency package.
+-/
+theorem poincareProofDependencies_of_package_layer_requirements_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareProofDependencies_of_package_layer_requirements_payload_of_dependencies
+        dependencies =
+      (by
+        cases dependencies
+        rfl :
+        poincareProofDependencies_of_package_layer_requirements_payload
+          (dependency_package_layer_requirements_payload_of_dependencies
+            dependencies) =
+          dependencies) := by
+  rfl
 
 /--
 The ordinary aggregate dependency reconstructed from the strengthened
 package-layer payload is exactly the forgetful aggregate dependency package.
 -/
-theorem poincareProofDependencies_of_package_layer_requirements_payload_of_equation_boundary_dependencies_eq
+theorem poincareProofDependencies_of_package_layer_requirements_payload_of_equation_boundary_dependencies
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     poincareProofDependencies_of_package_layer_requirements_payload
       (dependency_package_layer_requirements_payload_of_equation_boundary_dependencies
         dependencies) =
       dependencies_of_equation_boundary_dependencies dependencies := by
-  apply Subsingleton.elim
+  cases dependencies
+  rfl
+
+/--
+The strengthened package-layer payload constructor endpoint reconstructs the
+forgetful aggregate dependency package.
+-/
+theorem poincareProofDependencies_of_package_layer_requirements_payload_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareProofDependencies_of_package_layer_requirements_payload_of_equation_boundary_dependencies
+        dependencies =
+      (by
+        cases dependencies
+        rfl :
+        poincareProofDependencies_of_package_layer_requirements_payload
+          (dependency_package_layer_requirements_payload_of_equation_boundary_dependencies
+            dependencies) =
+          dependencies_of_equation_boundary_dependencies dependencies) := by
+  rfl
 
 /--
 The package-layer equivalence is exactly the named forward payload projection
@@ -1591,7 +1944,7 @@ theorem poincareProofDependencies_iff_package_layer_requirements_eq :
     poincareProofDependencies_iff_package_layer_requirements.{u} =
       ⟨dependency_package_layer_requirements_payload_of_dependencies,
         poincareProofDependencies_of_package_layer_requirements_payload⟩ := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The component-slot and package-layer requirement payloads are equivalent routes
@@ -1640,7 +1993,7 @@ theorem component_requirements_iff_package_layer_requirements_eq :
           dependency_component_requirements_payload_of_dependencies
             (poincareProofDependencies_of_package_layer_requirements_payload
               payload)) ⟩ := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The proposition represented by the concrete package layer assigned to a
@@ -1728,7 +2081,7 @@ theorem dependencyMilestoneRequirement_smoothabilityBridge_eq :
         dependencyMilestoneRequirement.{u}
             DependencyMilestone.smoothabilityBridge =
           SmoothabilityPackage.{u}) := by
-  apply Subsingleton.elim
+  rfl
 
 /-- The analytic-foundation milestone requirement theorem is the direct `rfl` proof. -/
 theorem dependencyMilestoneRequirement_ricciFlowAnalyticFoundation_eq :
@@ -1743,7 +2096,7 @@ theorem dependencyMilestoneRequirement_ricciFlowAnalyticFoundation_eq :
               Nonempty (Σ n : ℕ∞ω,
                 RicciFlowAnalyticFoundationPackage
                   ThreeManifoldModelWithCorners n M))) := by
-  apply Subsingleton.elim
+  rfl
 
 /-- The Ricci-flow-with-surgery milestone requirement theorem is the direct `rfl` proof. -/
 theorem dependencyMilestoneRequirement_ricciFlowWithSurgery_eq :
@@ -1761,7 +2114,7 @@ theorem dependencyMilestoneRequirement_ricciFlowWithSurgery_eq :
                     (n := n) (M := M) flow ∧
                   PerelmanSingularityControlPackage
                     (n := n) (M := M) flow)) := by
-  apply Subsingleton.elim
+  rfl
 
 /-- The Perelman-control milestone requirement theorem is the direct `rfl` proof. -/
 theorem dependencyMilestoneRequirement_perelmanSingularityControl_eq :
@@ -1779,7 +2132,7 @@ theorem dependencyMilestoneRequirement_perelmanSingularityControl_eq :
                     (n := n) (M := M) flow ∧
                   PerelmanSingularityControlPackage
                     (n := n) (M := M) flow)) := by
-  apply Subsingleton.elim
+  rfl
 
 /-- The finite-extinction milestone requirement theorem is the direct `rfl` proof. -/
 theorem dependencyMilestoneRequirement_finiteExtinction_eq :
@@ -1793,7 +2146,7 @@ theorem dependencyMilestoneRequirement_finiteExtinction_eq :
             [IsManifold ThreeManifoldModelWithCorners 1 M],
               Nonempty (Σ n : ℕ∞ω,
                 FiniteExtinctionSurgeryPackage n M))) := by
-  apply Subsingleton.elim
+  rfl
 
 /-- The topology-extraction milestone requirement theorem is the direct `rfl` proof. -/
 theorem dependencyMilestoneRequirement_extinctionToSphereHomeomorphism_eq :
@@ -1802,7 +2155,7 @@ theorem dependencyMilestoneRequirement_extinctionToSphereHomeomorphism_eq :
         dependencyMilestoneRequirement.{u}
             DependencyMilestone.extinctionToSphereHomeomorphism =
           ExtinctionTopologyExtractionPackage.{u}) := by
-  apply Subsingleton.elim
+  rfl
 
 /-- A completed dependency package supplies the requirement for every milestone. -/
 theorem dependencyMilestoneRequirement_of_dependencies
@@ -1834,8 +2187,7 @@ theorem dependencyMilestoneRequirement_of_componentRequirement_eq :
         intro milestone
         cases milestone <;>
           exact dependencyPackageLayerRequirement_of_componentRequirement _) := by
-  funext milestone
-  cases milestone <;> apply Subsingleton.elim
+  rfl
 
 /-- Aggregate dependencies supply the smoothability milestone requirement. -/
 theorem smoothabilityBridge_requirement_of_dependencies
@@ -1902,7 +2254,7 @@ theorem smoothabilityBridge_requirement_of_dependencies_to_package_layer_eq
     (dependencies : PoincareProofDependencies.{u}) :
     smoothabilityBridge_requirement_of_dependencies dependencies =
       smoothabilityPackage_requirement_of_dependencies dependencies := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The analytic-foundation milestone projection is the analytic package-layer
@@ -1912,7 +2264,7 @@ theorem ricciFlowAnalyticFoundation_requirement_of_dependencies_to_package_layer
     (dependencies : PoincareProofDependencies.{u}) :
     ricciFlowAnalyticFoundation_requirement_of_dependencies dependencies =
       analyticFoundationPackage_requirement_of_dependencies dependencies := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The Ricci-flow-with-surgery milestone projection is the surgery package-layer
@@ -1922,7 +2274,7 @@ theorem ricciFlowWithSurgery_requirement_of_dependencies_to_package_layer_eq
     (dependencies : PoincareProofDependencies.{u}) :
     ricciFlowWithSurgery_requirement_of_dependencies dependencies =
       surgeryPackage_requirement_of_dependencies dependencies := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The Perelman-control milestone projection is the surgery package-layer
@@ -1932,7 +2284,7 @@ theorem perelmanSingularityControl_requirement_of_dependencies_to_package_layer_
     (dependencies : PoincareProofDependencies.{u}) :
     perelmanSingularityControl_requirement_of_dependencies dependencies =
       surgeryPackage_requirement_of_dependencies dependencies := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The finite-extinction milestone projection is the finite-extinction
@@ -1942,7 +2294,7 @@ theorem finiteExtinction_requirement_of_dependencies_to_package_layer_eq
     (dependencies : PoincareProofDependencies.{u}) :
     finiteExtinction_requirement_of_dependencies dependencies =
       finiteExtinctionPackage_requirement_of_dependencies dependencies := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The topology-extraction milestone projection is the topology package-layer
@@ -1952,7 +2304,7 @@ theorem extinctionToSphereHomeomorphism_requirement_of_dependencies_to_package_l
     (dependencies : PoincareProofDependencies.{u}) :
     extinctionToSphereHomeomorphism_requirement_of_dependencies dependencies =
       topologyPackage_requirement_of_dependencies dependencies := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The smoothability milestone projection is the generic milestone projection at
@@ -2063,13 +2415,13 @@ theorem dependency_milestone_requirements_payload_of_dependencies_eq
       , finiteExtinction_requirement_of_dependencies dependencies
       , extinctionToSphereHomeomorphism_requirement_of_dependencies dependencies
       ⟩ := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The milestone payload is also the tuple of package-layer projections assigned
 to the six ledger milestones.
 -/
-theorem dependency_milestone_requirements_payload_of_dependencies_to_package_layer_projections_eq
+theorem dependency_milestone_requirements_payload_of_dependencies_to_package_layer_projections
     (dependencies : PoincareProofDependencies.{u}) :
     dependency_milestone_requirements_payload_of_dependencies dependencies =
       ⟨ smoothabilityPackage_requirement_of_dependencies dependencies
@@ -2079,13 +2431,33 @@ theorem dependency_milestone_requirements_payload_of_dependencies_to_package_lay
       , finiteExtinctionPackage_requirement_of_dependencies dependencies
       , topologyPackage_requirement_of_dependencies dependencies
       ⟩ := by
-  apply Subsingleton.elim
+  rfl
+
+/--
+The milestone package-layer-projection payload endpoint is the tuple of
+package-layer projections assigned to the six ledger milestones.
+-/
+theorem dependency_milestone_requirements_payload_of_dependencies_to_package_layer_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependency_milestone_requirements_payload_of_dependencies_to_package_layer_projections
+        dependencies =
+      (by
+        rfl :
+        dependency_milestone_requirements_payload_of_dependencies dependencies =
+          ⟨ smoothabilityPackage_requirement_of_dependencies dependencies
+          , analyticFoundationPackage_requirement_of_dependencies dependencies
+          , surgeryPackage_requirement_of_dependencies dependencies
+          , surgeryPackage_requirement_of_dependencies dependencies
+          , finiteExtinctionPackage_requirement_of_dependencies dependencies
+          , topologyPackage_requirement_of_dependencies dependencies
+          ⟩) := by
+  rfl
 
 /--
 The milestone payload is also the tuple of named milestone projections in
 milestone order.
 -/
-theorem dependency_milestone_requirements_payload_of_dependencies_to_named_projections_eq
+theorem dependency_milestone_requirements_payload_of_dependencies_to_named_projections
     (dependencies : PoincareProofDependencies.{u}) :
     dependency_milestone_requirements_payload_of_dependencies dependencies =
       ⟨ smoothabilityBridge_requirement_of_dependencies dependencies
@@ -2095,7 +2467,28 @@ theorem dependency_milestone_requirements_payload_of_dependencies_to_named_proje
       , finiteExtinction_requirement_of_dependencies dependencies
       , extinctionToSphereHomeomorphism_requirement_of_dependencies dependencies
       ⟩ := by
-  apply Subsingleton.elim
+  rfl
+
+/--
+The milestone named-projection payload endpoint is the tuple of named milestone
+projections in milestone order.
+-/
+theorem dependency_milestone_requirements_payload_of_dependencies_to_named_projections_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    dependency_milestone_requirements_payload_of_dependencies_to_named_projections
+        dependencies =
+      (by
+        rfl :
+        dependency_milestone_requirements_payload_of_dependencies dependencies =
+          ⟨ smoothabilityBridge_requirement_of_dependencies dependencies
+          , ricciFlowAnalyticFoundation_requirement_of_dependencies dependencies
+          , ricciFlowWithSurgery_requirement_of_dependencies dependencies
+          , perelmanSingularityControl_requirement_of_dependencies dependencies
+          , finiteExtinction_requirement_of_dependencies dependencies
+          , extinctionToSphereHomeomorphism_requirement_of_dependencies
+              dependencies
+          ⟩) := by
+  rfl
 
 /--
 Strengthened equation-boundary dependencies supply every milestone requirement
@@ -2120,7 +2513,7 @@ theorem dependencyMilestoneRequirement_of_equation_boundary_dependencies_eq
       dependencyMilestoneRequirement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies)
         milestone := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The strengthened dependency milestone projection factors through the
@@ -2133,7 +2526,7 @@ theorem dependencyMilestoneRequirement_of_equation_boundary_dependencies_to_pack
         dependencies milestone =
       dependencyPackageLayerRequirement_of_equation_boundary_dependencies
         dependencies (dependencyLayerForMilestone milestone) := by
-  cases milestone <;> apply Subsingleton.elim
+  cases milestone <;> rfl
 
 /-- Strengthened dependencies supply the smoothability milestone requirement. -/
 theorem smoothabilityBridge_requirement_of_equation_boundary_dependencies
@@ -2205,7 +2598,7 @@ theorem smoothabilityBridge_requirement_of_equation_boundary_dependencies_eq
         dependencies =
       smoothabilityBridge_requirement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The strengthened analytic-foundation milestone projection is the ordinary
@@ -2217,7 +2610,7 @@ theorem ricciFlowAnalyticFoundation_requirement_of_equation_boundary_dependencie
         dependencies =
       ricciFlowAnalyticFoundation_requirement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The strengthened Ricci-flow-with-surgery milestone projection is the ordinary
@@ -2229,7 +2622,7 @@ theorem ricciFlowWithSurgery_requirement_of_equation_boundary_dependencies_eq
         dependencies =
       ricciFlowWithSurgery_requirement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The strengthened Perelman-control milestone projection is the ordinary
@@ -2241,7 +2634,7 @@ theorem perelmanSingularityControl_requirement_of_equation_boundary_dependencies
         dependencies =
       perelmanSingularityControl_requirement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The strengthened finite-extinction milestone projection is the ordinary
@@ -2253,7 +2646,7 @@ theorem finiteExtinction_requirement_of_equation_boundary_dependencies_eq
         dependencies =
       finiteExtinction_requirement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The strengthened topology-extraction milestone projection is the ordinary
@@ -2265,7 +2658,7 @@ theorem extinctionToSphereHomeomorphism_requirement_of_equation_boundary_depende
         dependencies =
       extinctionToSphereHomeomorphism_requirement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 Strengthened equation-boundary dependencies supply all six milestone
@@ -2300,13 +2693,13 @@ theorem dependency_milestone_requirements_payload_of_equation_boundary_dependenc
         dependencies =
       dependency_milestone_requirements_payload_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The strengthened dependency milestone payload is also the tuple of the named
 strengthened milestone projections in ledger order.
 -/
-theorem dependency_milestone_requirements_payload_of_equation_boundary_dependencies_to_named_projections_eq
+theorem dependency_milestone_requirements_payload_of_equation_boundary_dependencies_to_named_projections
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     dependency_milestone_requirements_payload_of_equation_boundary_dependencies
         dependencies =
@@ -2323,13 +2716,40 @@ theorem dependency_milestone_requirements_payload_of_equation_boundary_dependenc
       , extinctionToSphereHomeomorphism_requirement_of_equation_boundary_dependencies
           dependencies
       ⟩ := by
-  apply Subsingleton.elim
+  rfl
+
+/--
+The strengthened milestone named-projection payload endpoint is the tuple of
+named strengthened milestone projections in ledger order.
+-/
+theorem dependency_milestone_requirements_payload_of_equation_boundary_dependencies_to_named_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependency_milestone_requirements_payload_of_equation_boundary_dependencies_to_named_projections
+        dependencies =
+      (by
+        rfl :
+        dependency_milestone_requirements_payload_of_equation_boundary_dependencies
+            dependencies =
+          ⟨ smoothabilityBridge_requirement_of_equation_boundary_dependencies
+              dependencies
+          , ricciFlowAnalyticFoundation_requirement_of_equation_boundary_dependencies
+              dependencies
+          , ricciFlowWithSurgery_requirement_of_equation_boundary_dependencies
+              dependencies
+          , perelmanSingularityControl_requirement_of_equation_boundary_dependencies
+              dependencies
+          , finiteExtinction_requirement_of_equation_boundary_dependencies
+              dependencies
+          , extinctionToSphereHomeomorphism_requirement_of_equation_boundary_dependencies
+              dependencies
+          ⟩) := by
+  rfl
 
 /--
 The strengthened dependency milestone payload is also the tuple of strengthened
 package-layer projections assigned to the six ledger milestones.
 -/
-theorem dependency_milestone_requirements_payload_of_equation_boundary_dependencies_to_package_layer_projections_eq
+theorem dependency_milestone_requirements_payload_of_equation_boundary_dependencies_to_package_layer_projections
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     dependency_milestone_requirements_payload_of_equation_boundary_dependencies
         dependencies =
@@ -2346,7 +2766,35 @@ theorem dependency_milestone_requirements_payload_of_equation_boundary_dependenc
       , topologyPackage_requirement_of_equation_boundary_dependencies
           dependencies
       ⟩ := by
-  apply Subsingleton.elim
+  rfl
+
+/--
+The strengthened milestone package-layer-projection payload endpoint is the
+tuple of strengthened package-layer projections assigned to the six ledger
+milestones.
+-/
+theorem dependency_milestone_requirements_payload_of_equation_boundary_dependencies_to_package_layer_projections_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    dependency_milestone_requirements_payload_of_equation_boundary_dependencies_to_package_layer_projections
+        dependencies =
+      (by
+        rfl :
+        dependency_milestone_requirements_payload_of_equation_boundary_dependencies
+            dependencies =
+          ⟨ smoothabilityPackage_requirement_of_equation_boundary_dependencies
+              dependencies
+          , analyticFoundationPackage_requirement_of_equation_boundary_dependencies
+              dependencies
+          , surgeryPackage_requirement_of_equation_boundary_dependencies
+              dependencies
+          , surgeryPackage_requirement_of_equation_boundary_dependencies
+              dependencies
+          , finiteExtinctionPackage_requirement_of_equation_boundary_dependencies
+              dependencies
+          , topologyPackage_requirement_of_equation_boundary_dependencies
+              dependencies
+          ⟩) := by
+  rfl
 
 /--
 The aggregate dependency package is equivalent to supplying every milestone
@@ -2409,13 +2857,13 @@ theorem poincareProofDependencies_of_milestone_requirements_payload_eq :
         rintro ⟨smoothability, _analytic, _ricciFlowWithSurgery,
           _perelmanSingularityControl, finiteExtinction, topology⟩
         exact ⟨smoothability, finiteExtinction, topology⟩) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 Projecting milestone requirements from the aggregate dependencies
 reconstructed from that payload returns the original payload.
 -/
-theorem dependency_milestone_requirements_payload_of_milestone_requirements_payload_eq
+theorem dependency_milestone_requirements_payload_of_milestone_requirements_payload
     (payload :
       ∃ _smoothabilityBridge :
         dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
@@ -2438,28 +2886,95 @@ theorem dependency_milestone_requirements_payload_of_milestone_requirements_payl
   apply Subsingleton.elim
 
 /--
+The milestone payload projection-after-constructor endpoint returns the
+original payload.
+-/
+theorem dependency_milestone_requirements_payload_of_milestone_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    dependency_milestone_requirements_payload_of_milestone_requirements_payload
+        payload =
+      (by
+        apply Subsingleton.elim :
+        dependency_milestone_requirements_payload_of_dependencies
+          (poincareProofDependencies_of_milestone_requirements_payload
+            payload) =
+          payload) := by
+  apply Subsingleton.elim
+
+/--
 The milestone requirements constructor recovers any aggregate dependency
 package from its projected milestone payload.
 -/
-theorem poincareProofDependencies_of_milestone_requirements_payload_of_dependencies_eq
+theorem poincareProofDependencies_of_milestone_requirements_payload_of_dependencies
     (dependencies : PoincareProofDependencies.{u}) :
     poincareProofDependencies_of_milestone_requirements_payload
       (dependency_milestone_requirements_payload_of_dependencies
         dependencies) =
       dependencies := by
-  apply Subsingleton.elim
+  cases dependencies
+  rfl
+
+/--
+The milestone requirements constructor-after-projection endpoint recovers the
+original aggregate dependency package.
+-/
+theorem poincareProofDependencies_of_milestone_requirements_payload_of_dependencies_eq
+    (dependencies : PoincareProofDependencies.{u}) :
+    poincareProofDependencies_of_milestone_requirements_payload_of_dependencies
+        dependencies =
+      (by
+        cases dependencies
+        rfl :
+        poincareProofDependencies_of_milestone_requirements_payload
+          (dependency_milestone_requirements_payload_of_dependencies
+            dependencies) =
+          dependencies) := by
+  rfl
 
 /--
 The ordinary aggregate dependency reconstructed from the strengthened milestone
 payload is exactly the forgetful aggregate dependency package.
 -/
-theorem poincareProofDependencies_of_milestone_requirements_payload_of_equation_boundary_dependencies_eq
+theorem poincareProofDependencies_of_milestone_requirements_payload_of_equation_boundary_dependencies
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     poincareProofDependencies_of_milestone_requirements_payload
       (dependency_milestone_requirements_payload_of_equation_boundary_dependencies
         dependencies) =
       dependencies_of_equation_boundary_dependencies dependencies := by
-  apply Subsingleton.elim
+  cases dependencies
+  rfl
+
+/--
+The strengthened milestone payload constructor endpoint reconstructs the
+forgetful aggregate dependency package.
+-/
+theorem poincareProofDependencies_of_milestone_requirements_payload_of_equation_boundary_dependencies_eq
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    poincareProofDependencies_of_milestone_requirements_payload_of_equation_boundary_dependencies
+        dependencies =
+      (by
+        cases dependencies
+        rfl :
+        poincareProofDependencies_of_milestone_requirements_payload
+          (dependency_milestone_requirements_payload_of_equation_boundary_dependencies
+            dependencies) =
+          dependencies_of_equation_boundary_dependencies dependencies) := by
+  rfl
 
 section VerificationFamilyDependencyRequirementPayloads
 
@@ -2502,7 +3017,7 @@ theorem dependency_component_requirements_payload_of_dependencies_and_verificati
       dependency_component_requirements_payload_of_equation_boundary_dependencies
         (equation_boundary_dependencies_of_dependencies_and_verification_family
           dependencies verificationFamily) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 Forgetting the verification-family lift recovers the ordinary component-slot
@@ -2512,7 +3027,7 @@ theorem dependency_component_requirements_payload_of_dependencies_and_verificati
     dependency_component_requirements_payload_of_dependencies_and_verification_family
         dependencies verificationFamily =
       dependency_component_requirements_payload_of_dependencies dependencies := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The component-slot constructor reconstructs the ordinary aggregate dependencies
@@ -2523,7 +3038,8 @@ theorem poincareProofDependencies_of_component_requirements_payload_of_dependenc
       (dependency_component_requirements_payload_of_dependencies_and_verification_family
         dependencies verificationFamily) =
       dependencies := by
-  apply Subsingleton.elim
+  cases dependencies
+  rfl
 
 /--
 Ordinary aggregate dependencies plus explicit equation verifications expose the
@@ -2557,7 +3073,7 @@ theorem dependency_package_layer_requirements_payload_of_dependencies_and_verifi
       dependency_package_layer_requirements_payload_of_equation_boundary_dependencies
         (equation_boundary_dependencies_of_dependencies_and_verification_family
           dependencies verificationFamily) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 Forgetting the verification-family lift recovers the ordinary package-layer
@@ -2567,7 +3083,7 @@ theorem dependency_package_layer_requirements_payload_of_dependencies_and_verifi
     dependency_package_layer_requirements_payload_of_dependencies_and_verification_family
         dependencies verificationFamily =
       dependency_package_layer_requirements_payload_of_dependencies dependencies := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The package-layer constructor reconstructs the ordinary aggregate dependencies
@@ -2578,7 +3094,8 @@ theorem poincareProofDependencies_of_package_layer_requirements_payload_of_depen
       (dependency_package_layer_requirements_payload_of_dependencies_and_verification_family
         dependencies verificationFamily) =
       dependencies := by
-  apply Subsingleton.elim
+  cases dependencies
+  rfl
 
 /--
 Ordinary aggregate dependencies plus explicit equation verifications expose the
@@ -2613,7 +3130,7 @@ theorem dependency_milestone_requirements_payload_of_dependencies_and_verificati
       dependency_milestone_requirements_payload_of_equation_boundary_dependencies
         (equation_boundary_dependencies_of_dependencies_and_verification_family
           dependencies verificationFamily) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 Forgetting the verification-family lift recovers the ordinary milestone payload
@@ -2623,7 +3140,7 @@ theorem dependency_milestone_requirements_payload_of_dependencies_and_verificati
     dependency_milestone_requirements_payload_of_dependencies_and_verification_family
         dependencies verificationFamily =
       dependency_milestone_requirements_payload_of_dependencies dependencies := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The milestone constructor reconstructs the ordinary aggregate dependencies from
@@ -2634,7 +3151,8 @@ theorem poincareProofDependencies_of_milestone_requirements_payload_of_dependenc
       (dependency_milestone_requirements_payload_of_dependencies_and_verification_family
         dependencies verificationFamily) =
       dependencies := by
-  apply Subsingleton.elim
+  cases dependencies
+  rfl
 
 end VerificationFamilyDependencyRequirementPayloads
 
@@ -2646,7 +3164,7 @@ theorem poincareProofDependencies_iff_milestone_requirements_eq :
     poincareProofDependencies_iff_milestone_requirements.{u} =
       ⟨dependency_milestone_requirements_payload_of_dependencies,
         poincareProofDependencies_of_milestone_requirements_payload⟩ := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The package-layer and milestone requirement payloads are equivalent routes to
@@ -2706,7 +3224,7 @@ theorem package_layer_requirements_iff_milestone_requirements_eq :
           dependency_package_layer_requirements_payload_of_dependencies
             (poincareProofDependencies_of_milestone_requirements_payload
               payload)) ⟩ := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The component-slot and milestone requirement payloads are equivalent routes to
@@ -2756,7 +3274,7 @@ theorem component_requirements_iff_milestone_requirements_eq :
           dependency_component_requirements_payload_of_dependencies
             (poincareProofDependencies_of_milestone_requirements_payload
               payload)) ⟩ := by
-  apply Subsingleton.elim
+  rfl
 
 /-- The smoothability milestone is discharged by the smoothability package layer. -/
 theorem dependencyLayerForMilestone_smoothabilityBridge :
@@ -2872,7 +3390,7 @@ theorem dependency_ledger_has_package_layers_eq :
           , DependencyPackageLayer.finiteExtinctionPackage
           , DependencyPackageLayer.topologyPackage
           ]) := by
-  apply Subsingleton.elim
+  rfl
 
 /-- The mapped dependency ledger contains exactly the concrete package layers. -/
 theorem dependency_ledger_package_layer_mem (layer : DependencyPackageLayer) :
@@ -2895,7 +3413,7 @@ theorem dependency_ledger_package_layer_mem_eq :
         cases layer <;> simp [dependencyMilestoneLedger,
           dependencyLayerForMilestone]) := by
   funext layer
-  apply Subsingleton.elim
+  cases layer <;> rfl
 
 /--
 The recorded dependency ledger folds to the three aggregate component slots.
@@ -2925,7 +3443,7 @@ theorem dependency_ledger_has_component_slots_eq :
           , DependencyComponentSlot.surgeryComponent
           , DependencyComponentSlot.topologyComponent
           ]) := by
-  apply Subsingleton.elim
+  rfl
 
 /-- The mapped dependency ledger contains exactly the aggregate component slots. -/
 theorem dependency_ledger_component_slot_mem (slot : DependencyComponentSlot) :
@@ -2948,7 +3466,7 @@ theorem dependency_ledger_component_slot_mem_eq :
           dependencyLayerForMilestone, dependencyComponentForPackageLayer,
           dependencyComponentForMilestone]) := by
   funext slot
-  apply Subsingleton.elim
+  cases slot <;> rfl
 
 /--
 Map each external blocker through the checked milestone ledger into the concrete
@@ -3051,7 +3569,7 @@ theorem externalBlocker_blocks_dependencyPackageLayers_iff_mathlibProofWanted_eq
           dependencyMilestonesBlockedByExternalBlocker, dependencyMilestoneLedger,
           dependencyLayerForMilestone]) := by
   funext blocker
-  apply Subsingleton.elim
+  cases blocker <;> rfl
 
 /--
 Having statement-adapter endpoints is equivalent to reaching the whole
@@ -3146,7 +3664,7 @@ theorem externalBlocker_milestone_layer_mem_dependencyPackageLayers_eq :
         rw [dependencyPackageLayersBlockedByExternalBlocker_eq]
         exact List.mem_map.mpr ⟨milestone, h, rfl⟩) := by
   funext blocker milestone
-  apply Subsingleton.elim
+  rfl
 
 /--
 Every package layer named by an external blocker has a blocked milestone witness
@@ -3173,7 +3691,7 @@ theorem externalBlocker_packageLayer_mem_milestone_layer_image_eq :
         rw [dependencyPackageLayersBlockedByExternalBlocker_eq] at h
         exact List.mem_map.mp h) := by
   funext blocker layer
-  apply Subsingleton.elim
+  rfl
 
 /--
 A package layer is named by an external blocker exactly when it is the layer
@@ -3207,7 +3725,7 @@ theorem externalBlocker_packageLayer_mem_iff_milestone_layer_image_eq :
             externalBlocker_milestone_layer_mem_dependencyPackageLayers
               blocker hMilestone) := by
   funext blocker layer
-  apply Subsingleton.elim
+  rfl
 
 /--
 Every package layer named by an external blocker is present in the checked
@@ -3235,7 +3753,7 @@ theorem externalBlocker_packageLayers_mem_dependencyLedgerPackageLayers_eq :
             dependencyMilestonesBlockedByExternalBlocker,
             dependencyMilestoneLedger, dependencyLayerForMilestone]) := by
   funext blocker layer
-  apply Subsingleton.elim
+  cases blocker <;> cases layer <;> rfl
 
 /--
 Map each external blocker through the checked milestone ledger into the
@@ -3282,7 +3800,7 @@ theorem externalBlocker_milestone_component_mem_dependencyComponentSlots_eq :
         rw [dependencyComponentSlotsBlockedByExternalBlocker_eq]
         exact List.mem_map.mpr ⟨milestone, h, rfl⟩) := by
   funext blocker milestone
-  apply Subsingleton.elim
+  rfl
 
 /--
 Every component slot named by an external blocker has a blocked milestone
@@ -3309,7 +3827,7 @@ theorem externalBlocker_componentSlot_mem_milestone_component_image_eq :
         rw [dependencyComponentSlotsBlockedByExternalBlocker_eq] at h
         exact List.mem_map.mp h) := by
   funext blocker slot
-  apply Subsingleton.elim
+  rfl
 
 /--
 A component slot is named by an external blocker exactly when it is the
@@ -3343,7 +3861,7 @@ theorem externalBlocker_componentSlot_mem_iff_milestone_component_image_eq :
             externalBlocker_milestone_component_mem_dependencyComponentSlots
               blocker hMilestone) := by
   funext blocker slot
-  apply Subsingleton.elim
+  rfl
 
 /--
 The external-blocker-to-component-slot map is also the blocker-to-package-layer
@@ -3363,7 +3881,7 @@ theorem dependencyComponentSlotsBlockedByExternalBlocker_eq_package_layer_map_eq
       (by
         funext blocker
         cases blocker <;> rfl) := by
-  apply Subsingleton.elim
+  rfl
 
 /-- The mathlib shortcut blocker covers the whole component-slot ledger image. -/
 theorem mathlibThreeDimensionalPoincareProofWanted_blocks_dependencyComponentSlots :
@@ -3444,7 +3962,7 @@ theorem externalBlocker_blocks_dependencyComponentSlots_iff_mathlibProofWanted_e
           dependencyLayerForMilestone, dependencyComponentForPackageLayer,
           dependencyComponentForMilestone]) := by
   funext blocker
-  apply Subsingleton.elim
+  cases blocker <;> rfl
 
 /--
 Having statement-adapter endpoints is equivalent to reaching the whole
@@ -3562,7 +4080,7 @@ theorem externalBlocker_packageLayer_component_mem_dependencyComponentSlots_eq :
         rw [dependencyComponentSlotsBlockedByExternalBlocker_eq_package_layer_map]
         exact List.mem_map.mpr ⟨layer, h, rfl⟩) := by
   funext blocker layer
-  apply Subsingleton.elim
+  rfl
 
 /--
 Every component slot named by an external blocker has a blocked package-layer
@@ -3589,7 +4107,7 @@ theorem externalBlocker_componentSlot_mem_packageLayer_component_image_eq :
         rw [dependencyComponentSlotsBlockedByExternalBlocker_eq_package_layer_map] at h
         exact List.mem_map.mp h) := by
   funext blocker slot
-  apply Subsingleton.elim
+  rfl
 
 /--
 A component slot is named by an external blocker exactly when it is the
@@ -3624,7 +4142,7 @@ theorem externalBlocker_componentSlot_mem_iff_packageLayer_component_image_eq :
             externalBlocker_packageLayer_component_mem_dependencyComponentSlots
               blocker hLayer) := by
   funext blocker slot
-  apply Subsingleton.elim
+  rfl
 
 /--
 The milestone-component and package-layer-component witness descriptions of a
@@ -3652,7 +4170,7 @@ theorem externalBlocker_componentSlot_milestone_image_iff_packageLayer_image_eq 
         rw [← externalBlocker_componentSlot_mem_iff_milestone_component_image,
           externalBlocker_componentSlot_mem_iff_packageLayer_component_image]) := by
   funext blocker slot
-  apply Subsingleton.elim
+  rfl
 
 /--
 A blocked component slot whose component requirement has been discharged yields
@@ -3690,7 +4208,7 @@ theorem externalBlocker_blockedComponentRequirement_to_packageLayerRequirement_e
             dependencyPackageLayerRequirement_of_componentRequirement layer
               (by simpa [hcomponent] using hrequirement)⟩) := by
   funext blocker slot hslot hrequirement
-  apply Subsingleton.elim
+  rfl
 
 /--
 A blocked component slot whose component requirement has been discharged yields
@@ -3727,7 +4245,7 @@ theorem externalBlocker_blockedComponentRequirement_to_milestoneRequirement_eq :
             dependencyMilestoneRequirement_of_componentRequirement milestone
               (by simpa [hcomponent] using hrequirement)⟩) := by
   funext blocker slot hslot hrequirement
-  apply Subsingleton.elim
+  rfl
 
 /--
 Aggregate dependencies discharge a blocked component slot by producing a
@@ -3757,7 +4275,7 @@ theorem externalBlocker_blockedComponentSlot_packageLayerRequirement_of_dependen
           blocker slot hslot
           (dependencyComponentRequirement_of_dependencies dependencies slot)) := by
   funext blocker slot hslot
-  apply Subsingleton.elim
+  rfl
 
 /--
 Aggregate dependencies discharge a blocked component slot by producing a
@@ -3787,7 +4305,7 @@ theorem externalBlocker_blockedComponentSlot_milestoneRequirement_of_dependencie
           blocker slot hslot
           (dependencyComponentRequirement_of_dependencies dependencies slot)) := by
   funext blocker slot hslot
-  apply Subsingleton.elim
+  rfl
 
 /--
 Strengthened equation-boundary dependencies turn any blocked component slot into
@@ -3815,7 +4333,7 @@ theorem externalBlocker_blockedComponentSlot_packageLayerRequirement_of_equation
       externalBlocker_blockedComponentSlot_packageLayerRequirement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
   funext blocker slot hslot
-  apply Subsingleton.elim
+  rfl
 
 /--
 Strengthened equation-boundary dependencies turn any blocked component slot into
@@ -3843,7 +4361,7 @@ theorem externalBlocker_blockedComponentSlot_milestoneRequirement_of_equation_bo
       externalBlocker_blockedComponentSlot_milestoneRequirement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
   funext blocker slot hslot
-  apply Subsingleton.elim
+  rfl
 
 /--
 Aggregate dependencies discharge every package layer named by an external
@@ -3866,7 +4384,7 @@ theorem externalBlocker_blockedPackageLayerRequirement_of_dependencies_eq
       (fun _blocker layer _hlayer =>
         dependencyPackageLayerRequirement_of_dependencies dependencies layer) := by
   funext blocker layer hlayer
-  apply Subsingleton.elim
+  rfl
 
 /--
 Aggregate dependencies discharge every milestone named by an external
@@ -3890,7 +4408,7 @@ theorem externalBlocker_blockedMilestoneRequirement_of_dependencies_eq
       (fun _blocker milestone _hmilestone =>
         dependencyMilestoneRequirement_of_dependencies dependencies milestone) := by
   funext blocker milestone hmilestone
-  apply Subsingleton.elim
+  rfl
 
 /--
 Strengthened equation-boundary dependencies discharge every package layer named
@@ -3916,7 +4434,7 @@ theorem externalBlocker_blockedPackageLayerRequirement_of_equation_boundary_depe
       externalBlocker_blockedPackageLayerRequirement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
   funext blocker layer hlayer
-  apply Subsingleton.elim
+  rfl
 
 /--
 Strengthened equation-boundary dependencies discharge every milestone named by
@@ -3943,7 +4461,7 @@ theorem externalBlocker_blockedMilestoneRequirement_of_equation_boundary_depende
       externalBlocker_blockedMilestoneRequirement_of_dependencies
         (dependencies_of_equation_boundary_dependencies dependencies) := by
   funext blocker milestone hmilestone
-  apply Subsingleton.elim
+  rfl
 
 /--
 Every component slot named by an external blocker is present in the checked
@@ -3973,6 +4491,6 @@ theorem externalBlocker_componentSlots_mem_dependencyLedgerComponentSlots_eq :
             dependencyMilestoneLedger, dependencyLayerForMilestone,
             dependencyComponentForPackageLayer, dependencyComponentForMilestone]) := by
   funext blocker slot
-  apply Subsingleton.elim
+  cases blocker <;> cases slot <;> rfl
 
 end Poincare

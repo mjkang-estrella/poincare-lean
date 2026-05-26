@@ -76,6 +76,17 @@ else
   echo "GAP: Ricci-specific manifold declarations not found"
 fi
 
+if rg -qi '\b(Seifert|Van Kampen|vankampen|fundamental group.*cover|cover.*fundamental group)\b' \
+    .lake/packages/mathlib/Mathlib/Topology \
+    .lake/packages/mathlib/Mathlib/AlgebraicTopology; then
+  echo "INFO: possible topological Seifert-Van Kampen-related mathlib names found"
+  rg -ni '\b(Seifert|Van Kampen|vankampen|fundamental group.*cover|cover.*fundamental group)\b' \
+    .lake/packages/mathlib/Mathlib/Topology \
+    .lake/packages/mathlib/Mathlib/AlgebraicTopology
+else
+  echo "INFO: no topological Seifert-Van Kampen theorem names found in local mathlib topology/algebraic-topology"
+fi
+
 if rg -q '^\s*(def|theorem|lemma|class|structure|inductive)\s+.*\b(RicciFlowWithSurgery|Perelman|FiniteExtinction)\b' "$manifold_dir"; then
   echo "READY: mathlib appears to contain Ricci-flow-with-surgery declarations"
   rg -n '^\s*(def|theorem|lemma|class|structure|inductive)\s+.*\b(RicciFlowWithSurgery|Perelman|FiniteExtinction)\b' "$manifold_dir"

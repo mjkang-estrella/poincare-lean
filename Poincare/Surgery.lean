@@ -498,7 +498,7 @@ theorem ricci_flow_with_surgery_construction_statement_of_components_eq
           surgeryTimeDiscreteness, surgeryTimeLocalFiniteness,
           longTimeExistenceIteration, longTimeParameterCoherence,
           longTimeNonaccumulation, longTimeContinuation, withSurgery⟩) := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 A completed construction package assembles the fixed-flow construction
@@ -555,7 +555,7 @@ theorem ricci_flow_with_surgery_construction_statement_of_construction_package_e
         package.longTimeExistenceIteration package.longTimeParameterCoherence
         package.longTimeNonaccumulation package.longTimeContinuation
         package.withSurgery := by
-  apply Subsingleton.elim
+  rfl
 
 /--
 The theorem-shaped surgery-construction statement supplies the aggregate
@@ -609,7 +609,19 @@ theorem ricci_flow_with_surgery_of_construction_statement_eq
             _longTimeExistenceIteration, _longTimeParameterCoherence,
             _longTimeNonaccumulation, _longTimeContinuation, withSurgery⟩
         exact withSurgery) := by
-  apply Subsingleton.elim
+  rcases statement with
+    ⟨_scaleFunction, _scaleContinuity, _scaleSeparation,
+      _cutoffParameterControl, _cutoffSmoothBump, _parameterSelection,
+      _strongDeltaNeckDetection, _neckSeparation, _neckParametrization,
+      _neckCanonicalCoordinates, _neckDecomposition, _standardCapModel,
+      _capGluingSmoothness, _capMetricInterpolation, _capCurvatureEstimates,
+      _capConstruction, _postSurgeryCurvaturePinching,
+      _postSurgeryNoncollapsing, _postSurgeryDerivativeBounds,
+      _postSurgeryCanonicalNeighborhoodPersistence, _metricControl,
+      _surgeryTimeDiscreteness, _surgeryTimeLocalFiniteness,
+      _longTimeExistenceIteration, _longTimeParameterCoherence,
+      _longTimeNonaccumulation, _longTimeContinuation, withSurgery⟩
+  rfl
 
 /--
 Semantic alias for the named surgery-construction sub-obligation payload exposed
@@ -760,7 +772,19 @@ theorem surgery_construction_subobligations_of_statement_eq
           surgeryTimeDiscreteness, surgeryTimeLocalFiniteness,
           longTimeExistenceIteration, longTimeParameterCoherence,
           longTimeNonaccumulation, longTimeContinuation, withSurgery⟩) := by
-  apply Subsingleton.elim
+  rcases statement with
+    ⟨scaleFunction, scaleContinuity, scaleSeparation,
+      cutoffParameterControl, cutoffSmoothBump, parameterSelection,
+      strongDeltaNeckDetection, neckSeparation, neckParametrization,
+      neckCanonicalCoordinates, neckDecomposition, standardCapModel,
+      capGluingSmoothness, capMetricInterpolation, capCurvatureEstimates,
+      capConstruction, postSurgeryCurvaturePinching,
+      postSurgeryNoncollapsing, postSurgeryDerivativeBounds,
+      postSurgeryCanonicalNeighborhoodPersistence, metricControl,
+      surgeryTimeDiscreteness, surgeryTimeLocalFiniteness,
+      longTimeExistenceIteration, longTimeParameterCoherence,
+      longTimeNonaccumulation, longTimeContinuation, withSurgery⟩
+  rfl
 
 /--
 A completed construction package exposes the theorem-shaped construction
@@ -777,18 +801,33 @@ theorem surgery_construction_payload_of_construction_package
     ∃ _subobligations :
       RicciFlowWithSurgeryConstructionSubobligationsPayload flow,
       HasRicciFlowWithSurgery n M := by
-  let statement :=
-    ricci_flow_with_surgery_construction_statement_of_construction_package
-      package
-  let subobligations :=
-    surgery_construction_subobligations_of_statement statement
-  exact ⟨statement, subobligations,
-    ricci_flow_with_surgery_of_construction_statement statement⟩
+  exact
+    ⟨ricci_flow_with_surgery_construction_statement_of_construction_package
+        package,
+      ⟨package.scaleFunction, package.scaleContinuity,
+        package.scaleSeparation, package.cutoffParameterControl,
+        package.cutoffSmoothBump, package.parameterSelection,
+        package.strongDeltaNeckDetection, package.neckSeparation,
+        package.neckParametrization, package.neckCanonicalCoordinates,
+        package.neckDecomposition, package.standardCapModel,
+        package.capGluingSmoothness, package.capMetricInterpolation,
+        package.capCurvatureEstimates, package.capConstruction,
+        package.postSurgeryCurvaturePinching,
+        package.postSurgeryNoncollapsing,
+        package.postSurgeryDerivativeBounds,
+        package.postSurgeryCanonicalNeighborhoodPersistence,
+        package.metricControl, package.surgeryTimeDiscreteness,
+        package.surgeryTimeLocalFiniteness,
+        package.longTimeExistenceIteration,
+        package.longTimeParameterCoherence,
+        package.longTimeNonaccumulation,
+        package.longTimeContinuation, package.withSurgery⟩,
+      package.withSurgery⟩
 
 /--
 The construction-package payload is exactly the named construction statement,
-its statement-mediated sub-obligation payload, and the aggregate surgery
-witness extracted from that statement.
+the package-field sub-obligation payload, and the stored aggregate surgery
+witness.
 -/
 theorem surgery_construction_payload_of_construction_package_eq
     {n : ℕ∞ω}
@@ -798,14 +837,29 @@ theorem surgery_construction_payload_of_construction_package_eq
     (package : RicciFlowWithSurgeryConstructionPackage flow) :
     surgery_construction_payload_of_construction_package package =
       (by
-        let statement :=
-          ricci_flow_with_surgery_construction_statement_of_construction_package
-            package
-        let subobligations :=
-          surgery_construction_subobligations_of_statement statement
-        exact ⟨statement, subobligations,
-          ricci_flow_with_surgery_of_construction_statement statement⟩) := by
-  apply Subsingleton.elim
+        exact
+          ⟨ricci_flow_with_surgery_construction_statement_of_construction_package
+              package,
+            ⟨package.scaleFunction, package.scaleContinuity,
+              package.scaleSeparation, package.cutoffParameterControl,
+              package.cutoffSmoothBump, package.parameterSelection,
+              package.strongDeltaNeckDetection, package.neckSeparation,
+              package.neckParametrization, package.neckCanonicalCoordinates,
+              package.neckDecomposition, package.standardCapModel,
+              package.capGluingSmoothness, package.capMetricInterpolation,
+              package.capCurvatureEstimates, package.capConstruction,
+              package.postSurgeryCurvaturePinching,
+              package.postSurgeryNoncollapsing,
+              package.postSurgeryDerivativeBounds,
+              package.postSurgeryCanonicalNeighborhoodPersistence,
+              package.metricControl, package.surgeryTimeDiscreteness,
+              package.surgeryTimeLocalFiniteness,
+              package.longTimeExistenceIteration,
+              package.longTimeParameterCoherence,
+              package.longTimeNonaccumulation,
+              package.longTimeContinuation, package.withSurgery⟩,
+            package.withSurgery⟩) := by
+  rfl
 
 /--
 A completed surgery-construction package directly exposes the named
@@ -817,14 +871,27 @@ theorem surgery_construction_subobligations_of_construction_package
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
     (package : RicciFlowWithSurgeryConstructionPackage flow) :
-    RicciFlowWithSurgeryConstructionSubobligationsPayload flow :=
-  surgery_construction_subobligations_of_statement
-    (ricci_flow_with_surgery_construction_statement_of_construction_package
-      package)
+    RicciFlowWithSurgeryConstructionSubobligationsPayload flow := by
+  exact
+    ⟨package.scaleFunction, package.scaleContinuity,
+      package.scaleSeparation, package.cutoffParameterControl,
+      package.cutoffSmoothBump, package.parameterSelection,
+      package.strongDeltaNeckDetection, package.neckSeparation,
+      package.neckParametrization, package.neckCanonicalCoordinates,
+      package.neckDecomposition, package.standardCapModel,
+      package.capGluingSmoothness, package.capMetricInterpolation,
+      package.capCurvatureEstimates, package.capConstruction,
+      package.postSurgeryCurvaturePinching, package.postSurgeryNoncollapsing,
+      package.postSurgeryDerivativeBounds,
+      package.postSurgeryCanonicalNeighborhoodPersistence,
+      package.metricControl, package.surgeryTimeDiscreteness,
+      package.surgeryTimeLocalFiniteness, package.longTimeExistenceIteration,
+      package.longTimeParameterCoherence, package.longTimeNonaccumulation,
+      package.longTimeContinuation, package.withSurgery⟩
 
 /--
 The package-level surgery-construction sub-obligation bridge is exactly the
-statement bridge applied to the package's theorem-shaped construction statement.
+conjunction of the package's stored construction fields.
 -/
 theorem surgery_construction_subobligations_of_construction_package_eq
     {n : ℕ∞ω}
@@ -833,10 +900,27 @@ theorem surgery_construction_subobligations_of_construction_package_eq
     {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
     (package : RicciFlowWithSurgeryConstructionPackage flow) :
     surgery_construction_subobligations_of_construction_package package =
-      surgery_construction_subobligations_of_statement
-        (ricci_flow_with_surgery_construction_statement_of_construction_package
-          package) := by
-  apply Subsingleton.elim
+      (by
+        exact
+          ⟨package.scaleFunction, package.scaleContinuity,
+            package.scaleSeparation, package.cutoffParameterControl,
+            package.cutoffSmoothBump, package.parameterSelection,
+            package.strongDeltaNeckDetection, package.neckSeparation,
+            package.neckParametrization, package.neckCanonicalCoordinates,
+            package.neckDecomposition, package.standardCapModel,
+            package.capGluingSmoothness, package.capMetricInterpolation,
+            package.capCurvatureEstimates, package.capConstruction,
+            package.postSurgeryCurvaturePinching,
+            package.postSurgeryNoncollapsing,
+            package.postSurgeryDerivativeBounds,
+            package.postSurgeryCanonicalNeighborhoodPersistence,
+            package.metricControl, package.surgeryTimeDiscreteness,
+            package.surgeryTimeLocalFiniteness,
+            package.longTimeExistenceIteration,
+            package.longTimeParameterCoherence,
+            package.longTimeNonaccumulation,
+            package.longTimeContinuation, package.withSurgery⟩) := by
+  rfl
 
 /-- Project surgery-scale-function evidence from a construction package. -/
 theorem surgery_scale_function_of_construction_package
@@ -11099,6 +11183,47 @@ theorem analytic_foundation_with_equation_boundary_of_surgery_package_with_equat
   apply Subsingleton.elim
 
 /--
+The named strengthened surgery-package analytic-boundary projection is the
+direct analytic-boundary route for the package.
+-/
+theorem analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary_to_analytic_boundary_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+        package =
+      (by
+        exact
+          analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+            package) := by
+  apply Subsingleton.elim
+
+/--
+The named strengthened surgery-package analytic-boundary projection can be
+rebuilt from the package's derivation-and-boundary payload.
+-/
+theorem analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary_to_derivation_and_boundary_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    analytic_foundation_with_equation_boundary_of_surgery_package_with_equation_boundary
+        package =
+      (by
+        rcases
+            analytic_derivation_and_boundary_payload_of_surgery_package_with_equation_boundary
+              package with
+          ⟨derivation, boundary, boundaryStatement, _derivativeId,
+            _equationAtTime, _pointwiseEquation⟩
+        exact
+          analytic_foundation_with_equation_boundary_of_derivation_and_boundary
+            derivation boundaryStatement) := by
+  apply Subsingleton.elim
+
+/--
 The scalar-pointwise surgery payload exposes the finite-extinction conclusion
 it carries for the target manifold.
 -/
@@ -11243,6 +11368,43 @@ theorem finite_extinction_of_surgery_package_with_equation_boundary_to_direct_po
       finite_extinction_of_direct_pointwise_equation_payload
         (surgery_package_with_equation_boundary_direct_pointwise_equation_payload
           package) := by
+  apply Subsingleton.elim
+
+/--
+The named strengthened surgery-package finite-extinction projection is carried
+by the same scalar-pointwise payload that stores the analytic-boundary field.
+-/
+theorem finite_extinction_of_surgery_package_with_equation_boundary_to_analytic_boundary_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    finite_extinction_of_surgery_package_with_equation_boundary package =
+      (by
+        rcases
+            surgery_package_with_equation_boundary_pointwise_equation_payload
+              package with
+          ⟨_basePackage, _basePackage_eq, _equationBoundary, _verification,
+            _verification_eq, _metricDerivative, _metricDerivative_eq,
+            _derivativeId, _pointwiseEquation, _analyticBoundary,
+            finiteExtinction⟩
+        exact finiteExtinction) := by
+  apply Subsingleton.elim
+
+/--
+The named strengthened surgery-package finite-extinction projection is carried
+by the full derivative-and-boundary surgery payload.
+-/
+theorem finite_extinction_of_surgery_package_with_equation_boundary_to_derivation_and_boundary_payload_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :
+    finite_extinction_of_surgery_package_with_equation_boundary package =
+      finite_extinction_of_derivative_payload
+        (surgery_package_with_equation_boundary_derivative_payload package) := by
   apply Subsingleton.elim
 
 section SurgeryPackageFiniteExtinctionProjectionEqualities

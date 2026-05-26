@@ -69,6 +69,8 @@ EOF
   rm -rf "$completion_check_dir"
   completion_check_dir=
   completion_check=
+else
+  echo "Reserved theorem boundary: poincare_conjecture is absent; scaffold audit success is not theorem completion."
 fi
 
 echo "No disallowed proof placeholders or false proof claims detected."
@@ -76,6 +78,7 @@ echo "No disallowed proof placeholders or false proof claims detected."
 sh scripts/interface_audit.sh
 sh scripts/mathlib_gap_audit.sh
 sh scripts/shape_contract_audit.sh
+sh scripts/theorem_contract_audit.sh
 sh scripts/semantic_surface_audit.sh
 sh scripts/root_import_audit.sh
 sh scripts/axiom_audit.sh

@@ -15,6 +15,7 @@ the canonical mathlib statement file `Mathlib.Geometry.Manifold.PoincareConjectu
 import Mathlib.Geometry.Manifold.PoincareConjecture
 import Mathlib.Analysis.Normed.Module.Connected
 import Mathlib.Topology.Homotopy.HomotopyGroup
+import Mathlib.Topology.Subpath
 
 universe u
 
@@ -124,6 +125,48 @@ theorem threeSphere_stereographic_source_homeomorph_eq
   rfl
 
 /--
+Each stereographic source of `ThreeSphere` is contractible, because it is
+homeomorphic to the contractible Euclidean space `ℝ³`.
+-/
+theorem threeSphere_stereographic_source_contractibleSpace
+    (v : ThreeSphere) :
+    ContractibleSpace (stereographic' 3 v).source :=
+  (threeSphere_stereographic_source_homeomorph v).contractibleSpace
+
+/--
+The contractibility witness for a stereographic source is transported across
+the named stereographic source homeomorphism.
+-/
+theorem threeSphere_stereographic_source_contractibleSpace_eq
+    (v : ThreeSphere) :
+    threeSphere_stereographic_source_contractibleSpace v =
+      (threeSphere_stereographic_source_homeomorph v).contractibleSpace := by
+  apply Subsingleton.elim
+
+/--
+The contractibility of a stereographic source supplies its simple-connectedness.
+-/
+theorem threeSphere_stereographic_source_simplyConnectedSpace_of_contractibleSpace
+    (v : ThreeSphere) :
+    SimplyConnectedSpace (stereographic' 3 v).source := by
+  letI : ContractibleSpace (stereographic' 3 v).source :=
+    threeSphere_stereographic_source_contractibleSpace v
+  infer_instance
+
+/--
+The contractible-to-simple-connected route uses mathlib's contractible-space
+instance after transporting contractibility from `ℝ³`.
+-/
+theorem threeSphere_stereographic_source_simplyConnectedSpace_of_contractibleSpace_eq
+    (v : ThreeSphere) :
+    threeSphere_stereographic_source_simplyConnectedSpace_of_contractibleSpace v =
+      (by
+        letI : ContractibleSpace (stereographic' 3 v).source :=
+          threeSphere_stereographic_source_contractibleSpace v
+        infer_instance) := by
+  apply Subsingleton.elim
+
+/--
 Each stereographic source of `ThreeSphere` is simply connected, because it is
 homeomorphic to the contractible Euclidean space `ℝ³`.
 -/
@@ -141,6 +184,38 @@ theorem threeSphere_stereographic_source_simplyConnectedSpace_eq
     (v : ThreeSphere) :
     threeSphere_stereographic_source_simplyConnectedSpace v =
       (threeSphere_stereographic_source_homeomorph v).toHomotopyEquiv.simplyConnectedSpace := by
+  apply Subsingleton.elim
+
+/--
+Every first homotopy group of a stereographic chart source is trivial, because
+the source is simply connected.
+-/
+theorem threeSphere_stereographic_source_piOneSubsingleton
+    (v : ThreeSphere)
+    (x : (stereographic' 3 v).source) :
+    Subsingleton (HomotopyGroup.Pi 1 (stereographic' 3 v).source x) := by
+  letI : SimplyConnectedSpace (stereographic' 3 v).source :=
+    threeSphere_stereographic_source_simplyConnectedSpace v
+  exact ((HomotopyGroup.pi1EquivFundamentalGroup
+    (X := (stereographic' 3 v).source) (x := x)).subsingleton_congr).mpr (by
+      change Subsingleton (Path.Homotopic.Quotient x x)
+      infer_instance)
+
+/--
+The chart-source `π₁` triviality proof factors through simple-connectedness of
+the source and mathlib's `π₁`/fundamental-group equivalence.
+-/
+theorem threeSphere_stereographic_source_piOneSubsingleton_eq
+    (v : ThreeSphere)
+    (x : (stereographic' 3 v).source) :
+    threeSphere_stereographic_source_piOneSubsingleton v x =
+      (by
+        letI : SimplyConnectedSpace (stereographic' 3 v).source :=
+          threeSphere_stereographic_source_simplyConnectedSpace v
+        exact ((HomotopyGroup.pi1EquivFundamentalGroup
+          (X := (stereographic' 3 v).source) (x := x)).subsingleton_congr).mpr (by
+            change Subsingleton (Path.Homotopic.Quotient x x)
+            infer_instance)) := by
   apply Subsingleton.elim
 
 /--
@@ -248,6 +323,867 @@ theorem threeSphere_stereographic_antipodal_sources_cover_eq
   apply Subsingleton.elim
 
 /--
+Every point of `ThreeSphere` lies in one of the two antipodal stereographic
+chart sources.
+-/
+theorem threeSphere_mem_stereographic_antipodal_source_or
+    (v x : ThreeSphere) :
+    x ∈ (stereographic' 3 v).source ∨
+      x ∈ (stereographic' 3 (-v)).source := by
+  have hx : x ∈ (stereographic' 3 v).source ∪
+      (stereographic' 3 (-v)).source := by
+    rw [threeSphere_stereographic_antipodal_sources_cover v]
+    trivial
+  exact hx
+
+/--
+The pointwise cover eliminator is membership in the named antipodal
+stereographic cover equality.
+-/
+theorem threeSphere_mem_stereographic_antipodal_source_or_eq
+    (v x : ThreeSphere) :
+    threeSphere_mem_stereographic_antipodal_source_or v x =
+      (by
+        have hx : x ∈ (stereographic' 3 v).source ∪
+            (stereographic' 3 (-v)).source := by
+          rw [threeSphere_stereographic_antipodal_sources_cover v]
+          trivial
+        exact hx) := by
+  apply Subsingleton.elim
+
+/--
+Every point along a path in `ThreeSphere` lies in one of the two north/south
+stereographic chart sources.
+-/
+theorem threeSphere_path_mem_stereographic_antipodal_source_or
+    {a b : ThreeSphere} (γ : Path a b) (t : unitInterval) :
+    γ t ∈ (stereographic' 3 threeSphere_northPole).source ∨
+      γ t ∈ (stereographic' 3 (-threeSphere_northPole)).source :=
+  threeSphere_mem_stereographic_antipodal_source_or threeSphere_northPole (γ t)
+
+/--
+The pathwise point-cover witness is pointwise application of the north/south
+stereographic source cover.
+-/
+theorem threeSphere_path_mem_stereographic_antipodal_source_or_eq
+    {a b : ThreeSphere} (γ : Path a b) (t : unitInterval) :
+    threeSphere_path_mem_stereographic_antipodal_source_or γ t =
+      threeSphere_mem_stereographic_antipodal_source_or threeSphere_northPole (γ t) := by
+  apply Subsingleton.elim
+
+/--
+The preimage of the north-pole stereographic source along any path is open in
+the path parameter interval.
+-/
+theorem threeSphere_path_northSource_preimage_isOpen
+    {a b : ThreeSphere} (γ : Path a b) :
+    IsOpen {t : unitInterval |
+      γ t ∈ (stereographic' 3 threeSphere_northPole).source} :=
+  (threeSphere_stereographic_source_isOpen threeSphere_northPole).preimage
+    γ.continuous
+
+/--
+North-source path-preimage openness is the open-source witness pulled back by
+path continuity.
+-/
+theorem threeSphere_path_northSource_preimage_isOpen_eq
+    {a b : ThreeSphere} (γ : Path a b) :
+    threeSphere_path_northSource_preimage_isOpen γ =
+      (threeSphere_stereographic_source_isOpen threeSphere_northPole).preimage
+        γ.continuous := by
+  apply Subsingleton.elim
+
+/--
+The preimage of the south-pole stereographic source along any path is open in
+the path parameter interval.
+-/
+theorem threeSphere_path_southSource_preimage_isOpen
+    {a b : ThreeSphere} (γ : Path a b) :
+    IsOpen {t : unitInterval |
+      γ t ∈ (stereographic' 3 (-threeSphere_northPole)).source} :=
+  (threeSphere_stereographic_source_isOpen (-threeSphere_northPole)).preimage
+    γ.continuous
+
+/--
+South-source path-preimage openness is the open-source witness pulled back by
+path continuity.
+-/
+theorem threeSphere_path_southSource_preimage_isOpen_eq
+    {a b : ThreeSphere} (γ : Path a b) :
+    threeSphere_path_southSource_preimage_isOpen γ =
+      (threeSphere_stereographic_source_isOpen (-threeSphere_northPole)).preimage
+        γ.continuous := by
+  apply Subsingleton.elim
+
+/--
+The north/south stereographic source preimages cover the whole path parameter
+interval.
+-/
+theorem threeSphere_path_stereographicSource_preimage_cover
+    {a b : ThreeSphere} (γ : Path a b) :
+    {t : unitInterval |
+      γ t ∈ (stereographic' 3 threeSphere_northPole).source} ∪
+        {t : unitInterval |
+          γ t ∈ (stereographic' 3 (-threeSphere_northPole)).source} =
+      Set.univ := by
+  ext t
+  constructor
+  · intro _
+    trivial
+  · intro _
+    exact threeSphere_path_mem_stereographic_antipodal_source_or γ t
+
+/--
+The path-parameter cover is the pointwise north/south stereographic source
+cover lifted along the path.
+-/
+theorem threeSphere_path_stereographicSource_preimage_cover_eq
+    {a b : ThreeSphere} (γ : Path a b) :
+    threeSphere_path_stereographicSource_preimage_cover γ =
+      (by
+        ext t
+        constructor
+        · intro _
+          trivial
+        · intro _
+          exact threeSphere_path_mem_stereographic_antipodal_source_or γ t) := by
+  apply Subsingleton.elim
+
+/--
+Every path admits a monotone subdivision of the parameter interval whose
+successive closed subintervals lie inside one of the two stereographic source
+preimages.  This is the path-fragment input needed before concatenating
+chart-contained loop pieces.
+-/
+theorem threeSphere_path_stereographicSource_preimage_subdivision
+    {a b : ThreeSphere} (γ : Path a b) :
+    ∃ τ : ℕ → unitInterval, τ 0 = 0 ∧ Monotone τ ∧
+      (∃ n, ∀ m ≥ n, τ m = 1) ∧
+      ∀ n, ∃ north : Bool,
+        Set.Icc (τ n) (τ (n + 1)) ⊆
+          (fun north : Bool =>
+            if north then
+              {t : unitInterval |
+                γ t ∈ (stereographic' 3 threeSphere_northPole).source}
+            else
+              {t : unitInterval |
+                γ t ∈ (stereographic' 3 (-threeSphere_northPole)).source}) north := by
+  let coverSet : Bool → Set unitInterval := fun north =>
+    if north then
+      {t : unitInterval |
+        γ t ∈ (stereographic' 3 threeSphere_northPole).source}
+    else
+      {t : unitInterval |
+        γ t ∈ (stereographic' 3 (-threeSphere_northPole)).source}
+  have hopen : ∀ north : Bool, IsOpen (coverSet north) := by
+    intro north
+    cases north
+    · simpa [coverSet] using threeSphere_path_southSource_preimage_isOpen γ
+    · simpa [coverSet] using threeSphere_path_northSource_preimage_isOpen γ
+  have hcover : (Set.univ : Set unitInterval) ⊆ ⋃ north, coverSet north := by
+    intro t _ht
+    rcases threeSphere_path_mem_stereographic_antipodal_source_or γ t with hNorth | hSouth
+    · exact Set.mem_iUnion.mpr ⟨true, by simpa [coverSet] using hNorth⟩
+    · exact Set.mem_iUnion.mpr ⟨false, by simpa [coverSet] using hSouth⟩
+  simpa [coverSet] using
+    exists_monotone_Icc_subset_open_cover_unitInterval hopen hcover
+
+/--
+The path subdivision theorem is the unit-interval open-cover subdivision
+result specialized to the two open stereographic source preimages.
+-/
+theorem threeSphere_path_stereographicSource_preimage_subdivision_eq
+    {a b : ThreeSphere} (γ : Path a b) :
+    threeSphere_path_stereographicSource_preimage_subdivision γ =
+      (by
+        let coverSet : Bool → Set unitInterval := fun north =>
+          if north then
+            {t : unitInterval |
+              γ t ∈ (stereographic' 3 threeSphere_northPole).source}
+          else
+            {t : unitInterval |
+              γ t ∈ (stereographic' 3 (-threeSphere_northPole)).source}
+        have hopen : ∀ north : Bool, IsOpen (coverSet north) := by
+          intro north
+          cases north
+          · simpa [coverSet] using threeSphere_path_southSource_preimage_isOpen γ
+          · simpa [coverSet] using threeSphere_path_northSource_preimage_isOpen γ
+        have hcover : (Set.univ : Set unitInterval) ⊆ ⋃ north, coverSet north := by
+          intro t _ht
+          rcases threeSphere_path_mem_stereographic_antipodal_source_or γ t with
+            hNorth | hSouth
+          · exact Set.mem_iUnion.mpr ⟨true, by simpa [coverSet] using hNorth⟩
+          · exact Set.mem_iUnion.mpr ⟨false, by simpa [coverSet] using hSouth⟩
+        simpa [coverSet] using
+          exists_monotone_Icc_subset_open_cover_unitInterval hopen hcover) := by
+  apply Subsingleton.elim
+
+/--
+Path-level north/south stereographic cover data for every path in the standard
+3-sphere.
+-/
+def ThreeSphereStereographicPathCoverStatement : Prop :=
+  ∀ (a b : ThreeSphere) (γ : Path a b),
+    IsOpen {t : unitInterval |
+      γ t ∈ (stereographic' 3 threeSphere_northPole).source} ∧
+    IsOpen {t : unitInterval |
+      γ t ∈ (stereographic' 3 (-threeSphere_northPole)).source} ∧
+    {t : unitInterval |
+      γ t ∈ (stereographic' 3 threeSphere_northPole).source} ∪
+        {t : unitInterval |
+          γ t ∈ (stereographic' 3 (-threeSphere_northPole)).source} =
+      Set.univ
+
+/--
+The path-cover statement expands to open north/south source preimages covering
+the path parameter interval.
+-/
+theorem threeSphereStereographicPathCoverStatement_eq :
+    ThreeSphereStereographicPathCoverStatement =
+      (∀ (a b : ThreeSphere) (γ : Path a b),
+        IsOpen {t : unitInterval |
+          γ t ∈ (stereographic' 3 threeSphere_northPole).source} ∧
+        IsOpen {t : unitInterval |
+          γ t ∈ (stereographic' 3 (-threeSphere_northPole)).source} ∧
+        {t : unitInterval |
+          γ t ∈ (stereographic' 3 threeSphere_northPole).source} ∪
+            {t : unitInterval |
+              γ t ∈ (stereographic' 3 (-threeSphere_northPole)).source} =
+          Set.univ) :=
+  rfl
+
+/--
+Every path in the standard 3-sphere carries the north/south stereographic
+open-cover data on its parameter interval.
+-/
+theorem threeSphere_stereographicPathCoverStatement :
+    ThreeSphereStereographicPathCoverStatement := by
+  intro a b γ
+  exact
+    ⟨threeSphere_path_northSource_preimage_isOpen γ,
+      threeSphere_path_southSource_preimage_isOpen γ,
+      threeSphere_path_stereographicSource_preimage_cover γ⟩
+
+/--
+The concrete path-cover statement is assembled from the named north/south
+preimage openness and cover witnesses.
+-/
+theorem threeSphere_stereographicPathCoverStatement_eq :
+    threeSphere_stereographicPathCoverStatement =
+      (by
+        intro a b γ
+        exact
+          ⟨threeSphere_path_northSource_preimage_isOpen γ,
+            threeSphere_path_southSource_preimage_isOpen γ,
+            threeSphere_path_stereographicSource_preimage_cover γ⟩) := by
+  apply Subsingleton.elim
+
+/--
+Path-level north/south stereographic subdivision data for every path in the
+standard 3-sphere.
+-/
+def ThreeSphereStereographicPathSubdivisionStatement : Prop :=
+  ∀ (a b : ThreeSphere) (γ : Path a b),
+    ∃ τ : ℕ → unitInterval, τ 0 = 0 ∧ Monotone τ ∧
+      (∃ n, ∀ m ≥ n, τ m = 1) ∧
+      ∀ n, ∃ north : Bool,
+        Set.Icc (τ n) (τ (n + 1)) ⊆
+          (fun north : Bool =>
+            if north then
+              {t : unitInterval |
+                γ t ∈ (stereographic' 3 threeSphere_northPole).source}
+            else
+              {t : unitInterval |
+                γ t ∈ (stereographic' 3 (-threeSphere_northPole)).source}) north
+
+/--
+The path-subdivision statement expands to monotone interval subdivisions
+subordinate to the two stereographic source preimages.
+-/
+theorem threeSphereStereographicPathSubdivisionStatement_eq :
+    ThreeSphereStereographicPathSubdivisionStatement =
+      (∀ (a b : ThreeSphere) (γ : Path a b),
+        ∃ τ : ℕ → unitInterval, τ 0 = 0 ∧ Monotone τ ∧
+          (∃ n, ∀ m ≥ n, τ m = 1) ∧
+          ∀ n, ∃ north : Bool,
+            Set.Icc (τ n) (τ (n + 1)) ⊆
+              (fun north : Bool =>
+                if north then
+                  {t : unitInterval |
+                    γ t ∈ (stereographic' 3 threeSphere_northPole).source}
+                else
+                  {t : unitInterval |
+                    γ t ∈ (stereographic' 3 (-threeSphere_northPole)).source}) north) :=
+  rfl
+
+/--
+Every path in the standard 3-sphere has a monotone stereographic subdivision of
+the parameter interval.
+-/
+theorem threeSphere_stereographicPathSubdivisionStatement :
+    ThreeSphereStereographicPathSubdivisionStatement := by
+  intro a b γ
+  exact threeSphere_path_stereographicSource_preimage_subdivision γ
+
+/--
+The concrete path-subdivision statement is pointwise application of the named
+path-subdivision theorem.
+-/
+theorem threeSphere_stereographicPathSubdivisionStatement_eq :
+    threeSphere_stereographicPathSubdivisionStatement =
+      (by
+        intro a b γ
+        exact threeSphere_path_stereographicSource_preimage_subdivision γ) := by
+  apply Subsingleton.elim
+
+/--
+Loop-level north/south stereographic subdivision data for loops based at the
+explicit equatorial overlap point.
+-/
+def ThreeSphereStereographicEquatorLoopSubdivisionStatement : Prop :=
+  ∀ γ : Path threeSphere_equatorPoint threeSphere_equatorPoint,
+    ∃ τ : ℕ → unitInterval, τ 0 = 0 ∧ Monotone τ ∧
+      (∃ n, ∀ m ≥ n, τ m = 1) ∧
+      ∀ n, ∃ north : Bool,
+        Set.Icc (τ n) (τ (n + 1)) ⊆
+          (fun north : Bool =>
+            if north then
+              {t : unitInterval |
+                γ t ∈ (stereographic' 3 threeSphere_northPole).source}
+            else
+              {t : unitInterval |
+                γ t ∈ (stereographic' 3 (-threeSphere_northPole)).source}) north
+
+/--
+The equatorial-loop subdivision statement is the based-loop specialization of
+the path-subdivision contract.
+-/
+theorem threeSphereStereographicEquatorLoopSubdivisionStatement_eq :
+    ThreeSphereStereographicEquatorLoopSubdivisionStatement =
+      (∀ γ : Path threeSphere_equatorPoint threeSphere_equatorPoint,
+        ∃ τ : ℕ → unitInterval, τ 0 = 0 ∧ Monotone τ ∧
+          (∃ n, ∀ m ≥ n, τ m = 1) ∧
+          ∀ n, ∃ north : Bool,
+            Set.Icc (τ n) (τ (n + 1)) ⊆
+              (fun north : Bool =>
+                if north then
+                  {t : unitInterval |
+                    γ t ∈ (stereographic' 3 threeSphere_northPole).source}
+                else
+                  {t : unitInterval |
+                    γ t ∈ (stereographic' 3 (-threeSphere_northPole)).source}) north) :=
+  rfl
+
+/--
+Any path-subdivision proof supplies the based-loop subdivision needed at the
+equatorial overlap basepoint.
+-/
+theorem threeSphere_stereographicEquatorLoopSubdivisionStatement_of_pathSubdivisionStatement
+    (h : ThreeSphereStereographicPathSubdivisionStatement) :
+    ThreeSphereStereographicEquatorLoopSubdivisionStatement := by
+  intro γ
+  exact h threeSphere_equatorPoint threeSphere_equatorPoint γ
+
+/--
+The based-loop subdivision projection is direct application of the general
+path-subdivision proof to the equatorial endpoint pair.
+-/
+theorem threeSphere_stereographicEquatorLoopSubdivisionStatement_of_pathSubdivisionStatement_eq
+    (h : ThreeSphereStereographicPathSubdivisionStatement) :
+    threeSphere_stereographicEquatorLoopSubdivisionStatement_of_pathSubdivisionStatement h =
+      (by
+        intro γ
+        exact h threeSphere_equatorPoint threeSphere_equatorPoint γ) := by
+  apply Subsingleton.elim
+
+/--
+Equatorial based loops have a monotone stereographic subdivision of the
+parameter interval.
+-/
+theorem threeSphere_stereographicEquatorLoopSubdivisionStatement :
+    ThreeSphereStereographicEquatorLoopSubdivisionStatement :=
+  threeSphere_stereographicEquatorLoopSubdivisionStatement_of_pathSubdivisionStatement
+    threeSphere_stereographicPathSubdivisionStatement
+
+/--
+The concrete based-loop subdivision proof is the specialization of the
+verified path-subdivision proof.
+-/
+theorem threeSphere_stereographicEquatorLoopSubdivisionStatement_eq :
+    threeSphere_stereographicEquatorLoopSubdivisionStatement =
+      threeSphere_stereographicEquatorLoopSubdivisionStatement_of_pathSubdivisionStatement
+        threeSphere_stereographicPathSubdivisionStatement := by
+  apply Subsingleton.elim
+
+/--
+Loop-level segment containment data with each subdivision interval explicitly
+contained in either the north or south stereographic source preimage.
+-/
+def ThreeSphereStereographicEquatorLoopContainedSegmentSubdivisionStatement :
+    Prop :=
+  ∀ γ : Path threeSphere_equatorPoint threeSphere_equatorPoint,
+    ∃ τ : ℕ → unitInterval, τ 0 = 0 ∧ Monotone τ ∧
+      (∃ n, ∀ m ≥ n, τ m = 1) ∧
+      ∀ n,
+        Set.Icc (τ n) (τ (n + 1)) ⊆
+            {t : unitInterval |
+              γ t ∈ (stereographic' 3 threeSphere_northPole).source} ∨
+          Set.Icc (τ n) (τ (n + 1)) ⊆
+            {t : unitInterval |
+              γ t ∈ (stereographic' 3 (-threeSphere_northPole)).source}
+
+/--
+The contained-segment loop subdivision contract is the explicit north-or-south
+form of the equatorial based-loop subdivision data.
+-/
+theorem threeSphereStereographicEquatorLoopContainedSegmentSubdivisionStatement_eq :
+    ThreeSphereStereographicEquatorLoopContainedSegmentSubdivisionStatement =
+      (∀ γ : Path threeSphere_equatorPoint threeSphere_equatorPoint,
+        ∃ τ : ℕ → unitInterval, τ 0 = 0 ∧ Monotone τ ∧
+          (∃ n, ∀ m ≥ n, τ m = 1) ∧
+          ∀ n,
+            Set.Icc (τ n) (τ (n + 1)) ⊆
+                {t : unitInterval |
+                  γ t ∈ (stereographic' 3 threeSphere_northPole).source} ∨
+              Set.Icc (τ n) (τ (n + 1)) ⊆
+                {t : unitInterval |
+                  γ t ∈ (stereographic' 3 (-threeSphere_northPole)).source}) :=
+  rfl
+
+/--
+The Bool-indexed loop subdivision supplies the explicit source-contained
+segment alternatives for each interval.
+-/
+theorem threeSphere_stereographicEquatorLoopContainedSegmentSubdivisionStatement_of_equatorLoopSubdivisionStatement
+    (h : ThreeSphereStereographicEquatorLoopSubdivisionStatement) :
+    ThreeSphereStereographicEquatorLoopContainedSegmentSubdivisionStatement := by
+  intro γ
+  rcases h γ with ⟨τ, hτ0, hmono, heventual, hsegment⟩
+  refine ⟨τ, hτ0, hmono, heventual, ?_⟩
+  intro n
+  rcases hsegment n with ⟨north, hsub⟩
+  cases north
+  · exact Or.inr (by simpa using hsub)
+  · exact Or.inl (by simpa using hsub)
+
+/--
+The contained-segment projection just case-splits the Bool-selected
+stereographic source for each subdivision interval.
+-/
+theorem threeSphere_stereographicEquatorLoopContainedSegmentSubdivisionStatement_of_equatorLoopSubdivisionStatement_eq
+    (h : ThreeSphereStereographicEquatorLoopSubdivisionStatement) :
+    threeSphere_stereographicEquatorLoopContainedSegmentSubdivisionStatement_of_equatorLoopSubdivisionStatement
+        h =
+      (by
+        intro γ
+        rcases h γ with ⟨τ, hτ0, hmono, heventual, hsegment⟩
+        refine ⟨τ, hτ0, hmono, heventual, ?_⟩
+        intro n
+        rcases hsegment n with ⟨north, hsub⟩
+        cases north
+        · exact Or.inr (by simpa using hsub)
+        · exact Or.inl (by simpa using hsub)) := by
+  apply Subsingleton.elim
+
+/--
+Equatorial based loops have a monotone subdivision whose intervals are
+explicitly contained in a north or south stereographic source preimage.
+-/
+theorem threeSphere_stereographicEquatorLoopContainedSegmentSubdivisionStatement :
+    ThreeSphereStereographicEquatorLoopContainedSegmentSubdivisionStatement :=
+  threeSphere_stereographicEquatorLoopContainedSegmentSubdivisionStatement_of_equatorLoopSubdivisionStatement
+    threeSphere_stereographicEquatorLoopSubdivisionStatement
+
+/--
+The concrete contained-segment subdivision proof is obtained by expanding the
+verified equatorial loop subdivision.
+-/
+theorem threeSphere_stereographicEquatorLoopContainedSegmentSubdivisionStatement_eq :
+    threeSphere_stereographicEquatorLoopContainedSegmentSubdivisionStatement =
+      threeSphere_stereographicEquatorLoopContainedSegmentSubdivisionStatement_of_equatorLoopSubdivisionStatement
+        threeSphere_stereographicEquatorLoopSubdivisionStatement := by
+  apply Subsingleton.elim
+
+/--
+Loop-level subpath range data: each subdivision subpath is contained in either
+the north or south stereographic source.
+-/
+def ThreeSphereStereographicEquatorLoopSubpathSegmentRangeStatement :
+    Prop :=
+  ∀ γ : Path threeSphere_equatorPoint threeSphere_equatorPoint,
+    ∃ τ : ℕ → unitInterval, τ 0 = 0 ∧ Monotone τ ∧
+      (∃ n, ∀ m ≥ n, τ m = 1) ∧
+      ∀ n,
+        Set.range (γ.subpath (τ n) (τ (n + 1))) ⊆
+            (stereographic' 3 threeSphere_northPole).source ∨
+          Set.range (γ.subpath (τ n) (τ (n + 1))) ⊆
+            (stereographic' 3 (-threeSphere_northPole)).source
+
+/--
+The subpath segment-range statement expands to the explicit source containment
+alternative for each loop subdivision interval.
+-/
+theorem threeSphereStereographicEquatorLoopSubpathSegmentRangeStatement_eq :
+    ThreeSphereStereographicEquatorLoopSubpathSegmentRangeStatement =
+      (∀ γ : Path threeSphere_equatorPoint threeSphere_equatorPoint,
+        ∃ τ : ℕ → unitInterval, τ 0 = 0 ∧ Monotone τ ∧
+          (∃ n, ∀ m ≥ n, τ m = 1) ∧
+          ∀ n,
+            Set.range (γ.subpath (τ n) (τ (n + 1))) ⊆
+                (stereographic' 3 threeSphere_northPole).source ∨
+              Set.range (γ.subpath (τ n) (τ (n + 1))) ⊆
+                (stereographic' 3 (-threeSphere_northPole)).source) :=
+  rfl
+
+/--
+Interval containment for a monotone subdivision gives source containment for
+the corresponding subpath ranges.
+-/
+theorem threeSphere_stereographicEquatorLoopSubpathSegmentRangeStatement_of_containedSegmentSubdivisionStatement
+    (h : ThreeSphereStereographicEquatorLoopContainedSegmentSubdivisionStatement) :
+    ThreeSphereStereographicEquatorLoopSubpathSegmentRangeStatement := by
+  intro γ
+  rcases h γ with ⟨τ, hτ0, hmono, heventual, hsegment⟩
+  refine ⟨τ, hτ0, hmono, heventual, ?_⟩
+  intro n
+  have hle : τ n ≤ τ (n + 1) := hmono (Nat.le_succ n)
+  rcases hsegment n with hn | hs
+  · left
+    rw [Path.range_subpath_of_le γ (τ n) (τ (n + 1)) hle]
+    rintro y ⟨r, hr, rfl⟩
+    exact hn hr
+  · right
+    rw [Path.range_subpath_of_le γ (τ n) (τ (n + 1)) hle]
+    rintro y ⟨r, hr, rfl⟩
+    exact hs hr
+
+/--
+The subpath range projection rewrites each monotone subpath range as the image
+of its parameter interval and applies the matching segment-containment witness.
+-/
+theorem threeSphere_stereographicEquatorLoopSubpathSegmentRangeStatement_of_containedSegmentSubdivisionStatement_eq
+    (h : ThreeSphereStereographicEquatorLoopContainedSegmentSubdivisionStatement) :
+    threeSphere_stereographicEquatorLoopSubpathSegmentRangeStatement_of_containedSegmentSubdivisionStatement
+        h =
+      (by
+        intro γ
+        rcases h γ with ⟨τ, hτ0, hmono, heventual, hsegment⟩
+        refine ⟨τ, hτ0, hmono, heventual, ?_⟩
+        intro n
+        have hle : τ n ≤ τ (n + 1) := hmono (Nat.le_succ n)
+        rcases hsegment n with hn | hs
+        · left
+          rw [Path.range_subpath_of_le γ (τ n) (τ (n + 1)) hle]
+          rintro y ⟨r, hr, rfl⟩
+          exact hn hr
+        · right
+          rw [Path.range_subpath_of_le γ (τ n) (τ (n + 1)) hle]
+          rintro y ⟨r, hr, rfl⟩
+          exact hs hr) := by
+  apply Subsingleton.elim
+
+/--
+Equatorial based loops have a monotone subdivision whose subpath ranges are
+contained in the north or south stereographic source.
+-/
+theorem threeSphere_stereographicEquatorLoopSubpathSegmentRangeStatement :
+    ThreeSphereStereographicEquatorLoopSubpathSegmentRangeStatement :=
+  threeSphere_stereographicEquatorLoopSubpathSegmentRangeStatement_of_containedSegmentSubdivisionStatement
+    threeSphere_stereographicEquatorLoopContainedSegmentSubdivisionStatement
+
+/--
+The concrete subpath range statement is obtained from the verified
+contained-segment loop subdivision.
+-/
+theorem threeSphere_stereographicEquatorLoopSubpathSegmentRangeStatement_eq :
+    threeSphere_stereographicEquatorLoopSubpathSegmentRangeStatement =
+      threeSphere_stereographicEquatorLoopSubpathSegmentRangeStatement_of_containedSegmentSubdivisionStatement
+        threeSphere_stereographicEquatorLoopContainedSegmentSubdivisionStatement := by
+  apply Subsingleton.elim
+
+/--
+Loop-level finite concatenation data: each equatorial based loop is homotopic
+to a finite concatenation of source-contained subpaths from the subdivision.
+-/
+def ThreeSphereStereographicEquatorLoopFiniteConcatSubpathStatement :
+    Prop :=
+  ∀ γ : Path threeSphere_equatorPoint threeSphere_equatorPoint,
+    ∃ (N : ℕ) (t : Fin (N + 1) → unitInterval),
+      t 0 = 0 ∧
+      t (Fin.last N) = 1 ∧
+      (∀ k : Fin N,
+        Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+            (stereographic' 3 threeSphere_northPole).source ∨
+          Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+            (stereographic' 3 (-threeSphere_northPole)).source) ∧
+      Path.Homotopic
+        (Path.concat (γ ∘ t) (fun k => γ.subpath (t k.castSucc) (t k.succ)))
+        (γ.subpath (t 0) (t (Fin.last N)))
+
+/--
+The finite-concat statement expands to a finite subdivision, source-contained
+subpath ranges, and mathlib's concat-subpath homotopy.
+-/
+theorem threeSphereStereographicEquatorLoopFiniteConcatSubpathStatement_eq :
+    ThreeSphereStereographicEquatorLoopFiniteConcatSubpathStatement =
+      (∀ γ : Path threeSphere_equatorPoint threeSphere_equatorPoint,
+        ∃ (N : ℕ) (t : Fin (N + 1) → unitInterval),
+          t 0 = 0 ∧
+          t (Fin.last N) = 1 ∧
+          (∀ k : Fin N,
+            Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+                (stereographic' 3 threeSphere_northPole).source ∨
+              Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+                (stereographic' 3 (-threeSphere_northPole)).source) ∧
+          Path.Homotopic
+            (Path.concat (γ ∘ t) (fun k => γ.subpath (t k.castSucc) (t k.succ)))
+            (γ.subpath (t 0) (t (Fin.last N)))) :=
+  rfl
+
+/--
+The eventually-one monotone subdivision supplies a finite endpoint list for
+`Path.concat`, with each adjacent subpath range contained in a chart source.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatSubpathStatement_of_subpathSegmentRangeStatement
+    (h : ThreeSphereStereographicEquatorLoopSubpathSegmentRangeStatement) :
+    ThreeSphereStereographicEquatorLoopFiniteConcatSubpathStatement := by
+  intro γ
+  rcases h γ with ⟨τ, hτ0, _hmono, ⟨N, hN⟩, hsegment⟩
+  let t : Fin (N + 1) → unitInterval := fun k => τ k.val
+  refine ⟨N, t, ?_, ?_, ?_, ?_⟩
+  · dsimp [t]
+    simpa using hτ0
+  · dsimp [t]
+    simpa using hN N (le_refl N)
+  · intro k
+    simpa only [t, Fin.val_castSucc, Fin.val_succ] using hsegment k.val
+  · exact Path.Homotopic.concat_subpath γ t
+
+/--
+The finite-concat projection chooses the first index where the subdivision is
+stationary at `1` and applies mathlib's concat-subpath homotopy to that list.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatSubpathStatement_of_subpathSegmentRangeStatement_eq
+    (h : ThreeSphereStereographicEquatorLoopSubpathSegmentRangeStatement) :
+    threeSphere_stereographicEquatorLoopFiniteConcatSubpathStatement_of_subpathSegmentRangeStatement
+        h =
+      (by
+        intro γ
+        rcases h γ with ⟨τ, hτ0, _hmono, ⟨N, hN⟩, hsegment⟩
+        let t : Fin (N + 1) → unitInterval := fun k => τ k.val
+        refine ⟨N, t, ?_, ?_, ?_, ?_⟩
+        · dsimp [t]
+          simpa using hτ0
+        · dsimp [t]
+          simpa using hN N (le_refl N)
+        · intro k
+          simpa only [t, Fin.val_castSucc, Fin.val_succ] using hsegment k.val
+        · exact Path.Homotopic.concat_subpath γ t) := by
+  apply Subsingleton.elim
+
+/--
+Equatorial based loops have a finite stereographic subpath concatenation whose
+pieces are contained in the north or south stereographic source.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatSubpathStatement :
+    ThreeSphereStereographicEquatorLoopFiniteConcatSubpathStatement :=
+  threeSphere_stereographicEquatorLoopFiniteConcatSubpathStatement_of_subpathSegmentRangeStatement
+    threeSphere_stereographicEquatorLoopSubpathSegmentRangeStatement
+
+/--
+The concrete finite-concat statement is obtained from the verified subpath
+segment-range statement.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatSubpathStatement_eq :
+    threeSphere_stereographicEquatorLoopFiniteConcatSubpathStatement =
+      threeSphere_stereographicEquatorLoopFiniteConcatSubpathStatement_of_subpathSegmentRangeStatement
+        threeSphere_stereographicEquatorLoopSubpathSegmentRangeStatement := by
+  apply Subsingleton.elim
+
+/--
+Loop-level finite concatenation data with the final subpath endpoint cast
+identified with the original based loop.
+-/
+def ThreeSphereStereographicEquatorLoopFiniteConcatLoopStatement :
+    Prop :=
+  ∀ γ : Path threeSphere_equatorPoint threeSphere_equatorPoint,
+    ∃ (N : ℕ) (t : Fin (N + 1) → unitInterval)
+      (h0 : t 0 = 0) (h1 : t (Fin.last N) = 1),
+      (∀ k : Fin N,
+        Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+            (stereographic' 3 threeSphere_northPole).source ∨
+          Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+            (stereographic' 3 (-threeSphere_northPole)).source) ∧
+      Path.Homotopic
+        (Path.concat (γ ∘ t) (fun k => γ.subpath (t k.castSucc) (t k.succ)))
+        (γ.cast (by simp [h0]) (by simp [h1]))
+
+/--
+The finite-concat loop statement expands to source-contained subpaths and a
+homotopy from their concatenation to the endpoint-cast original based loop.
+-/
+theorem threeSphereStereographicEquatorLoopFiniteConcatLoopStatement_eq :
+    ThreeSphereStereographicEquatorLoopFiniteConcatLoopStatement =
+      (∀ γ : Path threeSphere_equatorPoint threeSphere_equatorPoint,
+        ∃ (N : ℕ) (t : Fin (N + 1) → unitInterval)
+          (h0 : t 0 = 0) (h1 : t (Fin.last N) = 1),
+          (∀ k : Fin N,
+            Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+                (stereographic' 3 threeSphere_northPole).source ∨
+              Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+                (stereographic' 3 (-threeSphere_northPole)).source) ∧
+          Path.Homotopic
+            (Path.concat (γ ∘ t) (fun k => γ.subpath (t k.castSucc) (t k.succ)))
+            (γ.cast (by simp [h0]) (by simp [h1]))) :=
+  rfl
+
+/--
+The finite-concat subpath statement upgrades to the loop-cast statement by
+rewriting the full endpoint subpath as the original loop with endpoint casts.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatLoopStatement_of_finiteConcatSubpathStatement
+    (h : ThreeSphereStereographicEquatorLoopFiniteConcatSubpathStatement) :
+    ThreeSphereStereographicEquatorLoopFiniteConcatLoopStatement := by
+  intro γ
+  rcases h γ with ⟨N, t, h0, h1, hsegment, hconcat⟩
+  refine ⟨N, t, h0, h1, hsegment, ?_⟩
+  have hpath :
+      γ.subpath (t 0) (t (Fin.last N)) =
+        γ.cast (by simp [h0]) (by simp [h1]) := by
+    ext s
+    simp [Path.cast_coe, Path.subpath, h0, h1]
+  exact hconcat.trans (by
+    rw [hpath]
+    exact Path.Homotopic.refl _)
+
+/--
+The subpath-to-loop projection composes the existing concat-subpath homotopy
+with the endpoint-cast identification of the full interval subpath.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatLoopStatement_of_finiteConcatSubpathStatement_eq
+    (h : ThreeSphereStereographicEquatorLoopFiniteConcatSubpathStatement) :
+    threeSphere_stereographicEquatorLoopFiniteConcatLoopStatement_of_finiteConcatSubpathStatement
+        h =
+      (by
+        intro γ
+        rcases h γ with ⟨N, t, h0, h1, hsegment, hconcat⟩
+        refine ⟨N, t, h0, h1, hsegment, ?_⟩
+        have hpath :
+            γ.subpath (t 0) (t (Fin.last N)) =
+              γ.cast (by simp [h0]) (by simp [h1]) := by
+          ext s
+          simp [Path.cast_coe, Path.subpath, h0, h1]
+        exact hconcat.trans (by
+          rw [hpath]
+          exact Path.Homotopic.refl _)) := by
+  apply Subsingleton.elim
+
+/--
+Equatorial based loops are homotopic to finite concatenations of chart-contained
+subpaths, with the resulting path ending at the original loop endpoints.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatLoopStatement :
+    ThreeSphereStereographicEquatorLoopFiniteConcatLoopStatement :=
+  threeSphere_stereographicEquatorLoopFiniteConcatLoopStatement_of_finiteConcatSubpathStatement
+    threeSphere_stereographicEquatorLoopFiniteConcatSubpathStatement
+
+/--
+The concrete finite-concat loop statement is obtained from the verified
+finite-concat subpath statement.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatLoopStatement_eq :
+    threeSphere_stereographicEquatorLoopFiniteConcatLoopStatement =
+      threeSphere_stereographicEquatorLoopFiniteConcatLoopStatement_of_finiteConcatSubpathStatement
+        threeSphere_stereographicEquatorLoopFiniteConcatSubpathStatement := by
+  apply Subsingleton.elim
+
+/--
+Loop-level finite concatenation data as a quotient-class equality: each
+equatorial based loop has a finite source-contained subpath concatenation
+representing the same path-homotopy class as the original loop.
+-/
+def ThreeSphereStereographicEquatorLoopFiniteConcatQuotientStatement :
+    Prop :=
+  ∀ γ : Path threeSphere_equatorPoint threeSphere_equatorPoint,
+    ∃ (N : ℕ) (t : Fin (N + 1) → unitInterval)
+      (h0 : t 0 = 0) (h1 : t (Fin.last N) = 1),
+      (∀ k : Fin N,
+        Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+            (stereographic' 3 threeSphere_northPole).source ∨
+          Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+            (stereographic' 3 (-threeSphere_northPole)).source) ∧
+      Path.Homotopic.Quotient.mk
+        (Path.concat (γ ∘ t) (fun k => γ.subpath (t k.castSucc) (t k.succ))) =
+        Path.Homotopic.Quotient.mk
+          (γ.cast (by simp [h0]) (by simp [h1]))
+
+/--
+The finite-concat quotient statement expands to source-contained subpaths and
+equality of path-homotopy quotient classes.
+-/
+theorem threeSphereStereographicEquatorLoopFiniteConcatQuotientStatement_eq :
+    ThreeSphereStereographicEquatorLoopFiniteConcatQuotientStatement =
+      (∀ γ : Path threeSphere_equatorPoint threeSphere_equatorPoint,
+        ∃ (N : ℕ) (t : Fin (N + 1) → unitInterval)
+          (h0 : t 0 = 0) (h1 : t (Fin.last N) = 1),
+          (∀ k : Fin N,
+            Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+                (stereographic' 3 threeSphere_northPole).source ∨
+              Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+                (stereographic' 3 (-threeSphere_northPole)).source) ∧
+          Path.Homotopic.Quotient.mk
+            (Path.concat (γ ∘ t) (fun k => γ.subpath (t k.castSucc) (t k.succ))) =
+            Path.Homotopic.Quotient.mk
+              (γ.cast (by simp [h0]) (by simp [h1]))) :=
+  rfl
+
+/--
+The finite-concat loop statement descends to equality in the path-homotopy
+quotient by applying the quotient equality criterion to the homotopy.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatQuotientStatement_of_finiteConcatLoopStatement
+    (h : ThreeSphereStereographicEquatorLoopFiniteConcatLoopStatement) :
+    ThreeSphereStereographicEquatorLoopFiniteConcatQuotientStatement := by
+  intro γ
+  rcases h γ with ⟨N, t, h0, h1, hsegment, hloop⟩
+  refine ⟨N, t, h0, h1, hsegment, ?_⟩
+  exact Path.Homotopic.Quotient.eq.mpr hloop
+
+/--
+The loop-to-quotient projection keeps the same finite subdivision data and
+replaces path homotopy by equality in the path-homotopy quotient.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatQuotientStatement_of_finiteConcatLoopStatement_eq
+    (h : ThreeSphereStereographicEquatorLoopFiniteConcatLoopStatement) :
+    threeSphere_stereographicEquatorLoopFiniteConcatQuotientStatement_of_finiteConcatLoopStatement
+        h =
+      (by
+        intro γ
+        rcases h γ with ⟨N, t, h0, h1, hsegment, hloop⟩
+        refine ⟨N, t, h0, h1, hsegment, ?_⟩
+        exact Path.Homotopic.Quotient.eq.mpr hloop) := by
+  apply Subsingleton.elim
+
+/--
+Equatorial based loops have finite source-contained subpath concatenations
+representing the same path-homotopy quotient class.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatQuotientStatement :
+    ThreeSphereStereographicEquatorLoopFiniteConcatQuotientStatement :=
+  threeSphere_stereographicEquatorLoopFiniteConcatQuotientStatement_of_finiteConcatLoopStatement
+    threeSphere_stereographicEquatorLoopFiniteConcatLoopStatement
+
+/--
+The concrete finite-concat quotient statement is obtained from the verified
+finite-concat loop statement.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatQuotientStatement_eq :
+    threeSphere_stereographicEquatorLoopFiniteConcatQuotientStatement =
+      threeSphere_stereographicEquatorLoopFiniteConcatQuotientStatement_of_finiteConcatLoopStatement
+        threeSphere_stereographicEquatorLoopFiniteConcatLoopStatement := by
+  apply Subsingleton.elim
+
+/--
 The overlap of two antipodal stereographic sources is the complement of the two
 excluded antipodal points.
 -/
@@ -339,6 +1275,103 @@ theorem threeSphere_equatorPoint_mem_northPole_antipodal_sources_inter_eq :
           norm_num [threeSphere_equatorPoint, threeSphere_northPole] at hcoord) := by
   apply Subsingleton.elim
 
+/-- The equatorial point lies in the north-pole stereographic source. -/
+theorem threeSphere_equatorPoint_mem_northPole_stereographic_source :
+    threeSphere_equatorPoint ∈
+      (stereographic' 3 threeSphere_northPole).source :=
+  threeSphere_equatorPoint_mem_northPole_antipodal_sources_inter.1
+
+/--
+The north-source membership proof for the equatorial point is the first
+projection of the named overlap-membership witness.
+-/
+theorem threeSphere_equatorPoint_mem_northPole_stereographic_source_eq :
+    threeSphere_equatorPoint_mem_northPole_stereographic_source =
+      threeSphere_equatorPoint_mem_northPole_antipodal_sources_inter.1 := by
+  apply Subsingleton.elim
+
+/-- The equatorial point lies in the south-pole stereographic source. -/
+theorem threeSphere_equatorPoint_mem_southPole_stereographic_source :
+    threeSphere_equatorPoint ∈
+      (stereographic' 3 (-threeSphere_northPole)).source :=
+  threeSphere_equatorPoint_mem_northPole_antipodal_sources_inter.2
+
+/--
+The south-source membership proof for the equatorial point is the second
+projection of the named overlap-membership witness.
+-/
+theorem threeSphere_equatorPoint_mem_southPole_stereographic_source_eq :
+    threeSphere_equatorPoint_mem_southPole_stereographic_source =
+      threeSphere_equatorPoint_mem_northPole_antipodal_sources_inter.2 := by
+  apply Subsingleton.elim
+
+/-- The equatorial point as a point of the north-pole stereographic source. -/
+noncomputable def threeSphere_equatorPointInNorthSource :
+    (stereographic' 3 threeSphere_northPole).source :=
+  ⟨threeSphere_equatorPoint,
+    threeSphere_equatorPoint_mem_northPole_stereographic_source⟩
+
+/--
+The north-source equatorial basepoint is the equatorial point with its named
+north-source membership proof.
+-/
+theorem threeSphere_equatorPointInNorthSource_eq :
+    threeSphere_equatorPointInNorthSource =
+      ⟨threeSphere_equatorPoint,
+        threeSphere_equatorPoint_mem_northPole_stereographic_source⟩ :=
+  rfl
+
+/-- The equatorial point as a point of the south-pole stereographic source. -/
+noncomputable def threeSphere_equatorPointInSouthSource :
+    (stereographic' 3 (-threeSphere_northPole)).source :=
+  ⟨threeSphere_equatorPoint,
+    threeSphere_equatorPoint_mem_southPole_stereographic_source⟩
+
+/--
+The south-source equatorial basepoint is the equatorial point with its named
+south-source membership proof.
+-/
+theorem threeSphere_equatorPointInSouthSource_eq :
+    threeSphere_equatorPointInSouthSource =
+      ⟨threeSphere_equatorPoint,
+        threeSphere_equatorPoint_mem_southPole_stereographic_source⟩ :=
+  rfl
+
+/--
+The equatorial point as a point of the actual north/south stereographic
+overlap.
+-/
+noncomputable def threeSphere_equatorPointInActualOverlap :
+    (((stereographic' 3 threeSphere_northPole).source ∩
+      (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere) :=
+  ⟨threeSphere_equatorPoint,
+    threeSphere_equatorPoint_mem_northPole_antipodal_sources_inter⟩
+
+/--
+The actual-overlap equatorial basepoint is the equatorial point with its named
+overlap-membership proof.
+-/
+theorem threeSphere_equatorPointInActualOverlap_eq :
+    threeSphere_equatorPointInActualOverlap =
+      ⟨threeSphere_equatorPoint,
+        threeSphere_equatorPoint_mem_northPole_antipodal_sources_inter⟩ :=
+  rfl
+
+/-- The actual north/south stereographic overlap is nonempty. -/
+theorem threeSphere_actualOverlap_nonempty :
+    Nonempty
+      (((stereographic' 3 threeSphere_northPole).source ∩
+        (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere) :=
+  ⟨threeSphere_equatorPointInActualOverlap⟩
+
+/--
+The actual-overlap nonemptiness witness is the named equatorial overlap point.
+-/
+theorem threeSphere_actualOverlap_nonempty_eq :
+    threeSphere_actualOverlap_nonempty =
+      ⟨threeSphere_equatorPointInActualOverlap⟩ := by
+  apply Subsingleton.elim
+
 /-- The south pole lies in the north-pole stereographic source. -/
 theorem threeSphere_southPole_mem_northPole_stereographic_source :
     (-threeSphere_northPole) ∈ (stereographic' 3 threeSphere_northPole).source := by
@@ -402,6 +1435,10 @@ The verified north/south stereographic open-cover data for the standard
 loop-fragment argument without asserting that missing argument.
 -/
 structure ThreeSphereStereographicOpenCoverPackage where
+  northSourceContractible :
+    ContractibleSpace (stereographic' 3 threeSphere_northPole).source
+  southSourceContractible :
+    ContractibleSpace (stereographic' 3 (-threeSphere_northPole)).source
   northSourceSimplyConnected :
     SimplyConnectedSpace (stereographic' 3 threeSphere_northPole).source
   southSourceSimplyConnected :
@@ -423,6 +1460,10 @@ structure ThreeSphereStereographicOpenCoverPackage where
 /-- The concrete north/south stereographic open-cover package for `ThreeSphere`. -/
 noncomputable def threeSphere_stereographicOpenCoverPackage :
     ThreeSphereStereographicOpenCoverPackage where
+  northSourceContractible :=
+    threeSphere_stereographic_source_contractibleSpace threeSphere_northPole
+  southSourceContractible :=
+    threeSphere_stereographic_source_contractibleSpace (-threeSphere_northPole)
   northSourceSimplyConnected :=
     threeSphere_stereographic_source_simplyConnectedSpace threeSphere_northPole
   southSourceSimplyConnected :=
@@ -444,7 +1485,11 @@ north/south chart-domain, cover, overlap, and basepoint witnesses.
 -/
 theorem threeSphere_stereographicOpenCoverPackage_eq :
     threeSphere_stereographicOpenCoverPackage =
-      { northSourceSimplyConnected :=
+      { northSourceContractible :=
+          threeSphere_stereographic_source_contractibleSpace threeSphere_northPole
+        southSourceContractible :=
+          threeSphere_stereographic_source_contractibleSpace (-threeSphere_northPole)
+        northSourceSimplyConnected :=
           threeSphere_stereographic_source_simplyConnectedSpace threeSphere_northPole
         southSourceSimplyConnected :=
           threeSphere_stereographic_source_simplyConnectedSpace (-threeSphere_northPole)
@@ -806,6 +1851,62 @@ theorem threeSphere_actualOverlap_homeomorph_northSourceOverlap_eq :
   rfl
 
 /--
+The actual north/south chart-overlap subtype is directly homeomorphic to the
+punctured `ℝ³` chart model obtained from the north-pole stereographic chart.
+-/
+noncomputable def threeSphere_actualOverlap_homeomorph_puncturedChart :
+    (((stereographic' 3 threeSphere_northPole).source ∩
+      (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere) ≃ₜ
+      ({threeSphere_southPole_northChartImage}ᶜ :
+        Set (EuclideanSpace ℝ (Fin 3))) :=
+  threeSphere_actualOverlap_homeomorph_northSourceOverlap.trans
+    threeSphere_northSourceOverlap_homeomorph_puncturedChart
+
+/--
+The direct actual-overlap chart homeomorphism is the composition of the
+actual-overlap/north-source model homeomorphism with the restricted
+stereographic chart homeomorphism to punctured `ℝ³`.
+-/
+theorem threeSphere_actualOverlap_homeomorph_puncturedChart_eq :
+    threeSphere_actualOverlap_homeomorph_puncturedChart =
+      threeSphere_actualOverlap_homeomorph_northSourceOverlap.trans
+        threeSphere_northSourceOverlap_homeomorph_puncturedChart :=
+  rfl
+
+/--
+The actual north/south stereographic overlap is path-connected, transported
+directly from punctured `ℝ³` across the composed chart homeomorphism.
+-/
+theorem threeSphere_actualOverlap_pathConnectedSpace_via_puncturedChart :
+    PathConnectedSpace
+      (((stereographic' 3 threeSphere_northPole).source ∩
+        (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere) := by
+  letI : PathConnectedSpace
+      ({threeSphere_southPole_northChartImage}ᶜ :
+        Set (EuclideanSpace ℝ (Fin 3))) :=
+    threeSphere_northChartImage_compl_southPole_pathConnectedSpace
+  exact
+    threeSphere_actualOverlap_homeomorph_puncturedChart.symm.surjective.pathConnectedSpace
+      threeSphere_actualOverlap_homeomorph_puncturedChart.symm.continuous
+
+/--
+The punctured-chart path-connectedness route is the inverse image of the
+punctured-`ℝ³` path-connectedness witness under the direct actual-overlap chart
+homeomorphism.
+-/
+theorem threeSphere_actualOverlap_pathConnectedSpace_via_puncturedChart_eq :
+    threeSphere_actualOverlap_pathConnectedSpace_via_puncturedChart =
+      (by
+        letI : PathConnectedSpace
+            ({threeSphere_southPole_northChartImage}ᶜ :
+              Set (EuclideanSpace ℝ (Fin 3))) :=
+          threeSphere_northChartImage_compl_southPole_pathConnectedSpace
+        exact
+          threeSphere_actualOverlap_homeomorph_puncturedChart.symm.surjective.pathConnectedSpace
+            threeSphere_actualOverlap_homeomorph_puncturedChart.symm.continuous) := by
+  apply Subsingleton.elim
+
+/--
 The actual north/south stereographic overlap is path-connected, transported
 from the north-source complement model.
 -/
@@ -838,6 +1939,59 @@ theorem threeSphere_actualOverlap_pathConnectedSpace_eq :
   apply Subsingleton.elim
 
 /--
+The actual north/south stereographic overlap is path-connected as a subset of
+the target sphere.
+-/
+theorem threeSphere_actualOverlap_isPathConnected :
+    IsPathConnected
+      (((stereographic' 3 threeSphere_northPole).source ∩
+        (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere) :=
+  isPathConnected_iff_pathConnectedSpace.mpr
+    threeSphere_actualOverlap_pathConnectedSpace
+
+/--
+The set-level path-connectedness witness for the actual overlap is the subtype
+path-connectedness witness converted by mathlib's set/subtype equivalence.
+-/
+theorem threeSphere_actualOverlap_isPathConnected_eq :
+    threeSphere_actualOverlap_isPathConnected =
+      isPathConnected_iff_pathConnectedSpace.mpr
+        threeSphere_actualOverlap_pathConnectedSpace := by
+  apply Subsingleton.elim
+
+/--
+The complement of the north and south poles in `ThreeSphere` is
+path-connected, because it is the actual north/south stereographic overlap.
+-/
+theorem threeSphere_northSouthPole_compl_isPathConnected :
+    IsPathConnected
+      (({threeSphere_northPole} ∪ {-threeSphere_northPole})ᶜ :
+        Set ThreeSphere) := by
+  rw [← threeSphere_stereographic_antipodal_sources_inter threeSphere_northPole]
+  exact threeSphere_actualOverlap_isPathConnected
+
+/--
+The two-pole complement path-connectedness proof rewrites the complement as
+the north/south stereographic overlap and uses the overlap path-connectedness
+proof.
+-/
+theorem threeSphere_northSouthPole_compl_isPathConnected_eq :
+    threeSphere_northSouthPole_compl_isPathConnected =
+      (by
+        rw [← threeSphere_stereographic_antipodal_sources_inter threeSphere_northPole]
+        exact threeSphere_actualOverlap_isPathConnected) := by
+  apply Subsingleton.elim
+
+/--
+The original north-source-model path-connectedness route agrees with the direct
+punctured-chart route.
+-/
+theorem threeSphere_actualOverlap_pathConnectedSpace_to_puncturedChart_route_eq :
+    threeSphere_actualOverlap_pathConnectedSpace =
+      threeSphere_actualOverlap_pathConnectedSpace_via_puncturedChart := by
+  apply Subsingleton.elim
+
+/--
 Fully bridged north/south stereographic cover data, including the model
 homeomorphism and the resulting path-connectedness of the actual chart overlap.
 -/
@@ -848,6 +2002,11 @@ structure ThreeSphereStereographicCoverOverlapPackage where
       (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere) ≃ₜ
       ({threeSphere_southPoleInNorthSource}ᶜ :
         Set (stereographic' 3 threeSphere_northPole).source)
+  actualOverlapChartHomeomorph :
+    (((stereographic' 3 threeSphere_northPole).source ∩
+      (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere) ≃ₜ
+      ({threeSphere_southPole_northChartImage}ᶜ :
+        Set (EuclideanSpace ℝ (Fin 3)))
   actualOverlapPathConnected :
     PathConnectedSpace
       (((stereographic' 3 threeSphere_northPole).source ∩
@@ -861,6 +2020,7 @@ noncomputable def threeSphere_stereographicCoverOverlapPackage :
     ThreeSphereStereographicCoverOverlapPackage where
   overlapPackage := threeSphere_stereographicOverlapPackage
   actualOverlapHomeomorph := threeSphere_actualOverlap_homeomorph_northSourceOverlap
+  actualOverlapChartHomeomorph := threeSphere_actualOverlap_homeomorph_puncturedChart
   actualOverlapPathConnected := threeSphere_actualOverlap_pathConnectedSpace
 
 /-- The fully bridged cover-overlap package is assembled from the named witnesses. -/
@@ -868,8 +2028,111 @@ theorem threeSphere_stereographicCoverOverlapPackage_eq :
     threeSphere_stereographicCoverOverlapPackage =
       { overlapPackage := threeSphere_stereographicOverlapPackage
         actualOverlapHomeomorph := threeSphere_actualOverlap_homeomorph_northSourceOverlap
+        actualOverlapChartHomeomorph := threeSphere_actualOverlap_homeomorph_puncturedChart
         actualOverlapPathConnected := threeSphere_actualOverlap_pathConnectedSpace } := by
   rfl
+
+/--
+The strengthened stereographic cover input statement records that the two chart
+domains are contractible, in addition to the already proved open-cover,
+path-connected-overlap, and basepoint data.
+-/
+def ThreeSphereStereographicContractibleCoverInputsStatement : Prop :=
+    ∃ _northContractible :
+      ContractibleSpace (stereographic' 3 threeSphere_northPole).source,
+    ∃ _southContractible :
+      ContractibleSpace (stereographic' 3 (-threeSphere_northPole)).source,
+    ∃ _northOpen : IsOpen (stereographic' 3 threeSphere_northPole).source,
+    ∃ _southOpen : IsOpen (stereographic' 3 (-threeSphere_northPole)).source,
+    ∃ _cover :
+      (stereographic' 3 threeSphere_northPole).source ∪
+          (stereographic' 3 (-threeSphere_northPole)).source =
+        Set.univ,
+    ∃ _overlapOpen :
+      IsOpen ((stereographic' 3 threeSphere_northPole).source ∩
+        (stereographic' 3 (-threeSphere_northPole)).source),
+    ∃ _overlapPath :
+      PathConnectedSpace
+        (((stereographic' 3 threeSphere_northPole).source ∩
+          (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere),
+    ∃ _basepoint :
+      threeSphere_equatorPoint ∈
+        (stereographic' 3 threeSphere_northPole).source ∩
+          (stereographic' 3 (-threeSphere_northPole)).source,
+      Nonempty
+        (((stereographic' 3 threeSphere_northPole).source ∩
+          (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere)
+
+/--
+The strengthened stereographic cover input statement expands to contractible
+chart-domain witnesses plus the open-cover and overlap data used by the Van
+Kampen input contract.
+-/
+theorem threeSphereStereographicContractibleCoverInputsStatement_eq :
+    ThreeSphereStereographicContractibleCoverInputsStatement =
+      (∃ _northContractible :
+        ContractibleSpace (stereographic' 3 threeSphere_northPole).source,
+      ∃ _southContractible :
+        ContractibleSpace (stereographic' 3 (-threeSphere_northPole)).source,
+      ∃ _northOpen : IsOpen (stereographic' 3 threeSphere_northPole).source,
+      ∃ _southOpen : IsOpen (stereographic' 3 (-threeSphere_northPole)).source,
+      ∃ _cover :
+        (stereographic' 3 threeSphere_northPole).source ∪
+            (stereographic' 3 (-threeSphere_northPole)).source =
+          Set.univ,
+      ∃ _overlapOpen :
+        IsOpen ((stereographic' 3 threeSphere_northPole).source ∩
+          (stereographic' 3 (-threeSphere_northPole)).source),
+      ∃ _overlapPath :
+        PathConnectedSpace
+          (((stereographic' 3 threeSphere_northPole).source ∩
+            (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere),
+      ∃ _basepoint :
+        threeSphere_equatorPoint ∈
+          (stereographic' 3 threeSphere_northPole).source ∩
+            (stereographic' 3 (-threeSphere_northPole)).source,
+        Nonempty
+          (((stereographic' 3 threeSphere_northPole).source ∩
+            (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere)) :=
+  rfl
+
+/--
+The concrete stereographic cover package supplies the strengthened
+contractible-cover input tuple.
+-/
+theorem threeSphere_stereographicCoverOverlapPackage_contractibleCoverInputs :
+    ThreeSphereStereographicContractibleCoverInputsStatement := by
+  exact
+    ⟨threeSphere_stereographicOpenCoverPackage.northSourceContractible,
+      threeSphere_stereographicOpenCoverPackage.southSourceContractible,
+      threeSphere_stereographicOpenCoverPackage.northSourceOpen,
+      threeSphere_stereographicOpenCoverPackage.southSourceOpen,
+      threeSphere_stereographicOpenCoverPackage.cover,
+      threeSphere_stereographicOpenCoverPackage.overlapOpen,
+      threeSphere_actualOverlap_pathConnectedSpace,
+      threeSphere_stereographicOpenCoverPackage.overlapBasepoint,
+      ⟨⟨threeSphere_equatorPoint,
+        threeSphere_stereographicOpenCoverPackage.overlapBasepoint⟩⟩⟩
+
+/--
+The strengthened cover-input tuple is assembled from the named contractible
+chart-domain witnesses and existing overlap data.
+-/
+theorem threeSphere_stereographicCoverOverlapPackage_contractibleCoverInputs_eq :
+    threeSphere_stereographicCoverOverlapPackage_contractibleCoverInputs =
+      (by
+        exact
+          ⟨threeSphere_stereographicOpenCoverPackage.northSourceContractible,
+            threeSphere_stereographicOpenCoverPackage.southSourceContractible,
+            threeSphere_stereographicOpenCoverPackage.northSourceOpen,
+            threeSphere_stereographicOpenCoverPackage.southSourceOpen,
+            threeSphere_stereographicOpenCoverPackage.cover,
+            threeSphere_stereographicOpenCoverPackage.overlapOpen,
+            threeSphere_actualOverlap_pathConnectedSpace,
+            threeSphere_stereographicOpenCoverPackage.overlapBasepoint,
+            ⟨⟨threeSphere_equatorPoint,
+              threeSphere_stereographicOpenCoverPackage.overlapBasepoint⟩⟩⟩) := by
+  apply Subsingleton.elim
 
 /--
 The bridged stereographic cover package supplies the standard Van Kampen
@@ -968,6 +2231,292 @@ theorem threeSphere_stereographicCoverOverlapPackage_vanKampenInputs_eq :
             threeSphere_stereographicOpenCoverPackage.overlapBasepoint,
             ⟨⟨threeSphere_equatorPoint,
               threeSphere_stereographicOpenCoverPackage.overlapBasepoint⟩⟩⟩) := by
+  apply Subsingleton.elim
+
+/--
+Contractible chart-domain cover inputs imply the standard stereographic Van
+Kampen input statement by forgetting contractibility to simple-connectedness.
+-/
+theorem threeSphere_stereographicContractibleCoverInputs_vanKampenInputs
+    (h : ThreeSphereStereographicContractibleCoverInputsStatement) :
+    ThreeSphereStereographicVanKampenInputsStatement := by
+  rcases h with
+    ⟨northContractible, southContractible, northOpen, southOpen, cover,
+      overlapOpen, overlapPath, basepoint, overlapNonempty⟩
+  letI : ContractibleSpace (stereographic' 3 threeSphere_northPole).source :=
+    northContractible
+  letI : ContractibleSpace (stereographic' 3 (-threeSphere_northPole)).source :=
+    southContractible
+  exact
+    ⟨inferInstance, inferInstance, northOpen, southOpen, cover, overlapOpen,
+      overlapPath, basepoint, overlapNonempty⟩
+
+/--
+The contractible-cover-to-Van-Kampen-input route projects the same open-cover
+and overlap fields after replacing contractibility with simple-connectedness.
+-/
+theorem threeSphere_stereographicContractibleCoverInputs_vanKampenInputs_eq :
+    threeSphere_stereographicContractibleCoverInputs_vanKampenInputs =
+      (fun h : ThreeSphereStereographicContractibleCoverInputsStatement =>
+        by
+          rcases h with
+            ⟨northContractible, southContractible, northOpen, southOpen, cover,
+              overlapOpen, overlapPath, basepoint, overlapNonempty⟩
+          letI : ContractibleSpace (stereographic' 3 threeSphere_northPole).source :=
+            northContractible
+          letI : ContractibleSpace (stereographic' 3 (-threeSphere_northPole)).source :=
+            southContractible
+          exact
+            ⟨inferInstance, inferInstance, northOpen, southOpen, cover, overlapOpen,
+              overlapPath, basepoint, overlapNonempty⟩) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The `π₁` inputs supplied by the north and south stereographic chart domains:
+each chart source has trivial first homotopy group at every basepoint.
+-/
+def ThreeSphereStereographicSourcePiOneSubsingletonStatement : Prop :=
+    (∀ x : (stereographic' 3 threeSphere_northPole).source,
+      Subsingleton
+        (HomotopyGroup.Pi 1 (stereographic' 3 threeSphere_northPole).source x)) ∧
+    (∀ x : (stereographic' 3 (-threeSphere_northPole)).source,
+      Subsingleton
+        (HomotopyGroup.Pi 1 (stereographic' 3 (-threeSphere_northPole)).source x))
+
+/--
+The source-`π₁` statement expands to pointwise triviality for the north and
+south stereographic chart sources.
+-/
+theorem threeSphereStereographicSourcePiOneSubsingletonStatement_eq :
+    ThreeSphereStereographicSourcePiOneSubsingletonStatement =
+      ((∀ x : (stereographic' 3 threeSphere_northPole).source,
+        Subsingleton
+          (HomotopyGroup.Pi 1 (stereographic' 3 threeSphere_northPole).source x)) ∧
+      (∀ x : (stereographic' 3 (-threeSphere_northPole)).source,
+        Subsingleton
+          (HomotopyGroup.Pi 1 (stereographic' 3 (-threeSphere_northPole)).source x))) :=
+  rfl
+
+/--
+The concrete north and south stereographic chart domains have trivial first
+homotopy groups at every basepoint.
+-/
+theorem threeSphere_stereographicSourcePiOneSubsingletonStatement :
+    ThreeSphereStereographicSourcePiOneSubsingletonStatement := by
+  exact
+    ⟨threeSphere_stereographic_source_piOneSubsingleton threeSphere_northPole,
+      threeSphere_stereographic_source_piOneSubsingleton (-threeSphere_northPole)⟩
+
+/--
+The north/south source-`π₁` statement is assembled from the pointwise
+chart-source `π₁` triviality theorem.
+-/
+theorem threeSphere_stereographicSourcePiOneSubsingletonStatement_eq :
+    threeSphere_stereographicSourcePiOneSubsingletonStatement =
+      (by
+        exact
+          ⟨threeSphere_stereographic_source_piOneSubsingleton threeSphere_northPole,
+            threeSphere_stereographic_source_piOneSubsingleton (-threeSphere_northPole)⟩) := by
+  apply Subsingleton.elim
+
+/--
+The north-pole stereographic source has trivial `π₁` at the equatorial
+overlap basepoint.
+-/
+theorem threeSphere_northSource_equatorPiOneSubsingleton :
+    Subsingleton
+      (HomotopyGroup.Pi 1 (stereographic' 3 threeSphere_northPole).source
+        threeSphere_equatorPointInNorthSource) :=
+  threeSphere_stereographic_source_piOneSubsingleton threeSphere_northPole
+    threeSphere_equatorPointInNorthSource
+
+/--
+The north-source equatorial `π₁` witness is the pointwise source `π₁`
+triviality theorem specialized to the equatorial source point.
+-/
+theorem threeSphere_northSource_equatorPiOneSubsingleton_eq :
+    threeSphere_northSource_equatorPiOneSubsingleton =
+      threeSphere_stereographic_source_piOneSubsingleton threeSphere_northPole
+        threeSphere_equatorPointInNorthSource := by
+  apply Subsingleton.elim
+
+/--
+The south-pole stereographic source has trivial `π₁` at the equatorial
+overlap basepoint.
+-/
+theorem threeSphere_southSource_equatorPiOneSubsingleton :
+    Subsingleton
+      (HomotopyGroup.Pi 1 (stereographic' 3 (-threeSphere_northPole)).source
+        threeSphere_equatorPointInSouthSource) :=
+  threeSphere_stereographic_source_piOneSubsingleton (-threeSphere_northPole)
+    threeSphere_equatorPointInSouthSource
+
+/--
+The south-source equatorial `π₁` witness is the pointwise source `π₁`
+triviality theorem specialized to the equatorial source point.
+-/
+theorem threeSphere_southSource_equatorPiOneSubsingleton_eq :
+    threeSphere_southSource_equatorPiOneSubsingleton =
+      threeSphere_stereographic_source_piOneSubsingleton (-threeSphere_northPole)
+        threeSphere_equatorPointInSouthSource := by
+  apply Subsingleton.elim
+
+/--
+The two chart-source `π₁` inputs specialized at the common equatorial overlap
+basepoint.
+-/
+def ThreeSphereStereographicEquatorSourcePiOneSubsingletonStatement : Prop :=
+    Subsingleton
+      (HomotopyGroup.Pi 1 (stereographic' 3 threeSphere_northPole).source
+        threeSphere_equatorPointInNorthSource) ∧
+    Subsingleton
+      (HomotopyGroup.Pi 1 (stereographic' 3 (-threeSphere_northPole)).source
+        threeSphere_equatorPointInSouthSource)
+
+/--
+The equatorial source-`π₁` statement expands to triviality of the north and
+south chart-source `π₁`s at the common overlap basepoint.
+-/
+theorem threeSphereStereographicEquatorSourcePiOneSubsingletonStatement_eq :
+    ThreeSphereStereographicEquatorSourcePiOneSubsingletonStatement =
+      (Subsingleton
+        (HomotopyGroup.Pi 1 (stereographic' 3 threeSphere_northPole).source
+          threeSphere_equatorPointInNorthSource) ∧
+      Subsingleton
+        (HomotopyGroup.Pi 1 (stereographic' 3 (-threeSphere_northPole)).source
+          threeSphere_equatorPointInSouthSource)) :=
+  rfl
+
+/--
+Pointwise chart-source `π₁` triviality supplies the equatorial source-`π₁`
+input pair.
+-/
+theorem threeSphere_stereographicEquatorSourcePiOneSubsingletonStatement_of_sourcePiOneSubsingletonStatement
+    (h : ThreeSphereStereographicSourcePiOneSubsingletonStatement) :
+    ThreeSphereStereographicEquatorSourcePiOneSubsingletonStatement := by
+  exact
+    ⟨h.1 threeSphere_equatorPointInNorthSource,
+      h.2 threeSphere_equatorPointInSouthSource⟩
+
+/--
+The source-`π₁`-to-equatorial-source route specializes the two pointwise source
+families at the named equatorial source points.
+-/
+theorem threeSphere_stereographicEquatorSourcePiOneSubsingletonStatement_of_sourcePiOneSubsingletonStatement_eq :
+    threeSphere_stereographicEquatorSourcePiOneSubsingletonStatement_of_sourcePiOneSubsingletonStatement =
+      (fun h : ThreeSphereStereographicSourcePiOneSubsingletonStatement =>
+        ⟨h.1 threeSphere_equatorPointInNorthSource,
+          h.2 threeSphere_equatorPointInSouthSource⟩) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The concrete north and south chart sources have trivial `π₁` at the common
+equatorial overlap basepoint.
+-/
+theorem threeSphere_stereographicEquatorSourcePiOneSubsingletonStatement :
+    ThreeSphereStereographicEquatorSourcePiOneSubsingletonStatement :=
+  threeSphere_stereographicEquatorSourcePiOneSubsingletonStatement_of_sourcePiOneSubsingletonStatement
+    threeSphere_stereographicSourcePiOneSubsingletonStatement
+
+/--
+The concrete equatorial source-`π₁` statement is obtained by specializing the
+already proved pointwise source-`π₁` statement.
+-/
+theorem threeSphere_stereographicEquatorSourcePiOneSubsingletonStatement_eq :
+    threeSphere_stereographicEquatorSourcePiOneSubsingletonStatement =
+      threeSphere_stereographicEquatorSourcePiOneSubsingletonStatement_of_sourcePiOneSubsingletonStatement
+        threeSphere_stereographicSourcePiOneSubsingletonStatement := by
+  apply Subsingleton.elim
+
+/--
+The verified stereographic Van Kampen input bundle enriched with the chart
+source `π₁` computations that a later Van Kampen proof must consume.
+-/
+def ThreeSphereStereographicVanKampenPiOneInputsStatement : Prop :=
+  ThreeSphereStereographicVanKampenInputsStatement ∧
+    ThreeSphereStereographicSourcePiOneSubsingletonStatement
+
+/--
+The enriched Van Kampen `π₁` input statement is exactly the verified
+topological input tuple paired with pointwise source-`π₁` triviality.
+-/
+theorem threeSphereStereographicVanKampenPiOneInputsStatement_eq :
+    ThreeSphereStereographicVanKampenPiOneInputsStatement =
+      (ThreeSphereStereographicVanKampenInputsStatement ∧
+        ThreeSphereStereographicSourcePiOneSubsingletonStatement) :=
+  rfl
+
+/--
+The concrete stereographic cover supplies both the topological Van Kampen
+inputs and the source `π₁` inputs.
+-/
+theorem threeSphere_stereographicVanKampenPiOneInputsStatement :
+    ThreeSphereStereographicVanKampenPiOneInputsStatement :=
+  ⟨threeSphere_stereographicCoverOverlapPackage_vanKampenInputs,
+    threeSphere_stereographicSourcePiOneSubsingletonStatement⟩
+
+/--
+The concrete enriched Van Kampen input bundle is assembled from the named
+topological input tuple and source-`π₁` tuple.
+-/
+theorem threeSphere_stereographicVanKampenPiOneInputsStatement_eq :
+    threeSphere_stereographicVanKampenPiOneInputsStatement =
+      ⟨threeSphere_stereographicCoverOverlapPackage_vanKampenInputs,
+        threeSphere_stereographicSourcePiOneSubsingletonStatement⟩ := by
+  apply Subsingleton.elim
+
+/-- Project the topological inputs out of the enriched Van Kampen `π₁` bundle. -/
+theorem threeSphere_stereographicVanKampenInputsStatement_of_vanKampenPiOneInputsStatement
+    (h : ThreeSphereStereographicVanKampenPiOneInputsStatement) :
+    ThreeSphereStereographicVanKampenInputsStatement :=
+  h.1
+
+/--
+The enriched-input-to-topological-input projection is the first projection of
+the paired input bundle.
+-/
+theorem threeSphere_stereographicVanKampenInputsStatement_of_vanKampenPiOneInputsStatement_eq :
+    threeSphere_stereographicVanKampenInputsStatement_of_vanKampenPiOneInputsStatement =
+      (fun h : ThreeSphereStereographicVanKampenPiOneInputsStatement => h.1) :=
+  rfl
+
+/-- Project the source `π₁` inputs out of the enriched Van Kampen `π₁` bundle. -/
+theorem threeSphere_stereographicSourcePiOneSubsingletonStatement_of_vanKampenPiOneInputsStatement
+    (h : ThreeSphereStereographicVanKampenPiOneInputsStatement) :
+    ThreeSphereStereographicSourcePiOneSubsingletonStatement :=
+  h.2
+
+/--
+The enriched-input-to-source-`π₁` projection is the second projection of the
+paired input bundle.
+-/
+theorem threeSphere_stereographicSourcePiOneSubsingletonStatement_of_vanKampenPiOneInputsStatement_eq :
+    threeSphere_stereographicSourcePiOneSubsingletonStatement_of_vanKampenPiOneInputsStatement =
+      (fun h : ThreeSphereStereographicVanKampenPiOneInputsStatement => h.2) :=
+  rfl
+
+/--
+The enriched Van Kampen `π₁` input bundle also supplies the source `π₁`
+computations specialized at the equatorial overlap basepoint.
+-/
+theorem threeSphere_stereographicEquatorSourcePiOneSubsingletonStatement_of_vanKampenPiOneInputsStatement
+    (h : ThreeSphereStereographicVanKampenPiOneInputsStatement) :
+    ThreeSphereStereographicEquatorSourcePiOneSubsingletonStatement :=
+  threeSphere_stereographicEquatorSourcePiOneSubsingletonStatement_of_sourcePiOneSubsingletonStatement
+    h.2
+
+/--
+The enriched-input-to-equatorial-source-`π₁` route projects the source-`π₁`
+tuple and specializes it at the equatorial source points.
+-/
+theorem threeSphere_stereographicEquatorSourcePiOneSubsingletonStatement_of_vanKampenPiOneInputsStatement_eq :
+    threeSphere_stereographicEquatorSourcePiOneSubsingletonStatement_of_vanKampenPiOneInputsStatement =
+      (fun h : ThreeSphereStereographicVanKampenPiOneInputsStatement =>
+        threeSphere_stereographicEquatorSourcePiOneSubsingletonStatement_of_sourcePiOneSubsingletonStatement
+          h.2) := by
+  funext h
   apply Subsingleton.elim
 
 /-- The target 3-sphere is path-connected as a subset of Euclidean space. -/
@@ -1441,6 +2990,105 @@ theorem threeSphereStereographicVanKampenLoopStatement_eq :
   rfl
 
 /--
+The remaining finite-concat collapse obligation for the stereographic Van
+Kampen loop proof: every finite source-contained representative chosen for an
+equatorial based loop is equal in the path-homotopy quotient to the stationary
+loop, with endpoint casts matching the subdivision endpoints.
+-/
+def ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement :
+    Prop :=
+  ∀ γ : Path threeSphere_equatorPoint threeSphere_equatorPoint,
+    ∀ (N : ℕ) (t : Fin (N + 1) → unitInterval)
+      (h0 : t 0 = 0) (h1 : t (Fin.last N) = 1),
+      (∀ k : Fin N,
+        Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+            (stereographic' 3 threeSphere_northPole).source ∨
+          Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+            (stereographic' 3 (-threeSphere_northPole)).source) →
+      Path.Homotopic.Quotient.mk
+        (Path.concat (γ ∘ t) (fun k => γ.subpath (t k.castSucc) (t k.succ))) =
+        Path.Homotopic.Quotient.mk
+          ((Path.refl threeSphere_equatorPoint).cast
+            (by simp [h0]) (by simp [h1]))
+
+/--
+The finite-concat collapse statement expands to the cast-aware quotient
+nullity contract for finite source-contained representatives.
+-/
+theorem threeSphereStereographicEquatorLoopFiniteConcatCollapseStatement_eq :
+    ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement =
+      (∀ γ : Path threeSphere_equatorPoint threeSphere_equatorPoint,
+        ∀ (N : ℕ) (t : Fin (N + 1) → unitInterval)
+          (h0 : t 0 = 0) (h1 : t (Fin.last N) = 1),
+          (∀ k : Fin N,
+            Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+                (stereographic' 3 threeSphere_northPole).source ∨
+              Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+                (stereographic' 3 (-threeSphere_northPole)).source) →
+          Path.Homotopic.Quotient.mk
+            (Path.concat (γ ∘ t) (fun k => γ.subpath (t k.castSucc) (t k.succ))) =
+            Path.Homotopic.Quotient.mk
+              ((Path.refl threeSphere_equatorPoint).cast
+                (by simp [h0]) (by simp [h1]))) :=
+  rfl
+
+/--
+Finite-concat quotient representatives plus their cast-aware quotient collapse
+to the stationary loop supply the equatorial Van Kampen loop obligation.
+-/
+theorem threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatQuotientStatement_and_finiteConcatCollapseStatement
+    (hquotient : ThreeSphereStereographicEquatorLoopFiniteConcatQuotientStatement)
+    (hcollapse : ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement) :
+    ThreeSphereStereographicVanKampenLoopStatement := by
+  rw [threeSphereStereographicVanKampenLoopStatement_eq,
+    threeSphereBasedLoopNullhomotopyStatement_eq]
+  intro γ
+  rcases hquotient γ with ⟨N, t, h0, h1, hsegment, hquot⟩
+  simpa [h0, h1] using
+    Path.Homotopic.Quotient.eq.mp
+      (hquot.symm.trans (hcollapse γ N t h0 h1 hsegment))
+
+/--
+The quotient-and-collapse-to-loop route uses the finite-concat quotient equality
+for a loop and then the matching cast-aware quotient collapse.
+-/
+theorem threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatQuotientStatement_and_finiteConcatCollapseStatement_eq :
+    threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatQuotientStatement_and_finiteConcatCollapseStatement =
+      (fun hquotient hcollapse =>
+        by
+          rw [threeSphereStereographicVanKampenLoopStatement_eq,
+            threeSphereBasedLoopNullhomotopyStatement_eq]
+          intro γ
+          rcases hquotient γ with ⟨N, t, h0, h1, hsegment, hquot⟩
+          simpa [h0, h1] using
+            Path.Homotopic.Quotient.eq.mp
+              (hquot.symm.trans (hcollapse γ N t h0 h1 hsegment))) := by
+  funext hquotient hcollapse
+  apply Subsingleton.elim
+
+/--
+Using the concrete finite-concat quotient statement, it remains only to prove
+the finite-concat collapse contract to obtain the Van Kampen loop obligation.
+-/
+theorem threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatCollapseStatement
+    (hcollapse : ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement) :
+    ThreeSphereStereographicVanKampenLoopStatement :=
+  threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatQuotientStatement_and_finiteConcatCollapseStatement
+    threeSphere_stereographicEquatorLoopFiniteConcatQuotientStatement
+    hcollapse
+
+/--
+The concrete finite-concat-collapse route is the quotient-and-collapse route
+specialized to the verified finite-concat quotient statement.
+-/
+theorem threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatCollapseStatement_eq :
+    threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatCollapseStatement =
+      threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatQuotientStatement_and_finiteConcatCollapseStatement
+        threeSphere_stereographicEquatorLoopFiniteConcatQuotientStatement := by
+  funext hcollapse
+  apply Subsingleton.elim
+
+/--
 The stereographic Van Kampen reduction for `S^3`: the concrete cover satisfies
 the standard topological inputs, and the only remaining conclusion is the
 equatorial based-loop nullhomotopy obligation.
@@ -1477,6 +3125,95 @@ theorem threeSphereStereographicVanKampenConclusionStatement_eq :
       (ThreeSphereStereographicVanKampenInputsStatement →
         ThreeSphereStereographicVanKampenLoopStatement) :=
   rfl
+
+/--
+The `π₁`-level output expected from the stereographic Van Kampen computation:
+from the verified cover inputs, the first homotopy group at the equatorial
+overlap basepoint is trivial as a type.
+-/
+def ThreeSphereStereographicVanKampenPiOneSubsingletonStatement : Prop :=
+  ThreeSphereStereographicVanKampenInputsStatement →
+    Subsingleton (HomotopyGroup.Pi 1 ThreeSphere threeSphere_equatorPoint)
+
+/--
+The stereographic Van Kampen `π₁` output contract expands to a triviality
+statement for the equatorial first homotopy group under the verified inputs.
+-/
+theorem threeSphereStereographicVanKampenPiOneSubsingletonStatement_eq :
+    ThreeSphereStereographicVanKampenPiOneSubsingletonStatement =
+      (ThreeSphereStereographicVanKampenInputsStatement →
+        Subsingleton (HomotopyGroup.Pi 1 ThreeSphere threeSphere_equatorPoint)) :=
+  rfl
+
+/--
+General two-open-set Seifert--Van Kampen `π₁` contract needed by the concrete
+stereographic cover: if `U` and `V` are simply connected open sets covering
+`X`, with path-connected overlap containing the basepoint, then `π₁(X)` at
+that basepoint is trivial as a type.
+-/
+def TwoSetOpenCoverVanKampenPiOneSubsingletonStatement : Prop :=
+  ∀ {X : Type u} [TopologicalSpace X] (U V : Set X) (basepoint : X),
+    IsOpen U → IsOpen V → IsOpen (U ∩ V) → U ∪ V = Set.univ →
+    basepoint ∈ U ∩ V →
+    SimplyConnectedSpace U →
+    SimplyConnectedSpace V →
+    PathConnectedSpace (U ∩ V : Set X) →
+    Subsingleton (HomotopyGroup.Pi 1 X basepoint)
+
+/--
+The general two-open-set Van Kampen `π₁` contract expands to the usual
+simply-connected-open-cover hypotheses and a trivial `π₁` conclusion.
+-/
+theorem twoSetOpenCoverVanKampenPiOneSubsingletonStatement_eq :
+    TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{u} =
+      (∀ {X : Type u} [TopologicalSpace X] (U V : Set X) (basepoint : X),
+        IsOpen U → IsOpen V → IsOpen (U ∩ V) → U ∪ V = Set.univ →
+        basepoint ∈ U ∩ V →
+        SimplyConnectedSpace U →
+        SimplyConnectedSpace V →
+        PathConnectedSpace (U ∩ V : Set X) →
+        Subsingleton (HomotopyGroup.Pi 1 X basepoint)) :=
+  rfl
+
+/--
+The general two-set Van Kampen `π₁` contract specializes to the concrete
+north/south stereographic cover and supplies the stereographic `π₁` output
+surface.
+-/
+theorem threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0}) :
+    ThreeSphereStereographicVanKampenPiOneSubsingletonStatement := by
+  intro inputs
+  rcases inputs with
+    ⟨northSimple, southSimple, northOpen, southOpen, cover, overlapOpen,
+      overlapPath, basepoint, _overlapNonempty⟩
+  exact hVK
+    (stereographic' 3 threeSphere_northPole).source
+    (stereographic' 3 (-threeSphere_northPole)).source
+    threeSphere_equatorPoint
+    northOpen southOpen overlapOpen cover basepoint
+    northSimple southSimple overlapPath
+
+/--
+The concrete specialization of the two-set Van Kampen contract consumes exactly
+the fields of `ThreeSphereStereographicVanKampenInputsStatement`.
+-/
+theorem threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_twoSetOpenCoverVanKampen_eq :
+    threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        fun inputs : ThreeSphereStereographicVanKampenInputsStatement =>
+          by
+            rcases inputs with
+              ⟨northSimple, southSimple, northOpen, southOpen, cover, overlapOpen,
+                overlapPath, basepoint, _overlapNonempty⟩
+            exact hVK
+              (stereographic' 3 threeSphere_northPole).source
+              (stereographic' 3 (-threeSphere_northPole)).source
+              threeSphere_equatorPoint
+              northOpen southOpen overlapOpen cover basepoint
+              northSimple southSimple overlapPath) := by
+  funext hVK inputs
+  apply Subsingleton.elim
 
 /--
 The concrete stereographic Van Kampen conclusion fills the full reduction,
@@ -2552,6 +4289,90 @@ theorem threeSphere_pathHomotopyStatement_iff_pathQuotientSubsingletonStatement_
   apply Subsingleton.elim
 
 /--
+At a fixed basepoint, uniqueness of the based path-homotopy quotient is
+equivalent to nullhomotopy of every loop based there.
+-/
+theorem threeSphere_basedPathQuotientSubsingleton_iff_basedLoopNullhomotopyStatement
+    (basepoint : ThreeSphere) :
+    Subsingleton (Path.Homotopic.Quotient basepoint basepoint) ↔
+      ThreeSphereBasedLoopNullhomotopyStatement basepoint := by
+  rw [threeSphereBasedLoopNullhomotopyStatement_eq]
+  constructor
+  · intro h γ
+    rw [← Path.Homotopic.Quotient.eq]
+    exact h.elim (⟦γ⟧ : Path.Homotopic.Quotient basepoint basepoint)
+      ⟦Path.refl basepoint⟧
+  · intro h
+    rw [subsingleton_iff]
+    intro a b
+    induction a using Quotient.inductionOn with
+    | h γ =>
+      induction b using Quotient.inductionOn with
+      | h δ =>
+        exact Quotient.sound ((h γ).trans (h δ).symm)
+
+/--
+The fixed-basepoint path-quotient/loop-nullhomotopy equivalence is the based
+quotient subsingleton criterion at that basepoint.
+-/
+theorem threeSphere_basedPathQuotientSubsingleton_iff_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    threeSphere_basedPathQuotientSubsingleton_iff_basedLoopNullhomotopyStatement
+        basepoint =
+      (by
+        rw [threeSphereBasedLoopNullhomotopyStatement_eq]
+        constructor
+        · intro h γ
+          rw [← Path.Homotopic.Quotient.eq]
+          exact h.elim (⟦γ⟧ : Path.Homotopic.Quotient basepoint basepoint)
+            ⟦Path.refl basepoint⟧
+        · intro h
+          rw [subsingleton_iff]
+          intro a b
+          induction a using Quotient.inductionOn with
+          | h γ =>
+            induction b using Quotient.inductionOn with
+            | h δ =>
+              exact Quotient.sound ((h γ).trans (h δ).symm)) := by
+  apply Subsingleton.elim
+
+/--
+A fixed-basepoint based path-quotient computation supplies the global
+path-quotient formulation through the based-loop route.
+-/
+theorem threeSphere_pathQuotientSubsingletonStatement_of_basedPathQuotientSubsingleton
+    {basepoint : ThreeSphere}
+    (h : Subsingleton (Path.Homotopic.Quotient basepoint basepoint)) :
+    ThreeSpherePathQuotientSubsingletonStatement := by
+  let hLoop :=
+    (threeSphere_basedPathQuotientSubsingleton_iff_basedLoopNullhomotopyStatement
+      basepoint).mp h
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hLoop
+  exact threeSphere_pathQuotientSubsingletonStatement_of_simplyConnectedSpace
+
+/--
+The fixed path-quotient-to-global path-quotient route factors through the
+fixed-basepoint based-loop equivalence.
+-/
+theorem threeSphere_pathQuotientSubsingletonStatement_of_basedPathQuotientSubsingleton_eq
+    (basepoint : ThreeSphere) :
+    (fun h : Subsingleton (Path.Homotopic.Quotient basepoint basepoint) =>
+      (threeSphere_pathQuotientSubsingletonStatement_of_basedPathQuotientSubsingleton h :
+        ThreeSpherePathQuotientSubsingletonStatement)) =
+      (fun h : Subsingleton (Path.Homotopic.Quotient basepoint basepoint) =>
+        (by
+          let hLoop :=
+            (threeSphere_basedPathQuotientSubsingleton_iff_basedLoopNullhomotopyStatement
+              basepoint).mp h
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hLoop
+          exact threeSphere_pathQuotientSubsingletonStatement_of_simplyConnectedSpace :
+            ThreeSpherePathQuotientSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The fundamental-group formulation of the remaining simple-connectedness
 obligation for the standard 3-sphere: every based fundamental group is trivial
 as a type.
@@ -2567,6 +4388,95 @@ theorem threeSphereFundamentalGroupSubsingletonStatement_eq :
     ThreeSphereFundamentalGroupSubsingletonStatement =
       (∀ x : ThreeSphere, Subsingleton (FundamentalGroup ThreeSphere x)) :=
   rfl
+
+/--
+At a fixed basepoint, triviality of the fundamental group is equivalent to
+nullhomotopy of every loop based there.
+-/
+theorem threeSphere_basedFundamentalGroupSubsingleton_iff_basedLoopNullhomotopyStatement
+    (basepoint : ThreeSphere) :
+    Subsingleton (FundamentalGroup ThreeSphere basepoint) ↔
+      ThreeSphereBasedLoopNullhomotopyStatement basepoint := by
+  rw [threeSphereBasedLoopNullhomotopyStatement_eq]
+  constructor
+  · intro h γ
+    rw [← Path.Homotopic.Quotient.eq]
+    exact h.elim (⟦γ⟧ : Path.Homotopic.Quotient basepoint basepoint)
+      ⟦Path.refl basepoint⟧
+  · intro h
+    change Subsingleton (Path.Homotopic.Quotient basepoint basepoint)
+    rw [subsingleton_iff]
+    intro a b
+    induction a using Quotient.inductionOn with
+    | h γ =>
+      induction b using Quotient.inductionOn with
+      | h δ =>
+        exact Quotient.sound ((h γ).trans (h δ).symm)
+
+/--
+The fixed-basepoint fundamental-group/loop-nullhomotopy equivalence is the
+path quotient subsingleton criterion at that basepoint.
+-/
+theorem threeSphere_basedFundamentalGroupSubsingleton_iff_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    threeSphere_basedFundamentalGroupSubsingleton_iff_basedLoopNullhomotopyStatement
+        basepoint =
+      (by
+        rw [threeSphereBasedLoopNullhomotopyStatement_eq]
+        constructor
+        · intro h γ
+          rw [← Path.Homotopic.Quotient.eq]
+          exact h.elim (⟦γ⟧ : Path.Homotopic.Quotient basepoint basepoint)
+            ⟦Path.refl basepoint⟧
+        · intro h
+          change Subsingleton (Path.Homotopic.Quotient basepoint basepoint)
+          rw [subsingleton_iff]
+          intro a b
+          induction a using Quotient.inductionOn with
+          | h γ =>
+            induction b using Quotient.inductionOn with
+            | h δ =>
+              exact Quotient.sound ((h γ).trans (h δ).symm)) := by
+  apply Subsingleton.elim
+
+/--
+A fixed-basepoint fundamental-group computation supplies the global
+fundamental-group formulation through the based-loop route.
+-/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_basedFundamentalGroupSubsingleton
+    {basepoint : ThreeSphere}
+    (h : Subsingleton (FundamentalGroup ThreeSphere basepoint)) :
+    ThreeSphereFundamentalGroupSubsingletonStatement := by
+  let hLoop :=
+    (threeSphere_basedFundamentalGroupSubsingleton_iff_basedLoopNullhomotopyStatement
+      basepoint).mp h
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hLoop
+  intro x
+  change Subsingleton (Path.Homotopic.Quotient x x)
+  infer_instance
+
+/--
+The fixed fundamental-group-to-global fundamental-group route factors through
+the fixed-basepoint based-loop equivalence.
+-/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_basedFundamentalGroupSubsingleton_eq
+    (basepoint : ThreeSphere) :
+    (fun h : Subsingleton (FundamentalGroup ThreeSphere basepoint) =>
+      (threeSphere_fundamentalGroupSubsingletonStatement_of_basedFundamentalGroupSubsingleton h :
+        ThreeSphereFundamentalGroupSubsingletonStatement)) =
+      (fun h : Subsingleton (FundamentalGroup ThreeSphere basepoint) =>
+        (by
+          let hLoop :=
+            (threeSphere_basedFundamentalGroupSubsingleton_iff_basedLoopNullhomotopyStatement
+              basepoint).mp h
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hLoop
+          intro x
+          change Subsingleton (Path.Homotopic.Quotient x x)
+          infer_instance : ThreeSphereFundamentalGroupSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
 
 /--
 Simple-connectedness of the standard sphere gives the fundamental-group
@@ -2702,6 +4612,233 @@ theorem threeSpherePiOneSubsingletonStatement_eq :
     ThreeSpherePiOneSubsingletonStatement =
       (∀ x : ThreeSphere, Subsingleton (HomotopyGroup.Pi 1 ThreeSphere x)) :=
   rfl
+
+/--
+At a fixed basepoint, triviality of `π₁` is equivalent to nullhomotopy of every
+loop based there.
+-/
+theorem threeSphere_basedPiOneSubsingleton_iff_basedLoopNullhomotopyStatement
+    (basepoint : ThreeSphere) :
+    Subsingleton (HomotopyGroup.Pi 1 ThreeSphere basepoint) ↔
+      ThreeSphereBasedLoopNullhomotopyStatement basepoint :=
+  ((HomotopyGroup.pi1EquivFundamentalGroup
+    (X := ThreeSphere) (x := basepoint)).subsingleton_congr).trans
+      (threeSphere_basedFundamentalGroupSubsingleton_iff_basedLoopNullhomotopyStatement
+        basepoint)
+
+/--
+The fixed-basepoint `π₁`/loop-nullhomotopy equivalence factors through
+mathlib's `π₁`/fundamental-group equivalence and the fixed-basepoint
+fundamental-group bridge.
+-/
+theorem threeSphere_basedPiOneSubsingleton_iff_basedLoopNullhomotopyStatement_eq
+    (basepoint : ThreeSphere) :
+    threeSphere_basedPiOneSubsingleton_iff_basedLoopNullhomotopyStatement basepoint =
+      (((HomotopyGroup.pi1EquivFundamentalGroup
+        (X := ThreeSphere) (x := basepoint)).subsingleton_congr).trans
+          (threeSphere_basedFundamentalGroupSubsingleton_iff_basedLoopNullhomotopyStatement
+            basepoint)) := by
+  apply Subsingleton.elim
+
+/--
+A fixed-basepoint `π₁` computation supplies the global `π₁` formulation through
+the based-loop route.
+-/
+theorem threeSphere_piOneSubsingletonStatement_of_basedPiOneSubsingleton
+    {basepoint : ThreeSphere}
+    (h : Subsingleton (HomotopyGroup.Pi 1 ThreeSphere basepoint)) :
+    ThreeSpherePiOneSubsingletonStatement := by
+  let hLoop :=
+    (threeSphere_basedPiOneSubsingleton_iff_basedLoopNullhomotopyStatement
+      basepoint).mp h
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hLoop
+  intro x
+  exact ((HomotopyGroup.pi1EquivFundamentalGroup
+    (X := ThreeSphere) (x := x)).subsingleton_congr).mpr (by
+      change Subsingleton (Path.Homotopic.Quotient x x)
+      infer_instance)
+
+/--
+The fixed `π₁`-to-global `π₁` route factors through the fixed-basepoint
+based-loop equivalence.
+-/
+theorem threeSphere_piOneSubsingletonStatement_of_basedPiOneSubsingleton_eq
+    (basepoint : ThreeSphere) :
+    (fun h : Subsingleton (HomotopyGroup.Pi 1 ThreeSphere basepoint) =>
+      (threeSphere_piOneSubsingletonStatement_of_basedPiOneSubsingleton h :
+        ThreeSpherePiOneSubsingletonStatement)) =
+      (fun h : Subsingleton (HomotopyGroup.Pi 1 ThreeSphere basepoint) =>
+        (by
+          let hLoop :=
+            (threeSphere_basedPiOneSubsingleton_iff_basedLoopNullhomotopyStatement
+              basepoint).mp h
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hLoop
+          intro x
+          exact ((HomotopyGroup.pi1EquivFundamentalGroup
+            (X := ThreeSphere) (x := x)).subsingleton_congr).mpr (by
+              change Subsingleton (Path.Homotopic.Quotient x x)
+              infer_instance) : ThreeSpherePiOneSubsingletonStatement)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+Triviality of `π₁` at the equatorial overlap point supplies the stereographic
+Van Kampen loop obligation.
+-/
+theorem threeSphere_stereographicVanKampenLoopStatement_of_equatorPiOneSubsingleton
+    (h : Subsingleton (HomotopyGroup.Pi 1 ThreeSphere threeSphere_equatorPoint)) :
+    ThreeSphereStereographicVanKampenLoopStatement :=
+  (threeSphere_basedPiOneSubsingleton_iff_basedLoopNullhomotopyStatement
+    threeSphere_equatorPoint).mp h
+
+/--
+The equatorial `π₁`-to-stereographic-loop route is the fixed-basepoint `π₁`
+criterion at the explicit overlap point.
+-/
+theorem threeSphere_stereographicVanKampenLoopStatement_of_equatorPiOneSubsingleton_eq :
+    threeSphere_stereographicVanKampenLoopStatement_of_equatorPiOneSubsingleton =
+      (fun h : Subsingleton (HomotopyGroup.Pi 1 ThreeSphere threeSphere_equatorPoint) =>
+        (threeSphere_basedPiOneSubsingleton_iff_basedLoopNullhomotopyStatement
+          threeSphere_equatorPoint).mp h) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+Triviality of `π₁` at the equatorial overlap point supplies the stereographic
+Van Kampen conclusion contract.
+-/
+theorem threeSphere_stereographicVanKampenConclusionStatement_of_equatorPiOneSubsingleton
+    (h : Subsingleton (HomotopyGroup.Pi 1 ThreeSphere threeSphere_equatorPoint)) :
+    ThreeSphereStereographicVanKampenConclusionStatement := by
+  intro _inputs
+  exact threeSphere_stereographicVanKampenLoopStatement_of_equatorPiOneSubsingleton h
+
+/--
+The equatorial `π₁`-to-stereographic-conclusion route ignores the already
+verified input tuple and returns the equatorial loop obligation.
+-/
+theorem threeSphere_stereographicVanKampenConclusionStatement_of_equatorPiOneSubsingleton_eq :
+    threeSphere_stereographicVanKampenConclusionStatement_of_equatorPiOneSubsingleton =
+      (fun h : Subsingleton (HomotopyGroup.Pi 1 ThreeSphere threeSphere_equatorPoint) =>
+        fun _inputs : ThreeSphereStereographicVanKampenInputsStatement =>
+          threeSphere_stereographicVanKampenLoopStatement_of_equatorPiOneSubsingleton h) := by
+  funext h inputs
+  apply Subsingleton.elim
+
+/--
+A stereographic Van Kampen `π₁` computation supplies the equatorial
+loop-nullhomotopy obligation after applying it to the verified concrete inputs.
+-/
+theorem threeSphere_stereographicVanKampenLoopStatement_of_stereographicVanKampenPiOneSubsingletonStatement
+    (h : ThreeSphereStereographicVanKampenPiOneSubsingletonStatement) :
+    ThreeSphereStereographicVanKampenLoopStatement :=
+  threeSphere_stereographicVanKampenLoopStatement_of_equatorPiOneSubsingleton
+    (h threeSphere_stereographicCoverOverlapPackage_vanKampenInputs)
+
+/--
+The `π₁`-output-to-loop route evaluates the Van Kampen output at the concrete
+stereographic input tuple and then uses the fixed-basepoint `π₁` bridge.
+-/
+theorem threeSphere_stereographicVanKampenLoopStatement_of_stereographicVanKampenPiOneSubsingletonStatement_eq :
+    threeSphere_stereographicVanKampenLoopStatement_of_stereographicVanKampenPiOneSubsingletonStatement =
+      (fun h : ThreeSphereStereographicVanKampenPiOneSubsingletonStatement =>
+        threeSphere_stereographicVanKampenLoopStatement_of_equatorPiOneSubsingleton
+          (h threeSphere_stereographicCoverOverlapPackage_vanKampenInputs)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+A stereographic Van Kampen `π₁` computation supplies the existing conclusion
+contract by converting each equatorial `π₁` triviality witness to a loop
+nullhomotopy witness.
+-/
+theorem threeSphere_stereographicVanKampenConclusionStatement_of_stereographicVanKampenPiOneSubsingletonStatement
+    (h : ThreeSphereStereographicVanKampenPiOneSubsingletonStatement) :
+    ThreeSphereStereographicVanKampenConclusionStatement := by
+  intro inputs
+  exact threeSphere_stereographicVanKampenLoopStatement_of_equatorPiOneSubsingleton
+    (h inputs)
+
+/--
+The `π₁`-output-to-conclusion route keeps the cover-input argument and applies
+the fixed-basepoint `π₁` bridge pointwise.
+-/
+theorem threeSphere_stereographicVanKampenConclusionStatement_of_stereographicVanKampenPiOneSubsingletonStatement_eq :
+    threeSphere_stereographicVanKampenConclusionStatement_of_stereographicVanKampenPiOneSubsingletonStatement =
+      (fun h : ThreeSphereStereographicVanKampenPiOneSubsingletonStatement =>
+        fun inputs : ThreeSphereStereographicVanKampenInputsStatement =>
+          threeSphere_stereographicVanKampenLoopStatement_of_equatorPiOneSubsingleton
+            (h inputs)) := by
+  funext h inputs
+  apply Subsingleton.elim
+
+/--
+A stereographic Van Kampen `π₁` computation supplies the full reduction package
+through the existing conclusion-to-reduction assembly route.
+-/
+theorem threeSphere_stereographicVanKampenReductionStatement_of_stereographicVanKampenPiOneSubsingletonStatement
+    (h : ThreeSphereStereographicVanKampenPiOneSubsingletonStatement) :
+    ThreeSphereStereographicVanKampenReductionStatement :=
+  threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement
+    (threeSphere_stereographicVanKampenConclusionStatement_of_stereographicVanKampenPiOneSubsingletonStatement h)
+
+/--
+The `π₁`-output-to-reduction route factors through the existing
+conclusion-to-reduction constructor.
+-/
+theorem threeSphere_stereographicVanKampenReductionStatement_of_stereographicVanKampenPiOneSubsingletonStatement_eq :
+    threeSphere_stereographicVanKampenReductionStatement_of_stereographicVanKampenPiOneSubsingletonStatement =
+      (fun h : ThreeSphereStereographicVanKampenPiOneSubsingletonStatement =>
+        threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement
+          (threeSphere_stereographicVanKampenConclusionStatement_of_stereographicVanKampenPiOneSubsingletonStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+A stereographic Van Kampen `π₁` computation supplies simple-connectedness of
+the standard sphere through the existing conclusion route.
+-/
+theorem threeSphere_simplyConnectedSpace_of_stereographicVanKampenPiOneSubsingletonStatement
+    (h : ThreeSphereStereographicVanKampenPiOneSubsingletonStatement) :
+    SimplyConnectedSpace ThreeSphere :=
+  threeSphere_simplyConnectedSpace_of_stereographicVanKampenConclusionStatement
+    (threeSphere_stereographicVanKampenConclusionStatement_of_stereographicVanKampenPiOneSubsingletonStatement h)
+
+/--
+The `π₁`-output-to-simple-connectedness route factors through the existing
+stereographic conclusion route.
+-/
+theorem threeSphere_simplyConnectedSpace_of_stereographicVanKampenPiOneSubsingletonStatement_eq :
+    threeSphere_simplyConnectedSpace_of_stereographicVanKampenPiOneSubsingletonStatement =
+      (fun h : ThreeSphereStereographicVanKampenPiOneSubsingletonStatement =>
+        threeSphere_simplyConnectedSpace_of_stereographicVanKampenConclusionStatement
+          (threeSphere_stereographicVanKampenConclusionStatement_of_stereographicVanKampenPiOneSubsingletonStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+A stereographic Van Kampen `π₁` computation at the equatorial point supplies
+the global `π₁` formulation through the fixed-basepoint bridge.
+-/
+theorem threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenPiOneSubsingletonStatement
+    (h : ThreeSphereStereographicVanKampenPiOneSubsingletonStatement) :
+    ThreeSpherePiOneSubsingletonStatement :=
+  threeSphere_piOneSubsingletonStatement_of_basedPiOneSubsingleton
+    (h threeSphere_stereographicCoverOverlapPackage_vanKampenInputs)
+
+/--
+The `π₁`-output-to-global-`π₁` route evaluates the Van Kampen output at the
+verified concrete inputs and then globalizes from the equatorial basepoint.
+-/
+theorem threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenPiOneSubsingletonStatement_eq :
+    threeSphere_piOneSubsingletonStatement_of_stereographicVanKampenPiOneSubsingletonStatement =
+      (fun h : ThreeSphereStereographicVanKampenPiOneSubsingletonStatement =>
+        threeSphere_piOneSubsingletonStatement_of_basedPiOneSubsingleton
+          (h threeSphere_stereographicCoverOverlapPackage_vanKampenInputs)) := by
+  funext h
+  apply Subsingleton.elim
 
 /--
 The `π₁` and fundamental-group formulations are equivalent through mathlib's

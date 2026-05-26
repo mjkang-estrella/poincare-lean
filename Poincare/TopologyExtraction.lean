@@ -1461,6 +1461,56 @@ theorem onePointThreeSpaceFundamentalGroupSubsingletonStatement_eq :
   rfl
 
 /--
+At a fixed compactification basepoint, triviality of the fundamental group is
+equivalent to nullhomotopy of every loop based there.
+-/
+theorem onePoint_threeSpace_basedFundamentalGroupSubsingleton_iff_basedLoopNullhomotopyStatement
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    Subsingleton (FundamentalGroup (OnePoint (EuclideanSpace ℝ (Fin 3))) basepoint) ↔
+      OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint := by
+  rw [onePointThreeSpaceBasedLoopNullhomotopyStatement_eq]
+  constructor
+  · intro h γ
+    rw [← Path.Homotopic.Quotient.eq]
+    exact h.elim (⟦γ⟧ : Path.Homotopic.Quotient basepoint basepoint)
+      ⟦Path.refl basepoint⟧
+  · intro h
+    change Subsingleton (Path.Homotopic.Quotient basepoint basepoint)
+    rw [subsingleton_iff]
+    intro a b
+    induction a using Quotient.inductionOn with
+    | h γ =>
+      induction b using Quotient.inductionOn with
+      | h δ =>
+        exact Quotient.sound ((h γ).trans (h δ).symm)
+
+/--
+The compactification fixed-basepoint fundamental-group/loop-nullhomotopy
+equivalence is the path quotient subsingleton criterion at that basepoint.
+-/
+theorem onePoint_threeSpace_basedFundamentalGroupSubsingleton_iff_basedLoopNullhomotopyStatement_eq
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    onePoint_threeSpace_basedFundamentalGroupSubsingleton_iff_basedLoopNullhomotopyStatement
+        basepoint =
+      (by
+        rw [onePointThreeSpaceBasedLoopNullhomotopyStatement_eq]
+        constructor
+        · intro h γ
+          rw [← Path.Homotopic.Quotient.eq]
+          exact h.elim (⟦γ⟧ : Path.Homotopic.Quotient basepoint basepoint)
+            ⟦Path.refl basepoint⟧
+        · intro h
+          change Subsingleton (Path.Homotopic.Quotient basepoint basepoint)
+          rw [subsingleton_iff]
+          intro a b
+          induction a using Quotient.inductionOn with
+          | h γ =>
+            induction b using Quotient.inductionOn with
+            | h δ =>
+              exact Quotient.sound ((h γ).trans (h δ).symm)) := by
+  apply Subsingleton.elim
+
+/--
 Compactification simple-connectedness gives subsingleton fundamental groups at
 all basepoints.
 -/
@@ -1592,6 +1642,62 @@ theorem onePointThreeSpacePiOneSubsingletonStatement_eq :
       (∀ x : OnePoint (EuclideanSpace ℝ (Fin 3)),
         Subsingleton (HomotopyGroup.Pi 1 (OnePoint (EuclideanSpace ℝ (Fin 3))) x)) :=
   rfl
+
+/--
+At a fixed compactification basepoint, triviality of `π₁` is equivalent to
+nullhomotopy of every loop based there.
+-/
+theorem onePoint_threeSpace_basedPiOneSubsingleton_iff_basedLoopNullhomotopyStatement
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    Subsingleton (HomotopyGroup.Pi 1 (OnePoint (EuclideanSpace ℝ (Fin 3))) basepoint) ↔
+      OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint :=
+  ((HomotopyGroup.pi1EquivFundamentalGroup
+    (X := OnePoint (EuclideanSpace ℝ (Fin 3))) (x := basepoint)).subsingleton_congr).trans
+      (onePoint_threeSpace_basedFundamentalGroupSubsingleton_iff_basedLoopNullhomotopyStatement
+        basepoint)
+
+/--
+The compactification fixed-basepoint `π₁`/loop-nullhomotopy equivalence factors
+through mathlib's `π₁`/fundamental-group equivalence and the fixed-basepoint
+fundamental-group bridge.
+-/
+theorem onePoint_threeSpace_basedPiOneSubsingleton_iff_basedLoopNullhomotopyStatement_eq
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    onePoint_threeSpace_basedPiOneSubsingleton_iff_basedLoopNullhomotopyStatement
+        basepoint =
+      (((HomotopyGroup.pi1EquivFundamentalGroup
+        (X := OnePoint (EuclideanSpace ℝ (Fin 3))) (x := basepoint)).subsingleton_congr).trans
+          (onePoint_threeSpace_basedFundamentalGroupSubsingleton_iff_basedLoopNullhomotopyStatement
+            basepoint)) := by
+  apply Subsingleton.elim
+
+/--
+At a fixed compactification basepoint, triviality of `π₁` is equivalent to the
+standard sphere north-pole loop-nullhomotopy obligation.
+-/
+theorem onePoint_threeSpace_basedPiOneSubsingleton_iff_threeSphereNorthPoleLoopNullhomotopyStatement
+    (onePointBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    Subsingleton
+        (HomotopyGroup.Pi 1 (OnePoint (EuclideanSpace ℝ (Fin 3))) onePointBasepoint) ↔
+      ThreeSphereNorthPoleLoopNullhomotopyStatement :=
+  (onePoint_threeSpace_basedPiOneSubsingleton_iff_basedLoopNullhomotopyStatement
+    onePointBasepoint).trans
+    (onePoint_threeSpace_basedLoopNullhomotopyStatement_iff_threeSphereBasedLoopNullhomotopyStatement
+      onePointBasepoint threeSphere_northPole)
+
+/--
+The compactification fixed `π₁`/north-pole equivalence factors through the
+compactification based-loop equivalence.
+-/
+theorem onePoint_threeSpace_basedPiOneSubsingleton_iff_threeSphereNorthPoleLoopNullhomotopyStatement_eq
+    (onePointBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    onePoint_threeSpace_basedPiOneSubsingleton_iff_threeSphereNorthPoleLoopNullhomotopyStatement
+        onePointBasepoint =
+      (onePoint_threeSpace_basedPiOneSubsingleton_iff_basedLoopNullhomotopyStatement
+        onePointBasepoint).trans
+        (onePoint_threeSpace_basedLoopNullhomotopyStatement_iff_threeSphereBasedLoopNullhomotopyStatement
+          onePointBasepoint threeSphere_northPole) := by
+  apply Subsingleton.elim
 
 /--
 The compactification `π₁` and fundamental-group formulations are equivalent
@@ -2156,6 +2262,81 @@ theorem onePointThreeSpacePathQuotientSubsingletonStatement_eq :
       (∀ x y : OnePoint (EuclideanSpace ℝ (Fin 3)),
         Subsingleton (Path.Homotopic.Quotient x y)) :=
   rfl
+
+/--
+At a fixed compactification basepoint, uniqueness of the based path-homotopy
+quotient is equivalent to nullhomotopy of every loop based there.
+-/
+theorem onePoint_threeSpace_basedPathQuotientSubsingleton_iff_basedLoopNullhomotopyStatement
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    Subsingleton (Path.Homotopic.Quotient basepoint basepoint) ↔
+      OnePointThreeSpaceBasedLoopNullhomotopyStatement basepoint := by
+  rw [onePointThreeSpaceBasedLoopNullhomotopyStatement_eq]
+  constructor
+  · intro h γ
+    rw [← Path.Homotopic.Quotient.eq]
+    exact h.elim (⟦γ⟧ : Path.Homotopic.Quotient basepoint basepoint)
+      ⟦Path.refl basepoint⟧
+  · intro h
+    rw [subsingleton_iff]
+    intro a b
+    induction a using Quotient.inductionOn with
+    | h γ =>
+      induction b using Quotient.inductionOn with
+      | h δ =>
+        exact Quotient.sound ((h γ).trans (h δ).symm)
+
+/--
+The compactification fixed-basepoint path-quotient/loop-nullhomotopy
+equivalence is the based quotient subsingleton criterion at that basepoint.
+-/
+theorem onePoint_threeSpace_basedPathQuotientSubsingleton_iff_basedLoopNullhomotopyStatement_eq
+    (basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    onePoint_threeSpace_basedPathQuotientSubsingleton_iff_basedLoopNullhomotopyStatement
+        basepoint =
+      (by
+        rw [onePointThreeSpaceBasedLoopNullhomotopyStatement_eq]
+        constructor
+        · intro h γ
+          rw [← Path.Homotopic.Quotient.eq]
+          exact h.elim (⟦γ⟧ : Path.Homotopic.Quotient basepoint basepoint)
+            ⟦Path.refl basepoint⟧
+        · intro h
+          rw [subsingleton_iff]
+          intro a b
+          induction a using Quotient.inductionOn with
+          | h γ =>
+            induction b using Quotient.inductionOn with
+            | h δ =>
+              exact Quotient.sound ((h γ).trans (h δ).symm)) := by
+  apply Subsingleton.elim
+
+/--
+At a fixed compactification basepoint, based path-quotient uniqueness is
+equivalent to the standard sphere north-pole loop-nullhomotopy obligation.
+-/
+theorem onePoint_threeSpace_basedPathQuotientSubsingleton_iff_threeSphereNorthPoleLoopNullhomotopyStatement
+    (onePointBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    Subsingleton (Path.Homotopic.Quotient onePointBasepoint onePointBasepoint) ↔
+      ThreeSphereNorthPoleLoopNullhomotopyStatement :=
+  (onePoint_threeSpace_basedPathQuotientSubsingleton_iff_basedLoopNullhomotopyStatement
+    onePointBasepoint).trans
+    (onePoint_threeSpace_basedLoopNullhomotopyStatement_iff_threeSphereBasedLoopNullhomotopyStatement
+      onePointBasepoint threeSphere_northPole)
+
+/--
+The compactification fixed path-quotient/north-pole equivalence factors through
+the compactification based-loop equivalence.
+-/
+theorem onePoint_threeSpace_basedPathQuotientSubsingleton_iff_threeSphereNorthPoleLoopNullhomotopyStatement_eq
+    (onePointBasepoint : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    onePoint_threeSpace_basedPathQuotientSubsingleton_iff_threeSphereNorthPoleLoopNullhomotopyStatement
+        onePointBasepoint =
+      (onePoint_threeSpace_basedPathQuotientSubsingleton_iff_basedLoopNullhomotopyStatement
+        onePointBasepoint).trans
+        (onePoint_threeSpace_basedLoopNullhomotopyStatement_iff_threeSphereBasedLoopNullhomotopyStatement
+          onePointBasepoint threeSphere_northPole) := by
+  apply Subsingleton.elim
 
 /--
 For the compactification model, simple-connectedness is equivalent to
@@ -22905,6 +23086,33 @@ theorem homeomorphism_of_topology_package_eq
       package.extractHomeomorphism M extinction :=
   rfl
 
+/--
+Universal finite extinction and a completed topology package recognize every
+target manifold as the one-point compactification model.
+-/
+theorem onePointThreeSpaceRecognitionStatement_of_finite_extinction_and_topology_package
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    OnePointThreeSpaceRecognitionStatement.{u} := by
+  intro M _top _t2 _charted _simple _compact
+  exact homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere
+    (homeomorphism_of_topology_package package M (finiteExtinction M))
+
+/--
+The topology-package one-point recognition route is the package homeomorphism
+projection followed by the inverse one-point compactification model map.
+-/
+theorem onePointThreeSpaceRecognitionStatement_of_finite_extinction_and_topology_package_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    onePointThreeSpaceRecognitionStatement_of_finite_extinction_and_topology_package
+      finiteExtinction package =
+      (by
+        intro M _top _t2 _charted _simple _compact
+        exact homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere
+          (homeomorphism_of_topology_package package M (finiteExtinction M))) := by
+  apply Subsingleton.elim
+
 /-- A completed topology package assembles classification data into the homeomorphism. -/
 theorem extinction_homeomorphism_assembly_of_topology_package
     (package : ExtinctionTopologyExtractionPackage.{u})
@@ -24950,6 +25158,63 @@ theorem topology_spherical_homeomorphism_lift_statement_of_lifted_homeomorphism_
   apply Subsingleton.elim
 
 /--
+The lifted homeomorphism derivation statement contains the narrower spherical
+trivial-quotient statement through its spherical homeomorphism-lift projection.
+-/
+theorem topology_spherical_trivial_quotient_statement_of_lifted_homeomorphism_derivation_statement
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (liftedDerivationStatement :
+      ExtinctionTopologyLiftedHomeomorphismDerivationStatement
+        M extinction homeomorphism) :
+    ExtinctionTopologySphericalTrivialQuotientStatement M extinction := by
+  rcases liftedDerivationStatement with
+    ⟨decomposition, primeDecomposition, irreducibility, connectedSumCollapse,
+      sphericalReduction, quotientModel, _universalCover,
+      fundamentalGroupComputation, deckGroupIdentification, deckGroupTriviality,
+      simplyConnectedRecognition, trivialQuotient,
+      _trivialQuotientHomeomorphism, _sphericalHomeomorphismLift,
+      _homeomorphismAssembly, _homeomorphismDerivation⟩
+  exact ⟨decomposition, primeDecomposition, irreducibility,
+    connectedSumCollapse, sphericalReduction, quotientModel,
+    fundamentalGroupComputation, deckGroupIdentification, deckGroupTriviality,
+    simplyConnectedRecognition, trivialQuotient⟩
+
+/--
+The trivial-quotient projection from the lifted homeomorphism derivation
+statement factors through its spherical homeomorphism-lift statement.
+-/
+theorem topology_spherical_trivial_quotient_statement_of_lifted_homeomorphism_derivation_statement_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (liftedDerivationStatement :
+      ExtinctionTopologyLiftedHomeomorphismDerivationStatement
+        M extinction homeomorphism) :
+    topology_spherical_trivial_quotient_statement_of_lifted_homeomorphism_derivation_statement
+        M extinction homeomorphism liftedDerivationStatement =
+      (by
+        rcases liftedDerivationStatement with
+          ⟨decomposition, primeDecomposition, irreducibility,
+            connectedSumCollapse, sphericalReduction, quotientModel,
+            _universalCover, fundamentalGroupComputation,
+            deckGroupIdentification, deckGroupTriviality,
+            simplyConnectedRecognition, trivialQuotient,
+            _trivialQuotientHomeomorphism, _sphericalHomeomorphismLift,
+            _homeomorphismAssembly, _homeomorphismDerivation⟩
+        exact ⟨decomposition, primeDecomposition, irreducibility,
+          connectedSumCollapse, sphericalReduction, quotientModel,
+          fundamentalGroupComputation, deckGroupIdentification,
+          deckGroupTriviality, simplyConnectedRecognition,
+          trivialQuotient⟩) := by
+  apply Subsingleton.elim
+
+/--
 The lifted homeomorphism derivation statement contains the final homeomorphism
 assembly statement.
 -/
@@ -25152,6 +25417,46 @@ theorem topology_simply_connected_recognition_statement_of_spherical_trivial_quo
           connectedSumCollapse, sphericalReduction,
           fundamentalGroupComputation, deckGroupTriviality,
           simplyConnectedRecognition⟩) := by
+  apply Subsingleton.elim
+
+/--
+The lifted homeomorphism derivation statement contains the narrower
+simply-connected recognition statement through its trivial-quotient projection.
+-/
+theorem topology_simply_connected_recognition_statement_of_lifted_homeomorphism_derivation_statement
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (liftedDerivationStatement :
+      ExtinctionTopologyLiftedHomeomorphismDerivationStatement
+        M extinction homeomorphism) :
+    ExtinctionTopologySimplyConnectedRecognitionStatement M extinction :=
+  topology_simply_connected_recognition_statement_of_spherical_trivial_quotient_statement
+    M extinction
+    (topology_spherical_trivial_quotient_statement_of_lifted_homeomorphism_derivation_statement
+      M extinction homeomorphism liftedDerivationStatement)
+
+/--
+The recognition projection from the lifted homeomorphism derivation statement
+factors through its spherical trivial-quotient statement.
+-/
+theorem topology_simply_connected_recognition_statement_of_lifted_homeomorphism_derivation_statement_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (liftedDerivationStatement :
+      ExtinctionTopologyLiftedHomeomorphismDerivationStatement
+        M extinction homeomorphism) :
+    topology_simply_connected_recognition_statement_of_lifted_homeomorphism_derivation_statement
+        M extinction homeomorphism liftedDerivationStatement =
+      topology_simply_connected_recognition_statement_of_spherical_trivial_quotient_statement
+        M extinction
+        (topology_spherical_trivial_quotient_statement_of_lifted_homeomorphism_derivation_statement
+          M extinction homeomorphism liftedDerivationStatement) := by
   apply Subsingleton.elim
 
 /--
@@ -25370,6 +25675,66 @@ theorem topology_spherical_trivial_quotient_statement_of_homeomorphism_assembly_
   apply Subsingleton.elim
 
 /--
+The fixed-manifold homeomorphism assembly statement contains the narrower
+simply-connected recognition statement through its trivial-quotient projection.
+-/
+theorem topology_simply_connected_recognition_statement_of_homeomorphism_assembly_statement
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (assemblyStatement :
+      ExtinctionTopologyHomeomorphismAssemblyStatement
+        M extinction homeomorphism) :
+    ExtinctionTopologySimplyConnectedRecognitionStatement M extinction :=
+  topology_simply_connected_recognition_statement_of_spherical_trivial_quotient_statement
+    M extinction
+    (topology_spherical_trivial_quotient_statement_of_homeomorphism_assembly_statement
+      M extinction homeomorphism assemblyStatement)
+
+/--
+The recognition projection from the homeomorphism assembly statement factors
+through its spherical trivial-quotient statement.
+-/
+theorem topology_simply_connected_recognition_statement_of_homeomorphism_assembly_statement_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (assemblyStatement :
+      ExtinctionTopologyHomeomorphismAssemblyStatement
+        M extinction homeomorphism) :
+    topology_simply_connected_recognition_statement_of_homeomorphism_assembly_statement
+        M extinction homeomorphism assemblyStatement =
+      topology_simply_connected_recognition_statement_of_spherical_trivial_quotient_statement
+        M extinction
+        (topology_spherical_trivial_quotient_statement_of_homeomorphism_assembly_statement
+          M extinction homeomorphism assemblyStatement) := by
+  apply Subsingleton.elim
+
+/--
+The full-derivation route to simply-connected recognition agrees with the
+route through the narrower homeomorphism assembly statement.
+-/
+theorem topology_simply_connected_recognition_statement_of_derivation_statement_assembly_route_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (derivationStatement :
+      ExtinctionTopologyDerivationStatement M extinction homeomorphism) :
+    topology_simply_connected_recognition_statement_of_derivation_statement
+        M extinction homeomorphism derivationStatement =
+      topology_simply_connected_recognition_statement_of_homeomorphism_assembly_statement
+        M extinction homeomorphism
+        (topology_homeomorphism_assembly_statement_of_derivation_statement
+          M extinction homeomorphism derivationStatement) := by
+  apply Subsingleton.elim
+
+/--
 The full-derivation route to the trivial-quotient substatement agrees with the
 route through the narrower homeomorphism assembly statement.
 -/
@@ -25490,6 +25855,103 @@ theorem topology_homeomorphism_derivation_statement_of_derivation_statement_lift
   apply Subsingleton.elim
 
 /--
+The fixed-manifold homeomorphism derivation statement contains the narrower
+homeomorphism assembly statement.
+-/
+theorem topology_homeomorphism_assembly_statement_of_homeomorphism_derivation_statement
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (derivationStatement :
+      ExtinctionTopologyHomeomorphismDerivationStatement
+        M extinction homeomorphism) :
+    ExtinctionTopologyHomeomorphismAssemblyStatement
+      M extinction homeomorphism := by
+  rcases derivationStatement with
+    ⟨decomposition, primeDecomposition, irreducibility,
+      connectedSumCollapse, sphericalReduction, fundamentalGroupComputation,
+      deckGroupTriviality, simplyConnectedRecognition, quotientModel,
+      deckGroupIdentification, trivialQuotient, homeomorphismAssembly,
+      _homeomorphismDerivation⟩
+  exact ⟨decomposition, primeDecomposition, irreducibility,
+    connectedSumCollapse, sphericalReduction, quotientModel,
+    fundamentalGroupComputation, deckGroupIdentification, deckGroupTriviality,
+    simplyConnectedRecognition, trivialQuotient, homeomorphismAssembly⟩
+
+/--
+The assembly projection from the homeomorphism derivation statement exposes
+exactly its stored final assembly witness.
+-/
+theorem topology_homeomorphism_assembly_statement_of_homeomorphism_derivation_statement_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (derivationStatement :
+      ExtinctionTopologyHomeomorphismDerivationStatement
+        M extinction homeomorphism) :
+    topology_homeomorphism_assembly_statement_of_homeomorphism_derivation_statement
+        M extinction homeomorphism derivationStatement =
+      (by
+        rcases derivationStatement with
+          ⟨decomposition, primeDecomposition, irreducibility,
+            connectedSumCollapse, sphericalReduction,
+            fundamentalGroupComputation, deckGroupTriviality,
+            simplyConnectedRecognition, quotientModel, deckGroupIdentification,
+            trivialQuotient, homeomorphismAssembly,
+            _homeomorphismDerivation⟩
+        exact ⟨decomposition, primeDecomposition, irreducibility,
+          connectedSumCollapse, sphericalReduction, quotientModel,
+          fundamentalGroupComputation, deckGroupIdentification,
+          deckGroupTriviality, simplyConnectedRecognition, trivialQuotient,
+          homeomorphismAssembly⟩) := by
+  apply Subsingleton.elim
+
+/--
+The lifted-derivation route to final assembly agrees with the route through
+the narrower homeomorphism derivation statement.
+-/
+theorem topology_homeomorphism_assembly_statement_of_lifted_homeomorphism_derivation_statement_derivation_route_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (liftedDerivationStatement :
+      ExtinctionTopologyLiftedHomeomorphismDerivationStatement
+        M extinction homeomorphism) :
+    topology_homeomorphism_assembly_statement_of_lifted_homeomorphism_derivation_statement
+        M extinction homeomorphism liftedDerivationStatement =
+      topology_homeomorphism_assembly_statement_of_homeomorphism_derivation_statement
+        M extinction homeomorphism
+        (topology_homeomorphism_derivation_statement_of_lifted_homeomorphism_derivation_statement
+          M extinction homeomorphism liftedDerivationStatement) := by
+  apply Subsingleton.elim
+
+/--
+The full-derivation route to final assembly agrees with the route through the
+narrower homeomorphism derivation statement.
+-/
+theorem topology_homeomorphism_assembly_statement_of_derivation_statement_derivation_route_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (derivationStatement :
+      ExtinctionTopologyDerivationStatement M extinction homeomorphism) :
+    topology_homeomorphism_assembly_statement_of_derivation_statement
+        M extinction homeomorphism derivationStatement =
+      topology_homeomorphism_assembly_statement_of_homeomorphism_derivation_statement
+        M extinction homeomorphism
+        (topology_homeomorphism_derivation_statement_of_derivation_statement
+          M extinction homeomorphism derivationStatement) := by
+  apply Subsingleton.elim
+
+/--
 The fixed-manifold homeomorphism derivation statement contains the spherical
 trivial-quotient substatement.
 -/
@@ -25546,6 +26008,27 @@ theorem topology_spherical_trivial_quotient_statement_of_homeomorphism_derivatio
   apply Subsingleton.elim
 
 /--
+The lifted-derivation route to the trivial quotient agrees with the route
+through the narrower homeomorphism derivation statement.
+-/
+theorem topology_spherical_trivial_quotient_statement_of_lifted_homeomorphism_derivation_statement_derivation_route_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (liftedDerivationStatement :
+      ExtinctionTopologyLiftedHomeomorphismDerivationStatement
+        M extinction homeomorphism) :
+    topology_spherical_trivial_quotient_statement_of_lifted_homeomorphism_derivation_statement
+        M extinction homeomorphism liftedDerivationStatement =
+      topology_spherical_trivial_quotient_statement_of_homeomorphism_derivation_statement
+        M extinction homeomorphism
+        (topology_homeomorphism_derivation_statement_of_lifted_homeomorphism_derivation_statement
+          M extinction homeomorphism liftedDerivationStatement) := by
+  apply Subsingleton.elim
+
+/--
 The full-derivation route to the trivial-quotient substatement agrees with the
 route through the narrower homeomorphism derivation statement.
 -/
@@ -25562,6 +26045,127 @@ theorem topology_spherical_trivial_quotient_statement_of_derivation_statement_de
       topology_spherical_trivial_quotient_statement_of_homeomorphism_derivation_statement
         M extinction homeomorphism
         (topology_homeomorphism_derivation_statement_of_derivation_statement
+          M extinction homeomorphism derivationStatement) := by
+  apply Subsingleton.elim
+
+/--
+The fixed-manifold homeomorphism derivation statement contains the narrower
+simply-connected recognition statement through its trivial-quotient projection.
+-/
+theorem topology_simply_connected_recognition_statement_of_homeomorphism_derivation_statement
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (derivationStatement :
+      ExtinctionTopologyHomeomorphismDerivationStatement
+        M extinction homeomorphism) :
+    ExtinctionTopologySimplyConnectedRecognitionStatement M extinction :=
+  topology_simply_connected_recognition_statement_of_spherical_trivial_quotient_statement
+    M extinction
+    (topology_spherical_trivial_quotient_statement_of_homeomorphism_derivation_statement
+      M extinction homeomorphism derivationStatement)
+
+/--
+The recognition projection from the homeomorphism derivation statement factors
+through its spherical trivial-quotient statement.
+-/
+theorem topology_simply_connected_recognition_statement_of_homeomorphism_derivation_statement_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (derivationStatement :
+      ExtinctionTopologyHomeomorphismDerivationStatement
+        M extinction homeomorphism) :
+    topology_simply_connected_recognition_statement_of_homeomorphism_derivation_statement
+        M extinction homeomorphism derivationStatement =
+      topology_simply_connected_recognition_statement_of_spherical_trivial_quotient_statement
+        M extinction
+        (topology_spherical_trivial_quotient_statement_of_homeomorphism_derivation_statement
+          M extinction homeomorphism derivationStatement) := by
+  apply Subsingleton.elim
+
+/--
+The lifted-derivation route to simply-connected recognition agrees with the
+route through the narrower homeomorphism derivation statement.
+-/
+theorem topology_simply_connected_recognition_statement_of_lifted_homeomorphism_derivation_statement_derivation_route_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (liftedDerivationStatement :
+      ExtinctionTopologyLiftedHomeomorphismDerivationStatement
+        M extinction homeomorphism) :
+    topology_simply_connected_recognition_statement_of_lifted_homeomorphism_derivation_statement
+        M extinction homeomorphism liftedDerivationStatement =
+      topology_simply_connected_recognition_statement_of_homeomorphism_derivation_statement
+        M extinction homeomorphism
+        (topology_homeomorphism_derivation_statement_of_lifted_homeomorphism_derivation_statement
+          M extinction homeomorphism liftedDerivationStatement) := by
+  apply Subsingleton.elim
+
+/--
+The full-derivation route to simply-connected recognition agrees with the
+route through the narrower homeomorphism derivation statement.
+-/
+theorem topology_simply_connected_recognition_statement_of_derivation_statement_derivation_route_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (derivationStatement :
+      ExtinctionTopologyDerivationStatement M extinction homeomorphism) :
+    topology_simply_connected_recognition_statement_of_derivation_statement
+        M extinction homeomorphism derivationStatement =
+      topology_simply_connected_recognition_statement_of_homeomorphism_derivation_statement
+        M extinction homeomorphism
+        (topology_homeomorphism_derivation_statement_of_derivation_statement
+          M extinction homeomorphism derivationStatement) := by
+  apply Subsingleton.elim
+
+/--
+The full-derivation route to simply-connected recognition agrees with the
+route through the lifted homeomorphism derivation statement.
+-/
+theorem topology_simply_connected_recognition_statement_of_derivation_statement_lifted_derivation_route_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (derivationStatement :
+      ExtinctionTopologyDerivationStatement M extinction homeomorphism) :
+    topology_simply_connected_recognition_statement_of_derivation_statement
+        M extinction homeomorphism derivationStatement =
+      topology_simply_connected_recognition_statement_of_lifted_homeomorphism_derivation_statement
+        M extinction homeomorphism
+        (topology_lifted_homeomorphism_derivation_statement_of_derivation_statement
+          M extinction homeomorphism derivationStatement) := by
+  apply Subsingleton.elim
+
+/--
+The full-derivation route to the trivial quotient agrees with the route through
+the lifted homeomorphism derivation statement.
+-/
+theorem topology_spherical_trivial_quotient_statement_of_derivation_statement_lifted_derivation_route_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (derivationStatement :
+      ExtinctionTopologyDerivationStatement M extinction homeomorphism) :
+    topology_spherical_trivial_quotient_statement_of_derivation_statement
+        M extinction homeomorphism derivationStatement =
+      topology_spherical_trivial_quotient_statement_of_lifted_homeomorphism_derivation_statement
+        M extinction homeomorphism
+        (topology_lifted_homeomorphism_derivation_statement_of_derivation_statement
           M extinction homeomorphism derivationStatement) := by
   apply Subsingleton.elim
 
@@ -26106,6 +26710,81 @@ theorem topology_extraction_statement_payload_of_extraction_statement_eq
         topology_homeomorphism_derivation_statement_of_extraction_statement
           topologyStatement M extinction⟩ := by
   apply Subsingleton.elim
+
+/--
+The theorem-shaped topology payload can also be rebuilt through the lifted
+homeomorphism derivation projection and its downstream routes.
+-/
+theorem topology_extraction_statement_payload_of_extraction_statement_to_lifted_derivation_projections_eq
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_extraction_statement
+      topologyStatement M extinction =
+      (by
+        let homeomorphism :=
+          homeomorphism_of_topology_extraction_statement
+            topologyStatement M extinction
+        let derivationStatement :=
+          topology_derivation_statement_of_extraction_statement
+            topologyStatement M extinction
+        let liftedDerivationStatement :=
+          topology_lifted_homeomorphism_derivation_statement_of_extraction_statement
+            topologyStatement M extinction
+        exact ⟨topologyStatement, homeomorphism, derivationStatement,
+          topology_classification_subobligations_of_extraction_statement
+            topologyStatement M extinction,
+          topology_simply_connected_recognition_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_spherical_trivial_quotient_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_spherical_homeomorphism_lift_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_homeomorphism_assembly_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_homeomorphism_derivation_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement⟩) := by
+  apply Subsingleton.elim
+
+/--
+The theorem-shaped topology payload exposes the lifted-derivation projection
+route under a direct endpoint name.
+-/
+theorem topology_extraction_statement_payload_of_extraction_statement_to_lifted_derivation_projections
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_extraction_statement
+      topologyStatement M extinction =
+      (by
+        let homeomorphism :=
+          homeomorphism_of_topology_extraction_statement
+            topologyStatement M extinction
+        let derivationStatement :=
+          topology_derivation_statement_of_extraction_statement
+            topologyStatement M extinction
+        let liftedDerivationStatement :=
+          topology_lifted_homeomorphism_derivation_statement_of_extraction_statement
+            topologyStatement M extinction
+        exact ⟨topologyStatement, homeomorphism, derivationStatement,
+          topology_classification_subobligations_of_extraction_statement
+            topologyStatement M extinction,
+          topology_simply_connected_recognition_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_spherical_trivial_quotient_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_spherical_homeomorphism_lift_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_homeomorphism_assembly_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_homeomorphism_derivation_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement⟩) :=
+  topology_extraction_statement_payload_of_extraction_statement_to_lifted_derivation_projections_eq
+    topologyStatement M extinction
 
 /--
 The theorem-shaped topology extraction statement supplies the existing
@@ -26850,6 +27529,41 @@ theorem topology_extraction_statement_payload_of_topology_package_to_extraction_
   apply Subsingleton.elim
 
 /--
+The fixed-extinction package payload exposes the package-built theorem-shaped
+projection route under a direct endpoint name.
+-/
+theorem topology_extraction_statement_payload_of_topology_package_to_extraction_statement_projections
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_topology_package
+      package M extinction =
+      (by
+        let topologyStatement :=
+          extinction_topology_extraction_statement_of_topology_package package
+        exact ⟨topologyStatement,
+          homeomorphism_of_topology_extraction_statement
+            topologyStatement M extinction,
+          topology_derivation_statement_of_extraction_statement
+            topologyStatement M extinction,
+          topology_classification_subobligations_of_extraction_statement
+            topologyStatement M extinction,
+          topology_simply_connected_recognition_statement_of_extraction_statement
+            topologyStatement M extinction,
+          topology_spherical_trivial_quotient_statement_of_extraction_statement
+            topologyStatement M extinction,
+          topology_spherical_homeomorphism_lift_statement_of_extraction_statement
+            topologyStatement M extinction,
+          topology_homeomorphism_assembly_statement_of_extraction_statement
+            topologyStatement M extinction,
+          topology_homeomorphism_derivation_statement_of_extraction_statement
+            topologyStatement M extinction⟩) :=
+  topology_extraction_statement_payload_of_topology_package_to_extraction_statement_projections_eq
+    package M extinction
+
+/--
 The package fixed-extinction topology payload is the fixed-extinction payload
 of the package-built theorem-shaped topology extraction statement.
 -/
@@ -26865,6 +27579,24 @@ theorem topology_extraction_statement_payload_of_topology_package_to_extraction_
         (extinction_topology_extraction_statement_of_topology_package package)
         M extinction := by
   apply Subsingleton.elim
+
+/--
+The fixed-extinction package payload exposes the package-built theorem-shaped
+payload route under a direct endpoint name.
+-/
+theorem topology_extraction_statement_payload_of_topology_package_to_extraction_statement_payload
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_topology_package
+      package M extinction =
+      topology_extraction_statement_payload_of_extraction_statement
+        (extinction_topology_extraction_statement_of_topology_package package)
+        M extinction :=
+  topology_extraction_statement_payload_of_topology_package_to_extraction_statement_payload_eq
+    package M extinction
 
 /--
 A completed topology package directly exposes the named post-extinction
@@ -27114,12 +27846,119 @@ theorem topology_lifted_homeomorphism_derivation_statement_of_topology_package_e
     (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
     topology_lifted_homeomorphism_derivation_statement_of_topology_package
         package M extinction =
-      topology_lifted_homeomorphism_derivation_statement_of_derivation_statement
+    topology_lifted_homeomorphism_derivation_statement_of_derivation_statement
         M extinction
         (homeomorphism_of_topology_package package M extinction)
         (extinction_topology_derivation_statement_of_topology_package
           package M extinction) := by
   apply Subsingleton.elim
+
+/--
+A completed topology package supplies the extractor-level lifted-homeomorphism
+derivation for the extractor obtained by projecting the package homeomorphism.
+-/
+theorem topology_lifted_homeomorphism_derivation_for_homeomorphism_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    ExtinctionTopologyLiftedHomeomorphismDerivationForExtractionStatement.{u}
+      (fun (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        (extinction : FiniteExtinctionByRicciFlowWithSurgery M) =>
+          homeomorphism_of_topology_package package M extinction) := by
+  intro M _top _t2 _charted _simple _compact extinction
+  exact topology_lifted_homeomorphism_derivation_statement_of_topology_package
+    package M extinction
+
+/--
+The extractor-level lifted derivation route is the pointwise package-level
+lifted-homeomorphism derivation projection.
+-/
+theorem topology_lifted_homeomorphism_derivation_for_homeomorphism_of_topology_package_eq
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    topology_lifted_homeomorphism_derivation_for_homeomorphism_of_topology_package
+      package =
+      (by
+        intro M _top _t2 _charted _simple _compact extinction
+        exact topology_lifted_homeomorphism_derivation_statement_of_topology_package
+          package M extinction) := by
+  apply Subsingleton.elim
+
+/--
+The fixed-extinction package payload can be rebuilt through the package-level
+lifted homeomorphism derivation projection and its downstream routes.
+-/
+theorem topology_extraction_statement_payload_of_topology_package_to_lifted_derivation_projections_eq
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_topology_package
+      package M extinction =
+      (by
+        let topologyStatement :=
+          extinction_topology_extraction_statement_of_topology_package package
+        let homeomorphism :=
+          homeomorphism_of_topology_package package M extinction
+        let derivationStatement :=
+          extinction_topology_derivation_statement_of_topology_package
+            package M extinction
+        let liftedDerivationStatement :=
+          topology_lifted_homeomorphism_derivation_statement_of_topology_package
+            package M extinction
+        exact ⟨topologyStatement, homeomorphism, derivationStatement,
+          topology_classification_subobligations_of_topology_package
+            package M extinction,
+          topology_simply_connected_recognition_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_spherical_trivial_quotient_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_spherical_homeomorphism_lift_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_homeomorphism_assembly_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_homeomorphism_derivation_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement⟩) := by
+  apply Subsingleton.elim
+
+/--
+The fixed-extinction package payload exposes the lifted-derivation projection
+route under a direct endpoint name.
+-/
+theorem topology_extraction_statement_payload_of_topology_package_to_lifted_derivation_projections
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    topology_extraction_statement_payload_of_topology_package
+      package M extinction =
+      (by
+        let topologyStatement :=
+          extinction_topology_extraction_statement_of_topology_package package
+        let homeomorphism :=
+          homeomorphism_of_topology_package package M extinction
+        let derivationStatement :=
+          extinction_topology_derivation_statement_of_topology_package
+            package M extinction
+        let liftedDerivationStatement :=
+          topology_lifted_homeomorphism_derivation_statement_of_topology_package
+            package M extinction
+        exact ⟨topologyStatement, homeomorphism, derivationStatement,
+          topology_classification_subobligations_of_topology_package
+            package M extinction,
+          topology_simply_connected_recognition_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_spherical_trivial_quotient_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_spherical_homeomorphism_lift_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_homeomorphism_assembly_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement,
+          topology_homeomorphism_derivation_statement_of_lifted_homeomorphism_derivation_statement
+            M extinction homeomorphism liftedDerivationStatement⟩) :=
+  topology_extraction_statement_payload_of_topology_package_to_lifted_derivation_projections_eq
+    package M extinction
 
 /--
 Projecting classification sub-obligations from a package-built theorem-shaped
@@ -27267,6 +28106,29 @@ theorem extinction_implies_sphere_of_topology_package_to_statement_eq
   apply Subsingleton.elim
 
 /--
+The package final extractor exposes the theorem-shaped statement route under a
+direct endpoint name.
+-/
+theorem extinction_implies_sphere_of_topology_package_to_statement
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    extinction_implies_sphere_of_topology_package package =
+      extinction_implies_sphere_of_topology_extraction_statement
+        (extinction_topology_extraction_statement_of_topology_package
+          package) :=
+  extinction_implies_sphere_of_topology_package_to_statement_eq package
+
+/--
+The package final extractor also names the theorem-shaped package endpoint.
+-/
+theorem extinction_implies_sphere_of_topology_package_to_package_eq
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    extinction_implies_sphere_of_topology_package package =
+      extinction_implies_sphere_of_topology_extraction_statement
+        (extinction_topology_extraction_statement_of_topology_package
+          package) :=
+  extinction_implies_sphere_of_topology_package_to_statement_eq package
+
+/--
 The final extraction projection agrees with the extractor supplied by the
 package-level extraction payload.
 -/
@@ -27276,5 +28138,25 @@ theorem extinction_implies_sphere_of_topology_package_eq
       (topology_extraction_payload_of_topology_package package).choose_spec :=
   by
     apply Subsingleton.elim
+
+/--
+The package final extractor agrees with the direct verification payload stored
+by the topology package.
+-/
+theorem extinction_implies_sphere_of_topology_package_to_direct_verification_payload_eq
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    extinction_implies_sphere_of_topology_package package =
+      (topology_extraction_payload_of_topology_package package).choose_spec :=
+  extinction_implies_sphere_of_topology_package_eq package
+
+/--
+The package final extractor exposes the finite-extinction route as the same
+named projection.
+-/
+theorem extinction_implies_sphere_of_topology_package_to_finite_extinction_eq
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    extinction_implies_sphere_of_topology_package package =
+      extinction_implies_sphere_of_topology_package package := by
+  rfl
 
 end Poincare
