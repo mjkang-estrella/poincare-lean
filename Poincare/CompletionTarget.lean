@@ -3197,6 +3197,128 @@ theorem canonical_completion_criterion_of_surgery_and_topology_packages_via_exti
       witness smoothabilityPackage surgeryPackages topologyPackage
 
 /--
+The package-level one-point recognition canonical payload has a direct endpoint
+name for the theorem-shaped topology extraction statement route.
+-/
+theorem canonical_completion_payload_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement_to_extraction_statement_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    canonical_completion_payload_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement
+      smoothabilityPackage surgeryPackages topologyPackage =
+      canonical_completion_payload_of_surgery_and_topology_extraction_statement
+        smoothabilityPackage surgeryPackages
+        (extinction_topology_extraction_statement_of_topology_package
+          topologyPackage) := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_payload_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement_to_extraction_statement
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    canonical_completion_payload_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement
+      smoothabilityPackage surgeryPackages topologyPackage =
+      canonical_completion_payload_of_surgery_and_topology_extraction_statement
+        smoothabilityPackage surgeryPackages
+        (extinction_topology_extraction_statement_of_topology_package
+          topologyPackage) := by
+  exact
+    canonical_completion_payload_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement_to_extraction_statement_eq
+      smoothabilityPackage surgeryPackages topologyPackage
+
+/--
+The package-level one-point recognition canonical target has a direct endpoint
+name for the theorem-shaped topology extraction statement route.
+-/
+theorem canonical_completion_target_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement_to_extraction_statement_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    canonical_completion_target_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement
+      smoothabilityPackage surgeryPackages topologyPackage =
+      canonical_completion_target_of_surgery_and_topology_extraction_statement
+        smoothabilityPackage surgeryPackages
+        (extinction_topology_extraction_statement_of_topology_package
+          topologyPackage) := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_target_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement_to_extraction_statement
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    canonical_completion_target_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement
+      smoothabilityPackage surgeryPackages topologyPackage =
+      canonical_completion_target_of_surgery_and_topology_extraction_statement
+        smoothabilityPackage surgeryPackages
+        (extinction_topology_extraction_statement_of_topology_package
+          topologyPackage) := by
+  exact
+    canonical_completion_target_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement_to_extraction_statement_eq
+      smoothabilityPackage surgeryPackages topologyPackage
+
+/--
+The package-level one-point recognition canonical criterion has a direct
+endpoint name for the theorem-shaped topology extraction statement route.
+-/
+theorem canonical_completion_criterion_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement_to_extraction_statement_eq
+    (witness : Type u)
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    canonical_completion_criterion_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement
+      witness smoothabilityPackage surgeryPackages topologyPackage =
+      canonical_completion_criterion_of_surgery_and_topology_extraction_statement
+        witness smoothabilityPackage surgeryPackages
+        (extinction_topology_extraction_statement_of_topology_package
+          topologyPackage) := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_criterion_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement_to_extraction_statement
+    (witness : Type u)
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    canonical_completion_criterion_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement
+      witness smoothabilityPackage surgeryPackages topologyPackage =
+      canonical_completion_criterion_of_surgery_and_topology_extraction_statement
+        witness smoothabilityPackage surgeryPackages
+        (extinction_topology_extraction_statement_of_topology_package
+          topologyPackage) := by
+  exact
+    canonical_completion_criterion_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement_to_extraction_statement_eq
+      witness smoothabilityPackage surgeryPackages topologyPackage
+
+/--
 The explicit package canonical payload agrees with the theorem-shaped topology
 route for the package-built topology extraction statement.
 -/
