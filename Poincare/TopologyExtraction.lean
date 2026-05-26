@@ -20038,6 +20038,356 @@ theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePoint
   funext hVK extinction recognize
   apply Subsingleton.elim
 
+/--
+Universal finite extinction supplies the compactification model's extinction
+witness, so the two-set Van Kampen extinction-recognition self route needs only
+the global finite-extinction statement.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_universalFiniteExtinctionStatement_and_twoSetOpenCoverVanKampen
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{0})
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0})
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ
+      (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_t2Space
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_chartedSpace
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
+      (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+        (onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK))
+  letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_compactSpace
+  exact
+    onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen
+      hVK (finiteExtinction (OnePoint (EuclideanSpace ℝ (Fin 3)))) recognize
+
+/--
+The universal finite-extinction/two-set Van Kampen self route is the explicit
+finite-extinction route with the compactification model witness supplied by
+the universal finite-extinction statement.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_universalFiniteExtinctionStatement_and_twoSetOpenCoverVanKampen_eq :
+    onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_universalFiniteExtinctionStatement_and_twoSetOpenCoverVanKampen =
+      (fun finiteExtinction : UniversalFiniteExtinctionStatement.{0} =>
+        fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_t2Space
+            letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+                (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_chartedSpace
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
+                (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+                  (onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK))
+            letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_compactSpace
+            onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen
+              hVK (finiteExtinction (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              recognize) := by
+  funext finiteExtinction hVK recognize
+  apply Subsingleton.elim
+
+/--
+The universal finite-extinction/two-set Van Kampen self route agrees with first
+extracting the standard-sphere loop-nullhomotopy endpoint.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_universalFiniteExtinctionStatement_and_twoSetOpenCoverVanKampen_loop_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_universalFiniteExtinctionStatement_and_twoSetOpenCoverVanKampen =
+      (fun finiteExtinction : UniversalFiniteExtinctionStatement.{0} =>
+        fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_t2Space
+            letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+                (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_chartedSpace
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
+                (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+                  (onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK))
+            letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_compactSpace
+            onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+              (threeSphere_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen hVK)
+              (finiteExtinction (OnePoint (EuclideanSpace ℝ (Fin 3)))) recognize) := by
+  funext finiteExtinction hVK recognize
+  apply Subsingleton.elim
+
+/--
+The universal finite-extinction/two-set Van Kampen self route agrees with first
+extracting the north-pole based loop-nullhomotopy endpoint.
+-/
+theorem onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_universalFiniteExtinctionStatement_and_twoSetOpenCoverVanKampen_northPole_route_eq :
+    onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_universalFiniteExtinctionStatement_and_twoSetOpenCoverVanKampen =
+      (fun finiteExtinction : UniversalFiniteExtinctionStatement.{0} =>
+        fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_t2Space
+            letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+                (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_chartedSpace
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
+                (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+                  (onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK))
+            letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_compactSpace
+            onePoint_threeSpace_self_homeomorph_of_extinctionOnePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+              (threeSphere_northPoleLoopNullhomotopyStatement_of_twoSetOpenCoverVanKampen hVK)
+              (finiteExtinction (OnePoint (EuclideanSpace ℝ (Fin 3)))) recognize) := by
+  funext finiteExtinction hVK recognize
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction supplies the compactification model's extinction
+witness, so the two-set Van Kampen extinction-recognition target route needs
+only the global finite-extinction statement.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_universalFiniteExtinctionStatement_and_twoSetOpenCoverVanKampen
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{0})
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0})
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0}) :
+    Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) := by
+  letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_t2Space
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_chartedSpace
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
+      (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+        (onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK))
+  letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_compactSpace
+  exact
+    onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen
+      hVK (finiteExtinction (OnePoint (EuclideanSpace ℝ (Fin 3)))) recognize
+
+/--
+The universal finite-extinction/two-set Van Kampen target route is the explicit
+finite-extinction route with the compactification model witness supplied by
+the universal finite-extinction statement.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_universalFiniteExtinctionStatement_and_twoSetOpenCoverVanKampen_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_universalFiniteExtinctionStatement_and_twoSetOpenCoverVanKampen =
+      (fun finiteExtinction : UniversalFiniteExtinctionStatement.{0} =>
+        fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_t2Space
+            letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+                (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_chartedSpace
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
+                (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+                  (onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK))
+            letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_compactSpace
+            onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen
+              hVK (finiteExtinction (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              recognize) := by
+  funext finiteExtinction hVK recognize
+  apply Subsingleton.elim
+
+/--
+The universal finite-extinction/two-set Van Kampen target route agrees with
+first extracting the standard-sphere loop-nullhomotopy endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_universalFiniteExtinctionStatement_and_twoSetOpenCoverVanKampen_loop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_universalFiniteExtinctionStatement_and_twoSetOpenCoverVanKampen =
+      (fun finiteExtinction : UniversalFiniteExtinctionStatement.{0} =>
+        fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_t2Space
+            letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+                (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_chartedSpace
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
+                (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+                  (onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK))
+            letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_compactSpace
+            onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+              (threeSphere_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen hVK)
+              (finiteExtinction (OnePoint (EuclideanSpace ℝ (Fin 3)))) recognize) := by
+  funext finiteExtinction hVK recognize
+  apply Subsingleton.elim
+
+/--
+The universal finite-extinction/two-set Van Kampen target route agrees with
+first extracting the north-pole based loop-nullhomotopy endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_universalFiniteExtinctionStatement_and_twoSetOpenCoverVanKampen_northPole_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_universalFiniteExtinctionStatement_and_twoSetOpenCoverVanKampen =
+      (fun finiteExtinction : UniversalFiniteExtinctionStatement.{0} =>
+        fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_t2Space
+            letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+                (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_chartedSpace
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
+                (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+                  (onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK))
+            letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_compactSpace
+            onePoint_threeSpace_homeomorph_threeSphere_of_extinctionOnePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+              (threeSphere_northPoleLoopNullhomotopyStatement_of_twoSetOpenCoverVanKampen hVK)
+              (finiteExtinction (OnePoint (EuclideanSpace ℝ (Fin 3)))) recognize) := by
+  funext finiteExtinction hVK recognize
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction supplies the compactification model's extinction
+witness, so the two-set Van Kampen extinction-recognition payload route needs
+only the global finite-extinction statement.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_universalFiniteExtinctionStatement_and_twoSetOpenCoverVanKampen
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{0})
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0})
+    (recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _simple : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _compact : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _topological : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _path : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _locPath : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ _connected : ConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        Nonempty (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty ((OnePoint (EuclideanSpace ℝ (Fin 3))) ≃ₜ ThreeSphere) := by
+  letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_t2Space
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_chartedSpace
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
+      (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+        (onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK))
+  letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_compactSpace
+  exact
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen
+      hVK (finiteExtinction (OnePoint (EuclideanSpace ℝ (Fin 3)))) recognize
+
+/--
+The universal finite-extinction/two-set Van Kampen payload route is the
+explicit finite-extinction payload with the compactification model witness
+supplied by the universal finite-extinction statement.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_universalFiniteExtinctionStatement_and_twoSetOpenCoverVanKampen_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_universalFiniteExtinctionStatement_and_twoSetOpenCoverVanKampen =
+      (fun finiteExtinction : UniversalFiniteExtinctionStatement.{0} =>
+        fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_t2Space
+            letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+                (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_chartedSpace
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
+                (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+                  (onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK))
+            letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_compactSpace
+            onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_twoSetOpenCoverVanKampen
+              hVK (finiteExtinction (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              recognize) := by
+  funext finiteExtinction hVK recognize
+  apply Subsingleton.elim
+
+/--
+The universal finite-extinction/two-set Van Kampen payload route agrees with
+first extracting the compactification-local `π₁` endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_universalFiniteExtinctionStatement_and_twoSetOpenCoverVanKampen_onePoint_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_universalFiniteExtinctionStatement_and_twoSetOpenCoverVanKampen =
+      (fun finiteExtinction : UniversalFiniteExtinctionStatement.{0} =>
+        fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_t2Space
+            letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+                (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_chartedSpace
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
+                (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+                  (onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK))
+            letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_compactSpace
+            onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_onePointPiOneSubsingletonStatement
+              (onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK)
+              (finiteExtinction (OnePoint (EuclideanSpace ℝ (Fin 3)))) recognize) := by
+  funext finiteExtinction hVK recognize
+  apply Subsingleton.elim
+
+/--
+The universal finite-extinction/two-set Van Kampen payload route agrees with
+first extracting the standard-sphere loop-nullhomotopy endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_universalFiniteExtinctionStatement_and_twoSetOpenCoverVanKampen_loop_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_universalFiniteExtinctionStatement_and_twoSetOpenCoverVanKampen =
+      (fun finiteExtinction : UniversalFiniteExtinctionStatement.{0} =>
+        fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_t2Space
+            letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+                (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_chartedSpace
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
+                (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+                  (onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK))
+            letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_compactSpace
+            onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_loopNullhomotopyStatement
+              (threeSphere_loopNullhomotopyStatement_of_twoSetOpenCoverVanKampen hVK)
+              (finiteExtinction (OnePoint (EuclideanSpace ℝ (Fin 3)))) recognize) := by
+  funext finiteExtinction hVK recognize
+  apply Subsingleton.elim
+
+/--
+The universal finite-extinction/two-set Van Kampen payload route agrees with
+first extracting the north-pole based loop-nullhomotopy endpoint.
+-/
+theorem onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_universalFiniteExtinctionStatement_and_twoSetOpenCoverVanKampen_northPole_route_eq :
+    onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_universalFiniteExtinctionStatement_and_twoSetOpenCoverVanKampen =
+      (fun finiteExtinction : UniversalFiniteExtinctionStatement.{0} =>
+        fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+          fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{0} =>
+            letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_t2Space
+            letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+                (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_chartedSpace
+            letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_simplyConnectedSpace_of_loopNullhomotopyStatement
+                (onePoint_threeSpace_loopNullhomotopyStatement_of_piOneSubsingletonStatement
+                  (onePoint_threeSpace_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK))
+            letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+              onePoint_threeSpace_compactSpace
+            onePoint_threeSpace_homeomorph_threeSphere_payload_of_extinctionOnePointThreeSpaceRecognitionStatement_and_northPoleLoopNullhomotopyStatement
+              (threeSphere_northPoleLoopNullhomotopyStatement_of_twoSetOpenCoverVanKampen hVK)
+              (finiteExtinction (OnePoint (EuclideanSpace ℝ (Fin 3)))) recognize) := by
+  funext finiteExtinction hVK recognize
+  apply Subsingleton.elim
+
 /-- The standard target sphere is homeomorphic to itself. -/
 theorem threeSphere_self_homeomorph :
     Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=
