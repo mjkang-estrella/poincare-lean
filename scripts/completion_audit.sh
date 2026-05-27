@@ -3604,6 +3604,12 @@ check_decl "standard sphere target self payload pi-one fundamental-group compati
   '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere target self payload pi-one loop-route compatibility is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement_loop_route_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere target self payload from two-set Van Kampen theorem is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_twoSetOpenCoverVanKampen\b' Poincare/Assembly.lean
+check_decl "standard sphere target self payload from two-set Van Kampen equality contract is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_twoSetOpenCoverVanKampen_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere target self payload two-set Van Kampen pi-one compatibility is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_twoSetOpenCoverVanKampen_piOne_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-diffeomorphism payload from pi-one theorem is declared" \
   '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-diffeomorphism payload from pi-one equality contract is declared" \
@@ -3614,6 +3620,12 @@ check_decl "standard sphere smooth self-diffeomorphism payload pi-one fundamenta
   '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-diffeomorphism payload pi-one loop-route compatibility is declared" \
   '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_loop_route_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-diffeomorphism payload from two-set Van Kampen theorem is declared" \
+  '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_twoSetOpenCoverVanKampen\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-diffeomorphism payload from two-set Van Kampen equality contract is declared" \
+  '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_twoSetOpenCoverVanKampen_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-diffeomorphism payload two-set Van Kampen pi-one compatibility is declared" \
+  '^theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_twoSetOpenCoverVanKampen_piOne_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-homeomorphism payload from pi-one theorem is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-homeomorphism payload from pi-one equality contract is declared" \
@@ -3624,6 +3636,12 @@ check_decl "standard sphere smooth self-homeomorphism payload pi-one fundamental
   '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere smooth self-homeomorphism payload pi-one loop-route compatibility is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_loop_route_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-homeomorphism payload from two-set Van Kampen theorem is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_twoSetOpenCoverVanKampen\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-homeomorphism payload from two-set Van Kampen equality contract is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_twoSetOpenCoverVanKampen_eq\b' Poincare/Assembly.lean
+check_decl "standard sphere smooth self-homeomorphism payload two-set Van Kampen pi-one compatibility is declared" \
+  '^theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_twoSetOpenCoverVanKampen_piOne_route_eq\b' Poincare/Assembly.lean
 check_decl "standard sphere target self payload from based loop-nullhomotopy theorem is declared" \
   '^theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_basedLoopNullhomotopyStatement\b' Poincare/Assembly.lean
 check_decl "standard sphere target self payload from based loop-nullhomotopy equality contract is declared" \
@@ -25713,6 +25731,9 @@ append_certificate_route_projection_contract_checks() {
 #check Poincare.threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_eq
 #check Poincare.threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq
 #check Poincare.threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_loop_route_eq
+#check Poincare.threeSphere_self_diffeomorph_payload_of_smooth_statement_and_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_self_diffeomorph_payload_of_smooth_statement_and_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_self_diffeomorph_payload_of_smooth_statement_and_twoSetOpenCoverVanKampen_piOne_route_eq
 #check Poincare.threeSphere_self_homeomorph
 #check Poincare.threeSphere_self_homeomorph_of_poincare_statement
 #check Poincare.threeSphere_self_homeomorph_of_poincare_statement_and_basedLoopNullhomotopyStatement
@@ -25778,6 +25799,9 @@ append_certificate_route_projection_contract_checks() {
 #check Poincare.threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement_eq
 #check Poincare.threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq
 #check Poincare.threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement_loop_route_eq
+#check Poincare.threeSphere_self_homeomorph_payload_of_poincare_statement_and_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_self_homeomorph_payload_of_poincare_statement_and_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_self_homeomorph_payload_of_poincare_statement_and_twoSetOpenCoverVanKampen_piOne_route_eq
 #check Poincare.threeSphere_self_homeomorph_payload_of_self_diffeomorph
 #check Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement
 #check Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement_and_basedLoopNullhomotopyStatement
@@ -25799,6 +25823,9 @@ append_certificate_route_projection_contract_checks() {
 #check Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_eq
 #check Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_fundamentalGroup_route_eq
 #check Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement_loop_route_eq
+#check Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement_and_twoSetOpenCoverVanKampen
+#check Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement_and_twoSetOpenCoverVanKampen_eq
+#check Poincare.threeSphere_self_homeomorph_payload_of_smooth_statement_and_twoSetOpenCoverVanKampen_piOne_route_eq
 #check Poincare.threeSphere_simplyConnectedSpace_iff_loopNullhomotopyStatement
 #check Poincare.threeSphere_simplyConnectedSpace_iff_pathHomotopyStatement
 #check Poincare.threeSphere_simplyConnectedSpace_iff_pathQuotientSubsingletonStatement

@@ -2478,6 +2478,148 @@ theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsing
   apply Subsingleton.elim
 
 /--
+The two-set Van Kampen `π₁` contract exposes the target self route as a payload
+carrying both the homotopy-oriented prerequisite bundle and the
+self-homeomorphism endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0})
+    (h : PoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=
+  ⟨threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen hVK,
+    threeSphere_self_homeomorph_of_poincare_statement_and_twoSetOpenCoverVanKampen
+      hVK h⟩
+
+/--
+The two-set Van Kampen target self payload is exactly the two-set prerequisite
+route paired with the two-set target endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_twoSetOpenCoverVanKampen_eq :
+    threeSphere_self_homeomorph_payload_of_poincare_statement_and_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        fun h : PoincareConjectureStatement.{0} =>
+          ⟨threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen hVK,
+            threeSphere_self_homeomorph_of_poincare_statement_and_twoSetOpenCoverVanKampen
+              hVK h⟩) := by
+  funext hVK h
+  apply Subsingleton.elim
+
+/-- The two-set Van Kampen target self payload agrees with the `π₁` payload route. -/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_twoSetOpenCoverVanKampen_piOne_route_eq :
+    threeSphere_self_homeomorph_payload_of_poincare_statement_and_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        fun h : PoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_payload_of_poincare_statement_and_piOneSubsingletonStatement
+            (threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK) h) := by
+  funext hVK h
+  apply Subsingleton.elim
+
+/--
+The two-set Van Kampen `π₁` contract exposes the smooth self route as a payload
+carrying both the homotopy-oriented prerequisite bundle and the
+self-diffeomorphism endpoint.
+-/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0})
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) :=
+  ⟨threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen hVK,
+    threeSphere_self_diffeomorph_of_smooth_statement_and_twoSetOpenCoverVanKampen
+      hVK h⟩
+
+/--
+The two-set Van Kampen smooth self payload is exactly the two-set prerequisite
+route paired with the two-set smooth endpoint.
+-/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_twoSetOpenCoverVanKampen_eq :
+    threeSphere_self_diffeomorph_payload_of_smooth_statement_and_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          ⟨threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen hVK,
+            threeSphere_self_diffeomorph_of_smooth_statement_and_twoSetOpenCoverVanKampen
+              hVK h⟩) := by
+  funext hVK h
+  apply Subsingleton.elim
+
+/-- The two-set Van Kampen smooth self payload agrees with the `π₁` payload route. -/
+theorem threeSphere_self_diffeomorph_payload_of_smooth_statement_and_twoSetOpenCoverVanKampen_piOne_route_eq :
+    threeSphere_self_diffeomorph_payload_of_smooth_statement_and_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_diffeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement
+            (threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK) h) := by
+  funext hVK h
+  apply Subsingleton.elim
+
+/--
+The two-set Van Kampen `π₁` contract exposes the smooth-to-topological self
+route as a payload carrying both the homotopy-oriented prerequisite bundle and
+the self-homeomorphism endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0})
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=
+  ⟨threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen hVK,
+    threeSphere_self_homeomorph_of_smooth_statement_and_twoSetOpenCoverVanKampen
+      hVK h⟩
+
+/--
+The two-set Van Kampen smooth-to-topological self payload is exactly the
+two-set prerequisite route paired with the two-set smooth-to-topological
+endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_twoSetOpenCoverVanKampen_eq :
+    threeSphere_self_homeomorph_payload_of_smooth_statement_and_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          ⟨threeSphere_homotopy_prerequisites_of_twoSetOpenCoverVanKampen hVK,
+            threeSphere_self_homeomorph_of_smooth_statement_and_twoSetOpenCoverVanKampen
+              hVK h⟩) := by
+  funext hVK h
+  apply Subsingleton.elim
+
+/-- The two-set Van Kampen smooth-to-topological self payload agrees with the `π₁` payload route. -/
+theorem threeSphere_self_homeomorph_payload_of_smooth_statement_and_twoSetOpenCoverVanKampen_piOne_route_eq :
+    threeSphere_self_homeomorph_payload_of_smooth_statement_and_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_payload_of_smooth_statement_and_piOneSubsingletonStatement
+            (threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK) h) := by
+  funext hVK h
+  apply Subsingleton.elim
+
+/--
 The based loop-nullhomotopy obligation exposes the target self route as a
 payload carrying both the homotopy-oriented prerequisite bundle and the
 self-homeomorphism endpoint.
