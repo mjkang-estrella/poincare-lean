@@ -5000,6 +5000,48 @@ theorem threeSphere_stereographicVanKampenReductionStatement_of_stereographicVan
   apply Subsingleton.elim
 
 /--
+The stereographic reduction package repackages as the `π₁` output by first
+projecting the reduction back to the conclusion contract.
+-/
+theorem threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_stereographicVanKampenReductionStatement
+    (h : ThreeSphereStereographicVanKampenReductionStatement) :
+    ThreeSphereStereographicVanKampenPiOneSubsingletonStatement :=
+  threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_stereographicVanKampenConclusionStatement
+    (threeSphere_stereographicVanKampenConclusionStatement_of_reductionStatement h)
+
+/--
+The reduction-to-`π₁` route is the existing reduction-to-conclusion projection
+followed by the pointwise conclusion-to-`π₁` bridge.
+-/
+theorem threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_stereographicVanKampenReductionStatement_eq :
+    threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_stereographicVanKampenReductionStatement =
+      (fun h : ThreeSphereStereographicVanKampenReductionStatement =>
+        threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_stereographicVanKampenConclusionStatement
+          (threeSphere_stereographicVanKampenConclusionStatement_of_reductionStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The stereographic reduction package and the input-indexed `π₁` output are
+equivalent via the existing conclusion/reduction and conclusion/`π₁` bridges.
+-/
+theorem threeSphere_stereographicVanKampenReductionStatement_iff_stereographicVanKampenPiOneSubsingletonStatement :
+    ThreeSphereStereographicVanKampenReductionStatement ↔
+      ThreeSphereStereographicVanKampenPiOneSubsingletonStatement :=
+  ⟨threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_stereographicVanKampenReductionStatement,
+    threeSphere_stereographicVanKampenReductionStatement_of_stereographicVanKampenPiOneSubsingletonStatement⟩
+
+/--
+The reduction/`π₁` stereographic equivalence is exactly the pair of the two
+named conversion routes.
+-/
+theorem threeSphere_stereographicVanKampenReductionStatement_iff_stereographicVanKampenPiOneSubsingletonStatement_eq :
+    threeSphere_stereographicVanKampenReductionStatement_iff_stereographicVanKampenPiOneSubsingletonStatement =
+      ⟨threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_stereographicVanKampenReductionStatement,
+        threeSphere_stereographicVanKampenReductionStatement_of_stereographicVanKampenPiOneSubsingletonStatement⟩ := by
+  apply Subsingleton.elim
+
+/--
 A stereographic Van Kampen `π₁` computation supplies simple-connectedness of
 the standard sphere through the existing conclusion route.
 -/

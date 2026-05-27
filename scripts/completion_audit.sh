@@ -2611,6 +2611,12 @@ check_decl "general Ricci-flow data equation-verification bridge is declared" \
   '^noncomputable def ricci_flow_data_of_equation_verification_bridge\b' Poincare/RicciFlow.lean
 check_decl "general Ricci-flow data equation-verification bridge equality contract is declared" \
   '^@\[simp\] theorem ricci_flow_data_of_equation_verification_bridge_eq\b' Poincare/RicciFlow.lean
+check_decl "general Ricci-flow data equation-verification bridge metric projection is declared" \
+  '^@\[simp\] theorem metric_of_ricci_flow_data_of_equation_verification_bridge_eq\b' Poincare/RicciFlow.lean
+check_decl "general Ricci-flow data equation-verification bridge curvature projection is declared" \
+  '^@\[simp\] theorem curvature_data_of_ricci_flow_data_of_equation_verification_bridge_eq\b' Poincare/RicciFlow.lean
+check_decl "general Ricci-flow data equation-verification bridge evidence projection is declared" \
+  '^@\[simp\] theorem equation_evidence_of_ricci_flow_data_of_equation_verification_bridge_eq\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci-flow data equality contract is declared" \
   '^@\[simp\] theorem zero_ricci_flow_data_eq\b' Poincare/RicciFlow.lean
 check_decl "zero Ricci-flow data metric projection contract is declared" \
@@ -23278,6 +23284,10 @@ append_certificate_route_projection_contract_checks() {
 #check Poincare.threeSphere_stereographicVanKampenLoopStatement_of_twoSetOpenCoverVanKampen_eq
 #check Poincare.threeSphere_stereographicVanKampenReductionStatement_of_stereographicVanKampenPiOneSubsingletonStatement
 #check Poincare.threeSphere_stereographicVanKampenReductionStatement_of_stereographicVanKampenPiOneSubsingletonStatement_eq
+#check Poincare.threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_stereographicVanKampenReductionStatement
+#check Poincare.threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_stereographicVanKampenReductionStatement_eq
+#check Poincare.threeSphere_stereographicVanKampenReductionStatement_iff_stereographicVanKampenPiOneSubsingletonStatement
+#check Poincare.threeSphere_stereographicVanKampenReductionStatement_iff_stereographicVanKampenPiOneSubsingletonStatement_eq
 #check Poincare.threeSphere_stereographicVanKampenReductionStatement_of_twoSetOpenCoverVanKampen
 #check Poincare.threeSphere_stereographicVanKampenReductionStatement_of_twoSetOpenCoverVanKampen_eq
 #check Poincare.threeSphere_homotopy_prerequisites_iff_stereographicVanKampenLoopStatement
@@ -25809,6 +25819,9 @@ append_certificate_route_projection_contract_checks() {
 #check Poincare.zero_ricci_flow_analytic_foundation_package_eq
 #check Poincare.ricci_flow_data_of_equation_verification_bridge
 #check Poincare.ricci_flow_data_of_equation_verification_bridge_eq
+#check Poincare.metric_of_ricci_flow_data_of_equation_verification_bridge_eq
+#check Poincare.curvature_data_of_ricci_flow_data_of_equation_verification_bridge_eq
+#check Poincare.equation_evidence_of_ricci_flow_data_of_equation_verification_bridge_eq
 #check Poincare.zero_ricci_flow_data
 #check Poincare.zero_ricci_flow_data_eq
 #check Poincare.zero_ricci_flow_equation_boundary_package
@@ -40078,6 +40091,9 @@ append_certificate_route_projection_contract_checks() {
 #check Poincare.zero_ricci_flow_analytic_foundation_package_of_equation_verification_bridge_eq
 #check Poincare.ricci_flow_data_of_equation_verification_bridge
 #check Poincare.ricci_flow_data_of_equation_verification_bridge_eq
+#check Poincare.metric_of_ricci_flow_data_of_equation_verification_bridge_eq
+#check Poincare.curvature_data_of_ricci_flow_data_of_equation_verification_bridge_eq
+#check Poincare.equation_evidence_of_ricci_flow_data_of_equation_verification_bridge_eq
 #check Poincare.zero_ricci_flow_data_of_equation_verification_bridge
 #check Poincare.zero_ricci_flow_data_of_equation_verification_bridge_eq
 #check Poincare.zero_ricci_flow_equation_boundary_package_pointwise_zero_payload_to_verification_payload_eq
@@ -40326,6 +40342,9 @@ check_audit_surface_coverage() {
   #check Poincare.pointwise_zero_payload_of_zero_ricci_flow_equation_verification_eq
   #check Poincare.ricci_flow_data_of_equation_verification_bridge
   #check Poincare.ricci_flow_data_of_equation_verification_bridge_eq
+  #check Poincare.metric_of_ricci_flow_data_of_equation_verification_bridge_eq
+  #check Poincare.curvature_data_of_ricci_flow_data_of_equation_verification_bridge_eq
+  #check Poincare.equation_evidence_of_ricci_flow_data_of_equation_verification_bridge_eq
   #check Poincare.smoothability_of_dependencies_of_equation_boundary_dependencies_eq
   #check Poincare.smoothability_of_equation_boundary_dependencies_of_dependencies_and_verification_family_eq
   #check Poincare.stationary_zero_ricci_flow_analytic_foundation_package_of_equation_verification_bridge_eq

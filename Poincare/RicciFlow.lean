@@ -1975,6 +1975,55 @@ equation evidence obtained from the concrete verification.
         RicciFlowData I n M) :=
   rfl
 
+/-- The bridge-built Ricci-flow data has the supplied metric family. -/
+@[simp] theorem metric_of_ricci_flow_data_of_equation_verification_bridge_eq
+    (bridge : RicciFlowEquationInterfaceBridgeStatement.{u, v, w})
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (curvature : RicciCurvatureData g)
+    (verification : RicciFlowEquationVerification curvature) :
+    metric_of_ricci_flow_data
+      (ricci_flow_data_of_equation_verification_bridge bridge
+        curvature verification) = g :=
+  rfl
+
+/-- The bridge-built Ricci-flow data has the supplied curvature data. -/
+@[simp] theorem curvature_data_of_ricci_flow_data_of_equation_verification_bridge_eq
+    (bridge : RicciFlowEquationInterfaceBridgeStatement.{u, v, w})
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (curvature : RicciCurvatureData g)
+    (verification : RicciFlowEquationVerification curvature) :
+    curvature_data_of_ricci_flow_data
+      (ricci_flow_data_of_equation_verification_bridge bridge
+        curvature verification) = curvature :=
+  rfl
+
+/--
+The bridge-built Ricci-flow data stores the equation evidence obtained by
+applying the bridge to the concrete verification.
+-/
+@[simp] theorem equation_evidence_of_ricci_flow_data_of_equation_verification_bridge_eq
+    (bridge : RicciFlowEquationInterfaceBridgeStatement.{u, v, w})
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (curvature : RicciCurvatureData g)
+    (verification : RicciFlowEquationVerification curvature) :
+    equation_evidence_of_ricci_flow_data
+      (ricci_flow_data_of_equation_verification_bridge bridge
+        curvature verification) =
+      satisfies_ricci_flow_equation_of_verification bridge verification :=
+  rfl
+
 /--
 Zero Ricci-flow data built from the explicit zero verification and a supplied
 bridge from concrete verifications to the abstract equation interface.
