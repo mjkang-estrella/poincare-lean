@@ -435,6 +435,124 @@ theorem finite_or_first_right_or_all_left
     exact Or.inr ⟨k, hRight, hnNotLeft, hBefore⟩
 
 /--
+The first non-left entry also gives a reindexed suffix on which the original
+left-or-right choice remains available.
+-/
+theorem finite_first_right_or_all_left_with_tail_choice
+    {N : ℕ} {Left Right : Fin N → Prop}
+    (hchoice : ∀ k : Fin N, Left k ∨ Right k) :
+    (∀ k : Fin N, Left k) ∨
+      ∃ k : Fin N,
+        Right k ∧ ¬ Left k ∧
+          (∀ j : Fin N, j.val < k.val → Left j) ∧
+          ∀ r : Fin (N - (k.val + 1)),
+            Left ⟨k.val + 1 + r.val,
+              by
+                have hk : k.val < N := k.isLt
+                have hr : r.val < N - (k.val + 1) := r.isLt
+                omega⟩ ∨
+            Right ⟨k.val + 1 + r.val,
+              by
+                have hk : k.val < N := k.isLt
+                have hr : r.val < N - (k.val + 1) := r.isLt
+                omega⟩ := by
+  rcases finite_or_first_right_or_all_left hchoice with hAll | hFirst
+  · exact Or.inl hAll
+  · rcases hFirst with ⟨k, hRight, hNotLeft, hBefore⟩
+    refine Or.inr ⟨k, hRight, hNotLeft, hBefore, ?_⟩
+    intro r
+    exact hchoice ⟨k.val + 1 + r.val,
+      by
+        have hk : k.val < N := k.isLt
+        have hr : r.val < N - (k.val + 1) := r.isLt
+        omega⟩
+
+/--
+A first non-preferred entry starts a forced opposite run: either that run
+continues to the end, or there is a first return to preferred together with a
+reindexed tail that still satisfies the original left-or-right choice.
+-/
+theorem finite_first_opposite_run_or_all_preferred_with_tail_choice
+    {N : ℕ} {Preferred Opposite : Fin N → Prop}
+    (hchoice : ∀ k : Fin N, Preferred k ∨ Opposite k) :
+    (∀ k : Fin N, Preferred k) ∨
+      ∃ start : Fin N,
+        Opposite start ∧ ¬ Preferred start ∧
+          (∀ j : Fin N, j.val < start.val → Preferred j) ∧
+          ((∀ j : Fin N, start.val ≤ j.val → Opposite j ∧ ¬ Preferred j) ∨
+            ∃ stop : Fin N,
+              start.val < stop.val ∧ Preferred stop ∧
+                (∀ j : Fin N, start.val ≤ j.val → j.val < stop.val →
+                  Opposite j ∧ ¬ Preferred j) ∧
+                ∀ r : Fin (N - (stop.val + 1)),
+                  Preferred ⟨stop.val + 1 + r.val,
+                    by
+                      have hs : stop.val < N := stop.isLt
+                      have hr : r.val < N - (stop.val + 1) := r.isLt
+                      omega⟩ ∨
+                  Opposite ⟨stop.val + 1 + r.val,
+                    by
+                      have hs : stop.val < N := stop.isLt
+                      have hr : r.val < N - (stop.val + 1) := r.isLt
+                      omega⟩) := by
+  classical
+  rcases finite_or_first_right_or_all_left (Left := Preferred) (Right := Opposite)
+      hchoice with hAll | hFirst
+  · exact Or.inl hAll
+  · rcases hFirst with ⟨start, hOppStart, hNotPrefStart, hBefore⟩
+    refine Or.inr ⟨start, hOppStart, hNotPrefStart, hBefore, ?_⟩
+    let ret : ℕ → Prop := fun n =>
+      ∃ h : n < N, start.val < n ∧ Preferred ⟨n, h⟩
+    by_cases hret : ∃ n, ret n
+    · let n := Nat.find hret
+      have hn : ret n := Nat.find_spec hret
+      rcases hn with ⟨hnN, hstartlt, hPrefStop⟩
+      let stop : Fin N := ⟨n, hnN⟩
+      refine Or.inr ⟨stop, hstartlt, hPrefStop, ?_, ?_⟩
+      · intro j hstartj hjstop
+        have hNotPref : ¬ Preferred j := by
+          intro hPrefj
+          by_cases hEq : j.val = start.val
+          · have hjEq : j = start := by
+              ext
+              exact hEq
+            rw [hjEq] at hPrefj
+            exact hNotPrefStart hPrefj
+          · have hstartltj : start.val < j.val := by
+              omega
+            have hretj : ret j.val := ⟨j.isLt, hstartltj, hPrefj⟩
+            exact (Nat.find_min hret hjstop) hretj
+        have hOpp : Opposite j := by
+          rcases hchoice j with hPref | hOpp
+          · exact False.elim (hNotPref hPref)
+          · exact hOpp
+        exact ⟨hOpp, hNotPref⟩
+      · intro r
+        exact hchoice ⟨stop.val + 1 + r.val,
+          by
+            have hs : stop.val < N := stop.isLt
+            have hr : r.val < N - (stop.val + 1) := r.isLt
+            omega⟩
+    · refine Or.inl ?_
+      intro j hstartj
+      have hNotPref : ¬ Preferred j := by
+        intro hPrefj
+        by_cases hEq : j.val = start.val
+        · have hjEq : j = start := by
+            ext
+            exact hEq
+          rw [hjEq] at hPrefj
+          exact hNotPrefStart hPrefj
+        · have hstartltj : start.val < j.val := by
+            omega
+          exact hret ⟨j.val, j.isLt, hstartltj, hPrefj⟩
+      have hOpp : Opposite j := by
+        rcases hchoice j with hPref | hOpp
+        · exact False.elim (hNotPref hPref)
+        · exact hOpp
+      exact ⟨hOpp, hNotPref⟩
+
+/--
 Moving a source cast from the second factor of a path concatenation to a target
 cast on the first factor does not change the concatenated path.
 -/
