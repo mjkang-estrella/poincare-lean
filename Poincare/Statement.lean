@@ -4879,6 +4879,356 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
   exact hblocksToSubpath.symm.trans hcollapse
 
 /--
+A three-switch subpath of an equator loop is null-homotopic when it is
+subdivided into nonempty north, south, north, and south source blocks.
+-/
+theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlock_nullhomotopic
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    (N M L K : ℕ)
+    (u : Fin (N + 2) → unitInterval)
+    (v : Fin (M + 2) → unitInterval)
+    (w : Fin (L + 2) → unitInterval)
+    (x : Fin (K + 2) → unitInterval)
+    (h0 : u 0 = 0) (h1 : x (Fin.last (K + 1)) = 1)
+    (hjoinUV : v 0 = u (Fin.last (N + 1)))
+    (hjoinVW : w 0 = v (Fin.last (M + 1)))
+    (hjoinWX : x 0 = w (Fin.last (L + 1)))
+    (hNorthFirst : ∀ k : Fin (N + 1),
+      Set.range (γ.subpath (u k.castSucc) (u k.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hSouthFirst : ∀ k : Fin (M + 1),
+      Set.range (γ.subpath (v k.castSucc) (v k.succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthLast : ∀ k : Fin (L + 1),
+      Set.range (γ.subpath (w k.castSucc) (w k.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hSouthLast : ∀ k : Fin (K + 1),
+      Set.range (γ.subpath (x k.castSucc) (x k.succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source) :
+    Path.Homotopic
+      (γ.subpath (u 0) (x (Fin.last (K + 1))))
+      ((Path.refl (γ (u 0))).cast rfl
+        (by
+          rw [h1, h0]
+          exact γ.target.trans γ.source.symm)) := by
+  let p : Fin (N + 2) → ThreeSphere := γ ∘ u
+  let F : (k : Fin (N + 1)) → Path (p k.castSucc) (p k.succ) :=
+    fun k => γ.subpath (u k.castSucc) (u k.succ)
+  let q : Fin (M + 2) → ThreeSphere := γ ∘ v
+  let G : (k : Fin (M + 1)) → Path (q k.castSucc) (q k.succ) :=
+    fun k => γ.subpath (v k.castSucc) (v k.succ)
+  let r : Fin (L + 2) → ThreeSphere := γ ∘ w
+  let H : (k : Fin (L + 1)) → Path (r k.castSucc) (r k.succ) :=
+    fun k => γ.subpath (w k.castSucc) (w k.succ)
+  let s : Fin (K + 2) → ThreeSphere := γ ∘ x
+  let J : (k : Fin (K + 1)) → Path (s k.castSucc) (s k.succ) :=
+    fun k => γ.subpath (x k.castSucc) (x k.succ)
+  have hjoinUVPoint : q 0 = p (Fin.last (N + 1)) := by
+    change γ (v 0) = γ (u (Fin.last (N + 1)))
+    rw [hjoinUV]
+  have hjoinVWPoint : r 0 = q (Fin.last (M + 1)) := by
+    change γ (w 0) = γ (v (Fin.last (M + 1)))
+    rw [hjoinVW]
+  have hjoinWXPoint : s 0 = r (Fin.last (L + 1)) := by
+    change γ (x 0) = γ (w (Fin.last (L + 1)))
+    rw [hjoinWX]
+  have hclose : s (Fin.last (K + 1)) = p 0 := by
+    change γ (x (Fin.last (K + 1))) = γ (u 0)
+    rw [h1, h0]
+    exact γ.target.trans γ.source.symm
+  have hpBase : p 0 ∈ (stereographic' 3 threeSphere_northPole).source := by
+    exact hNorthFirst 0 ⟨0, (γ.subpath (u (0 : Fin (N + 1)).castSucc)
+      (u (0 : Fin (N + 1)).succ)).source⟩
+  have hqBase : q 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source := by
+    exact hSouthFirst 0 ⟨0, (γ.subpath (v (0 : Fin (M + 1)).castSucc)
+      (v (0 : Fin (M + 1)).succ)).source⟩
+  have hrBase : r 0 ∈ (stereographic' 3 threeSphere_northPole).source := by
+    exact hNorthLast 0 ⟨0, (γ.subpath (w (0 : Fin (L + 1)).castSucc)
+      (w (0 : Fin (L + 1)).succ)).source⟩
+  have hsBase : s 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source := by
+    exact hSouthLast 0 ⟨0, (γ.subpath (x (0 : Fin (K + 1)).castSucc)
+      (x (0 : Fin (K + 1)).succ)).source⟩
+  have hcollapse :
+      Path.Homotopic
+        (((((Path.concat p F).cast rfl hjoinUVPoint).trans (Path.concat q G)).trans
+          ((Path.concat r H).cast hjoinVWPoint.symm rfl)).trans
+          ((Path.concat s J).cast hjoinWXPoint.symm rfl))
+        ((Path.refl (p 0)).cast rfl hclose) := by
+    exact threeSphere_stereographic_northSouthBlockNorthSouthBlock_concat_cast_nullhomotopic
+      p F q G r H s J hjoinUVPoint hjoinVWPoint hjoinWXPoint hclose
+      hpBase hNorthFirst hqBase hSouthFirst hrBase hNorthLast hsBase hSouthLast
+  have hcatU :
+      Path.Homotopic (Path.concat p F)
+        (γ.subpath (u 0) (u (Fin.last (N + 1)))) := by
+    exact Path.Homotopic.concat_subpath γ u
+  have hcatUCast :
+      Path.Homotopic ((Path.concat p F).cast rfl hjoinUVPoint)
+        (γ.subpath (u 0) (v 0)) := by
+    refine (Path.Homotopic.pathCast hcatU rfl hjoinUVPoint).trans ?_
+    have htargetEq :
+        (γ.subpath (u 0) (u (Fin.last (N + 1)))).cast rfl hjoinUVPoint =
+          γ.subpath (u 0) (v 0) := by
+      apply Path.ext
+      funext t
+      simp [Path.cast_coe]
+      rw [← hjoinUV]
+      rfl
+    exact htargetEq ▸ Path.Homotopic.refl _
+  have hcatV :
+      Path.Homotopic (Path.concat q G)
+        (γ.subpath (v 0) (v (Fin.last (M + 1)))) := by
+    exact Path.Homotopic.concat_subpath γ v
+  have hcatW :
+      Path.Homotopic (Path.concat r H)
+        (γ.subpath (w 0) (w (Fin.last (L + 1)))) := by
+    exact Path.Homotopic.concat_subpath γ w
+  have hcatWCast :
+      Path.Homotopic ((Path.concat r H).cast hjoinVWPoint.symm rfl)
+        (γ.subpath (v (Fin.last (M + 1))) (w (Fin.last (L + 1)))) := by
+    refine (Path.Homotopic.pathCast hcatW hjoinVWPoint.symm rfl).trans ?_
+    have hsourceEq :
+        (γ.subpath (w 0) (w (Fin.last (L + 1)))).cast hjoinVWPoint.symm rfl =
+          γ.subpath (v (Fin.last (M + 1))) (w (Fin.last (L + 1))) := by
+      apply Path.ext
+      funext t
+      simp [Path.cast_coe]
+      rw [hjoinVW]
+      rfl
+    exact hsourceEq ▸ Path.Homotopic.refl _
+  have hcatX :
+      Path.Homotopic (Path.concat s J)
+        (γ.subpath (x 0) (x (Fin.last (K + 1)))) := by
+    exact Path.Homotopic.concat_subpath γ x
+  have hcatXCast :
+      Path.Homotopic ((Path.concat s J).cast hjoinWXPoint.symm rfl)
+        (γ.subpath (w (Fin.last (L + 1))) (x (Fin.last (K + 1)))) := by
+    refine (Path.Homotopic.pathCast hcatX hjoinWXPoint.symm rfl).trans ?_
+    have hsourceEq :
+        (γ.subpath (x 0) (x (Fin.last (K + 1)))).cast hjoinWXPoint.symm rfl =
+          γ.subpath (w (Fin.last (L + 1))) (x (Fin.last (K + 1))) := by
+      apply Path.ext
+      funext t
+      simp [Path.cast_coe]
+      rw [hjoinWX]
+      rfl
+    exact hsourceEq ▸ Path.Homotopic.refl _
+  have hblocksToSubpaths :
+      Path.Homotopic
+        (((((Path.concat p F).cast rfl hjoinUVPoint).trans (Path.concat q G)).trans
+          ((Path.concat r H).cast hjoinVWPoint.symm rfl)).trans
+          ((Path.concat s J).cast hjoinWXPoint.symm rfl))
+        ((((γ.subpath (u 0) (v 0)).trans
+          (γ.subpath (v 0) (v (Fin.last (M + 1))))).trans
+          (γ.subpath (v (Fin.last (M + 1))) (w (Fin.last (L + 1))))).trans
+          (γ.subpath (w (Fin.last (L + 1))) (x (Fin.last (K + 1))))) := by
+    exact Path.Homotopic.hcomp
+      (Path.Homotopic.hcomp (Path.Homotopic.hcomp hcatUCast hcatV) hcatWCast)
+      hcatXCast
+  have hfirstSubpaths :
+      Path.Homotopic
+        ((γ.subpath (u 0) (v 0)).trans
+          (γ.subpath (v 0) (v (Fin.last (M + 1)))))
+        (γ.subpath (u 0) (v (Fin.last (M + 1)))) :=
+    ⟨Path.Homotopy.subpathTransSubpath γ (u 0) (v 0)
+      (v (Fin.last (M + 1)))⟩
+  have hthreeSubpaths :
+      Path.Homotopic
+        (((γ.subpath (u 0) (v 0)).trans
+          (γ.subpath (v 0) (v (Fin.last (M + 1))))).trans
+          (γ.subpath (v (Fin.last (M + 1))) (w (Fin.last (L + 1)))))
+        (γ.subpath (u 0) (w (Fin.last (L + 1)))) := by
+    refine (Path.Homotopic.hcomp hfirstSubpaths (Path.Homotopic.refl _)).trans ?_
+    exact ⟨Path.Homotopy.subpathTransSubpath γ (u 0)
+      (v (Fin.last (M + 1))) (w (Fin.last (L + 1)))⟩
+  have hsubpathsToSubpath :
+      Path.Homotopic
+        ((((γ.subpath (u 0) (v 0)).trans
+          (γ.subpath (v 0) (v (Fin.last (M + 1))))).trans
+          (γ.subpath (v (Fin.last (M + 1))) (w (Fin.last (L + 1))))).trans
+          (γ.subpath (w (Fin.last (L + 1))) (x (Fin.last (K + 1)))))
+        (γ.subpath (u 0) (x (Fin.last (K + 1)))) := by
+    refine (Path.Homotopic.hcomp hthreeSubpaths (Path.Homotopic.refl _)).trans ?_
+    exact ⟨Path.Homotopy.subpathTransSubpath γ (u 0)
+      (w (Fin.last (L + 1))) (x (Fin.last (K + 1)))⟩
+  have hblocksToSubpath := hblocksToSubpaths.trans hsubpathsToSubpath
+  exact hblocksToSubpath.symm.trans hcollapse
+
+/--
+The symmetric three-switch subpath collapse for nonempty south, north, south,
+and north source blocks.
+-/
+theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlock_nullhomotopic
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    (N M L K : ℕ)
+    (u : Fin (N + 2) → unitInterval)
+    (v : Fin (M + 2) → unitInterval)
+    (w : Fin (L + 2) → unitInterval)
+    (x : Fin (K + 2) → unitInterval)
+    (h0 : u 0 = 0) (h1 : x (Fin.last (K + 1)) = 1)
+    (hjoinUV : v 0 = u (Fin.last (N + 1)))
+    (hjoinVW : w 0 = v (Fin.last (M + 1)))
+    (hjoinWX : x 0 = w (Fin.last (L + 1)))
+    (hSouthFirst : ∀ k : Fin (N + 1),
+      Set.range (γ.subpath (u k.castSucc) (u k.succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthFirst : ∀ k : Fin (M + 1),
+      Set.range (γ.subpath (v k.castSucc) (v k.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hSouthLast : ∀ k : Fin (L + 1),
+      Set.range (γ.subpath (w k.castSucc) (w k.succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthLast : ∀ k : Fin (K + 1),
+      Set.range (γ.subpath (x k.castSucc) (x k.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source) :
+    Path.Homotopic
+      (γ.subpath (u 0) (x (Fin.last (K + 1))))
+      ((Path.refl (γ (u 0))).cast rfl
+        (by
+          rw [h1, h0]
+          exact γ.target.trans γ.source.symm)) := by
+  let p : Fin (N + 2) → ThreeSphere := γ ∘ u
+  let F : (k : Fin (N + 1)) → Path (p k.castSucc) (p k.succ) :=
+    fun k => γ.subpath (u k.castSucc) (u k.succ)
+  let q : Fin (M + 2) → ThreeSphere := γ ∘ v
+  let G : (k : Fin (M + 1)) → Path (q k.castSucc) (q k.succ) :=
+    fun k => γ.subpath (v k.castSucc) (v k.succ)
+  let r : Fin (L + 2) → ThreeSphere := γ ∘ w
+  let H : (k : Fin (L + 1)) → Path (r k.castSucc) (r k.succ) :=
+    fun k => γ.subpath (w k.castSucc) (w k.succ)
+  let s : Fin (K + 2) → ThreeSphere := γ ∘ x
+  let J : (k : Fin (K + 1)) → Path (s k.castSucc) (s k.succ) :=
+    fun k => γ.subpath (x k.castSucc) (x k.succ)
+  have hjoinUVPoint : q 0 = p (Fin.last (N + 1)) := by
+    change γ (v 0) = γ (u (Fin.last (N + 1)))
+    rw [hjoinUV]
+  have hjoinVWPoint : r 0 = q (Fin.last (M + 1)) := by
+    change γ (w 0) = γ (v (Fin.last (M + 1)))
+    rw [hjoinVW]
+  have hjoinWXPoint : s 0 = r (Fin.last (L + 1)) := by
+    change γ (x 0) = γ (w (Fin.last (L + 1)))
+    rw [hjoinWX]
+  have hclose : s (Fin.last (K + 1)) = p 0 := by
+    change γ (x (Fin.last (K + 1))) = γ (u 0)
+    rw [h1, h0]
+    exact γ.target.trans γ.source.symm
+  have hpBase : p 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source := by
+    exact hSouthFirst 0 ⟨0, (γ.subpath (u (0 : Fin (N + 1)).castSucc)
+      (u (0 : Fin (N + 1)).succ)).source⟩
+  have hqBase : q 0 ∈ (stereographic' 3 threeSphere_northPole).source := by
+    exact hNorthFirst 0 ⟨0, (γ.subpath (v (0 : Fin (M + 1)).castSucc)
+      (v (0 : Fin (M + 1)).succ)).source⟩
+  have hrBase : r 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source := by
+    exact hSouthLast 0 ⟨0, (γ.subpath (w (0 : Fin (L + 1)).castSucc)
+      (w (0 : Fin (L + 1)).succ)).source⟩
+  have hsBase : s 0 ∈ (stereographic' 3 threeSphere_northPole).source := by
+    exact hNorthLast 0 ⟨0, (γ.subpath (x (0 : Fin (K + 1)).castSucc)
+      (x (0 : Fin (K + 1)).succ)).source⟩
+  have hcollapse :
+      Path.Homotopic
+        (((((Path.concat p F).cast rfl hjoinUVPoint).trans (Path.concat q G)).trans
+          ((Path.concat r H).cast hjoinVWPoint.symm rfl)).trans
+          ((Path.concat s J).cast hjoinWXPoint.symm rfl))
+        ((Path.refl (p 0)).cast rfl hclose) := by
+    exact threeSphere_stereographic_southNorthBlockSouthNorthBlock_concat_cast_nullhomotopic
+      p F q G r H s J hjoinUVPoint hjoinVWPoint hjoinWXPoint hclose
+      hpBase hSouthFirst hqBase hNorthFirst hrBase hSouthLast hsBase hNorthLast
+  have hcatU :
+      Path.Homotopic (Path.concat p F)
+        (γ.subpath (u 0) (u (Fin.last (N + 1)))) := by
+    exact Path.Homotopic.concat_subpath γ u
+  have hcatUCast :
+      Path.Homotopic ((Path.concat p F).cast rfl hjoinUVPoint)
+        (γ.subpath (u 0) (v 0)) := by
+    refine (Path.Homotopic.pathCast hcatU rfl hjoinUVPoint).trans ?_
+    have htargetEq :
+        (γ.subpath (u 0) (u (Fin.last (N + 1)))).cast rfl hjoinUVPoint =
+          γ.subpath (u 0) (v 0) := by
+      apply Path.ext
+      funext t
+      simp [Path.cast_coe]
+      rw [← hjoinUV]
+      rfl
+    exact htargetEq ▸ Path.Homotopic.refl _
+  have hcatV :
+      Path.Homotopic (Path.concat q G)
+        (γ.subpath (v 0) (v (Fin.last (M + 1)))) := by
+    exact Path.Homotopic.concat_subpath γ v
+  have hcatW :
+      Path.Homotopic (Path.concat r H)
+        (γ.subpath (w 0) (w (Fin.last (L + 1)))) := by
+    exact Path.Homotopic.concat_subpath γ w
+  have hcatWCast :
+      Path.Homotopic ((Path.concat r H).cast hjoinVWPoint.symm rfl)
+        (γ.subpath (v (Fin.last (M + 1))) (w (Fin.last (L + 1)))) := by
+    refine (Path.Homotopic.pathCast hcatW hjoinVWPoint.symm rfl).trans ?_
+    have hsourceEq :
+        (γ.subpath (w 0) (w (Fin.last (L + 1)))).cast hjoinVWPoint.symm rfl =
+          γ.subpath (v (Fin.last (M + 1))) (w (Fin.last (L + 1))) := by
+      apply Path.ext
+      funext t
+      simp [Path.cast_coe]
+      rw [hjoinVW]
+      rfl
+    exact hsourceEq ▸ Path.Homotopic.refl _
+  have hcatX :
+      Path.Homotopic (Path.concat s J)
+        (γ.subpath (x 0) (x (Fin.last (K + 1)))) := by
+    exact Path.Homotopic.concat_subpath γ x
+  have hcatXCast :
+      Path.Homotopic ((Path.concat s J).cast hjoinWXPoint.symm rfl)
+        (γ.subpath (w (Fin.last (L + 1))) (x (Fin.last (K + 1)))) := by
+    refine (Path.Homotopic.pathCast hcatX hjoinWXPoint.symm rfl).trans ?_
+    have hsourceEq :
+        (γ.subpath (x 0) (x (Fin.last (K + 1)))).cast hjoinWXPoint.symm rfl =
+          γ.subpath (w (Fin.last (L + 1))) (x (Fin.last (K + 1))) := by
+      apply Path.ext
+      funext t
+      simp [Path.cast_coe]
+      rw [hjoinWX]
+      rfl
+    exact hsourceEq ▸ Path.Homotopic.refl _
+  have hblocksToSubpaths :
+      Path.Homotopic
+        (((((Path.concat p F).cast rfl hjoinUVPoint).trans (Path.concat q G)).trans
+          ((Path.concat r H).cast hjoinVWPoint.symm rfl)).trans
+          ((Path.concat s J).cast hjoinWXPoint.symm rfl))
+        ((((γ.subpath (u 0) (v 0)).trans
+          (γ.subpath (v 0) (v (Fin.last (M + 1))))).trans
+          (γ.subpath (v (Fin.last (M + 1))) (w (Fin.last (L + 1))))).trans
+          (γ.subpath (w (Fin.last (L + 1))) (x (Fin.last (K + 1))))) := by
+    exact Path.Homotopic.hcomp
+      (Path.Homotopic.hcomp (Path.Homotopic.hcomp hcatUCast hcatV) hcatWCast)
+      hcatXCast
+  have hfirstSubpaths :
+      Path.Homotopic
+        ((γ.subpath (u 0) (v 0)).trans
+          (γ.subpath (v 0) (v (Fin.last (M + 1)))))
+        (γ.subpath (u 0) (v (Fin.last (M + 1)))) :=
+    ⟨Path.Homotopy.subpathTransSubpath γ (u 0) (v 0)
+      (v (Fin.last (M + 1)))⟩
+  have hthreeSubpaths :
+      Path.Homotopic
+        (((γ.subpath (u 0) (v 0)).trans
+          (γ.subpath (v 0) (v (Fin.last (M + 1))))).trans
+          (γ.subpath (v (Fin.last (M + 1))) (w (Fin.last (L + 1)))))
+        (γ.subpath (u 0) (w (Fin.last (L + 1)))) := by
+    refine (Path.Homotopic.hcomp hfirstSubpaths (Path.Homotopic.refl _)).trans ?_
+    exact ⟨Path.Homotopy.subpathTransSubpath γ (u 0)
+      (v (Fin.last (M + 1))) (w (Fin.last (L + 1)))⟩
+  have hsubpathsToSubpath :
+      Path.Homotopic
+        ((((γ.subpath (u 0) (v 0)).trans
+          (γ.subpath (v 0) (v (Fin.last (M + 1))))).trans
+          (γ.subpath (v (Fin.last (M + 1))) (w (Fin.last (L + 1))))).trans
+          (γ.subpath (w (Fin.last (L + 1))) (x (Fin.last (K + 1)))))
+        (γ.subpath (u 0) (x (Fin.last (K + 1)))) := by
+    refine (Path.Homotopic.hcomp hthreeSubpaths (Path.Homotopic.refl _)).trans ?_
+    exact ⟨Path.Homotopy.subpathTransSubpath γ (u 0)
+      (w (Fin.last (L + 1))) (x (Fin.last (K + 1)))⟩
+  have hblocksToSubpath := hblocksToSubpaths.trans hsubpathsToSubpath
+  exact hblocksToSubpath.symm.trans hcollapse
+
+/--
 Exact finite-concat quotient form for one subdivision split into nonempty
 north, south, and north source blocks.
 -/
