@@ -3172,6 +3172,175 @@ theorem threeSphereStereographicEquatorLoopFiniteConcatCollapseStatement_eq :
   rfl
 
 /--
+If every segment in a finite concatenation of an equatorial loop stays inside
+the north stereographic source, the concatenation collapses to the stationary
+equatorial loop in the path-homotopy quotient.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_allNorth
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    (N : ℕ) (t : Fin (N + 1) → unitInterval)
+    (h0 : t 0 = 0) (h1 : t (Fin.last N) = 1)
+    (hNorth : ∀ k : Fin N,
+      Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source) :
+    Path.Homotopic.Quotient.mk
+      (Path.concat (γ ∘ t) (fun k => γ.subpath (t k.castSucc) (t k.succ))) =
+      Path.Homotopic.Quotient.mk
+        ((Path.refl threeSphere_equatorPoint).cast
+          (by simp [h0]) (by simp [h1])) := by
+  have hbase :
+      (γ ∘ t) 0 ∈ (stereographic' 3 threeSphere_northPole).source := by
+    simpa [Function.comp_def, h0, γ.source] using
+      threeSphere_equatorPoint_mem_northPole_stereographic_source
+  have hconcat :
+      Set.range
+          (Path.concat (γ ∘ t)
+            (fun k => γ.subpath (t k.castSucc) (t k.succ))) ⊆
+        (stereographic' 3 threeSphere_northPole).source :=
+    threeSphere_stereographic_source_concat_range_subset threeSphere_northPole
+      (γ ∘ t) (fun k => γ.subpath (t k.castSucc) (t k.succ))
+      hbase hNorth
+  apply Path.Homotopic.Quotient.eq.mpr
+  apply threeSphere_stereographic_source_contained_paths_homotopic
+    threeSphere_northPole
+  · exact hconcat
+  · intro x hx
+    rcases hx with ⟨_s, rfl⟩
+    simpa [Path.cast_coe] using
+      threeSphere_equatorPoint_mem_northPole_stereographic_source
+
+/--
+If every segment in a finite concatenation of an equatorial loop stays inside
+the south stereographic source, the concatenation collapses to the stationary
+equatorial loop in the path-homotopy quotient.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_allSouth
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    (N : ℕ) (t : Fin (N + 1) → unitInterval)
+    (h0 : t 0 = 0) (h1 : t (Fin.last N) = 1)
+    (hSouth : ∀ k : Fin N,
+      Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source) :
+    Path.Homotopic.Quotient.mk
+      (Path.concat (γ ∘ t) (fun k => γ.subpath (t k.castSucc) (t k.succ))) =
+      Path.Homotopic.Quotient.mk
+        ((Path.refl threeSphere_equatorPoint).cast
+          (by simp [h0]) (by simp [h1])) := by
+  have hbase :
+      (γ ∘ t) 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source := by
+    simpa [Function.comp_def, h0, γ.source] using
+      threeSphere_equatorPoint_mem_southPole_stereographic_source
+  have hconcat :
+      Set.range
+          (Path.concat (γ ∘ t)
+            (fun k => γ.subpath (t k.castSucc) (t k.succ))) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source :=
+    threeSphere_stereographic_source_concat_range_subset (-threeSphere_northPole)
+      (γ ∘ t) (fun k => γ.subpath (t k.castSucc) (t k.succ))
+      hbase hSouth
+  apply Path.Homotopic.Quotient.eq.mpr
+  apply threeSphere_stereographic_source_contained_paths_homotopic
+    (-threeSphere_northPole)
+  · exact hconcat
+  · intro x hx
+    rcases hx with ⟨_s, rfl⟩
+    simpa [Path.cast_coe] using
+      threeSphere_equatorPoint_mem_southPole_stereographic_source
+
+/--
+A two-segment loop with the first segment in the north stereographic source
+and the return segment in the south stereographic source is null-homotopic.
+The endpoints lie in the overlap, so the two segments can both be replaced by
+an overlap path and its reverse.
+-/
+theorem threeSphere_stereographic_northSouth_loop_nullhomotopic
+    {x y : ThreeSphere} (p : Path x y) (q : Path y x)
+    (hp : Set.range p ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hq : Set.range q ⊆ (stereographic' 3 (-threeSphere_northPole)).source) :
+    Path.Homotopic (p.trans q) (Path.refl x) := by
+  let U : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
+  let V : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  have hxU : x ∈ U := hp ⟨0, p.source⟩
+  have hyU : y ∈ U := hp ⟨1, p.target⟩
+  have hyV : y ∈ V := hq ⟨0, q.source⟩
+  have hxV : x ∈ V := hq ⟨1, q.target⟩
+  let xOverlap : (U ∩ V : Set ThreeSphere) := ⟨x, hxU, hxV⟩
+  let yOverlap : (U ∩ V : Set ThreeSphere) := ⟨y, hyU, hyV⟩
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    simpa [U, V] using threeSphere_actualOverlap_pathConnectedSpace
+  let overlapPath : Path xOverlap yOverlap :=
+    PathConnectedSpace.somePath xOverlap yOverlap
+  let incl : C((U ∩ V : Set ThreeSphere), ThreeSphere) :=
+    ⟨Subtype.val, continuous_subtype_val⟩
+  let r : Path x y := overlapPath.map incl.continuous
+  have hrU : Set.range r ⊆ U := by
+    intro z hz
+    rcases hz with ⟨s, rfl⟩
+    exact (overlapPath s).2.1
+  have hrV : Set.range r ⊆ V := by
+    intro z hz
+    rcases hz with ⟨s, rfl⟩
+    exact (overlapPath s).2.2
+  have hpR : Path.Homotopic p r := by
+    simpa [U] using
+      threeSphere_stereographic_source_contained_paths_homotopic
+        threeSphere_northPole p r hp hrU
+  have hqR : Path.Homotopic q r.symm := by
+    have hrSymmV : Set.range r.symm ⊆ V := by
+      simpa [Path.symm_range] using hrV
+    simpa [V] using
+      threeSphere_stereographic_source_contained_paths_homotopic
+        (-threeSphere_northPole) q r.symm hq hrSymmV
+  exact (Path.Homotopic.hcomp hpR hqR).trans
+    (Path.Homotopic.trans_symm r)
+
+/--
+A two-segment loop with the first segment in the south stereographic source
+and the return segment in the north stereographic source is null-homotopic.
+This is the symmetric chart-switch case to the north/south loop collapse.
+-/
+theorem threeSphere_stereographic_southNorth_loop_nullhomotopic
+    {x y : ThreeSphere} (p : Path x y) (q : Path y x)
+    (hp : Set.range p ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hq : Set.range q ⊆ (stereographic' 3 threeSphere_northPole).source) :
+    Path.Homotopic (p.trans q) (Path.refl x) := by
+  let U : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
+  let V : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  have hxV : x ∈ V := hp ⟨0, p.source⟩
+  have hyV : y ∈ V := hp ⟨1, p.target⟩
+  have hyU : y ∈ U := hq ⟨0, q.source⟩
+  have hxU : x ∈ U := hq ⟨1, q.target⟩
+  let xOverlap : (U ∩ V : Set ThreeSphere) := ⟨x, hxU, hxV⟩
+  let yOverlap : (U ∩ V : Set ThreeSphere) := ⟨y, hyU, hyV⟩
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    simpa [U, V] using threeSphere_actualOverlap_pathConnectedSpace
+  let overlapPath : Path xOverlap yOverlap :=
+    PathConnectedSpace.somePath xOverlap yOverlap
+  let incl : C((U ∩ V : Set ThreeSphere), ThreeSphere) :=
+    ⟨Subtype.val, continuous_subtype_val⟩
+  let r : Path x y := overlapPath.map incl.continuous
+  have hrU : Set.range r ⊆ U := by
+    intro z hz
+    rcases hz with ⟨s, rfl⟩
+    exact (overlapPath s).2.1
+  have hrV : Set.range r ⊆ V := by
+    intro z hz
+    rcases hz with ⟨s, rfl⟩
+    exact (overlapPath s).2.2
+  have hpR : Path.Homotopic p r := by
+    simpa [V] using
+      threeSphere_stereographic_source_contained_paths_homotopic
+        (-threeSphere_northPole) p r hp hrV
+  have hqR : Path.Homotopic q r.symm := by
+    have hrSymmU : Set.range r.symm ⊆ U := by
+      simpa [Path.symm_range] using hrU
+    simpa [U] using
+      threeSphere_stereographic_source_contained_paths_homotopic
+        threeSphere_northPole q r.symm hq hrSymmU
+  exact (Path.Homotopic.hcomp hpR hqR).trans
+    (Path.Homotopic.trans_symm r)
+
+/--
 Finite-concat quotient representatives plus their cast-aware quotient collapse
 to the stationary loop supply the equatorial Van Kampen loop obligation.
 -/
