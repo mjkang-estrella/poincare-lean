@@ -404,6 +404,36 @@ theorem path_homotopic_concat_first_middle_last
     (Path.Homotopic.refl (F (Fin.last (N + 1))))
 
 /--
+Finite path concatenation can be split after a block of `L` segments into the
+prefix concatenation followed by the reindexed suffix concatenation.
+-/
+theorem path_homotopic_concat_split
+    {X : Type u} [TopologicalSpace X] {L R : ℕ}
+    (p : Fin (L + R + 1) → X)
+    (F : (k : Fin (L + R)) → Path (p k.castSucc) (p k.succ)) :
+    Path.Homotopic (Path.concat p F)
+      ((Path.concat (fun i : Fin (L + 1) => p ⟨i.val, by omega⟩)
+        (fun k : Fin L => F ⟨k.val, by omega⟩)).trans
+        (Path.concat (fun j : Fin (R + 1) => p ⟨L + j.val, by omega⟩)
+          (fun k : Fin R => F ⟨L + k.val, by omega⟩))) := by
+  induction R with
+  | zero =>
+      simp [Path.concat_zero]
+      exact (Path.Homotopic.trans_refl _).symm
+  | succ R ih =>
+      rw [Path.concat_succ]
+      refine (Path.Homotopic.hcomp
+        (ih (p ∘ Fin.castSucc) (fun k : Fin (L + R) => F k.castSucc))
+        (Path.Homotopic.refl (F (Fin.last (L + R))))).trans ?_
+      rw [Path.concat_succ]
+      exact Path.Homotopic.trans_assoc
+        (Path.concat (fun i : Fin (L + 1) => p ⟨i.val, by omega⟩)
+          (fun k : Fin L => F ⟨k.val, by omega⟩))
+        (Path.concat (fun j : Fin (R + 1) => p ⟨L + j.val, by omega⟩)
+          (fun k : Fin R => F ⟨L + k.val, by omega⟩))
+        (F (Fin.last (L + R)))
+
+/--
 For a finite word whose entries each satisfy a left-or-right alternative,
 either every entry is left, or there is a first non-left entry; that entry is
 right and every earlier entry is left.
@@ -4831,6 +4861,60 @@ theorem threeSphere_stereographicEquatorLoop_afterStop_tailConcat_homotopic_to_s
     simp [Path.cast_coe]
     rw [hidx0, hidxLast]
   exact htarget ▸ Path.Homotopic.refl _
+
+/--
+The full finite concatenation splits at a first-run stop into the prefix
+subpath ending at the stop segment's right endpoint followed by the concrete
+after-stop suffix concatenation.
+-/
+theorem threeSphere_stereographicEquatorLoop_fullConcat_homotopic_to_stopSubpath_tailConcat
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval) {stop : Fin N} :
+    let tailPts : Fin ((N - (stop.val + 1)) + 1) → ThreeSphere := fun i =>
+      γ (t ⟨stop.val + 1 + i.val, by
+        have hi : i.val < (N - (stop.val + 1)) + 1 := i.isLt
+        omega⟩)
+    let tailSegs : (k : Fin (N - (stop.val + 1))) →
+        Path (tailPts k.castSucc) (tailPts k.succ) := fun k =>
+      γ.subpath
+        (t ⟨stop.val + 1 + k.val, by
+          have hk : k.val < N - (stop.val + 1) := k.isLt
+          omega⟩)
+        (t ⟨stop.val + 1 + (k.val + 1), by
+          have hk : k.val < N - (stop.val + 1) := k.isLt
+          omega⟩)
+    let hstart : tailPts 0 = γ (t stop.succ) := by rfl
+    let hend : tailPts (Fin.last (N - (stop.val + 1))) = γ (t (Fin.last N)) := by
+      dsimp [tailPts]
+      congr 2
+      ext
+      change stop.val + 1 + (N - (stop.val + 1)) = N
+      omega
+    Path.Homotopic
+      (Path.concat (γ ∘ t) (fun k : Fin N => γ.subpath (t k.castSucc) (t k.succ)))
+      ((γ.subpath (t 0) (t stop.succ)).trans
+        ((Path.concat tailPts tailSegs).cast hstart.symm hend.symm)) := by
+  intro tailPts tailSegs hstart hend
+  have hconcat :
+      Path.Homotopic
+        (Path.concat (γ ∘ t) (fun k : Fin N => γ.subpath (t k.castSucc) (t k.succ)))
+        (γ.subpath (t 0) (t (Fin.last N))) := by
+    exact Path.Homotopic.concat_subpath γ t
+  have hsplit :
+      Path.Homotopic
+        ((γ.subpath (t 0) (t stop.succ)).trans
+          (γ.subpath (t stop.succ) (t (Fin.last N))))
+        (γ.subpath (t 0) (t (Fin.last N))) := by
+    exact ⟨Path.Homotopy.subpathTransSubpath γ (t 0) (t stop.succ) (t (Fin.last N))⟩
+  have htail :
+      Path.Homotopic
+        ((Path.concat tailPts tailSegs).cast hstart.symm hend.symm)
+        (γ.subpath (t stop.succ) (t (Fin.last N))) := by
+    simpa using
+      (threeSphere_stereographicEquatorLoop_afterStop_tailConcat_homotopic_to_subpath
+        γ t (stop := stop))
+  exact hconcat.trans (hsplit.symm.trans
+    (Path.Homotopic.hcomp (Path.Homotopic.refl _) htail.symm))
 
 /--
 For a finite subdivision whose segments each lie in a north or south
