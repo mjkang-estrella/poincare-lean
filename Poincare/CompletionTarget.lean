@@ -3040,6 +3040,44 @@ theorem canonical_completion_payload_of_surgery_and_topology_packages_via_extinc
   apply Subsingleton.elim
 
 /--
+The package-level one-point recognition canonical payload has a direct endpoint
+name for the project-layer completion payload.
+-/
+theorem canonical_completion_payload_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement_to_project_payload_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    canonical_completion_payload_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement
+      smoothabilityPackage surgeryPackages topologyPackage =
+      canonical_completion_payload_of_poincare_completion_payload
+        (poincare_completion_payload_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement
+          smoothabilityPackage surgeryPackages topologyPackage) := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_payload_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement_to_project_payload
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    canonical_completion_payload_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement
+      smoothabilityPackage surgeryPackages topologyPackage =
+      canonical_completion_payload_of_poincare_completion_payload
+        (poincare_completion_payload_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement
+          smoothabilityPackage surgeryPackages topologyPackage) := by
+  exact
+    canonical_completion_payload_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement_to_project_payload_eq
+      smoothabilityPackage surgeryPackages topologyPackage
+
+/--
 The package-level one-point recognition canonical target projection destructures
 the named canonical payload.
 -/
@@ -3061,6 +3099,42 @@ theorem canonical_completion_target_of_surgery_and_topology_packages_via_extinct
           ⟨target, _criterion⟩
         exact target) := by
   apply Subsingleton.elim
+
+/--
+The package-level one-point recognition canonical target has a direct endpoint
+name for the project-layer Poincare statement.
+-/
+theorem canonical_completion_target_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement_to_project_statement_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    canonical_completion_target_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement
+      smoothabilityPackage surgeryPackages topologyPackage =
+      poincare_statement_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement
+        smoothabilityPackage surgeryPackages topologyPackage := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_target_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement_to_project_statement
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    canonical_completion_target_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement
+      smoothabilityPackage surgeryPackages topologyPackage =
+      poincare_statement_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement
+        smoothabilityPackage surgeryPackages topologyPackage := by
+  exact
+    canonical_completion_target_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement_to_project_statement_eq
+      smoothabilityPackage surgeryPackages topologyPackage
 
 /--
 The package-level one-point recognition canonical criterion projection
@@ -3085,6 +3159,54 @@ theorem canonical_completion_criterion_of_surgery_and_topology_packages_via_exti
           ⟨_target, criterion⟩
         exact criterion witness) := by
   apply Subsingleton.elim
+
+/--
+The package-level one-point recognition canonical criterion has a direct
+endpoint name for the criterion carried by the project-layer completion payload.
+-/
+theorem canonical_completion_criterion_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement_to_project_payload_eq
+    (witness : Type u)
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    canonical_completion_criterion_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement
+      witness smoothabilityPackage surgeryPackages topologyPackage =
+      (by
+        rcases
+            canonical_completion_payload_of_poincare_completion_payload
+              (poincare_completion_payload_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement
+                smoothabilityPackage surgeryPackages topologyPackage) with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  apply Subsingleton.elim
+
+theorem canonical_completion_criterion_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement_to_project_payload
+    (witness : Type u)
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (surgeryPackages :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    canonical_completion_criterion_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement
+      witness smoothabilityPackage surgeryPackages topologyPackage =
+      (by
+        rcases
+            canonical_completion_payload_of_poincare_completion_payload
+              (poincare_completion_payload_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement
+                smoothabilityPackage surgeryPackages topologyPackage) with
+          ⟨_target, criterion⟩
+        exact criterion witness) := by
+  exact
+    canonical_completion_criterion_of_surgery_and_topology_packages_via_extinctionOnePointThreeSpaceRecognitionStatement_to_project_payload_eq
+      witness smoothabilityPackage surgeryPackages topologyPackage
 
 /--
 The package-level one-point recognition canonical payload agrees with the
