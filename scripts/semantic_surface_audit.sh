@@ -4642,6 +4642,12 @@ append_certificate_route_projection_contract_checks() {
 #check Poincare.completion_certificate_of_poincareProofDependencies_packaged_reverse_canonical_smooth_three_sphere_statement_payload_eq
 #check Poincare.completion_certificate_of_poincareProofDependencies_packaged_smooth_statement_payload
 #check Poincare.completion_certificate_of_poincareProofDependencies_packaged_smooth_statement_payload_eq
+#check Poincare.nonempty_completion_certificate_of_remaining_dependency_package_packaged_smooth_statement_payload
+#check Poincare.nonempty_completion_certificate_of_remaining_dependency_package_packaged_smooth_statement_payload_eq
+#check Poincare.poincare_conjecture_of_nonempty_completion_certificate_of_remaining_dependency_package_packaged_smooth_statement_payload_eq
+#check Poincare.nonempty_completion_certificate_of_poincareProofDependencies_packaged_smooth_statement_payload
+#check Poincare.nonempty_completion_certificate_of_poincareProofDependencies_packaged_smooth_statement_payload_eq
+#check Poincare.poincare_conjecture_of_nonempty_completion_certificate_of_poincareProofDependencies_packaged_smooth_statement_payload_eq
 #check Poincare.completion_certificate_of_poincareProofDependencies_projections
 #check Poincare.completion_certificate_of_poincareProofDependencies_reverse_canonical_smooth_three_sphere_statement_payload_eq
 #check Poincare.completion_certificate_of_poincareProofDependencies_smooth_statement_payload_eq
@@ -35020,6 +35026,22 @@ universe u
     ∃ _target : Poincare.PoincareConjectureStatement,
       ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
     Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.nonempty_completion_certificate_of_remaining_dependency_package_packaged_smooth_statement_payload :
+  (∃ _dependencies : Poincare.RemainingDependencyPackage,
+    ∃ _smoothManifold : Poincare.SmoothabilitySmoothManifoldStatement,
+    ∃ _smoothStatement : Poincare.SmoothPoincareConjectureStatement,
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    Nonempty Poincare.PoincareCompletionCertificate)
+
+#check (Poincare.nonempty_completion_certificate_of_poincareProofDependencies_packaged_smooth_statement_payload :
+  (∃ _dependencies : Poincare.PoincareProofDependencies,
+    ∃ _smoothManifold : Poincare.SmoothabilitySmoothManifoldStatement,
+    ∃ _smoothStatement : Poincare.SmoothPoincareConjectureStatement,
+    ∃ _target : Poincare.PoincareConjectureStatement,
+      ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness) →
+    Nonempty Poincare.PoincareCompletionCertificate)
 
 #check (Poincare.completion_certificate_of_remaining_dependency_package_packaged_canonical_smooth_three_sphere_statement_payload :
   (∃ _dependencies : Poincare.RemainingDependencyPackage,
