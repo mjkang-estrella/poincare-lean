@@ -12552,6 +12552,152 @@ theorem completion_certificate_of_poincareProofDependencies_packaged_canonical_s
       dependencies canonicalSmoothStatement
 
 /--
+A remaining-dependency packaged canonical-smooth route payload also packages
+directly as an inhabited completion-certificate proposition.
+-/
+theorem nonempty_completion_certificate_of_remaining_dependency_package_packaged_canonical_smooth_three_sphere_statement_payload
+    (payload :
+      ∃ _dependencies : RemainingDependencyPackage.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _canonicalSmoothStatement :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [IsManifold (𝓡 3) ∞ M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)),
+      ∃ _smoothStatement : SmoothPoincareConjectureStatement.{u},
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    Nonempty PoincareCompletionCertificate.{u} :=
+  nonempty_completion_certificate_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_package_packaged_canonical_smooth_three_sphere_statement_payload
+      payload)
+
+/--
+The nonempty package from a remaining-dependency packaged canonical-smooth
+payload is the package containing the checked packaged canonical-smooth
+certificate constructor.
+-/
+theorem nonempty_completion_certificate_of_remaining_dependency_package_packaged_canonical_smooth_three_sphere_statement_payload_eq
+    (payload :
+      ∃ _dependencies : RemainingDependencyPackage.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _canonicalSmoothStatement :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [IsManifold (𝓡 3) ∞ M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)),
+      ∃ _smoothStatement : SmoothPoincareConjectureStatement.{u},
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    nonempty_completion_certificate_of_remaining_dependency_package_packaged_canonical_smooth_three_sphere_statement_payload
+        payload =
+      nonempty_completion_certificate_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_package_packaged_canonical_smooth_three_sphere_statement_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+Reducing the final theorem through the nonempty remaining-dependency packaged
+canonical-smooth payload package agrees with projecting the constructed
+certificate directly.
+-/
+theorem poincare_conjecture_of_nonempty_completion_certificate_of_remaining_dependency_package_packaged_canonical_smooth_three_sphere_statement_payload_eq
+    (payload :
+      ∃ _dependencies : RemainingDependencyPackage.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _canonicalSmoothStatement :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [IsManifold (𝓡 3) ∞ M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)),
+      ∃ _smoothStatement : SmoothPoincareConjectureStatement.{u},
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincare_conjecture_of_nonempty_completion_certificate
+        (nonempty_completion_certificate_of_remaining_dependency_package_packaged_canonical_smooth_three_sphere_statement_payload
+          payload) =
+      poincare_conjecture_of_completion_certificate
+        (completion_certificate_of_remaining_dependency_package_packaged_canonical_smooth_three_sphere_statement_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+An aggregate-dependency packaged canonical-smooth route payload also packages
+directly as an inhabited completion-certificate proposition.
+-/
+theorem nonempty_completion_certificate_of_poincareProofDependencies_packaged_canonical_smooth_three_sphere_statement_payload
+    (payload :
+      ∃ _dependencies : PoincareProofDependencies.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _canonicalSmoothStatement :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [IsManifold (𝓡 3) ∞ M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)),
+      ∃ _smoothStatement : SmoothPoincareConjectureStatement.{u},
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    Nonempty PoincareCompletionCertificate.{u} :=
+  nonempty_completion_certificate_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_packaged_canonical_smooth_three_sphere_statement_payload
+      payload)
+
+/--
+The nonempty package from an aggregate-dependency packaged canonical-smooth
+payload is the package containing the checked packaged canonical-smooth
+certificate constructor.
+-/
+theorem nonempty_completion_certificate_of_poincareProofDependencies_packaged_canonical_smooth_three_sphere_statement_payload_eq
+    (payload :
+      ∃ _dependencies : PoincareProofDependencies.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _canonicalSmoothStatement :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [IsManifold (𝓡 3) ∞ M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)),
+      ∃ _smoothStatement : SmoothPoincareConjectureStatement.{u},
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    nonempty_completion_certificate_of_poincareProofDependencies_packaged_canonical_smooth_three_sphere_statement_payload
+        payload =
+      nonempty_completion_certificate_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies_packaged_canonical_smooth_three_sphere_statement_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+Reducing the final theorem through the nonempty aggregate-dependency packaged
+canonical-smooth payload package agrees with projecting the constructed
+certificate directly.
+-/
+theorem poincare_conjecture_of_nonempty_completion_certificate_of_poincareProofDependencies_packaged_canonical_smooth_three_sphere_statement_payload_eq
+    (payload :
+      ∃ _dependencies : PoincareProofDependencies.{u},
+      ∃ _smoothManifold : SmoothabilitySmoothManifoldStatement.{u},
+      ∃ _canonicalSmoothStatement :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [IsManifold (𝓡 3) ∞ M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)),
+      ∃ _smoothStatement : SmoothPoincareConjectureStatement.{u},
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :
+    poincare_conjecture_of_nonempty_completion_certificate
+        (nonempty_completion_certificate_of_poincareProofDependencies_packaged_canonical_smooth_three_sphere_statement_payload
+          payload) =
+      poincare_conjecture_of_completion_certificate
+        (completion_certificate_of_poincareProofDependencies_packaged_canonical_smooth_three_sphere_statement_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
 With a project smooth statement supplied as an explicit input, the checked
 completion certificate is equivalent to a remaining-dependency package together
 with its packaged smooth-route payload.
