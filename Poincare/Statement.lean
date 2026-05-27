@@ -256,6 +256,108 @@ theorem threeSphere_stereographic_source_contained_loop_nullhomotopic
   simpa [hγmap, hreflmap] using hmap
 
 /--
+Two paths in the target sphere with the same endpoints are homotopic whenever
+both images stay inside one stereographic chart source.  This is the path-piece
+form of chart-source simple-connectedness needed before replacing
+source-contained subpaths in finite concatenations.
+-/
+theorem threeSphere_stereographic_source_contained_paths_homotopic
+    (v : ThreeSphere) {x y : ThreeSphere}
+    (p q : Path x y)
+    (hp : Set.range p ⊆ (stereographic' 3 v).source)
+    (hq : Set.range q ⊆ (stereographic' 3 v).source) :
+    Path.Homotopic p q := by
+  have hx : x ∈ (stereographic' 3 v).source :=
+    hp ⟨0, p.source⟩
+  have hy : y ∈ (stereographic' 3 v).source :=
+    hp ⟨1, p.target⟩
+  let sourceX : (stereographic' 3 v).source := ⟨x, hx⟩
+  let sourceY : (stereographic' 3 v).source := ⟨y, hy⟩
+  let pSource : Path sourceX sourceY := {
+    toFun := fun t => ⟨p t, hp ⟨t, rfl⟩⟩
+    continuous_toFun := by
+      exact p.continuous.subtype_mk (fun t => hp ⟨t, rfl⟩)
+    source' := by
+      exact Subtype.ext p.source
+    target' := by
+      exact Subtype.ext p.target }
+  let qSource : Path sourceX sourceY := {
+    toFun := fun t => ⟨q t, hq ⟨t, rfl⟩⟩
+    continuous_toFun := by
+      exact q.continuous.subtype_mk (fun t => hq ⟨t, rfl⟩)
+    source' := by
+      exact Subtype.ext q.source
+    target' := by
+      exact Subtype.ext q.target }
+  let incl : C((stereographic' 3 v).source, ThreeSphere) :=
+    ⟨Subtype.val, continuous_subtype_val⟩
+  have hsource : Path.Homotopic pSource qSource := by
+    letI : SimplyConnectedSpace (stereographic' 3 v).source :=
+      threeSphere_stereographic_source_simplyConnectedSpace v
+    exact SimplyConnectedSpace.paths_homotopic pSource qSource
+  have hmap := Path.Homotopic.map hsource incl
+  have hpmap : pSource.map incl.continuous = p := by
+    ext t
+    rfl
+  have hqmap : qSource.map incl.continuous = q := by
+    ext t
+    rfl
+  simpa [hpmap, hqmap] using hmap
+
+/--
+A finite concatenation of paths whose pieces all stay inside one stereographic
+source also stays inside that source.
+-/
+theorem threeSphere_stereographic_source_concat_range_subset
+    (v : ThreeSphere) {N : ℕ} (p : Fin (N + 1) → ThreeSphere)
+    (F : (k : Fin N) → Path (p k.castSucc) (p k.succ))
+    (hbase : p 0 ∈ (stereographic' 3 v).source)
+    (hF : ∀ k : Fin N, Set.range (F k) ⊆ (stereographic' 3 v).source) :
+    Set.range (Path.concat p F) ⊆ (stereographic' 3 v).source := by
+  induction N with
+  | zero =>
+      intro x hx
+      rw [Path.concat_zero] at hx
+      rcases hx with ⟨_t, rfl⟩
+      simpa using hbase
+  | succ N ih =>
+      rw [Path.concat_succ]
+      intro x hx
+      have hx' :
+          x ∈ Set.range (Path.concat (p ∘ Fin.castSucc) (fun k => F k.castSucc)) ∪
+            Set.range (F (Fin.last N)) := by
+        simpa [Path.trans_range] using hx
+      rcases hx' with hx | hx
+      · exact ih (p ∘ Fin.castSucc) (fun k => F k.castSucc)
+          hbase (fun k => hF k.castSucc) hx
+      · exact hF (Fin.last N) hx
+
+/--
+A closed finite concatenation of paths inside one stereographic source is
+null-homotopic in the target sphere.  This is the single-chart finite-concat
+collapse supplied by chart-source simple-connectedness.
+-/
+theorem threeSphere_stereographic_source_contained_concat_loop_nullhomotopic
+    (v : ThreeSphere) {N : ℕ} (p : Fin (N + 1) → ThreeSphere)
+    (F : (k : Fin N) → Path (p k.castSucc) (p k.succ))
+    (hbase : p 0 ∈ (stereographic' 3 v).source)
+    (hF : ∀ k : Fin N, Set.range (F k) ⊆ (stereographic' 3 v).source)
+    (hend : p (Fin.last N) = p 0) :
+    Path.Homotopic
+      ((Path.concat p F).cast rfl hend.symm)
+      (Path.refl (p 0)) := by
+  have hconcat :
+      Set.range (Path.concat p F) ⊆ (stereographic' 3 v).source :=
+    threeSphere_stereographic_source_concat_range_subset v p F hbase hF
+  apply threeSphere_stereographic_source_contained_paths_homotopic v
+  · intro x hx
+    rcases hx with ⟨t, rfl⟩
+    exact hconcat ⟨t, by simp [Path.cast_coe]⟩
+  · intro x hx
+    rcases hx with ⟨_t, rfl⟩
+    simpa using hbase
+
+/--
 The source of the stereographic chart at `v` is the complement of the point
 `v`.
 -/
