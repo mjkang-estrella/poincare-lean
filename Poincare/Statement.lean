@@ -404,6 +404,17 @@ theorem path_homotopic_concat_first_middle_last
     (Path.Homotopic.refl (F (Fin.last (N + 1))))
 
 /--
+Moving a source cast from the second factor of a path concatenation to a target
+cast on the first factor does not change the concatenated path.
+-/
+theorem path_trans_source_cast_eq_target_cast_trans
+    {X : Type u} [TopologicalSpace X] {a b c d : X}
+    (p : Path a b) (q : Path c d) (h : c = b) :
+    p.trans (q.cast h.symm rfl) = (p.cast rfl h).trans q := by
+  cases h
+  rfl
+
+/--
 The source of the stereographic chart at `v` is the complement of the point
 `v`.
 -/
@@ -4041,6 +4052,236 @@ theorem threeSphere_stereographic_southNorthBlockSouthNorthBlock_concat_cast_nul
       ((Path.concat s J).cast hjoinRS.symm rfl)
       hclose hsouthPathRange hlastRange
   exact hreplaceFull.trans hcontract
+
+/--
+A five-block north/south/north/south/north chart word is null-homotopic.  The
+proof replaces the first south block bracketed by north blocks, reducing the
+word to a north/south/north block collapse.
+-/
+theorem threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthBlock_concat_cast_nullhomotopic
+    {N M L K T : ℕ}
+    (p : Fin (N + 1) → ThreeSphere)
+    (F : (k : Fin N) → Path (p k.castSucc) (p k.succ))
+    (q : Fin (M + 1) → ThreeSphere)
+    (G : (k : Fin M) → Path (q k.castSucc) (q k.succ))
+    (r : Fin (L + 1) → ThreeSphere)
+    (H : (k : Fin L) → Path (r k.castSucc) (r k.succ))
+    (s : Fin (K + 1) → ThreeSphere)
+    (J : (k : Fin K) → Path (s k.castSucc) (s k.succ))
+    (u : Fin (T + 1) → ThreeSphere)
+    (W : (k : Fin T) → Path (u k.castSucc) (u k.succ))
+    (hjoinPQ : q 0 = p (Fin.last N))
+    (hjoinQR : r 0 = q (Fin.last M))
+    (hjoinRS : s 0 = r (Fin.last L))
+    (hjoinSU : u 0 = s (Fin.last K))
+    (hclose : u (Fin.last T) = p 0)
+    (hpBase : p 0 ∈ (stereographic' 3 threeSphere_northPole).source)
+    (hF : ∀ k : Fin N,
+      Set.range (F k) ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hqBase : q 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hG : ∀ k : Fin M,
+      Set.range (G k) ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hrBase : r 0 ∈ (stereographic' 3 threeSphere_northPole).source)
+    (hH : ∀ k : Fin L,
+      Set.range (H k) ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hsBase : s 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hJ : ∀ k : Fin K,
+      Set.range (J k) ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (huBase : u 0 ∈ (stereographic' 3 threeSphere_northPole).source)
+    (hW : ∀ k : Fin T,
+      Set.range (W k) ⊆ (stereographic' 3 threeSphere_northPole).source) :
+    Path.Homotopic
+      ((((((Path.concat p F).cast rfl hjoinPQ).trans (Path.concat q G)).trans
+        ((Path.concat r H).cast hjoinQR.symm rfl)).trans
+        ((Path.concat s J).cast hjoinRS.symm rfl)).trans
+        ((Path.concat u W).cast hjoinSU.symm rfl))
+      ((Path.refl (p 0)).cast rfl hclose) := by
+  let A : Path (p 0) (q 0) := (Path.concat p F).cast rfl hjoinPQ
+  let B : Path (q 0) (q (Fin.last M)) := Path.concat q G
+  let C : Path (q (Fin.last M)) (r (Fin.last L)) :=
+    (Path.concat r H).cast hjoinQR.symm rfl
+  let D : Path (r (Fin.last L)) (s (Fin.last K)) :=
+    (Path.concat s J).cast hjoinRS.symm rfl
+  let E : Path (s (Fin.last K)) (u (Fin.last T)) :=
+    (Path.concat u W).cast hjoinSU.symm rfl
+  have hfirstConcatRange :
+      Set.range (Path.concat p F) ⊆
+        (stereographic' 3 threeSphere_northPole).source :=
+    threeSphere_stereographic_source_concat_range_subset threeSphere_northPole
+      p F hpBase hF
+  have hfirstRange :
+      Set.range A ⊆ (stereographic' 3 threeSphere_northPole).source := by
+    intro y hy
+    rcases hy with ⟨a, rfl⟩
+    exact hfirstConcatRange ⟨a, by simp [A, Path.cast_coe]⟩
+  have hthirdConcatRange :
+      Set.range (Path.concat r H) ⊆
+        (stereographic' 3 threeSphere_northPole).source :=
+    threeSphere_stereographic_source_concat_range_subset threeSphere_northPole
+      r H hrBase hH
+  have hthirdRange :
+      Set.range C ⊆ (stereographic' 3 threeSphere_northPole).source := by
+    intro y hy
+    rcases hy with ⟨a, rfl⟩
+    exact hthirdConcatRange ⟨a, by simp [C, Path.cast_coe]⟩
+  have hlastConcatRange :
+      Set.range (Path.concat u W) ⊆
+        (stereographic' 3 threeSphere_northPole).source :=
+    threeSphere_stereographic_source_concat_range_subset threeSphere_northPole
+      u W huBase hW
+  have hlastRange :
+      Set.range E ⊆ (stereographic' 3 threeSphere_northPole).source := by
+    intro y hy
+    rcases hy with ⟨a, rfl⟩
+    exact hlastConcatRange ⟨a, by simp [E, Path.cast_coe]⟩
+  rcases threeSphere_stereographic_northSouthBlockNorth_homotopic_to_northBlock
+      q A G C hfirstRange hqBase hG hthirdRange with
+    ⟨northBridge, _hnorthBridgeRange, hreplace, hnorthPathRange⟩
+  have hreplaceFull :
+      Path.Homotopic ((((A.trans B).trans C).trans D).trans E)
+        ((((A.trans northBridge).trans C).trans D).trans E) := by
+    exact Path.Homotopic.hcomp
+      (Path.Homotopic.hcomp hreplace (Path.Homotopic.refl D))
+      (Path.Homotopic.refl E)
+  let P : Path (p 0) (r (Fin.last L)) := (A.trans northBridge).trans C
+  have hPRange :
+      Set.range P ⊆ (stereographic' 3 threeSphere_northPole).source := by
+    simpa [P] using hnorthPathRange
+  have hPCastRange :
+      Set.range (P.cast rfl hjoinRS) ⊆
+        (stereographic' 3 threeSphere_northPole).source := by
+    intro y hy
+    rcases hy with ⟨a, rfl⟩
+    exact hPRange ⟨a, by simp [Path.cast_coe]⟩
+  have hshift :
+      P.trans D = (P.cast rfl hjoinRS).trans (Path.concat s J) := by
+    dsimp [D]
+    exact path_trans_source_cast_eq_target_cast_trans P (Path.concat s J) hjoinRS
+  have hcontractBase :
+      Path.Homotopic (((P.cast rfl hjoinRS).trans (Path.concat s J)).trans E)
+        ((Path.refl (p 0)).cast rfl hclose) := by
+    exact threeSphere_stereographic_northSouthBlockNorth_concat_cast_nullhomotopic
+      s (P.cast rfl hjoinRS) J E hclose hPCastRange hsBase hJ hlastRange
+  have hcontract :
+      Path.Homotopic ((P.trans D).trans E)
+        ((Path.refl (p 0)).cast rfl hclose) := by
+    rw [hshift]
+    exact hcontractBase
+  exact (by simpa [A, B, C, D, E, P] using hreplaceFull.trans hcontract)
+
+/--
+The symmetric five-block south/north/south/north/south chart-word collapse.
+-/
+theorem threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthBlock_concat_cast_nullhomotopic
+    {N M L K T : ℕ}
+    (p : Fin (N + 1) → ThreeSphere)
+    (F : (k : Fin N) → Path (p k.castSucc) (p k.succ))
+    (q : Fin (M + 1) → ThreeSphere)
+    (G : (k : Fin M) → Path (q k.castSucc) (q k.succ))
+    (r : Fin (L + 1) → ThreeSphere)
+    (H : (k : Fin L) → Path (r k.castSucc) (r k.succ))
+    (s : Fin (K + 1) → ThreeSphere)
+    (J : (k : Fin K) → Path (s k.castSucc) (s k.succ))
+    (u : Fin (T + 1) → ThreeSphere)
+    (W : (k : Fin T) → Path (u k.castSucc) (u k.succ))
+    (hjoinPQ : q 0 = p (Fin.last N))
+    (hjoinQR : r 0 = q (Fin.last M))
+    (hjoinRS : s 0 = r (Fin.last L))
+    (hjoinSU : u 0 = s (Fin.last K))
+    (hclose : u (Fin.last T) = p 0)
+    (hpBase : p 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hF : ∀ k : Fin N,
+      Set.range (F k) ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hqBase : q 0 ∈ (stereographic' 3 threeSphere_northPole).source)
+    (hG : ∀ k : Fin M,
+      Set.range (G k) ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hrBase : r 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hH : ∀ k : Fin L,
+      Set.range (H k) ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hsBase : s 0 ∈ (stereographic' 3 threeSphere_northPole).source)
+    (hJ : ∀ k : Fin K,
+      Set.range (J k) ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (huBase : u 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hW : ∀ k : Fin T,
+      Set.range (W k) ⊆ (stereographic' 3 (-threeSphere_northPole)).source) :
+    Path.Homotopic
+      ((((((Path.concat p F).cast rfl hjoinPQ).trans (Path.concat q G)).trans
+        ((Path.concat r H).cast hjoinQR.symm rfl)).trans
+        ((Path.concat s J).cast hjoinRS.symm rfl)).trans
+        ((Path.concat u W).cast hjoinSU.symm rfl))
+      ((Path.refl (p 0)).cast rfl hclose) := by
+  let A : Path (p 0) (q 0) := (Path.concat p F).cast rfl hjoinPQ
+  let B : Path (q 0) (q (Fin.last M)) := Path.concat q G
+  let C : Path (q (Fin.last M)) (r (Fin.last L)) :=
+    (Path.concat r H).cast hjoinQR.symm rfl
+  let D : Path (r (Fin.last L)) (s (Fin.last K)) :=
+    (Path.concat s J).cast hjoinRS.symm rfl
+  let E : Path (s (Fin.last K)) (u (Fin.last T)) :=
+    (Path.concat u W).cast hjoinSU.symm rfl
+  have hfirstConcatRange :
+      Set.range (Path.concat p F) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source :=
+    threeSphere_stereographic_source_concat_range_subset (-threeSphere_northPole)
+      p F hpBase hF
+  have hfirstRange :
+      Set.range A ⊆ (stereographic' 3 (-threeSphere_northPole)).source := by
+    intro y hy
+    rcases hy with ⟨a, rfl⟩
+    exact hfirstConcatRange ⟨a, by simp [A, Path.cast_coe]⟩
+  have hthirdConcatRange :
+      Set.range (Path.concat r H) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source :=
+    threeSphere_stereographic_source_concat_range_subset (-threeSphere_northPole)
+      r H hrBase hH
+  have hthirdRange :
+      Set.range C ⊆ (stereographic' 3 (-threeSphere_northPole)).source := by
+    intro y hy
+    rcases hy with ⟨a, rfl⟩
+    exact hthirdConcatRange ⟨a, by simp [C, Path.cast_coe]⟩
+  have hlastConcatRange :
+      Set.range (Path.concat u W) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source :=
+    threeSphere_stereographic_source_concat_range_subset (-threeSphere_northPole)
+      u W huBase hW
+  have hlastRange :
+      Set.range E ⊆ (stereographic' 3 (-threeSphere_northPole)).source := by
+    intro y hy
+    rcases hy with ⟨a, rfl⟩
+    exact hlastConcatRange ⟨a, by simp [E, Path.cast_coe]⟩
+  rcases threeSphere_stereographic_southNorthBlockSouth_homotopic_to_southBlock
+      q A G C hfirstRange hqBase hG hthirdRange with
+    ⟨southBridge, _hsouthBridgeRange, hreplace, hsouthPathRange⟩
+  have hreplaceFull :
+      Path.Homotopic ((((A.trans B).trans C).trans D).trans E)
+        ((((A.trans southBridge).trans C).trans D).trans E) := by
+    exact Path.Homotopic.hcomp
+      (Path.Homotopic.hcomp hreplace (Path.Homotopic.refl D))
+      (Path.Homotopic.refl E)
+  let P : Path (p 0) (r (Fin.last L)) := (A.trans southBridge).trans C
+  have hPRange :
+      Set.range P ⊆ (stereographic' 3 (-threeSphere_northPole)).source := by
+    simpa [P] using hsouthPathRange
+  have hPCastRange :
+      Set.range (P.cast rfl hjoinRS) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source := by
+    intro y hy
+    rcases hy with ⟨a, rfl⟩
+    exact hPRange ⟨a, by simp [Path.cast_coe]⟩
+  have hshift :
+      P.trans D = (P.cast rfl hjoinRS).trans (Path.concat s J) := by
+    dsimp [D]
+    exact path_trans_source_cast_eq_target_cast_trans P (Path.concat s J) hjoinRS
+  have hcontractBase :
+      Path.Homotopic (((P.cast rfl hjoinRS).trans (Path.concat s J)).trans E)
+        ((Path.refl (p 0)).cast rfl hclose) := by
+    exact threeSphere_stereographic_southNorthBlockSouth_concat_cast_nullhomotopic
+      s (P.cast rfl hjoinRS) J E hclose hPCastRange hsBase hJ hlastRange
+  have hcontract :
+      Path.Homotopic ((P.trans D).trans E)
+        ((Path.refl (p 0)).cast rfl hclose) := by
+    rw [hshift]
+    exact hcontractBase
+  exact (by simpa [A, B, C, D, E, P] using hreplaceFull.trans hcontract)
 
 /--
 A loop formed by a finite north-source block followed by one south-source
