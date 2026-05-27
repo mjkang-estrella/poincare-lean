@@ -805,6 +805,20 @@ theorem path_trans_source_cast_eq_target_cast_trans
   rfl
 
 /--
+Moving source and target casts from the second factor of a path concatenation
+to a target cast on the whole concatenation, with the source cast absorbed into
+the first factor.
+-/
+theorem path_trans_cast_eq_trans_cast_target
+    {X : Type u} [TopologicalSpace X] {a b c d e : X}
+    (p : Path a b) (q : Path c d) (hc : c = b) (hd : e = d) :
+    p.trans (q.cast hc.symm hd) =
+      ((p.cast rfl hc).trans q).cast rfl hd := by
+  cases hc
+  cases hd
+  rfl
+
+/--
 The source of the stereographic chart at `v` is the complement of the point
 `v`.
 -/
@@ -4371,6 +4385,61 @@ theorem threeSphere_stereographic_southNorthBlockSouthTail_concat_cast_nullhomot
     ((Path.Homotopic.trans_assoc p (Path.concat northPts northSegs)
       (Path.concat southPts southSegs)).symm.trans
       (hcontract.trans (htargetEq ▸ Path.Homotopic.refl _)))
+
+/--
+Length-cast form of the one-switch north/south/north tail contraction.  It
+matches first-run suffixes whose concrete tail length `T` is known to split as
+`L + R`.
+-/
+theorem threeSphere_stereographic_northSouthBlockNorthTail_concat_cast_nullhomotopic_of_length_eq
+    {T L R : ℕ} {x₀ : ThreeSphere}
+    (tailPts : Fin (T + 1) → ThreeSphere)
+    (tailSegs : (k : Fin T) → Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last T) = x₀)
+    (hTailLen : T = L + R)
+    (hp : Set.range p ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hSouthBase : tailPts 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouth : ∀ k : Fin L,
+      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthBase : tailPts ⟨L, by omega⟩ ∈
+        (stereographic' 3 threeSphere_northPole).source)
+    (hNorth : ∀ k : Fin R,
+      Set.range (tailSegs ⟨L + k.val, by omega⟩) ⊆
+        (stereographic' 3 threeSphere_northPole).source) :
+    Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
+      ((Path.refl x₀).cast rfl hclose) := by
+  cases hTailLen
+  exact threeSphere_stereographic_northSouthBlockNorthTail_concat_cast_nullhomotopic
+    tailPts tailSegs p hclose hp hSouthBase hSouth hNorthBase hNorth
+
+/--
+Symmetric length-cast form of the one-switch south/north/south tail
+contraction, again aligned to the first-run suffix length `T = L + R`.
+-/
+theorem threeSphere_stereographic_southNorthBlockSouthTail_concat_cast_nullhomotopic_of_length_eq
+    {T L R : ℕ} {x₀ : ThreeSphere}
+    (tailPts : Fin (T + 1) → ThreeSphere)
+    (tailSegs : (k : Fin T) → Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last T) = x₀)
+    (hTailLen : T = L + R)
+    (hp : Set.range p ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthBase : tailPts 0 ∈ (stereographic' 3 threeSphere_northPole).source)
+    (hNorth : ∀ k : Fin L,
+      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hSouthBase : tailPts ⟨L, by omega⟩ ∈
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouth : ∀ k : Fin R,
+      Set.range (tailSegs ⟨L + k.val, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source) :
+    Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
+      ((Path.refl x₀).cast rfl hclose) := by
+  cases hTailLen
+  exact threeSphere_stereographic_southNorthBlockSouthTail_concat_cast_nullhomotopic
+    tailPts tailSegs p hclose hp hNorthBase hNorth hSouthBase hSouth
 
 /--
 A finite south-source block bracketed by north-source paths can be replaced by
@@ -11595,6 +11664,214 @@ theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_allNo
       exact htailConcatRange ⟨s, by simp [tailPath, Path.cast_coe]⟩
     exact threeSphere_stereographic_southNorth_trans_cast_nullhomotopic
       q tailPath hclose hq htailPathRange
+  have htargetEq :
+      ((Path.refl (p 0)).cast rfl hclose) =
+        ((Path.refl threeSphere_equatorPoint).cast
+          (by
+            change γ (t 0) = threeSphere_equatorPoint
+            rw [h0]
+            exact γ.source)
+          (by
+            rw [h1]
+            exact γ.target)) := by
+    apply Path.ext
+    funext _s
+    change p 0 = threeSphere_equatorPoint
+    dsimp [p]
+    rw [h0]
+    exact γ.source
+  apply Path.Homotopic.Quotient.eq.mpr
+  exact hhom.trans (htargetEq ▸ Path.Homotopic.refl _)
+
+/--
+Nonterminal first-south-run collapse when the after-stop suffix splits into a
+south-source block followed by a north-source return block.  This is the first
+concrete one-switch tail case consumed by the raw first-run induction step.
+-/
+theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlock_collapse
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval)
+    (h0 : t 0 = 0) (h1 : t (Fin.last N) = 1)
+    {start stop : Fin N} (hstartstop : start.val < stop.val)
+    (hBefore : ∀ j : Fin N, j.val < start.val →
+      Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hNorthStop : Set.range (γ.subpath (t stop.castSucc) (t stop.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hrun : ∀ j : Fin N, start.val ≤ j.val → j.val < stop.val →
+      Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    {L R : ℕ} (hTailLen : N - (stop.val + 1) = L + R)
+    (hLpos : 0 < L) (hRpos : 0 < R)
+    (htailSouth : ∀ k : Fin L,
+      Set.range (γ.subpath
+        (t (⟨stop.val + 1 + k.val,
+          by
+            have hk : k.val < L := k.isLt
+            omega⟩ : Fin N).castSucc)
+        (t (⟨stop.val + 1 + k.val,
+          by
+            have hk : k.val < L := k.isLt
+            omega⟩ : Fin N).succ)) ⊆
+          (stereographic' 3 (-threeSphere_northPole)).source)
+    (htailNorth : ∀ k : Fin R,
+      Set.range (γ.subpath
+        (t (⟨stop.val + 1 + L + k.val,
+          by
+            have hk : k.val < R := k.isLt
+            omega⟩ : Fin N).castSucc)
+        (t (⟨stop.val + 1 + L + k.val,
+          by
+            have hk : k.val < R := k.isLt
+            omega⟩ : Fin N).succ)) ⊆
+          (stereographic' 3 threeSphere_northPole).source) :
+    Path.Homotopic.Quotient.mk
+      (Path.concat (γ ∘ t) (fun k : Fin N =>
+        γ.subpath (t k.castSucc) (t k.succ))) =
+      Path.Homotopic.Quotient.mk
+        ((Path.refl threeSphere_equatorPoint).cast
+          (by simp [h0]) (by simp [h1])) := by
+  let p : Fin (start.val + 1) → ThreeSphere := fun i =>
+    γ (t ⟨i.val, by omega⟩)
+  let tailPts : Fin ((N - (stop.val + 1)) + 1) → ThreeSphere := fun i =>
+    γ (t ⟨stop.val + 1 + i.val, by
+      have hi : i.val < (N - (stop.val + 1)) + 1 := i.isLt
+      omega⟩)
+  let tailSegs : (k : Fin (N - (stop.val + 1))) →
+      Path (tailPts k.castSucc) (tailPts k.succ) := fun k =>
+    γ.subpath
+      (t ⟨stop.val + 1 + k.val, by
+        have hk : k.val < N - (stop.val + 1) := k.isLt
+        omega⟩)
+      (t ⟨stop.val + 1 + (k.val + 1), by
+        have hk : k.val < N - (stop.val + 1) := k.isLt
+        omega⟩)
+  let htailStart : tailPts 0 = γ (t stop.succ) := by rfl
+  let htailEnd : tailPts (Fin.last (N - (stop.val + 1))) = γ (t (Fin.last N)) := by
+    dsimp [tailPts]
+    congr 2
+    ext
+    change stop.val + 1 + (N - (stop.val + 1)) = N
+    omega
+  have hclose : γ (t (Fin.last N)) = p 0 := by
+    dsimp [p]
+    rw [h1, h0]
+    exact γ.target.trans γ.source.symm
+  have hhom :
+      Path.Homotopic
+        (Path.concat (γ ∘ t) (fun k : Fin N =>
+          γ.subpath (t k.castSucc) (t k.succ)))
+        ((Path.refl (p 0)).cast rfl hclose) := by
+    refine
+      (threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_induction_step
+        γ t h0 hstartstop hBefore hNorthStop hrun) hclose ?_
+    intro q hq
+    let tailPath : Path (γ (t stop.succ)) (γ (t (Fin.last N))) :=
+      (Path.concat tailPts tailSegs).cast htailStart.symm htailEnd.symm
+    have hqCastRange :
+        Set.range (q.cast rfl htailStart) ⊆
+          (stereographic' 3 threeSphere_northPole).source := by
+      simpa [htailStart] using hq
+    have hSouthBase :
+        tailPts 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source := by
+      let k0 : Fin L := ⟨0, hLpos⟩
+      have hsource :
+          γ (t (⟨stop.val + 1 + k0.val, by
+            have hk : k0.val < L := k0.isLt
+            omega⟩ : Fin N).castSucc) ∈
+            (stereographic' 3 (-threeSphere_northPole)).source :=
+        htailSouth k0 ⟨0, (γ.subpath
+          (t (⟨stop.val + 1 + k0.val, by
+            have hk : k0.val < L := k0.isLt
+            omega⟩ : Fin N).castSucc)
+          (t (⟨stop.val + 1 + k0.val, by
+            have hk : k0.val < L := k0.isLt
+            omega⟩ : Fin N).succ)).source⟩
+      change γ (t (⟨stop.val + 1 + (0 : ℕ), by
+        have hi : (0 : Fin ((N - (stop.val + 1)) + 1)).val <
+            (N - (stop.val + 1)) + 1 := (0 : Fin ((N - (stop.val + 1)) + 1)).isLt
+        omega⟩ : Fin (N + 1))) ∈
+        (stereographic' 3 (-threeSphere_northPole)).source
+      simpa [k0] using hsource
+    have hSouth : ∀ k : Fin L,
+        Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
+          (stereographic' 3 (-threeSphere_northPole)).source := by
+      intro k
+      simpa [tailSegs] using htailSouth k
+    have hNorthBase :
+        tailPts ⟨L, by omega⟩ ∈
+          (stereographic' 3 threeSphere_northPole).source := by
+      let k0 : Fin R := ⟨0, hRpos⟩
+      have hsource :
+          γ (t (⟨stop.val + 1 + L + k0.val, by
+            have hk : k0.val < R := k0.isLt
+            omega⟩ : Fin N).castSucc) ∈
+            (stereographic' 3 threeSphere_northPole).source :=
+        htailNorth k0 ⟨0, (γ.subpath
+          (t (⟨stop.val + 1 + L + k0.val, by
+            have hk : k0.val < R := k0.isLt
+            omega⟩ : Fin N).castSucc)
+          (t (⟨stop.val + 1 + L + k0.val, by
+            have hk : k0.val < R := k0.isLt
+            omega⟩ : Fin N).succ)).source⟩
+      change γ (t (⟨stop.val + 1 + L, by omega⟩ : Fin (N + 1))) ∈
+        (stereographic' 3 threeSphere_northPole).source
+      simpa [k0] using hsource
+    have hNorth : ∀ k : Fin R,
+        Set.range (tailSegs ⟨L + k.val, by omega⟩) ⊆
+          (stereographic' 3 threeSphere_northPole).source := by
+      intro k
+      have hchoice := htailNorth k
+      let j : Fin N := ⟨stop.val + 1 + L + k.val, by
+        have hk : k.val < R := k.isLt
+        omega⟩
+      have hleft : j.castSucc = (⟨stop.val + 1 + (L + k.val), by
+          have hk : k.val < R := k.isLt
+          omega⟩ : Fin (N + 1)) := by
+        ext
+        dsimp [j]
+        omega
+      have hright : j.succ = (⟨stop.val + 1 + (L + k.val + 1), by
+          have hk : k.val < R := k.isLt
+          omega⟩ : Fin (N + 1)) := by
+        ext
+        dsimp [j]
+        omega
+      change Set.range (γ.subpath
+          (t (⟨stop.val + 1 + (L + k.val), by
+            have hk : k.val < R := k.isLt
+            omega⟩ : Fin (N + 1)))
+          (t (⟨stop.val + 1 + (L + k.val + 1), by
+            have hk : k.val < R := k.isLt
+            omega⟩ : Fin (N + 1)))) ⊆
+          (stereographic' 3 threeSphere_northPole).source
+      rw [← hleft, ← hright]
+      exact hchoice
+    have htailClose : tailPts (Fin.last (N - (stop.val + 1))) = p 0 :=
+      htailEnd.trans hclose
+    have hcore :
+        Path.Homotopic
+          ((q.cast rfl htailStart).trans (Path.concat tailPts tailSegs))
+          ((Path.refl (p 0)).cast rfl htailClose) :=
+      threeSphere_stereographic_northSouthBlockNorthTail_concat_cast_nullhomotopic_of_length_eq
+        tailPts tailSegs (q.cast rfl htailStart) htailClose hTailLen
+        hqCastRange hSouthBase hSouth hNorthBase hNorth
+    have hcoreCast :=
+      Path.Homotopic.pathCast hcore rfl htailEnd.symm
+    have hsourceEq :
+        (((q.cast rfl htailStart).trans (Path.concat tailPts tailSegs)).cast
+          rfl htailEnd.symm) = q.trans tailPath := by
+      dsimp [tailPath]
+      exact (path_trans_cast_eq_trans_cast_target
+        q (Path.concat tailPts tailSegs) htailStart htailEnd.symm).symm
+    have htargetEq :
+        (((Path.refl (p 0)).cast rfl htailClose).cast rfl htailEnd.symm) =
+          ((Path.refl (p 0)).cast rfl hclose) := by
+      apply Path.ext
+      funext _s
+      change p 0 = p 0
+      rfl
+    exact (hsourceEq ▸ hcoreCast).trans (htargetEq ▸ Path.Homotopic.refl _)
   have htargetEq :
       ((Path.refl (p 0)).cast rfl hclose) =
         ((Path.refl threeSphere_equatorPoint).cast
