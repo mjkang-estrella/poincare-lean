@@ -4917,6 +4917,8 @@ append_certificate_route_projection_contract_checks() {
 #check Poincare.extinction_implies_sphere_of_topology_package
 #check Poincare.extinction_implies_sphere_of_topology_package_to_statement
 #check Poincare.extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation_eq
+#check Poincare.extinction_topology_extraction_statement_of_extraction_with_lifted_homeomorphism_derivation
+#check Poincare.extinction_topology_extraction_statement_of_extraction_with_lifted_homeomorphism_derivation_eq
 #check Poincare.finiteExtinctionStatement_eq
 #check Poincare.finiteExtinction_mem_dependencyMilestoneLedger
 #check Poincare.finiteExtinction_mem_dependencyMilestoneLedger_eq
@@ -21628,8 +21630,11 @@ set_option linter.unusedVariables false
 #check Poincare.homeomorphism_of_extinction_topology_extraction_statement_of_extraction_and_derivation_eq
 #check Poincare.topology_derivation_statement_of_extinction_topology_extraction_statement_of_extraction_and_derivation_eq
 #check Poincare.extinction_implies_sphere_of_extinction_topology_extraction_statement_of_extraction_and_derivation_eq
+#check Poincare.extinction_topology_extraction_statement_of_extraction_with_lifted_homeomorphism_derivation_eq
 #check Poincare.poincare_statement_of_finite_extinction_and_topology_extraction_statement_eq
 #check Poincare.poincare_payload_of_finite_extinction_and_topology_extraction_statement_eq
+#check Poincare.poincare_statement_of_finite_extinction_and_extraction_with_lifted_homeomorphism_derivation_eq
+#check Poincare.poincare_payload_of_finite_extinction_and_extraction_with_lifted_homeomorphism_derivation_eq
 #check Poincare.poincare_statement_of_finite_extinction_and_extraction_derivation_eq
 #check Poincare.poincare_payload_of_finite_extinction_and_extraction_derivation_eq
 #check Poincare.topology_extraction_statement_payload_of_topology_package_eq
@@ -21649,6 +21654,23 @@ set_option linter.unusedVariables false
     [SimplyConnectedSpace M] [CompactSpace M],
       Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
     Poincare.ExtinctionTopologyExtractionStatement →
+      ∃ _target : Poincare.PoincareConjectureStatement,
+        ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
+
+#check (Poincare.poincare_statement_of_finite_extinction_and_extraction_with_lifted_homeomorphism_derivation :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
+    Poincare.ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement →
+      Poincare.PoincareConjectureStatement)
+
+#check (Poincare.poincare_payload_of_finite_extinction_and_extraction_with_lifted_homeomorphism_derivation :
+  (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Poincare.FiniteExtinctionByRicciFlowWithSurgery M) →
+    Poincare.ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement →
       ∃ _target : Poincare.PoincareConjectureStatement,
         ∀ witness : Type, Poincare.CompletionCriterionAtUniverse witness)
 
@@ -21872,6 +21894,12 @@ set_option linter.unusedVariables false
 #check Poincare.topology_lifted_homeomorphism_derivation_statement_of_topology_package
 #check Poincare.extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation
 #check Poincare.extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation_eq
+#check Poincare.extinction_topology_extraction_statement_of_extraction_with_lifted_homeomorphism_derivation
+#check Poincare.extinction_topology_extraction_statement_of_extraction_with_lifted_homeomorphism_derivation_eq
+#check Poincare.poincare_statement_of_finite_extinction_and_extraction_with_lifted_homeomorphism_derivation
+#check Poincare.poincare_statement_of_finite_extinction_and_extraction_with_lifted_homeomorphism_derivation_eq
+#check Poincare.poincare_payload_of_finite_extinction_and_extraction_with_lifted_homeomorphism_derivation
+#check Poincare.poincare_payload_of_finite_extinction_and_extraction_with_lifted_homeomorphism_derivation_eq
 #check Poincare.topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
 #check Poincare.topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package_eq
 #check Poincare.topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package_to_derivation_payload_eq

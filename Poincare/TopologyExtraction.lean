@@ -28069,6 +28069,30 @@ theorem extinction_topology_extraction_statement_iff_extraction_with_lifted_home
   apply Subsingleton.elim
 
 /--
+The lifted-homeomorphism extraction payload projects back to the
+theorem-shaped topology extraction statement.
+-/
+theorem extinction_topology_extraction_statement_of_extraction_with_lifted_homeomorphism_derivation
+    (liftedPayload :
+      ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u}) :
+    ExtinctionTopologyExtractionStatement.{u} :=
+  extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mpr
+    liftedPayload
+
+/--
+The lifted-homeomorphism extraction payload projection is the reverse direction
+of the lifted-homeomorphism extraction equivalence.
+-/
+theorem extinction_topology_extraction_statement_of_extraction_with_lifted_homeomorphism_derivation_eq
+    (liftedPayload :
+      ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u}) :
+    extinction_topology_extraction_statement_of_extraction_with_lifted_homeomorphism_derivation
+        liftedPayload =
+      extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mpr
+        liftedPayload := by
+  apply Subsingleton.elim
+
+/--
 Universal finite extinction plus the stronger topology extraction statement is
 enough to discharge the project target.
 -/
@@ -28112,6 +28136,82 @@ theorem poincare_statement_of_finite_extinction_and_topology_extraction_statemen
       poincare_statement_of_extinction_and_extraction finiteExtinction
         (extinction_implies_sphere_of_topology_extraction_statement
           topologyStatement) := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction plus the lifted-homeomorphism extraction payload is
+enough to discharge the project target.
+-/
+theorem poincare_statement_of_finite_extinction_and_extraction_with_lifted_homeomorphism_derivation
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (liftedPayload :
+      ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_finite_extinction_and_topology_extraction_statement
+    finiteExtinction
+    (extinction_topology_extraction_statement_of_extraction_with_lifted_homeomorphism_derivation
+      liftedPayload)
+
+/--
+The lifted-homeomorphism extraction project target route is the existing
+finite-extinction/topology-statement route after projecting the lifted payload
+back to the theorem-shaped topology extraction statement.
+-/
+theorem poincare_statement_of_finite_extinction_and_extraction_with_lifted_homeomorphism_derivation_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (liftedPayload :
+      ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u}) :
+    poincare_statement_of_finite_extinction_and_extraction_with_lifted_homeomorphism_derivation
+        finiteExtinction liftedPayload =
+      poincare_statement_of_finite_extinction_and_topology_extraction_statement
+        finiteExtinction
+        (extinction_topology_extraction_statement_of_extraction_with_lifted_homeomorphism_derivation
+          liftedPayload) := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction plus the lifted-homeomorphism extraction payload
+exposes the target and universe-indexed completion criterion as one payload.
+-/
+theorem poincare_payload_of_finite_extinction_and_extraction_with_lifted_homeomorphism_derivation
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (liftedPayload :
+      ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_poincareConjectureStatement
+    (poincare_statement_of_finite_extinction_and_extraction_with_lifted_homeomorphism_derivation
+      finiteExtinction liftedPayload)
+
+/--
+The lifted-homeomorphism extraction project payload is the statement-layer
+completion payload of the named lifted-homeomorphism extraction target route.
+-/
+theorem poincare_payload_of_finite_extinction_and_extraction_with_lifted_homeomorphism_derivation_eq
+    (finiteExtinction :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (liftedPayload :
+      ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u}) :
+    poincare_payload_of_finite_extinction_and_extraction_with_lifted_homeomorphism_derivation
+        finiteExtinction liftedPayload =
+      poincare_completion_payload_of_poincareConjectureStatement
+        (poincare_statement_of_finite_extinction_and_extraction_with_lifted_homeomorphism_derivation
+          finiteExtinction liftedPayload) := by
   apply Subsingleton.elim
 
 /--
