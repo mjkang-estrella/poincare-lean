@@ -11027,6 +11027,57 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_twoSouthNorth
     exact Path.Homotopic.refl _))
 
 /--
+The two-segment dispatcher for the actual finite-concat collapse hypothesis:
+if each of the two pieces lies in either stereographic source, the finite
+concatenation collapses in the path-homotopy quotient.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_twoSegments_of_source_or
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    (t : Fin 3 → unitInterval)
+    (h0 : t 0 = 0) (h1 : t (Fin.last 2) = 1)
+    (hseg : ∀ k : Fin 2,
+      Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+          (stereographic' 3 threeSphere_northPole).source ∨
+        Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+          (stereographic' 3 (-threeSphere_northPole)).source) :
+    Path.Homotopic.Quotient.mk
+      (Path.concat (γ ∘ t) (fun k : Fin 2 =>
+        γ.subpath (t k.castSucc) (t k.succ))) =
+      Path.Homotopic.Quotient.mk
+        ((Path.refl threeSphere_equatorPoint).cast
+          (by
+            change γ (t (0 : Fin 3)) = threeSphere_equatorPoint
+            rw [h0]
+            exact γ.source)
+          (by
+            change γ (t (Fin.last 2)) = threeSphere_equatorPoint
+            rw [h1]
+            exact γ.target)) := by
+  rcases hseg 0 with hNorth0 | hSouth0
+  · rcases hseg 1 with hNorth1 | hSouth1
+    · simpa using
+        threeSphere_stereographicEquatorLoopFiniteConcatCollapse_allNorth γ 2 t h0 h1
+          (by
+            intro k
+            fin_cases k
+            · simpa using hNorth0
+            · simpa using hNorth1)
+    · exact
+        threeSphere_stereographicEquatorLoopFiniteConcatCollapse_twoNorthSouth
+          γ t h0 h1 hNorth0 hSouth1
+  · rcases hseg 1 with hNorth1 | hSouth1
+    · exact
+        threeSphere_stereographicEquatorLoopFiniteConcatCollapse_twoSouthNorth
+          γ t h0 h1 hSouth0 hNorth1
+    · simpa using
+        threeSphere_stereographicEquatorLoopFiniteConcatCollapse_allSouth γ 2 t h0 h1
+          (by
+            intro k
+            fin_cases k
+            · simpa using hSouth0
+            · simpa using hSouth1)
+
+/--
 The first three-piece mixed finite-concat excursion collapse: north, then
 south, then north.  The south middle segment is replaced by an overlap path,
 turning the whole three-piece loop into a north-source loop.
