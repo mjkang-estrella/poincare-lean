@@ -3388,6 +3388,152 @@ theorem threeSphere_stereographic_southNorth_trans_cast_nullhomotopic
   simpa [qLoop] using hcast
 
 /--
+A three-piece chart excursion that leaves the north stereographic source for a
+south-source middle segment and then returns to the north source is
+null-homotopic.  The middle segment has endpoints in the actual overlap, so it
+can be replaced by an overlap path; after that replacement the whole loop lies
+inside the simply connected north source.
+-/
+theorem threeSphere_stereographic_northSouthNorth_trans_trans_cast_nullhomotopic
+    {x₀ x₁ x₂ x₃ : ThreeSphere}
+    (p : Path x₀ x₁) (q : Path x₁ x₂) (r : Path x₂ x₃) (hclose : x₃ = x₀)
+    (hp : Set.range p ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hq : Set.range q ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hr : Set.range r ⊆ (stereographic' 3 threeSphere_northPole).source) :
+    Path.Homotopic ((p.trans q).trans r) ((Path.refl x₀).cast rfl hclose) := by
+  let U : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
+  let V : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  have hx₁U : x₁ ∈ U := hp ⟨1, p.target⟩
+  have hx₁V : x₁ ∈ V := hq ⟨0, q.source⟩
+  have hx₂V : x₂ ∈ V := hq ⟨1, q.target⟩
+  have hx₂U : x₂ ∈ U := hr ⟨0, r.source⟩
+  have hx₀U : x₀ ∈ U := hp ⟨0, p.source⟩
+  let x₁Overlap : (U ∩ V : Set ThreeSphere) := ⟨x₁, hx₁U, hx₁V⟩
+  let x₂Overlap : (U ∩ V : Set ThreeSphere) := ⟨x₂, hx₂U, hx₂V⟩
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    simpa [U, V] using threeSphere_actualOverlap_pathConnectedSpace
+  let overlapPath : Path x₁Overlap x₂Overlap :=
+    PathConnectedSpace.somePath x₁Overlap x₂Overlap
+  let incl : C((U ∩ V : Set ThreeSphere), ThreeSphere) :=
+    ⟨Subtype.val, continuous_subtype_val⟩
+  let qOverlap : Path x₁ x₂ := overlapPath.map incl.continuous
+  have hqOverlapU : Set.range qOverlap ⊆ U := by
+    intro z hz
+    rcases hz with ⟨s, rfl⟩
+    exact (overlapPath s).2.1
+  have hqOverlapV : Set.range qOverlap ⊆ V := by
+    intro z hz
+    rcases hz with ⟨s, rfl⟩
+    exact (overlapPath s).2.2
+  have hqReplace : Path.Homotopic q qOverlap := by
+    simpa [V] using
+      threeSphere_stereographic_source_contained_paths_homotopic
+        (-threeSphere_northPole) q qOverlap hq hqOverlapV
+  have hreplace :
+      Path.Homotopic ((p.trans q).trans r) ((p.trans qOverlap).trans r) :=
+    Path.Homotopic.hcomp
+      (Path.Homotopic.hcomp (Path.Homotopic.refl p) hqReplace)
+      (Path.Homotopic.refl r)
+  have hmiddleU : Set.range (p.trans qOverlap) ⊆ U := by
+    intro z hz
+    have hz' :
+        z ∈ Set.range p ∪ Set.range qOverlap := by
+      simpa [Path.trans_range] using hz
+    rcases hz' with hzP | hzQ
+    · exact hp hzP
+    · exact hqOverlapU hzQ
+  have hloopU : Set.range ((p.trans qOverlap).trans r) ⊆ U := by
+    intro z hz
+    have hz' :
+        z ∈ Set.range (p.trans qOverlap) ∪ Set.range r := by
+      simpa [Path.trans_range] using hz
+    rcases hz' with hzMid | hzR
+    · exact hmiddleU hzMid
+    · exact hr hzR
+  have hreflU : Set.range ((Path.refl x₀).cast rfl hclose) ⊆ U := by
+    intro z hz
+    rcases hz with ⟨s, rfl⟩
+    simpa [Path.cast_coe] using hx₀U
+  exact hreplace.trans
+    (by
+      simpa [U] using
+        threeSphere_stereographic_source_contained_paths_homotopic
+          threeSphere_northPole ((p.trans qOverlap).trans r)
+          ((Path.refl x₀).cast rfl hclose) hloopU hreflU)
+
+/--
+The symmetric three-piece chart excursion: a south-source path, a north-source
+middle segment, and a south-source return segment collapse after replacing the
+middle segment by an overlap path and contracting inside the south source.
+-/
+theorem threeSphere_stereographic_southNorthSouth_trans_trans_cast_nullhomotopic
+    {x₀ x₁ x₂ x₃ : ThreeSphere}
+    (p : Path x₀ x₁) (q : Path x₁ x₂) (r : Path x₂ x₃) (hclose : x₃ = x₀)
+    (hp : Set.range p ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hq : Set.range q ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hr : Set.range r ⊆ (stereographic' 3 (-threeSphere_northPole)).source) :
+    Path.Homotopic ((p.trans q).trans r) ((Path.refl x₀).cast rfl hclose) := by
+  let U : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
+  let V : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  have hx₁V : x₁ ∈ V := hp ⟨1, p.target⟩
+  have hx₁U : x₁ ∈ U := hq ⟨0, q.source⟩
+  have hx₂U : x₂ ∈ U := hq ⟨1, q.target⟩
+  have hx₂V : x₂ ∈ V := hr ⟨0, r.source⟩
+  have hx₀V : x₀ ∈ V := hp ⟨0, p.source⟩
+  let x₁Overlap : (U ∩ V : Set ThreeSphere) := ⟨x₁, hx₁U, hx₁V⟩
+  let x₂Overlap : (U ∩ V : Set ThreeSphere) := ⟨x₂, hx₂U, hx₂V⟩
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    simpa [U, V] using threeSphere_actualOverlap_pathConnectedSpace
+  let overlapPath : Path x₁Overlap x₂Overlap :=
+    PathConnectedSpace.somePath x₁Overlap x₂Overlap
+  let incl : C((U ∩ V : Set ThreeSphere), ThreeSphere) :=
+    ⟨Subtype.val, continuous_subtype_val⟩
+  let qOverlap : Path x₁ x₂ := overlapPath.map incl.continuous
+  have hqOverlapU : Set.range qOverlap ⊆ U := by
+    intro z hz
+    rcases hz with ⟨s, rfl⟩
+    exact (overlapPath s).2.1
+  have hqOverlapV : Set.range qOverlap ⊆ V := by
+    intro z hz
+    rcases hz with ⟨s, rfl⟩
+    exact (overlapPath s).2.2
+  have hqReplace : Path.Homotopic q qOverlap := by
+    simpa [U] using
+      threeSphere_stereographic_source_contained_paths_homotopic
+        threeSphere_northPole q qOverlap hq hqOverlapU
+  have hreplace :
+      Path.Homotopic ((p.trans q).trans r) ((p.trans qOverlap).trans r) :=
+    Path.Homotopic.hcomp
+      (Path.Homotopic.hcomp (Path.Homotopic.refl p) hqReplace)
+      (Path.Homotopic.refl r)
+  have hmiddleV : Set.range (p.trans qOverlap) ⊆ V := by
+    intro z hz
+    have hz' :
+        z ∈ Set.range p ∪ Set.range qOverlap := by
+      simpa [Path.trans_range] using hz
+    rcases hz' with hzP | hzQ
+    · exact hp hzP
+    · exact hqOverlapV hzQ
+  have hloopV : Set.range ((p.trans qOverlap).trans r) ⊆ V := by
+    intro z hz
+    have hz' :
+        z ∈ Set.range (p.trans qOverlap) ∪ Set.range r := by
+      simpa [Path.trans_range] using hz
+    rcases hz' with hzMid | hzR
+    · exact hmiddleV hzMid
+    · exact hr hzR
+  have hreflV : Set.range ((Path.refl x₀).cast rfl hclose) ⊆ V := by
+    intro z hz
+    rcases hz with ⟨s, rfl⟩
+    simpa [Path.cast_coe] using hx₀V
+  exact hreplace.trans
+    (by
+      simpa [V] using
+        threeSphere_stereographic_source_contained_paths_homotopic
+          (-threeSphere_northPole) ((p.trans qOverlap).trans r)
+          ((Path.refl x₀).cast rfl hclose) hloopV hreflV)
+
+/--
 The first non-degenerate mixed finite-concat collapse: two pieces of an
 equatorial based loop collapse in the path-homotopy quotient when the first
 lies in the north stereographic source and the second lies in the south
@@ -3543,6 +3689,185 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_twoSouthNorth
     apply Path.ext
     funext _s
     change γ (t (0 : Fin 2).castSucc) = threeSphere_equatorPoint
+    exact hsourceAt
+  apply Path.Homotopic.Quotient.eq.mpr
+  exact hconcat.trans (hmixed.trans (by
+    rw [htargetEq]
+    exact Path.Homotopic.refl _))
+
+/--
+The first three-piece mixed finite-concat excursion collapse: north, then
+south, then north.  The south middle segment is replaced by an overlap path,
+turning the whole three-piece loop into a north-source loop.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_threeNorthSouthNorth
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    (t : Fin 4 → unitInterval)
+    (h0 : t 0 = 0) (h1 : t (Fin.last 3) = 1)
+    (hNorth₀ : Set.range
+      (γ.subpath (t (0 : Fin 3).castSucc) (t (0 : Fin 3).succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hSouth₁ : Set.range
+      (γ.subpath (t (1 : Fin 3).castSucc) (t (1 : Fin 3).succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorth₂ : Set.range
+      (γ.subpath (t (2 : Fin 3).castSucc) (t (2 : Fin 3).succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source) :
+    Path.Homotopic.Quotient.mk
+      (Path.concat (γ ∘ t) (fun k : Fin 3 =>
+        γ.subpath (t k.castSucc) (t k.succ))) =
+      Path.Homotopic.Quotient.mk
+        ((Path.refl threeSphere_equatorPoint).cast
+          (by
+            change γ (t (0 : Fin 4)) = threeSphere_equatorPoint
+            rw [h0]
+            exact γ.source)
+          (by
+            change γ (t (Fin.last 3)) = threeSphere_equatorPoint
+            rw [h1]
+            exact γ.target)) := by
+  have hsourceAt :
+      γ (t (0 : Fin 3).castSucc) = threeSphere_equatorPoint := by
+    have htStart : t (0 : Fin 3).castSucc = 0 := by
+      simpa using h0
+    rw [htStart]
+    exact γ.source
+  have htargetAt :
+      γ (t (2 : Fin 3).succ) = threeSphere_equatorPoint := by
+    have htEnd : t (2 : Fin 3).succ = 1 := by
+      simpa using h1
+    rw [htEnd]
+    exact γ.target
+  have hclose :
+      γ (t (2 : Fin 3).succ) = γ (t (0 : Fin 3).castSucc) := by
+    exact htargetAt.trans hsourceAt.symm
+  have hconcat :
+      Path.Homotopic
+        (Path.concat (γ ∘ t) (fun k : Fin 3 =>
+          γ.subpath (t k.castSucc) (t k.succ)))
+        (((γ.subpath (t (0 : Fin 3).castSucc) (t (0 : Fin 3).succ)).trans
+          (γ.subpath (t (1 : Fin 3).castSucc) (t (1 : Fin 3).succ))).trans
+          (γ.subpath (t (2 : Fin 3).castSucc) (t (2 : Fin 3).succ))) := by
+    rw [Path.concat_succ]
+    apply Path.Homotopic.hcomp
+    · simpa using
+        (Path.Homotopic.concat_two ((γ ∘ t) ∘ Fin.castSucc) (fun k : Fin 2 =>
+          γ.subpath (t k.castSucc.castSucc) (t k.castSucc.succ)))
+    · exact Path.Homotopic.refl _
+  have hmixed :
+      Path.Homotopic
+        (((γ.subpath (t (0 : Fin 3).castSucc) (t (0 : Fin 3).succ)).trans
+          (γ.subpath (t (1 : Fin 3).castSucc) (t (1 : Fin 3).succ))).trans
+          (γ.subpath (t (2 : Fin 3).castSucc) (t (2 : Fin 3).succ)))
+        ((Path.refl (γ (t (0 : Fin 3).castSucc))).cast rfl hclose) :=
+    threeSphere_stereographic_northSouthNorth_trans_trans_cast_nullhomotopic
+      (γ.subpath (t (0 : Fin 3).castSucc) (t (0 : Fin 3).succ))
+      (γ.subpath (t (1 : Fin 3).castSucc) (t (1 : Fin 3).succ))
+      (γ.subpath (t (2 : Fin 3).castSucc) (t (2 : Fin 3).succ))
+      hclose hNorth₀ hSouth₁ hNorth₂
+  have htargetEq :
+      ((Path.refl (γ (t (0 : Fin 3).castSucc))).cast rfl hclose) =
+        ((Path.refl threeSphere_equatorPoint).cast
+          (by
+            change γ (t (0 : Fin 4)) = threeSphere_equatorPoint
+            rw [h0]
+            exact γ.source)
+          (by
+            change γ (t (Fin.last 3)) = threeSphere_equatorPoint
+            rw [h1]
+            exact γ.target)) := by
+    apply Path.ext
+    funext _s
+    change γ (t (0 : Fin 3).castSucc) = threeSphere_equatorPoint
+    exact hsourceAt
+  apply Path.Homotopic.Quotient.eq.mpr
+  exact hconcat.trans (hmixed.trans (by
+    rw [htargetEq]
+    exact Path.Homotopic.refl _))
+
+/--
+The symmetric three-piece mixed finite-concat excursion collapse: south, then
+north, then south.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_threeSouthNorthSouth
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    (t : Fin 4 → unitInterval)
+    (h0 : t 0 = 0) (h1 : t (Fin.last 3) = 1)
+    (hSouth₀ : Set.range
+      (γ.subpath (t (0 : Fin 3).castSucc) (t (0 : Fin 3).succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorth₁ : Set.range
+      (γ.subpath (t (1 : Fin 3).castSucc) (t (1 : Fin 3).succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hSouth₂ : Set.range
+      (γ.subpath (t (2 : Fin 3).castSucc) (t (2 : Fin 3).succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source) :
+    Path.Homotopic.Quotient.mk
+      (Path.concat (γ ∘ t) (fun k : Fin 3 =>
+        γ.subpath (t k.castSucc) (t k.succ))) =
+      Path.Homotopic.Quotient.mk
+        ((Path.refl threeSphere_equatorPoint).cast
+          (by
+            change γ (t (0 : Fin 4)) = threeSphere_equatorPoint
+            rw [h0]
+            exact γ.source)
+          (by
+            change γ (t (Fin.last 3)) = threeSphere_equatorPoint
+            rw [h1]
+            exact γ.target)) := by
+  have hsourceAt :
+      γ (t (0 : Fin 3).castSucc) = threeSphere_equatorPoint := by
+    have htStart : t (0 : Fin 3).castSucc = 0 := by
+      simpa using h0
+    rw [htStart]
+    exact γ.source
+  have htargetAt :
+      γ (t (2 : Fin 3).succ) = threeSphere_equatorPoint := by
+    have htEnd : t (2 : Fin 3).succ = 1 := by
+      simpa using h1
+    rw [htEnd]
+    exact γ.target
+  have hclose :
+      γ (t (2 : Fin 3).succ) = γ (t (0 : Fin 3).castSucc) := by
+    exact htargetAt.trans hsourceAt.symm
+  have hconcat :
+      Path.Homotopic
+        (Path.concat (γ ∘ t) (fun k : Fin 3 =>
+          γ.subpath (t k.castSucc) (t k.succ)))
+        (((γ.subpath (t (0 : Fin 3).castSucc) (t (0 : Fin 3).succ)).trans
+          (γ.subpath (t (1 : Fin 3).castSucc) (t (1 : Fin 3).succ))).trans
+          (γ.subpath (t (2 : Fin 3).castSucc) (t (2 : Fin 3).succ))) := by
+    rw [Path.concat_succ]
+    apply Path.Homotopic.hcomp
+    · simpa using
+        (Path.Homotopic.concat_two ((γ ∘ t) ∘ Fin.castSucc) (fun k : Fin 2 =>
+          γ.subpath (t k.castSucc.castSucc) (t k.castSucc.succ)))
+    · exact Path.Homotopic.refl _
+  have hmixed :
+      Path.Homotopic
+        (((γ.subpath (t (0 : Fin 3).castSucc) (t (0 : Fin 3).succ)).trans
+          (γ.subpath (t (1 : Fin 3).castSucc) (t (1 : Fin 3).succ))).trans
+          (γ.subpath (t (2 : Fin 3).castSucc) (t (2 : Fin 3).succ)))
+        ((Path.refl (γ (t (0 : Fin 3).castSucc))).cast rfl hclose) :=
+    threeSphere_stereographic_southNorthSouth_trans_trans_cast_nullhomotopic
+      (γ.subpath (t (0 : Fin 3).castSucc) (t (0 : Fin 3).succ))
+      (γ.subpath (t (1 : Fin 3).castSucc) (t (1 : Fin 3).succ))
+      (γ.subpath (t (2 : Fin 3).castSucc) (t (2 : Fin 3).succ))
+      hclose hSouth₀ hNorth₁ hSouth₂
+  have htargetEq :
+      ((Path.refl (γ (t (0 : Fin 3).castSucc))).cast rfl hclose) =
+        ((Path.refl threeSphere_equatorPoint).cast
+          (by
+            change γ (t (0 : Fin 4)) = threeSphere_equatorPoint
+            rw [h0]
+            exact γ.source)
+          (by
+            change γ (t (Fin.last 3)) = threeSphere_equatorPoint
+            rw [h1]
+            exact γ.target)) := by
+    apply Path.ext
+    funext _s
+    change γ (t (0 : Fin 3).castSucc) = threeSphere_equatorPoint
     exact hsourceAt
   apply Path.Homotopic.Quotient.eq.mpr
   exact hconcat.trans (hmixed.trans (by
