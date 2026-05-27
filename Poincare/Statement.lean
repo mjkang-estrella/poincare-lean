@@ -4591,6 +4591,109 @@ theorem threeSphere_stereographicEquatorLoop_firstNorthRun_prefixBlockStop_repla
       γ t hstartstop hrun prefixPath rightPath hp hr)
 
 /--
+The concrete prefix/block/stop expression used by the first-run replacement
+lemmas is exactly the original subpath from the initial subdivision point to
+the stop segment's right endpoint, up to path homotopy.
+-/
+theorem threeSphere_stereographicEquatorLoop_prefixBlockStop_homotopic_to_stopSubpath
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval)
+    {start stop : Fin N} (hstartstop : start.val < stop.val) :
+    let p : Fin (start.val + 1) → ThreeSphere := fun i =>
+      γ (t ⟨i.val, by omega⟩)
+    let F : (k : Fin start.val) → Path (p k.castSucc) (p k.succ) := fun k =>
+      γ.subpath (t ⟨k.val, by omega⟩) (t ⟨k.val + 1, by omega⟩)
+    let block : Fin ((stop.val - start.val) + 1) → unitInterval := fun i =>
+      t ⟨start.val + i.val,
+        by
+          have hltStopSucc : start.val + i.val < stop.val + 1 := by
+            have hi : i.val < (stop.val - start.val) + 1 := i.isLt
+            omega
+          exact Nat.lt_trans hltStopSucc (Nat.succ_lt_succ stop.isLt)⟩
+    let prefixJoin : (γ ∘ block) 0 = p (Fin.last start.val) := by rfl
+    let prefixPath : Path (p 0) ((γ ∘ block) 0) :=
+      (Path.concat p F).cast rfl prefixJoin
+    let rightJoin :
+        (γ ∘ block) (Fin.last (stop.val - start.val)) =
+          γ (t stop.castSucc) := by
+      dsimp [block, Function.comp_def]
+      congr 2
+      ext
+      simp
+      omega
+    let rightPath :
+        Path ((γ ∘ block) (Fin.last (stop.val - start.val))) (γ (t stop.succ)) :=
+      (γ.subpath (t stop.castSucc) (t stop.succ)).cast rightJoin rfl
+    Path.Homotopic
+      ((prefixPath.trans (Path.concat (γ ∘ block)
+        (fun k : Fin (stop.val - start.val) =>
+          γ.subpath (block k.castSucc) (block k.succ)))).trans rightPath)
+      (γ.subpath (t 0) (t stop.succ)) := by
+  intro p F block prefixJoin prefixPath rightJoin rightPath
+  let prefixIndex : Fin (start.val + 1) → unitInterval := fun i =>
+    t ⟨i.val, by omega⟩
+  have hprefixConcat :
+      Path.Homotopic (Path.concat p F)
+        (γ.subpath (prefixIndex 0) (prefixIndex (Fin.last start.val))) := by
+    change Path.Homotopic
+      (Path.concat (γ ∘ prefixIndex)
+        (fun k : Fin start.val => γ.subpath (prefixIndex k.castSucc) (prefixIndex k.succ)))
+      (γ.subpath (prefixIndex 0) (prefixIndex (Fin.last start.val)))
+    exact Path.Homotopic.concat_subpath γ prefixIndex
+  have hprefix :
+      Path.Homotopic prefixPath (γ.subpath (t 0) (block 0)) := by
+    have hcast := Path.Homotopic.pathCast hprefixConcat rfl prefixJoin
+    refine hcast.trans ?_
+    have htarget :
+        (γ.subpath (prefixIndex 0) (prefixIndex (Fin.last start.val))).cast rfl
+            prefixJoin =
+          γ.subpath (t 0) (block 0) := by
+      apply Path.ext
+      funext s
+      simp [prefixIndex, block]
+    exact htarget ▸ Path.Homotopic.refl _
+  have hblock :
+      Path.Homotopic
+        (Path.concat (γ ∘ block)
+          (fun k : Fin (stop.val - start.val) =>
+            γ.subpath (block k.castSucc) (block k.succ)))
+        (γ.subpath (block 0) (block (Fin.last (stop.val - start.val)))) := by
+    exact Path.Homotopic.concat_subpath γ block
+  have hblockLast : block (Fin.last (stop.val - start.val)) = t stop.castSucc := by
+    dsimp [block]
+    congr 1
+    ext
+    change start.val + (stop.val - start.val) = stop.val
+    omega
+  have hright :
+      Path.Homotopic rightPath
+        (γ.subpath (block (Fin.last (stop.val - start.val))) (t stop.succ)) := by
+    have htarget :
+        rightPath =
+          γ.subpath (block (Fin.last (stop.val - start.val))) (t stop.succ) := by
+      apply Path.ext
+      funext s
+      rw [Path.cast_coe]
+      change (γ.subpath (t stop.castSucc) (t stop.succ)) s =
+        (γ.subpath (block (Fin.last (stop.val - start.val))) (t stop.succ)) s
+      rw [hblockLast]
+    exact htarget ▸ Path.Homotopic.refl _
+  have hprefixBlock := Path.Homotopic.hcomp hprefix hblock
+  have hprefixBlockToSubpath :
+      Path.Homotopic
+        (prefixPath.trans (Path.concat (γ ∘ block)
+          (fun k : Fin (stop.val - start.val) =>
+            γ.subpath (block k.castSucc) (block k.succ))))
+        (γ.subpath (t 0) (block (Fin.last (stop.val - start.val)))) := by
+    exact hprefixBlock.trans
+      ⟨Path.Homotopy.subpathTransSubpath γ (t 0) (block 0)
+        (block (Fin.last (stop.val - start.val)))⟩
+  have hwithRight := Path.Homotopic.hcomp hprefixBlockToSubpath hright
+  exact hwithRight.trans
+    ⟨Path.Homotopy.subpathTransSubpath γ (t 0)
+      (block (Fin.last (stop.val - start.val))) (t stop.succ)⟩
+
+/--
 Instantiated induction step for a first south run: after the concrete
 prefix/block/stop replacement, append an arbitrary tail and use any shorter
 north-source contraction obligation for the replaced prefix.
@@ -4915,6 +5018,77 @@ theorem threeSphere_stereographicEquatorLoop_fullConcat_homotopic_to_stopSubpath
         γ t (stop := stop))
   exact hconcat.trans (hsplit.symm.trans
     (Path.Homotopic.hcomp (Path.Homotopic.refl _) htail.symm))
+
+/--
+The raw finite concatenation is homotopic to the exact prefix/block/stop
+normal form used by the first-run replacement lemmas, followed by the concrete
+after-stop suffix concatenation.
+-/
+theorem threeSphere_stereographicEquatorLoop_fullConcat_homotopic_to_prefixBlockStop_tailConcat
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval)
+    {start stop : Fin N} (hstartstop : start.val < stop.val) :
+    let p : Fin (start.val + 1) → ThreeSphere := fun i =>
+      γ (t ⟨i.val, by omega⟩)
+    let F : (k : Fin start.val) → Path (p k.castSucc) (p k.succ) := fun k =>
+      γ.subpath (t ⟨k.val, by omega⟩) (t ⟨k.val + 1, by omega⟩)
+    let block : Fin ((stop.val - start.val) + 1) → unitInterval := fun i =>
+      t ⟨start.val + i.val,
+        by
+          have hltStopSucc : start.val + i.val < stop.val + 1 := by
+            have hi : i.val < (stop.val - start.val) + 1 := i.isLt
+            omega
+          exact Nat.lt_trans hltStopSucc (Nat.succ_lt_succ stop.isLt)⟩
+    let prefixJoin : (γ ∘ block) 0 = p (Fin.last start.val) := by rfl
+    let prefixPath : Path (p 0) ((γ ∘ block) 0) :=
+      (Path.concat p F).cast rfl prefixJoin
+    let rightJoin :
+        (γ ∘ block) (Fin.last (stop.val - start.val)) =
+          γ (t stop.castSucc) := by
+      dsimp [block, Function.comp_def]
+      congr 2
+      ext
+      simp
+      omega
+    let rightPath :
+        Path ((γ ∘ block) (Fin.last (stop.val - start.val))) (γ (t stop.succ)) :=
+      (γ.subpath (t stop.castSucc) (t stop.succ)).cast rightJoin rfl
+    let tailPts : Fin ((N - (stop.val + 1)) + 1) → ThreeSphere := fun i =>
+      γ (t ⟨stop.val + 1 + i.val, by
+        have hi : i.val < (N - (stop.val + 1)) + 1 := i.isLt
+        omega⟩)
+    let tailSegs : (k : Fin (N - (stop.val + 1))) →
+        Path (tailPts k.castSucc) (tailPts k.succ) := fun k =>
+      γ.subpath
+        (t ⟨stop.val + 1 + k.val, by
+          have hk : k.val < N - (stop.val + 1) := k.isLt
+          omega⟩)
+        (t ⟨stop.val + 1 + (k.val + 1), by
+          have hk : k.val < N - (stop.val + 1) := k.isLt
+          omega⟩)
+    let htailStart : tailPts 0 = γ (t stop.succ) := by rfl
+    let htailEnd : tailPts (Fin.last (N - (stop.val + 1))) = γ (t (Fin.last N)) := by
+      dsimp [tailPts]
+      congr 2
+      ext
+      change stop.val + 1 + (N - (stop.val + 1)) = N
+      omega
+    Path.Homotopic
+      (Path.concat (γ ∘ t) (fun k : Fin N => γ.subpath (t k.castSucc) (t k.succ)))
+      (((prefixPath.trans (Path.concat (γ ∘ block)
+        (fun k : Fin (stop.val - start.val) =>
+          γ.subpath (block k.castSucc) (block k.succ)))).trans rightPath).trans
+        ((Path.concat tailPts tailSegs).cast htailStart.symm htailEnd.symm)) := by
+  intro p F block prefixJoin prefixPath rightJoin rightPath tailPts tailSegs
+    htailStart htailEnd
+  have hfull :=
+    threeSphere_stereographicEquatorLoop_fullConcat_homotopic_to_stopSubpath_tailConcat
+      γ t (stop := stop)
+  have hprefix :=
+    threeSphere_stereographicEquatorLoop_prefixBlockStop_homotopic_to_stopSubpath
+      γ t hstartstop
+  exact hfull.trans
+    (Path.Homotopic.hcomp hprefix.symm (Path.Homotopic.refl _))
 
 /--
 For a finite subdivision whose segments each lie in a north or south
