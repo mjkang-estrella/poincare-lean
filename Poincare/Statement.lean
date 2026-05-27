@@ -3534,6 +3534,58 @@ theorem threeSphere_stereographic_southNorthSouth_trans_trans_cast_nullhomotopic
           ((Path.refl x₀).cast rfl hclose) hloopV hreflV)
 
 /--
+A north-source loop with an arbitrary finite south-source block between the
+two north pieces is null-homotopic.  This packages the finite middle block as
+a single south-source path, then applies the three-piece excursion collapse.
+-/
+theorem threeSphere_stereographic_northSouthBlockNorth_concat_cast_nullhomotopic
+    {N : ℕ} {x₀ x₃ : ThreeSphere}
+    (m : Fin (N + 1) → ThreeSphere)
+    (p : Path x₀ (m 0))
+    (F : (k : Fin N) → Path (m k.castSucc) (m k.succ))
+    (r : Path (m (Fin.last N)) x₃) (hclose : x₃ = x₀)
+    (hp : Set.range p ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hmBase : m 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hF : ∀ k : Fin N,
+      Set.range (F k) ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hr : Set.range r ⊆ (stereographic' 3 threeSphere_northPole).source) :
+    Path.Homotopic ((p.trans (Path.concat m F)).trans r)
+      ((Path.refl x₀).cast rfl hclose) := by
+  have hmiddle :
+      Set.range (Path.concat m F) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source :=
+    threeSphere_stereographic_source_concat_range_subset (-threeSphere_northPole)
+      m F hmBase hF
+  exact threeSphere_stereographic_northSouthNorth_trans_trans_cast_nullhomotopic
+    p (Path.concat m F) r hclose hp hmiddle hr
+
+/--
+The symmetric arbitrary-block excursion collapse: a finite north-source block
+between two south-source pieces can be replaced through the overlap and then
+contracted in the south source.
+-/
+theorem threeSphere_stereographic_southNorthBlockSouth_concat_cast_nullhomotopic
+    {N : ℕ} {x₀ x₃ : ThreeSphere}
+    (m : Fin (N + 1) → ThreeSphere)
+    (p : Path x₀ (m 0))
+    (F : (k : Fin N) → Path (m k.castSucc) (m k.succ))
+    (r : Path (m (Fin.last N)) x₃) (hclose : x₃ = x₀)
+    (hp : Set.range p ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hmBase : m 0 ∈ (stereographic' 3 threeSphere_northPole).source)
+    (hF : ∀ k : Fin N,
+      Set.range (F k) ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hr : Set.range r ⊆ (stereographic' 3 (-threeSphere_northPole)).source) :
+    Path.Homotopic ((p.trans (Path.concat m F)).trans r)
+      ((Path.refl x₀).cast rfl hclose) := by
+  have hmiddle :
+      Set.range (Path.concat m F) ⊆
+        (stereographic' 3 threeSphere_northPole).source :=
+    threeSphere_stereographic_source_concat_range_subset threeSphere_northPole
+      m F hmBase hF
+  exact threeSphere_stereographic_southNorthSouth_trans_trans_cast_nullhomotopic
+    p (Path.concat m F) r hclose hp hmiddle hr
+
+/--
 The first non-degenerate mixed finite-concat collapse: two pieces of an
 equatorial based loop collapse in the path-homotopy quotient when the first
 lies in the north stereographic source and the second lies in the south
