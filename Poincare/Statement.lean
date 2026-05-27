@@ -4143,6 +4143,184 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlock_nullhom
   exact hblocksToSubpath.symm.trans hcollapse
 
 /--
+Exact finite-concat quotient form for one subdivision split into a nonempty
+north-source block followed by a nonempty south-source block.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlock
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    (N M : ℕ) (t : Fin ((N + 1) + (M + 1) + 1) → unitInterval)
+    (h0 : t 0 = 0) (h1 : t (Fin.last ((N + 1) + (M + 1))) = 1)
+    (hNorthBlock : ∀ k : Fin (N + 1),
+      Set.range (γ.subpath
+        (t ((k.castSucc.castAdd (M + 1)).cast (by omega)))
+        (t ((k.succ.castAdd (M + 1)).cast (by omega)))) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hSouthBlock : ∀ k : Fin (M + 1),
+      Set.range (γ.subpath
+        (t ((k.castSucc.natAdd (N + 1)).cast (by omega)))
+        (t ((k.succ.natAdd (N + 1)).cast (by omega)))) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source) :
+    Path.Homotopic.Quotient.mk
+      (Path.concat (γ ∘ t) (fun k : Fin ((N + 1) + (M + 1)) =>
+        γ.subpath (t k.castSucc) (t k.succ))) =
+      Path.Homotopic.Quotient.mk
+        ((Path.refl threeSphere_equatorPoint).cast
+          (by simp [h0]) (by simp [h1])) := by
+  let u : Fin (N + 2) → unitInterval :=
+    fun i => t ((i.castAdd (M + 1)).cast (by omega))
+  let v : Fin (M + 2) → unitInterval :=
+    fun j => t ((j.natAdd (N + 1)).cast (by omega))
+  have hu0 : u 0 = 0 := by
+    simpa [u] using h0
+  have hv1 : v (Fin.last (M + 1)) = 1 := by
+    simpa [v] using h1
+  have hjoin : v 0 = u (Fin.last (N + 1)) := by
+    apply congrArg t
+    ext
+    simp [Fin.val_natAdd]
+  have hNorth : ∀ k : Fin (N + 1),
+      Set.range (γ.subpath (u k.castSucc) (u k.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source := by
+    intro k
+    simpa [u] using hNorthBlock k
+  have hSouth : ∀ k : Fin (M + 1),
+      Set.range (γ.subpath (v k.castSucc) (v k.succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source := by
+    intro k
+    simpa [v] using hSouthBlock k
+  have hSub :
+      Path.Homotopic
+        (γ.subpath (u 0) (v (Fin.last (M + 1))))
+        ((Path.refl (γ (u 0))).cast rfl
+          (by
+            rw [hv1, hu0]
+            exact γ.target.trans γ.source.symm)) :=
+    threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlock_nullhomotopic
+      γ N M u v hu0 hv1 hjoin hNorth hSouth
+  have hSubT :
+      Path.Homotopic
+        (γ.subpath (t 0) (t (Fin.last ((N + 1) + (M + 1)))))
+        ((Path.refl (γ (t 0))).cast rfl
+          (by
+            rw [h1, h0]
+            exact γ.target.trans γ.source.symm)) := by
+    simpa [u, v] using hSub
+  have hConcat :
+      Path.Homotopic
+        (Path.concat (γ ∘ t) (fun k : Fin ((N + 1) + (M + 1)) =>
+          γ.subpath (t k.castSucc) (t k.succ)))
+        (γ.subpath (t 0) (t (Fin.last ((N + 1) + (M + 1))))) := by
+    exact Path.Homotopic.concat_subpath γ t
+  have hsourceAt : γ (t 0) = threeSphere_equatorPoint := by
+    rw [h0]
+    exact γ.source
+  have htargetAt :
+      γ (t (Fin.last ((N + 1) + (M + 1)))) = threeSphere_equatorPoint := by
+    rw [h1]
+    exact γ.target
+  have hclose : γ (t (Fin.last ((N + 1) + (M + 1)))) = γ (t 0) := by
+    exact htargetAt.trans hsourceAt.symm
+  have htargetEq :
+      ((Path.refl (γ (t 0))).cast rfl hclose) =
+        ((Path.refl threeSphere_equatorPoint).cast
+          (by simp [h0]) (by simp [h1])) := by
+    apply Path.ext
+    funext _s
+    change γ (t 0) = threeSphere_equatorPoint
+    exact hsourceAt
+  apply Path.Homotopic.Quotient.eq.mpr
+  exact hConcat.trans (hSubT.trans (htargetEq ▸ Path.Homotopic.refl _))
+
+/--
+Exact finite-concat quotient form for one subdivision split into a nonempty
+south-source block followed by a nonempty north-source block.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlock
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    (N M : ℕ) (t : Fin ((N + 1) + (M + 1) + 1) → unitInterval)
+    (h0 : t 0 = 0) (h1 : t (Fin.last ((N + 1) + (M + 1))) = 1)
+    (hSouthBlock : ∀ k : Fin (N + 1),
+      Set.range (γ.subpath
+        (t ((k.castSucc.castAdd (M + 1)).cast (by omega)))
+        (t ((k.succ.castAdd (M + 1)).cast (by omega)))) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthBlock : ∀ k : Fin (M + 1),
+      Set.range (γ.subpath
+        (t ((k.castSucc.natAdd (N + 1)).cast (by omega)))
+        (t ((k.succ.natAdd (N + 1)).cast (by omega)))) ⊆
+        (stereographic' 3 threeSphere_northPole).source) :
+    Path.Homotopic.Quotient.mk
+      (Path.concat (γ ∘ t) (fun k : Fin ((N + 1) + (M + 1)) =>
+        γ.subpath (t k.castSucc) (t k.succ))) =
+      Path.Homotopic.Quotient.mk
+        ((Path.refl threeSphere_equatorPoint).cast
+          (by simp [h0]) (by simp [h1])) := by
+  let u : Fin (N + 2) → unitInterval :=
+    fun i => t ((i.castAdd (M + 1)).cast (by omega))
+  let v : Fin (M + 2) → unitInterval :=
+    fun j => t ((j.natAdd (N + 1)).cast (by omega))
+  have hu0 : u 0 = 0 := by
+    simpa [u] using h0
+  have hv1 : v (Fin.last (M + 1)) = 1 := by
+    simpa [v] using h1
+  have hjoin : v 0 = u (Fin.last (N + 1)) := by
+    apply congrArg t
+    ext
+    simp [Fin.val_natAdd]
+  have hSouth : ∀ k : Fin (N + 1),
+      Set.range (γ.subpath (u k.castSucc) (u k.succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source := by
+    intro k
+    simpa [u] using hSouthBlock k
+  have hNorth : ∀ k : Fin (M + 1),
+      Set.range (γ.subpath (v k.castSucc) (v k.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source := by
+    intro k
+    simpa [v] using hNorthBlock k
+  have hSub :
+      Path.Homotopic
+        (γ.subpath (u 0) (v (Fin.last (M + 1))))
+        ((Path.refl (γ (u 0))).cast rfl
+          (by
+            rw [hv1, hu0]
+            exact γ.target.trans γ.source.symm)) :=
+    threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlock_nullhomotopic
+      γ N M u v hu0 hv1 hjoin hSouth hNorth
+  have hSubT :
+      Path.Homotopic
+        (γ.subpath (t 0) (t (Fin.last ((N + 1) + (M + 1)))))
+        ((Path.refl (γ (t 0))).cast rfl
+          (by
+            rw [h1, h0]
+            exact γ.target.trans γ.source.symm)) := by
+    simpa [u, v] using hSub
+  have hConcat :
+      Path.Homotopic
+        (Path.concat (γ ∘ t) (fun k : Fin ((N + 1) + (M + 1)) =>
+          γ.subpath (t k.castSucc) (t k.succ)))
+        (γ.subpath (t 0) (t (Fin.last ((N + 1) + (M + 1))))) := by
+    exact Path.Homotopic.concat_subpath γ t
+  have hsourceAt : γ (t 0) = threeSphere_equatorPoint := by
+    rw [h0]
+    exact γ.source
+  have htargetAt :
+      γ (t (Fin.last ((N + 1) + (M + 1)))) = threeSphere_equatorPoint := by
+    rw [h1]
+    exact γ.target
+  have hclose : γ (t (Fin.last ((N + 1) + (M + 1)))) = γ (t 0) := by
+    exact htargetAt.trans hsourceAt.symm
+  have htargetEq :
+      ((Path.refl (γ (t 0))).cast rfl hclose) =
+        ((Path.refl threeSphere_equatorPoint).cast
+          (by simp [h0]) (by simp [h1])) := by
+    apply Path.ext
+    funext _s
+    change γ (t 0) = threeSphere_equatorPoint
+    exact hsourceAt
+  apply Path.Homotopic.Quotient.eq.mpr
+  exact hConcat.trans (hSubT.trans (htargetEq ▸ Path.Homotopic.refl _))
+
+/--
 Exact finite-concat quotient form for a loop made of a nonempty north-source
 block followed by one south-source return segment.
 -/
