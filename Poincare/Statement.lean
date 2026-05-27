@@ -4839,6 +4839,52 @@ theorem threeSphere_stereographicVanKampenLoopStatement_of_stereographicVanKampe
   apply Subsingleton.elim
 
 /--
+The stereographic loop-nullhomotopy output repackages as the `π₁` output at
+the equatorial overlap point for every verified input tuple.
+-/
+theorem threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_stereographicVanKampenLoopStatement
+    (h : ThreeSphereStereographicVanKampenLoopStatement) :
+    ThreeSphereStereographicVanKampenPiOneSubsingletonStatement := by
+  intro _inputs
+  exact
+    (threeSphere_basedPiOneSubsingleton_iff_basedLoopNullhomotopyStatement
+      threeSphere_equatorPoint).mpr h
+
+/--
+The loop-to-`π₁` stereographic route is the fixed equatorial
+loop-nullhomotopy/`π₁` equivalence applied pointwise in the cover inputs.
+-/
+theorem threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_stereographicVanKampenLoopStatement_eq :
+    threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_stereographicVanKampenLoopStatement =
+      (fun h : ThreeSphereStereographicVanKampenLoopStatement =>
+        fun _inputs : ThreeSphereStereographicVanKampenInputsStatement =>
+          (threeSphere_basedPiOneSubsingleton_iff_basedLoopNullhomotopyStatement
+            threeSphere_equatorPoint).mpr h) := by
+  funext h inputs
+  apply Subsingleton.elim
+
+/--
+The stereographic Van Kampen loop output and the `π₁`-subsingleton output are
+equivalent: the forward direction repackages loop-nullhomotopy pointwise, and
+the reverse direction evaluates the `π₁` output at the concrete inputs.
+-/
+theorem threeSphere_stereographicVanKampenLoopStatement_iff_stereographicVanKampenPiOneSubsingletonStatement :
+    ThreeSphereStereographicVanKampenLoopStatement ↔
+      ThreeSphereStereographicVanKampenPiOneSubsingletonStatement :=
+  ⟨threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_stereographicVanKampenLoopStatement,
+    threeSphere_stereographicVanKampenLoopStatement_of_stereographicVanKampenPiOneSubsingletonStatement⟩
+
+/--
+The loop/`π₁` stereographic equivalence is exactly the pair of the two named
+conversion routes.
+-/
+theorem threeSphere_stereographicVanKampenLoopStatement_iff_stereographicVanKampenPiOneSubsingletonStatement_eq :
+    threeSphere_stereographicVanKampenLoopStatement_iff_stereographicVanKampenPiOneSubsingletonStatement =
+      ⟨threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_stereographicVanKampenLoopStatement,
+        threeSphere_stereographicVanKampenLoopStatement_of_stereographicVanKampenPiOneSubsingletonStatement⟩ := by
+  apply Subsingleton.elim
+
+/--
 A stereographic Van Kampen `π₁` computation collapses every finite-concat
 representative by evaluating the computation at the concrete cover inputs.
 -/
@@ -4884,6 +4930,51 @@ theorem threeSphere_stereographicVanKampenConclusionStatement_of_stereographicVa
           threeSphere_stereographicVanKampenLoopStatement_of_equatorPiOneSubsingleton
             (h inputs)) := by
   funext h inputs
+  apply Subsingleton.elim
+
+/--
+The stereographic conclusion contract repackages pointwise as the `π₁`
+subsingleton output at the equatorial overlap point.
+-/
+theorem threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_stereographicVanKampenConclusionStatement
+    (h : ThreeSphereStereographicVanKampenConclusionStatement) :
+    ThreeSphereStereographicVanKampenPiOneSubsingletonStatement := by
+  intro inputs
+  exact
+    (threeSphere_basedPiOneSubsingleton_iff_basedLoopNullhomotopyStatement
+      threeSphere_equatorPoint).mpr (h inputs)
+
+/--
+The conclusion-to-`π₁` route applies the fixed equatorial
+loop-nullhomotopy/`π₁` equivalence to each input-indexed loop output.
+-/
+theorem threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_stereographicVanKampenConclusionStatement_eq :
+    threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_stereographicVanKampenConclusionStatement =
+      (fun h : ThreeSphereStereographicVanKampenConclusionStatement =>
+        fun inputs : ThreeSphereStereographicVanKampenInputsStatement =>
+          (threeSphere_basedPiOneSubsingleton_iff_basedLoopNullhomotopyStatement
+            threeSphere_equatorPoint).mpr (h inputs)) := by
+  funext h inputs
+  apply Subsingleton.elim
+
+/--
+The stereographic conclusion contract and `π₁` output are equivalent pointwise
+over the verified input tuple.
+-/
+theorem threeSphere_stereographicVanKampenConclusionStatement_iff_stereographicVanKampenPiOneSubsingletonStatement :
+    ThreeSphereStereographicVanKampenConclusionStatement ↔
+      ThreeSphereStereographicVanKampenPiOneSubsingletonStatement :=
+  ⟨threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_stereographicVanKampenConclusionStatement,
+    threeSphere_stereographicVanKampenConclusionStatement_of_stereographicVanKampenPiOneSubsingletonStatement⟩
+
+/--
+The conclusion/`π₁` stereographic equivalence is exactly the pair of the two
+named pointwise conversion routes.
+-/
+theorem threeSphere_stereographicVanKampenConclusionStatement_iff_stereographicVanKampenPiOneSubsingletonStatement_eq :
+    threeSphere_stereographicVanKampenConclusionStatement_iff_stereographicVanKampenPiOneSubsingletonStatement =
+      ⟨threeSphere_stereographicVanKampenPiOneSubsingletonStatement_of_stereographicVanKampenConclusionStatement,
+        threeSphere_stereographicVanKampenConclusionStatement_of_stereographicVanKampenPiOneSubsingletonStatement⟩ := by
   apply Subsingleton.elim
 
 /--

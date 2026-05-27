@@ -1936,6 +1936,46 @@ noncomputable def zero_ricci_flow_data
   rfl
 
 /--
+Ricci-flow data built from concrete equation verification and a supplied bridge
+to the abstract equation interface.
+-/
+noncomputable def ricci_flow_data_of_equation_verification_bridge
+    (bridge : RicciFlowEquationInterfaceBridgeStatement.{u, v, w})
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (curvature : RicciCurvatureData g)
+    (verification : RicciFlowEquationVerification curvature) :
+    RicciFlowData I n M where
+  metric := g
+  curvature := curvature
+  equation := satisfies_ricci_flow_equation_of_verification bridge verification
+
+/--
+The bridge-built Ricci-flow data stores the supplied metric, curvature data, and
+equation evidence obtained from the concrete verification.
+-/
+@[simp] theorem ricci_flow_data_of_equation_verification_bridge_eq
+    (bridge : RicciFlowEquationInterfaceBridgeStatement.{u, v, w})
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (curvature : RicciCurvatureData g)
+    (verification : RicciFlowEquationVerification curvature) :
+    ricci_flow_data_of_equation_verification_bridge bridge
+      curvature verification =
+      ({ metric := g
+         curvature := curvature
+         equation :=
+          satisfies_ricci_flow_equation_of_verification bridge verification } :
+        RicciFlowData I n M) :=
+  rfl
+
+/--
 Zero Ricci-flow data built from the explicit zero verification and a supplied
 bridge from concrete verifications to the abstract equation interface.
 -/
