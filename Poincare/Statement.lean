@@ -219,6 +219,43 @@ theorem threeSphere_stereographic_source_piOneSubsingleton_eq
   apply Subsingleton.elim
 
 /--
+A loop in the target sphere whose image stays inside one stereographic chart
+source is null-homotopic in the target sphere.  The proof lifts the loop to the
+chart source, uses simple-connectedness there, and maps the resulting homotopy
+back along the inclusion.
+-/
+theorem threeSphere_stereographic_source_contained_loop_nullhomotopic
+    (v : ThreeSphere) {basepoint : ThreeSphere}
+    (γ : Path basepoint basepoint)
+    (hγ : Set.range γ ⊆ (stereographic' 3 v).source) :
+    Path.Homotopic γ (Path.refl basepoint) := by
+  have hbase : basepoint ∈ (stereographic' 3 v).source :=
+    hγ ⟨0, γ.source⟩
+  let sourceBase : (stereographic' 3 v).source := ⟨basepoint, hbase⟩
+  let γSource : Path sourceBase sourceBase := {
+    toFun := fun t => ⟨γ t, hγ ⟨t, rfl⟩⟩
+    continuous_toFun := by
+      exact γ.continuous.subtype_mk (fun t => hγ ⟨t, rfl⟩)
+    source' := by
+      exact Subtype.ext γ.source
+    target' := by
+      exact Subtype.ext γ.target }
+  let incl : C((stereographic' 3 v).source, ThreeSphere) :=
+    ⟨Subtype.val, continuous_subtype_val⟩
+  have hsource : Path.Homotopic γSource (Path.refl sourceBase) := by
+    letI : SimplyConnectedSpace (stereographic' 3 v).source :=
+      threeSphere_stereographic_source_simplyConnectedSpace v
+    exact SimplyConnectedSpace.paths_homotopic γSource (Path.refl sourceBase)
+  have hmap := Path.Homotopic.map hsource incl
+  have hγmap : γSource.map incl.continuous = γ := by
+    ext t
+    rfl
+  have hreflmap : (Path.refl sourceBase).map incl.continuous = Path.refl basepoint := by
+    ext t
+    rfl
+  simpa [hγmap, hreflmap] using hmap
+
+/--
 The source of the stereographic chart at `v` is the complement of the point
 `v`.
 -/
