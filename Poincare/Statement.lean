@@ -404,6 +404,37 @@ theorem path_homotopic_concat_first_middle_last
     (Path.Homotopic.refl (F (Fin.last (N + 1))))
 
 /--
+For a finite word whose entries each satisfy a left-or-right alternative,
+either every entry is left, or there is a first non-left entry; that entry is
+right and every earlier entry is left.
+-/
+theorem finite_or_first_right_or_all_left
+    {N : ℕ} {Left Right : Fin N → Prop}
+    (hchoice : ∀ k : Fin N, Left k ∨ Right k) :
+    (∀ k : Fin N, Left k) ∨
+      ∃ k : Fin N, Right k ∧ ¬ Left k ∧ ∀ j : Fin N, j.val < k.val → Left j := by
+  classical
+  by_cases hAll : ∀ k : Fin N, Left k
+  · exact Or.inl hAll
+  · let bad : ℕ → Prop := fun n => ∃ h : n < N, ¬ Left ⟨n, h⟩
+    have hbad : ∃ n, bad n := by
+      rcases Classical.not_forall.mp hAll with ⟨k, hk⟩
+      exact ⟨k.val, k.isLt, hk⟩
+    let n := Nat.find hbad
+    have hn : bad n := Nat.find_spec hbad
+    rcases hn with ⟨hnN, hnNotLeft⟩
+    let k : Fin N := ⟨n, hnN⟩
+    have hBefore : ∀ j : Fin N, j.val < k.val → Left j := by
+      intro j hj
+      by_contra hjLeft
+      exact (Nat.find_min hbad hj) ⟨j.isLt, hjLeft⟩
+    have hRight : Right k := by
+      rcases hchoice k with hkLeft | hkRight
+      · exact False.elim (hnNotLeft hkLeft)
+      · exact hkRight
+    exact Or.inr ⟨k, hRight, hnNotLeft, hBefore⟩
+
+/--
 Moving a source cast from the second factor of a path concatenation to a target
 cast on the first factor does not change the concatenated path.
 -/
