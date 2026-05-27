@@ -1934,6 +1934,119 @@ theorem threeSphere_stereographicEquatorLoop_leftEndpoint_southSource_of_before
       hBefore prev hprevlt hend
     simpa [hsucc] using hsourcePrev
 
+/--
+If every segment before `start` lies in one stereographic source and the left
+basepoint is in that source, then the concrete finite prefix concatenation up
+to `start` stays in the source.
+-/
+theorem threeSphere_stereographicEquatorLoop_prefixConcat_range_subset
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval) (v : ThreeSphere)
+    {start : Fin N}
+    (hbase : γ (t 0) ∈ (stereographic' 3 v).source)
+    (hBefore : ∀ j : Fin N, j.val < start.val →
+      Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+        (stereographic' 3 v).source) :
+    let p : Fin (start.val + 1) → ThreeSphere := fun i =>
+      γ (t ⟨i.val, by omega⟩)
+    let F : (k : Fin start.val) → Path (p k.castSucc) (p k.succ) := fun k =>
+      γ.subpath (t ⟨k.val, by omega⟩) (t ⟨k.val + 1, by omega⟩)
+    Set.range (Path.concat p F) ⊆ (stereographic' 3 v).source := by
+  intro p F
+  have hp0 : p 0 ∈ (stereographic' 3 v).source := by
+    have hidx : (⟨(0 : Fin (start.val + 1)).val, by omega⟩ : Fin (N + 1)) = 0 := by
+      ext
+      simp
+    simpa [p, hidx] using hbase
+  have hF : ∀ k : Fin start.val,
+      Set.range (F k) ⊆ (stereographic' 3 v).source := by
+    intro k
+    let j : Fin N := ⟨k.val, by omega⟩
+    have hj : j.val < start.val := by
+      dsimp [j]
+      exact k.isLt
+    have hseg := hBefore j hj
+    have hleft : j.castSucc = (⟨k.val, by omega⟩ : Fin (N + 1)) := by
+      ext
+      dsimp [j]
+    have hright : j.succ = (⟨k.val + 1, by omega⟩ : Fin (N + 1)) := by
+      ext
+      dsimp [j]
+    change Set.range (γ.subpath (t (⟨k.val, by omega⟩ : Fin (N + 1)))
+      (t (⟨k.val + 1, by omega⟩ : Fin (N + 1)))) ⊆
+        (stereographic' 3 v).source
+    rw [← hleft, ← hright]
+    exact hseg
+  exact threeSphere_stereographic_source_concat_range_subset v p F hp0 hF
+
+/--
+For the first south run in a north-preferred word, the actual prefix before the
+run supplies the north-source bracket data needed by local block replacement.
+-/
+theorem threeSphere_stereographicEquatorLoop_firstSouthRun_prefixNorth_sourceData
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval) (h0 : t 0 = 0)
+    {start : Fin N}
+    (hBefore : ∀ j : Fin N, j.val < start.val →
+      Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source) :
+    let p : Fin (start.val + 1) → ThreeSphere := fun i =>
+      γ (t ⟨i.val, by omega⟩)
+    let F : (k : Fin start.val) → Path (p k.castSucc) (p k.succ) := fun k =>
+      γ.subpath (t ⟨k.val, by omega⟩) (t ⟨k.val + 1, by omega⟩)
+    γ (t start.castSucc) ∈ (stereographic' 3 threeSphere_northPole).source ∧
+      Set.range (Path.concat p F) ⊆
+        (stereographic' 3 threeSphere_northPole).source := by
+  intro p F
+  have hend :
+      γ (t start.castSucc) ∈ (stereographic' 3 threeSphere_northPole).source :=
+    threeSphere_stereographicEquatorLoop_leftEndpoint_northSource_of_before
+      γ t h0 (start := start) hBefore
+  have hbase : γ (t 0) ∈ (stereographic' 3 threeSphere_northPole).source := by
+    simpa [h0, γ.source] using
+      threeSphere_equatorPoint_mem_northPole_stereographic_source
+  have hprefix :
+      Set.range (Path.concat p F) ⊆
+        (stereographic' 3 threeSphere_northPole).source := by
+    simpa [p, F] using
+      threeSphere_stereographicEquatorLoop_prefixConcat_range_subset
+        γ t threeSphere_northPole hbase hBefore
+  exact ⟨hend, hprefix⟩
+
+/--
+For the first north run in a south-preferred word, the actual prefix before the
+run supplies the south-source bracket data needed by local block replacement.
+-/
+theorem threeSphere_stereographicEquatorLoop_firstNorthRun_prefixSouth_sourceData
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval) (h0 : t 0 = 0)
+    {start : Fin N}
+    (hBefore : ∀ j : Fin N, j.val < start.val →
+      Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source) :
+    let p : Fin (start.val + 1) → ThreeSphere := fun i =>
+      γ (t ⟨i.val, by omega⟩)
+    let F : (k : Fin start.val) → Path (p k.castSucc) (p k.succ) := fun k =>
+      γ.subpath (t ⟨k.val, by omega⟩) (t ⟨k.val + 1, by omega⟩)
+    γ (t start.castSucc) ∈ (stereographic' 3 (-threeSphere_northPole)).source ∧
+      Set.range (Path.concat p F) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source := by
+  intro p F
+  have hend :
+      γ (t start.castSucc) ∈ (stereographic' 3 (-threeSphere_northPole)).source :=
+    threeSphere_stereographicEquatorLoop_leftEndpoint_southSource_of_before
+      γ t h0 (start := start) hBefore
+  have hbase : γ (t 0) ∈ (stereographic' 3 (-threeSphere_northPole)).source := by
+    simpa [h0, γ.source] using
+      threeSphere_equatorPoint_mem_southPole_stereographic_source
+  have hprefix :
+      Set.range (Path.concat p F) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source := by
+    simpa [p, F] using
+      threeSphere_stereographicEquatorLoop_prefixConcat_range_subset
+        γ t (-threeSphere_northPole) hbase hBefore
+  exact ⟨hend, hprefix⟩
+
 /-- The equatorial point as a point of the north-pole stereographic source. -/
 noncomputable def threeSphere_equatorPointInNorthSource :
     (stereographic' 3 threeSphere_northPole).source :=
