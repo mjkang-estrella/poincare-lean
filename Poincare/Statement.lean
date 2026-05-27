@@ -3774,6 +3774,84 @@ theorem threeSphere_stereographic_southNorthBlockSouth_homotopic_to_southBlock
   exact ⟨q, hqV, hreplace, htargetRange⟩
 
 /--
+The north replacement path produced from a bracketed finite south block gives
+an explicit two-step contraction: first replace the south block by an overlap
+path in the north source, then contract the resulting north-source loop.
+-/
+theorem threeSphere_stereographic_northSouthBlockNorth_contracts_through_northBlock
+    {N : ℕ} {x₀ x₃ : ThreeSphere}
+    (m : Fin (N + 1) → ThreeSphere)
+    (p : Path x₀ (m 0))
+    (F : (k : Fin N) → Path (m k.castSucc) (m k.succ))
+    (r : Path (m (Fin.last N)) x₃) (hclose : x₃ = x₀)
+    (hp : Set.range p ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hmBase : m 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hF : ∀ k : Fin N,
+      Set.range (F k) ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hr : Set.range r ⊆ (stereographic' 3 threeSphere_northPole).source) :
+    ∃ q : Path (m 0) (m (Fin.last N)),
+      Set.range q ⊆ (stereographic' 3 threeSphere_northPole).source ∧
+      Set.range ((p.trans q).trans r) ⊆
+        (stereographic' 3 threeSphere_northPole).source ∧
+      Path.Homotopic ((p.trans (Path.concat m F)).trans r) ((p.trans q).trans r) ∧
+      Path.Homotopic ((p.trans q).trans r) ((Path.refl x₀).cast rfl hclose) := by
+  rcases threeSphere_stereographic_northSouthBlockNorth_homotopic_to_northBlock
+      m p F r hp hmBase hF hr with
+    ⟨q, hq, hreplace, htargetRange⟩
+  have hx₀ : x₀ ∈ (stereographic' 3 threeSphere_northPole).source := hp ⟨0, p.source⟩
+  have hreflRange :
+      Set.range ((Path.refl x₀).cast rfl hclose) ⊆
+        (stereographic' 3 threeSphere_northPole).source := by
+    intro z hz
+    rcases hz with ⟨s, rfl⟩
+    simpa [Path.cast_coe] using hx₀
+  have hcontract :
+      Path.Homotopic ((p.trans q).trans r) ((Path.refl x₀).cast rfl hclose) :=
+    threeSphere_stereographic_source_contained_paths_homotopic
+      threeSphere_northPole ((p.trans q).trans r)
+      ((Path.refl x₀).cast rfl hclose) htargetRange hreflRange
+  exact ⟨q, hq, htargetRange, hreplace, hcontract⟩
+
+/--
+The symmetric two-step contraction through a south-source replacement path for
+a finite north block bracketed by south-source paths.
+-/
+theorem threeSphere_stereographic_southNorthBlockSouth_contracts_through_southBlock
+    {N : ℕ} {x₀ x₃ : ThreeSphere}
+    (m : Fin (N + 1) → ThreeSphere)
+    (p : Path x₀ (m 0))
+    (F : (k : Fin N) → Path (m k.castSucc) (m k.succ))
+    (r : Path (m (Fin.last N)) x₃) (hclose : x₃ = x₀)
+    (hp : Set.range p ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hmBase : m 0 ∈ (stereographic' 3 threeSphere_northPole).source)
+    (hF : ∀ k : Fin N,
+      Set.range (F k) ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hr : Set.range r ⊆ (stereographic' 3 (-threeSphere_northPole)).source) :
+    ∃ q : Path (m 0) (m (Fin.last N)),
+      Set.range q ⊆ (stereographic' 3 (-threeSphere_northPole)).source ∧
+      Set.range ((p.trans q).trans r) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source ∧
+      Path.Homotopic ((p.trans (Path.concat m F)).trans r) ((p.trans q).trans r) ∧
+      Path.Homotopic ((p.trans q).trans r) ((Path.refl x₀).cast rfl hclose) := by
+  rcases threeSphere_stereographic_southNorthBlockSouth_homotopic_to_southBlock
+      m p F r hp hmBase hF hr with
+    ⟨q, hq, hreplace, htargetRange⟩
+  have hx₀ : x₀ ∈ (stereographic' 3 (-threeSphere_northPole)).source :=
+    hp ⟨0, p.source⟩
+  have hreflRange :
+      Set.range ((Path.refl x₀).cast rfl hclose) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source := by
+    intro z hz
+    rcases hz with ⟨s, rfl⟩
+    simpa [Path.cast_coe] using hx₀
+  have hcontract :
+      Path.Homotopic ((p.trans q).trans r) ((Path.refl x₀).cast rfl hclose) :=
+    threeSphere_stereographic_source_contained_paths_homotopic
+      (-threeSphere_northPole) ((p.trans q).trans r)
+      ((Path.refl x₀).cast rfl hclose) htargetRange hreflRange
+  exact ⟨q, hq, htargetRange, hreplace, hcontract⟩
+
+/--
 A loop formed by a finite north-source block followed by one south-source
 return segment is null-homotopic.  This compresses the north block to a single
 north-source path and applies the mixed two-piece collapse.
