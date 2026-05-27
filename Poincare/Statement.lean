@@ -4561,6 +4561,121 @@ theorem threeSphere_stereographicEquatorLoop_firstNorthRun_prefixBlockStop_repla
       γ t hstartstop hrun prefixPath rightPath hp hr)
 
 /--
+Instantiated induction step for a first south run: after the concrete
+prefix/block/stop replacement, append an arbitrary tail and use any shorter
+north-source contraction obligation for the replaced prefix.
+-/
+theorem threeSphere_stereographicEquatorLoop_firstSouthRun_prefixBlockStop_tail_induction_step
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval) (h0 : t 0 = 0)
+    {start stop : Fin N} (hstartstop : start.val < stop.val)
+    (hBefore : ∀ j : Fin N, j.val < start.val →
+      Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hNorthStop : Set.range (γ.subpath (t stop.castSucc) (t stop.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hrun : ∀ j : Fin N, start.val ≤ j.val → j.val < stop.val →
+      Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source) :
+    let p : Fin (start.val + 1) → ThreeSphere := fun i =>
+      γ (t ⟨i.val, by omega⟩)
+    let F : (k : Fin start.val) → Path (p k.castSucc) (p k.succ) := fun k =>
+      γ.subpath (t ⟨k.val, by omega⟩) (t ⟨k.val + 1, by omega⟩)
+    let block : Fin ((stop.val - start.val) + 1) → unitInterval := fun i =>
+      t ⟨start.val + i.val,
+        by
+          have hltStopSucc : start.val + i.val < stop.val + 1 := by
+            have hi : i.val < (stop.val - start.val) + 1 := i.isLt
+            omega
+          exact Nat.lt_trans hltStopSucc (Nat.succ_lt_succ stop.isLt)⟩
+    let prefixJoin : (γ ∘ block) 0 = p (Fin.last start.val) := by rfl
+    let prefixPath : Path (p 0) ((γ ∘ block) 0) :=
+      (Path.concat p F).cast rfl prefixJoin
+    let rightJoin :
+        (γ ∘ block) (Fin.last (stop.val - start.val)) =
+          γ (t stop.castSucc) := by
+      dsimp [block, Function.comp_def]
+      congr 2
+      ext
+      simp
+      omega
+    let rightPath :
+        Path ((γ ∘ block) (Fin.last (stop.val - start.val))) (γ (t stop.succ)) :=
+      (γ.subpath (t stop.castSucc) (t stop.succ)).cast rightJoin rfl
+    ∀ {x₄ : ThreeSphere} (tail : Path (γ (t stop.succ)) x₄) (hclose : x₄ = p 0),
+      (∀ q : Path (p 0) (γ (t stop.succ)),
+        Set.range q ⊆ (stereographic' 3 threeSphere_northPole).source →
+        Path.Homotopic (q.trans tail) ((Path.refl (p 0)).cast rfl hclose)) →
+      Path.Homotopic
+        (((prefixPath.trans (Path.concat (γ ∘ block)
+          (fun k : Fin (stop.val - start.val) =>
+            γ.subpath (block k.castSucc) (block k.succ)))).trans rightPath).trans tail)
+        ((Path.refl (p 0)).cast rfl hclose) := by
+  intro p F block prefixJoin prefixPath rightJoin rightPath x₄ tail hclose hshort
+  rcases threeSphere_stereographicEquatorLoop_firstSouthRun_prefixBlockStop_replacement
+      γ t h0 hstartstop hBefore hNorthStop hrun with
+    ⟨q, _hq, hreplace, htargetRange⟩
+  exact (Path.Homotopic.hcomp hreplace (Path.Homotopic.refl tail)).trans
+    (hshort ((prefixPath.trans q).trans rightPath) htargetRange)
+
+/--
+Symmetric instantiated induction step for a first north run in a south-source
+preferred word.
+-/
+theorem threeSphere_stereographicEquatorLoop_firstNorthRun_prefixBlockStop_tail_induction_step
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval) (h0 : t 0 = 0)
+    {start stop : Fin N} (hstartstop : start.val < stop.val)
+    (hBefore : ∀ j : Fin N, j.val < start.val →
+      Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouthStop : Set.range (γ.subpath (t stop.castSucc) (t stop.succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hrun : ∀ j : Fin N, start.val ≤ j.val → j.val < stop.val →
+      Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source) :
+    let p : Fin (start.val + 1) → ThreeSphere := fun i =>
+      γ (t ⟨i.val, by omega⟩)
+    let F : (k : Fin start.val) → Path (p k.castSucc) (p k.succ) := fun k =>
+      γ.subpath (t ⟨k.val, by omega⟩) (t ⟨k.val + 1, by omega⟩)
+    let block : Fin ((stop.val - start.val) + 1) → unitInterval := fun i =>
+      t ⟨start.val + i.val,
+        by
+          have hltStopSucc : start.val + i.val < stop.val + 1 := by
+            have hi : i.val < (stop.val - start.val) + 1 := i.isLt
+            omega
+          exact Nat.lt_trans hltStopSucc (Nat.succ_lt_succ stop.isLt)⟩
+    let prefixJoin : (γ ∘ block) 0 = p (Fin.last start.val) := by rfl
+    let prefixPath : Path (p 0) ((γ ∘ block) 0) :=
+      (Path.concat p F).cast rfl prefixJoin
+    let rightJoin :
+        (γ ∘ block) (Fin.last (stop.val - start.val)) =
+          γ (t stop.castSucc) := by
+      dsimp [block, Function.comp_def]
+      congr 2
+      ext
+      simp
+      omega
+    let rightPath :
+        Path ((γ ∘ block) (Fin.last (stop.val - start.val))) (γ (t stop.succ)) :=
+      (γ.subpath (t stop.castSucc) (t stop.succ)).cast rightJoin rfl
+    ∀ {x₄ : ThreeSphere} (tail : Path (γ (t stop.succ)) x₄) (hclose : x₄ = p 0),
+      (∀ q : Path (p 0) (γ (t stop.succ)),
+        Set.range q ⊆ (stereographic' 3 (-threeSphere_northPole)).source →
+        Path.Homotopic (q.trans tail) ((Path.refl (p 0)).cast rfl hclose)) →
+      Path.Homotopic
+        (((prefixPath.trans (Path.concat (γ ∘ block)
+          (fun k : Fin (stop.val - start.val) =>
+            γ.subpath (block k.castSucc) (block k.succ)))).trans rightPath).trans tail)
+        ((Path.refl (p 0)).cast rfl hclose) := by
+  intro p F block prefixJoin prefixPath rightJoin rightPath x₄ tail hclose hshort
+  rcases threeSphere_stereographicEquatorLoop_firstNorthRun_prefixBlockStop_replacement
+      γ t h0 hstartstop hBefore hSouthStop hrun with
+    ⟨q, _hq, hreplace, htargetRange⟩
+  exact (Path.Homotopic.hcomp hreplace (Path.Homotopic.refl tail)).trans
+    (hshort ((prefixPath.trans q).trans rightPath) htargetRange)
+
+/--
 For a finite subdivision whose segments each lie in a north or south
 stereographic source, the first south run in a north-preferred word is either
 terminal or reaches a north segment where the reindexed south block admits the
