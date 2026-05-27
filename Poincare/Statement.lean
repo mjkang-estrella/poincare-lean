@@ -10440,6 +10440,374 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_of_subpath_null
   exact hConcat.trans (hSub.trans (htargetEq ▸ Path.Homotopic.refl _))
 
 /--
+Terminal first-south-run collapse: if a finite chart word has a north-source
+prefix and then stays in the south stereographic source through the end, the
+original finite concatenation already collapses in the path-homotopy quotient.
+-/
+theorem threeSphere_stereographicEquatorLoop_firstSouthRun_terminal_fullConcat_collapse
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval)
+    (h0 : t 0 = 0) (h1 : t (Fin.last N) = 1)
+    {start : Fin N}
+    (hBefore : ∀ j : Fin N, j.val < start.val →
+      Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hTerminal : ∀ j : Fin N, start.val ≤ j.val →
+      Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source) :
+    Path.Homotopic.Quotient.mk
+      (Path.concat (γ ∘ t) (fun k : Fin N =>
+        γ.subpath (t k.castSucc) (t k.succ))) =
+      Path.Homotopic.Quotient.mk
+        ((Path.refl threeSphere_equatorPoint).cast
+          (by simp [h0]) (by simp [h1])) := by
+  by_cases hstart0 : start.val = 0
+  · exact threeSphere_stereographicEquatorLoopFiniteConcatCollapse_allSouth
+      γ N t h0 h1
+      (by
+        intro k
+        exact hTerminal k (by omega))
+  · let A : ℕ := start.val - 1
+    let B : ℕ := N - start.val - 1
+    let u : Fin (A + 2) → unitInterval := fun i =>
+      t ⟨i.val, by
+        have hi : i.val < A + 2 := i.isLt
+        dsimp [A] at hi
+        omega⟩
+    let v : Fin (B + 2) → unitInterval := fun i =>
+      t ⟨start.val + i.val, by
+        have hi : i.val < B + 2 := i.isLt
+        dsimp [B] at hi
+        omega⟩
+    have hu0 : u 0 = 0 := by
+      simpa [u] using h0
+    have hLastIndex :
+        (⟨start.val + (B + 1), by
+          omega⟩ : Fin (N + 1)) = Fin.last N := by
+      ext
+      dsimp [B]
+      omega
+    have hv1 : v (Fin.last (B + 1)) = 1 := by
+      dsimp [v]
+      rw [hLastIndex]
+      exact h1
+    have hjoin : v 0 = u (Fin.last (A + 1)) := by
+      apply congrArg t
+      ext
+      dsimp [u, v, A]
+      omega
+    have hNorth : ∀ k : Fin (A + 1),
+        Set.range (γ.subpath (u k.castSucc) (u k.succ)) ⊆
+          (stereographic' 3 threeSphere_northPole).source := by
+      intro k
+      let j : Fin N := ⟨k.val, by
+        have hk : k.val < A + 1 := k.isLt
+        dsimp [A] at hk
+        omega⟩
+      have hj : j.val < start.val := by
+        dsimp [j, A]
+        omega
+      have hleft :
+          j.castSucc =
+            (⟨(k.castSucc : Fin (A + 2)).val, by
+              have hk : (k.castSucc : Fin (A + 2)).val < A + 2 :=
+                (k.castSucc : Fin (A + 2)).isLt
+              dsimp [A] at hk
+              omega⟩ : Fin (N + 1)) := by
+        ext
+        dsimp [j]
+      have hright :
+          j.succ =
+            (⟨(k.succ : Fin (A + 2)).val, by
+              have hk : (k.succ : Fin (A + 2)).val < A + 2 :=
+                (k.succ : Fin (A + 2)).isLt
+              dsimp [A] at hk
+              omega⟩ : Fin (N + 1)) := by
+        ext
+        dsimp [j]
+      change Set.range (γ.subpath
+          (t (⟨(k.castSucc : Fin (A + 2)).val, by
+            have hk : (k.castSucc : Fin (A + 2)).val < A + 2 :=
+              (k.castSucc : Fin (A + 2)).isLt
+            dsimp [A] at hk
+            omega⟩ : Fin (N + 1)))
+          (t (⟨(k.succ : Fin (A + 2)).val, by
+            have hk : (k.succ : Fin (A + 2)).val < A + 2 :=
+              (k.succ : Fin (A + 2)).isLt
+            dsimp [A] at hk
+            omega⟩ : Fin (N + 1)))) ⊆
+          (stereographic' 3 threeSphere_northPole).source
+      rw [← hleft, ← hright]
+      exact hBefore j hj
+    have hSouth : ∀ k : Fin (B + 1),
+        Set.range (γ.subpath (v k.castSucc) (v k.succ)) ⊆
+          (stereographic' 3 (-threeSphere_northPole)).source := by
+      intro k
+      let j : Fin N := ⟨start.val + k.val, by
+        have hk : k.val < B + 1 := k.isLt
+        dsimp [B] at hk
+        omega⟩
+      have hj : start.val ≤ j.val := by
+        dsimp [j]
+        omega
+      have hleft :
+          j.castSucc =
+            (⟨start.val + (k.castSucc : Fin (B + 2)).val, by
+              have hk : (k.castSucc : Fin (B + 2)).val < B + 2 :=
+                (k.castSucc : Fin (B + 2)).isLt
+              dsimp [B] at hk
+              omega⟩ : Fin (N + 1)) := by
+        ext
+        dsimp [j]
+      have hright :
+          j.succ =
+            (⟨start.val + (k.succ : Fin (B + 2)).val, by
+              have hk : (k.succ : Fin (B + 2)).val < B + 2 :=
+                (k.succ : Fin (B + 2)).isLt
+              dsimp [B] at hk
+              omega⟩ : Fin (N + 1)) := by
+        ext
+        dsimp [j]
+        omega
+      change Set.range (γ.subpath
+          (t (⟨start.val + (k.castSucc : Fin (B + 2)).val, by
+            have hk : (k.castSucc : Fin (B + 2)).val < B + 2 :=
+              (k.castSucc : Fin (B + 2)).isLt
+            dsimp [B] at hk
+            omega⟩ : Fin (N + 1)))
+          (t (⟨start.val + (k.succ : Fin (B + 2)).val, by
+            have hk : (k.succ : Fin (B + 2)).val < B + 2 :=
+              (k.succ : Fin (B + 2)).isLt
+            dsimp [B] at hk
+            omega⟩ : Fin (N + 1)))) ⊆
+          (stereographic' 3 (-threeSphere_northPole)).source
+      rw [← hleft, ← hright]
+      exact hTerminal j hj
+    have hcloseLocal : γ (v (Fin.last (B + 1))) = γ (u 0) := by
+      rw [hv1, hu0]
+      exact γ.target.trans γ.source.symm
+    have hSub :
+        Path.Homotopic
+          (γ.subpath (u 0) (v (Fin.last (B + 1))))
+          ((Path.refl (γ (u 0))).cast rfl hcloseLocal) := by
+      simpa [hcloseLocal] using
+        threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlock_nullhomotopic
+          γ A B u v hu0 hv1 hjoin hNorth hSouth
+    have hclose : γ (t (Fin.last N)) = γ (t 0) := by
+      rw [h1, h0]
+      exact γ.target.trans γ.source.symm
+    have hSubT :
+        Path.Homotopic
+          (γ.subpath (t 0) (t (Fin.last N)))
+          ((Path.refl (γ (t 0))).cast rfl hclose) := by
+      have hstartEq : γ (t 0) = γ (u 0) := by
+        simp [u]
+      have hendEq : γ (t (Fin.last N)) = γ (v (Fin.last (B + 1))) := by
+        simp [v, hLastIndex]
+      have hcast := Path.Homotopic.pathCast hSub hstartEq hendEq
+      have hleftPath :
+          (γ.subpath (u 0) (v (Fin.last (B + 1)))).cast hstartEq hendEq =
+            γ.subpath (t 0) (t (Fin.last N)) := by
+        apply Path.ext
+        funext s
+        simp [Path.cast_coe, u, v]
+        rw [hLastIndex]
+      have hrightPath :
+          (((Path.refl (γ (u 0))).cast rfl hcloseLocal).cast hstartEq hendEq) =
+            ((Path.refl (γ (t 0))).cast rfl hclose) := by
+        apply Path.ext
+        funext s
+        simp [Path.cast_coe, u]
+      rw [hleftPath, hrightPath] at hcast
+      exact hcast
+    exact threeSphere_stereographicEquatorLoopFiniteConcatCollapse_of_subpath_nullhomotopic
+      γ t h0 h1 hclose hSubT
+
+/--
+Terminal first-north-run collapse: if a finite chart word has a south-source
+prefix and then stays in the north stereographic source through the end, the
+original finite concatenation collapses in the path-homotopy quotient.
+-/
+theorem threeSphere_stereographicEquatorLoop_firstNorthRun_terminal_fullConcat_collapse
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval)
+    (h0 : t 0 = 0) (h1 : t (Fin.last N) = 1)
+    {start : Fin N}
+    (hBefore : ∀ j : Fin N, j.val < start.val →
+      Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hTerminal : ∀ j : Fin N, start.val ≤ j.val →
+      Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source) :
+    Path.Homotopic.Quotient.mk
+      (Path.concat (γ ∘ t) (fun k : Fin N =>
+        γ.subpath (t k.castSucc) (t k.succ))) =
+      Path.Homotopic.Quotient.mk
+        ((Path.refl threeSphere_equatorPoint).cast
+          (by simp [h0]) (by simp [h1])) := by
+  by_cases hstart0 : start.val = 0
+  · exact threeSphere_stereographicEquatorLoopFiniteConcatCollapse_allNorth
+      γ N t h0 h1
+      (by
+        intro k
+        exact hTerminal k (by omega))
+  · let A : ℕ := start.val - 1
+    let B : ℕ := N - start.val - 1
+    let u : Fin (A + 2) → unitInterval := fun i =>
+      t ⟨i.val, by
+        have hi : i.val < A + 2 := i.isLt
+        dsimp [A] at hi
+        omega⟩
+    let v : Fin (B + 2) → unitInterval := fun i =>
+      t ⟨start.val + i.val, by
+        have hi : i.val < B + 2 := i.isLt
+        dsimp [B] at hi
+        omega⟩
+    have hu0 : u 0 = 0 := by
+      simpa [u] using h0
+    have hLastIndex :
+        (⟨start.val + (B + 1), by
+          omega⟩ : Fin (N + 1)) = Fin.last N := by
+      ext
+      dsimp [B]
+      omega
+    have hv1 : v (Fin.last (B + 1)) = 1 := by
+      dsimp [v]
+      rw [hLastIndex]
+      exact h1
+    have hjoin : v 0 = u (Fin.last (A + 1)) := by
+      apply congrArg t
+      ext
+      dsimp [u, v, A]
+      omega
+    have hSouth : ∀ k : Fin (A + 1),
+        Set.range (γ.subpath (u k.castSucc) (u k.succ)) ⊆
+          (stereographic' 3 (-threeSphere_northPole)).source := by
+      intro k
+      let j : Fin N := ⟨k.val, by
+        have hk : k.val < A + 1 := k.isLt
+        dsimp [A] at hk
+        omega⟩
+      have hj : j.val < start.val := by
+        dsimp [j, A]
+        omega
+      have hleft :
+          j.castSucc =
+            (⟨(k.castSucc : Fin (A + 2)).val, by
+              have hk : (k.castSucc : Fin (A + 2)).val < A + 2 :=
+                (k.castSucc : Fin (A + 2)).isLt
+              dsimp [A] at hk
+              omega⟩ : Fin (N + 1)) := by
+        ext
+        dsimp [j]
+      have hright :
+          j.succ =
+            (⟨(k.succ : Fin (A + 2)).val, by
+              have hk : (k.succ : Fin (A + 2)).val < A + 2 :=
+                (k.succ : Fin (A + 2)).isLt
+              dsimp [A] at hk
+              omega⟩ : Fin (N + 1)) := by
+        ext
+        dsimp [j]
+      change Set.range (γ.subpath
+          (t (⟨(k.castSucc : Fin (A + 2)).val, by
+            have hk : (k.castSucc : Fin (A + 2)).val < A + 2 :=
+              (k.castSucc : Fin (A + 2)).isLt
+            dsimp [A] at hk
+            omega⟩ : Fin (N + 1)))
+          (t (⟨(k.succ : Fin (A + 2)).val, by
+            have hk : (k.succ : Fin (A + 2)).val < A + 2 :=
+              (k.succ : Fin (A + 2)).isLt
+            dsimp [A] at hk
+            omega⟩ : Fin (N + 1)))) ⊆
+          (stereographic' 3 (-threeSphere_northPole)).source
+      rw [← hleft, ← hright]
+      exact hBefore j hj
+    have hNorth : ∀ k : Fin (B + 1),
+        Set.range (γ.subpath (v k.castSucc) (v k.succ)) ⊆
+          (stereographic' 3 threeSphere_northPole).source := by
+      intro k
+      let j : Fin N := ⟨start.val + k.val, by
+        have hk : k.val < B + 1 := k.isLt
+        dsimp [B] at hk
+        omega⟩
+      have hj : start.val ≤ j.val := by
+        dsimp [j]
+        omega
+      have hleft :
+          j.castSucc =
+            (⟨start.val + (k.castSucc : Fin (B + 2)).val, by
+              have hk : (k.castSucc : Fin (B + 2)).val < B + 2 :=
+                (k.castSucc : Fin (B + 2)).isLt
+              dsimp [B] at hk
+              omega⟩ : Fin (N + 1)) := by
+        ext
+        dsimp [j]
+      have hright :
+          j.succ =
+            (⟨start.val + (k.succ : Fin (B + 2)).val, by
+              have hk : (k.succ : Fin (B + 2)).val < B + 2 :=
+                (k.succ : Fin (B + 2)).isLt
+              dsimp [B] at hk
+              omega⟩ : Fin (N + 1)) := by
+        ext
+        dsimp [j]
+        omega
+      change Set.range (γ.subpath
+          (t (⟨start.val + (k.castSucc : Fin (B + 2)).val, by
+            have hk : (k.castSucc : Fin (B + 2)).val < B + 2 :=
+              (k.castSucc : Fin (B + 2)).isLt
+            dsimp [B] at hk
+            omega⟩ : Fin (N + 1)))
+          (t (⟨start.val + (k.succ : Fin (B + 2)).val, by
+            have hk : (k.succ : Fin (B + 2)).val < B + 2 :=
+              (k.succ : Fin (B + 2)).isLt
+            dsimp [B] at hk
+            omega⟩ : Fin (N + 1)))) ⊆
+          (stereographic' 3 threeSphere_northPole).source
+      rw [← hleft, ← hright]
+      exact hTerminal j hj
+    have hcloseLocal : γ (v (Fin.last (B + 1))) = γ (u 0) := by
+      rw [hv1, hu0]
+      exact γ.target.trans γ.source.symm
+    have hSub :
+        Path.Homotopic
+          (γ.subpath (u 0) (v (Fin.last (B + 1))))
+          ((Path.refl (γ (u 0))).cast rfl hcloseLocal) := by
+      simpa [hcloseLocal] using
+        threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlock_nullhomotopic
+          γ A B u v hu0 hv1 hjoin hSouth hNorth
+    have hclose : γ (t (Fin.last N)) = γ (t 0) := by
+      rw [h1, h0]
+      exact γ.target.trans γ.source.symm
+    have hSubT :
+        Path.Homotopic
+          (γ.subpath (t 0) (t (Fin.last N)))
+          ((Path.refl (γ (t 0))).cast rfl hclose) := by
+      have hstartEq : γ (t 0) = γ (u 0) := by
+        simp [u]
+      have hendEq : γ (t (Fin.last N)) = γ (v (Fin.last (B + 1))) := by
+        simp [v, hLastIndex]
+      have hcast := Path.Homotopic.pathCast hSub hstartEq hendEq
+      have hleftPath :
+          (γ.subpath (u 0) (v (Fin.last (B + 1)))).cast hstartEq hendEq =
+            γ.subpath (t 0) (t (Fin.last N)) := by
+        apply Path.ext
+        funext s
+        simp [Path.cast_coe, u, v]
+        rw [hLastIndex]
+      have hrightPath :
+          (((Path.refl (γ (u 0))).cast rfl hcloseLocal).cast hstartEq hendEq) =
+            ((Path.refl (γ (t 0))).cast rfl hclose) := by
+        apply Path.ext
+        funext s
+        simp [Path.cast_coe, u]
+      rw [hleftPath, hrightPath] at hcast
+      exact hcast
+    exact threeSphere_stereographicEquatorLoopFiniteConcatCollapse_of_subpath_nullhomotopic
+      γ t h0 h1 hclose hSubT
+
+/--
 Exact finite-concat quotient form for one subdivision split into nonempty
 north, south, north, south, north, south, and north source blocks.
 -/
