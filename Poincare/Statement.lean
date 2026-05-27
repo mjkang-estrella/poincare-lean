@@ -1861,6 +1861,79 @@ theorem threeSphere_equatorPoint_mem_southPole_stereographic_source_eq :
       threeSphere_equatorPoint_mem_northPole_antipodal_sources_inter.2 := by
   apply Subsingleton.elim
 
+/--
+If every earlier segment in a finite subdivision lies in the north-pole
+stereographic source, then the left endpoint of the next segment lies there as
+well. At the initial segment this is the equatorial basepoint; otherwise it is
+the terminal point of the preceding north-source segment.
+-/
+theorem threeSphere_stereographicEquatorLoop_leftEndpoint_northSource_of_before
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval) (h0 : t 0 = 0)
+    {start : Fin N}
+    (hBefore : ∀ j : Fin N, j.val < start.val →
+      Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source) :
+    γ (t start.castSucc) ∈ (stereographic' 3 threeSphere_northPole).source := by
+  by_cases hstart0 : start.val = 0
+  · have hstart : start.castSucc = (0 : Fin (N + 1)) := by
+      ext
+      exact hstart0
+    simpa [hstart, h0, γ.source] using
+      threeSphere_equatorPoint_mem_northPole_stereographic_source
+  · let prev : Fin N := ⟨start.val - 1, by omega⟩
+    have hprevlt : prev.val < start.val := by
+      dsimp [prev]
+      omega
+    have hsucc : prev.succ = start.castSucc := by
+      ext
+      dsimp [prev]
+      omega
+    have hend :
+        γ (t prev.succ) ∈ Set.range (γ.subpath (t prev.castSucc) (t prev.succ)) := by
+      refine ⟨1, ?_⟩
+      exact (γ.subpath (t prev.castSucc) (t prev.succ)).target
+    have hsourcePrev :
+        γ (t prev.succ) ∈ (stereographic' 3 threeSphere_northPole).source :=
+      hBefore prev hprevlt hend
+    simpa [hsucc] using hsourcePrev
+
+/--
+South-pole version of the first-run left-endpoint source lemma: the endpoint
+is either the equatorial basepoint or the terminal point of the preceding
+south-source segment.
+-/
+theorem threeSphere_stereographicEquatorLoop_leftEndpoint_southSource_of_before
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval) (h0 : t 0 = 0)
+    {start : Fin N}
+    (hBefore : ∀ j : Fin N, j.val < start.val →
+      Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source) :
+    γ (t start.castSucc) ∈ (stereographic' 3 (-threeSphere_northPole)).source := by
+  by_cases hstart0 : start.val = 0
+  · have hstart : start.castSucc = (0 : Fin (N + 1)) := by
+      ext
+      exact hstart0
+    simpa [hstart, h0, γ.source] using
+      threeSphere_equatorPoint_mem_southPole_stereographic_source
+  · let prev : Fin N := ⟨start.val - 1, by omega⟩
+    have hprevlt : prev.val < start.val := by
+      dsimp [prev]
+      omega
+    have hsucc : prev.succ = start.castSucc := by
+      ext
+      dsimp [prev]
+      omega
+    have hend :
+        γ (t prev.succ) ∈ Set.range (γ.subpath (t prev.castSucc) (t prev.succ)) := by
+      refine ⟨1, ?_⟩
+      exact (γ.subpath (t prev.castSucc) (t prev.succ)).target
+    have hsourcePrev :
+        γ (t prev.succ) ∈ (stereographic' 3 (-threeSphere_northPole)).source :=
+      hBefore prev hprevlt hend
+    simpa [hsucc] using hsourcePrev
+
 /-- The equatorial point as a point of the north-pole stereographic source. -/
 noncomputable def threeSphere_equatorPointInNorthSource :
     (stereographic' 3 threeSphere_northPole).source :=
