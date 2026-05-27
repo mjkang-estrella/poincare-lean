@@ -6961,6 +6961,31 @@ theorem threeSphere_target_prerequisites_of_pathHomotopyStatement_loop_route_eq 
   apply Subsingleton.elim
 
 /--
+The direct path-homotopy target-prerequisite route agrees with the route through
+fundamental-group triviality.
+-/
+theorem threeSphere_target_prerequisites_of_pathHomotopyStatement_fundamentalGroup_route_eq :
+    threeSphere_target_prerequisites_of_pathHomotopyStatement =
+      (fun h : ThreeSpherePathHomotopyStatement =>
+        threeSphere_target_prerequisites_of_fundamentalGroupSubsingletonStatement
+          (threeSphere_fundamentalGroupSubsingletonStatement_of_pathHomotopyStatement
+            h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The direct path-homotopy target-prerequisite route agrees with the route through
+the `π₁` formulation.
+-/
+theorem threeSphere_target_prerequisites_of_pathHomotopyStatement_piOne_route_eq :
+    threeSphere_target_prerequisites_of_pathHomotopyStatement =
+      (fun h : ThreeSpherePathHomotopyStatement =>
+        threeSphere_target_prerequisites_of_piOneSubsingletonStatement
+          (threeSphere_piOneSubsingletonStatement_of_pathHomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
 The concrete path-homotopy obligation supplies the full homotopy-oriented
 prerequisite payload by converting path-homotopy directly to
 simple-connectedness.
@@ -7015,6 +7040,31 @@ theorem threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_loop_route_e
       (fun h : ThreeSpherePathHomotopyStatement =>
         threeSphere_homotopy_prerequisites_of_loopNullhomotopyStatement
           (threeSphere_loopNullhomotopyStatement_of_pathHomotopyStatement h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The direct path-homotopy homotopy-prerequisite route agrees with the route
+through fundamental-group triviality.
+-/
+theorem threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_fundamentalGroup_route_eq :
+    threeSphere_homotopy_prerequisites_of_pathHomotopyStatement =
+      (fun h : ThreeSpherePathHomotopyStatement =>
+        threeSphere_homotopy_prerequisites_of_fundamentalGroupSubsingletonStatement
+          (threeSphere_fundamentalGroupSubsingletonStatement_of_pathHomotopyStatement
+            h)) := by
+  funext h
+  apply Subsingleton.elim
+
+/--
+The direct path-homotopy homotopy-prerequisite route agrees with the route
+through the `π₁` formulation.
+-/
+theorem threeSphere_homotopy_prerequisites_of_pathHomotopyStatement_piOne_route_eq :
+    threeSphere_homotopy_prerequisites_of_pathHomotopyStatement =
+      (fun h : ThreeSpherePathHomotopyStatement =>
+        threeSphere_homotopy_prerequisites_of_piOneSubsingletonStatement
+          (threeSphere_piOneSubsingletonStatement_of_pathHomotopyStatement h)) := by
   funext h
   apply Subsingleton.elim
 
