@@ -4676,6 +4676,102 @@ theorem threeSphere_stereographicEquatorLoop_firstNorthRun_prefixBlockStop_tail_
     (hshort ((prefixPath.trans q).trans rightPath) htargetRange)
 
 /--
+The source-choice tail returned after a first-run stop can be materialized as
+an actual finite suffix of the original subdivision. The suffix starts at the
+right endpoint of the stop segment and ends at the original last subdivision
+point, with the tail segment choices transported to the reindexed segments.
+-/
+theorem threeSphere_stereographicEquatorLoop_afterStop_tail_sourceChoice
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval) {stop : Fin N}
+    (U V : Set ThreeSphere)
+    (htail : ∀ r : Fin (N - (stop.val + 1)),
+      Set.range (γ.subpath
+        (t (⟨stop.val + 1 + r.val,
+          by
+            have hlt : stop.val + 1 + r.val < N := by
+              have hr : r.val < N - (stop.val + 1) := r.isLt
+              omega
+            exact hlt⟩ : Fin N).castSucc)
+        (t (⟨stop.val + 1 + r.val,
+          by
+            have hlt : stop.val + 1 + r.val < N := by
+              have hr : r.val < N - (stop.val + 1) := r.isLt
+              omega
+            exact hlt⟩ : Fin N).succ)) ⊆ U ∨
+      Set.range (γ.subpath
+        (t (⟨stop.val + 1 + r.val,
+          by
+            have hlt : stop.val + 1 + r.val < N := by
+              have hr : r.val < N - (stop.val + 1) := r.isLt
+              omega
+            exact hlt⟩ : Fin N).castSucc)
+        (t (⟨stop.val + 1 + r.val,
+          by
+            have hlt : stop.val + 1 + r.val < N := by
+              have hr : r.val < N - (stop.val + 1) := r.isLt
+              omega
+            exact hlt⟩ : Fin N).succ)) ⊆ V) :
+    let tailPts : Fin ((N - (stop.val + 1)) + 1) → ThreeSphere := fun i =>
+      γ (t ⟨stop.val + 1 + i.val, by
+        have hi : i.val < (N - (stop.val + 1)) + 1 := i.isLt
+        omega⟩)
+    let tailSegs : (k : Fin (N - (stop.val + 1))) →
+        Path (tailPts k.castSucc) (tailPts k.succ) := fun k =>
+      γ.subpath
+        (t ⟨stop.val + 1 + k.val, by
+          have hk : k.val < N - (stop.val + 1) := k.isLt
+          omega⟩)
+        (t ⟨stop.val + 1 + (k.val + 1), by
+          have hk : k.val < N - (stop.val + 1) := k.isLt
+          omega⟩)
+    tailPts 0 = γ (t stop.succ) ∧
+      tailPts (Fin.last (N - (stop.val + 1))) = γ (t (Fin.last N)) ∧
+      ∀ k : Fin (N - (stop.val + 1)),
+        Set.range (tailSegs k) ⊆ U ∨ Set.range (tailSegs k) ⊆ V := by
+  intro tailPts tailSegs
+  constructor
+  · rfl
+  constructor
+  · dsimp [tailPts]
+    congr 2
+    ext
+    change stop.val + 1 + (N - (stop.val + 1)) = N
+    omega
+  · intro k
+    have hchoice := htail k
+    let j : Fin N := ⟨stop.val + 1 + k.val, by
+      have hk : k.val < N - (stop.val + 1) := k.isLt
+      omega⟩
+    have hleft : j.castSucc = (⟨stop.val + 1 + k.val, by
+          have hk : k.val < N - (stop.val + 1) := k.isLt
+          omega⟩ : Fin (N + 1)) := by
+      ext
+      dsimp [j]
+    have hright : j.succ = (⟨stop.val + 1 + (k.val + 1), by
+          have hk : k.val < N - (stop.val + 1) := k.isLt
+          omega⟩ : Fin (N + 1)) := by
+      ext
+      dsimp [j]
+      omega
+    change Set.range (γ.subpath
+        (t (⟨stop.val + 1 + k.val, by
+          have hk : k.val < N - (stop.val + 1) := k.isLt
+          omega⟩ : Fin (N + 1)))
+        (t (⟨stop.val + 1 + (k.val + 1), by
+          have hk : k.val < N - (stop.val + 1) := k.isLt
+          omega⟩ : Fin (N + 1)))) ⊆ U ∨
+      Set.range (γ.subpath
+        (t (⟨stop.val + 1 + k.val, by
+          have hk : k.val < N - (stop.val + 1) := k.isLt
+          omega⟩ : Fin (N + 1)))
+        (t (⟨stop.val + 1 + (k.val + 1), by
+          have hk : k.val < N - (stop.val + 1) := k.isLt
+          omega⟩ : Fin (N + 1)))) ⊆ V
+    rw [← hleft, ← hright]
+    exact hchoice
+
+/--
 For a finite subdivision whose segments each lie in a north or south
 stereographic source, the first south run in a north-preferred word is either
 terminal or reaches a north segment where the reindexed south block admits the
