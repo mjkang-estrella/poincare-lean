@@ -14588,6 +14588,78 @@ theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_dependenc
   apply Subsingleton.elim
 
 /--
+The verification-family lifted-homeomorphism extraction payload follows the
+stored topology-package route after forgetting the verification-family lift.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_and_verification_family_to_package_eq :
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+        dependencies.topology := by
+  apply Subsingleton.elim
+
+/--
+The verification-family lifted-homeomorphism extraction payload can also be
+exposed directly as the selected payload itself.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_and_verification_family_to_direct_verification_payload_eq :
+    let payload :=
+      topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      payload := by
+  dsimp
+
+/--
+The verification-family lifted-homeomorphism extraction payload is the forward
+direction of the lifted extraction/derivation equivalence for the ordinary
+dependency-level topology statement.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_and_verification_family_to_statement_eq :
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      extinction_topology_extraction_statement_iff_extraction_with_lifted_homeomorphism_derivation.mp
+        (topology_extraction_statement_of_dependencies dependencies) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family lifted-homeomorphism extraction payload is recovered
+from the ordinary extraction/derivation payload by attaching the lifted
+derivation projection.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_and_verification_family_to_derivation_payload_eq :
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      (by
+        rcases topology_extraction_derivation_payload_of_dependencies
+            dependencies with
+          ⟨extractSphere, derivation⟩
+        exact ⟨extractSphere, derivation,
+          topology_lifted_homeomorphism_derivation_for_extraction_statement_of_derivation_for_extraction_statement
+            extractSphere derivation⟩) := by
+  apply Subsingleton.elim
+
+/--
+The verification-family lifted-homeomorphism extraction payload is recovered
+from the lifted finite-extinction projection route after forgetting the
+finite-extinction field.
+-/
+theorem topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_and_verification_family_to_finite_extinction_eq :
+    topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      (by
+        let _finiteExtinction :=
+          finite_extinction_of_dependencies_and_verification_family
+            dependencies verificationFamily
+        rcases
+            topology_extraction_lifted_homeomorphism_derivation_payload_of_dependencies_and_verification_family
+              dependencies verificationFamily with
+          ⟨extractSphere, derivation, liftedDerivation⟩
+        exact ⟨extractSphere, derivation, liftedDerivation⟩) := by
+  apply Subsingleton.elim
+
+/--
 Ordinary aggregate dependencies plus explicit equation verifications expose the
 two theorem-shaped inputs consumed by the projection assembly route.
 -/
