@@ -1057,6 +1057,116 @@ theorem threeSphere_self_homeomorph_of_smooth_statement_and_piOneSubsingletonSta
   apply Subsingleton.elim
 
 /--
+The two-set Van Kampen `π₁` contract is enough to apply the target statement to
+the standard sphere itself.
+-/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0})
+    (h : PoincareConjectureStatement.{0}) :
+    Nonempty (ThreeSphere ≃ₜ ThreeSphere) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_twoSetOpenCoverVanKampen hVK
+  exact threeSphere_self_homeomorph_of_poincare_statement h
+
+/--
+The target-statement self route from two-set Van Kampen is exactly the existing
+self route after converting the two-set contract to simple-connectedness.
+-/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_twoSetOpenCoverVanKampen_eq :
+    threeSphere_self_homeomorph_of_poincare_statement_and_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_twoSetOpenCoverVanKampen hVK
+          threeSphere_self_homeomorph_of_poincare_statement h) := by
+  funext hVK h
+  apply Subsingleton.elim
+
+/-- The two-set Van Kampen target self route agrees with the `π₁` route. -/
+theorem threeSphere_self_homeomorph_of_poincare_statement_and_twoSetOpenCoverVanKampen_piOne_route_eq :
+    threeSphere_self_homeomorph_of_poincare_statement_and_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        fun h : PoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_of_poincare_statement_and_piOneSubsingletonStatement
+            (threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK) h) := by
+  funext hVK h
+  apply Subsingleton.elim
+
+/--
+The two-set Van Kampen `π₁` contract is enough to apply the smooth target
+statement to the standard sphere itself.
+-/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0})
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_twoSetOpenCoverVanKampen hVK
+  exact threeSphere_self_diffeomorph_of_smooth_statement h
+
+/--
+The smooth self-diffeomorphism route from two-set Van Kampen is exactly the
+existing smooth self route after converting the two-set contract to
+simple-connectedness.
+-/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_twoSetOpenCoverVanKampen_eq :
+    threeSphere_self_diffeomorph_of_smooth_statement_and_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_twoSetOpenCoverVanKampen hVK
+          threeSphere_self_diffeomorph_of_smooth_statement h) := by
+  funext hVK h
+  apply Subsingleton.elim
+
+/-- The two-set Van Kampen smooth self-diffeomorphism route agrees with the `π₁` route. -/
+theorem threeSphere_self_diffeomorph_of_smooth_statement_and_twoSetOpenCoverVanKampen_piOne_route_eq :
+    threeSphere_self_diffeomorph_of_smooth_statement_and_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_diffeomorph_of_smooth_statement_and_piOneSubsingletonStatement
+            (threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK) h) := by
+  funext hVK h
+  apply Subsingleton.elim
+
+/--
+The smooth target plus the two-set Van Kampen `π₁` contract gives the
+topological self-homeomorphism after forgetting smooth structure.
+-/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_twoSetOpenCoverVanKampen
+    (hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0})
+    (h : SmoothPoincareConjectureStatement.{0}) :
+    Nonempty (ThreeSphere ≃ₜ ThreeSphere) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_twoSetOpenCoverVanKampen hVK
+  exact threeSphere_self_homeomorph_of_smooth_statement h
+
+/--
+The smooth-to-topological self route from two-set Van Kampen is exactly the
+existing smooth-to-topological self route after converting the two-set contract
+to simple-connectedness.
+-/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_twoSetOpenCoverVanKampen_eq :
+    threeSphere_self_homeomorph_of_smooth_statement_and_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_twoSetOpenCoverVanKampen hVK
+          threeSphere_self_homeomorph_of_smooth_statement h) := by
+  funext hVK h
+  apply Subsingleton.elim
+
+/-- The two-set Van Kampen smooth-to-topological self route agrees with the `π₁` route. -/
+theorem threeSphere_self_homeomorph_of_smooth_statement_and_twoSetOpenCoverVanKampen_piOne_route_eq :
+    threeSphere_self_homeomorph_of_smooth_statement_and_twoSetOpenCoverVanKampen =
+      (fun hVK : TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{0} =>
+        fun h : SmoothPoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_of_smooth_statement_and_piOneSubsingletonStatement
+            (threeSphere_piOneSubsingletonStatement_of_twoSetOpenCoverVanKampen hVK) h) := by
+  funext hVK h
+  apply Subsingleton.elim
+
+/--
 The based loop-nullhomotopy obligation is enough to apply the project target
 statement to the standard sphere itself.
 -/
