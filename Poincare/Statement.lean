@@ -4231,6 +4231,221 @@ theorem threeSphere_stereographicEquatorLoop_runBlock_northBetweenSouth_homotopi
     r hp hmBase hF hr
 
 /--
+For a finite subdivision whose segments each lie in a north or south
+stereographic source, the first south run in a north-preferred word is either
+terminal or reaches a north segment where the reindexed south block admits the
+local overlap replacement needed for chart-word shortening.
+-/
+theorem threeSphere_stereographicEquatorLoop_firstSouthRunBetweenNorth_replacement_or_terminal
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval)
+    (hchoice : ∀ k : Fin N,
+      Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+          (stereographic' 3 threeSphere_northPole).source ∨
+        Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+          (stereographic' 3 (-threeSphere_northPole)).source) :
+    (∀ k : Fin N,
+      Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source) ∨
+      ∃ start : Fin N,
+        Set.range (γ.subpath (t start.castSucc) (t start.succ)) ⊆
+            (stereographic' 3 (-threeSphere_northPole)).source ∧
+          ¬ Set.range (γ.subpath (t start.castSucc) (t start.succ)) ⊆
+            (stereographic' 3 threeSphere_northPole).source ∧
+          (∀ j : Fin N, j.val < start.val →
+            Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+              (stereographic' 3 threeSphere_northPole).source) ∧
+          ((∀ j : Fin N, start.val ≤ j.val →
+              Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+                  (stereographic' 3 (-threeSphere_northPole)).source ∧
+                ¬ Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+                  (stereographic' 3 threeSphere_northPole).source) ∨
+            ∃ stop : Fin N, ∃ hstartstop : start.val < stop.val,
+              Set.range (γ.subpath (t stop.castSucc) (t stop.succ)) ⊆
+                  (stereographic' 3 threeSphere_northPole).source ∧
+                (∀ j : Fin N, start.val ≤ j.val → j.val < stop.val →
+                  Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+                      (stereographic' 3 (-threeSphere_northPole)).source ∧
+                    ¬ Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+                      (stereographic' 3 threeSphere_northPole).source) ∧
+                (let block : Fin ((stop.val - start.val) + 1) → unitInterval := fun i =>
+                  t ⟨start.val + i.val,
+                    by
+                      have hltStopSucc : start.val + i.val < stop.val + 1 := by
+                        have hi : i.val < (stop.val - start.val) + 1 := i.isLt
+                        omega
+                      exact Nat.lt_trans hltStopSucc (Nat.succ_lt_succ stop.isLt)⟩
+                ∀ {x₀ x₃ : ThreeSphere}
+                  (p : Path x₀ ((γ ∘ block) 0))
+                  (r : Path ((γ ∘ block) (Fin.last (stop.val - start.val))) x₃)
+                  (_ : Set.range p ⊆ (stereographic' 3 threeSphere_northPole).source)
+                  (_ : Set.range r ⊆ (stereographic' 3 threeSphere_northPole).source),
+                  ∃ q : Path ((γ ∘ block) 0)
+                      ((γ ∘ block) (Fin.last (stop.val - start.val))),
+                    Set.range q ⊆ (stereographic' 3 threeSphere_northPole).source ∧
+                      Path.Homotopic
+                        ((p.trans (Path.concat (γ ∘ block)
+                          (fun k : Fin (stop.val - start.val) =>
+                            γ.subpath (block k.castSucc) (block k.succ)))).trans r)
+                        ((p.trans q).trans r) ∧
+                      Set.range ((p.trans q).trans r) ⊆
+                        (stereographic' 3 threeSphere_northPole).source) ∧
+                ∀ r : Fin (N - (stop.val + 1)),
+                  Set.range (γ.subpath
+                    (t (⟨stop.val + 1 + r.val,
+                      by
+                        have hlt : stop.val + 1 + r.val < N := by
+                          have hr : r.val < N - (stop.val + 1) := r.isLt
+                          omega
+                        exact hlt⟩ : Fin N).castSucc)
+                    (t (⟨stop.val + 1 + r.val,
+                      by
+                        have hlt : stop.val + 1 + r.val < N := by
+                          have hr : r.val < N - (stop.val + 1) := r.isLt
+                          omega
+                        exact hlt⟩ : Fin N).succ)) ⊆
+                      (stereographic' 3 threeSphere_northPole).source ∨
+                    Set.range (γ.subpath
+                      (t (⟨stop.val + 1 + r.val,
+                        by
+                          have hlt : stop.val + 1 + r.val < N := by
+                            have hr : r.val < N - (stop.val + 1) := r.isLt
+                            omega
+                          exact hlt⟩ : Fin N).castSucc)
+                      (t (⟨stop.val + 1 + r.val,
+                        by
+                          have hlt : stop.val + 1 + r.val < N := by
+                            have hr : r.val < N - (stop.val + 1) := r.isLt
+                            omega
+                          exact hlt⟩ : Fin N).succ)) ⊆
+                      (stereographic' 3 (-threeSphere_northPole)).source) := by
+  rcases finite_first_opposite_run_or_all_preferred_with_tail_choice
+      (Preferred := fun k : Fin N =>
+        Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+          (stereographic' 3 threeSphere_northPole).source)
+      (Opposite := fun k : Fin N =>
+        Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+          (stereographic' 3 (-threeSphere_northPole)).source)
+      hchoice with hAll | hRun
+  · exact Or.inl hAll
+  · rcases hRun with ⟨start, hSouthStart, hNotNorthStart, hBefore, hRunOr⟩
+    refine Or.inr ⟨start, hSouthStart, hNotNorthStart, hBefore, ?_⟩
+    rcases hRunOr with hTerminal | hStop
+    · exact Or.inl hTerminal
+    · rcases hStop with ⟨stop, hstartstop, hNorthStop, hrun, htail⟩
+      refine Or.inr ⟨stop, hstartstop, hNorthStop, hrun, ?_, htail⟩
+      intro block x₀ x₃ p r hp hr
+      exact threeSphere_stereographicEquatorLoop_runBlock_southBetweenNorth_homotopic_to_northBlock
+        γ t hstartstop (fun j hjle hjlt => (hrun j hjle hjlt).1) p r hp hr
+
+/--
+Symmetric first-run package: the first north run in a south-preferred finite
+word is either terminal or reaches a south segment where the reindexed north
+block admits the local overlap replacement.
+-/
+theorem threeSphere_stereographicEquatorLoop_firstNorthRunBetweenSouth_replacement_or_terminal
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval)
+    (hchoice : ∀ k : Fin N,
+      Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+          (stereographic' 3 (-threeSphere_northPole)).source ∨
+        Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+          (stereographic' 3 threeSphere_northPole).source) :
+    (∀ k : Fin N,
+      Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source) ∨
+      ∃ start : Fin N,
+        Set.range (γ.subpath (t start.castSucc) (t start.succ)) ⊆
+            (stereographic' 3 threeSphere_northPole).source ∧
+          ¬ Set.range (γ.subpath (t start.castSucc) (t start.succ)) ⊆
+            (stereographic' 3 (-threeSphere_northPole)).source ∧
+          (∀ j : Fin N, j.val < start.val →
+            Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+              (stereographic' 3 (-threeSphere_northPole)).source) ∧
+          ((∀ j : Fin N, start.val ≤ j.val →
+              Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+                  (stereographic' 3 threeSphere_northPole).source ∧
+                ¬ Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+                  (stereographic' 3 (-threeSphere_northPole)).source) ∨
+            ∃ stop : Fin N, ∃ hstartstop : start.val < stop.val,
+              Set.range (γ.subpath (t stop.castSucc) (t stop.succ)) ⊆
+                  (stereographic' 3 (-threeSphere_northPole)).source ∧
+                (∀ j : Fin N, start.val ≤ j.val → j.val < stop.val →
+                  Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+                      (stereographic' 3 threeSphere_northPole).source ∧
+                    ¬ Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+                      (stereographic' 3 (-threeSphere_northPole)).source) ∧
+                (let block : Fin ((stop.val - start.val) + 1) → unitInterval := fun i =>
+                  t ⟨start.val + i.val,
+                    by
+                      have hltStopSucc : start.val + i.val < stop.val + 1 := by
+                        have hi : i.val < (stop.val - start.val) + 1 := i.isLt
+                        omega
+                      exact Nat.lt_trans hltStopSucc (Nat.succ_lt_succ stop.isLt)⟩
+                ∀ {x₀ x₃ : ThreeSphere}
+                  (p : Path x₀ ((γ ∘ block) 0))
+                  (r : Path ((γ ∘ block) (Fin.last (stop.val - start.val))) x₃)
+                  (_ : Set.range p ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+                  (_ : Set.range r ⊆ (stereographic' 3 (-threeSphere_northPole)).source),
+                  ∃ q : Path ((γ ∘ block) 0)
+                      ((γ ∘ block) (Fin.last (stop.val - start.val))),
+                    Set.range q ⊆ (stereographic' 3 (-threeSphere_northPole)).source ∧
+                      Path.Homotopic
+                        ((p.trans (Path.concat (γ ∘ block)
+                          (fun k : Fin (stop.val - start.val) =>
+                            γ.subpath (block k.castSucc) (block k.succ)))).trans r)
+                        ((p.trans q).trans r) ∧
+                      Set.range ((p.trans q).trans r) ⊆
+                        (stereographic' 3 (-threeSphere_northPole)).source) ∧
+                ∀ r : Fin (N - (stop.val + 1)),
+                  Set.range (γ.subpath
+                    (t (⟨stop.val + 1 + r.val,
+                      by
+                        have hlt : stop.val + 1 + r.val < N := by
+                          have hr : r.val < N - (stop.val + 1) := r.isLt
+                          omega
+                        exact hlt⟩ : Fin N).castSucc)
+                    (t (⟨stop.val + 1 + r.val,
+                      by
+                        have hlt : stop.val + 1 + r.val < N := by
+                          have hr : r.val < N - (stop.val + 1) := r.isLt
+                          omega
+                        exact hlt⟩ : Fin N).succ)) ⊆
+                      (stereographic' 3 (-threeSphere_northPole)).source ∨
+                    Set.range (γ.subpath
+                      (t (⟨stop.val + 1 + r.val,
+                        by
+                          have hlt : stop.val + 1 + r.val < N := by
+                            have hr : r.val < N - (stop.val + 1) := r.isLt
+                            omega
+                          exact hlt⟩ : Fin N).castSucc)
+                      (t (⟨stop.val + 1 + r.val,
+                        by
+                          have hlt : stop.val + 1 + r.val < N := by
+                            have hr : r.val < N - (stop.val + 1) := r.isLt
+                            omega
+                          exact hlt⟩ : Fin N).succ)) ⊆
+                      (stereographic' 3 threeSphere_northPole).source) := by
+  rcases finite_first_opposite_run_or_all_preferred_with_tail_choice
+      (Preferred := fun k : Fin N =>
+        Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+          (stereographic' 3 (-threeSphere_northPole)).source)
+      (Opposite := fun k : Fin N =>
+        Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+          (stereographic' 3 threeSphere_northPole).source)
+      hchoice with hAll | hRun
+  · exact Or.inl hAll
+  · rcases hRun with ⟨start, hNorthStart, hNotSouthStart, hBefore, hRunOr⟩
+    refine Or.inr ⟨start, hNorthStart, hNotSouthStart, hBefore, ?_⟩
+    rcases hRunOr with hTerminal | hStop
+    · exact Or.inl hTerminal
+    · rcases hStop with ⟨stop, hstartstop, hSouthStop, hrun, htail⟩
+      refine Or.inr ⟨stop, hstartstop, hSouthStop, hrun, ?_, htail⟩
+      intro block x₀ x₃ p r hp hr
+      exact threeSphere_stereographicEquatorLoop_runBlock_northBetweenSouth_homotopic_to_southBlock
+        γ t hstartstop (fun j hjle hjlt => (hrun j hjle hjlt).1) p r hp hr
+
+/--
 Induction step for north-starting alternating words: replacing a bracketed
 finite south block by a north-source overlap path reduces the remaining
 closed word to any shorter north-starting collapse obligation.
