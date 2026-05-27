@@ -22260,6 +22260,226 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
   apply Subsingleton.elim
 
 /--
+The remaining-dependency smooth statement certificate exposes the reserved-name
+payload through the direct smooth project payload.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_of_remaining_dependency_and_smooth_statement
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_conjecture_payload_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_and_smooth_statement
+      dependencies smoothable smoothStatement)
+
+theorem poincare_conjecture_payload_of_completion_certificate_of_remaining_dependency_and_smooth_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    poincare_conjecture_payload_of_completion_certificate_of_remaining_dependency_and_smooth_statement
+      dependencies smoothable smoothStatement =
+      poincare_payload_of_smooth_statement smoothable smoothStatement := by
+  apply Subsingleton.elim
+
+/--
+The aggregate smooth statement certificate exposes the reserved-name payload
+through the direct smooth project payload.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_and_smooth_statement
+    (dependencies : PoincareProofDependencies.{u})
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_conjecture_payload_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_and_smooth_statement
+      dependencies smoothable smoothStatement)
+
+theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_and_smooth_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (smoothStatement : SmoothPoincareConjectureStatement.{u}) :
+    poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_and_smooth_statement
+      dependencies smoothable smoothStatement =
+      poincare_payload_of_smooth_statement smoothable smoothStatement := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency canonical-smooth statement certificate exposes the
+reserved-name payload through the canonical-smooth project payload.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_of_remaining_dependency_and_canonical_smooth_three_sphere_statement
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_conjecture_payload_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_and_canonical_smooth_three_sphere_statement
+      dependencies smoothable h)
+
+theorem poincare_conjecture_payload_of_completion_certificate_of_remaining_dependency_and_canonical_smooth_three_sphere_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    poincare_conjecture_payload_of_completion_certificate_of_remaining_dependency_and_canonical_smooth_three_sphere_statement
+      dependencies smoothable h =
+      poincare_payload_of_canonical_smooth_three_sphere_statement
+        smoothable h := by
+  apply Subsingleton.elim
+
+/--
+The aggregate canonical-smooth statement certificate exposes the reserved-name
+payload through the canonical-smooth project payload.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_smooth_three_sphere_statement
+    (dependencies : PoincareProofDependencies.{u})
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_conjecture_payload_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_and_canonical_smooth_three_sphere_statement
+      dependencies smoothable h)
+
+theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_smooth_three_sphere_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere)) :
+    poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_and_canonical_smooth_three_sphere_statement
+      dependencies smoothable h =
+      poincare_payload_of_canonical_smooth_three_sphere_statement
+        smoothable h := by
+  apply Subsingleton.elim
+
+/--
+The remaining-dependency reverse canonical-smooth statement certificate exposes
+the reserved-name payload through the reverse smooth project payload.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_of_remaining_dependency_and_reverse_canonical_smooth_three_sphere_statement
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_conjecture_payload_of_completion_certificate
+    (completion_certificate_of_remaining_dependency_and_reverse_canonical_smooth_three_sphere_statement
+      dependencies smoothable h)
+
+theorem poincare_conjecture_payload_of_completion_certificate_of_remaining_dependency_and_reverse_canonical_smooth_three_sphere_statement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    poincare_conjecture_payload_of_completion_certificate_of_remaining_dependency_and_reverse_canonical_smooth_three_sphere_statement
+      dependencies smoothable h =
+      poincare_payload_of_reverse_smooth_statement smoothable h := by
+  apply Subsingleton.elim
+
+/--
+The aggregate reverse canonical-smooth statement certificate exposes the
+reserved-name payload through the reverse smooth project payload.
+-/
+theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_and_reverse_canonical_smooth_three_sphere_statement
+    (dependencies : PoincareProofDependencies.{u})
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_conjecture_payload_of_completion_certificate
+    (completion_certificate_of_poincareProofDependencies_and_reverse_canonical_smooth_three_sphere_statement
+      dependencies smoothable h)
+
+theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_and_reverse_canonical_smooth_three_sphere_statement_eq
+    (dependencies : PoincareProofDependencies.{u})
+    (smoothable :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          IsManifold (𝓡 3) ∞ M)
+    (h : ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [IsManifold (𝓡 3) ∞ M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (ThreeSphere ≃ₘ⟮𝓡 3, 𝓡 3⟯ M)) :
+    poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_and_reverse_canonical_smooth_three_sphere_statement
+      dependencies smoothable h =
+      poincare_payload_of_reverse_smooth_statement smoothable h := by
+  apply Subsingleton.elim
+
+/--
 Projecting the project target statement from the remaining-dependency packaged
 smooth certificate returns the packaged smooth target endpoint.
 -/
