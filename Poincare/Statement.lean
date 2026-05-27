@@ -11257,6 +11257,104 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_threeSouthNorth
     exact Path.Homotopic.refl _))
 
 /--
+The three-segment dispatcher for the actual finite-concat collapse hypothesis:
+case-splitting the segmentwise stereographic source alternatives reduces every
+three-piece loop to an existing all-one-source, one-switch, or alternating
+three-piece collapse.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_threeSegments_of_source_or
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    (t : Fin 4 → unitInterval)
+    (h0 : t 0 = 0) (h1 : t (Fin.last 3) = 1)
+    (hseg : ∀ k : Fin 3,
+      Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+          (stereographic' 3 threeSphere_northPole).source ∨
+        Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+          (stereographic' 3 (-threeSphere_northPole)).source) :
+    Path.Homotopic.Quotient.mk
+      (Path.concat (γ ∘ t) (fun k : Fin 3 =>
+        γ.subpath (t k.castSucc) (t k.succ))) =
+      Path.Homotopic.Quotient.mk
+        ((Path.refl threeSphere_equatorPoint).cast
+          (by
+            change γ (t (0 : Fin 4)) = threeSphere_equatorPoint
+            rw [h0]
+            exact γ.source)
+          (by
+            change γ (t (Fin.last 3)) = threeSphere_equatorPoint
+            rw [h1]
+            exact γ.target)) := by
+  rcases hseg 0 with hNorth0 | hSouth0
+  · rcases hseg 1 with hNorth1 | hSouth1
+    · rcases hseg 2 with hNorth2 | hSouth2
+      · simpa using
+          threeSphere_stereographicEquatorLoopFiniteConcatCollapse_allNorth γ 3 t h0 h1
+            (by
+              intro k
+              fin_cases k
+              · simpa using hNorth0
+              · simpa using hNorth1
+              · simpa using hNorth2)
+      · simpa using
+          threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouth γ 1 t h0 h1
+            (by
+              intro k
+              fin_cases k
+              · simpa using hNorth0
+              · simpa using hNorth1)
+            hSouth2
+    · rcases hseg 2 with hNorth2 | hSouth2
+      · exact
+          threeSphere_stereographicEquatorLoopFiniteConcatCollapse_threeNorthSouthNorth
+            γ t h0 h1 hNorth0 hSouth1 hNorth2
+      · simpa using
+          threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlock
+            γ 0 1 t h0 h1
+            (by
+              intro k
+              fin_cases k
+              · simpa using hNorth0)
+            (by
+              intro k
+              fin_cases k
+              · simpa using hSouth1
+              · simpa using hSouth2)
+  · rcases hseg 1 with hNorth1 | hSouth1
+    · rcases hseg 2 with hNorth2 | hSouth2
+      · simpa using
+          threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlock
+            γ 0 1 t h0 h1
+            (by
+              intro k
+              fin_cases k
+              · simpa using hSouth0)
+            (by
+              intro k
+              fin_cases k
+              · simpa using hNorth1
+              · simpa using hNorth2)
+      · exact
+          threeSphere_stereographicEquatorLoopFiniteConcatCollapse_threeSouthNorthSouth
+            γ t h0 h1 hSouth0 hNorth1 hSouth2
+    · rcases hseg 2 with hNorth2 | hSouth2
+      · simpa using
+          threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorth γ 1 t h0 h1
+            (by
+              intro k
+              fin_cases k
+              · simpa using hSouth0
+              · simpa using hSouth1)
+            hNorth2
+      · simpa using
+          threeSphere_stereographicEquatorLoopFiniteConcatCollapse_allSouth γ 3 t h0 h1
+            (by
+              intro k
+              fin_cases k
+              · simpa using hSouth0
+              · simpa using hSouth1
+              · simpa using hSouth2)
+
+/--
 Finite-concat quotient representatives plus their cast-aware quotient collapse
 to the stationary loop supply the equatorial Van Kampen loop obligation.
 -/
