@@ -5984,6 +5984,93 @@ theorem equation_boundary_payload_of_analytic_foundation_with_equation_boundary_
   apply Subsingleton.elim
 
 /--
+An analytic derivation stack plus explicit Ricci-flow equation verification
+exposes the concrete equation-boundary payload of the assembled strengthened
+analytic-foundation statement.
+-/
+theorem equation_boundary_payload_of_analytic_foundation_with_equation_boundary_of_derivation_and_ricci_flow_equation_verification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (derivation : AnalyticFoundationDerivationStatement flow)
+    (verification :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow)) :
+    ∃ boundary : RicciFlowEquationBoundaryPackage flow,
+      RicciFlowEquationBoundaryStatement flow ∧
+      IsMetricTimeDerivativeOf
+        (metric_of_ricci_flow_data flow)
+        (metric_time_derivative_field_of_metric_derivative_data
+          (metric_derivative_data_of_equation_boundary_package boundary)) ∧
+      (∀ t : ℝ,
+        metric_time_derivative_at_time_of_metric_derivative_field
+          (metric_time_derivative_field_of_metric_derivative_data
+            (metric_derivative_data_of_equation_boundary_package boundary)) t =
+          ricci_flow_rhs_tensor (curvature_data_of_ricci_flow_data flow) t) ∧
+      ∀ (t : ℝ) (x : M) (v w : TangentSpace I x),
+        metric_time_derivative_at_time_of_metric_derivative_field
+          (metric_time_derivative_field_of_metric_derivative_data
+            (metric_derivative_data_of_equation_boundary_package boundary)) t x v w =
+          ricci_flow_rhs_tensor
+            (curvature_data_of_ricci_flow_data flow) t x v w := by
+  exact
+    equation_boundary_payload_of_analytic_foundation_with_equation_boundary
+      (analytic_foundation_with_equation_boundary_of_derivation_and_ricci_flow_equation_verification
+        derivation verification)
+
+/--
+The derivation-plus-verification equation-boundary payload route is the named
+payload projection applied to the assembled strengthened analytic-boundary
+statement.
+-/
+theorem equation_boundary_payload_of_analytic_foundation_with_equation_boundary_of_derivation_and_ricci_flow_equation_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (derivation : AnalyticFoundationDerivationStatement flow)
+    (verification :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow)) :
+    equation_boundary_payload_of_analytic_foundation_with_equation_boundary_of_derivation_and_ricci_flow_equation_verification
+      derivation verification =
+      equation_boundary_payload_of_analytic_foundation_with_equation_boundary
+        (analytic_foundation_with_equation_boundary_of_derivation_and_ricci_flow_equation_verification
+          derivation verification) := by
+  apply Subsingleton.elim
+
+/--
+The derivation-plus-verification equation-boundary payload is propositionally
+the direct package built from the supplied explicit Ricci-flow equation
+verification and its named projections.
+-/
+theorem equation_boundary_payload_of_analytic_foundation_with_equation_boundary_of_derivation_and_ricci_flow_equation_verification_to_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (derivation : AnalyticFoundationDerivationStatement flow)
+    (verification :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow)) :
+    equation_boundary_payload_of_analytic_foundation_with_equation_boundary_of_derivation_and_ricci_flow_equation_verification
+      derivation verification =
+      (by
+        let boundary : RicciFlowEquationBoundaryPackage flow :=
+          equation_boundary_package_of_ricci_flow_equation_verification
+            flow verification
+        exact
+          ⟨boundary, ⟨boundary⟩,
+            metric_time_derivative_identification_of_equation_boundary_package
+              boundary,
+            equation_at_time_of_equation_boundary_package_projection
+              boundary,
+            equation_at_time_apply_of_equation_boundary_package_projection
+              boundary⟩) := by
+  apply Subsingleton.elim
+
+/--
 A strengthened analytic foundation statement exposes both its analytic
 derivation stack and the concrete equation-boundary payload.
 -/
