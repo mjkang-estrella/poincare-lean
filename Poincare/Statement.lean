@@ -4772,6 +4772,67 @@ theorem threeSphere_stereographicEquatorLoop_afterStop_tail_sourceChoice
     exact hchoice
 
 /--
+The concrete finite suffix after a first-run stop is the expected subpath from
+the stop segment's right endpoint to the original final subdivision point.
+-/
+theorem threeSphere_stereographicEquatorLoop_afterStop_tailConcat_homotopic_to_subpath
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval) {stop : Fin N} :
+    let tailPts : Fin ((N - (stop.val + 1)) + 1) → ThreeSphere := fun i =>
+      γ (t ⟨stop.val + 1 + i.val, by
+        have hi : i.val < (N - (stop.val + 1)) + 1 := i.isLt
+        omega⟩)
+    let tailSegs : (k : Fin (N - (stop.val + 1))) →
+        Path (tailPts k.castSucc) (tailPts k.succ) := fun k =>
+      γ.subpath
+        (t ⟨stop.val + 1 + k.val, by
+          have hk : k.val < N - (stop.val + 1) := k.isLt
+          omega⟩)
+        (t ⟨stop.val + 1 + (k.val + 1), by
+          have hk : k.val < N - (stop.val + 1) := k.isLt
+          omega⟩)
+    let hstart : tailPts 0 = γ (t stop.succ) := by rfl
+    let hend : tailPts (Fin.last (N - (stop.val + 1))) = γ (t (Fin.last N)) := by
+      dsimp [tailPts]
+      congr 2
+      ext
+      change stop.val + 1 + (N - (stop.val + 1)) = N
+      omega
+    Path.Homotopic
+      ((Path.concat tailPts tailSegs).cast hstart.symm hend.symm)
+      (γ.subpath (t stop.succ) (t (Fin.last N))) := by
+  intro tailPts tailSegs hstart hend
+  let tailIndex : Fin ((N - (stop.val + 1)) + 1) → unitInterval := fun i =>
+    t ⟨stop.val + 1 + i.val, by
+      have hi : i.val < (N - (stop.val + 1)) + 1 := i.isLt
+      omega⟩
+  have hconcat :
+      Path.Homotopic (Path.concat tailPts tailSegs)
+        (γ.subpath (tailIndex 0) (tailIndex (Fin.last (N - (stop.val + 1))))) := by
+    change Path.Homotopic (Path.concat (γ ∘ tailIndex)
+        (fun k : Fin (N - (stop.val + 1)) =>
+          γ.subpath (tailIndex k.castSucc) (tailIndex k.succ)))
+      (γ.subpath (tailIndex 0) (tailIndex (Fin.last (N - (stop.val + 1)))))
+    exact Path.Homotopic.concat_subpath γ tailIndex
+  refine (Path.Homotopic.pathCast hconcat hstart.symm hend.symm).trans ?_
+  have hidx0 : tailIndex 0 = t stop.succ := by
+    rfl
+  have hidxLast : tailIndex (Fin.last (N - (stop.val + 1))) = t (Fin.last N) := by
+    dsimp [tailIndex]
+    congr 1
+    ext
+    change stop.val + 1 + (N - (stop.val + 1)) = N
+    omega
+  have htarget :
+      (γ.subpath (tailIndex 0) (tailIndex (Fin.last (N - (stop.val + 1))))).cast
+        hstart.symm hend.symm = γ.subpath (t stop.succ) (t (Fin.last N)) := by
+    apply Path.ext
+    funext s
+    simp [Path.cast_coe]
+    rw [hidx0, hidxLast]
+  exact htarget ▸ Path.Homotopic.refl _
+
+/--
 For a finite subdivision whose segments each lie in a north or south
 stereographic source, the first south run in a north-preferred word is either
 terminal or reaches a north segment where the reindexed south block admits the
