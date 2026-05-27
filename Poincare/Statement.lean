@@ -693,6 +693,77 @@ theorem threeSphere_stereographicEquatorLoop_runBlock_source
   simpa [block, j] using hrun j hjle hjlt
 
 /--
+Source containment over an interval of original finite-concat segments also
+gives the base-point and segment data for the reindexed interval block.
+-/
+theorem threeSphere_stereographicEquatorLoop_runBlock_sourceData
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval) (v : ThreeSphere)
+    {start stop : Fin N} (hstartstop : start.val < stop.val)
+    (hrun : ∀ j : Fin N, start.val ≤ j.val → j.val < stop.val →
+      Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+        (stereographic' 3 v).source) :
+    let block : Fin ((stop.val - start.val) + 1) → unitInterval := fun i =>
+      t ⟨start.val + i.val,
+        by
+          have hltStopSucc : start.val + i.val < stop.val + 1 := by
+            have hi : i.val < (stop.val - start.val) + 1 := i.isLt
+            omega
+          exact Nat.lt_trans hltStopSucc (Nat.succ_lt_succ stop.isLt)⟩
+    (γ ∘ block) 0 ∈ (stereographic' 3 v).source ∧
+      ∀ k : Fin (stop.val - start.val),
+        Set.range (γ.subpath (block k.castSucc) (block k.succ)) ⊆
+          (stereographic' 3 v).source := by
+  intro block
+  have hbaseSegment :
+      Set.range (γ.subpath (t start.castSucc) (t start.succ)) ⊆
+        (stereographic' 3 v).source := by
+    exact hrun start (by omega) hstartstop
+  have hblock0 : block 0 = t start.castSucc := by
+    apply congrArg t
+    ext
+    simp
+  have hbase : (γ ∘ block) 0 ∈ (stereographic' 3 v).source := by
+    refine hbaseSegment ⟨0, ?_⟩
+    rw [Function.comp_apply, hblock0]
+    exact (γ.subpath (t start.castSucc) (t start.succ)).source
+  have hF : ∀ k : Fin (stop.val - start.val),
+      Set.range (γ.subpath (block k.castSucc) (block k.succ)) ⊆
+        (stereographic' 3 v).source := by
+    simpa [block] using
+      threeSphere_stereographicEquatorLoop_runBlock_source γ t v hrun
+  exact ⟨hbase, hF⟩
+
+/--
+Source containment over an interval of original finite-concat segments also
+contains the finite concatenation of the reindexed interval block.
+-/
+theorem threeSphere_stereographicEquatorLoop_runBlock_concat_range_subset
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval) (v : ThreeSphere)
+    {start stop : Fin N} (hstartstop : start.val < stop.val)
+    (hrun : ∀ j : Fin N, start.val ≤ j.val → j.val < stop.val →
+      Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+        (stereographic' 3 v).source) :
+    let block : Fin ((stop.val - start.val) + 1) → unitInterval := fun i =>
+      t ⟨start.val + i.val,
+        by
+          have hltStopSucc : start.val + i.val < stop.val + 1 := by
+            have hi : i.val < (stop.val - start.val) + 1 := i.isLt
+            omega
+          exact Nat.lt_trans hltStopSucc (Nat.succ_lt_succ stop.isLt)⟩
+    Set.range (Path.concat (γ ∘ block)
+      (fun k : Fin (stop.val - start.val) =>
+        γ.subpath (block k.castSucc) (block k.succ))) ⊆
+        (stereographic' 3 v).source := by
+  intro block
+  rcases threeSphere_stereographicEquatorLoop_runBlock_sourceData γ t v
+      hstartstop hrun with ⟨hbase, hF⟩
+  exact threeSphere_stereographic_source_concat_range_subset v (γ ∘ block)
+    (fun k : Fin (stop.val - start.val) =>
+      γ.subpath (block k.castSucc) (block k.succ)) hbase hF
+
+/--
 Moving a source cast from the second factor of a path concatenation to a target
 cast on the first factor does not change the concatenated path.
 -/
