@@ -5091,6 +5091,122 @@ theorem threeSphere_stereographicEquatorLoop_fullConcat_homotopic_to_prefixBlock
     (Path.Homotopic.hcomp hprefix.symm (Path.Homotopic.refl _))
 
 /--
+Raw first-south-run induction step: once the after-stop suffix is the concrete
+finite tail concat, the shorter north-source collapse hypothesis applies to
+the original full finite concatenation.
+-/
+theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_induction_step
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval) (h0 : t 0 = 0)
+    {start stop : Fin N} (hstartstop : start.val < stop.val)
+    (hBefore : ∀ j : Fin N, j.val < start.val →
+      Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hNorthStop : Set.range (γ.subpath (t stop.castSucc) (t stop.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hrun : ∀ j : Fin N, start.val ≤ j.val → j.val < stop.val →
+      Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source) :
+    let p : Fin (start.val + 1) → ThreeSphere := fun i =>
+      γ (t ⟨i.val, by omega⟩)
+    let tailPts : Fin ((N - (stop.val + 1)) + 1) → ThreeSphere := fun i =>
+      γ (t ⟨stop.val + 1 + i.val, by
+        have hi : i.val < (N - (stop.val + 1)) + 1 := i.isLt
+        omega⟩)
+    let tailSegs : (k : Fin (N - (stop.val + 1))) →
+        Path (tailPts k.castSucc) (tailPts k.succ) := fun k =>
+      γ.subpath
+        (t ⟨stop.val + 1 + k.val, by
+          have hk : k.val < N - (stop.val + 1) := k.isLt
+          omega⟩)
+        (t ⟨stop.val + 1 + (k.val + 1), by
+          have hk : k.val < N - (stop.val + 1) := k.isLt
+          omega⟩)
+    let htailStart : tailPts 0 = γ (t stop.succ) := by rfl
+    let htailEnd : tailPts (Fin.last (N - (stop.val + 1))) = γ (t (Fin.last N)) := by
+      dsimp [tailPts]
+      congr 2
+      ext
+      change stop.val + 1 + (N - (stop.val + 1)) = N
+      omega
+    ∀ (hclose : γ (t (Fin.last N)) = p 0),
+      (∀ q : Path (p 0) (γ (t stop.succ)),
+        Set.range q ⊆ (stereographic' 3 threeSphere_northPole).source →
+        Path.Homotopic
+          (q.trans ((Path.concat tailPts tailSegs).cast htailStart.symm htailEnd.symm))
+          ((Path.refl (p 0)).cast rfl hclose)) →
+      Path.Homotopic
+        (Path.concat (γ ∘ t) (fun k : Fin N => γ.subpath (t k.castSucc) (t k.succ)))
+        ((Path.refl (p 0)).cast rfl hclose) := by
+  intro p tailPts tailSegs htailStart htailEnd hclose hshort
+  have hfull :=
+    threeSphere_stereographicEquatorLoop_fullConcat_homotopic_to_prefixBlockStop_tailConcat
+      γ t hstartstop
+  have hcollapse :=
+    (threeSphere_stereographicEquatorLoop_firstSouthRun_prefixBlockStop_tail_induction_step
+      γ t h0 hstartstop hBefore hNorthStop hrun)
+      ((Path.concat tailPts tailSegs).cast htailStart.symm htailEnd.symm) hclose hshort
+  exact hfull.trans (by simpa [p] using hcollapse)
+
+/--
+Raw first-north-run induction step: the symmetric south-source shorter-collapse
+hypothesis applies directly to the original full finite concatenation after
+normalizing through the concrete after-stop suffix.
+-/
+theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_induction_step
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval) (h0 : t 0 = 0)
+    {start stop : Fin N} (hstartstop : start.val < stop.val)
+    (hBefore : ∀ j : Fin N, j.val < start.val →
+      Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouthStop : Set.range (γ.subpath (t stop.castSucc) (t stop.succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hrun : ∀ j : Fin N, start.val ≤ j.val → j.val < stop.val →
+      Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source) :
+    let p : Fin (start.val + 1) → ThreeSphere := fun i =>
+      γ (t ⟨i.val, by omega⟩)
+    let tailPts : Fin ((N - (stop.val + 1)) + 1) → ThreeSphere := fun i =>
+      γ (t ⟨stop.val + 1 + i.val, by
+        have hi : i.val < (N - (stop.val + 1)) + 1 := i.isLt
+        omega⟩)
+    let tailSegs : (k : Fin (N - (stop.val + 1))) →
+        Path (tailPts k.castSucc) (tailPts k.succ) := fun k =>
+      γ.subpath
+        (t ⟨stop.val + 1 + k.val, by
+          have hk : k.val < N - (stop.val + 1) := k.isLt
+          omega⟩)
+        (t ⟨stop.val + 1 + (k.val + 1), by
+          have hk : k.val < N - (stop.val + 1) := k.isLt
+          omega⟩)
+    let htailStart : tailPts 0 = γ (t stop.succ) := by rfl
+    let htailEnd : tailPts (Fin.last (N - (stop.val + 1))) = γ (t (Fin.last N)) := by
+      dsimp [tailPts]
+      congr 2
+      ext
+      change stop.val + 1 + (N - (stop.val + 1)) = N
+      omega
+    ∀ (hclose : γ (t (Fin.last N)) = p 0),
+      (∀ q : Path (p 0) (γ (t stop.succ)),
+        Set.range q ⊆ (stereographic' 3 (-threeSphere_northPole)).source →
+        Path.Homotopic
+          (q.trans ((Path.concat tailPts tailSegs).cast htailStart.symm htailEnd.symm))
+          ((Path.refl (p 0)).cast rfl hclose)) →
+      Path.Homotopic
+        (Path.concat (γ ∘ t) (fun k : Fin N => γ.subpath (t k.castSucc) (t k.succ)))
+        ((Path.refl (p 0)).cast rfl hclose) := by
+  intro p tailPts tailSegs htailStart htailEnd hclose hshort
+  have hfull :=
+    threeSphere_stereographicEquatorLoop_fullConcat_homotopic_to_prefixBlockStop_tailConcat
+      γ t hstartstop
+  have hcollapse :=
+    (threeSphere_stereographicEquatorLoop_firstNorthRun_prefixBlockStop_tail_induction_step
+      γ t h0 hstartstop hBefore hSouthStop hrun)
+      ((Path.concat tailPts tailSegs).cast htailStart.symm htailEnd.symm) hclose hshort
+  exact hfull.trans (by simpa [p] using hcollapse)
+
+/--
 For a finite subdivision whose segments each lie in a north or south
 stereographic source, the first south run in a north-preferred word is either
 terminal or reaches a north segment where the reindexed south block admits the
