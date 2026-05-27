@@ -545,6 +545,65 @@ theorem ricciFlowEquationBoundaryStatement_of_ricci_flow_equation_verification
   apply Subsingleton.elim
 
 /--
+A supplied explicit Ricci-flow equation verification also proves the
+projection-routed tensor equation through its constructed boundary package.
+-/
+theorem equation_at_time_of_equation_boundary_package_of_ricci_flow_equation_verification_projection
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M)
+    (verification :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (t : ℝ) :
+    metric_time_derivative_at_time_of_metric_derivative_field
+      (metric_time_derivative_field_of_metric_derivative_data
+        (metric_derivative_data_of_equation_boundary_package
+          (equation_boundary_package_of_ricci_flow_equation_verification
+            flow verification))) t =
+        ricci_flow_rhs_tensor (curvature_data_of_ricci_flow_data flow) t :=
+  equation_at_time_of_equation_boundary_package_projection
+    (equation_boundary_package_of_ricci_flow_equation_verification
+      flow verification) t
+
+/-- The verification boundary-package tensor equation is the generic package route. -/
+@[simp] theorem equation_at_time_of_equation_boundary_package_of_ricci_flow_equation_verification_projection_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M)
+    (verification :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (t : ℝ) :
+    equation_at_time_of_equation_boundary_package_of_ricci_flow_equation_verification_projection
+      flow verification t =
+      equation_at_time_of_equation_boundary_package_projection
+        (equation_boundary_package_of_ricci_flow_equation_verification
+          flow verification) t :=
+  rfl
+
+/--
+The verification boundary-package tensor equation agrees with the direct
+Ricci-flow equation-verification projection.
+-/
+@[simp] theorem equation_at_time_of_equation_boundary_package_of_ricci_flow_equation_verification_projection_to_verification_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M)
+    (verification :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (t : ℝ) :
+    equation_at_time_of_equation_boundary_package_of_ricci_flow_equation_verification_projection
+      flow verification t =
+      equation_at_time_of_ricci_flow_equation_verification_projection
+        verification t := by
+  apply Subsingleton.elim
+
+/--
 Equation-boundary package for zero Ricci-flow data.
 
 The metric-derivative identification, Ricci identification, and abstract
