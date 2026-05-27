@@ -4145,6 +4145,92 @@ theorem threeSphere_stereographic_southNorthBlockSouth_homotopic_to_southBlock
   exact ⟨q, hqV, hreplace, htargetRange⟩
 
 /--
+A south-source interval run of an equatorial loop, reindexed as a finite block,
+can be replaced by a north-source overlap path when bracketed by north-source
+paths.
+-/
+theorem threeSphere_stereographicEquatorLoop_runBlock_southBetweenNorth_homotopic_to_northBlock
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval)
+    {start stop : Fin N} (hstartstop : start.val < stop.val)
+    (hrun : ∀ j : Fin N, start.val ≤ j.val → j.val < stop.val →
+      Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source) :
+    let block : Fin ((stop.val - start.val) + 1) → unitInterval := fun i =>
+      t ⟨start.val + i.val,
+        by
+          have hltStopSucc : start.val + i.val < stop.val + 1 := by
+            have hi : i.val < (stop.val - start.val) + 1 := i.isLt
+            omega
+          exact Nat.lt_trans hltStopSucc (Nat.succ_lt_succ stop.isLt)⟩
+    ∀ {x₀ x₃ : ThreeSphere}
+      (p : Path x₀ ((γ ∘ block) 0))
+      (r : Path ((γ ∘ block) (Fin.last (stop.val - start.val))) x₃)
+      (_ : Set.range p ⊆ (stereographic' 3 threeSphere_northPole).source)
+      (_ : Set.range r ⊆ (stereographic' 3 threeSphere_northPole).source),
+      ∃ q : Path ((γ ∘ block) 0)
+          ((γ ∘ block) (Fin.last (stop.val - start.val))),
+        Set.range q ⊆ (stereographic' 3 threeSphere_northPole).source ∧
+          Path.Homotopic
+            ((p.trans (Path.concat (γ ∘ block)
+              (fun k : Fin (stop.val - start.val) =>
+                γ.subpath (block k.castSucc) (block k.succ)))).trans r)
+            ((p.trans q).trans r) ∧
+          Set.range ((p.trans q).trans r) ⊆
+            (stereographic' 3 threeSphere_northPole).source := by
+  intro block x₀ x₃ p r hp hr
+  rcases threeSphere_stereographicEquatorLoop_runBlock_sourceData γ t
+      (-threeSphere_northPole) hstartstop hrun with ⟨hmBase, hF⟩
+  exact threeSphere_stereographic_northSouthBlockNorth_homotopic_to_northBlock
+    (γ ∘ block) p
+    (fun k : Fin (stop.val - start.val) =>
+      γ.subpath (block k.castSucc) (block k.succ))
+    r hp hmBase hF hr
+
+/--
+A north-source interval run of an equatorial loop, reindexed as a finite block,
+can be replaced by a south-source overlap path when bracketed by south-source
+paths.
+-/
+theorem threeSphere_stereographicEquatorLoop_runBlock_northBetweenSouth_homotopic_to_southBlock
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval)
+    {start stop : Fin N} (hstartstop : start.val < stop.val)
+    (hrun : ∀ j : Fin N, start.val ≤ j.val → j.val < stop.val →
+      Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source) :
+    let block : Fin ((stop.val - start.val) + 1) → unitInterval := fun i =>
+      t ⟨start.val + i.val,
+        by
+          have hltStopSucc : start.val + i.val < stop.val + 1 := by
+            have hi : i.val < (stop.val - start.val) + 1 := i.isLt
+            omega
+          exact Nat.lt_trans hltStopSucc (Nat.succ_lt_succ stop.isLt)⟩
+    ∀ {x₀ x₃ : ThreeSphere}
+      (p : Path x₀ ((γ ∘ block) 0))
+      (r : Path ((γ ∘ block) (Fin.last (stop.val - start.val))) x₃)
+      (_ : Set.range p ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+      (_ : Set.range r ⊆ (stereographic' 3 (-threeSphere_northPole)).source),
+      ∃ q : Path ((γ ∘ block) 0)
+          ((γ ∘ block) (Fin.last (stop.val - start.val))),
+        Set.range q ⊆ (stereographic' 3 (-threeSphere_northPole)).source ∧
+          Path.Homotopic
+            ((p.trans (Path.concat (γ ∘ block)
+              (fun k : Fin (stop.val - start.val) =>
+                γ.subpath (block k.castSucc) (block k.succ)))).trans r)
+            ((p.trans q).trans r) ∧
+          Set.range ((p.trans q).trans r) ⊆
+            (stereographic' 3 (-threeSphere_northPole)).source := by
+  intro block x₀ x₃ p r hp hr
+  rcases threeSphere_stereographicEquatorLoop_runBlock_sourceData γ t
+      threeSphere_northPole hstartstop hrun with ⟨hmBase, hF⟩
+  exact threeSphere_stereographic_southNorthBlockSouth_homotopic_to_southBlock
+    (γ ∘ block) p
+    (fun k : Fin (stop.val - start.val) =>
+      γ.subpath (block k.castSucc) (block k.succ))
+    r hp hmBase hF hr
+
+/--
 Induction step for north-starting alternating words: replacing a bracketed
 finite south block by a north-source overlap path reduces the remaining
 closed word to any shorter north-starting collapse obligation.
