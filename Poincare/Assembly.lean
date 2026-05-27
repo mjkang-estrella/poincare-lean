@@ -1914,6 +1914,114 @@ theorem threeSphere_self_homeomorph_of_smooth_statement_and_basedLoopNullhomotop
   apply Subsingleton.elim
 
 /--
+The full stereographic Van Kampen reduction exposes the target self route as a
+payload carrying both the homotopy-oriented prerequisite bundle and the
+self-homeomorphism endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_stereographicVanKampenReductionStatement
+    (hReduction : ThreeSphereStereographicVanKampenReductionStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=
+  ⟨threeSphere_homotopy_prerequisites_of_stereographicVanKampenReductionStatement
+      hReduction,
+    threeSphere_self_homeomorph_of_poincare_statement_and_stereographicVanKampenReductionStatement
+      hReduction h⟩
+
+/--
+The stereographic reduction target self payload is exactly the concrete
+prerequisite route paired with the stereographic reduction target endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_stereographicVanKampenReductionStatement_eq :
+    threeSphere_self_homeomorph_payload_of_poincare_statement_and_stereographicVanKampenReductionStatement =
+      (fun hReduction : ThreeSphereStereographicVanKampenReductionStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          ⟨threeSphere_homotopy_prerequisites_of_stereographicVanKampenReductionStatement
+              hReduction,
+            threeSphere_self_homeomorph_of_poincare_statement_and_stereographicVanKampenReductionStatement
+              hReduction h⟩) := by
+  funext hReduction h
+  apply Subsingleton.elim
+
+/--
+The stereographic reduction target self payload is the bare self payload under
+the simple-connectedness instance derived from the reduction package.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_stereographicVanKampenReductionStatement_bare_route_eq :
+    threeSphere_self_homeomorph_payload_of_poincare_statement_and_stereographicVanKampenReductionStatement =
+      (fun hReduction : ThreeSphereStereographicVanKampenReductionStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          letI : SimplyConnectedSpace ThreeSphere :=
+            threeSphere_simplyConnectedSpace_of_stereographicVanKampenReductionStatement
+              hReduction
+          threeSphere_self_homeomorph_payload_of_poincare_statement h) := by
+  funext hReduction h
+  apply Subsingleton.elim
+
+/--
+The concrete stereographic Van Kampen conclusion exposes the target self route
+as a payload carrying both the homotopy-oriented prerequisite bundle and the
+self-homeomorphism endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_stereographicVanKampenConclusionStatement
+    (hConclusion : ThreeSphereStereographicVanKampenConclusionStatement)
+    (h : PoincareConjectureStatement.{0}) :
+    ∃ _prerequisites :
+      (∃ _t2 : T2Space ThreeSphere,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere,
+      ∃ _simplyConnected : SimplyConnectedSpace ThreeSphere,
+      ∃ _compact : CompactSpace ThreeSphere,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ ThreeSphere,
+      ∃ _path : PathConnectedSpace ThreeSphere,
+      ∃ _locPath : LocPathConnectedSpace ThreeSphere,
+      ∃ _connected : ConnectedSpace ThreeSphere,
+        Nonempty ThreeSphere),
+        Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=
+  ⟨threeSphere_homotopy_prerequisites_of_stereographicVanKampenConclusionStatement
+      hConclusion,
+    threeSphere_self_homeomorph_of_poincare_statement_and_stereographicVanKampenConclusionStatement
+      hConclusion h⟩
+
+/--
+The stereographic conclusion target self payload is exactly the concrete
+prerequisite route paired with the stereographic conclusion target endpoint.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_stereographicVanKampenConclusionStatement_eq :
+    threeSphere_self_homeomorph_payload_of_poincare_statement_and_stereographicVanKampenConclusionStatement =
+      (fun hConclusion : ThreeSphereStereographicVanKampenConclusionStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          ⟨threeSphere_homotopy_prerequisites_of_stereographicVanKampenConclusionStatement
+              hConclusion,
+            threeSphere_self_homeomorph_of_poincare_statement_and_stereographicVanKampenConclusionStatement
+              hConclusion h⟩) := by
+  funext hConclusion h
+  apply Subsingleton.elim
+
+/--
+The stereographic conclusion target self payload agrees with the route through
+the assembled stereographic reduction package.
+-/
+theorem threeSphere_self_homeomorph_payload_of_poincare_statement_and_stereographicVanKampenConclusionStatement_reduction_route_eq :
+    threeSphere_self_homeomorph_payload_of_poincare_statement_and_stereographicVanKampenConclusionStatement =
+      (fun hConclusion : ThreeSphereStereographicVanKampenConclusionStatement =>
+        fun h : PoincareConjectureStatement.{0} =>
+          threeSphere_self_homeomorph_payload_of_poincare_statement_and_stereographicVanKampenReductionStatement
+            (threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement
+              hConclusion)
+            h) := by
+  funext hConclusion h
+  apply Subsingleton.elim
+
+/--
 The concrete loop-nullhomotopy obligation exposes the target self route as a
 payload carrying both the homotopy-oriented prerequisite bundle and the
 self-homeomorphism endpoint.
