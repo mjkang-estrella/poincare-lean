@@ -553,6 +553,146 @@ theorem finite_first_opposite_run_or_all_preferred_with_tail_choice
       exact ⟨hOpp, hNotPref⟩
 
 /--
+An interval run over the original finite word can be reindexed as a block
+starting at the interval's left endpoint.
+-/
+theorem finite_run_interval_reindex
+    {N : ℕ} {P : Fin N → Prop} {start stop : Fin N}
+    (hrun : ∀ j : Fin N, start.val ≤ j.val → j.val < stop.val → P j) :
+    ∀ r : Fin (stop.val - start.val),
+      P ⟨start.val + r.val,
+        by
+          have hltStop : start.val + r.val < stop.val := by
+            have hr : r.val < stop.val - start.val := r.isLt
+            omega
+          exact Nat.lt_trans hltStop stop.isLt⟩ := by
+  intro r
+  let j : Fin N := ⟨start.val + r.val,
+    by
+      have hltStop : start.val + r.val < stop.val := by
+        have hr : r.val < stop.val - start.val := r.isLt
+        omega
+      exact Nat.lt_trans hltStop stop.isLt⟩
+  have hjle : start.val ≤ j.val := by
+    change start.val ≤ start.val + r.val
+    omega
+  have hjlt : j.val < stop.val := by
+    change start.val + r.val < stop.val
+    have hr : r.val < stop.val - start.val := r.isLt
+    omega
+  exact hrun j hjle hjlt
+
+/--
+The first forced opposite run can be returned as a concrete finite block.  The
+run either reaches the end, or it stops at the first preferred return and leaves
+a reindexed tail with the original left-or-right choice.
+-/
+theorem finite_first_opposite_run_or_all_preferred_with_reindexed_block
+    {N : ℕ} {Preferred Opposite : Fin N → Prop}
+    (hchoice : ∀ k : Fin N, Preferred k ∨ Opposite k) :
+    (∀ k : Fin N, Preferred k) ∨
+      ∃ start : Fin N,
+        Opposite start ∧ ¬ Preferred start ∧
+          (∀ j : Fin N, j.val < start.val → Preferred j) ∧
+          ((∀ r : Fin (N - start.val),
+              Opposite ⟨start.val + r.val,
+                by
+                  have hlt : start.val + r.val < N := by
+                    have hr : r.val < N - start.val := r.isLt
+                    omega
+                  exact hlt⟩ ∧
+              ¬ Preferred ⟨start.val + r.val,
+                by
+                  have hlt : start.val + r.val < N := by
+                    have hr : r.val < N - start.val := r.isLt
+                    omega
+                  exact hlt⟩) ∨
+            ∃ stop : Fin N,
+              start.val < stop.val ∧ Preferred stop ∧
+                (∀ r : Fin (stop.val - start.val),
+                  Opposite ⟨start.val + r.val,
+                    by
+                      have hltStop : start.val + r.val < stop.val := by
+                        have hr : r.val < stop.val - start.val := r.isLt
+                        omega
+                      exact Nat.lt_trans hltStop stop.isLt⟩ ∧
+                  ¬ Preferred ⟨start.val + r.val,
+                    by
+                      have hltStop : start.val + r.val < stop.val := by
+                        have hr : r.val < stop.val - start.val := r.isLt
+                        omega
+                      exact Nat.lt_trans hltStop stop.isLt⟩) ∧
+                ∀ r : Fin (N - (stop.val + 1)),
+                  Preferred ⟨stop.val + 1 + r.val,
+                    by
+                      have hlt : stop.val + 1 + r.val < N := by
+                        have hr : r.val < N - (stop.val + 1) := r.isLt
+                        omega
+                      exact hlt⟩ ∨
+                  Opposite ⟨stop.val + 1 + r.val,
+                    by
+                      have hlt : stop.val + 1 + r.val < N := by
+                        have hr : r.val < N - (stop.val + 1) := r.isLt
+                        omega
+                      exact hlt⟩) := by
+  rcases finite_first_opposite_run_or_all_preferred_with_tail_choice hchoice with
+    hAll | hRun
+  · exact Or.inl hAll
+  · rcases hRun with ⟨start, hOppStart, hNotPrefStart, hBefore, hRunOr⟩
+    refine Or.inr ⟨start, hOppStart, hNotPrefStart, hBefore, ?_⟩
+    rcases hRunOr with hToEnd | hStop
+    · refine Or.inl ?_
+      intro r
+      let j : Fin N := ⟨start.val + r.val,
+        by
+          have hlt : start.val + r.val < N := by
+            have hr : r.val < N - start.val := r.isLt
+            omega
+          exact hlt⟩
+      have hjle : start.val ≤ j.val := by
+        change start.val ≤ start.val + r.val
+        omega
+      exact hToEnd j hjle
+    · rcases hStop with ⟨stop, hstartstop, hPrefStop, hrun, htail⟩
+      refine Or.inr ⟨stop, hstartstop, hPrefStop, ?_, htail⟩
+      exact finite_run_interval_reindex hrun
+
+/--
+Source containment over an interval of original finite-concat segments transfers
+to the reindexed block cut out by that interval.
+-/
+theorem threeSphere_stereographicEquatorLoop_runBlock_source
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval) (v : ThreeSphere)
+    {start stop : Fin N}
+    (hrun : ∀ j : Fin N, start.val ≤ j.val → j.val < stop.val →
+      Set.range (γ.subpath (t j.castSucc) (t j.succ)) ⊆
+        (stereographic' 3 v).source) :
+    let block : Fin ((stop.val - start.val) + 1) → unitInterval := fun i =>
+      t ⟨start.val + i.val,
+        by
+          have hstop : stop.val < N := stop.isLt
+          have hi : i.val < (stop.val - start.val) + 1 := i.isLt
+          omega⟩
+    ∀ k : Fin (stop.val - start.val),
+      Set.range (γ.subpath (block k.castSucc) (block k.succ)) ⊆
+        (stereographic' 3 v).source := by
+  intro block k
+  let j : Fin N := ⟨start.val + k.val,
+    by
+      have hstop : stop.val < N := stop.isLt
+      have hk : k.val < stop.val - start.val := k.isLt
+      omega⟩
+  have hjle : start.val ≤ j.val := by
+    change start.val ≤ start.val + k.val
+    omega
+  have hjlt : j.val < stop.val := by
+    change start.val + k.val < stop.val
+    have hk : k.val < stop.val - start.val := k.isLt
+    omega
+  simpa [block, j] using hrun j hjle hjlt
+
+/--
 Moving a source cast from the second factor of a path concatenation to a target
 cast on the first factor does not change the concatenated path.
 -/
