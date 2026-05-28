@@ -4520,6 +4520,20 @@ theorem path_homotopy_forall_mem_of_isSimplyConnected
   exact (Fsub t).2
 
 /--
+A typeclass-form simply connected subtype gives a contained homotopy between
+any two ambient paths whose ranges stay in that subtype.
+-/
+theorem path_homotopy_forall_mem_of_range_subset_simplyConnectedSubtype
+    {Y : Type u} [TopologicalSpace Y] {U : Set Y} {x y : Y}
+    [SimplyConnectedSpace U]
+    (p q : Path x y)
+    (hp : Set.range p ⊆ U) (hq : Set.range q ⊆ U) :
+    ∃ F : p.Homotopy q, ∀ t, F t ∈ U := by
+  have hU : IsSimplyConnected U := ‹SimplyConnectedSpace U›
+  exact path_homotopy_forall_mem_of_isSimplyConnected hU p q
+    (fun t => hp ⟨t, rfl⟩) (fun t => hq ⟨t, rfl⟩)
+
+/--
 If a head path and an arbitrary finite tail all stay inside the same simply
 connected set, then the resulting closed tail loop contracts through an actual
 homotopy whose image stays in that set.
@@ -4555,16 +4569,20 @@ theorem twoSetOpenCover_sameHead_sameTail_concat_cast_homotopy_refl_forall_mem_o
     rcases ht' with htHead | htTail
     · exact hp htHead
     · exact htail htTail
+  have hloopRange :
+      Set.range (p.trans (Path.concat tailPts tailSegs)) ⊆ U := by
+    rintro _ ⟨t, rfl⟩
+    exact hloop t
   have hx₀ : x₀ ∈ U :=
     hp ⟨0, p.source⟩
   have hrefl :
-      ∀ t, ((Path.refl x₀).cast rfl hclose) t ∈ U := by
-    intro _t
+      Set.range ((Path.refl x₀).cast rfl hclose) ⊆ U := by
+    rintro _ ⟨t, rfl⟩
     simpa [Path.cast_coe] using hx₀
-  have hSC : IsSimplyConnected U := ‹SimplyConnectedSpace U›
-  exact path_homotopy_forall_mem_of_isSimplyConnected hSC
+  exact path_homotopy_forall_mem_of_range_subset_simplyConnectedSubtype
     (p.trans (Path.concat tailPts tailSegs))
-    ((Path.refl x₀).cast rfl hclose) hloop hrefl
+    ((Path.refl x₀).cast rfl hclose)
+    hloopRange hrefl
 
 /--
 If a head path and an arbitrary finite tail all stay inside the same simply
