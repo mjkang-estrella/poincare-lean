@@ -2166,6 +2166,17 @@ theorem onePoint_threeSpace_pathHomotopyStatement_of_simplyConnectedSpace_eq
         OnePointThreeSpacePathHomotopyStatement) := by
   apply Subsingleton.elim
 
+/--
+The source-choice collapse proof gives path-homotopy uniqueness for all
+parallel paths in the one-point compactification model.
+-/
+theorem onePoint_threeSpace_pathHomotopyStatement_of_sourceChoiceCollapse :
+    OnePointThreeSpacePathHomotopyStatement := by
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_sourceChoiceCollapse
+  exact (onePoint_threeSpace_pathHomotopyStatement_of_simplyConnectedSpace :
+    OnePointThreeSpacePathHomotopyStatement)
+
 /-- Path-homotopy uniqueness implies loop-nullhomotopy by comparing a loop to `Path.refl`. -/
 theorem onePoint_threeSpace_loopNullhomotopyStatement_of_pathHomotopyStatement
     (h : OnePointThreeSpacePathHomotopyStatement) :
