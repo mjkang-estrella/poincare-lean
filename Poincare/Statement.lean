@@ -4052,6 +4052,80 @@ theorem twoSetOpenCover_sameSideBlockOppositeTail_concat_cast_nullhomotopic_of_m
       (hcontract.trans (htargetEq ▸ Path.Homotopic.refl _)))
 
 /--
+Length-cast form of the two-set one-switch tail contraction.  This allows a
+tail of length `T` to be consumed once its length is known to split as `L + R`.
+-/
+theorem twoSetOpenCover_sameSideBlockOppositeTail_concat_cast_nullhomotopic_of_length_eq
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {T L R : ℕ} {x₀ : Y}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set Y)]
+    (tailPts : Fin (T + 1) → Y)
+    (tailSegs : (k : Fin T) →
+      Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last T) = x₀)
+    (hTailLen : T = L + R)
+    (hp : Set.range p ⊆ U)
+    (hU : ∀ k : Fin L, Set.range (tailSegs ⟨k.val, by omega⟩) ⊆ U)
+    (hVBase : tailPts ⟨L, by omega⟩ ∈ V)
+    (hV : ∀ k : Fin R, Set.range (tailSegs ⟨L + k.val, by omega⟩) ⊆ V) :
+    Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
+      ((Path.refl x₀).cast rfl hclose) := by
+  cases hTailLen
+  exact twoSetOpenCover_sameSideBlockOppositeTail_concat_cast_nullhomotopic_of_mapsTo
+    (U := U) (V := V) tailPts tailSegs p hclose hp hU hVBase hV
+
+/--
+A terminal first-opposite run contracts in any two-set cover: a prefix path and
+the tail pieces before `start` stay in one simply-connected cover member, while
+all tail pieces from `start` through the end stay in the other member.
+-/
+theorem twoSetOpenCover_sameHead_terminalOppositeRun_tail_concat_cast_nullhomotopic_of_mapsTo
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {N : ℕ} {x₀ : Y}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set Y)]
+    (tailPts : Fin (N + 1) → Y)
+    (tailSegs : (k : Fin N) →
+      Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last N) = x₀)
+    (hp : Set.range p ⊆ U)
+    {start : Fin N}
+    (hBefore : ∀ j : Fin N, j.val < start.val →
+      Set.range (tailSegs j) ⊆ U)
+    (hTerminal : ∀ j : Fin N, start.val ≤ j.val →
+      Set.range (tailSegs j) ⊆ V) :
+    Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
+      ((Path.refl x₀).cast rfl hclose) := by
+  let R : ℕ := N - start.val
+  have hTailLen : N = start.val + R := by
+    dsimp [R]
+    omega
+  have hU : ∀ k : Fin start.val,
+      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆ U := by
+    intro k
+    exact hBefore ⟨k.val, by omega⟩ k.isLt
+  have hVBase : tailPts ⟨start.val, by omega⟩ ∈ V := by
+    have hStart := hTerminal start (by omega)
+    simpa using hStart ⟨0, (tailSegs start).source⟩
+  have hV : ∀ k : Fin R,
+      Set.range (tailSegs ⟨start.val + k.val, by omega⟩) ⊆ V := by
+    intro k
+    let j : Fin N := ⟨start.val + k.val, by
+      have hs : start.val < N := start.isLt
+      have hk : k.val < N - start.val := by
+        change k.val < R
+        exact k.isLt
+      omega⟩
+    have hjle : start.val ≤ j.val := by
+      dsimp [j]
+      omega
+    simpa [j] using hTerminal j hjle
+  exact twoSetOpenCover_sameSideBlockOppositeTail_concat_cast_nullhomotopic_of_length_eq
+    (U := U) (V := V) (L := start.val) (R := R)
+    tailPts tailSegs p hclose hTailLen hp hU hVBase hV
+
+/--
 A path in one cover member, followed by a finite block in the other member,
 then a return path in the first member and a final closing path in the other
 member, is nullhomotopic.  The middle block is replaced through the overlap
@@ -6896,36 +6970,25 @@ theorem threeSphere_stereographic_northHead_terminalSouthRun_tail_concat_cast_nu
         (stereographic' 3 (-threeSphere_northPole)).source) :
     Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
       ((Path.refl x₀).cast rfl hclose) := by
-  have hTailLen : N = start.val + (N - start.val) := by
-    omega
-  have hNorthBase :
-      tailPts 0 ∈ (stereographic' 3 threeSphere_northPole).source :=
-    hp ⟨1, p.target⟩
-  have hNorth : ∀ k : Fin start.val,
-      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
-        (stereographic' 3 threeSphere_northPole).source := by
-    intro k
-    exact hBefore ⟨k.val, by omega⟩ k.isLt
-  have hSouthBase :
-      tailPts ⟨start.val, by omega⟩ ∈
-        (stereographic' 3 (-threeSphere_northPole)).source := by
-    have hStart := hTerminal start (by omega)
-    simpa using hStart ⟨0, (tailSegs start).source⟩
-  have hSouth : ∀ k : Fin (N - start.val),
-      Set.range (tailSegs ⟨start.val + k.val, by omega⟩) ⊆
-        (stereographic' 3 (-threeSphere_northPole)).source := by
-    intro k
-    let j : Fin N := ⟨start.val + k.val, by
-      have hs : start.val < N := start.isLt
-      have hk : k.val < N - start.val := k.isLt
-      omega⟩
-    have hjle : start.val ≤ j.val := by
-      dsimp [j]
-      omega
-    simpa [j] using hTerminal j hjle
-  exact
-    threeSphere_stereographic_northNorthBlockSouthTail_concat_cast_nullhomotopic_of_length_eq
-      tailPts tailSegs p hclose hTailLen hp hNorthBase hNorth hSouthBase hSouth
+  let U : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
+  let V : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  letI : SimplyConnectedSpace U := by
+    simpa [U] using threeSphere_stereographic_source_simplyConnectedSpace
+      threeSphere_northPole
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace
+      (-threeSphere_northPole)
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    simpa [U, V] using threeSphere_actualOverlap_pathConnectedSpace
+  exact twoSetOpenCover_sameHead_terminalOppositeRun_tail_concat_cast_nullhomotopic_of_mapsTo
+    (U := U) (V := V) (start := start) tailPts tailSegs p hclose
+    (by simpa [U] using hp)
+    (by
+      intro j hj
+      simpa [U] using hBefore j hj)
+    (by
+      intro j hj
+      simpa [V] using hTerminal j hj)
 
 /--
 Symmetric terminal first-north-run contraction for arbitrary head/tail data: a
@@ -6948,36 +7011,29 @@ theorem threeSphere_stereographic_southHead_terminalNorthRun_tail_concat_cast_nu
         (stereographic' 3 threeSphere_northPole).source) :
     Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
       ((Path.refl x₀).cast rfl hclose) := by
-  have hTailLen : N = start.val + (N - start.val) := by
-    omega
-  have hSouthBase :
-      tailPts 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source :=
-    hp ⟨1, p.target⟩
-  have hSouth : ∀ k : Fin start.val,
-      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
-        (stereographic' 3 (-threeSphere_northPole)).source := by
-    intro k
-    exact hBefore ⟨k.val, by omega⟩ k.isLt
-  have hNorthBase :
-      tailPts ⟨start.val, by omega⟩ ∈
-        (stereographic' 3 threeSphere_northPole).source := by
-    have hStart := hTerminal start (by omega)
-    simpa using hStart ⟨0, (tailSegs start).source⟩
-  have hNorth : ∀ k : Fin (N - start.val),
-      Set.range (tailSegs ⟨start.val + k.val, by omega⟩) ⊆
-        (stereographic' 3 threeSphere_northPole).source := by
-    intro k
-    let j : Fin N := ⟨start.val + k.val, by
-      have hs : start.val < N := start.isLt
-      have hk : k.val < N - start.val := k.isLt
-      omega⟩
-    have hjle : start.val ≤ j.val := by
-      dsimp [j]
-      omega
-    simpa [j] using hTerminal j hjle
-  exact
-    threeSphere_stereographic_southSouthBlockNorthTail_concat_cast_nullhomotopic_of_length_eq
-      tailPts tailSegs p hclose hTailLen hp hSouthBase hSouth hNorthBase hNorth
+  let U : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  let V : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
+  letI : SimplyConnectedSpace U := by
+    simpa [U] using threeSphere_stereographic_source_simplyConnectedSpace
+      (-threeSphere_northPole)
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace
+      threeSphere_northPole
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    change PathConnectedSpace
+      ((stereographic' 3 (-threeSphere_northPole)).source ∩
+        (stereographic' 3 threeSphere_northPole).source : Set ThreeSphere)
+    rw [Set.inter_comm]
+    exact threeSphere_actualOverlap_pathConnectedSpace
+  exact twoSetOpenCover_sameHead_terminalOppositeRun_tail_concat_cast_nullhomotopic_of_mapsTo
+    (U := U) (V := V) (start := start) tailPts tailSegs p hclose
+    (by simpa [U] using hp)
+    (by
+      intro j hj
+      simpa [U] using hBefore j hj)
+    (by
+      intro j hj
+      simpa [V] using hTerminal j hj)
 
 /--
 First-run reduction for arbitrary north-headed finite tails: the all-north
