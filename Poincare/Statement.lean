@@ -690,6 +690,45 @@ theorem path_concat_split_homotopy_forall_mem_of_mapsTo
   exact (Hsub t).2
 
 /--
+The concatenation of two paths stays in a set when both input paths stay there.
+This is the range-control fact used by contained path-algebra homotopies.
+-/
+theorem path_trans_forall_mem_of_forall_mem
+    {X : Type u} [TopologicalSpace X] {S : Set X}
+    {x₀ x₁ x₂ : X} (p : Path x₀ x₁) (q : Path x₁ x₂)
+    (hp : ∀ t, p t ∈ S) (hq : ∀ t, q t ∈ S) :
+    ∀ t, (p.trans q) t ∈ S := by
+  intro t
+  have ht : (p.trans q) t ∈ Set.range (p.trans q) := ⟨t, rfl⟩
+  have hUnion : (p.trans q) t ∈ Set.range p ∪ Set.range q := by
+    simpa [Path.trans_range] using ht
+  rcases hUnion with hpRange | hqRange
+  · rcases hpRange with ⟨s, hs⟩
+    simpa [← hs] using hp s
+  · rcases hqRange with ⟨s, hs⟩
+    simpa [← hs] using hq s
+
+/--
+The standard associativity homotopy for path concatenation stays inside a set
+when each of the three input paths stays inside that set.  This is the
+contained normalization step needed before finite cover contractions can stop
+erasing `Path.Homotopic.trans_assoc`.
+-/
+theorem path_transAssoc_forall_mem_of_forall_mem
+    {X : Type u} [TopologicalSpace X] {S : Set X}
+    {x₀ x₁ x₂ x₃ : X}
+    (p : Path x₀ x₁) (q : Path x₁ x₂) (r : Path x₂ x₃)
+    (hp : ∀ t, p t ∈ S) (hq : ∀ t, q t ∈ S) (hr : ∀ t, r t ∈ S) :
+    ∀ t, Path.Homotopy.transAssoc p q r t ∈ S := by
+  intro t
+  have hqr : ∀ s, (q.trans r) s ∈ S :=
+    path_trans_forall_mem_of_forall_mem q r hq hr
+  have htarget : ∀ s, (p.trans (q.trans r)) s ∈ S :=
+    path_trans_forall_mem_of_forall_mem p (q.trans r) hp hqr
+  change (p.trans (q.trans r)) _ ∈ S
+  exact htarget _
+
+/--
 Finite path concatenation can be split after a block of `L` segments even when
 the ambient length is only propositionally equal to `L + R`; the resulting
 endpoint cast records the arithmetic alignment of the split suffix.
