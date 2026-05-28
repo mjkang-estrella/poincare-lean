@@ -4795,6 +4795,58 @@ theorem twoSetOpenCover_basedLoop_nullhomotopic
     (U := U) (V := V) hbase γ t h0 h1 hchoice
 
 /--
+A two-set cover by path-connected members with a shared basepoint is
+path-connected.  The paths in the cover members are transported through the
+subtype inclusions and then concatenated through the common basepoint.
+-/
+theorem twoSetOpenCover_pathConnectedSpace
+    {X : Type u} [TopologicalSpace X] {U V : Set X} {basepoint : X}
+    [PathConnectedSpace U] [PathConnectedSpace V]
+    (hcover : U ∪ V = Set.univ) (hbase : basepoint ∈ U ∩ V) :
+    PathConnectedSpace X := by
+  refine ⟨⟨basepoint⟩, ?_⟩
+  intro x y
+  have hxUV : x ∈ U ∪ V := by
+    rw [hcover]
+    trivial
+  have hyUV : y ∈ U ∪ V := by
+    rw [hcover]
+    trivial
+  have hxbase : Joined x basepoint := by
+    rcases hxUV with hxU | hxV
+    · rcases (PathConnectedSpace.joined (⟨x, hxU⟩ : U) ⟨basepoint, hbase.1⟩) with ⟨p⟩
+      exact ⟨p.map continuous_subtype_val⟩
+    · rcases (PathConnectedSpace.joined (⟨x, hxV⟩ : V) ⟨basepoint, hbase.2⟩) with ⟨p⟩
+      exact ⟨p.map continuous_subtype_val⟩
+  have hybase : Joined y basepoint := by
+    rcases hyUV with hyU | hyV
+    · rcases (PathConnectedSpace.joined (⟨y, hyU⟩ : U) ⟨basepoint, hbase.1⟩) with ⟨p⟩
+      exact ⟨p.map continuous_subtype_val⟩
+    · rcases (PathConnectedSpace.joined (⟨y, hyV⟩ : V) ⟨basepoint, hbase.2⟩) with ⟨p⟩
+      exact ⟨p.map continuous_subtype_val⟩
+  exact hxbase.trans hybase.symm
+
+/--
+The simply-connected form of the two-set open-cover Van Kampen theorem.  The
+cover gives path-connectedness of the ambient union, and the existing two-set
+loop theorem null-homotopes every loop at the shared basepoint.
+-/
+theorem twoSetOpenCover_simplyConnectedSpace
+    {X : Type u} [TopologicalSpace X] {U V : Set X} {basepoint : X}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set X)]
+    (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ)
+    (hbase : basepoint ∈ U ∩ V) :
+    SimplyConnectedSpace X := by
+  have hpc : PathConnectedSpace X :=
+    twoSetOpenCover_pathConnectedSpace (U := U) (V := V)
+      (basepoint := basepoint) hcover hbase
+  rw [simplyConnectedSpace_iff_pathConnectedSpace_and_basedLoopNullhomotopy basepoint]
+  exact ⟨hpc, fun γ =>
+    twoSetOpenCover_basedLoop_nullhomotopic
+      (U := U) (V := V) hU hV hcover hbase γ⟩
+
+/--
 A path in one cover member, followed by a finite block in the other member,
 then a return path in the first member and a final closing path in the other
 member, is nullhomotopic.  The middle block is replaced through the overlap
