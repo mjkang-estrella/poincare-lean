@@ -3700,6 +3700,22 @@ theorem pathQuotientSubsingleton_of_pathConnectedSpace_and_basedFundamentalGroup
   exact ((simply_connected_iff_paths_homotopic).mp hSC).2
 
 /--
+In a path-connected space, triviality of `π₁` at one basepoint collapses all
+path-homotopy quotients.
+-/
+theorem pathQuotientSubsingleton_of_pathConnectedSpace_and_basedPiOneSubsingleton
+    {Y : Type u} [TopologicalSpace Y] (basepoint : Y)
+    [PathConnectedSpace Y]
+    (h : Subsingleton (HomotopyGroup.Pi 1 Y basepoint)) :
+    ∀ x y : Y, Subsingleton (Path.Homotopic.Quotient x y) := by
+  have hfg : Subsingleton (FundamentalGroup Y basepoint) :=
+    ((HomotopyGroup.pi1EquivFundamentalGroup
+      (X := Y) (x := basepoint)).subsingleton_congr).mp h
+  exact
+    pathQuotientSubsingleton_of_pathConnectedSpace_and_basedFundamentalGroupSubsingleton
+      basepoint hfg
+
+/--
 In a path-connected space, triviality of `π₁` at one basepoint collapses
 `π₁` at every basepoint.
 -/
