@@ -4964,6 +4964,65 @@ piece stays in either the preferred member or the opposite member, the
 all-preferred and terminal first-opposite-run cases close directly; otherwise a
 first return to the preferred member is delegated to a shorter-tail hypothesis.
 -/
+theorem twoSetOpenCover_sameHead_firstOppositeRun_terminal_or_return_tail_induction_homotopy_refl_forall_mem_of_mapsTo
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {N : ℕ} {x₀ : Y}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set Y)]
+    (tailPts : Fin (N + 1) → Y)
+    (tailSegs : (k : Fin N) →
+      Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last N) = x₀)
+    (hp : Set.range p ⊆ U)
+    (hchoice : ∀ k : Fin N,
+      Set.range (tailSegs k) ⊆ U ∨ Set.range (tailSegs k) ⊆ V)
+    (hreturn : ∀ {start stop : Fin N}, start.val < stop.val →
+      (∀ j : Fin N, j.val < start.val →
+        Set.range (tailSegs j) ⊆ U) →
+      Set.range (tailSegs stop) ⊆ U →
+      (∀ j : Fin N, start.val ≤ j.val → j.val < stop.val →
+        Set.range (tailSegs j) ⊆ V) →
+      (∀ r : Fin (N - (stop.val + 1)),
+        Set.range (tailSegs ⟨stop.val + 1 + r.val,
+          by
+            have hs : stop.val < N := stop.isLt
+            have hr : r.val < N - (stop.val + 1) := r.isLt
+            omega⟩) ⊆ U ∨
+        Set.range (tailSegs ⟨stop.val + 1 + r.val,
+          by
+            have hs : stop.val < N := stop.isLt
+            have hr : r.val < N - (stop.val + 1) := r.isLt
+            omega⟩) ⊆ V) →
+      ∃ H : (p.trans (Path.concat tailPts tailSegs)).Homotopy
+          ((Path.refl x₀).cast rfl hclose),
+        ∀ t, H t ∈ U ∪ V) :
+    ∃ H : (p.trans (Path.concat tailPts tailSegs)).Homotopy
+        ((Path.refl x₀).cast rfl hclose),
+      ∀ t, H t ∈ U ∪ V := by
+  rcases finite_first_opposite_run_or_all_preferred_with_tail_choice
+      (Preferred := fun k : Fin N => Set.range (tailSegs k) ⊆ U)
+      (Opposite := fun k : Fin N => Set.range (tailSegs k) ⊆ V)
+      hchoice with hAll | hRun
+  · rcases twoSetOpenCover_sameHead_sameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo
+      (U := U) tailPts tailSegs p hclose hp hAll with
+      ⟨H, hH⟩
+    exact ⟨H, fun t => Or.inl (hH t)⟩
+  · rcases hRun with ⟨start, _hOppStart, _hNotPrefStart, hBefore, hRunOr⟩
+    rcases hRunOr with hTerminal | hStop
+    · exact
+        twoSetOpenCover_sameHead_terminalOppositeRun_tail_concat_cast_homotopy_refl_forall_mem_of_mapsTo
+          (U := U) (V := V) (start := start) tailPts tailSegs p hclose hp
+          hBefore (fun j hj => (hTerminal j hj).1)
+    · rcases hStop with ⟨stop, hstartstop, hPrefStop, hrun, htail⟩
+      exact hreturn hstartstop hBefore hPrefStop
+        (fun j hjle hjlt => (hrun j hjle hjlt).1) htail
+
+/--
+First-opposite-run reduction for arbitrary two-set covers.  If every tail
+piece stays in either the preferred member or the opposite member, the
+all-preferred and terminal first-opposite-run cases close directly; otherwise a
+first return to the preferred member is delegated to a shorter-tail hypothesis.
+-/
 theorem twoSetOpenCover_sameHead_firstOppositeRun_terminal_or_return_tail_induction
     {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {N : ℕ} {x₀ : Y}
     [SimplyConnectedSpace U] [SimplyConnectedSpace V]
