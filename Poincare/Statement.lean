@@ -822,6 +822,18 @@ theorem path_homotopy_cast_forall_mem_of_forall_mem
   change H t ∈ S
   exact hH t
 
+/-- Removing a leading constant path by `Path.Homotopy.reflTrans` preserves containment. -/
+theorem path_homotopy_reflTrans_forall_mem_of_forall_mem
+    {X : Type u} [TopologicalSpace X] {S : Set X} {x₀ x₁ : X}
+    (p : Path x₀ x₁) (hp : ∀ t, p t ∈ S) :
+    ∀ t, Path.Homotopy.reflTrans p t ∈ S := by
+  intro t
+  simp only [Path.Homotopy.reflTrans, Path.Homotopy.transRefl,
+    Path.Homotopy.cast_apply, Path.Homotopy.symm_apply,
+    Path.Homotopy.symm₂_apply]
+  change p _ ∈ S
+  exact hp _
+
 /--
 Left reassociation across four successive path factors stays inside a set when
 each factor stays inside that set.
@@ -6079,6 +6091,92 @@ theorem twoSetOpenCover_sameHead_firstOppositeRun_tail_induction
         omega⟩
   simpa [afterPts, afterSegs] using
     ih C hClt afterPts afterSegs q hafterClose hq hafterChoice
+
+/--
+A finite source-choice subdivision of a based loop contracts in any two-set
+cover whose two members are simply connected and whose overlap is path
+connected.  This is the generic finite-word Van Kampen collapse consumed by the
+stereographic cover proof.
+-/
+theorem twoSetOpenCover_basedLoop_fullConcat_homotopy_refl_forall_mem_of_sourceChoice
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {basepoint : Y}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set Y)]
+    (hbaseU : basepoint ∈ U)
+    (γ : Path basepoint basepoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval)
+    (h0 : t 0 = 0) (h1 : t (Fin.last N) = 1)
+    (hchoice : ∀ k : Fin N,
+      Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆ U ∨
+        Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆ V) :
+    ∃ H :
+      (Path.concat (γ ∘ t) (fun k : Fin N =>
+        γ.subpath (t k.castSucc) (t k.succ))).Homotopy
+      ((Path.refl basepoint).cast
+        (by simp [h0, γ.source])
+        (by simp [h1, γ.target])),
+      ∀ s, H s ∈ U ∪ V := by
+  let full : Path ((γ ∘ t) 0) ((γ ∘ t) (Fin.last N)) :=
+    Path.concat (γ ∘ t) (fun k : Fin N =>
+      γ.subpath (t k.castSucc) (t k.succ))
+  have hstartU : (γ ∘ t) 0 ∈ U := by
+    simpa [Function.comp_def, h0, γ.source] using hbaseU
+  have hsegUV : ∀ k : Fin N,
+      Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆ U ∪ V := by
+    intro k y hy
+    rcases hchoice k with hU | hV
+    · exact Or.inl (hU hy)
+    · exact Or.inr (hV hy)
+  have hfullRange : Set.range full ⊆ U ∪ V := by
+    simpa [full] using
+      path_concat_range_subset_of_mapsTo (γ ∘ t)
+        (fun k : Fin N => γ.subpath (t k.castSucc) (t k.succ))
+        (Or.inl hstartU) hsegUV
+  have hfullUV : ∀ s, full s ∈ U ∪ V := fun s => hfullRange ⟨s, rfl⟩
+  have hp : Set.range (Path.refl ((γ ∘ t) 0)) ⊆ U := by
+    intro y hy
+    rcases hy with ⟨_s, rfl⟩
+    exact hstartU
+  have hclose : (γ ∘ t) (Fin.last N) = (γ ∘ t) 0 := by
+    dsimp [Function.comp_def]
+    rw [h1, h0]
+    exact γ.target.trans γ.source.symm
+  rcases twoSetOpenCover_sameHead_firstOppositeRun_tail_induction_homotopy_refl_forall_mem_of_mapsTo
+      (U := U) (V := V)
+      (γ ∘ t)
+      (fun k : Fin N => γ.subpath (t k.castSucc) (t k.succ))
+      (Path.refl ((γ ∘ t) 0))
+      hclose
+      hp
+      hchoice with
+    ⟨Hcollapse, hHcollapse⟩
+  let Hlead : full.Homotopy ((Path.refl ((γ ∘ t) 0)).trans full) :=
+    (Path.Homotopy.reflTrans full).symm
+  have hHlead : ∀ s, Hlead s ∈ U ∪ V :=
+    path_homotopy_symm_forall_mem_of_forall_mem
+      (Path.Homotopy.reflTrans full)
+      (path_homotopy_reflTrans_forall_mem_of_forall_mem full hfullUV)
+  let Hdirect : full.Homotopy ((Path.refl ((γ ∘ t) 0)).cast rfl hclose) :=
+    Hlead.trans Hcollapse
+  have hHdirect : ∀ s, Hdirect s ∈ U ∪ V :=
+    path_homotopy_trans_forall_mem_of_forall_mem Hlead Hcollapse hHlead hHcollapse
+  have htargetEq :
+      ((Path.refl ((γ ∘ t) 0)).cast rfl hclose) =
+        ((Path.refl basepoint).cast
+          (by simp [h0, γ.source])
+          (by simp [h1, γ.target])) := by
+    apply Path.ext
+    funext _s
+    change (γ ∘ t) 0 = basepoint
+    simp [h0, γ.source]
+  let Hfinal : full.Homotopy
+      ((Path.refl basepoint).cast
+        (by simp [h0, γ.source])
+        (by simp [h1, γ.target])) :=
+    Hdirect.cast rfl htargetEq
+  have hHfinal : ∀ s, Hfinal s ∈ U ∪ V :=
+    path_homotopy_cast_forall_mem_of_forall_mem Hdirect rfl htargetEq hHdirect
+  exact ⟨Hfinal, hHfinal⟩
 
 /--
 A finite source-choice subdivision of a based loop contracts in any two-set
