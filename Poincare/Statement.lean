@@ -1452,6 +1452,44 @@ theorem threeSphere_stereographic_source_eq_compl_singleton_eq
       stereographic'_source v := by
   apply Subsingleton.elim
 
+/--
+A point of the concrete unit `ThreeSphere` is never equal to its antipode.
+This is the geometric separation input behind the antipodal stereographic
+cover.
+-/
+theorem threeSphere_antipodal_ne_self
+    (v : ThreeSphere) : -v ≠ v := by
+  intro h
+  have hv :
+      (v : EuclideanSpace ℝ (Fin 4)) =
+        -(v : EuclideanSpace ℝ (Fin 4)) := by
+    exact (congrArg Subtype.val h).symm
+  have hvzero : (v : EuclideanSpace ℝ (Fin 4)) = 0 := by
+    have hsum :
+        (v : EuclideanSpace ℝ (Fin 4)) +
+            (v : EuclideanSpace ℝ (Fin 4)) =
+          0 := by
+      nth_rewrite 2 [hv]
+      exact add_neg_cancel _
+    have htwo : (2 : ℝ) • (v : EuclideanSpace ℝ (Fin 4)) = 0 := by
+      simpa [two_smul] using hsum
+    exact (smul_eq_zero.mp htwo).resolve_left (by norm_num)
+  have hvnorm : ‖(v : EuclideanSpace ℝ (Fin 4))‖ = 1 :=
+    norm_eq_of_mem_sphere v
+  have : (0 : ℝ) = 1 := by
+    rw [← hvnorm, hvzero, norm_zero]
+  norm_num at this
+
+/--
+The antipode of a point on `ThreeSphere` lies in the stereographic chart source
+centered at that point.
+-/
+theorem threeSphere_antipode_mem_stereographic_source
+    (v : ThreeSphere) :
+    -v ∈ (stereographic' 3 v).source := by
+  rw [threeSphere_stereographic_source_eq_compl_singleton]
+  exact threeSphere_antipodal_ne_self v
+
 /-- A stereographic source is an open subset of the target sphere. -/
 theorem threeSphere_stereographic_source_isOpen
     (v : ThreeSphere) :
@@ -1472,31 +1510,17 @@ theorem threeSphere_stereographic_antipodal_sources_cover
     (v : ThreeSphere) :
     (stereographic' 3 v).source ∪ (stereographic' 3 (-v)).source =
       Set.univ := by
-  rw [threeSphere_stereographic_source_eq_compl_singleton,
-    threeSphere_stereographic_source_eq_compl_singleton]
   ext x
-  simp only [Set.mem_union, Set.mem_compl_iff, Set.mem_singleton_iff,
-    Set.mem_univ, iff_true]
-  by_cases hx : x = v
-  · right
-    intro hxneg
-    have hv : (v : EuclideanSpace ℝ (Fin 4)) = -(v : EuclideanSpace ℝ (Fin 4)) := by
-      exact congrArg Subtype.val (hx.symm.trans hxneg)
-    have hvzero : (v : EuclideanSpace ℝ (Fin 4)) = 0 := by
-      have hsum :
-          (v : EuclideanSpace ℝ (Fin 4)) + (v : EuclideanSpace ℝ (Fin 4)) =
-            0 := by
-        nth_rewrite 2 [hv]
-        exact add_neg_cancel _
-      have htwo : (2 : ℝ) • (v : EuclideanSpace ℝ (Fin 4)) = 0 := by
-        simpa [two_smul] using hsum
-      exact (smul_eq_zero.mp htwo).resolve_left (by norm_num)
-    have hvnorm : ‖(v : EuclideanSpace ℝ (Fin 4))‖ = 1 :=
-      norm_eq_of_mem_sphere v
-    have : (0 : ℝ) = 1 := by
-      rw [← hvnorm, hvzero, norm_zero]
-    norm_num at this
-  · exact Or.inl hx
+  constructor
+  · intro _hx
+    trivial
+  · intro _hx
+    by_cases hx : x = v
+    · right
+      simpa [hx] using threeSphere_antipode_mem_stereographic_source (-v)
+    · left
+      rw [threeSphere_stereographic_source_eq_compl_singleton]
+      exact hx
 
 /--
 The antipodal-source cover statement is exactly the complement-of-singleton
@@ -2776,12 +2800,7 @@ theorem threeSphere_actualOverlap_nonempty_eq :
 /-- The south pole lies in the north-pole stereographic source. -/
 theorem threeSphere_southPole_mem_northPole_stereographic_source :
     (-threeSphere_northPole) ∈ (stereographic' 3 threeSphere_northPole).source := by
-  rw [threeSphere_stereographic_source_eq_compl_singleton]
-  intro h
-  have hcoord := congrArg
-    (fun w : EuclideanSpace ℝ (Fin 4) => w 0)
-    (congrArg Subtype.val h)
-  norm_num [threeSphere_northPole] at hcoord
+  exact threeSphere_antipode_mem_stereographic_source threeSphere_northPole
 
 /--
 The south-pole source-membership proof is the coordinate separation of the
