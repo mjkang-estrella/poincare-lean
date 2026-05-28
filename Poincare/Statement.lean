@@ -256,17 +256,18 @@ theorem threeSphere_stereographic_source_contained_loop_nullhomotopic
   simpa [hγmap, hreflmap] using hmap
 
 /--
-Two paths in the target sphere with the same endpoints are homotopic whenever
-both images stay inside one stereographic chart source.  This is the path-piece
-form of chart-source simple-connectedness needed before replacing
-source-contained subpaths in finite concatenations.
+Two paths in the target sphere with the same endpoints are homotopic through a
+homotopy that stays inside one stereographic chart source whenever both path
+images stay inside that source.  This is the contained path-piece form of
+chart-source simple-connectedness needed before replacing source-contained
+subpaths in finite concatenations.
 -/
-theorem threeSphere_stereographic_source_contained_paths_homotopic
+theorem threeSphere_stereographic_source_contained_paths_homotopy_forall_mem
     (v : ThreeSphere) {x y : ThreeSphere}
     (p q : Path x y)
     (hp : Set.range p ⊆ (stereographic' 3 v).source)
     (hq : Set.range q ⊆ (stereographic' 3 v).source) :
-    Path.Homotopic p q := by
+    ∃ F : p.Homotopy q, ∀ t, F t ∈ (stereographic' 3 v).source := by
   have hx : x ∈ (stereographic' 3 v).source :=
     hp ⟨0, p.source⟩
   have hy : y ∈ (stereographic' 3 v).source :=
@@ -289,20 +290,46 @@ theorem threeSphere_stereographic_source_contained_paths_homotopic
       exact Subtype.ext q.source
     target' := by
       exact Subtype.ext q.target }
-  let incl : C((stereographic' 3 v).source, ThreeSphere) :=
-    ⟨Subtype.val, continuous_subtype_val⟩
-  have hsource : Path.Homotopic pSource qSource := by
-    letI : SimplyConnectedSpace (stereographic' 3 v).source :=
-      threeSphere_stereographic_source_simplyConnectedSpace v
-    exact SimplyConnectedSpace.paths_homotopic pSource qSource
-  have hmap := Path.Homotopic.map hsource incl
-  have hpmap : pSource.map incl.continuous = p := by
-    ext t
-    rfl
-  have hqmap : qSource.map incl.continuous = q := by
-    ext t
-    rfl
-  simpa [hpmap, hqmap] using hmap
+  letI : SimplyConnectedSpace (stereographic' 3 v).source :=
+    threeSphere_stereographic_source_simplyConnectedSpace v
+  rcases (SimplyConnectedSpace.paths_homotopic pSource qSource) with ⟨Fsub⟩
+  refine ⟨{
+    toFun := fun t => (Fsub t).1
+    continuous_toFun := by fun_prop
+    map_zero_left := by
+      intro t
+      change (Fsub (0, t)).1 = p t
+      exact congrArg Subtype.val (Fsub.map_zero_left t)
+    map_one_left := by
+      intro t
+      change (Fsub (1, t)).1 = q t
+      exact congrArg Subtype.val (Fsub.map_one_left t)
+    prop' := by
+      intro t z hz
+      rcases hz with hz | hz
+      · rw [hz]
+        exact congrArg Subtype.val (Fsub.prop' t 0 (by simp))
+      · rw [Set.mem_singleton_iff] at hz
+        rw [hz]
+        exact congrArg Subtype.val (Fsub.prop' t 1 (by simp))
+  }, ?_⟩
+  intro t
+  exact (Fsub t).2
+
+/--
+Two paths in the target sphere with the same endpoints are homotopic whenever
+both images stay inside one stereographic chart source.  This forgets the
+source-containment witness from the stronger contained-homotopy theorem.
+-/
+theorem threeSphere_stereographic_source_contained_paths_homotopic
+    (v : ThreeSphere) {x y : ThreeSphere}
+    (p q : Path x y)
+    (hp : Set.range p ⊆ (stereographic' 3 v).source)
+    (hq : Set.range q ⊆ (stereographic' 3 v).source) :
+    Path.Homotopic p q := by
+  rcases threeSphere_stereographic_source_contained_paths_homotopy_forall_mem
+    v p q hp hq with ⟨F, _hF⟩
+  exact ⟨F⟩
 
 /--
 A finite concatenation of paths whose pieces all stay inside a set also stays
