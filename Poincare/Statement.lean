@@ -332,6 +332,17 @@ theorem threeSphere_stereographic_source_contained_paths_homotopic
   exact ⟨F⟩
 
 /--
+The concatenation of two paths stays in a set when the image of each input path
+stays in that set.
+-/
+theorem path_trans_range_subset_of_range_subset
+    {Y : Type u} [TopologicalSpace Y] {S : Set Y} {x y z : Y}
+    (p : Path x y) (q : Path y z)
+    (hp : Set.range p ⊆ S) (hq : Set.range q ⊆ S) :
+    Set.range (p.trans q) ⊆ S := by
+  simpa [Path.trans_range] using Set.union_subset hp hq
+
+/--
 A finite concatenation of paths whose pieces all stay inside a set also stays
 inside that set.
 -/
@@ -348,16 +359,13 @@ theorem path_concat_range_subset_of_mapsTo
       rcases hx with ⟨_t, rfl⟩
       simpa using hbase
   | succ N ih =>
-      rw [Path.concat_succ]
-      intro x hx
-      have hx' :
-          x ∈ Set.range (Path.concat (p ∘ Fin.castSucc) (fun k => F k.castSucc)) ∪
-            Set.range (F (Fin.last N)) := by
-        simpa [Path.trans_range] using hx
-      rcases hx' with hx | hx
-      · exact ih (p ∘ Fin.castSucc) (fun k => F k.castSucc)
-          hbase (fun k => hF k.castSucc) hx
-      · exact hF (Fin.last N) hx
+    rw [Path.concat_succ]
+    exact path_trans_range_subset_of_range_subset
+      (Path.concat (p ∘ Fin.castSucc) (fun k => F k.castSucc))
+      (F (Fin.last N))
+      (ih (p ∘ Fin.castSucc) (fun k => F k.castSucc) hbase
+        (fun k => hF k.castSucc))
+      (hF (Fin.last N))
 
 /--
 If a finite path concatenation stays inside a set, then each original segment
@@ -468,14 +476,8 @@ theorem threeSphere_stereographic_source_head_concat_tail_nullhomotopic
     threeSphere_stereographic_source_concat_range_subset v p F hbase hF
   have hloop :
       Set.range (head.trans (Path.concat p F)) ⊆
-        (stereographic' 3 v).source := by
-    intro z hz
-    have hz' :
-        z ∈ Set.range head ∪ Set.range (Path.concat p F) := by
-      simpa [Path.trans_range] using hz
-    rcases hz' with hzHead | hzTail
-    · exact hhead hzHead
-    · exact htail hzTail
+        (stereographic' 3 v).source :=
+    path_trans_range_subset_of_range_subset head (Path.concat p F) hhead htail
   have hx₀ : x₀ ∈ (stereographic' 3 v).source :=
     hhead ⟨0, head.source⟩
   have hrefl :
@@ -4556,23 +4558,10 @@ theorem twoSetOpenCover_sameHead_sameTail_concat_cast_homotopy_refl_forall_mem_o
   have htail :
       Set.range (Path.concat tailPts tailSegs) ⊆ U :=
     path_concat_range_subset_of_mapsTo tailPts tailSegs hbase hTail
-  have hloop :
-      ∀ t, (p.trans (Path.concat tailPts tailSegs)) t ∈ U := by
-    intro t
-    have ht :
-        (p.trans (Path.concat tailPts tailSegs)) t ∈
-          Set.range (p.trans (Path.concat tailPts tailSegs)) := ⟨t, rfl⟩
-    have ht' :
-        (p.trans (Path.concat tailPts tailSegs)) t ∈
-          Set.range p ∪ Set.range (Path.concat tailPts tailSegs) := by
-      simpa [Path.trans_range] using ht
-    rcases ht' with htHead | htTail
-    · exact hp htHead
-    · exact htail htTail
   have hloopRange :
-      Set.range (p.trans (Path.concat tailPts tailSegs)) ⊆ U := by
-    rintro _ ⟨t, rfl⟩
-    exact hloop t
+      Set.range (p.trans (Path.concat tailPts tailSegs)) ⊆ U :=
+    path_trans_range_subset_of_range_subset p (Path.concat tailPts tailSegs)
+      hp htail
   have hx₀ : x₀ ∈ U :=
     hp ⟨0, p.source⟩
   have hrefl :
@@ -4816,16 +4805,8 @@ theorem twoSetOpenCover_sameSideBlock_homotopy_to_overlapBlock_forall_mem_of_map
     · exact hHprefix _
     · exact Or.inl (hr ⟨_, rfl⟩)
   have htargetRange : Set.range ((p.trans q).trans r) ⊆ U := by
-    intro z hz
-    have hz' : z ∈ Set.range (p.trans q) ∪ Set.range r := by
-      simpa [Path.trans_range] using hz
-    rcases hz' with hzMid | hzR
-    · have hz'' : z ∈ Set.range p ∪ Set.range q := by
-        simpa [Path.trans_range] using hzMid
-      rcases hz'' with hzP | hzQ
-      · exact hp hzP
-      · exact hqU hzQ
-    · exact hr hzR
+    exact path_trans_range_subset_of_range_subset (p.trans q) r
+      (path_trans_range_subset_of_range_subset p q hp hqU) hr
   exact ⟨q, hqU, ⟨Hreplace, hHreplace⟩, htargetRange⟩
 
 /--
@@ -4892,12 +4873,9 @@ theorem twoSetOpenCover_samePrefixOppositeRunSameReturn_tail_induction_step_homo
     path_concat_range_subset_of_mapsTo prefPts prefSegs hPrefBase hPref
   have hprefPath :
       Set.range prefPath ⊆ U := by
-    intro z hz
-    have hz' : z ∈ Set.range p ∪ Set.range (Path.concat prefPts prefSegs) := by
-      simpa [prefPath, Path.trans_range] using hz
-    rcases hz' with hzP | hzPref
-    · exact hp hzP
-    · exact hprefConcat hzPref
+    dsimp [prefPath]
+    exact path_trans_range_subset_of_range_subset p
+      (Path.concat prefPts prefSegs) hp hprefConcat
   have hprefPathCast :
       Set.range (prefPath.cast rfl hjoin) ⊆ U := by
     intro z hz
@@ -4987,12 +4965,9 @@ theorem twoSetOpenCover_samePrefixOppositeRunSameReturn_tail_induction_step_of_m
     path_concat_range_subset_of_mapsTo prefPts prefSegs hPrefBase hPref
   have hprefPath :
       Set.range prefPath ⊆ U := by
-    intro z hz
-    have hz' : z ∈ Set.range p ∪ Set.range (Path.concat prefPts prefSegs) := by
-      simpa [prefPath, Path.trans_range] using hz
-    rcases hz' with hzP | hzPref
-    · exact hp hzP
-    · exact hprefConcat hzPref
+    dsimp [prefPath]
+    exact path_trans_range_subset_of_range_subset p
+      (Path.concat prefPts prefSegs) hp hprefConcat
   have hprefPathCast :
       Set.range (prefPath.cast rfl hjoin) ⊆ U := by
     intro z hz
