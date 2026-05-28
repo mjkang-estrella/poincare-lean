@@ -3937,10 +3937,10 @@ theorem twoSetOpenCover_twoPieceLoop_cast_nullhomotopic_of_mapsTo
 
 /--
 A finite block in one member of a two-set cover, bracketed by paths in the
-other member, can be replaced by an overlap path while keeping the bracketed
-path in the bracketing member.
+other member, can be replaced by an overlap path through an actual homotopy
+whose image stays in the union of the two cover members.
 -/
-theorem twoSetOpenCover_sameSideBlock_homotopic_to_overlapBlock_of_mapsTo
+theorem twoSetOpenCover_sameSideBlock_homotopy_to_overlapBlock_forall_mem_of_mapsTo
     {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {N : ℕ}
     {x₀ x₃ : Y}
     [SimplyConnectedSpace V] [PathConnectedSpace (U ∩ V : Set Y)]
@@ -3953,7 +3953,9 @@ theorem twoSetOpenCover_sameSideBlock_homotopic_to_overlapBlock_of_mapsTo
     (hr : Set.range r ⊆ U) :
     ∃ q : Path (m 0) (m (Fin.last N)),
       Set.range q ⊆ U ∧
-      Path.Homotopic ((p.trans (Path.concat m F)).trans r) ((p.trans q).trans r) ∧
+      (∃ H : ((p.trans (Path.concat m F)).trans r).Homotopy
+          ((p.trans q).trans r),
+        ∀ t, H t ∈ U ∪ V) ∧
       Set.range ((p.trans q).trans r) ⊆ U := by
   have hmiddle : Set.range (Path.concat m F) ⊆ V :=
     path_concat_range_subset_of_mapsTo m F hmBase hF
@@ -3978,15 +3980,31 @@ theorem twoSetOpenCover_sameSideBlock_homotopic_to_overlapBlock_of_mapsTo
     intro z hz
     rcases hz with ⟨s, rfl⟩
     exact (overlapPath s).2.2
-  have hreplaceMiddle : Path.Homotopic (Path.concat m F) q :=
-    paths_homotopic_of_mapsTo_simplyConnectedSubtype
-      hstartV hendV (Path.concat m F) q
-      (fun t => hmiddle ⟨t, rfl⟩) (fun t => hqV ⟨t, rfl⟩)
-  have hreplace :
-      Path.Homotopic ((p.trans (Path.concat m F)).trans r) ((p.trans q).trans r) :=
-    Path.Homotopic.hcomp
-      (Path.Homotopic.hcomp (Path.Homotopic.refl p) hreplaceMiddle)
-      (Path.Homotopic.refl r)
+  have hVSC : IsSimplyConnected V := ‹SimplyConnectedSpace V›
+  rcases path_homotopy_forall_mem_of_isSimplyConnected hVSC
+      (Path.concat m F) q
+      (fun t => hmiddle ⟨t, rfl⟩)
+      (fun t => hqV ⟨t, rfl⟩) with
+    ⟨Hmiddle, hHmiddle⟩
+  let Hprefix : (p.trans (Path.concat m F)).Homotopy (p.trans q) :=
+    (Path.Homotopy.refl p).hcomp Hmiddle
+  have hHprefix : ∀ t, Hprefix t ∈ U ∪ V := by
+    intro t
+    dsimp [Hprefix]
+    rw [Path.Homotopy.hcomp_apply]
+    split_ifs
+    · exact Or.inl (hp ⟨_, rfl⟩)
+    · exact Or.inr (hHmiddle _)
+  let Hreplace : ((p.trans (Path.concat m F)).trans r).Homotopy
+      ((p.trans q).trans r) :=
+    Hprefix.hcomp (Path.Homotopy.refl r)
+  have hHreplace : ∀ t, Hreplace t ∈ U ∪ V := by
+    intro t
+    dsimp [Hreplace]
+    rw [Path.Homotopy.hcomp_apply]
+    split_ifs
+    · exact hHprefix _
+    · exact Or.inl (hr ⟨_, rfl⟩)
   have htargetRange : Set.range ((p.trans q).trans r) ⊆ U := by
     intro z hz
     have hz' : z ∈ Set.range (p.trans q) ∪ Set.range r := by
@@ -3998,7 +4016,32 @@ theorem twoSetOpenCover_sameSideBlock_homotopic_to_overlapBlock_of_mapsTo
       · exact hp hzP
       · exact hqU hzQ
     · exact hr hzR
-  exact ⟨q, hqU, hreplace, htargetRange⟩
+  exact ⟨q, hqU, ⟨Hreplace, hHreplace⟩, htargetRange⟩
+
+/--
+A finite block in one member of a two-set cover, bracketed by paths in the
+other member, can be replaced by an overlap path while keeping the bracketed
+path in the bracketing member.
+-/
+theorem twoSetOpenCover_sameSideBlock_homotopic_to_overlapBlock_of_mapsTo
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {N : ℕ}
+    {x₀ x₃ : Y}
+    [SimplyConnectedSpace V] [PathConnectedSpace (U ∩ V : Set Y)]
+    (m : Fin (N + 1) → Y)
+    (p : Path x₀ (m 0))
+    (F : (k : Fin N) → Path (m k.castSucc) (m k.succ))
+    (r : Path (m (Fin.last N)) x₃)
+    (hp : Set.range p ⊆ U) (hmBase : m 0 ∈ V)
+    (hF : ∀ k : Fin N, Set.range (F k) ⊆ V)
+    (hr : Set.range r ⊆ U) :
+    ∃ q : Path (m 0) (m (Fin.last N)),
+      Set.range q ⊆ U ∧
+      Path.Homotopic ((p.trans (Path.concat m F)).trans r) ((p.trans q).trans r) ∧
+      Set.range ((p.trans q).trans r) ⊆ U := by
+  rcases twoSetOpenCover_sameSideBlock_homotopy_to_overlapBlock_forall_mem_of_mapsTo
+      (U := U) (V := V) m p F r hp hmBase hF hr with
+    ⟨q, hqU, ⟨H, _hH⟩, htargetRange⟩
+  exact ⟨q, hqU, ⟨H⟩, htargetRange⟩
 
 /--
 Non-terminal first-opposite-run step with an arbitrary finite preferred prefix:
@@ -4072,6 +4115,46 @@ theorem twoSetOpenCover_samePrefixOppositeRunSameReturn_tail_induction_step_of_m
 /--
 A finite block in one member of a two-set cover, bracketed by paths in the
 other member and closing up to a loop, is nullhomotopic after replacing the
+block through the overlap and contracting inside the bracketing member, through
+an actual homotopy that stays in the union of the two cover members.
+-/
+theorem twoSetOpenCover_sameSideBlock_cast_homotopy_refl_forall_mem_of_mapsTo
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {N : ℕ}
+    {x₀ x₃ : Y}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set Y)]
+    (m : Fin (N + 1) → Y)
+    (p : Path x₀ (m 0))
+    (F : (k : Fin N) → Path (m k.castSucc) (m k.succ))
+    (r : Path (m (Fin.last N)) x₃) (hclose : x₃ = x₀)
+    (hp : Set.range p ⊆ U) (hmBase : m 0 ∈ V)
+    (hF : ∀ k : Fin N, Set.range (F k) ⊆ V)
+    (hr : Set.range r ⊆ U) :
+    ∃ H : ((p.trans (Path.concat m F)).trans r).Homotopy
+        ((Path.refl x₀).cast rfl hclose),
+      ∀ t, H t ∈ U ∪ V := by
+  rcases twoSetOpenCover_sameSideBlock_homotopy_to_overlapBlock_forall_mem_of_mapsTo
+      (U := U) (V := V) m p F r hp hmBase hF hr with
+    ⟨q, _hqU, ⟨Hreplace, hHreplace⟩, htargetRange⟩
+  have hx₀U : x₀ ∈ U := hp ⟨0, p.source⟩
+  have hreflU : ∀ t, ((Path.refl x₀).cast rfl hclose) t ∈ U := by
+    intro _t
+    simpa [Path.cast_coe] using hx₀U
+  have hSC : IsSimplyConnected U := ‹SimplyConnectedSpace U›
+  rcases path_homotopy_forall_mem_of_isSimplyConnected hSC
+      ((p.trans q).trans r) ((Path.refl x₀).cast rfl hclose)
+      (fun t => htargetRange ⟨t, rfl⟩) hreflU with
+    ⟨Hcontract, hHcontract⟩
+  refine ⟨Hreplace.trans Hcontract, ?_⟩
+  intro t
+  rw [Path.Homotopy.trans_apply]
+  split_ifs
+  · exact hHreplace _
+  · exact Or.inl (hHcontract _)
+
+/--
+A finite block in one member of a two-set cover, bracketed by paths in the
+other member and closing up to a loop, is nullhomotopic after replacing the
 block through the overlap and contracting inside the bracketing member.
 -/
 theorem twoSetOpenCover_sameSideBlock_cast_nullhomotopic_of_mapsTo
@@ -4088,19 +4171,10 @@ theorem twoSetOpenCover_sameSideBlock_cast_nullhomotopic_of_mapsTo
     (hr : Set.range r ⊆ U) :
     Path.Homotopic ((p.trans (Path.concat m F)).trans r)
       ((Path.refl x₀).cast rfl hclose) := by
-  rcases twoSetOpenCover_sameSideBlock_homotopic_to_overlapBlock_of_mapsTo
-      (U := U) (V := V) m p F r hp hmBase hF hr with
-    ⟨q, _hqU, hreplace, htargetRange⟩
-  have hx₀U : x₀ ∈ U := hp ⟨0, p.source⟩
-  have hx₃U : x₃ ∈ U := by
-    simpa [hclose] using hx₀U
-  have hreflU : ∀ t, ((Path.refl x₀).cast rfl hclose) t ∈ U := by
-    intro t
-    simpa [Path.cast_coe] using hx₀U
-  exact hreplace.trans
-    (paths_homotopic_of_mapsTo_simplyConnectedSubtype
-      hx₀U hx₃U ((p.trans q).trans r) ((Path.refl x₀).cast rfl hclose)
-      (fun t => htargetRange ⟨t, rfl⟩) hreflU)
+  rcases twoSetOpenCover_sameSideBlock_cast_homotopy_refl_forall_mem_of_mapsTo
+      (U := U) (V := V) m p F r hclose hp hmBase hF hr with
+    ⟨H, _hH⟩
+  exact ⟨H⟩
 
 /--
 A finite tail made of a block in one cover member followed by a return block
