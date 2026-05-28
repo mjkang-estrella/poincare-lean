@@ -9628,6 +9628,183 @@ theorem threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockS
   exact hsix
 
 /--
+An arbitrary south path followed by north, south, north, south, north, south,
+north, south, and north blocks is null-homotopic.  This is the symmetric
+ten-block arbitrary-head contraction frontier.
+-/
+theorem threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouthNorth_trans_cast_nullhomotopic
+    {M K T R A₀ B₀ C₀ D₀ : ℕ} {x₀ x₃ : ThreeSphere}
+    (m : Fin (M + 1) → ThreeSphere)
+    (p : Path x₀ (m 0))
+    (F : (k : Fin M) → Path (m k.castSucc) (m k.succ))
+    (r : Path (m (Fin.last M)) x₃)
+    (s : Fin (K + 1) → ThreeSphere)
+    (J : (k : Fin K) → Path (s k.castSucc) (s k.succ))
+    (u : Fin (T + 1) → ThreeSphere)
+    (W : (k : Fin T) → Path (u k.castSucc) (u k.succ))
+    (v : Fin (R + 1) → ThreeSphere)
+    (Z : (k : Fin R) → Path (v k.castSucc) (v k.succ))
+    (w : Fin (A₀ + 1) → ThreeSphere)
+    (Y : (k : Fin A₀) → Path (w k.castSucc) (w k.succ))
+    (a : Fin (B₀ + 1) → ThreeSphere)
+    (Q : (k : Fin B₀) → Path (a k.castSucc) (a k.succ))
+    (b : Fin (C₀ + 1) → ThreeSphere)
+    (O : (k : Fin C₀) → Path (b k.castSucc) (b k.succ))
+    (c : Fin (D₀ + 1) → ThreeSphere)
+    (P : (k : Fin D₀) → Path (c k.castSucc) (c k.succ))
+    (hjoinRS : s 0 = x₃)
+    (hjoinSU : u 0 = s (Fin.last K))
+    (hjoinUV : v 0 = u (Fin.last T))
+    (hjoinVW : w 0 = v (Fin.last R))
+    (hjoinWA : a 0 = w (Fin.last A₀))
+    (hjoinAB : b 0 = a (Fin.last B₀))
+    (hjoinBC : c 0 = b (Fin.last C₀))
+    (hclose : c (Fin.last D₀) = x₀)
+    (hp : Set.range p ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hmBase : m 0 ∈ (stereographic' 3 threeSphere_northPole).source)
+    (hF : ∀ k : Fin M,
+      Set.range (F k) ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hr : Set.range r ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hsBase : s 0 ∈ (stereographic' 3 threeSphere_northPole).source)
+    (hJ : ∀ k : Fin K,
+      Set.range (J k) ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (huBase : u 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hW : ∀ k : Fin T,
+      Set.range (W k) ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hvBase : v 0 ∈ (stereographic' 3 threeSphere_northPole).source)
+    (hZ : ∀ k : Fin R,
+      Set.range (Z k) ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hwBase : w 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hY : ∀ k : Fin A₀,
+      Set.range (Y k) ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (haBase : a 0 ∈ (stereographic' 3 threeSphere_northPole).source)
+    (hQ : ∀ k : Fin B₀,
+      Set.range (Q k) ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hbBase : b 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hO : ∀ k : Fin C₀,
+      Set.range (O k) ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hcBase : c 0 ∈ (stereographic' 3 threeSphere_northPole).source)
+    (hP : ∀ k : Fin D₀,
+      Set.range (P k) ⊆ (stereographic' 3 threeSphere_northPole).source) :
+    Path.Homotopic
+      (((((((((p.trans (Path.concat m F)).trans r).trans
+        ((Path.concat s J).cast hjoinRS.symm rfl)).trans
+        ((Path.concat u W).cast hjoinSU.symm rfl)).trans
+        ((Path.concat v Z).cast hjoinUV.symm rfl)).trans
+        ((Path.concat w Y).cast hjoinVW.symm rfl)).trans
+        ((Path.concat a Q).cast hjoinWA.symm rfl)).trans
+        ((Path.concat b O).cast hjoinAB.symm rfl)).trans
+        ((Path.concat c P).cast hjoinBC.symm rfl))
+      ((Path.refl x₀).cast rfl hclose) := by
+  let D : Path x₃ (s (Fin.last K)) := (Path.concat s J).cast hjoinRS.symm rfl
+  let E : Path (s (Fin.last K)) (u (Fin.last T)) :=
+    (Path.concat u W).cast hjoinSU.symm rfl
+  let U : Path (u (Fin.last T)) (v (Fin.last R)) :=
+    (Path.concat v Z).cast hjoinUV.symm rfl
+  let V : Path (v (Fin.last R)) (w (Fin.last A₀)) :=
+    (Path.concat w Y).cast hjoinVW.symm rfl
+  let X : Path (w (Fin.last A₀)) (a (Fin.last B₀)) :=
+    (Path.concat a Q).cast hjoinWA.symm rfl
+  let Ytail : Path (a (Fin.last B₀)) (b (Fin.last C₀)) :=
+    (Path.concat b O).cast hjoinAB.symm rfl
+  let Ztail : Path (b (Fin.last C₀)) (c (Fin.last D₀)) :=
+    (Path.concat c P).cast hjoinBC.symm rfl
+  have hERange :
+      Set.range E ⊆ (stereographic' 3 (-threeSphere_northPole)).source := by
+    have hconcat :
+        Set.range (Path.concat u W) ⊆
+          (stereographic' 3 (-threeSphere_northPole)).source :=
+      threeSphere_stereographic_source_concat_range_subset (-threeSphere_northPole)
+        u W huBase hW
+    intro y hy
+    rcases hy with ⟨d, rfl⟩
+    exact hconcat ⟨d, by simp [E, Path.cast_coe]⟩
+  let L : Path x₀ x₃ := (p.trans (Path.concat m F)).trans r
+  change Path.Homotopic
+    (((((((L.trans D).trans E).trans U).trans V).trans X).trans Ytail).trans Ztail)
+    ((Path.refl x₀).cast rfl hclose)
+  have hassoc₀ :
+      Path.Homotopic ((((L.trans D).trans E).trans U).trans V)
+        (L.trans (((D.trans E).trans U).trans V)) := by
+    exact ((Path.Homotopic.hcomp
+      ((Path.Homotopic.hcomp (Path.Homotopic.trans_assoc L D E)
+        (Path.Homotopic.refl U)).trans
+        (Path.Homotopic.trans_assoc L (D.trans E) U))
+      (Path.Homotopic.refl V)).trans
+      (Path.Homotopic.trans_assoc L ((D.trans E).trans U) V))
+  have hassoc₁ :
+      Path.Homotopic (((((L.trans D).trans E).trans U).trans V).trans X)
+        (L.trans ((((D.trans E).trans U).trans V).trans X)) := by
+    exact (Path.Homotopic.hcomp hassoc₀ (Path.Homotopic.refl X)).trans
+      (Path.Homotopic.trans_assoc L (((D.trans E).trans U).trans V) X)
+  have hassoc₂ :
+      Path.Homotopic ((((((L.trans D).trans E).trans U).trans V).trans X).trans Ytail)
+        (L.trans (((((D.trans E).trans U).trans V).trans X).trans Ytail)) := by
+    exact (Path.Homotopic.hcomp hassoc₁ (Path.Homotopic.refl Ytail)).trans
+      (Path.Homotopic.trans_assoc L ((((D.trans E).trans U).trans V).trans X) Ytail)
+  refine ((Path.Homotopic.hcomp hassoc₂ (Path.Homotopic.refl Ztail)).trans
+    (Path.Homotopic.trans_assoc L
+      (((((D.trans E).trans U).trans V).trans X).trans Ytail) Ztail)).trans ?_
+  dsimp [L]
+  refine threeSphere_stereographic_southNorthBlockSouth_induction_step
+    m p F r ((((((D.trans E).trans U).trans V).trans X).trans Ytail).trans Ztail)
+    hclose hp hmBase hF hr ?_
+  intro q hq
+  have hqCastRange :
+      Set.range (q.cast rfl hjoinRS) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source := by
+    intro y hy
+    rcases hy with ⟨d, rfl⟩
+    exact hq ⟨d, by simp [Path.cast_coe]⟩
+  have htail :
+      Path.Homotopic
+        ((((((((q.cast rfl hjoinRS).trans (Path.concat s J)).trans E).trans U).trans V).trans X).trans Ytail).trans Ztail)
+        ((Path.refl x₀).cast rfl hclose) :=
+    threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorth_trans_cast_nullhomotopic
+      s (q.cast rfl hjoinRS) J E v Z w Y a Q b O c P
+      hjoinUV hjoinVW hjoinWA hjoinAB hjoinBC hclose
+      hqCastRange hsBase hJ hERange hvBase hZ hwBase hY haBase hQ hbBase hO hcBase hP
+  have hshift :
+      q.trans D = (q.cast rfl hjoinRS).trans (Path.concat s J) := by
+    dsimp [D]
+    exact path_trans_source_cast_eq_target_cast_trans q (Path.concat s J) hjoinRS
+  refine (Path.Homotopic.trans_assoc q (((((D.trans E).trans U).trans V).trans X).trans Ytail) Ztail).symm.trans ?_
+  refine (Path.Homotopic.hcomp
+    (Path.Homotopic.trans_assoc q ((((D.trans E).trans U).trans V).trans X) Ytail).symm
+    (Path.Homotopic.refl Ztail)).trans ?_
+  refine (Path.Homotopic.hcomp
+    (Path.Homotopic.hcomp
+      (Path.Homotopic.trans_assoc q (((D.trans E).trans U).trans V) X).symm
+      (Path.Homotopic.refl Ytail))
+    (Path.Homotopic.refl Ztail)).trans ?_
+  refine (Path.Homotopic.hcomp
+    (Path.Homotopic.hcomp
+      (Path.Homotopic.hcomp (Path.Homotopic.trans_assoc q ((D.trans E).trans U) V).symm
+        (Path.Homotopic.refl X))
+      (Path.Homotopic.refl Ytail))
+    (Path.Homotopic.refl Ztail)).trans ?_
+  refine (Path.Homotopic.hcomp
+    (Path.Homotopic.hcomp
+      (Path.Homotopic.hcomp
+        (Path.Homotopic.hcomp (Path.Homotopic.trans_assoc q (D.trans E) U).symm
+          (Path.Homotopic.refl V))
+        (Path.Homotopic.refl X))
+      (Path.Homotopic.refl Ytail))
+    (Path.Homotopic.refl Ztail)).trans ?_
+  refine (Path.Homotopic.hcomp
+    (Path.Homotopic.hcomp
+      (Path.Homotopic.hcomp
+        (Path.Homotopic.hcomp
+          (Path.Homotopic.hcomp (Path.Homotopic.trans_assoc q D E).symm
+            (Path.Homotopic.refl U))
+          (Path.Homotopic.refl V))
+        (Path.Homotopic.refl X))
+      (Path.Homotopic.refl Ytail))
+    (Path.Homotopic.refl Ztail)).trans ?_
+  rw [hshift]
+  exact htail
+
+/--
 An arbitrary north-source path followed by finite south, north, south, north,
 south, and north tail blocks is null-homotopic.  This is the flat-tail form of
 the first five-switch after-stop branch.
