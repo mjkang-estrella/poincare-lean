@@ -3660,6 +3660,32 @@ theorem simplyConnectedSpace_iff_pathConnectedSpace_and_basedLoopNullhomotopy_eq
   apply Subsingleton.elim
 
 /--
+Simple-connectedness is equivalent to path-connectedness plus trivial based
+fundamental groups at every basepoint.
+-/
+theorem simplyConnectedSpace_iff_pathConnectedSpace_and_fundamentalGroupSubsingleton
+    {Y : Type u} [TopologicalSpace Y] :
+    SimplyConnectedSpace Y ↔
+      PathConnectedSpace Y ∧ ∀ x : Y, Subsingleton (FundamentalGroup Y x) := by
+  rw [simply_connected_iff_loops_nullhomotopic]
+  constructor
+  · intro h
+    exact ⟨h.1, fun x => by
+      change Subsingleton (Path.Homotopic.Quotient x x)
+      rw [subsingleton_iff]
+      intro a b
+      induction a using Quotient.inductionOn with
+      | h γ =>
+        induction b using Quotient.inductionOn with
+        | h δ =>
+          exact Quotient.sound ((h.2 x γ).trans (h.2 x δ).symm)⟩
+  · intro h
+    exact ⟨h.1, fun x γ => by
+      rw [← Path.Homotopic.Quotient.eq]
+      exact (h.2 x).elim (⟦γ⟧ : Path.Homotopic.Quotient x x)
+        ⟦Path.refl x⟧⟩
+
+/--
 The based loop-nullhomotopy obligation for the standard 3-sphere at a chosen
 basepoint.
 -/
@@ -32193,8 +32219,9 @@ fundamental groups are subsingletons.
 theorem threeSphere_simplyConnectedSpace_iff_fundamentalGroupSubsingletonStatement :
     SimplyConnectedSpace ThreeSphere ↔
       ThreeSphereFundamentalGroupSubsingletonStatement := by
-  exact threeSphere_simplyConnectedSpace_iff_loopNullhomotopyStatement.trans
-    threeSphere_fundamentalGroupSubsingletonStatement_iff_loopNullhomotopyStatement.symm
+  rw [threeSphereFundamentalGroupSubsingletonStatement_eq,
+    simplyConnectedSpace_iff_pathConnectedSpace_and_fundamentalGroupSubsingleton]
+  exact ⟨fun h => h.2, fun h => ⟨threeSphere_pathConnectedSpace, h⟩⟩
 
 /--
 The simple-connectedness/fundamental-group reduction factors through the

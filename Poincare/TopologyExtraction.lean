@@ -1696,9 +1696,10 @@ fundamental groups are subsingletons.
 -/
 theorem onePoint_threeSpace_simplyConnectedSpace_iff_fundamentalGroupSubsingletonStatement :
     SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) ↔
-      OnePointThreeSpaceFundamentalGroupSubsingletonStatement :=
-  onePoint_threeSpace_simplyConnectedSpace_iff_loopNullhomotopyStatement.trans
-    onePoint_threeSpace_fundamentalGroupSubsingletonStatement_iff_loopNullhomotopyStatement.symm
+      OnePointThreeSpaceFundamentalGroupSubsingletonStatement := by
+  rw [onePointThreeSpaceFundamentalGroupSubsingletonStatement_eq,
+    simplyConnectedSpace_iff_pathConnectedSpace_and_fundamentalGroupSubsingleton]
+  exact ⟨fun h => h.2, fun h => ⟨onePoint_threeSpace_pathConnectedSpace, h⟩⟩
 
 /--
 The compactification simple-connectedness/fundamental-group reduction factors
