@@ -3740,6 +3740,109 @@ theorem loop_homotopic_refl_of_mapsTo_simplyConnectedSubtype
     hbase hbase γ (Path.refl basepoint) hγ (fun _ => hbase)
 
 /--
+In a simply connected subset, any two ambient paths with the same endpoints
+and image in the subset are homotopic through a homotopy that stays in the
+subset.
+-/
+theorem path_homotopy_forall_mem_of_isSimplyConnected
+    {X : Type u} [TopologicalSpace X] {s : Set X}
+    (hs : IsSimplyConnected s) {x y : X} (p q : Path x y)
+    (hp : ∀ t, p t ∈ s) (hq : ∀ t, q t ∈ s) :
+    ∃ F : p.Homotopy q, ∀ t, F t ∈ s := by
+  let xS : s := ⟨x, by simpa using hp 0⟩
+  let yS : s := ⟨y, by simpa using hp 1⟩
+  let pS : Path xS yS :=
+    { toFun := fun t => ⟨p t, hp t⟩
+      source' := by
+        ext
+        exact p.source
+      target' := by
+        ext
+        exact p.target
+      continuous_toFun := by fun_prop }
+  let qS : Path xS yS :=
+    { toFun := fun t => ⟨q t, hq t⟩
+      source' := by
+        ext
+        exact q.source
+      target' := by
+        ext
+        exact q.target
+      continuous_toFun := by fun_prop }
+  have hS : SimplyConnectedSpace s := hs
+  letI : SimplyConnectedSpace s := hS
+  rcases (SimplyConnectedSpace.paths_homotopic pS qS) with ⟨Fsub⟩
+  refine ⟨{
+    toFun := fun t => (Fsub t).1
+    continuous_toFun := by fun_prop
+    map_zero_left := by
+      intro t
+      change (Fsub (0, t)).1 = p t
+      exact congrArg Subtype.val (Fsub.map_zero_left t)
+    map_one_left := by
+      intro t
+      change (Fsub (1, t)).1 = q t
+      exact congrArg Subtype.val (Fsub.map_one_left t)
+    prop' := by
+      intro t z hz
+      rcases hz with hz | hz
+      · rw [hz]
+        exact congrArg Subtype.val (Fsub.prop' t 0 (by simp))
+      · rw [Set.mem_singleton_iff] at hz
+        rw [hz]
+        exact congrArg Subtype.val (Fsub.prop' t 1 (by simp))
+  }, ?_⟩
+  intro t
+  exact (Fsub t).2
+
+/--
+If a head path and an arbitrary finite tail all stay inside the same simply
+connected set, then the resulting closed tail loop contracts through an actual
+homotopy whose image stays in that set.
+-/
+theorem twoSetOpenCover_sameHead_sameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo
+    {Y : Type u} [TopologicalSpace Y] {U : Set Y} {N : ℕ} {x₀ : Y}
+    [SimplyConnectedSpace U]
+    (tailPts : Fin (N + 1) → Y)
+    (tailSegs : (k : Fin N) →
+      Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last N) = x₀)
+    (hp : Set.range p ⊆ U)
+    (hTail : ∀ k : Fin N, Set.range (tailSegs k) ⊆ U) :
+    ∃ H : (p.trans (Path.concat tailPts tailSegs)).Homotopy
+        ((Path.refl x₀).cast rfl hclose),
+      ∀ t, H t ∈ U := by
+  have hbase : tailPts 0 ∈ U :=
+    hp ⟨1, p.target⟩
+  have htail :
+      Set.range (Path.concat tailPts tailSegs) ⊆ U :=
+    path_concat_range_subset_of_mapsTo tailPts tailSegs hbase hTail
+  have hloop :
+      ∀ t, (p.trans (Path.concat tailPts tailSegs)) t ∈ U := by
+    intro t
+    have ht :
+        (p.trans (Path.concat tailPts tailSegs)) t ∈
+          Set.range (p.trans (Path.concat tailPts tailSegs)) := ⟨t, rfl⟩
+    have ht' :
+        (p.trans (Path.concat tailPts tailSegs)) t ∈
+          Set.range p ∪ Set.range (Path.concat tailPts tailSegs) := by
+      simpa [Path.trans_range] using ht
+    rcases ht' with htHead | htTail
+    · exact hp htHead
+    · exact htail htTail
+  have hx₀ : x₀ ∈ U :=
+    hp ⟨0, p.source⟩
+  have hrefl :
+      ∀ t, ((Path.refl x₀).cast rfl hclose) t ∈ U := by
+    intro _t
+    simpa [Path.cast_coe] using hx₀
+  have hSC : IsSimplyConnected U := ‹SimplyConnectedSpace U›
+  exact path_homotopy_forall_mem_of_isSimplyConnected hSC
+    (p.trans (Path.concat tailPts tailSegs))
+    ((Path.refl x₀).cast rfl hclose) hloop hrefl
+
+/--
 If a head path and an arbitrary finite tail all stay inside the same simply
 connected set, then the resulting closed tail loop is nullhomotopic.
 -/
@@ -3755,33 +3858,11 @@ theorem twoSetOpenCover_sameHead_sameTail_concat_cast_nullhomotopic_of_mapsTo
     (hTail : ∀ k : Fin N, Set.range (tailSegs k) ⊆ U) :
     Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
       ((Path.refl x₀).cast rfl hclose) := by
-  have hbase : tailPts 0 ∈ U :=
-    hp ⟨1, p.target⟩
-  have htail :
-      Set.range (Path.concat tailPts tailSegs) ⊆ U :=
-    path_concat_range_subset_of_mapsTo tailPts tailSegs hbase hTail
-  have hloop :
-      Set.range (p.trans (Path.concat tailPts tailSegs)) ⊆ U := by
-    intro z hz
-    have hz' :
-        z ∈ Set.range p ∪ Set.range (Path.concat tailPts tailSegs) := by
-      simpa [Path.trans_range] using hz
-    rcases hz' with hzHead | hzTail
-    · exact hp hzHead
-    · exact htail hzTail
-  have hx₀ : x₀ ∈ U :=
-    hp ⟨0, p.source⟩
-  have hlast : tailPts (Fin.last N) ∈ U := by
-    simpa [hclose] using hx₀
-  have hrefl :
-      ∀ t, ((Path.refl x₀).cast rfl hclose) t ∈ U := by
-    intro t
-    simpa [Path.cast_coe] using hx₀
-  exact
-    paths_homotopic_of_mapsTo_simplyConnectedSubtype
-      hx₀ hlast (p.trans (Path.concat tailPts tailSegs))
-      ((Path.refl x₀).cast rfl hclose)
-      (fun t => hloop ⟨t, rfl⟩) hrefl
+  rcases
+    twoSetOpenCover_sameHead_sameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo
+      (U := U) tailPts tailSegs p hclose hp hTail with
+  ⟨H, _hH⟩
+  exact ⟨H⟩
 
 /--
 A two-piece based loop is nullhomotopic when the first piece stays in one
@@ -4969,62 +5050,6 @@ theorem simplyConnectedSpace_union_of_isOpen_pathConnected_inter
       · exact Or.inr hxV
   exact twoSetOpenCover_simplyConnectedSpace_of_pathConnected_inter
     (X := S) (U := UinS) (V := VinS) hUopen hVopen hcover
-
-/--
-In a simply connected subset, any two ambient paths with the same endpoints
-and image in the subset are homotopic through a homotopy that stays in the
-subset.
--/
-theorem path_homotopy_forall_mem_of_isSimplyConnected
-    {X : Type u} [TopologicalSpace X] {s : Set X}
-    (hs : IsSimplyConnected s) {x y : X} (p q : Path x y)
-    (hp : ∀ t, p t ∈ s) (hq : ∀ t, q t ∈ s) :
-    ∃ F : p.Homotopy q, ∀ t, F t ∈ s := by
-  let xS : s := ⟨x, by simpa using hp 0⟩
-  let yS : s := ⟨y, by simpa using hp 1⟩
-  let pS : Path xS yS :=
-    { toFun := fun t => ⟨p t, hp t⟩
-      source' := by
-        ext
-        exact p.source
-      target' := by
-        ext
-        exact p.target
-      continuous_toFun := by fun_prop }
-  let qS : Path xS yS :=
-    { toFun := fun t => ⟨q t, hq t⟩
-      source' := by
-        ext
-        exact q.source
-      target' := by
-        ext
-        exact q.target
-      continuous_toFun := by fun_prop }
-  have hS : SimplyConnectedSpace s := hs
-  letI : SimplyConnectedSpace s := hS
-  rcases (SimplyConnectedSpace.paths_homotopic pS qS) with ⟨Fsub⟩
-  refine ⟨{
-    toFun := fun t => (Fsub t).1
-    continuous_toFun := by fun_prop
-    map_zero_left := by
-      intro t
-      change (Fsub (0, t)).1 = p t
-      exact congrArg Subtype.val (Fsub.map_zero_left t)
-    map_one_left := by
-      intro t
-      change (Fsub (1, t)).1 = q t
-      exact congrArg Subtype.val (Fsub.map_one_left t)
-    prop' := by
-      intro t z hz
-      rcases hz with hz | hz
-      · rw [hz]
-        exact congrArg Subtype.val (Fsub.prop' t 0 (by simp))
-      · rw [Set.mem_singleton_iff] at hz
-        rw [hz]
-        exact congrArg Subtype.val (Fsub.prop' t 1 (by simp))
-  }, ?_⟩
-  intro t
-  exact (Fsub t).2
 
 /--
 The single-chart finite-concat collapse can be realized by an actual homotopy
