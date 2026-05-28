@@ -358,6 +358,51 @@ theorem threeSphere_stereographic_source_contained_concat_loop_nullhomotopic
     simpa using hbase
 
 /--
+If a head path and an arbitrary finite tail all stay inside the same
+stereographic chart source, then the resulting closed loop is null-homotopic.
+This is the single-chart arbitrary-head tail collapse used by the
+all-preferred branch of finite concatenation reductions.
+-/
+theorem threeSphere_stereographic_source_head_concat_tail_nullhomotopic
+    (v : ThreeSphere) {N : ℕ} {x₀ : ThreeSphere}
+    (p : Fin (N + 1) → ThreeSphere)
+    (F : (k : Fin N) → Path (p k.castSucc) (p k.succ))
+    (head : Path x₀ (p 0))
+    (hhead : Set.range head ⊆ (stereographic' 3 v).source)
+    (hF : ∀ k : Fin N, Set.range (F k) ⊆ (stereographic' 3 v).source)
+    (hend : p (Fin.last N) = x₀) :
+    Path.Homotopic
+      (head.trans (Path.concat p F))
+      ((Path.refl x₀).cast rfl hend) := by
+  have hbase : p 0 ∈ (stereographic' 3 v).source :=
+    hhead ⟨1, head.target⟩
+  have htail :
+      Set.range (Path.concat p F) ⊆ (stereographic' 3 v).source :=
+    threeSphere_stereographic_source_concat_range_subset v p F hbase hF
+  have hloop :
+      Set.range (head.trans (Path.concat p F)) ⊆
+        (stereographic' 3 v).source := by
+    intro z hz
+    have hz' :
+        z ∈ Set.range head ∪ Set.range (Path.concat p F) := by
+      simpa [Path.trans_range] using hz
+    rcases hz' with hzHead | hzTail
+    · exact hhead hzHead
+    · exact htail hzTail
+  have hx₀ : x₀ ∈ (stereographic' 3 v).source :=
+    hhead ⟨0, head.source⟩
+  have hrefl :
+      Set.range ((Path.refl x₀).cast rfl hend) ⊆
+        (stereographic' 3 v).source := by
+    intro z hz
+    rcases hz with ⟨_t, rfl⟩
+    simpa [Path.cast_coe] using hx₀
+  exact
+    threeSphere_stereographic_source_contained_paths_homotopic
+      v (head.trans (Path.concat p F)) ((Path.refl x₀).cast rfl hend)
+      hloop hrefl
+
+/--
 Finite path concatenation can be split into its first segment followed by the
 concatenation of the remaining tail.
 -/
