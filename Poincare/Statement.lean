@@ -3746,6 +3746,38 @@ theorem twoSetOpenCover_twoPieceLoop_nullhomotopic_of_mapsTo
     (Path.Homotopic.trans_symm r)
 
 /--
+A two-piece loop whose final endpoint is only propositionally equal to its
+start is nullhomotopic in the endpoint-cast form produced by finite
+subdivision concatenations.
+-/
+theorem twoSetOpenCover_twoPieceLoop_cast_nullhomotopic_of_mapsTo
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {x y z : Y}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set Y)]
+    (p : Path x y) (q : Path y z) (hzx : z = x)
+    (hp : ∀ t, p t ∈ U) (hq : ∀ t, q t ∈ V) :
+    Path.Homotopic (p.trans q) ((Path.refl x).cast rfl hzx) := by
+  let qLoop : Path y x := q.cast rfl hzx.symm
+  have hqLoop : ∀ t, qLoop t ∈ V := by
+    intro t
+    exact hq t
+  have hbase : x ∈ U ∩ V := by
+    refine ⟨?_, ?_⟩
+    · simpa using hp 0
+    · have hzV : z ∈ V := by
+        simpa using hq 1
+      simpa [hzx] using hzV
+  have hmid : y ∈ U ∩ V := by
+    refine ⟨?_, ?_⟩
+    · simpa using hp 1
+    · simpa using hq 0
+  have hloop : Path.Homotopic (p.trans qLoop) (Path.refl x) :=
+    twoSetOpenCover_twoPieceLoop_nullhomotopic_of_mapsTo
+      hbase hmid p qLoop hp hqLoop
+  have hcast := Path.Homotopic.pathCast hloop rfl hzx
+  simpa [qLoop] using hcast
+
+/--
 In a path-connected space, triviality of the fundamental group at one basepoint
 is equivalent to simple-connectedness.
 -/
