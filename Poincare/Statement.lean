@@ -749,6 +749,31 @@ theorem path_homotopy_trans_forall_mem_of_forall_mem
   · exact hH _
   · exact hK _
 
+/-- Horizontal composition of path homotopies preserves containment. -/
+theorem path_homotopy_hcomp_forall_mem_of_forall_mem
+    {X : Type u} [TopologicalSpace X] {S : Set X}
+    {x₀ x₁ x₂ : X}
+    {p₀ q₀ : Path x₀ x₁} {p₁ q₁ : Path x₁ x₂}
+    (H : p₀.Homotopy q₀) (K : p₁.Homotopy q₁)
+    (hH : ∀ t, H t ∈ S) (hK : ∀ t, K t ∈ S) :
+    ∀ t, H.hcomp K t ∈ S := by
+  intro t
+  rw [Path.Homotopy.hcomp_apply]
+  split_ifs
+  · exact hH _
+  · exact hK _
+
+/-- Casting the endpoints of a path homotopy preserves containment. -/
+theorem path_homotopy_cast_forall_mem_of_forall_mem
+    {X : Type u} [TopologicalSpace X] {S : Set X} {x₀ x₁ : X}
+    {p₀ p₁ q₀ q₁ : Path x₀ x₁}
+    (H : p₀.Homotopy p₁) (h₀ : p₀ = q₀) (h₁ : p₁ = q₁)
+    (hH : ∀ t, H t ∈ S) :
+    ∀ t, (H.cast h₀ h₁) t ∈ S := by
+  intro t
+  change H t ∈ S
+  exact hH t
+
 /--
 Finite path concatenation can be split after a block of `L` segments even when
 the ambient length is only propositionally equal to `L + R`; the resulting
@@ -4369,6 +4394,103 @@ theorem twoSetOpenCover_sameSideBlock_homotopic_to_overlapBlock_of_mapsTo
       (U := U) (V := V) m p F r hp hmBase hF hr with
     ⟨q, hqU, ⟨H, _hH⟩, htargetRange⟩
   exact ⟨q, hqU, ⟨H⟩, htargetRange⟩
+
+/--
+Non-terminal first-opposite-run step with an arbitrary finite preferred prefix:
+fold the preferred prefix into the head path, replace the opposite run by an
+overlap path in the preferred member, and leave the shorter tail to a
+continuation hypothesis.
+-/
+theorem twoSetOpenCover_samePrefixOppositeRunSameReturn_tail_induction_step_homotopy_refl_forall_mem_of_mapsTo
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {A B : ℕ}
+    {x₀ x₃ x₄ : Y}
+    [SimplyConnectedSpace V] [PathConnectedSpace (U ∩ V : Set Y)]
+    (prefPts : Fin (A + 1) → Y)
+    (prefSegs : (k : Fin A) → Path (prefPts k.castSucc) (prefPts k.succ))
+    (oppPts : Fin (B + 1) → Y)
+    (oppSegs : (k : Fin B) → Path (oppPts k.castSucc) (oppPts k.succ))
+    (p : Path x₀ (prefPts 0))
+    (hjoin : oppPts 0 = prefPts (Fin.last A))
+    (r : Path (oppPts (Fin.last B)) x₃)
+    (tail : Path x₃ x₄) (hclose : x₄ = x₀)
+    (hp : Set.range p ⊆ U)
+    (hPrefBase : prefPts 0 ∈ U)
+    (hPref : ∀ k : Fin A, Set.range (prefSegs k) ⊆ U)
+    (hOppBase : oppPts 0 ∈ V)
+    (hOpp : ∀ k : Fin B, Set.range (oppSegs k) ⊆ V)
+    (hr : Set.range r ⊆ U)
+    (hshort : ∀ q : Path x₀ x₃, Set.range q ⊆ U →
+      ∃ H : (q.trans tail).Homotopy ((Path.refl x₀).cast rfl hclose),
+        ∀ t, H t ∈ U ∪ V) :
+    ∃ H :
+      ((((p.trans (Path.concat prefPts prefSegs)).trans
+        ((Path.concat oppPts oppSegs).cast hjoin.symm rfl)).trans r).trans tail).Homotopy
+      ((Path.refl x₀).cast rfl hclose),
+      ∀ t, H t ∈ U ∪ V := by
+  let prefPath : Path x₀ (prefPts (Fin.last A)) :=
+    p.trans (Path.concat prefPts prefSegs)
+  have hprefConcat :
+      Set.range (Path.concat prefPts prefSegs) ⊆ U :=
+    path_concat_range_subset_of_mapsTo prefPts prefSegs hPrefBase hPref
+  have hprefPath :
+      Set.range prefPath ⊆ U := by
+    intro z hz
+    have hz' : z ∈ Set.range p ∪ Set.range (Path.concat prefPts prefSegs) := by
+      simpa [prefPath, Path.trans_range] using hz
+    rcases hz' with hzP | hzPref
+    · exact hp hzP
+    · exact hprefConcat hzPref
+  have hprefPathCast :
+      Set.range (prefPath.cast rfl hjoin) ⊆ U := by
+    intro z hz
+    rcases hz with ⟨s, rfl⟩
+    exact hprefPath ⟨s, by simp [Path.cast_coe]⟩
+  rcases twoSetOpenCover_sameSideBlock_homotopy_to_overlapBlock_forall_mem_of_mapsTo
+      (U := U) (V := V) oppPts (prefPath.cast rfl hjoin) oppSegs r
+      hprefPathCast hOppBase hOpp hr with
+    ⟨bridge, _hbridgeRange, ⟨Hreplace, hHreplace⟩, htargetRange⟩
+  rcases hshort (((prefPath.cast rfl hjoin).trans bridge).trans r) htargetRange with
+    ⟨Hshort, hHshort⟩
+  have htargetTailRange :
+      Set.range ((((prefPath.cast rfl hjoin).trans bridge).trans r).trans tail) ⊆
+        U ∪ V := by
+    intro z hz
+    rcases hz with ⟨s, rfl⟩
+    have h := hHshort (0, s)
+    simpa using h
+  have htailUnion : ∀ s, tail s ∈ U ∪ V := by
+    intro s
+    exact htargetTailRange (by
+      rw [Path.trans_range]
+      exact Or.inr ⟨s, rfl⟩)
+  let HreplaceTail :
+      ((((prefPath.cast rfl hjoin).trans (Path.concat oppPts oppSegs)).trans r).trans tail).Homotopy
+      ((((prefPath.cast rfl hjoin).trans bridge).trans r).trans tail) :=
+    Hreplace.hcomp (Path.Homotopy.refl tail)
+  have hHreplaceTail : ∀ t, HreplaceTail t ∈ U ∪ V := by
+    exact path_homotopy_hcomp_forall_mem_of_forall_mem
+      Hreplace (Path.Homotopy.refl tail) hHreplace
+      (fun t => by
+        change tail t.2 ∈ U ∪ V
+        exact htailUnion t.2)
+  let Hcollapse :
+      ((((prefPath.cast rfl hjoin).trans (Path.concat oppPts oppSegs)).trans r).trans tail).Homotopy
+      ((Path.refl x₀).cast rfl hclose) := HreplaceTail.trans Hshort
+  have hHcollapse : ∀ t, Hcollapse t ∈ U ∪ V :=
+    path_homotopy_trans_forall_mem_of_forall_mem
+      HreplaceTail Hshort hHreplaceTail hHshort
+  have hshift :
+      prefPath.trans ((Path.concat oppPts oppSegs).cast hjoin.symm rfl) =
+        (prefPath.cast rfl hjoin).trans (Path.concat oppPts oppSegs) := by
+    exact path_trans_source_cast_eq_target_cast_trans
+      prefPath (Path.concat oppPts oppSegs) hjoin
+  have hsourceEq :
+      ((((prefPath.cast rfl hjoin).trans (Path.concat oppPts oppSegs)).trans r).trans tail) =
+      (((prefPath.trans ((Path.concat oppPts oppSegs).cast hjoin.symm rfl)).trans r).trans tail) := by
+    rw [← hshift]
+  refine ⟨Hcollapse.cast hsourceEq rfl, ?_⟩
+  exact path_homotopy_cast_forall_mem_of_forall_mem
+    Hcollapse hsourceEq rfl hHcollapse
 
 /--
 Non-terminal first-opposite-run step with an arbitrary finite preferred prefix:
