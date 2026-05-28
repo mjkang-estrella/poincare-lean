@@ -3220,6 +3220,101 @@ theorem onePoint_threeSpace_topologicalManifold_eq :
   apply Subsingleton.elim
 
 /--
+The one-point compactification model as a charted space with a single chart
+into the already smooth project sphere.
+-/
+@[reducible] noncomputable def onePoint_threeSpace_sphereChartedSpace :
+    ChartedSpace ThreeSphere (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  let e := Classical.choice threeSphere_homeomorph_onePoint_threeSpace
+  exact e.symm.toOpenPartialHomeomorph.singletonChartedSpace (by simp)
+
+/--
+The one-point compactification model with charts obtained by composing its
+global sphere chart with the standard smooth atlas on `ThreeSphere`.
+-/
+@[reducible] noncomputable def onePoint_threeSpace_smoothChartedSpace :
+    ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  letI : ChartedSpace ThreeSphere (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_sphereChartedSpace
+  exact ChartedSpace.comp (EuclideanSpace ℝ (Fin 3)) ThreeSphere
+    (OnePoint (EuclideanSpace ℝ (Fin 3)))
+
+/--
+Identity restrictions on the standard smooth sphere atlas are local
+structomorphisms.  This is the smooth compatibility input needed to compose
+the single compactification chart with the smooth `ThreeSphere` charts.
+-/
+theorem onePoint_threeSpace_idRestr_liftPropOn_localStructomorph
+    (f : OpenPartialHomeomorph ThreeSphere ThreeSphere)
+    (hf : f ∈ @idRestrGroupoid ThreeSphere _) :
+    ChartedSpace.LiftPropOn
+      (StructureGroupoid.IsLocalStructomorphWithinAt
+        (contDiffGroupoid ∞ (𝓡 3)))
+      (f : ThreeSphere → ThreeSphere) f.source := by
+  let G := contDiffGroupoid ∞ (𝓡 3)
+  let hG := StructureGroupoid.isLocalStructomorphWithinAt_localInvariantProp G
+  have hId :
+      ∀ y : EuclideanSpace ℝ (Fin 3),
+        StructureGroupoid.IsLocalStructomorphWithinAt G id Set.univ y := by
+    intro y hy
+    refine ⟨OpenPartialHomeomorph.refl (EuclideanSpace ℝ (Fin 3)), G.id_mem, ?_, by simp⟩
+    intro z hz
+    rfl
+  have hmono :
+      ∀ ⦃s : Set (EuclideanSpace ℝ (Fin 3))⦄
+        ⦃x : EuclideanSpace ℝ (Fin 3)⦄
+        ⦃t : Set (EuclideanSpace ℝ (Fin 3))⦄
+        ⦃g : EuclideanSpace ℝ (Fin 3) → EuclideanSpace ℝ (Fin 3)⦄,
+        t ⊆ s →
+          StructureGroupoid.IsLocalStructomorphWithinAt G g s x →
+            StructureGroupoid.IsLocalStructomorphWithinAt G g t x := by
+    intro s x t g hts hg hx
+    rcases hg (hts hx) with ⟨e, he, heg, hxe⟩
+    exact ⟨e, he, heg.mono (Set.inter_subset_inter_left _ hts), hxe⟩
+  have hid :
+      ChartedSpace.LiftPropOn
+        (StructureGroupoid.IsLocalStructomorphWithinAt G)
+        (id : ThreeSphere → ThreeSphere) f.source :=
+    StructureGroupoid.LocalInvariantProp.liftPropOn_of_liftProp hmono
+      (hG.liftProp_id hId)
+  have hfid : ∀ y ∈ f.source, f y = id y := by
+    rcases hf with ⟨s, hs, hfs⟩
+    intro y hy
+    exact hfs.eqOn hy
+  exact hG.liftPropOn_congr hid hfid
+
+/--
+The one-point compactification of `ℝ^3` carries a genuine smooth
+3-manifold structure, obtained from its global homeomorphism with the standard
+smooth `ThreeSphere`.
+-/
+theorem onePoint_threeSpace_smoothManifold :
+    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+      onePoint_threeSpace_smoothChartedSpace
+    IsManifold (𝓡 3) ∞ (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  letI : ChartedSpace ThreeSphere (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_sphereChartedSpace
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_smoothChartedSpace
+  haveI : IsManifold (𝓡 3) ∞ ThreeSphere := threeSphere_smoothManifold
+  haveI : @HasGroupoid ThreeSphere _ (OnePoint (EuclideanSpace ℝ (Fin 3))) _
+      onePoint_threeSpace_sphereChartedSpace (@idRestrGroupoid ThreeSphere _) := by
+    let e := Classical.choice threeSphere_homeomorph_onePoint_threeSpace
+    exact e.symm.toOpenPartialHomeomorph.singleton_hasGroupoid (by simp)
+      (@idRestrGroupoid ThreeSphere _)
+  haveI :
+      HasGroupoid (OnePoint (EuclideanSpace ℝ (Fin 3)))
+        (contDiffGroupoid ∞ (𝓡 3)) := by
+    apply StructureGroupoid.HasGroupoid.comp
+      (G₂ := (@idRestrGroupoid ThreeSphere _))
+    intro f hf
+    exact onePoint_threeSpace_idRestr_liftPropOn_localStructomorph f hf
+  exact IsManifold.mk' (𝓡 3) ∞ (OnePoint (EuclideanSpace ℝ (Fin 3)))
+
+/--
 The compactification model has the basic topological prerequisites supplied by
 its homeomorphism with `ThreeSphere`.
 -/
