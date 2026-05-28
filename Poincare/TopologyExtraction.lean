@@ -4685,15 +4685,16 @@ theorem simplyConnectedSpace_of_homeomorph
   exact e.toHomotopyEquiv.simplyConnectedSpace
 
 /--
-A homeomorphism to a known simply connected compact path-connected locally
-path-connected topological 3-manifold transports the full homotopy/manifold
-prerequisite payload to the source.
+A homeomorphism to a known simply connected compact locally path-connected
+topological 3-manifold transports the full homotopy/manifold prerequisite
+payload to the source. The target path-connectedness input is derived from
+simple-connectedness.
 -/
 theorem homotopy_manifold_prerequisites_of_homeomorph
     {M : Type u} {N : Type v} [TopologicalSpace M] [TopologicalSpace N]
     [T2Space N] [CompactSpace N]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N] [IsManifold (𝓡 3) 0 N]
-    [PathConnectedSpace N] [LocPathConnectedSpace N] [SimplyConnectedSpace N]
+    [LocPathConnectedSpace N] [SimplyConnectedSpace N]
     (h : Nonempty (M ≃ₜ N)) :
     ∃ _t2 : T2Space M,
     ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
@@ -4704,6 +4705,7 @@ theorem homotopy_manifold_prerequisites_of_homeomorph
     ∃ _locPath : LocPathConnectedSpace M,
     ∃ _connected : ConnectedSpace M,
       Nonempty M := by
+  letI : PathConnectedSpace N := inferInstance
   rcases topological_manifold_prerequisites_of_homeomorph h with
     ⟨t2, charted, compact, topological, path, locPath, connected, nonempty⟩
   exact ⟨t2, charted, simplyConnectedSpace_of_homeomorph h, compact,
