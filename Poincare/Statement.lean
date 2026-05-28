@@ -4827,6 +4827,20 @@ theorem twoSetOpenCover_pathConnectedSpace
   exact hxbase.trans hybase.symm
 
 /--
+If the overlap of a two-set cover is path-connected, it supplies the shared
+basepoint needed to prove that the ambient space is path-connected.
+-/
+theorem twoSetOpenCover_pathConnectedSpace_of_pathConnected_inter
+    {X : Type u} [TopologicalSpace X] {U V : Set X}
+    [PathConnectedSpace U] [PathConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set X)]
+    (hcover : U ∪ V = Set.univ) :
+    PathConnectedSpace X := by
+  rcases (PathConnectedSpace.nonempty : Nonempty (U ∩ V : Set X)) with ⟨basepoint⟩
+  exact twoSetOpenCover_pathConnectedSpace (U := U) (V := V)
+    (basepoint := basepoint.1) hcover basepoint.2
+
+/--
 The simply-connected form of the two-set open-cover Van Kampen theorem.  The
 cover gives path-connectedness of the ambient union, and the existing two-set
 loop theorem null-homotopes every loop at the shared basepoint.
@@ -4845,6 +4859,21 @@ theorem twoSetOpenCover_simplyConnectedSpace
   exact ⟨hpc, fun γ =>
     twoSetOpenCover_basedLoop_nullhomotopic
       (U := U) (V := V) hU hV hcover hbase γ⟩
+
+/--
+The basepoint-free simply-connected form of the two-set open-cover Van Kampen
+theorem.  A path-connected overlap is nonempty, so it provides the shared
+basepoint required by the based-loop form.
+-/
+theorem twoSetOpenCover_simplyConnectedSpace_of_pathConnected_inter
+    {X : Type u} [TopologicalSpace X] {U V : Set X}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set X)]
+    (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ) :
+    SimplyConnectedSpace X := by
+  rcases (PathConnectedSpace.nonempty : Nonempty (U ∩ V : Set X)) with ⟨basepoint⟩
+  exact twoSetOpenCover_simplyConnectedSpace (U := U) (V := V)
+    (basepoint := basepoint.1) hU hV hcover basepoint.2
 
 /--
 A path in one cover member, followed by a finite block in the other member,
