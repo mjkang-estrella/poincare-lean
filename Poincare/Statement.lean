@@ -6950,6 +6950,156 @@ theorem threeSphere_stereographic_northHead_firstSouthRun_tail_induction
     ih C hClt afterPts afterSegs q hafterClose hq hafterChoice
 
 /--
+Length-aligned form of the south-headed flat first-return step.  This is the
+symmetric arithmetic split needed by the arbitrary first-north-run induction.
+-/
+theorem threeSphere_stereographic_southHead_prefixNorthRunSouthReturn_flat_tail_induction_step_of_length_eq
+    {T A B C : ℕ} {x₀ : ThreeSphere}
+    (tailPts : Fin (T + 1) → ThreeSphere)
+    (tailSegs : (k : Fin T) → Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last T) = x₀)
+    (hTailLen : T = A + (B + 1) + C)
+    (hp : Set.range p ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouthBase : tailPts 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouth : ∀ k : Fin A,
+      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthBase : tailPts ⟨A, by omega⟩ ∈
+        (stereographic' 3 threeSphere_northPole).source)
+    (hNorth : ∀ k : Fin B,
+      Set.range (tailSegs ⟨A + k.val, by omega⟩) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hReturn : Set.range (tailSegs ⟨A + B, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hshort : ∀ q : Path x₀ (tailPts ⟨A + (B + 1), by omega⟩),
+      Set.range q ⊆ (stereographic' 3 (-threeSphere_northPole)).source →
+      let afterPts : Fin (C + 1) → ThreeSphere := fun i =>
+        tailPts ⟨A + (B + 1) + i.val, by omega⟩
+      let afterSegs : (k : Fin C) → Path (afterPts k.castSucc) (afterPts k.succ) :=
+        fun k => tailSegs ⟨A + (B + 1) + k.val, by omega⟩
+      let afterClose : afterPts (Fin.last C) = x₀ := by
+        dsimp [afterPts]
+        have hidx :
+            (⟨A + (B + 1) + C, by omega⟩ : Fin (T + 1)) = Fin.last T := by
+          ext
+          change A + (B + 1) + C = T
+          omega
+        exact (congrArg tailPts hidx).trans hclose
+      Path.Homotopic (q.trans (Path.concat afterPts afterSegs))
+        ((Path.refl x₀).cast rfl afterClose)) :
+    Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
+      ((Path.refl x₀).cast rfl hclose) := by
+  cases hTailLen
+  exact threeSphere_stereographic_southHead_prefixNorthRunSouthReturn_flat_tail_induction_step
+    tailPts tailSegs p hclose hp hSouthBase hSouth hNorthBase hNorth hReturn
+    (by
+      intro q hq
+      simpa using hshort q hq)
+
+/--
+First-run induction for arbitrary south-headed finite tails.  This is the
+symmetric form of the north-headed induction above: terminal first-north-runs
+close directly, while non-terminal returns recurse on the after-tail.
+-/
+theorem threeSphere_stereographic_southHead_firstNorthRun_tail_induction
+    {N : ℕ} {x₀ : ThreeSphere}
+    (tailPts : Fin (N + 1) → ThreeSphere)
+    (tailSegs : (k : Fin N) → Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last N) = x₀)
+    (hp : Set.range p ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hchoice : ∀ k : Fin N,
+      Set.range (tailSegs k) ⊆ (stereographic' 3 (-threeSphere_northPole)).source ∨
+        Set.range (tailSegs k) ⊆ (stereographic' 3 threeSphere_northPole).source) :
+    Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
+      ((Path.refl x₀).cast rfl hclose) := by
+  revert tailPts tailSegs p hclose hp hchoice
+  refine Nat.strong_induction_on N ?_
+  intro N ih tailPts tailSegs p hclose hp hchoice
+  refine
+    threeSphere_stereographic_southHead_firstNorthRun_terminal_or_return_tail_induction
+      tailPts tailSegs p hclose hp hchoice ?_
+  intro start stop hstartstop hBefore hSouthStop hrun htail
+  let A : ℕ := start.val
+  let B : ℕ := stop.val - start.val
+  let C : ℕ := N - (stop.val + 1)
+  have hTailLen : N = A + (B + 1) + C := by
+    dsimp [A, B, C]
+    omega
+  have hClt : C < N := by
+    dsimp [C]
+    omega
+  have hSouthBase :
+      tailPts 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source :=
+    hp ⟨1, p.target⟩
+  have hSouth : ∀ k : Fin A,
+      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source := by
+    intro k
+    simpa [A] using hBefore ⟨k.val, by omega⟩ k.isLt
+  have hNorthBase :
+      tailPts ⟨A, by omega⟩ ∈
+        (stereographic' 3 threeSphere_northPole).source := by
+    have hStart := hrun start (by omega) hstartstop
+    simpa [A] using hStart ⟨0, (tailSegs start).source⟩
+  have hNorth : ∀ k : Fin B,
+      Set.range (tailSegs ⟨A + k.val, by omega⟩) ⊆
+        (stereographic' 3 threeSphere_northPole).source := by
+    intro k
+    let j : Fin N := ⟨A + k.val, by
+      dsimp [A, B]
+      have hk := k.isLt
+      omega⟩
+    have hjle : start.val ≤ j.val := by
+      dsimp [j, A]
+      omega
+    have hjlt : j.val < stop.val := by
+      dsimp [j, A, B]
+      have hk := k.isLt
+      omega
+    simpa [j] using hrun j hjle hjlt
+  have hReturn :
+      Set.range (tailSegs ⟨A + B, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source := by
+    have hstopIdx : (⟨A + B, by omega⟩ : Fin N) = stop := by
+      ext
+      dsimp [A, B]
+      omega
+    rw [hstopIdx]
+    exact hSouthStop
+  refine
+    threeSphere_stereographic_southHead_prefixNorthRunSouthReturn_flat_tail_induction_step_of_length_eq
+      tailPts tailSegs p hclose hTailLen hp hSouthBase hSouth hNorthBase hNorth
+      hReturn ?_
+  intro q hq
+  let afterPts : Fin (C + 1) → ThreeSphere := fun i =>
+    tailPts ⟨A + (B + 1) + i.val, by omega⟩
+  let afterSegs : (k : Fin C) → Path (afterPts k.castSucc) (afterPts k.succ) :=
+    fun k => tailSegs ⟨A + (B + 1) + k.val, by omega⟩
+  have hafterClose : afterPts (Fin.last C) = x₀ := by
+    dsimp [afterPts]
+    have hidx :
+        (⟨A + (B + 1) + C, by
+          rw [← hTailLen]
+          exact Nat.lt_succ_self N⟩ : Fin (N + 1)) = Fin.last N := by
+      ext
+      change A + (B + 1) + C = N
+      omega
+    exact (congrArg tailPts hidx).trans hclose
+  have hafterChoice : ∀ k : Fin C,
+      Set.range (afterSegs k) ⊆ (stereographic' 3 (-threeSphere_northPole)).source ∨
+        Set.range (afterSegs k) ⊆
+          (stereographic' 3 threeSphere_northPole).source := by
+    intro k
+    simpa [afterSegs] using
+      hchoice ⟨A + (B + 1) + k.val, by
+        have hk : k.val < C := k.isLt
+        omega⟩
+  simpa [afterPts, afterSegs] using
+    ih C hClt afterPts afterSegs q hafterClose hq hafterChoice
+
+/--
 The north replacement path produced from a bracketed finite south block gives
 an explicit two-step contraction: first replace the south block by an overlap
 path in the north source, then contract the resulting north-source loop.
