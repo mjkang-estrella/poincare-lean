@@ -19879,6 +19879,16 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_of_sourceChoice
     γ t h0 h1 hchoice
 
 /--
+The finite-concat collapse obligation is discharged by the arbitrary
+source-choice path-level nullhomotopy above.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement :
+    ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement := by
+  intro γ N t h0 h1 hchoice
+  exact threeSphere_stereographicEquatorLoopFiniteConcatCollapse_of_sourceChoice
+    γ t h0 h1 hchoice
+
+/--
 Terminal first-south-run collapse: if a finite chart word has a north-source
 prefix and then stays in the south stereographic source through the end, the
 original finite concatenation already collapses in the path-homotopy quotient.
@@ -30608,6 +30618,16 @@ theorem threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatCollapseS
     hcollapse
 
 /--
+The equatorial Van Kampen loop obligation follows from the verified finite
+subdivision quotient statement and the arbitrary source-choice finite-concat
+collapse.
+-/
+theorem threeSphere_stereographicVanKampenLoopStatement_of_sourceChoiceCollapse :
+    ThreeSphereStereographicVanKampenLoopStatement :=
+  threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatCollapseStatement
+    threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement
+
+/--
 The concrete finite-concat-collapse route is the quotient-and-collapse route
 specialized to the verified finite-concat quotient statement.
 -/
@@ -30896,6 +30916,17 @@ theorem threeSphere_simplyConnectedSpace_of_stereographicVanKampenLoopStatement
     (h : ThreeSphereStereographicVanKampenLoopStatement) :
     SimplyConnectedSpace ThreeSphere :=
   threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement h
+
+/--
+The standard 3-sphere is simply connected by the stereographic finite
+subdivision proof: every equatorial based loop has a finite source-contained
+representative, and every such representative collapses by the arbitrary
+source-choice theorem.
+-/
+theorem threeSphere_simplyConnectedSpace_of_sourceChoiceCollapse :
+    SimplyConnectedSpace ThreeSphere :=
+  threeSphere_simplyConnectedSpace_of_stereographicVanKampenLoopStatement
+    threeSphere_stereographicVanKampenLoopStatement_of_sourceChoiceCollapse
 
 /--
 The stereographic Van Kampen loop route to simple-connectedness is exactly the
