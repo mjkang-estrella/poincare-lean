@@ -10295,6 +10295,432 @@ theorem threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockS
     hNorthFinalBase hNorthFinal hSouthEndBase hSouthEnd
 
 /--
+An arbitrary north-source path followed by finite south, north, south, north,
+south, north, south, and north tail blocks is null-homotopic.  This is the
+flat-tail form of the first seven-switch after-stop branch.
+-/
+theorem threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic
+    {L R A B C D E₀ F₀ : ℕ} {x₀ : ThreeSphere}
+    (tailPts : Fin (L + R + A + B + C + D + E₀ + F₀ + 1) → ThreeSphere)
+    (tailSegs : (k : Fin (L + R + A + B + C + D + E₀ + F₀)) →
+      Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last (L + R + A + B + C + D + E₀ + F₀)) = x₀)
+    (hp : Set.range p ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hSouthBase : tailPts 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouth : ∀ k : Fin L,
+      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthBase : tailPts ⟨L, by omega⟩ ∈
+        (stereographic' 3 threeSphere_northPole).source)
+    (hNorth : ∀ k : Fin R,
+      Set.range (tailSegs ⟨L + k.val, by omega⟩) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hSouthLastBase : tailPts ⟨L + R, by omega⟩ ∈
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouthLast : ∀ k : Fin A,
+      Set.range (tailSegs ⟨L + R + k.val, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthLastBase : tailPts ⟨L + R + A, by omega⟩ ∈
+        (stereographic' 3 threeSphere_northPole).source)
+    (hNorthLast : ∀ k : Fin B,
+      Set.range (tailSegs ⟨L + R + A + k.val, by omega⟩) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hSouthFinalBase : tailPts ⟨L + R + A + B, by omega⟩ ∈
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouthFinal : ∀ k : Fin C,
+      Set.range (tailSegs ⟨L + R + A + B + k.val, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthFinalBase : tailPts ⟨L + R + A + B + C, by omega⟩ ∈
+        (stereographic' 3 threeSphere_northPole).source)
+    (hNorthFinal : ∀ k : Fin D,
+      Set.range (tailSegs ⟨L + R + A + B + C + k.val, by omega⟩) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hSouthEndBase : tailPts ⟨L + R + A + B + C + D, by omega⟩ ∈
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouthEnd : ∀ k : Fin E₀,
+      Set.range (tailSegs ⟨L + R + A + B + C + D + k.val, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthEndBase : tailPts ⟨L + R + A + B + C + D + E₀, by omega⟩ ∈
+        (stereographic' 3 threeSphere_northPole).source)
+    (hNorthEnd : ∀ k : Fin F₀,
+      Set.range (tailSegs ⟨L + R + A + B + C + D + E₀ + k.val, by omega⟩) ⊆
+        (stereographic' 3 threeSphere_northPole).source) :
+    Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
+      ((Path.refl x₀).cast rfl hclose) := by
+  let prefix₁Pts : Fin (L + R + A + B + C + D + E₀ + 1) → ThreeSphere := fun i =>
+    tailPts ⟨i.val, by omega⟩
+  let prefix₁Segs : (k : Fin (L + R + A + B + C + D + E₀)) →
+      Path (prefix₁Pts k.castSucc) (prefix₁Pts k.succ) :=
+    fun k => tailSegs ⟨k.val, by omega⟩
+  let prefix₂Pts : Fin (L + R + A + B + C + D + 1) → ThreeSphere := fun i =>
+    prefix₁Pts ⟨i.val, by omega⟩
+  let prefix₂Segs : (k : Fin (L + R + A + B + C + D)) →
+      Path (prefix₂Pts k.castSucc) (prefix₂Pts k.succ) :=
+    fun k => prefix₁Segs ⟨k.val, by omega⟩
+  let prefix₃Pts : Fin (L + R + A + B + C + 1) → ThreeSphere := fun i =>
+    prefix₂Pts ⟨i.val, by omega⟩
+  let prefix₃Segs : (k : Fin (L + R + A + B + C)) →
+      Path (prefix₃Pts k.castSucc) (prefix₃Pts k.succ) :=
+    fun k => prefix₂Segs ⟨k.val, by omega⟩
+  let prefix₄Pts : Fin (L + R + A + B + 1) → ThreeSphere := fun i =>
+    prefix₃Pts ⟨i.val, by omega⟩
+  let prefix₄Segs : (k : Fin (L + R + A + B)) →
+      Path (prefix₄Pts k.castSucc) (prefix₄Pts k.succ) :=
+    fun k => prefix₃Segs ⟨k.val, by omega⟩
+  let prefix₅Pts : Fin (L + R + A + 1) → ThreeSphere := fun i =>
+    prefix₄Pts ⟨i.val, by omega⟩
+  let prefix₅Segs : (k : Fin (L + R + A)) →
+      Path (prefix₅Pts k.castSucc) (prefix₅Pts k.succ) :=
+    fun k => prefix₄Segs ⟨k.val, by omega⟩
+  let prefix₆Pts : Fin (L + R + 1) → ThreeSphere := fun i =>
+    prefix₅Pts ⟨i.val, by omega⟩
+  let prefix₆Segs : (k : Fin (L + R)) →
+      Path (prefix₆Pts k.castSucc) (prefix₆Pts k.succ) :=
+    fun k => prefix₅Segs ⟨k.val, by omega⟩
+  let southPts : Fin (L + 1) → ThreeSphere := fun i =>
+    prefix₆Pts ⟨i.val, by omega⟩
+  let southSegs : (k : Fin L) → Path (southPts k.castSucc) (southPts k.succ) :=
+    fun k => prefix₆Segs ⟨k.val, by omega⟩
+  let northPts : Fin (R + 1) → ThreeSphere := fun i =>
+    prefix₆Pts ⟨L + i.val, by omega⟩
+  let northSegs : (k : Fin R) → Path (northPts k.castSucc) (northPts k.succ) :=
+    fun k => prefix₆Segs ⟨L + k.val, by omega⟩
+  let southLastPts : Fin (A + 1) → ThreeSphere := fun i =>
+    prefix₅Pts ⟨L + R + i.val, by omega⟩
+  let southLastSegs : (k : Fin A) →
+      Path (southLastPts k.castSucc) (southLastPts k.succ) :=
+    fun k => prefix₅Segs ⟨L + R + k.val, by omega⟩
+  let northLastPts : Fin (B + 1) → ThreeSphere := fun i =>
+    prefix₄Pts ⟨L + R + A + i.val, by omega⟩
+  let northLastSegs : (k : Fin B) →
+      Path (northLastPts k.castSucc) (northLastPts k.succ) :=
+    fun k => prefix₄Segs ⟨L + R + A + k.val, by omega⟩
+  let southFinalPts : Fin (C + 1) → ThreeSphere := fun i =>
+    prefix₃Pts ⟨L + R + A + B + i.val, by omega⟩
+  let southFinalSegs : (k : Fin C) →
+      Path (southFinalPts k.castSucc) (southFinalPts k.succ) :=
+    fun k => prefix₃Segs ⟨L + R + A + B + k.val, by omega⟩
+  let northFinalPts : Fin (D + 1) → ThreeSphere := fun i =>
+    prefix₂Pts ⟨L + R + A + B + C + i.val, by omega⟩
+  let northFinalSegs : (k : Fin D) →
+      Path (northFinalPts k.castSucc) (northFinalPts k.succ) :=
+    fun k => prefix₂Segs ⟨L + R + A + B + C + k.val, by omega⟩
+  let southEndPts : Fin (E₀ + 1) → ThreeSphere := fun i =>
+    prefix₁Pts ⟨L + R + A + B + C + D + i.val, by omega⟩
+  let southEndSegs : (k : Fin E₀) →
+      Path (southEndPts k.castSucc) (southEndPts k.succ) :=
+    fun k => prefix₁Segs ⟨L + R + A + B + C + D + k.val, by omega⟩
+  let northEndPts : Fin (F₀ + 1) → ThreeSphere := fun i =>
+    tailPts ⟨L + R + A + B + C + D + E₀ + i.val, by omega⟩
+  let northEndSegs : (k : Fin F₀) →
+      Path (northEndPts k.castSucc) (northEndPts k.succ) :=
+    fun k => tailSegs ⟨L + R + A + B + C + D + E₀ + k.val, by omega⟩
+  have hsplitTail :
+      Path.Homotopic (Path.concat tailPts tailSegs)
+        ((Path.concat prefix₁Pts prefix₁Segs).trans
+          (Path.concat northEndPts northEndSegs)) := by
+    change Path.Homotopic (Path.concat tailPts tailSegs)
+      ((Path.concat
+        (fun i : Fin (L + R + A + B + C + D + E₀ + 1) => tailPts ⟨i.val, by omega⟩)
+        (fun k : Fin (L + R + A + B + C + D + E₀) => tailSegs ⟨k.val, by omega⟩)).trans
+        (Path.concat
+          (fun i : Fin (F₀ + 1) =>
+            tailPts ⟨L + R + A + B + C + D + E₀ + i.val, by omega⟩)
+          (fun k : Fin F₀ =>
+            tailSegs ⟨L + R + A + B + C + D + E₀ + k.val, by omega⟩)))
+    exact path_homotopic_concat_split tailPts tailSegs
+  have hsplitPrefix₁ :
+      Path.Homotopic (Path.concat prefix₁Pts prefix₁Segs)
+        ((Path.concat prefix₂Pts prefix₂Segs).trans
+          (Path.concat southEndPts southEndSegs)) := by
+    change Path.Homotopic (Path.concat prefix₁Pts prefix₁Segs)
+      ((Path.concat
+        (fun i : Fin (L + R + A + B + C + D + 1) => prefix₁Pts ⟨i.val, by omega⟩)
+        (fun k : Fin (L + R + A + B + C + D) => prefix₁Segs ⟨k.val, by omega⟩)).trans
+        (Path.concat
+          (fun i : Fin (E₀ + 1) => prefix₁Pts ⟨L + R + A + B + C + D + i.val, by omega⟩)
+          (fun k : Fin E₀ => prefix₁Segs ⟨L + R + A + B + C + D + k.val, by omega⟩)))
+    exact path_homotopic_concat_split prefix₁Pts prefix₁Segs
+  have hsplitPrefix₂ :
+      Path.Homotopic (Path.concat prefix₂Pts prefix₂Segs)
+        ((Path.concat prefix₃Pts prefix₃Segs).trans
+          (Path.concat northFinalPts northFinalSegs)) := by
+    change Path.Homotopic (Path.concat prefix₂Pts prefix₂Segs)
+      ((Path.concat
+        (fun i : Fin (L + R + A + B + C + 1) => prefix₂Pts ⟨i.val, by omega⟩)
+        (fun k : Fin (L + R + A + B + C) => prefix₂Segs ⟨k.val, by omega⟩)).trans
+        (Path.concat
+          (fun i : Fin (D + 1) => prefix₂Pts ⟨L + R + A + B + C + i.val, by omega⟩)
+          (fun k : Fin D => prefix₂Segs ⟨L + R + A + B + C + k.val, by omega⟩)))
+    exact path_homotopic_concat_split prefix₂Pts prefix₂Segs
+  have hsplitPrefix₃ :
+      Path.Homotopic (Path.concat prefix₃Pts prefix₃Segs)
+        ((Path.concat prefix₄Pts prefix₄Segs).trans
+          (Path.concat southFinalPts southFinalSegs)) := by
+    change Path.Homotopic (Path.concat prefix₃Pts prefix₃Segs)
+      ((Path.concat
+        (fun i : Fin (L + R + A + B + 1) => prefix₃Pts ⟨i.val, by omega⟩)
+        (fun k : Fin (L + R + A + B) => prefix₃Segs ⟨k.val, by omega⟩)).trans
+        (Path.concat
+          (fun i : Fin (C + 1) => prefix₃Pts ⟨L + R + A + B + i.val, by omega⟩)
+          (fun k : Fin C => prefix₃Segs ⟨L + R + A + B + k.val, by omega⟩)))
+    exact path_homotopic_concat_split prefix₃Pts prefix₃Segs
+  have hsplitPrefix₄ :
+      Path.Homotopic (Path.concat prefix₄Pts prefix₄Segs)
+        ((Path.concat prefix₅Pts prefix₅Segs).trans
+          (Path.concat northLastPts northLastSegs)) := by
+    change Path.Homotopic (Path.concat prefix₄Pts prefix₄Segs)
+      ((Path.concat
+        (fun i : Fin (L + R + A + 1) => prefix₄Pts ⟨i.val, by omega⟩)
+        (fun k : Fin (L + R + A) => prefix₄Segs ⟨k.val, by omega⟩)).trans
+        (Path.concat
+          (fun i : Fin (B + 1) => prefix₄Pts ⟨L + R + A + i.val, by omega⟩)
+          (fun k : Fin B => prefix₄Segs ⟨L + R + A + k.val, by omega⟩)))
+    exact path_homotopic_concat_split prefix₄Pts prefix₄Segs
+  have hsplitPrefix₅ :
+      Path.Homotopic (Path.concat prefix₅Pts prefix₅Segs)
+        ((Path.concat prefix₆Pts prefix₆Segs).trans
+          (Path.concat southLastPts southLastSegs)) := by
+    change Path.Homotopic (Path.concat prefix₅Pts prefix₅Segs)
+      ((Path.concat
+        (fun i : Fin (L + R + 1) => prefix₅Pts ⟨i.val, by omega⟩)
+        (fun k : Fin (L + R) => prefix₅Segs ⟨k.val, by omega⟩)).trans
+        (Path.concat
+          (fun i : Fin (A + 1) => prefix₅Pts ⟨L + R + i.val, by omega⟩)
+          (fun k : Fin A => prefix₅Segs ⟨L + R + k.val, by omega⟩)))
+    exact path_homotopic_concat_split prefix₅Pts prefix₅Segs
+  have hsplitPrefix₆ :
+      Path.Homotopic (Path.concat prefix₆Pts prefix₆Segs)
+        ((Path.concat southPts southSegs).trans
+          (Path.concat northPts northSegs)) := by
+    change Path.Homotopic (Path.concat prefix₆Pts prefix₆Segs)
+      ((Path.concat (fun i : Fin (L + 1) => prefix₆Pts ⟨i.val, by omega⟩)
+        (fun k : Fin L => prefix₆Segs ⟨k.val, by omega⟩)).trans
+        (Path.concat (fun i : Fin (R + 1) => prefix₆Pts ⟨L + i.val, by omega⟩)
+          (fun k : Fin R => prefix₆Segs ⟨L + k.val, by omega⟩)))
+    exact path_homotopic_concat_split prefix₆Pts prefix₆Segs
+  have hsplit :
+      Path.Homotopic (Path.concat tailPts tailSegs)
+        ((((((((Path.concat southPts southSegs).trans
+          (Path.concat northPts northSegs)).trans
+          (Path.concat southLastPts southLastSegs)).trans
+          (Path.concat northLastPts northLastSegs)).trans
+          (Path.concat southFinalPts southFinalSegs)).trans
+          (Path.concat northFinalPts northFinalSegs)).trans
+          (Path.concat southEndPts southEndSegs)).trans
+          (Path.concat northEndPts northEndSegs)) :=
+    (((((hsplitTail.trans
+      (Path.Homotopic.hcomp hsplitPrefix₁ (Path.Homotopic.refl _))).trans
+      (Path.Homotopic.hcomp
+        (Path.Homotopic.hcomp hsplitPrefix₂ (Path.Homotopic.refl _))
+        (Path.Homotopic.refl _))).trans
+      (Path.Homotopic.hcomp
+        (Path.Homotopic.hcomp
+          (Path.Homotopic.hcomp hsplitPrefix₃ (Path.Homotopic.refl _))
+          (Path.Homotopic.refl _))
+        (Path.Homotopic.refl _))).trans
+      (Path.Homotopic.hcomp
+        (Path.Homotopic.hcomp
+          (Path.Homotopic.hcomp
+            (Path.Homotopic.hcomp hsplitPrefix₄ (Path.Homotopic.refl _))
+            (Path.Homotopic.refl _))
+          (Path.Homotopic.refl _))
+        (Path.Homotopic.refl _))).trans
+      (Path.Homotopic.hcomp
+        (Path.Homotopic.hcomp
+          (Path.Homotopic.hcomp
+            (Path.Homotopic.hcomp
+              (Path.Homotopic.hcomp hsplitPrefix₅ (Path.Homotopic.refl _))
+              (Path.Homotopic.refl _))
+            (Path.Homotopic.refl _))
+          (Path.Homotopic.refl _))
+        (Path.Homotopic.refl _))).trans
+      (Path.Homotopic.hcomp
+        (Path.Homotopic.hcomp
+          (Path.Homotopic.hcomp
+            (Path.Homotopic.hcomp
+              (Path.Homotopic.hcomp
+                (Path.Homotopic.hcomp hsplitPrefix₆ (Path.Homotopic.refl _))
+                (Path.Homotopic.refl _))
+              (Path.Homotopic.refl _))
+            (Path.Homotopic.refl _))
+          (Path.Homotopic.refl _))
+        (Path.Homotopic.refl _))
+  have hnorthRange :
+      Set.range (Path.concat northPts northSegs) ⊆
+        (stereographic' 3 threeSphere_northPole).source := by
+    exact threeSphere_stereographic_source_concat_range_subset threeSphere_northPole
+      northPts northSegs
+      (by simpa [northPts, prefix₆Pts, prefix₅Pts, prefix₄Pts, prefix₃Pts, prefix₂Pts, prefix₁Pts] using hNorthBase)
+      (by
+        intro k
+        simpa [northSegs, prefix₆Segs, prefix₅Segs, prefix₄Segs, prefix₃Segs, prefix₂Segs, prefix₁Segs] using hNorth k)
+  have hcloseNorthEnd : northEndPts (Fin.last F₀) = x₀ := by
+    simpa [northEndPts] using hclose
+  have hcontract :
+      Path.Homotopic
+        ((((((((p.trans (Path.concat southPts southSegs)).trans
+          (Path.concat northPts northSegs)).trans
+          (Path.concat southLastPts southLastSegs)).trans
+          (Path.concat northLastPts northLastSegs)).trans
+          (Path.concat southFinalPts southFinalSegs)).trans
+          (Path.concat northFinalPts northFinalSegs)).trans
+          (Path.concat southEndPts southEndSegs)).trans
+          (Path.concat northEndPts northEndSegs))
+        ((Path.refl x₀).cast rfl hcloseNorthEnd) := by
+    exact threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorth_trans_cast_nullhomotopic
+      southPts p southSegs (Path.concat northPts northSegs)
+      southLastPts southLastSegs northLastPts northLastSegs
+      southFinalPts southFinalSegs northFinalPts northFinalSegs
+      southEndPts southEndSegs northEndPts northEndSegs
+      rfl rfl rfl rfl rfl rfl hcloseNorthEnd
+      (by simpa [southPts, prefix₆Pts, prefix₅Pts, prefix₄Pts, prefix₃Pts, prefix₂Pts, prefix₁Pts] using hp)
+      (by simpa [southPts, prefix₆Pts, prefix₅Pts, prefix₄Pts, prefix₃Pts, prefix₂Pts, prefix₁Pts] using hSouthBase)
+      (by
+        intro k
+        simpa [southSegs, prefix₆Segs, prefix₅Segs, prefix₄Segs, prefix₃Segs, prefix₂Segs, prefix₁Segs] using hSouth k)
+      hnorthRange
+      (by simpa [southLastPts, prefix₅Pts, prefix₄Pts, prefix₃Pts, prefix₂Pts, prefix₁Pts] using hSouthLastBase)
+      (by
+        intro k
+        simpa [southLastSegs, prefix₅Segs, prefix₄Segs, prefix₃Segs, prefix₂Segs, prefix₁Segs] using hSouthLast k)
+      (by simpa [northLastPts, prefix₄Pts, prefix₃Pts, prefix₂Pts, prefix₁Pts] using hNorthLastBase)
+      (by
+        intro k
+        simpa [northLastSegs, prefix₄Segs, prefix₃Segs, prefix₂Segs, prefix₁Segs] using hNorthLast k)
+      (by simpa [southFinalPts, prefix₃Pts, prefix₂Pts, prefix₁Pts] using hSouthFinalBase)
+      (by
+        intro k
+        simpa [southFinalSegs, prefix₃Segs, prefix₂Segs, prefix₁Segs] using hSouthFinal k)
+      (by simpa [northFinalPts, prefix₂Pts, prefix₁Pts] using hNorthFinalBase)
+      (by
+        intro k
+        simpa [northFinalSegs, prefix₂Segs, prefix₁Segs] using hNorthFinal k)
+      (by simpa [southEndPts, prefix₁Pts] using hSouthEndBase)
+      (by
+        intro k
+        simpa [southEndSegs, prefix₁Segs] using hSouthEnd k)
+      (by simpa [northEndPts] using hNorthEndBase)
+      (by
+        intro k
+        simpa [northEndSegs] using hNorthEnd k)
+  have htargetEq :
+      ((Path.refl x₀).cast rfl hcloseNorthEnd) =
+        ((Path.refl x₀).cast rfl hclose) := by
+    apply Path.ext
+    funext _s
+    change x₀ = x₀
+    rfl
+  let S : Path (tailPts 0) (tailPts ⟨L, by omega⟩) := Path.concat southPts southSegs
+  let N : Path (tailPts ⟨L, by omega⟩) (tailPts ⟨L + R, by omega⟩) :=
+    Path.concat northPts northSegs
+  let S₂ : Path (tailPts ⟨L + R, by omega⟩) (tailPts ⟨L + R + A, by omega⟩) :=
+    Path.concat southLastPts southLastSegs
+  let N₂ : Path (tailPts ⟨L + R + A, by omega⟩) (tailPts ⟨L + R + A + B, by omega⟩) :=
+    Path.concat northLastPts northLastSegs
+  let S₃ : Path (tailPts ⟨L + R + A + B, by omega⟩)
+      (tailPts ⟨L + R + A + B + C, by omega⟩) :=
+    Path.concat southFinalPts southFinalSegs
+  let N₃ : Path (tailPts ⟨L + R + A + B + C, by omega⟩)
+      (tailPts ⟨L + R + A + B + C + D, by omega⟩) :=
+    Path.concat northFinalPts northFinalSegs
+  let S₄ : Path (tailPts ⟨L + R + A + B + C + D, by omega⟩)
+      (tailPts ⟨L + R + A + B + C + D + E₀, by omega⟩) :=
+    Path.concat southEndPts southEndSegs
+  let N₄ : Path (tailPts ⟨L + R + A + B + C + D + E₀, by omega⟩)
+      (tailPts (Fin.last (L + R + A + B + C + D + E₀ + F₀))) :=
+    Path.concat northEndPts northEndSegs
+  have hassoc :
+      Path.Homotopic
+        (p.trans (((((((S.trans N).trans S₂).trans N₂).trans S₃).trans N₃).trans S₄).trans N₄))
+        ((((((((p.trans S).trans N).trans S₂).trans N₂).trans S₃).trans N₃).trans S₄).trans N₄) := by
+    exact (Path.Homotopic.trans_assoc p ((((((S.trans N).trans S₂).trans N₂).trans S₃).trans N₃).trans S₄) N₄).symm.trans
+      (Path.Homotopic.hcomp
+        ((Path.Homotopic.trans_assoc p (((((S.trans N).trans S₂).trans N₂).trans S₃).trans N₃) S₄).symm.trans
+          (Path.Homotopic.hcomp
+            ((Path.Homotopic.trans_assoc p ((((S.trans N).trans S₂).trans N₂).trans S₃) N₃).symm.trans
+              (Path.Homotopic.hcomp
+                ((Path.Homotopic.trans_assoc p (((S.trans N).trans S₂).trans N₂) S₃).symm.trans
+                  (Path.Homotopic.hcomp
+                    ((Path.Homotopic.trans_assoc p ((S.trans N).trans S₂) N₂).symm.trans
+                      (Path.Homotopic.hcomp
+                        ((Path.Homotopic.trans_assoc p (S.trans N) S₂).symm.trans
+                          (Path.Homotopic.hcomp
+                            (Path.Homotopic.trans_assoc p S N).symm
+                            (Path.Homotopic.refl S₂)))
+                        (Path.Homotopic.refl N₂)))
+                    (Path.Homotopic.refl S₃)))
+                (Path.Homotopic.refl N₃)))
+            (Path.Homotopic.refl S₄)))
+        (Path.Homotopic.refl N₄))
+  refine (Path.Homotopic.hcomp (Path.Homotopic.refl p) hsplit).trans ?_
+  change Path.Homotopic
+    (p.trans (((((((S.trans N).trans S₂).trans N₂).trans S₃).trans N₃).trans S₄).trans N₄))
+    ((Path.refl x₀).cast rfl hclose)
+  exact hassoc.trans (hcontract.trans (htargetEq ▸ Path.Homotopic.refl _))
+
+/--
+Length-cast form of the north/south/north/south/north/south/north/south
+seven-switch tail contraction, aligned to first-run suffixes whose length splits
+as `L + R + A + B + C + D + E₀ + F₀`.
+-/
+theorem threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic_of_length_eq
+    {T L R A B C D E₀ F₀ : ℕ} {x₀ : ThreeSphere}
+    (tailPts : Fin (T + 1) → ThreeSphere)
+    (tailSegs : (k : Fin T) → Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last T) = x₀)
+    (hTailLen : T = L + R + A + B + C + D + E₀ + F₀)
+    (hp : Set.range p ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hSouthBase : tailPts 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouth : ∀ k : Fin L,
+      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthBase : tailPts ⟨L, by omega⟩ ∈
+        (stereographic' 3 threeSphere_northPole).source)
+    (hNorth : ∀ k : Fin R,
+      Set.range (tailSegs ⟨L + k.val, by omega⟩) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hSouthLastBase : tailPts ⟨L + R, by omega⟩ ∈
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouthLast : ∀ k : Fin A,
+      Set.range (tailSegs ⟨L + R + k.val, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthLastBase : tailPts ⟨L + R + A, by omega⟩ ∈
+        (stereographic' 3 threeSphere_northPole).source)
+    (hNorthLast : ∀ k : Fin B,
+      Set.range (tailSegs ⟨L + R + A + k.val, by omega⟩) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hSouthFinalBase : tailPts ⟨L + R + A + B, by omega⟩ ∈
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouthFinal : ∀ k : Fin C,
+      Set.range (tailSegs ⟨L + R + A + B + k.val, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthFinalBase : tailPts ⟨L + R + A + B + C, by omega⟩ ∈
+        (stereographic' 3 threeSphere_northPole).source)
+    (hNorthFinal : ∀ k : Fin D,
+      Set.range (tailSegs ⟨L + R + A + B + C + k.val, by omega⟩) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hSouthEndBase : tailPts ⟨L + R + A + B + C + D, by omega⟩ ∈
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouthEnd : ∀ k : Fin E₀,
+      Set.range (tailSegs ⟨L + R + A + B + C + D + k.val, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthEndBase : tailPts ⟨L + R + A + B + C + D + E₀, by omega⟩ ∈
+        (stereographic' 3 threeSphere_northPole).source)
+    (hNorthEnd : ∀ k : Fin F₀,
+      Set.range (tailSegs ⟨L + R + A + B + C + D + E₀ + k.val, by omega⟩) ⊆
+        (stereographic' 3 threeSphere_northPole).source) :
+    Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
+      ((Path.refl x₀).cast rfl hclose) := by
+  cases hTailLen
+  exact threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic
+    tailPts tailSegs p hclose hp hSouthBase hSouth hNorthBase hNorth hSouthLastBase
+    hSouthLast hNorthLastBase hNorthLast hSouthFinalBase hSouthFinal
+    hNorthFinalBase hNorthFinal hSouthEndBase hSouthEnd hNorthEndBase hNorthEnd
+
+/--
 An arbitrary south-source path followed by finite north, south, north, south,
 north, south, and north tail blocks is null-homotopic.  This is the flat-tail
 form of the first six-switch after-stop branch.
