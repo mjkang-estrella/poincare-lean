@@ -4831,6 +4831,32 @@ theorem twoSetOpenCover_sameSideBlockOppositeTail_concat_cast_nullhomotopic_of_m
 Length-cast form of the two-set one-switch tail contraction.  This allows a
 tail of length `T` to be consumed once its length is known to split as `L + R`.
 -/
+theorem twoSetOpenCover_sameSideBlockOppositeTail_concat_cast_homotopy_refl_forall_mem_of_length_eq
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {T L R : ℕ} {x₀ : Y}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set Y)]
+    (tailPts : Fin (T + 1) → Y)
+    (tailSegs : (k : Fin T) →
+      Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last T) = x₀)
+    (hTailLen : T = L + R)
+    (hp : Set.range p ⊆ U)
+    (hU : ∀ k : Fin L, Set.range (tailSegs ⟨k.val, by omega⟩) ⊆ U)
+    (hVBase : tailPts ⟨L, by omega⟩ ∈ V)
+    (hV : ∀ k : Fin R, Set.range (tailSegs ⟨L + k.val, by omega⟩) ⊆ V) :
+    ∃ H : (p.trans (Path.concat tailPts tailSegs)).Homotopy
+        ((Path.refl x₀).cast rfl hclose),
+      ∀ t, H t ∈ U ∪ V := by
+  cases hTailLen
+  exact twoSetOpenCover_sameSideBlockOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo
+    (U := U) (V := V) tailPts tailSegs p hclose hp hU hVBase hV
+
+/--
+A terminal first-opposite run contracts in any two-set cover: a prefix path and
+the tail pieces before `start` stay in one simply-connected cover member, while
+all tail pieces from `start` through the end stay in the other member.
+-/
 theorem twoSetOpenCover_sameSideBlockOppositeTail_concat_cast_nullhomotopic_of_length_eq
     {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {T L R : ℕ} {x₀ : Y}
     [SimplyConnectedSpace U] [SimplyConnectedSpace V]
@@ -4847,16 +4873,18 @@ theorem twoSetOpenCover_sameSideBlockOppositeTail_concat_cast_nullhomotopic_of_l
     (hV : ∀ k : Fin R, Set.range (tailSegs ⟨L + k.val, by omega⟩) ⊆ V) :
     Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
       ((Path.refl x₀).cast rfl hclose) := by
-  cases hTailLen
-  exact twoSetOpenCover_sameSideBlockOppositeTail_concat_cast_nullhomotopic_of_mapsTo
-    (U := U) (V := V) tailPts tailSegs p hclose hp hU hVBase hV
+  rcases twoSetOpenCover_sameSideBlockOppositeTail_concat_cast_homotopy_refl_forall_mem_of_length_eq
+      (U := U) (V := V) tailPts tailSegs p hclose hTailLen hp hU hVBase hV with
+    ⟨H, _hH⟩
+  exact ⟨H⟩
 
 /--
-A terminal first-opposite run contracts in any two-set cover: a prefix path and
-the tail pieces before `start` stay in one simply-connected cover member, while
-all tail pieces from `start` through the end stay in the other member.
+A terminal first-opposite run contracts through an explicit homotopy contained
+in the two-set cover: a prefix path and the tail pieces before `start` stay in
+one simply-connected cover member, while all tail pieces from `start` through
+the end stay in the other member.
 -/
-theorem twoSetOpenCover_sameHead_terminalOppositeRun_tail_concat_cast_nullhomotopic_of_mapsTo
+theorem twoSetOpenCover_sameHead_terminalOppositeRun_tail_concat_cast_homotopy_refl_forall_mem_of_mapsTo
     {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {N : ℕ} {x₀ : Y}
     [SimplyConnectedSpace U] [SimplyConnectedSpace V]
     [PathConnectedSpace (U ∩ V : Set Y)]
@@ -4871,8 +4899,9 @@ theorem twoSetOpenCover_sameHead_terminalOppositeRun_tail_concat_cast_nullhomoto
       Set.range (tailSegs j) ⊆ U)
     (hTerminal : ∀ j : Fin N, start.val ≤ j.val →
       Set.range (tailSegs j) ⊆ V) :
-    Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
-      ((Path.refl x₀).cast rfl hclose) := by
+    ∃ H : (p.trans (Path.concat tailPts tailSegs)).Homotopy
+        ((Path.refl x₀).cast rfl hclose),
+      ∀ t, H t ∈ U ∪ V := by
   let R : ℕ := N - start.val
   have hTailLen : N = start.val + R := by
     dsimp [R]
@@ -4897,9 +4926,37 @@ theorem twoSetOpenCover_sameHead_terminalOppositeRun_tail_concat_cast_nullhomoto
       dsimp [j]
       omega
     simpa [j] using hTerminal j hjle
-  exact twoSetOpenCover_sameSideBlockOppositeTail_concat_cast_nullhomotopic_of_length_eq
+  exact twoSetOpenCover_sameSideBlockOppositeTail_concat_cast_homotopy_refl_forall_mem_of_length_eq
     (U := U) (V := V) (L := start.val) (R := R)
     tailPts tailSegs p hclose hTailLen hp hU hVBase hV
+
+/--
+A terminal first-opposite run contracts in any two-set cover: a prefix path and
+the tail pieces before `start` stay in one simply-connected cover member, while
+all tail pieces from `start` through the end stay in the other member.
+-/
+theorem twoSetOpenCover_sameHead_terminalOppositeRun_tail_concat_cast_nullhomotopic_of_mapsTo
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {N : ℕ} {x₀ : Y}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set Y)]
+    (tailPts : Fin (N + 1) → Y)
+    (tailSegs : (k : Fin N) →
+      Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last N) = x₀)
+    (hp : Set.range p ⊆ U)
+    {start : Fin N}
+    (hBefore : ∀ j : Fin N, j.val < start.val →
+      Set.range (tailSegs j) ⊆ U)
+    (hTerminal : ∀ j : Fin N, start.val ≤ j.val →
+      Set.range (tailSegs j) ⊆ V) :
+    Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
+      ((Path.refl x₀).cast rfl hclose) := by
+  rcases twoSetOpenCover_sameHead_terminalOppositeRun_tail_concat_cast_homotopy_refl_forall_mem_of_mapsTo
+      (U := U) (V := V) (start := start) tailPts tailSegs p hclose hp
+      hBefore hTerminal with
+    ⟨H, _hH⟩
+  exact ⟨H⟩
 
 /--
 First-opposite-run reduction for arbitrary two-set covers.  If every tail
