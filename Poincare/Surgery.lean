@@ -3901,6 +3901,31 @@ inductive HasFiniteExtinctionFundamentalGroupInput
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
     [CompactSpace M] : Prop
 
+/--
+The finite-extinction topological hypotheses force every fundamental group to
+be finite: in a simply connected space, every based loop quotient is unique.
+-/
+theorem finite_extinction_fundamentalGroup_subsingleton_of_simplyConnectedSpace
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] (x : M) :
+    Subsingleton (FundamentalGroup M x) := by
+  change Subsingleton (Path.Homotopic.Quotient x x)
+  infer_instance
+
+/--
+The finite-extinction topological hypotheses give the finite fundamental-group
+fact needed by Perelman's finite-extinction input.
+-/
+theorem finite_extinction_fundamentalGroup_finite_of_simplyConnectedSpace
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] (x : M) :
+    Finite (FundamentalGroup M x) := by
+  haveI : Subsingleton (FundamentalGroup M x) :=
+    finite_extinction_fundamentalGroup_subsingleton_of_simplyConnectedSpace x
+  infer_instance
+
 /-- Interface for producing the sweepout family used by the width argument. -/
 inductive HasFiniteExtinctionSweepoutExistence
     (M : Type u) [TopologicalSpace M] [T2Space M]
