@@ -9682,18 +9682,29 @@ theorem threeSphere_stereographic_northSouthNorth_trans_trans_cast_nullhomotopic
 
 /--
 The symmetric three-piece chart excursion: a south-source path, a north-source
-middle segment, and a south-source return segment collapse after replacing the
-middle segment by an overlap path and contracting inside the south source.
+middle segment, and a south-source return segment contract through a homotopy
+whose image stays in the two stereographic chart sources.  The middle segment is
+replaced by an overlap path, after which the full loop lies in the simply
+connected south source.
 -/
-theorem threeSphere_stereographic_southNorthSouth_trans_trans_cast_nullhomotopic
+theorem threeSphere_stereographic_southNorthSouth_trans_trans_cast_homotopy_refl_forall_mem
     {x₀ x₁ x₂ x₃ : ThreeSphere}
     (p : Path x₀ x₁) (q : Path x₁ x₂) (r : Path x₂ x₃) (hclose : x₃ = x₀)
     (hp : Set.range p ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
     (hq : Set.range q ⊆ (stereographic' 3 threeSphere_northPole).source)
     (hr : Set.range r ⊆ (stereographic' 3 (-threeSphere_northPole)).source) :
-    Path.Homotopic ((p.trans q).trans r) ((Path.refl x₀).cast rfl hclose) := by
+    ∃ H : ((p.trans q).trans r).Homotopy ((Path.refl x₀).cast rfl hclose),
+      ∀ t, H t ∈
+        (stereographic' 3 threeSphere_northPole).source ∪
+          (stereographic' 3 (-threeSphere_northPole)).source := by
   let U : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
   let V : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  letI : SimplyConnectedSpace U := by
+    simpa [U] using
+      threeSphere_stereographic_source_simplyConnectedSpace threeSphere_northPole
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using
+      threeSphere_stereographic_source_simplyConnectedSpace (-threeSphere_northPole)
   have hx₁V : x₁ ∈ V := hp ⟨1, p.target⟩
   have hx₁U : x₁ ∈ U := hq ⟨0, q.source⟩
   have hx₂U : x₂ ∈ U := hq ⟨1, q.target⟩
@@ -9716,41 +9727,63 @@ theorem threeSphere_stereographic_southNorthSouth_trans_trans_cast_nullhomotopic
     intro z hz
     rcases hz with ⟨s, rfl⟩
     exact (overlapPath s).2.2
-  have hqReplace : Path.Homotopic q qOverlap := by
-    simpa [U] using
-      threeSphere_stereographic_source_contained_paths_homotopic
-        threeSphere_northPole q qOverlap hq hqOverlapU
-  have hreplace :
-      Path.Homotopic ((p.trans q).trans r) ((p.trans qOverlap).trans r) :=
-    Path.Homotopic.hcomp
-      (Path.Homotopic.hcomp (Path.Homotopic.refl p) hqReplace)
-      (Path.Homotopic.refl r)
-  have hmiddleV : Set.range (p.trans qOverlap) ⊆ V := by
-    intro z hz
-    have hz' :
-        z ∈ Set.range p ∪ Set.range qOverlap := by
-      simpa [Path.trans_range] using hz
-    rcases hz' with hzP | hzQ
-    · exact hp hzP
-    · exact hqOverlapV hzQ
-  have hloopV : Set.range ((p.trans qOverlap).trans r) ⊆ V := by
-    intro z hz
-    have hz' :
-        z ∈ Set.range (p.trans qOverlap) ∪ Set.range r := by
-      simpa [Path.trans_range] using hz
-    rcases hz' with hzMid | hzR
-    · exact hmiddleV hzMid
-    · exact hr hzR
+  rcases path_homotopy_forall_mem_of_range_subset_simplyConnectedSubtype
+      (U := U) q qOverlap hq hqOverlapU with
+    ⟨HqReplace, hHqReplace⟩
+  let Hpq : (p.trans q).Homotopy (p.trans qOverlap) :=
+    (Path.Homotopy.refl p).hcomp HqReplace
+  have hpUnion : ∀ t, p t ∈ U ∪ V := by
+    intro t
+    exact Or.inr (hp ⟨t, rfl⟩)
+  have hHqReplaceUnion : ∀ t, HqReplace t ∈ U ∪ V := by
+    intro t
+    exact Or.inl (hHqReplace t)
+  have hHpq : ∀ t, Hpq t ∈ U ∪ V := by
+    exact path_homotopy_hcomp_forall_mem_of_forall_mem
+      (Path.Homotopy.refl p) HqReplace
+      (path_homotopy_refl_forall_mem_of_forall_mem p hpUnion)
+      hHqReplaceUnion
+  let Hreplace : ((p.trans q).trans r).Homotopy ((p.trans qOverlap).trans r) :=
+    Hpq.hcomp (Path.Homotopy.refl r)
+  have hrUnion : ∀ t, r t ∈ U ∪ V := by
+    intro t
+    exact Or.inr (hr ⟨t, rfl⟩)
+  have hHreplace : ∀ t, Hreplace t ∈ U ∪ V := by
+    exact path_homotopy_hcomp_forall_mem_of_forall_mem
+      Hpq (Path.Homotopy.refl r) hHpq
+      (path_homotopy_refl_forall_mem_of_forall_mem r hrUnion)
+  have hmiddleV : Set.range (p.trans qOverlap) ⊆ V :=
+    path_trans_range_subset_of_range_subset p qOverlap hp hqOverlapV
+  have hloopV : Set.range ((p.trans qOverlap).trans r) ⊆ V :=
+    path_trans_range_subset_of_range_subset (p.trans qOverlap) r hmiddleV hr
   have hreflV : Set.range ((Path.refl x₀).cast rfl hclose) ⊆ V := by
     intro z hz
     rcases hz with ⟨s, rfl⟩
     simpa [Path.cast_coe] using hx₀V
-  exact hreplace.trans
-    (by
-      simpa [V] using
-        threeSphere_stereographic_source_contained_paths_homotopic
-          (-threeSphere_northPole) ((p.trans qOverlap).trans r)
-          ((Path.refl x₀).cast rfl hclose) hloopV hreflV)
+  rcases path_homotopy_forall_mem_of_range_subset_simplyConnectedSubtype
+      (U := V) ((p.trans qOverlap).trans r)
+      ((Path.refl x₀).cast rfl hclose) hloopV hreflV with
+    ⟨Hcontract, hHcontract⟩
+  refine ⟨Hreplace.trans Hcontract, ?_⟩
+  exact path_homotopy_trans_forall_mem_of_forall_mem
+    Hreplace Hcontract hHreplace (fun t => Or.inr (hHcontract t))
+
+/--
+The symmetric three-piece chart excursion: a south-source path, a north-source
+middle segment, and a south-source return segment collapse after replacing the
+middle segment by an overlap path and contracting inside the south source.
+-/
+theorem threeSphere_stereographic_southNorthSouth_trans_trans_cast_nullhomotopic
+    {x₀ x₁ x₂ x₃ : ThreeSphere}
+    (p : Path x₀ x₁) (q : Path x₁ x₂) (r : Path x₂ x₃) (hclose : x₃ = x₀)
+    (hp : Set.range p ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hq : Set.range q ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hr : Set.range r ⊆ (stereographic' 3 (-threeSphere_northPole)).source) :
+    Path.Homotopic ((p.trans q).trans r) ((Path.refl x₀).cast rfl hclose) := by
+  rcases threeSphere_stereographic_southNorthSouth_trans_trans_cast_homotopy_refl_forall_mem
+      p q r hclose hp hq hr with
+    ⟨H, _hH⟩
+  exact ⟨H⟩
 
 /--
 A north-source loop with an arbitrary finite south-source block between the
