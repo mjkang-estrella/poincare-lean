@@ -834,6 +834,121 @@ theorem path_homotopy_reflTrans_forall_mem_of_forall_mem
   change p _ ∈ S
   exact hp _
 
+/-- The constant path homotopy preserves containment. -/
+theorem path_homotopy_refl_forall_mem_of_forall_mem
+    {X : Type u} [TopologicalSpace X] {S : Set X} {x₀ x₁ : X}
+    (p : Path x₀ x₁) (hp : ∀ t, p t ∈ S) :
+    ∀ t, Path.Homotopy.refl p t ∈ S := by
+  intro t
+  change p t.2 ∈ S
+  exact hp t.2
+
+/-- Removing a trailing constant path by `Path.Homotopy.transRefl` preserves containment. -/
+theorem path_homotopy_transRefl_forall_mem_of_forall_mem
+    {X : Type u} [TopologicalSpace X] {S : Set X} {x₀ x₁ : X}
+    (p : Path x₀ x₁) (hp : ∀ t, p t ∈ S) :
+    ∀ t, Path.Homotopy.transRefl p t ∈ S := by
+  intro t
+  simp only [Path.Homotopy.transRefl, Path.Homotopy.cast_apply,
+    Path.Homotopy.symm_apply]
+  change p _ ∈ S
+  exact hp _
+
+/-- Subpaths preserve containment in any set containing the original path. -/
+theorem path_subpath_forall_mem_of_forall_mem
+    {X : Type u} [TopologicalSpace X] {S : Set X} {x₀ x₁ : X}
+    (p : Path x₀ x₁) (hp : ∀ t, p t ∈ S) (t₀ t₁ : unitInterval) :
+    ∀ t, (p.subpath t₀ t₁) t ∈ S := by
+  intro t
+  change p _ ∈ S
+  exact hp _
+
+/--
+The unreduced subpath-trans-subpath homotopy preserves containment in any set
+containing the original path.
+-/
+theorem path_homotopy_subpathTransSubpathRefl_forall_mem_of_forall_mem
+    {X : Type u} [TopologicalSpace X] {S : Set X} {x₀ x₁ : X}
+    (p : Path x₀ x₁) (hp : ∀ t, p t ∈ S)
+    (t₀ t₁ t₂ : unitInterval) :
+    ∀ t, Path.Homotopy.subpathTransSubpathRefl p t₀ t₁ t₂ t ∈ S := by
+  intro t
+  change ((p.subpath t₀ (Set.Icc.convexCombo t₁ t₂ t.1)).trans
+    (p.subpath (Set.Icc.convexCombo t₁ t₂ t.1) t₂)) t.2 ∈ S
+  rw [Path.trans_apply]
+  split_ifs <;> change p _ ∈ S <;> exact hp _
+
+/--
+The natural homotopy from two adjacent subpaths to the combined subpath
+preserves containment in any set containing the original path.
+-/
+theorem path_homotopy_subpathTransSubpath_forall_mem_of_forall_mem
+    {X : Type u} [TopologicalSpace X] {S : Set X} {x₀ x₁ : X}
+    (p : Path x₀ x₁) (hp : ∀ t, p t ∈ S)
+    (t₀ t₁ t₂ : unitInterval) :
+    ∀ t, Path.Homotopy.subpathTransSubpath p t₀ t₁ t₂ t ∈ S := by
+  exact path_homotopy_trans_forall_mem_of_forall_mem
+    (Path.Homotopy.subpathTransSubpathRefl p t₀ t₁ t₂)
+    (Path.Homotopy.transRefl (p.subpath t₀ t₂))
+    (path_homotopy_subpathTransSubpathRefl_forall_mem_of_forall_mem
+      p hp t₀ t₁ t₂)
+    (path_homotopy_transRefl_forall_mem_of_forall_mem (p.subpath t₀ t₂)
+      (path_subpath_forall_mem_of_forall_mem p hp t₀ t₂))
+
+/--
+The natural homotopy from a finite concatenation of subpaths to the matching
+single subpath preserves containment in any set containing the original path.
+-/
+theorem path_concatSubpath_homotopy_forall_mem_of_forall_mem
+    {X : Type u} [TopologicalSpace X] {S : Set X} {x₀ x₁ : X} {N : ℕ}
+    (p : Path x₀ x₁) (hp : ∀ t, p t ∈ S)
+    (t : Fin (N + 1) → unitInterval) :
+    ∃ H : (Path.concat (p ∘ t) (fun k : Fin N =>
+          p.subpath (t k.castSucc) (t k.succ))).Homotopy
+        (p.subpath (t 0) (t (Fin.last N))),
+      ∀ z, H z ∈ S := by
+  induction N with
+  | zero =>
+      let Hrefl : (Path.refl (p (t 0))).Homotopy (Path.refl (p (t 0))) :=
+        Path.Homotopy.refl _
+      have hsource :
+          Path.refl (p (t 0)) =
+            Path.concat (p ∘ t) (fun k : Fin 0 =>
+              p.subpath (t k.castSucc) (t k.succ)) := by
+        simp [Path.concat_zero, Function.comp_def]
+      have htarget :
+          Path.refl (p (t 0)) = p.subpath (t 0) (t (Fin.last 0)) := by
+        simp
+      let H :
+          (Path.concat (p ∘ t) (fun k : Fin 0 =>
+            p.subpath (t k.castSucc) (t k.succ))).Homotopy
+          (p.subpath (t 0) (t (Fin.last 0))) :=
+        Hrefl.cast hsource htarget
+      refine ⟨H, ?_⟩
+      exact path_homotopy_cast_forall_mem_of_forall_mem Hrefl hsource htarget
+        (path_homotopy_refl_forall_mem_of_forall_mem _ (fun _ => hp (t 0)))
+  | succ N ih =>
+      rw [Path.concat_succ]
+      rcases ih (t ∘ Fin.castSucc) with ⟨Hprefix, hHprefix⟩
+      let lastPath : Path (p (t (Fin.last N).castSucc))
+          (p (t (Fin.last (N + 1)))) :=
+        p.subpath (t (Fin.last N).castSucc) (t (Fin.last (N + 1)))
+      let Hlast : lastPath.Homotopy lastPath := Path.Homotopy.refl _
+      have hHlast : ∀ z, Hlast z ∈ S := by
+        exact path_homotopy_refl_forall_mem_of_forall_mem _
+          (path_subpath_forall_mem_of_forall_mem p hp _ _)
+      let Hsplit := Hprefix.hcomp Hlast
+      have hHsplit : ∀ z, Hsplit z ∈ S :=
+        path_homotopy_hcomp_forall_mem_of_forall_mem Hprefix Hlast
+          hHprefix hHlast
+      let Hmerge := Path.Homotopy.subpathTransSubpath p ((t ∘ Fin.castSucc) 0)
+        ((t ∘ Fin.castSucc) (Fin.last N)) (t (Fin.last N).succ)
+      have hHmerge : ∀ z, Hmerge z ∈ S :=
+        path_homotopy_subpathTransSubpath_forall_mem_of_forall_mem p hp _ _ _
+      refine ⟨Hsplit.trans Hmerge, ?_⟩
+      exact path_homotopy_trans_forall_mem_of_forall_mem Hsplit Hmerge
+        hHsplit hHmerge
+
 /--
 Left reassociation across four successive path factors stays inside a set when
 each factor stays inside that set.
@@ -6348,6 +6463,75 @@ theorem twoSetOpenCover_basedLoop_nullhomotopic_of_sourceChoice
   have hCastBack :=
     Path.Homotopic.pathCast hCast hsourceAt.symm htargetAt.symm
   simpa [Path.cast] using hCastBack
+
+/--
+A finite source-choice subdivision contracts the original based loop through an
+actual homotopy whose image stays in the two-set cover, provided the original
+loop itself stays in the cover.
+-/
+theorem twoSetOpenCover_basedLoop_homotopy_refl_forall_mem_of_sourceChoice
+    {X : Type u} [TopologicalSpace X] {U V : Set X} {basepoint : X}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set X)]
+    (hbase : basepoint ∈ U ∩ V)
+    (γ : Path basepoint basepoint)
+    (hγ : ∀ t, γ t ∈ U ∪ V)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval)
+    (h0 : t 0 = 0) (h1 : t (Fin.last N) = 1)
+    (hchoice : ∀ k : Fin N,
+      Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆ U ∨
+        Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆ V) :
+    ∃ H : γ.Homotopy (Path.refl basepoint), ∀ z, H z ∈ U ∪ V := by
+  rcases path_concatSubpath_homotopy_forall_mem_of_forall_mem
+      (S := U ∪ V) γ hγ t with
+    ⟨Hconcat, hHconcat⟩
+  rcases twoSetOpenCover_basedLoop_fullConcat_homotopy_refl_forall_mem_of_sourceChoice
+      (U := U) (V := V) hbase.1 γ t h0 h1 hchoice with
+    ⟨Hfull, hHfull⟩
+  have hsourceAt : γ (t 0) = basepoint := by
+    rw [h0]
+    exact γ.source
+  have htargetAt : γ (t (Fin.last N)) = basepoint := by
+    rw [h1]
+    exact γ.target
+  have hSubpathCast :
+      γ.subpath (t 0) (t (Fin.last N)) =
+        γ.cast hsourceAt htargetAt := by
+    ext s
+    simp [Path.cast_coe, Path.subpath, h0, h1]
+  let Hsubpath : (γ.subpath (t 0) (t (Fin.last N))).Homotopy
+      ((Path.refl basepoint).cast hsourceAt htargetAt) :=
+    Hconcat.symm.trans Hfull
+  have hHsubpath : ∀ z, Hsubpath z ∈ U ∪ V :=
+    path_homotopy_trans_forall_mem_of_forall_mem Hconcat.symm Hfull
+      (path_homotopy_symm_forall_mem_of_forall_mem Hconcat hHconcat)
+      hHfull
+  let Hcast : (γ.cast hsourceAt htargetAt).Homotopy
+      ((Path.refl basepoint).cast hsourceAt htargetAt) :=
+    Hsubpath.cast hSubpathCast rfl
+  have hHcast : ∀ z, Hcast z ∈ U ∪ V :=
+    path_homotopy_cast_forall_mem_of_forall_mem Hsubpath hSubpathCast rfl
+      hHsubpath
+  let Hback := Path.Homotopy.pathCast Hcast hsourceAt.symm htargetAt.symm
+  have hHback : ∀ z, Hback z ∈ U ∪ V := by
+    intro z
+    change Hcast z ∈ U ∪ V
+    exact hHcast z
+  have hsourceEq :
+      (γ.cast hsourceAt htargetAt).cast hsourceAt.symm htargetAt.symm = γ := by
+    ext s
+    simp [Path.cast_coe]
+  have htargetEq :
+      (((Path.refl basepoint).cast hsourceAt htargetAt).cast
+        hsourceAt.symm htargetAt.symm) = Path.refl basepoint := by
+    ext s
+    simp [Path.cast_coe]
+  let Hfinal : γ.Homotopy (Path.refl basepoint) :=
+    Hback.cast hsourceEq htargetEq
+  have hHfinal : ∀ z, Hfinal z ∈ U ∪ V :=
+    path_homotopy_cast_forall_mem_of_forall_mem Hback hsourceEq htargetEq
+      hHback
+  exact ⟨Hfinal, hHfinal⟩
 
 /--
 The two-set open-cover Van Kampen loop theorem: if the cover members are
