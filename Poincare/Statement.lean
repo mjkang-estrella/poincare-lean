@@ -19791,6 +19791,94 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_of_subpath_null
   exact hConcat.trans (hSub.trans (htargetEq ▸ Path.Homotopic.refl _))
 
 /--
+An arbitrary finite stereographic source-choice subdivision of an equatorial
+loop collapses as a path, not only in the quotient.  This consumes the
+north-headed first-run induction with the stationary path at the initial
+subdivision point as head.
+-/
+theorem threeSphere_stereographicEquatorLoop_fullConcat_nullhomotopic_of_sourceChoice
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval)
+    (h0 : t 0 = 0) (h1 : t (Fin.last N) = 1)
+    (hchoice : ∀ k : Fin N,
+      Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+          (stereographic' 3 threeSphere_northPole).source ∨
+        Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+          (stereographic' 3 (-threeSphere_northPole)).source) :
+    Path.Homotopic
+      (Path.concat (γ ∘ t) (fun k : Fin N => γ.subpath (t k.castSucc) (t k.succ)))
+      ((Path.refl threeSphere_equatorPoint).cast
+        (by simp [h0]) (by simp [h1])) := by
+  have hstartNorth :
+      (γ ∘ t) 0 ∈
+      (stereographic' 3 threeSphere_northPole).source := by
+    simpa [Function.comp_def, h0, γ.source] using
+      threeSphere_equatorPoint_mem_northPole_stereographic_source
+  have hp : Set.range (Path.refl ((γ ∘ t) 0)) ⊆
+      (stereographic' 3 threeSphere_northPole).source := by
+    intro y hy
+    rcases hy with ⟨_s, rfl⟩
+    exact hstartNorth
+  have hclose : (γ ∘ t) (Fin.last N) = (γ ∘ t) 0 := by
+    dsimp [Function.comp_def]
+    rw [h1, h0]
+    exact γ.target.trans γ.source.symm
+  have hcollapse :
+      Path.Homotopic
+        ((Path.refl ((γ ∘ t) 0)).trans
+          (Path.concat (γ ∘ t) (fun k : Fin N =>
+            γ.subpath (t k.castSucc) (t k.succ))))
+        ((Path.refl ((γ ∘ t) 0)).cast rfl hclose) :=
+    threeSphere_stereographic_northHead_firstSouthRun_tail_induction
+      (γ ∘ t)
+      (fun k : Fin N => γ.subpath (t k.castSucc) (t k.succ))
+      (Path.refl ((γ ∘ t) 0))
+      hclose
+      hp
+      hchoice
+  have hdirect :
+      Path.Homotopic
+        (Path.concat (γ ∘ t) (fun k : Fin N =>
+          γ.subpath (t k.castSucc) (t k.succ)))
+        ((Path.refl ((γ ∘ t) 0)).cast rfl hclose) :=
+    (Path.Homotopic.refl_trans
+      (Path.concat (γ ∘ t) (fun k : Fin N =>
+        γ.subpath (t k.castSucc) (t k.succ)))).symm.trans hcollapse
+  have htargetEq :
+      ((Path.refl ((γ ∘ t) 0)).cast rfl hclose) =
+        ((Path.refl threeSphere_equatorPoint).cast
+          (by simp [h0]) (by simp [h1])) := by
+    apply Path.ext
+    funext _s
+    change (γ ∘ t) 0 = threeSphere_equatorPoint
+    simp [h0, γ.source]
+  exact hdirect.trans (htargetEq ▸ Path.Homotopic.refl _)
+
+/--
+Quotient form of the arbitrary finite stereographic source-choice collapse.
+It is the finite equator-loop collapse contract obtained from the path-level
+null-homotopy above.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_of_sourceChoice
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval)
+    (h0 : t 0 = 0) (h1 : t (Fin.last N) = 1)
+    (hchoice : ∀ k : Fin N,
+      Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+          (stereographic' 3 threeSphere_northPole).source ∨
+        Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+          (stereographic' 3 (-threeSphere_northPole)).source) :
+    Path.Homotopic.Quotient.mk
+      (Path.concat (γ ∘ t) (fun k : Fin N =>
+        γ.subpath (t k.castSucc) (t k.succ))) =
+      Path.Homotopic.Quotient.mk
+        ((Path.refl threeSphere_equatorPoint).cast
+          (by simp [h0]) (by simp [h1])) := by
+  apply Path.Homotopic.Quotient.eq.mpr
+  exact threeSphere_stereographicEquatorLoop_fullConcat_nullhomotopic_of_sourceChoice
+    γ t h0 h1 hchoice
+
+/--
 Terminal first-south-run collapse: if a finite chart word has a north-source
 prefix and then stays in the south stereographic source through the end, the
 original finite concatenation already collapses in the path-homotopy quotient.
