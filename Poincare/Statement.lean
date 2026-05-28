@@ -4645,19 +4645,19 @@ theorem twoSetOpenCover_twoPieceLoop_cast_homotopy_refl_forall_mem_of_mapsTo
     [SimplyConnectedSpace U] [SimplyConnectedSpace V]
     [PathConnectedSpace (U ∩ V : Set Y)]
     (p : Path x y) (q : Path y z) (hzx : z = x)
-    (hp : ∀ t, p t ∈ U) (hq : ∀ t, q t ∈ V) :
+    (hp : Set.range p ⊆ U) (hq : Set.range q ⊆ V) :
     ∃ H : (p.trans q).Homotopy ((Path.refl x).cast rfl hzx),
       ∀ t, H t ∈ U ∪ V := by
   have hbase : x ∈ U ∩ V := by
     refine ⟨?_, ?_⟩
-    · simpa using hp 0
+    · exact hp ⟨0, p.source⟩
     · have hzV : z ∈ V := by
-        simpa using hq 1
+        exact hq ⟨1, q.target⟩
       simpa [hzx] using hzV
   have hmid : y ∈ U ∩ V := by
     refine ⟨?_, ?_⟩
-    · simpa using hp 1
-    · simpa using hq 0
+    · exact hp ⟨1, p.target⟩
+    · exact hq ⟨0, q.source⟩
   let baseOverlap : (U ∩ V : Set Y) := ⟨x, hbase⟩
   let midOverlap : (U ∩ V : Set Y) := ⟨y, hmid⟩
   let overlapPath : Path baseOverlap midOverlap :=
@@ -4666,23 +4666,23 @@ theorem twoSetOpenCover_twoPieceLoop_cast_homotopy_refl_forall_mem_of_mapsTo
     ⟨Subtype.val, continuous_subtype_val⟩
   let r : Path x y := overlapPath.map incl.continuous
   let rBack : Path y z := r.symm.cast rfl hzx
-  have hrU : ∀ t, r t ∈ U := by
-    intro t
+  have hrURange : Set.range r ⊆ U := by
+    rintro _ ⟨t, rfl⟩
     exact (overlapPath t).2.1
-  have hrV : ∀ t, r t ∈ V := by
-    intro t
+  have hrVRange : Set.range r ⊆ V := by
+    rintro _ ⟨t, rfl⟩
     exact (overlapPath t).2.2
-  have hrBackU : ∀ t, rBack t ∈ U := by
-    intro t
-    simpa [rBack, Path.cast_coe] using hrU (unitInterval.symm t)
-  have hrBackV : ∀ t, rBack t ∈ V := by
-    intro t
-    simpa [rBack, Path.cast_coe] using hrV (unitInterval.symm t)
-  have hUSC : IsSimplyConnected U := ‹SimplyConnectedSpace U›
-  rcases path_homotopy_forall_mem_of_isSimplyConnected hUSC p r hp hrU with
+  have hrBackURange : Set.range rBack ⊆ U := by
+    rintro _ ⟨t, rfl⟩
+    simpa [rBack, Path.cast_coe] using (overlapPath (unitInterval.symm t)).2.1
+  have hrBackVRange : Set.range rBack ⊆ V := by
+    rintro _ ⟨t, rfl⟩
+    simpa [rBack, Path.cast_coe] using (overlapPath (unitInterval.symm t)).2.2
+  rcases path_homotopy_forall_mem_of_range_subset_simplyConnectedSubtype
+      (U := U) p r hp hrURange with
     ⟨Hp, hHp⟩
-  have hVSC : IsSimplyConnected V := ‹SimplyConnectedSpace V›
-  rcases path_homotopy_forall_mem_of_isSimplyConnected hVSC q rBack hq hrBackV with
+  rcases path_homotopy_forall_mem_of_range_subset_simplyConnectedSubtype
+      (U := V) q rBack hq hrBackVRange with
     ⟨Hq, hHq⟩
   let Hreplace : (p.trans q).Homotopy (r.trans rBack) := Hp.hcomp Hq
   have hHreplace : ∀ t, Hreplace t ∈ U ∪ V := by
@@ -4692,23 +4692,14 @@ theorem twoSetOpenCover_twoPieceLoop_cast_homotopy_refl_forall_mem_of_mapsTo
     split_ifs
     · exact Or.inl (hHp _)
     · exact Or.inr (hHq _)
-  have hrrU : ∀ t, (r.trans rBack) t ∈ U := by
-    intro t
-    have ht : (r.trans rBack) t ∈ Set.range (r.trans rBack) := ⟨t, rfl⟩
-    have ht' : (r.trans rBack) t ∈ Set.range r ∪ Set.range rBack := by
-      simpa [Path.trans_range] using ht
-    rcases ht' with htR | htBack
-    · rcases htR with ⟨s, hs⟩
-      rw [← hs]
-      exact hrU s
-    · rcases htBack with ⟨s, hs⟩
-      rw [← hs]
-      exact hrBackU s
-  have hreflU : ∀ t, ((Path.refl x).cast rfl hzx) t ∈ U := by
-    intro _t
+  have hrrURange : Set.range (r.trans rBack) ⊆ U :=
+    path_trans_range_subset_of_range_subset r rBack hrURange hrBackURange
+  have hreflURange : Set.range ((Path.refl x).cast rfl hzx) ⊆ U := by
+    rintro _ ⟨_t, rfl⟩
     simpa [Path.cast_coe] using hbase.1
-  rcases path_homotopy_forall_mem_of_isSimplyConnected hUSC
-      (r.trans rBack) ((Path.refl x).cast rfl hzx) hrrU hreflU with
+  rcases path_homotopy_forall_mem_of_range_subset_simplyConnectedSubtype
+      (U := U) (r.trans rBack) ((Path.refl x).cast rfl hzx)
+      hrrURange hreflURange with
     ⟨Hcontract, hHcontract⟩
   refine ⟨Hreplace.trans Hcontract, ?_⟩
   intro t
@@ -4727,7 +4718,7 @@ theorem twoSetOpenCover_twoPieceLoop_cast_nullhomotopic_of_mapsTo
     [SimplyConnectedSpace U] [SimplyConnectedSpace V]
     [PathConnectedSpace (U ∩ V : Set Y)]
     (p : Path x y) (q : Path y z) (hzx : z = x)
-    (hp : ∀ t, p t ∈ U) (hq : ∀ t, q t ∈ V) :
+    (hp : Set.range p ⊆ U) (hq : Set.range q ⊆ V) :
     Path.Homotopic (p.trans q) ((Path.refl x).cast rfl hzx) := by
   rcases twoSetOpenCover_twoPieceLoop_cast_homotopy_refl_forall_mem_of_mapsTo
       (U := U) (V := V) p q hzx hp hq with
@@ -5314,8 +5305,7 @@ theorem twoSetOpenCover_sameSideBlockOppositeTail_concat_cast_homotopy_refl_fora
     simpa [vPts] using hclose
   rcases twoSetOpenCover_twoPieceLoop_cast_homotopy_refl_forall_mem_of_mapsTo
       (U := U) (V := V)
-      (p.trans Upath) Vpath hcloseV
-      (fun t => hprefixRange' ⟨t, rfl⟩) (fun t => hvRange ⟨t, rfl⟩) with
+      (p.trans Upath) Vpath hcloseV hprefixRange' hvRange with
     ⟨Hcontract, hHcontract⟩
   have htargetEq :
       ((Path.refl x₀).cast rfl hcloseV) =
@@ -7059,7 +7049,7 @@ theorem twoSetOpenCover_sameSideBlockOppositeReturn_trans_cast_homotopy_refl_for
         exact Or.inr (hs ⟨t.2, rfl⟩))
   rcases twoSetOpenCover_twoPieceLoop_cast_homotopy_refl_forall_mem_of_mapsTo
       (U := U) (V := V) ((p.trans q).trans r) s hclose
-      (fun t => htargetRange ⟨t, rfl⟩) (fun t => hs ⟨t, rfl⟩) with
+      htargetRange hs with
     ⟨Hcontract, hHcontract⟩
   refine ⟨HreplaceFull.trans Hcontract, ?_⟩
   exact path_homotopy_trans_forall_mem_of_forall_mem
@@ -9585,19 +9575,29 @@ theorem threeSphere_stereographic_southNorth_trans_cast_nullhomotopic
 /--
 A three-piece chart excursion that leaves the north stereographic source for a
 south-source middle segment and then returns to the north source is
-null-homotopic.  The middle segment has endpoints in the actual overlap, so it
+null-homotopic through a homotopy whose image stays in the two stereographic
+chart sources.  The middle segment has endpoints in the actual overlap, so it
 can be replaced by an overlap path; after that replacement the whole loop lies
 inside the simply connected north source.
 -/
-theorem threeSphere_stereographic_northSouthNorth_trans_trans_cast_nullhomotopic
+theorem threeSphere_stereographic_northSouthNorth_trans_trans_cast_homotopy_refl_forall_mem
     {x₀ x₁ x₂ x₃ : ThreeSphere}
     (p : Path x₀ x₁) (q : Path x₁ x₂) (r : Path x₂ x₃) (hclose : x₃ = x₀)
     (hp : Set.range p ⊆ (stereographic' 3 threeSphere_northPole).source)
     (hq : Set.range q ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
     (hr : Set.range r ⊆ (stereographic' 3 threeSphere_northPole).source) :
-    Path.Homotopic ((p.trans q).trans r) ((Path.refl x₀).cast rfl hclose) := by
+    ∃ H : ((p.trans q).trans r).Homotopy ((Path.refl x₀).cast rfl hclose),
+      ∀ t, H t ∈
+        (stereographic' 3 threeSphere_northPole).source ∪
+          (stereographic' 3 (-threeSphere_northPole)).source := by
   let U : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
   let V : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  letI : SimplyConnectedSpace U := by
+    simpa [U] using
+      threeSphere_stereographic_source_simplyConnectedSpace threeSphere_northPole
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using
+      threeSphere_stereographic_source_simplyConnectedSpace (-threeSphere_northPole)
   have hx₁U : x₁ ∈ U := hp ⟨1, p.target⟩
   have hx₁V : x₁ ∈ V := hq ⟨0, q.source⟩
   have hx₂V : x₂ ∈ V := hq ⟨1, q.target⟩
@@ -9620,41 +9620,65 @@ theorem threeSphere_stereographic_northSouthNorth_trans_trans_cast_nullhomotopic
     intro z hz
     rcases hz with ⟨s, rfl⟩
     exact (overlapPath s).2.2
-  have hqReplace : Path.Homotopic q qOverlap := by
-    simpa [V] using
-      threeSphere_stereographic_source_contained_paths_homotopic
-        (-threeSphere_northPole) q qOverlap hq hqOverlapV
-  have hreplace :
-      Path.Homotopic ((p.trans q).trans r) ((p.trans qOverlap).trans r) :=
-    Path.Homotopic.hcomp
-      (Path.Homotopic.hcomp (Path.Homotopic.refl p) hqReplace)
-      (Path.Homotopic.refl r)
-  have hmiddleU : Set.range (p.trans qOverlap) ⊆ U := by
-    intro z hz
-    have hz' :
-        z ∈ Set.range p ∪ Set.range qOverlap := by
-      simpa [Path.trans_range] using hz
-    rcases hz' with hzP | hzQ
-    · exact hp hzP
-    · exact hqOverlapU hzQ
-  have hloopU : Set.range ((p.trans qOverlap).trans r) ⊆ U := by
-    intro z hz
-    have hz' :
-        z ∈ Set.range (p.trans qOverlap) ∪ Set.range r := by
-      simpa [Path.trans_range] using hz
-    rcases hz' with hzMid | hzR
-    · exact hmiddleU hzMid
-    · exact hr hzR
+  rcases path_homotopy_forall_mem_of_range_subset_simplyConnectedSubtype
+      (U := V) q qOverlap hq hqOverlapV with
+    ⟨HqReplace, hHqReplace⟩
+  let Hpq : (p.trans q).Homotopy (p.trans qOverlap) :=
+    (Path.Homotopy.refl p).hcomp HqReplace
+  have hpUnion : ∀ t, p t ∈ U ∪ V := by
+    intro t
+    exact Or.inl (hp ⟨t, rfl⟩)
+  have hHqReplaceUnion : ∀ t, HqReplace t ∈ U ∪ V := by
+    intro t
+    exact Or.inr (hHqReplace t)
+  have hHpq : ∀ t, Hpq t ∈ U ∪ V := by
+    exact path_homotopy_hcomp_forall_mem_of_forall_mem
+      (Path.Homotopy.refl p) HqReplace
+      (path_homotopy_refl_forall_mem_of_forall_mem p hpUnion)
+      hHqReplaceUnion
+  let Hreplace : ((p.trans q).trans r).Homotopy ((p.trans qOverlap).trans r) :=
+    Hpq.hcomp (Path.Homotopy.refl r)
+  have hrUnion : ∀ t, r t ∈ U ∪ V := by
+    intro t
+    exact Or.inl (hr ⟨t, rfl⟩)
+  have hHreplace : ∀ t, Hreplace t ∈ U ∪ V := by
+    exact path_homotopy_hcomp_forall_mem_of_forall_mem
+      Hpq (Path.Homotopy.refl r) hHpq
+      (path_homotopy_refl_forall_mem_of_forall_mem r hrUnion)
+  have hmiddleU : Set.range (p.trans qOverlap) ⊆ U :=
+    path_trans_range_subset_of_range_subset p qOverlap hp hqOverlapU
+  have hloopU : Set.range ((p.trans qOverlap).trans r) ⊆ U :=
+    path_trans_range_subset_of_range_subset (p.trans qOverlap) r hmiddleU hr
   have hreflU : Set.range ((Path.refl x₀).cast rfl hclose) ⊆ U := by
     intro z hz
     rcases hz with ⟨s, rfl⟩
     simpa [Path.cast_coe] using hx₀U
-  exact hreplace.trans
-    (by
-      simpa [U] using
-        threeSphere_stereographic_source_contained_paths_homotopic
-          threeSphere_northPole ((p.trans qOverlap).trans r)
-          ((Path.refl x₀).cast rfl hclose) hloopU hreflU)
+  rcases path_homotopy_forall_mem_of_range_subset_simplyConnectedSubtype
+      (U := U) ((p.trans qOverlap).trans r)
+      ((Path.refl x₀).cast rfl hclose) hloopU hreflU with
+    ⟨Hcontract, hHcontract⟩
+  refine ⟨Hreplace.trans Hcontract, ?_⟩
+  exact path_homotopy_trans_forall_mem_of_forall_mem
+    Hreplace Hcontract hHreplace (fun t => Or.inl (hHcontract t))
+
+/--
+A three-piece chart excursion that leaves the north stereographic source for a
+south-source middle segment and then returns to the north source is
+null-homotopic.  The middle segment has endpoints in the actual overlap, so it
+can be replaced by an overlap path; after that replacement the whole loop lies
+inside the simply connected north source.
+-/
+theorem threeSphere_stereographic_northSouthNorth_trans_trans_cast_nullhomotopic
+    {x₀ x₁ x₂ x₃ : ThreeSphere}
+    (p : Path x₀ x₁) (q : Path x₁ x₂) (r : Path x₂ x₃) (hclose : x₃ = x₀)
+    (hp : Set.range p ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hq : Set.range q ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hr : Set.range r ⊆ (stereographic' 3 threeSphere_northPole).source) :
+    Path.Homotopic ((p.trans q).trans r) ((Path.refl x₀).cast rfl hclose) := by
+  rcases threeSphere_stereographic_northSouthNorth_trans_trans_cast_homotopy_refl_forall_mem
+      p q r hclose hp hq hr with
+    ⟨H, _hH⟩
+  exact ⟨H⟩
 
 /--
 The symmetric three-piece chart excursion: a south-source path, a north-source
