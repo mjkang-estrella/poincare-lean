@@ -4971,6 +4971,23 @@ theorem simplyConnectedSpace_union_of_isOpen_pathConnected_inter
     (X := S) (U := UinS) (V := VinS) hUopen hVopen hcover
 
 /--
+Loops contained in the union of two open simply connected subspaces with
+path-connected overlap contract through a homotopy that stays in the same
+union.
+-/
+theorem union_loop_homotopy_refl_forall_mem_of_isOpen_pathConnected_inter
+    {X : Type u} [TopologicalSpace X] {U V : Set X}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set X)]
+    (hU : IsOpen U) (hV : IsOpen V)
+    {x : X} (p : Path x x) (hp : ∀ t, p t ∈ U ∪ V) :
+    ∃ F : p.Homotopy (Path.refl x), ∀ t, F t ∈ U ∪ V := by
+  have hSC : IsSimplyConnected (U ∪ V : Set X) :=
+    simplyConnectedSpace_union_of_isOpen_pathConnected_inter
+      (U := U) (V := V) hU hV
+  exact (isSimplyConnected_iff_exists_homotopy_refl_forall_mem.mp hSC).2 x p hp
+
+/--
 The basepoint-free two-set open-cover theorem collapses every path-homotopy
 quotient in the ambient space, not only the loops at the overlap point used in
 the Van Kampen proof.
