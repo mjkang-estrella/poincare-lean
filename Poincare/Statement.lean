@@ -4720,6 +4720,110 @@ theorem threeSphere_stereographic_southSouthBlockNorthTail_concat_cast_nullhomot
     tailPts tailSegs p hclose hp hSouthBase hSouth hNorthBase hNorth
 
 /--
+Terminal first-south-run contraction for arbitrary head/tail data: a
+north-source head path followed by north-source tail pieces before `start` and
+south-source tail pieces from `start` through the end is null-homotopic.
+-/
+theorem threeSphere_stereographic_northHead_terminalSouthRun_tail_concat_cast_nullhomotopic
+    {N : ℕ} {x₀ : ThreeSphere}
+    (tailPts : Fin (N + 1) → ThreeSphere)
+    (tailSegs : (k : Fin N) → Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last N) = x₀)
+    (hp : Set.range p ⊆ (stereographic' 3 threeSphere_northPole).source)
+    {start : Fin N}
+    (hBefore : ∀ j : Fin N, j.val < start.val →
+      Set.range (tailSegs j) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hTerminal : ∀ j : Fin N, start.val ≤ j.val →
+      Set.range (tailSegs j) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source) :
+    Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
+      ((Path.refl x₀).cast rfl hclose) := by
+  have hTailLen : N = start.val + (N - start.val) := by
+    omega
+  have hNorthBase :
+      tailPts 0 ∈ (stereographic' 3 threeSphere_northPole).source :=
+    hp ⟨1, p.target⟩
+  have hNorth : ∀ k : Fin start.val,
+      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
+        (stereographic' 3 threeSphere_northPole).source := by
+    intro k
+    exact hBefore ⟨k.val, by omega⟩ k.isLt
+  have hSouthBase :
+      tailPts ⟨start.val, by omega⟩ ∈
+        (stereographic' 3 (-threeSphere_northPole)).source := by
+    have hStart := hTerminal start (by omega)
+    simpa using hStart ⟨0, (tailSegs start).source⟩
+  have hSouth : ∀ k : Fin (N - start.val),
+      Set.range (tailSegs ⟨start.val + k.val, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source := by
+    intro k
+    let j : Fin N := ⟨start.val + k.val, by
+      have hs : start.val < N := start.isLt
+      have hk : k.val < N - start.val := k.isLt
+      omega⟩
+    have hjle : start.val ≤ j.val := by
+      dsimp [j]
+      omega
+    simpa [j] using hTerminal j hjle
+  exact
+    threeSphere_stereographic_northNorthBlockSouthTail_concat_cast_nullhomotopic_of_length_eq
+      tailPts tailSegs p hclose hTailLen hp hNorthBase hNorth hSouthBase hSouth
+
+/--
+Symmetric terminal first-north-run contraction for arbitrary head/tail data: a
+south-source head path followed by south-source tail pieces before `start` and
+north-source tail pieces from `start` through the end is null-homotopic.
+-/
+theorem threeSphere_stereographic_southHead_terminalNorthRun_tail_concat_cast_nullhomotopic
+    {N : ℕ} {x₀ : ThreeSphere}
+    (tailPts : Fin (N + 1) → ThreeSphere)
+    (tailSegs : (k : Fin N) → Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last N) = x₀)
+    (hp : Set.range p ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    {start : Fin N}
+    (hBefore : ∀ j : Fin N, j.val < start.val →
+      Set.range (tailSegs j) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hTerminal : ∀ j : Fin N, start.val ≤ j.val →
+      Set.range (tailSegs j) ⊆
+        (stereographic' 3 threeSphere_northPole).source) :
+    Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
+      ((Path.refl x₀).cast rfl hclose) := by
+  have hTailLen : N = start.val + (N - start.val) := by
+    omega
+  have hSouthBase :
+      tailPts 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source :=
+    hp ⟨1, p.target⟩
+  have hSouth : ∀ k : Fin start.val,
+      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source := by
+    intro k
+    exact hBefore ⟨k.val, by omega⟩ k.isLt
+  have hNorthBase :
+      tailPts ⟨start.val, by omega⟩ ∈
+        (stereographic' 3 threeSphere_northPole).source := by
+    have hStart := hTerminal start (by omega)
+    simpa using hStart ⟨0, (tailSegs start).source⟩
+  have hNorth : ∀ k : Fin (N - start.val),
+      Set.range (tailSegs ⟨start.val + k.val, by omega⟩) ⊆
+        (stereographic' 3 threeSphere_northPole).source := by
+    intro k
+    let j : Fin N := ⟨start.val + k.val, by
+      have hs : start.val < N := start.isLt
+      have hk : k.val < N - start.val := k.isLt
+      omega⟩
+    have hjle : start.val ≤ j.val := by
+      dsimp [j]
+      omega
+    simpa [j] using hTerminal j hjle
+  exact
+    threeSphere_stereographic_southSouthBlockNorthTail_concat_cast_nullhomotopic_of_length_eq
+      tailPts tailSegs p hclose hTailLen hp hSouthBase hSouth hNorthBase hNorth
+
+/--
 A finite south-source block bracketed by north-source paths can be replaced by
 an overlap path whose image lies in the north source.  This is the local
 block-replacement move needed for finite chart-word normalization.
