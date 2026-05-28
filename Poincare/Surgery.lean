@@ -3919,6 +3919,24 @@ theorem fundamentalGroup_finite_of_simplyConnectedSpace
   infer_instance
 
 /--
+Finiteness transfers from the fundamental group to mathlib's first homotopy
+group through the standard `π₁`/fundamental-group equivalence.
+-/
+theorem piOne_finite_of_fundamentalGroup_finite
+    {X : Type u} [TopologicalSpace X] (x : X) [Finite (FundamentalGroup X x)] :
+    Finite (HomotopyGroup.Pi 1 X x) :=
+  Finite.of_equiv (FundamentalGroup X x)
+    (HomotopyGroup.pi1EquivFundamentalGroup (X := X) (x := x)).symm
+
+/-- In a simply connected space, the first homotopy group is finite. -/
+theorem piOne_finite_of_simplyConnectedSpace
+    {X : Type u} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) :
+    Finite (HomotopyGroup.Pi 1 X x) := by
+  haveI : Finite (FundamentalGroup X x) :=
+    fundamentalGroup_finite_of_simplyConnectedSpace x
+  exact piOne_finite_of_fundamentalGroup_finite x
+
+/--
 The finite-extinction topological hypotheses force every fundamental group to
 be finite: in a simply connected space, every based loop quotient is unique.
 -/
@@ -3951,6 +3969,18 @@ theorem finite_extinction_fundamental_group_input_of_simplyConnectedSpace
     HasFiniteExtinctionFundamentalGroupInput M where
   finiteFundamentalGroup :=
     finite_extinction_fundamentalGroup_finite_of_simplyConnectedSpace
+
+/--
+The finite-extinction fundamental-group input gives finite first homotopy
+groups at every basepoint.
+-/
+theorem finite_extinction_piOne_finite_of_fundamentalGroupInput
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] (h : HasFiniteExtinctionFundamentalGroupInput M) (x : M) :
+    Finite (HomotopyGroup.Pi 1 M x) := by
+  haveI : Finite (FundamentalGroup M x) := h.finiteFundamentalGroup x
+  exact piOne_finite_of_fundamentalGroup_finite x
 
 /-- Interface for producing the sweepout family used by the width argument. -/
 inductive HasFiniteExtinctionSweepoutExistence
