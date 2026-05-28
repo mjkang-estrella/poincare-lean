@@ -4900,6 +4900,77 @@ theorem twoSetOpenCover_simplyConnectedSpace_of_pathConnected_inter
     (basepoint := basepoint.1) hU hV hcover basepoint.2
 
 /--
+The union of two open simply connected subspaces with path-connected overlap is
+simply connected as a subtype.  The induced cover of the union is homeomorphic
+to the original pieces and has path-connected overlap, so the basepoint-free
+two-set Van Kampen theorem applies inside the union.
+-/
+theorem simplyConnectedSpace_union_of_isOpen_pathConnected_inter
+    {X : Type u} [TopologicalSpace X] {U V : Set X}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set X)]
+    (hU : IsOpen U) (hV : IsOpen V) :
+    SimplyConnectedSpace (U ∪ V : Set X) := by
+  let S : Set X := U ∪ V
+  let UinS : Set S := {x : S | (x : X) ∈ U}
+  let VinS : Set S := {x : S | (x : X) ∈ V}
+  let eU : UinS ≃ₜ U :=
+    { toFun := fun x => ⟨x.1.1, x.2⟩
+      invFun := fun x => ⟨⟨x.1, Or.inl x.2⟩, x.2⟩
+      left_inv := by
+        intro x
+        ext
+        rfl
+      right_inv := by
+        intro x
+        ext
+        rfl
+      continuous_toFun := by fun_prop
+      continuous_invFun := by fun_prop }
+  let eV : VinS ≃ₜ V :=
+    { toFun := fun x => ⟨x.1.1, x.2⟩
+      invFun := fun x => ⟨⟨x.1, Or.inr x.2⟩, x.2⟩
+      left_inv := by
+        intro x
+        ext
+        rfl
+      right_inv := by
+        intro x
+        ext
+        rfl
+      continuous_toFun := by fun_prop
+      continuous_invFun := by fun_prop }
+  letI : SimplyConnectedSpace UinS := eU.toHomotopyEquiv.simplyConnectedSpace
+  letI : SimplyConnectedSpace VinS := eV.toHomotopyEquiv.simplyConnectedSpace
+  let interInS : Set S := UinS ∩ VinS
+  let fInter : (U ∩ V : Set X) → interInS := fun x =>
+    ⟨⟨x.1, Or.inl x.2.1⟩, ⟨x.2.1, x.2.2⟩⟩
+  have hsurjInter : Function.Surjective fInter := by
+    intro y
+    exact ⟨⟨y.1.1, ⟨y.2.1, y.2.2⟩⟩, by
+      ext
+      rfl⟩
+  have hcontInter : Continuous fInter := by
+    fun_prop
+  letI : PathConnectedSpace interInS :=
+    hsurjInter.pathConnectedSpace hcontInter
+  have hUopen : IsOpen UinS := by
+    exact hU.preimage continuous_subtype_val
+  have hVopen : IsOpen VinS := by
+    exact hV.preimage continuous_subtype_val
+  have hcover : UinS ∪ VinS = Set.univ := by
+    ext x
+    constructor
+    · intro _hx
+      trivial
+    · intro _hx
+      rcases x.2 with hxU | hxV
+      · exact Or.inl hxU
+      · exact Or.inr hxV
+  exact twoSetOpenCover_simplyConnectedSpace_of_pathConnected_inter
+    (X := S) (U := UinS) (V := VinS) hUopen hVopen hcover
+
+/--
 The basepoint-free two-set open-cover theorem collapses every path-homotopy
 quotient in the ambient space, not only the loops at the overlap point used in
 the Van Kampen proof.
