@@ -750,6 +750,14 @@ theorem onePoint_threeSpace_simplyConnectedSpace_of_sourceChoiceCollapse :
     threeSphere_simplyConnectedSpace_of_sourceChoiceCollapse
   exact onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
 
+/--
+The source-choice collapse proof transported across the compactification
+homeomorphism is the canonical simple-connectedness instance for `OnePoint ℝ³`.
+-/
+instance onePoint_threeSpace_instSimplyConnectedSpace :
+    SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+  onePoint_threeSpace_simplyConnectedSpace_of_sourceChoiceCollapse
+
 /-- Standard-sphere `π₁` triviality transports to compactification simple-connectedness. -/
 theorem onePoint_threeSpace_simplyConnectedSpace_of_threeSpherePiOneSubsingletonStatement
     (h : ThreeSpherePiOneSubsingletonStatement) :

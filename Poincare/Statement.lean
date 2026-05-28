@@ -30929,6 +30929,13 @@ theorem threeSphere_simplyConnectedSpace_of_sourceChoiceCollapse :
     threeSphere_stereographicVanKampenLoopStatement_of_sourceChoiceCollapse
 
 /--
+The source-choice collapse proof is the canonical simple-connectedness instance
+for the standard 3-sphere.
+-/
+instance threeSphere_instSimplyConnectedSpace : SimplyConnectedSpace ThreeSphere :=
+  threeSphere_simplyConnectedSpace_of_sourceChoiceCollapse
+
+/--
 The stereographic Van Kampen loop route to simple-connectedness is exactly the
 based-loop route at the explicit equatorial overlap basepoint.
 -/
