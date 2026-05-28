@@ -45,6 +45,29 @@ theorem onePoint_threeSpace_surgeryModel_isManifold_of_smoothabilitySmoothManifo
 
 end OnePointThreeSpaceSmoothability
 
+section OnePointThreeSpaceSmoothManifold
+
+/--
+The concrete smooth compactification atlas supplies the `C¹` surgery-model
+manifold evidence for the one-point compactification, without appealing to the
+universal smoothability theorem-shaped input.
+-/
+theorem onePoint_threeSpace_surgeryModel_isManifold :
+    letI : ChartedSpace ThreeManifoldModel
+        (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+      onePoint_threeSpace_smoothChartedSpace
+    IsManifold ThreeManifoldModelWithCorners 1
+      (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  letI : ChartedSpace ThreeManifoldModel
+      (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_smoothChartedSpace
+  haveI : IsManifold (𝓡 3) ∞
+      (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_smoothManifold
+  infer_instance
+
+end OnePointThreeSpaceSmoothManifold
+
 section OnePointThreeSpaceFiniteExtinction
 
 attribute [local instance] onePoint_threeSpace_chartedSpace
