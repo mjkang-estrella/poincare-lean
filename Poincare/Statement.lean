@@ -4876,6 +4876,41 @@ theorem twoSetOpenCover_simplyConnectedSpace_of_pathConnected_inter
     (basepoint := basepoint.1) hU hV hcover basepoint.2
 
 /--
+The basepoint-free two-set open-cover theorem collapses every path-homotopy
+quotient in the ambient space, not only the loops at the overlap point used in
+the Van Kampen proof.
+-/
+theorem twoSetOpenCover_pathQuotientSubsingleton_of_pathConnected_inter
+    {X : Type u} [TopologicalSpace X] {U V : Set X}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set X)]
+    (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ) :
+    ∀ x y : X, Subsingleton (Path.Homotopic.Quotient x y) := by
+  have hSC : SimplyConnectedSpace X :=
+    twoSetOpenCover_simplyConnectedSpace_of_pathConnected_inter
+      (U := U) (V := V) hU hV hcover
+  exact ((simply_connected_iff_paths_homotopic).mp hSC).2
+
+/--
+The same two-set open-cover hypotheses trivialize the first homotopy group at
+every ambient basepoint.
+-/
+theorem twoSetOpenCover_piOneSubsingleton_of_pathConnected_inter
+    {X : Type u} [TopologicalSpace X] {U V : Set X}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set X)]
+    (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ) :
+    ∀ basepoint : X, Subsingleton (HomotopyGroup.Pi 1 X basepoint) := by
+  have hquot :
+      ∀ x y : X, Subsingleton (Path.Homotopic.Quotient x y) :=
+    twoSetOpenCover_pathQuotientSubsingleton_of_pathConnected_inter
+      (U := U) (V := V) hU hV hcover
+  intro basepoint
+  exact ((HomotopyGroup.pi1EquivFundamentalGroup
+    (X := X) (x := basepoint)).subsingleton_congr).mpr
+      (hquot basepoint basepoint)
+
+/--
 A path in one cover member, followed by a finite block in the other member,
 then a return path in the first member and a final closing path in the other
 member, is nullhomotopic.  The middle block is replaced through the overlap
