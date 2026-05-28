@@ -3660,6 +3660,53 @@ theorem simplyConnectedSpace_iff_pathConnectedSpace_and_basedLoopNullhomotopy_eq
   apply Subsingleton.elim
 
 /--
+Two ambient paths with the same endpoints are homotopic when both paths stay
+inside a simply connected subtype containing those endpoints.
+-/
+theorem paths_homotopic_of_mapsTo_simplyConnectedSubtype
+    {Y : Type u} [TopologicalSpace Y] {U : Set Y} {x y : Y}
+    (hx : x ∈ U) (hy : y ∈ U) [SimplyConnectedSpace U]
+    (p q : Path x y) (hp : ∀ t, p t ∈ U) (hq : ∀ t, q t ∈ U) :
+    Path.Homotopic p q := by
+  let xU : U := ⟨x, hx⟩
+  let yU : U := ⟨y, hy⟩
+  let pU : Path xU yU :=
+    { toContinuousMap :=
+        { toFun := fun t => ⟨p t, hp t⟩
+          continuous_toFun := by fun_prop }
+      source' := by
+        ext
+        exact p.source
+      target' := by
+        ext
+        exact p.target }
+  let qU : Path xU yU :=
+    { toContinuousMap :=
+        { toFun := fun t => ⟨q t, hq t⟩
+          continuous_toFun := by fun_prop }
+      source' := by
+        ext
+        exact q.source
+      target' := by
+        ext
+        exact q.target }
+  have hU : Path.Homotopic pU qU :=
+    SimplyConnectedSpace.paths_homotopic pU qU
+  simpa [pU, qU] using hU.map ⟨Subtype.val, continuous_subtype_val⟩
+
+/--
+Any ambient loop that stays inside a simply connected subtype is nullhomotopic
+in the ambient space.
+-/
+theorem loop_homotopic_refl_of_mapsTo_simplyConnectedSubtype
+    {Y : Type u} [TopologicalSpace Y] {U : Set Y} {basepoint : Y}
+    (hbase : basepoint ∈ U) [SimplyConnectedSpace U]
+    (γ : Path basepoint basepoint) (hγ : ∀ t, γ t ∈ U) :
+    Path.Homotopic γ (Path.refl basepoint) :=
+  paths_homotopic_of_mapsTo_simplyConnectedSubtype
+    hbase hbase γ (Path.refl basepoint) hγ (fun _ => hbase)
+
+/--
 In a path-connected space, triviality of the fundamental group at one basepoint
 is equivalent to simple-connectedness.
 -/
