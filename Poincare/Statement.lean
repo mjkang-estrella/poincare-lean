@@ -3686,6 +3686,20 @@ theorem simplyConnectedSpace_iff_pathConnectedSpace_and_basedFundamentalGroupSub
         ⟦Path.refl basepoint⟧⟩
 
 /--
+In a path-connected space, triviality of one based fundamental group collapses
+all path-homotopy quotients.
+-/
+theorem pathQuotientSubsingleton_of_pathConnectedSpace_and_basedFundamentalGroupSubsingleton
+    {Y : Type u} [TopologicalSpace Y] (basepoint : Y)
+    [PathConnectedSpace Y]
+    (h : Subsingleton (FundamentalGroup Y basepoint)) :
+    ∀ x y : Y, Subsingleton (Path.Homotopic.Quotient x y) := by
+  have hSC : SimplyConnectedSpace Y :=
+    (simplyConnectedSpace_iff_pathConnectedSpace_and_basedFundamentalGroupSubsingleton
+      basepoint).mpr ⟨inferInstance, h⟩
+  exact ((simply_connected_iff_paths_homotopic).mp hSC).2
+
+/--
 Simple-connectedness is equivalent to path-connectedness plus trivial based
 fundamental groups at every basepoint.
 -/
@@ -32114,6 +32128,19 @@ theorem threeSphere_basedFundamentalGroupSubsingleton_iff_basedLoopNullhomotopyS
   apply Subsingleton.elim
 
 /--
+A fixed-basepoint fundamental-group computation collapses every path-homotopy
+quotient on the standard sphere.
+-/
+theorem threeSphere_pathQuotientSubsingletonStatement_of_basedFundamentalGroupSubsingleton
+    {basepoint : ThreeSphere}
+    (h : Subsingleton (FundamentalGroup ThreeSphere basepoint)) :
+    ThreeSpherePathQuotientSubsingletonStatement := by
+  rw [threeSpherePathQuotientSubsingletonStatement_eq]
+  exact
+    pathQuotientSubsingleton_of_pathConnectedSpace_and_basedFundamentalGroupSubsingleton
+      basepoint h
+
+/--
 A fixed-basepoint fundamental-group computation supplies the global
 fundamental-group formulation through the based-loop route.
 -/
@@ -32121,12 +32148,12 @@ theorem threeSphere_fundamentalGroupSubsingletonStatement_of_basedFundamentalGro
     {basepoint : ThreeSphere}
     (h : Subsingleton (FundamentalGroup ThreeSphere basepoint)) :
     ThreeSphereFundamentalGroupSubsingletonStatement := by
-  letI : SimplyConnectedSpace ThreeSphere :=
-    (simplyConnectedSpace_iff_pathConnectedSpace_and_basedFundamentalGroupSubsingleton
-      basepoint).mpr ⟨threeSphere_pathConnectedSpace, h⟩
+  have hquot :
+      ThreeSpherePathQuotientSubsingletonStatement :=
+    threeSphere_pathQuotientSubsingletonStatement_of_basedFundamentalGroupSubsingleton h
   intro x
   change Subsingleton (Path.Homotopic.Quotient x x)
-  infer_instance
+  exact hquot x x
 
 /--
 The fixed fundamental-group-to-global fundamental-group route factors through
