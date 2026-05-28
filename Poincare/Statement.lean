@@ -3855,6 +3855,39 @@ theorem twoSetOpenCover_sameSideBlock_homotopic_to_overlapBlock_of_mapsTo
   exact ⟨q, hqU, hreplace, htargetRange⟩
 
 /--
+A finite block in one member of a two-set cover, bracketed by paths in the
+other member and closing up to a loop, is nullhomotopic after replacing the
+block through the overlap and contracting inside the bracketing member.
+-/
+theorem twoSetOpenCover_sameSideBlock_cast_nullhomotopic_of_mapsTo
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {N : ℕ}
+    {x₀ x₃ : Y}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set Y)]
+    (m : Fin (N + 1) → Y)
+    (p : Path x₀ (m 0))
+    (F : (k : Fin N) → Path (m k.castSucc) (m k.succ))
+    (r : Path (m (Fin.last N)) x₃) (hclose : x₃ = x₀)
+    (hp : Set.range p ⊆ U) (hmBase : m 0 ∈ V)
+    (hF : ∀ k : Fin N, Set.range (F k) ⊆ V)
+    (hr : Set.range r ⊆ U) :
+    Path.Homotopic ((p.trans (Path.concat m F)).trans r)
+      ((Path.refl x₀).cast rfl hclose) := by
+  rcases twoSetOpenCover_sameSideBlock_homotopic_to_overlapBlock_of_mapsTo
+      (U := U) (V := V) m p F r hp hmBase hF hr with
+    ⟨q, _hqU, hreplace, htargetRange⟩
+  have hx₀U : x₀ ∈ U := hp ⟨0, p.source⟩
+  have hx₃U : x₃ ∈ U := by
+    simpa [hclose] using hx₀U
+  have hreflU : ∀ t, ((Path.refl x₀).cast rfl hclose) t ∈ U := by
+    intro t
+    simpa [Path.cast_coe] using hx₀U
+  exact hreplace.trans
+    (paths_homotopic_of_mapsTo_simplyConnectedSubtype
+      hx₀U hx₃U ((p.trans q).trans r) ((Path.refl x₀).cast rfl hclose)
+      (fun t => htargetRange ⟨t, rfl⟩) hreflU)
+
+/--
 In a path-connected space, triviality of the fundamental group at one basepoint
 is equivalent to simple-connectedness.
 -/
@@ -4540,13 +4573,18 @@ theorem threeSphere_stereographic_northSouthBlockNorth_concat_cast_nullhomotopic
     (hr : Set.range r ⊆ (stereographic' 3 threeSphere_northPole).source) :
     Path.Homotopic ((p.trans (Path.concat m F)).trans r)
       ((Path.refl x₀).cast rfl hclose) := by
-  have hmiddle :
-      Set.range (Path.concat m F) ⊆
-        (stereographic' 3 (-threeSphere_northPole)).source :=
-    threeSphere_stereographic_source_concat_range_subset (-threeSphere_northPole)
-      m F hmBase hF
-  exact threeSphere_stereographic_northSouthNorth_trans_trans_cast_nullhomotopic
-    p (Path.concat m F) r hclose hp hmiddle hr
+  let U : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
+  let V : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  letI : SimplyConnectedSpace U := by
+    simpa [U] using threeSphere_stereographic_source_simplyConnectedSpace
+      threeSphere_northPole
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace
+      (-threeSphere_northPole)
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    simpa [U, V] using threeSphere_actualOverlap_pathConnectedSpace
+  exact twoSetOpenCover_sameSideBlock_cast_nullhomotopic_of_mapsTo
+    (U := U) (V := V) m p F r hclose hp hmBase hF hr
 
 /--
 The symmetric arbitrary-block excursion collapse: a finite north-source block
@@ -4566,13 +4604,22 @@ theorem threeSphere_stereographic_southNorthBlockSouth_concat_cast_nullhomotopic
     (hr : Set.range r ⊆ (stereographic' 3 (-threeSphere_northPole)).source) :
     Path.Homotopic ((p.trans (Path.concat m F)).trans r)
       ((Path.refl x₀).cast rfl hclose) := by
-  have hmiddle :
-      Set.range (Path.concat m F) ⊆
-        (stereographic' 3 threeSphere_northPole).source :=
-    threeSphere_stereographic_source_concat_range_subset threeSphere_northPole
-      m F hmBase hF
-  exact threeSphere_stereographic_southNorthSouth_trans_trans_cast_nullhomotopic
-    p (Path.concat m F) r hclose hp hmiddle hr
+  let U : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  let V : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
+  letI : SimplyConnectedSpace U := by
+    simpa [U] using threeSphere_stereographic_source_simplyConnectedSpace
+      (-threeSphere_northPole)
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace
+      threeSphere_northPole
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    change PathConnectedSpace
+      ((stereographic' 3 (-threeSphere_northPole)).source ∩
+        (stereographic' 3 threeSphere_northPole).source : Set ThreeSphere)
+    rw [Set.inter_comm]
+    exact threeSphere_actualOverlap_pathConnectedSpace
+  exact twoSetOpenCover_sameSideBlock_cast_nullhomotopic_of_mapsTo
+    (U := U) (V := V) m p F r hclose hp hmBase hF hr
 
 /--
 An arbitrary north-source path followed by a finite south-source block and a
