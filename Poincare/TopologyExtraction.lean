@@ -4674,6 +4674,42 @@ theorem topological_manifold_prerequisites_of_homeomorph
     locPath, connected, nonempty⟩
 
 /--
+Simple-connectedness transports from a target to a source along a recognizing
+homeomorphism.
+-/
+theorem simplyConnectedSpace_of_homeomorph
+    {M : Type u} {N : Type v} [TopologicalSpace M] [TopologicalSpace N]
+    [SimplyConnectedSpace N] (h : Nonempty (M ≃ₜ N)) :
+    SimplyConnectedSpace M := by
+  rcases h with ⟨e⟩
+  exact e.toHomotopyEquiv.simplyConnectedSpace
+
+/--
+A homeomorphism to a known simply connected compact path-connected locally
+path-connected topological 3-manifold transports the full homotopy/manifold
+prerequisite payload to the source.
+-/
+theorem homotopy_manifold_prerequisites_of_homeomorph
+    {M : Type u} {N : Type v} [TopologicalSpace M] [TopologicalSpace N]
+    [T2Space N] [CompactSpace N]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N] [IsManifold (𝓡 3) 0 N]
+    [PathConnectedSpace N] [LocPathConnectedSpace N] [SimplyConnectedSpace N]
+    (h : Nonempty (M ≃ₜ N)) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  rcases topological_manifold_prerequisites_of_homeomorph h with
+    ⟨t2, charted, compact, topological, path, locPath, connected, nonempty⟩
+  exact ⟨t2, charted, simplyConnectedSpace_of_homeomorph h, compact,
+    topological, path, locPath, connected, nonempty⟩
+
+/--
 Any space recognized as the one-point compactification model inherits the same
 basic `C^0` 3-manifold prerequisite payload.
 -/
@@ -4746,10 +4782,9 @@ theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace
     {M : Type u} [TopologicalSpace M] [SimplyConnectedSpace ThreeSphere]
     (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
     SimplyConnectedSpace M := by
-  rcases h with ⟨e⟩
   letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
     onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
-  exact e.toHomotopyEquiv.simplyConnectedSpace
+  exact simplyConnectedSpace_of_homeomorph h
 
 /-- Source simple-connectedness is transported through compactification recognition. -/
 theorem simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace_eq
@@ -5130,10 +5165,20 @@ theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace
     ∃ _locPath : LocPathConnectedSpace M,
     ∃ _connected : ConnectedSpace M,
       Nonempty M := by
-  rcases topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h with
-    ⟨t2, charted, compact, topological, path, locPath, connected, nonempty⟩
-  exact ⟨t2, charted, simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace h,
-    compact, topological, path, locPath, connected, nonempty⟩
+  letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) := onePoint_threeSpace_t2Space
+  letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_compactSpace
+  letI : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_pathConnectedSpace
+  letI : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_locPathConnectedSpace
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_chartedSpace
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+  haveI : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+    infer_instance
+  exact homotopy_manifold_prerequisites_of_homeomorph h
 
 /-- The full source prerequisite payload is compactification transport plus simple-connectedness transport. -/
 theorem homotopy_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq
@@ -6405,8 +6450,7 @@ theorem simplyConnectedSpace_of_homeomorph_to_threeSphere
     {M : Type u} [TopologicalSpace M] [SimplyConnectedSpace ThreeSphere]
     (h : Nonempty (M ≃ₜ ThreeSphere)) :
     SimplyConnectedSpace M := by
-  rcases h with ⟨e⟩
-  exact e.toHomotopyEquiv.simplyConnectedSpace
+  exact simplyConnectedSpace_of_homeomorph h
 
 /-- Source simple-connectedness is transported through direct target recognition. -/
 theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_eq
@@ -6811,10 +6855,15 @@ theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere
     ∃ _locPath : LocPathConnectedSpace M,
     ∃ _connected : ConnectedSpace M,
       Nonempty M := by
-  rcases topological_manifold_prerequisites_of_homeomorph_to_threeSphere h with
-    ⟨t2, charted, compact, topological, path, locPath, connected, nonempty⟩
-  exact ⟨t2, charted, simplyConnectedSpace_of_homeomorph_to_threeSphere h,
-    compact, topological, path, locPath, connected, nonempty⟩
+  letI : T2Space ThreeSphere := threeSphere_t2Space
+  letI : CompactSpace ThreeSphere := threeSphere_compactSpace
+  letI : PathConnectedSpace ThreeSphere := threeSphere_pathConnectedSpace
+  letI : LocPathConnectedSpace ThreeSphere := threeSphere_locPathConnectedSpace
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere :=
+    threeSphere_chartedSpace
+  haveI : IsManifold (𝓡 3) 0 ThreeSphere := by
+    infer_instance
+  exact homotopy_manifold_prerequisites_of_homeomorph h
 
 /-- The full source prerequisite payload is target transport plus simple-connectedness transport. -/
 theorem homotopy_manifold_prerequisites_of_homeomorph_to_threeSphere_eq
