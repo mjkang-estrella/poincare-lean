@@ -4738,6 +4738,312 @@ theorem twoSetOpenCover_oppositeSameOppositeSameOppositeTail_concat_cast_nullhom
     (hreplaceFull.trans (hcontract.trans (htargetEq ▸ Path.Homotopic.refl _)))
 
 /--
+A finite tail made of alternating opposite, prefix, opposite, prefix, opposite,
+and prefix cover blocks is nullhomotopic.  The first two opposite blocks are
+replaced through the overlap, after which the final opposite block is bracketed
+by a prefix-cover loop and contracts inside the two-set cover.
+-/
+theorem twoSetOpenCover_oppositeSameOppositeSameOppositeSameTail_concat_cast_nullhomotopic_of_mapsTo
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {L R A B C D : ℕ} {x₀ : Y}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set Y)]
+    (tailPts : Fin (L + R + A + B + C + D + 1) → Y)
+    (tailSegs : (k : Fin (L + R + A + B + C + D)) →
+      Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last (L + R + A + B + C + D)) = x₀)
+    (hp : Set.range p ⊆ U)
+    (hVBase : tailPts 0 ∈ V)
+    (hV : ∀ k : Fin L, Set.range (tailSegs ⟨k.val, by omega⟩) ⊆ V)
+    (hUBase : tailPts ⟨L, by omega⟩ ∈ U)
+    (hU : ∀ k : Fin R, Set.range (tailSegs ⟨L + k.val, by omega⟩) ⊆ U)
+    (hVLastBase : tailPts ⟨L + R, by omega⟩ ∈ V)
+    (hVLast : ∀ k : Fin A,
+      Set.range (tailSegs ⟨L + R + k.val, by omega⟩) ⊆ V)
+    (hULastBase : tailPts ⟨L + R + A, by omega⟩ ∈ U)
+    (hULast : ∀ k : Fin B,
+      Set.range (tailSegs ⟨L + R + A + k.val, by omega⟩) ⊆ U)
+    (hVFinalBase : tailPts ⟨L + R + A + B, by omega⟩ ∈ V)
+    (hVFinal : ∀ k : Fin C,
+      Set.range (tailSegs ⟨L + R + A + B + k.val, by omega⟩) ⊆ V)
+    (hUFinalBase : tailPts ⟨L + R + A + B + C, by omega⟩ ∈ U)
+    (hUFinal : ∀ k : Fin D,
+      Set.range (tailSegs ⟨L + R + A + B + C + k.val, by omega⟩) ⊆ U) :
+    Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
+      ((Path.refl x₀).cast rfl hclose) := by
+  let prefix₁Pts : Fin (L + R + A + B + C + 1) → Y := fun i =>
+    tailPts ⟨i.val, by omega⟩
+  let prefix₁Segs : (k : Fin (L + R + A + B + C)) →
+      Path (prefix₁Pts k.castSucc) (prefix₁Pts k.succ) :=
+    fun k => tailSegs ⟨k.val, by omega⟩
+  let prefix₂Pts : Fin (L + R + A + B + 1) → Y := fun i =>
+    prefix₁Pts ⟨i.val, by omega⟩
+  let prefix₂Segs : (k : Fin (L + R + A + B)) →
+      Path (prefix₂Pts k.castSucc) (prefix₂Pts k.succ) :=
+    fun k => prefix₁Segs ⟨k.val, by omega⟩
+  let prefix₃Pts : Fin (L + R + A + 1) → Y := fun i =>
+    prefix₂Pts ⟨i.val, by omega⟩
+  let prefix₃Segs : (k : Fin (L + R + A)) →
+      Path (prefix₃Pts k.castSucc) (prefix₃Pts k.succ) :=
+    fun k => prefix₂Segs ⟨k.val, by omega⟩
+  let prefix₄Pts : Fin (L + R + 1) → Y := fun i =>
+    prefix₃Pts ⟨i.val, by omega⟩
+  let prefix₄Segs : (k : Fin (L + R)) →
+      Path (prefix₄Pts k.castSucc) (prefix₄Pts k.succ) :=
+    fun k => prefix₃Segs ⟨k.val, by omega⟩
+  let vPts : Fin (L + 1) → Y := fun i =>
+    prefix₄Pts ⟨i.val, by omega⟩
+  let vSegs : (k : Fin L) → Path (vPts k.castSucc) (vPts k.succ) :=
+    fun k => prefix₄Segs ⟨k.val, by omega⟩
+  let uPts : Fin (R + 1) → Y := fun i =>
+    prefix₄Pts ⟨L + i.val, by omega⟩
+  let uSegs : (k : Fin R) → Path (uPts k.castSucc) (uPts k.succ) :=
+    fun k => prefix₄Segs ⟨L + k.val, by omega⟩
+  let vLastPts : Fin (A + 1) → Y := fun i =>
+    prefix₃Pts ⟨L + R + i.val, by omega⟩
+  let vLastSegs : (k : Fin A) →
+      Path (vLastPts k.castSucc) (vLastPts k.succ) :=
+    fun k => prefix₃Segs ⟨L + R + k.val, by omega⟩
+  let uLastPts : Fin (B + 1) → Y := fun i =>
+    prefix₂Pts ⟨L + R + A + i.val, by omega⟩
+  let uLastSegs : (k : Fin B) →
+      Path (uLastPts k.castSucc) (uLastPts k.succ) :=
+    fun k => prefix₂Segs ⟨L + R + A + k.val, by omega⟩
+  let vFinalPts : Fin (C + 1) → Y := fun i =>
+    prefix₁Pts ⟨L + R + A + B + i.val, by omega⟩
+  let vFinalSegs : (k : Fin C) →
+      Path (vFinalPts k.castSucc) (vFinalPts k.succ) :=
+    fun k => prefix₁Segs ⟨L + R + A + B + k.val, by omega⟩
+  let uFinalPts : Fin (D + 1) → Y := fun i =>
+    tailPts ⟨L + R + A + B + C + i.val, by omega⟩
+  let uFinalSegs : (k : Fin D) →
+      Path (uFinalPts k.castSucc) (uFinalPts k.succ) :=
+    fun k => tailSegs ⟨L + R + A + B + C + k.val, by omega⟩
+  have hsplitTail :
+      Path.Homotopic (Path.concat tailPts tailSegs)
+        ((Path.concat prefix₁Pts prefix₁Segs).trans
+          (Path.concat uFinalPts uFinalSegs)) := by
+    change Path.Homotopic (Path.concat tailPts tailSegs)
+      ((Path.concat
+        (fun i : Fin (L + R + A + B + C + 1) => tailPts ⟨i.val, by omega⟩)
+        (fun k : Fin (L + R + A + B + C) => tailSegs ⟨k.val, by omega⟩)).trans
+        (Path.concat
+          (fun i : Fin (D + 1) => tailPts ⟨L + R + A + B + C + i.val, by omega⟩)
+          (fun k : Fin D => tailSegs ⟨L + R + A + B + C + k.val, by omega⟩)))
+    exact path_homotopic_concat_split tailPts tailSegs
+  have hsplitPrefix₁ :
+      Path.Homotopic (Path.concat prefix₁Pts prefix₁Segs)
+        ((Path.concat prefix₂Pts prefix₂Segs).trans
+          (Path.concat vFinalPts vFinalSegs)) := by
+    change Path.Homotopic (Path.concat prefix₁Pts prefix₁Segs)
+      ((Path.concat
+        (fun i : Fin (L + R + A + B + 1) => prefix₁Pts ⟨i.val, by omega⟩)
+        (fun k : Fin (L + R + A + B) => prefix₁Segs ⟨k.val, by omega⟩)).trans
+        (Path.concat
+          (fun i : Fin (C + 1) => prefix₁Pts ⟨L + R + A + B + i.val, by omega⟩)
+          (fun k : Fin C => prefix₁Segs ⟨L + R + A + B + k.val, by omega⟩)))
+    exact path_homotopic_concat_split prefix₁Pts prefix₁Segs
+  have hsplitPrefix₂ :
+      Path.Homotopic (Path.concat prefix₂Pts prefix₂Segs)
+        ((Path.concat prefix₃Pts prefix₃Segs).trans
+          (Path.concat uLastPts uLastSegs)) := by
+    change Path.Homotopic (Path.concat prefix₂Pts prefix₂Segs)
+      ((Path.concat
+        (fun i : Fin (L + R + A + 1) => prefix₂Pts ⟨i.val, by omega⟩)
+        (fun k : Fin (L + R + A) => prefix₂Segs ⟨k.val, by omega⟩)).trans
+        (Path.concat
+          (fun i : Fin (B + 1) => prefix₂Pts ⟨L + R + A + i.val, by omega⟩)
+          (fun k : Fin B => prefix₂Segs ⟨L + R + A + k.val, by omega⟩)))
+    exact path_homotopic_concat_split prefix₂Pts prefix₂Segs
+  have hsplitPrefix₃ :
+      Path.Homotopic (Path.concat prefix₃Pts prefix₃Segs)
+        ((Path.concat prefix₄Pts prefix₄Segs).trans
+          (Path.concat vLastPts vLastSegs)) := by
+    change Path.Homotopic (Path.concat prefix₃Pts prefix₃Segs)
+      ((Path.concat
+        (fun i : Fin (L + R + 1) => prefix₃Pts ⟨i.val, by omega⟩)
+        (fun k : Fin (L + R) => prefix₃Segs ⟨k.val, by omega⟩)).trans
+        (Path.concat
+          (fun i : Fin (A + 1) => prefix₃Pts ⟨L + R + i.val, by omega⟩)
+          (fun k : Fin A => prefix₃Segs ⟨L + R + k.val, by omega⟩)))
+    exact path_homotopic_concat_split prefix₃Pts prefix₃Segs
+  have hsplitPrefix₄ :
+      Path.Homotopic (Path.concat prefix₄Pts prefix₄Segs)
+        ((Path.concat vPts vSegs).trans
+          (Path.concat uPts uSegs)) := by
+    change Path.Homotopic (Path.concat prefix₄Pts prefix₄Segs)
+      ((Path.concat (fun i : Fin (L + 1) => prefix₄Pts ⟨i.val, by omega⟩)
+        (fun k : Fin L => prefix₄Segs ⟨k.val, by omega⟩)).trans
+        (Path.concat (fun i : Fin (R + 1) => prefix₄Pts ⟨L + i.val, by omega⟩)
+          (fun k : Fin R => prefix₄Segs ⟨L + k.val, by omega⟩)))
+    exact path_homotopic_concat_split prefix₄Pts prefix₄Segs
+  have hsplit :
+      Path.Homotopic (Path.concat tailPts tailSegs)
+        ((((((Path.concat vPts vSegs).trans
+          (Path.concat uPts uSegs)).trans
+          (Path.concat vLastPts vLastSegs)).trans
+          (Path.concat uLastPts uLastSegs)).trans
+          (Path.concat vFinalPts vFinalSegs)).trans
+          (Path.concat uFinalPts uFinalSegs)) :=
+    (((hsplitTail.trans
+      (Path.Homotopic.hcomp hsplitPrefix₁ (Path.Homotopic.refl _))).trans
+      (Path.Homotopic.hcomp
+        (Path.Homotopic.hcomp hsplitPrefix₂ (Path.Homotopic.refl _))
+        (Path.Homotopic.refl _))).trans
+      (Path.Homotopic.hcomp
+        (Path.Homotopic.hcomp
+          (Path.Homotopic.hcomp hsplitPrefix₃ (Path.Homotopic.refl _))
+          (Path.Homotopic.refl _))
+        (Path.Homotopic.refl _))).trans
+      (Path.Homotopic.hcomp
+        (Path.Homotopic.hcomp
+          (Path.Homotopic.hcomp
+            (Path.Homotopic.hcomp hsplitPrefix₄ (Path.Homotopic.refl _))
+            (Path.Homotopic.refl _))
+          (Path.Homotopic.refl _))
+        (Path.Homotopic.refl _))
+  have huRange : Set.range (Path.concat uPts uSegs) ⊆ U :=
+    path_concat_range_subset_of_mapsTo uPts uSegs
+      (by simpa [uPts, prefix₄Pts, prefix₃Pts, prefix₂Pts, prefix₁Pts] using hUBase)
+      (by
+        intro k
+        simpa [uSegs, prefix₄Segs, prefix₃Segs, prefix₂Segs, prefix₁Segs] using hU k)
+  have huLastRange : Set.range (Path.concat uLastPts uLastSegs) ⊆ U :=
+    path_concat_range_subset_of_mapsTo uLastPts uLastSegs
+      (by simpa [uLastPts, prefix₂Pts, prefix₁Pts] using hULastBase)
+      (by
+        intro k
+        simpa [uLastSegs, prefix₂Segs, prefix₁Segs] using hULast k)
+  have huFinalRange : Set.range (Path.concat uFinalPts uFinalSegs) ⊆ U :=
+    path_concat_range_subset_of_mapsTo uFinalPts uFinalSegs
+      (by simpa [uFinalPts] using hUFinalBase)
+      (by
+        intro k
+        simpa [uFinalSegs] using hUFinal k)
+  rcases twoSetOpenCover_sameSideBlock_homotopic_to_overlapBlock_of_mapsTo
+      (U := U) (V := V) vPts p vSegs (Path.concat uPts uSegs)
+      hp (by simpa [vPts, prefix₄Pts, prefix₃Pts, prefix₂Pts, prefix₁Pts] using hVBase)
+      (by
+        intro k
+        simpa [vSegs, prefix₄Segs, prefix₃Segs, prefix₂Segs, prefix₁Segs] using hV k)
+      huRange with
+    ⟨q₁, _hq₁U, hreplace₁, hprefixRange₁⟩
+  rcases twoSetOpenCover_sameSideBlock_homotopic_to_overlapBlock_of_mapsTo
+      (U := U) (V := V) vLastPts
+      ((p.trans q₁).trans (Path.concat uPts uSegs)) vLastSegs
+      (Path.concat uLastPts uLastSegs) hprefixRange₁
+      (by simpa [vLastPts, prefix₃Pts, prefix₂Pts, prefix₁Pts] using hVLastBase)
+      (by
+        intro k
+        simpa [vLastSegs, prefix₃Segs, prefix₂Segs, prefix₁Segs] using hVLast k)
+      huLastRange with
+    ⟨q₂, _hq₂U, hreplace₂, hprefixRange₂⟩
+  have hcloseUFinal : uFinalPts (Fin.last D) = x₀ := by
+    simpa [uFinalPts] using hclose
+  have hcontract :
+      Path.Homotopic
+        ((((((p.trans q₁).trans (Path.concat uPts uSegs)).trans q₂).trans
+          (Path.concat uLastPts uLastSegs)).trans
+          (Path.concat vFinalPts vFinalSegs)).trans
+          (Path.concat uFinalPts uFinalSegs))
+        ((Path.refl x₀).cast rfl hcloseUFinal) := by
+    exact twoSetOpenCover_sameSideBlock_cast_nullhomotopic_of_mapsTo
+      (U := U) (V := V) vFinalPts
+      ((((p.trans q₁).trans (Path.concat uPts uSegs)).trans q₂).trans
+        (Path.concat uLastPts uLastSegs))
+      vFinalSegs (Path.concat uFinalPts uFinalSegs) hcloseUFinal hprefixRange₂
+      (by simpa [vFinalPts, prefix₁Pts] using hVFinalBase)
+      (by
+        intro k
+        simpa [vFinalSegs, prefix₁Segs] using hVFinal k)
+      huFinalRange
+  have hreplace₁Full :
+      Path.Homotopic
+        ((((((p.trans (Path.concat vPts vSegs)).trans
+          (Path.concat uPts uSegs)).trans
+          (Path.concat vLastPts vLastSegs)).trans
+          (Path.concat uLastPts uLastSegs)).trans
+          (Path.concat vFinalPts vFinalSegs)).trans
+          (Path.concat uFinalPts uFinalSegs))
+        ((((((p.trans q₁).trans
+          (Path.concat uPts uSegs)).trans
+          (Path.concat vLastPts vLastSegs)).trans
+          (Path.concat uLastPts uLastSegs)).trans
+          (Path.concat vFinalPts vFinalSegs)).trans
+          (Path.concat uFinalPts uFinalSegs)) :=
+    Path.Homotopic.hcomp
+      (Path.Homotopic.hcomp
+        (Path.Homotopic.hcomp
+          (Path.Homotopic.hcomp hreplace₁ (Path.Homotopic.refl _))
+          (Path.Homotopic.refl _))
+        (Path.Homotopic.refl _))
+      (Path.Homotopic.refl _)
+  have hreplace₂Full :
+      Path.Homotopic
+        ((((((p.trans q₁).trans
+          (Path.concat uPts uSegs)).trans
+          (Path.concat vLastPts vLastSegs)).trans
+          (Path.concat uLastPts uLastSegs)).trans
+          (Path.concat vFinalPts vFinalSegs)).trans
+          (Path.concat uFinalPts uFinalSegs))
+        ((((((p.trans q₁).trans
+          (Path.concat uPts uSegs)).trans q₂).trans
+          (Path.concat uLastPts uLastSegs)).trans
+          (Path.concat vFinalPts vFinalSegs)).trans
+          (Path.concat uFinalPts uFinalSegs)) :=
+    Path.Homotopic.hcomp
+      (Path.Homotopic.hcomp hreplace₂ (Path.Homotopic.refl _))
+      (Path.Homotopic.refl _)
+  have htargetEq :
+      ((Path.refl x₀).cast rfl hcloseUFinal) =
+        ((Path.refl x₀).cast rfl hclose) := by
+    apply Path.ext
+    funext _s
+    change x₀ = x₀
+    rfl
+  let V₁ : Path (tailPts 0) (tailPts ⟨L, by omega⟩) :=
+    Path.concat vPts vSegs
+  let U₁ : Path (tailPts ⟨L, by omega⟩) (tailPts ⟨L + R, by omega⟩) :=
+    Path.concat uPts uSegs
+  let V₂ : Path (tailPts ⟨L + R, by omega⟩) (tailPts ⟨L + R + A, by omega⟩) :=
+    Path.concat vLastPts vLastSegs
+  let U₂ : Path (tailPts ⟨L + R + A, by omega⟩)
+      (tailPts ⟨L + R + A + B, by omega⟩) :=
+    Path.concat uLastPts uLastSegs
+  let V₃ : Path (tailPts ⟨L + R + A + B, by omega⟩)
+      (tailPts ⟨L + R + A + B + C, by omega⟩) :=
+    Path.concat vFinalPts vFinalSegs
+  let U₃ : Path (tailPts ⟨L + R + A + B + C, by omega⟩)
+      (tailPts (Fin.last (L + R + A + B + C + D))) :=
+    Path.concat uFinalPts uFinalSegs
+  have hassoc₀ :
+      Path.Homotopic (p.trans (((V₁.trans U₁).trans V₂).trans U₂))
+        ((((p.trans V₁).trans U₁).trans V₂).trans U₂) := by
+    exact (Path.Homotopic.trans_assoc p ((V₁.trans U₁).trans V₂) U₂).symm.trans
+      (Path.Homotopic.hcomp
+        ((Path.Homotopic.trans_assoc p (V₁.trans U₁) V₂).symm.trans
+          (Path.Homotopic.hcomp
+            (Path.Homotopic.trans_assoc p V₁ U₁).symm
+            (Path.Homotopic.refl V₂)))
+        (Path.Homotopic.refl U₂))
+  have hassoc₁ :
+      Path.Homotopic (p.trans ((((V₁.trans U₁).trans V₂).trans U₂).trans V₃))
+        (((((p.trans V₁).trans U₁).trans V₂).trans U₂).trans V₃) := by
+    exact (Path.Homotopic.trans_assoc p (((V₁.trans U₁).trans V₂).trans U₂) V₃).symm.trans
+      (Path.Homotopic.hcomp hassoc₀ (Path.Homotopic.refl V₃))
+  have hassoc :
+      Path.Homotopic (p.trans (((((V₁.trans U₁).trans V₂).trans U₂).trans V₃).trans U₃))
+        ((((((p.trans V₁).trans U₁).trans V₂).trans U₂).trans V₃).trans U₃) := by
+    exact (Path.Homotopic.trans_assoc p ((((V₁.trans U₁).trans V₂).trans U₂).trans V₃) U₃).symm.trans
+      (Path.Homotopic.hcomp hassoc₁ (Path.Homotopic.refl U₃))
+  refine (Path.Homotopic.hcomp (Path.Homotopic.refl p) hsplit).trans ?_
+  change Path.Homotopic (p.trans (((((V₁.trans U₁).trans V₂).trans U₂).trans V₃).trans U₃))
+    ((Path.refl x₀).cast rfl hclose)
+  exact hassoc.trans
+    (hreplace₁Full.trans
+      (hreplace₂Full.trans (hcontract.trans (htargetEq ▸ Path.Homotopic.refl _))))
+
+/--
 In a path-connected space, triviality of the fundamental group at one basepoint
 is equivalent to simple-connectedness.
 -/
