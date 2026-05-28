@@ -26626,6 +26626,213 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouth
 
 /--
 Exact finite-concat quotient form for one subdivision split into nonempty
+north, south, north, south, north, south, north, and south source blocks.
+-/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    (N M L K T R A₀ B₀ : ℕ)
+    (t : Fin
+      ((N + 1) + (M + 1) + (L + 1) + (K + 1) + (T + 1) + (R + 1) +
+        (A₀ + 1) + (B₀ + 1) + 1) → unitInterval)
+    (h0 : t 0 = 0)
+    (h1 : t (Fin.last
+      ((N + 1) + (M + 1) + (L + 1) + (K + 1) + (T + 1) + (R + 1) +
+        (A₀ + 1) + (B₀ + 1))) = 1)
+    (hNorthFirstBlock : ∀ k : Fin (N + 1),
+      Set.range (γ.subpath
+        (t ((k.castSucc.castAdd
+          ((M + 1) + (L + 1) + (K + 1) + (T + 1) + (R + 1) +
+            (A₀ + 1) + (B₀ + 1))).cast (by omega)))
+        (t ((k.succ.castAdd
+          ((M + 1) + (L + 1) + (K + 1) + (T + 1) + (R + 1) +
+            (A₀ + 1) + (B₀ + 1))).cast (by omega)))) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hSouthSecondBlock : ∀ k : Fin (M + 1),
+      Set.range (γ.subpath
+        (t (((k.castSucc.natAdd (N + 1)).castAdd
+          ((L + 1) + (K + 1) + (T + 1) + (R + 1) + (A₀ + 1) +
+            (B₀ + 1))).cast (by omega)))
+        (t (((k.succ.natAdd (N + 1)).castAdd
+          ((L + 1) + (K + 1) + (T + 1) + (R + 1) + (A₀ + 1) +
+            (B₀ + 1))).cast (by omega)))) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthThirdBlock : ∀ k : Fin (L + 1),
+      Set.range (γ.subpath
+        (t (((k.castSucc.natAdd ((N + 1) + (M + 1))).castAdd
+          ((K + 1) + (T + 1) + (R + 1) + (A₀ + 1) + (B₀ + 1))).cast
+            (by omega)))
+        (t (((k.succ.natAdd ((N + 1) + (M + 1))).castAdd
+          ((K + 1) + (T + 1) + (R + 1) + (A₀ + 1) + (B₀ + 1))).cast
+            (by omega)))) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hSouthFourthBlock : ∀ k : Fin (K + 1),
+      Set.range (γ.subpath
+        (t (((k.castSucc.natAdd ((N + 1) + (M + 1) + (L + 1))).castAdd
+          ((T + 1) + (R + 1) + (A₀ + 1) + (B₀ + 1))).cast (by omega)))
+        (t (((k.succ.natAdd ((N + 1) + (M + 1) + (L + 1))).castAdd
+          ((T + 1) + (R + 1) + (A₀ + 1) + (B₀ + 1))).cast (by omega)))) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthFifthBlock : ∀ k : Fin (T + 1),
+      Set.range (γ.subpath
+        (t (((k.castSucc.natAdd
+          ((N + 1) + (M + 1) + (L + 1) + (K + 1))).castAdd
+          ((R + 1) + (A₀ + 1) + (B₀ + 1))).cast (by omega)))
+        (t (((k.succ.natAdd
+          ((N + 1) + (M + 1) + (L + 1) + (K + 1))).castAdd
+          ((R + 1) + (A₀ + 1) + (B₀ + 1))).cast (by omega)))) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hSouthSixthBlock : ∀ k : Fin (R + 1),
+      Set.range (γ.subpath
+        (t (((k.castSucc.natAdd
+          ((N + 1) + (M + 1) + (L + 1) + (K + 1) + (T + 1))).castAdd
+          ((A₀ + 1) + (B₀ + 1))).cast (by omega)))
+        (t (((k.succ.natAdd
+          ((N + 1) + (M + 1) + (L + 1) + (K + 1) + (T + 1))).castAdd
+          ((A₀ + 1) + (B₀ + 1))).cast (by omega)))) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthSeventhBlock : ∀ k : Fin (A₀ + 1),
+      Set.range (γ.subpath
+        (t (((k.castSucc.natAdd
+          ((N + 1) + (M + 1) + (L + 1) + (K + 1) + (T + 1) +
+            (R + 1))).castAdd (B₀ + 1)).cast (by omega)))
+        (t (((k.succ.natAdd
+          ((N + 1) + (M + 1) + (L + 1) + (K + 1) + (T + 1) +
+            (R + 1))).castAdd (B₀ + 1)).cast (by omega)))) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hSouthLastBlock : ∀ k : Fin (B₀ + 1),
+      Set.range (γ.subpath
+        (t ((k.castSucc.natAdd
+          ((N + 1) + (M + 1) + (L + 1) + (K + 1) + (T + 1) +
+            (R + 1) + (A₀ + 1))).cast (by omega)))
+        (t ((k.succ.natAdd
+          ((N + 1) + (M + 1) + (L + 1) + (K + 1) + (T + 1) +
+            (R + 1) + (A₀ + 1))).cast (by omega)))) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source) :
+    Path.Homotopic.Quotient.mk
+      (Path.concat (γ ∘ t) (fun k : Fin
+        ((N + 1) + (M + 1) + (L + 1) + (K + 1) + (T + 1) + (R + 1) +
+          (A₀ + 1) + (B₀ + 1)) =>
+        γ.subpath (t k.castSucc) (t k.succ))) =
+      Path.Homotopic.Quotient.mk
+        ((Path.refl threeSphere_equatorPoint).cast
+          (by simp [h0]) (by simp [h1])) := by
+  let u : Fin (N + 2) → unitInterval :=
+    fun i => t ((i.castAdd
+      ((M + 1) + (L + 1) + (K + 1) + (T + 1) + (R + 1) +
+        (A₀ + 1) + (B₀ + 1))).cast (by omega))
+  let v : Fin (M + 2) → unitInterval :=
+    fun j => t (((j.natAdd (N + 1)).castAdd
+      ((L + 1) + (K + 1) + (T + 1) + (R + 1) + (A₀ + 1) +
+        (B₀ + 1))).cast (by omega))
+  let w : Fin (L + 2) → unitInterval :=
+    fun l => t (((l.natAdd ((N + 1) + (M + 1))).castAdd
+      ((K + 1) + (T + 1) + (R + 1) + (A₀ + 1) + (B₀ + 1))).cast
+        (by omega))
+  let x : Fin (K + 2) → unitInterval :=
+    fun m => t (((m.natAdd ((N + 1) + (M + 1) + (L + 1))).castAdd
+      ((T + 1) + (R + 1) + (A₀ + 1) + (B₀ + 1))).cast (by omega))
+  let y : Fin (T + 2) → unitInterval :=
+    fun n => t (((n.natAdd
+      ((N + 1) + (M + 1) + (L + 1) + (K + 1))).castAdd
+      ((R + 1) + (A₀ + 1) + (B₀ + 1))).cast (by omega))
+  let z : Fin (R + 2) → unitInterval :=
+    fun o => t (((o.natAdd
+      ((N + 1) + (M + 1) + (L + 1) + (K + 1) + (T + 1))).castAdd
+      ((A₀ + 1) + (B₀ + 1))).cast (by omega))
+  let a : Fin (A₀ + 2) → unitInterval :=
+    fun b => t (((b.natAdd
+      ((N + 1) + (M + 1) + (L + 1) + (K + 1) + (T + 1) +
+        (R + 1))).castAdd (B₀ + 1)).cast (by omega))
+  let b : Fin (B₀ + 2) → unitInterval :=
+    fun c => t ((c.natAdd
+      ((N + 1) + (M + 1) + (L + 1) + (K + 1) + (T + 1) +
+        (R + 1) + (A₀ + 1))).cast (by omega))
+  have hu0 : u 0 = 0 := by
+    simpa [u] using h0
+  have hb1 : b (Fin.last (B₀ + 1)) = 1 := by
+    simpa [b] using h1
+  have hjoinUV : v 0 = u (Fin.last (N + 1)) := by
+    apply congrArg t
+    ext
+    simp [Fin.val_natAdd]
+  have hjoinVW : w 0 = v (Fin.last (M + 1)) := by
+    apply congrArg t
+    ext
+    simp [Fin.val_natAdd]
+  have hjoinWX : x 0 = w (Fin.last (L + 1)) := by
+    apply congrArg t
+    ext
+    simp [Fin.val_natAdd]
+  have hjoinXY : y 0 = x (Fin.last (K + 1)) := by
+    apply congrArg t
+    ext
+    simp [Fin.val_natAdd]
+  have hjoinYZ : z 0 = y (Fin.last (T + 1)) := by
+    apply congrArg t
+    ext
+    simp [Fin.val_natAdd]
+  have hjoinZA : a 0 = z (Fin.last (R + 1)) := by
+    apply congrArg t
+    ext
+    simp [Fin.val_natAdd]
+  have hjoinAB : b 0 = a (Fin.last (A₀ + 1)) := by
+    apply congrArg t
+    ext
+    simp [Fin.val_natAdd]
+  have hNorthFirst : ∀ k : Fin (N + 1),
+      Set.range (γ.subpath (u k.castSucc) (u k.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source := by
+    intro k
+    simpa [u] using hNorthFirstBlock k
+  have hSouthSecond : ∀ k : Fin (M + 1),
+      Set.range (γ.subpath (v k.castSucc) (v k.succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source := by
+    intro k
+    simpa [v] using hSouthSecondBlock k
+  have hNorthThird : ∀ k : Fin (L + 1),
+      Set.range (γ.subpath (w k.castSucc) (w k.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source := by
+    intro k
+    simpa [w] using hNorthThirdBlock k
+  have hSouthFourth : ∀ k : Fin (K + 1),
+      Set.range (γ.subpath (x k.castSucc) (x k.succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source := by
+    intro k
+    simpa [x] using hSouthFourthBlock k
+  have hNorthFifth : ∀ k : Fin (T + 1),
+      Set.range (γ.subpath (y k.castSucc) (y k.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source := by
+    intro k
+    simpa [y] using hNorthFifthBlock k
+  have hSouthSixth : ∀ k : Fin (R + 1),
+      Set.range (γ.subpath (z k.castSucc) (z k.succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source := by
+    intro k
+    simpa [z] using hSouthSixthBlock k
+  have hNorthSeventh : ∀ k : Fin (A₀ + 1),
+      Set.range (γ.subpath (a k.castSucc) (a k.succ)) ⊆
+        (stereographic' 3 threeSphere_northPole).source := by
+    intro k
+    simpa [a] using hNorthSeventhBlock k
+  have hSouthLast : ∀ k : Fin (B₀ + 1),
+      Set.range (γ.subpath (b k.castSucc) (b k.succ)) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source := by
+    intro k
+    simpa [b] using hSouthLastBlock k
+  have hSub :=
+    threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic
+      γ N M L K T R A₀ B₀ u v w x y z a b hu0 hb1 hjoinUV hjoinVW hjoinWX
+      hjoinXY hjoinYZ hjoinZA hjoinAB hNorthFirst hSouthSecond hNorthThird
+      hSouthFourth hNorthFifth hSouthSixth hNorthSeventh hSouthLast
+  exact threeSphere_stereographicEquatorLoopFiniteConcatCollapse_of_subpath_nullhomotopic
+    γ t h0 h1
+    (by
+      rw [h1, h0]
+      exact γ.target.trans γ.source.symm)
+    (by simpa [u, b] using hSub)
+
+/--
+Exact finite-concat quotient form for one subdivision split into nonempty
 south, north, south, north, south, north, and south source blocks.
 -/
 theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock
