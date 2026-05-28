@@ -4827,6 +4827,24 @@ theorem twoSetOpenCover_pathConnectedSpace
   exact hxbase.trans hybase.symm
 
 /--
+The union of two path-connected subspaces with path-connected overlap is
+path-connected as a subtype.  This is the set-level topological input behind
+the ambient two-set cover path-connectedness theorem.
+-/
+theorem pathConnectedSpace_union_of_pathConnected_inter
+    {X : Type u} [TopologicalSpace X] {U V : Set X}
+    [PathConnectedSpace U] [PathConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set X)] :
+    PathConnectedSpace (U ∪ V : Set X) := by
+  have hU : IsPathConnected U :=
+    (isPathConnected_iff_pathConnectedSpace).mpr inferInstance
+  have hV : IsPathConnected V :=
+    (isPathConnected_iff_pathConnectedSpace).mpr inferInstance
+  rcases (PathConnectedSpace.nonempty : Nonempty (U ∩ V : Set X)) with ⟨basepoint⟩
+  have hUV : (U ∩ V).Nonempty := ⟨basepoint.1, basepoint.2⟩
+  exact (isPathConnected_iff_pathConnectedSpace).mp (hU.union hV hUV)
+
+/--
 If the overlap of a two-set cover is path-connected, it supplies the shared
 basepoint needed to prove that the ambient space is path-connected.
 -/
@@ -4836,9 +4854,15 @@ theorem twoSetOpenCover_pathConnectedSpace_of_pathConnected_inter
     [PathConnectedSpace (U ∩ V : Set X)]
     (hcover : U ∪ V = Set.univ) :
     PathConnectedSpace X := by
-  rcases (PathConnectedSpace.nonempty : Nonempty (U ∩ V : Set X)) with ⟨basepoint⟩
-  exact twoSetOpenCover_pathConnectedSpace (U := U) (V := V)
-    (basepoint := basepoint.1) hcover basepoint.2
+  letI : PathConnectedSpace (U ∪ V : Set X) :=
+    pathConnectedSpace_union_of_pathConnected_inter (U := U) (V := V)
+  have hsurj : Function.Surjective ((↑) : (U ∪ V : Set X) → X) := by
+    intro x
+    have hx : x ∈ U ∪ V := by
+      rw [hcover]
+      trivial
+    exact ⟨⟨x, hx⟩, rfl⟩
+  exact hsurj.pathConnectedSpace continuous_subtype_val
 
 /--
 The simply-connected form of the two-set open-cover Van Kampen theorem.  The
