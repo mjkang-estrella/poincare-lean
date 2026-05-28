@@ -9906,6 +9906,47 @@ theorem threeSphere_stereographic_southNorthBlockSouth_concat_cast_nullhomotopic
 
 /--
 An arbitrary north-source path followed by a finite south-source block and a
+finite north-source return block contracts through a homotopy whose image stays
+in the two stereographic chart sources.
+-/
+theorem threeSphere_stereographic_northSouthBlockNorthTail_concat_cast_homotopy_refl_forall_mem
+    {L R : ℕ} {x₀ : ThreeSphere}
+    (tailPts : Fin (L + R + 1) → ThreeSphere)
+    (tailSegs : (k : Fin (L + R)) →
+      Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last (L + R)) = x₀)
+    (hp : Set.range p ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hSouthBase : tailPts 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouth : ∀ k : Fin L,
+      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthBase : tailPts ⟨L, by omega⟩ ∈
+        (stereographic' 3 threeSphere_northPole).source)
+    (hNorth : ∀ k : Fin R,
+      Set.range (tailSegs ⟨L + k.val, by omega⟩) ⊆
+        (stereographic' 3 threeSphere_northPole).source) :
+    ∃ H : (p.trans (Path.concat tailPts tailSegs)).Homotopy
+        ((Path.refl x₀).cast rfl hclose),
+      ∀ t, H t ∈
+        (stereographic' 3 threeSphere_northPole).source ∪
+          (stereographic' 3 (-threeSphere_northPole)).source := by
+  let U : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
+  let V : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  letI : SimplyConnectedSpace U := by
+    simpa [U] using threeSphere_stereographic_source_simplyConnectedSpace
+      threeSphere_northPole
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace
+      (-threeSphere_northPole)
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    simpa [U, V] using threeSphere_actualOverlap_pathConnectedSpace
+  exact twoSetOpenCover_sameSideBlockSameSideTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo
+    (U := U) (V := V) tailPts tailSegs p hclose hp hSouthBase hSouth
+    hNorthBase hNorth
+
+/--
+An arbitrary north-source path followed by a finite south-source block and a
 finite north-source return block is null-homotopic.  This is the one-switch
 tail contraction needed after a first-south-run replacement.
 -/
@@ -9928,19 +9969,56 @@ theorem threeSphere_stereographic_northSouthBlockNorthTail_concat_cast_nullhomot
         (stereographic' 3 threeSphere_northPole).source) :
     Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
       ((Path.refl x₀).cast rfl hclose) := by
-  let U : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
-  let V : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  rcases threeSphere_stereographic_northSouthBlockNorthTail_concat_cast_homotopy_refl_forall_mem
+      tailPts tailSegs p hclose hp hSouthBase hSouth hNorthBase hNorth with
+    ⟨H, _hH⟩
+  exact ⟨H⟩
+
+/--
+The symmetric one-switch tail contraction: an arbitrary south-source path
+followed by a finite north-source block and a finite south-source return block
+contracts through a homotopy whose image stays in the two stereographic chart
+sources.
+-/
+theorem threeSphere_stereographic_southNorthBlockSouthTail_concat_cast_homotopy_refl_forall_mem
+    {L R : ℕ} {x₀ : ThreeSphere}
+    (tailPts : Fin (L + R + 1) → ThreeSphere)
+    (tailSegs : (k : Fin (L + R)) →
+      Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last (L + R)) = x₀)
+    (hp : Set.range p ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthBase : tailPts 0 ∈ (stereographic' 3 threeSphere_northPole).source)
+    (hNorth : ∀ k : Fin L,
+      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hSouthBase : tailPts ⟨L, by omega⟩ ∈
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouth : ∀ k : Fin R,
+      Set.range (tailSegs ⟨L + k.val, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source) :
+    ∃ H : (p.trans (Path.concat tailPts tailSegs)).Homotopy
+        ((Path.refl x₀).cast rfl hclose),
+      ∀ t, H t ∈
+        (stereographic' 3 (-threeSphere_northPole)).source ∪
+          (stereographic' 3 threeSphere_northPole).source := by
+  let U : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  let V : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
   letI : SimplyConnectedSpace U := by
     simpa [U] using threeSphere_stereographic_source_simplyConnectedSpace
-      threeSphere_northPole
+      (-threeSphere_northPole)
   letI : SimplyConnectedSpace V := by
     simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace
-      (-threeSphere_northPole)
+      threeSphere_northPole
   letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
-    simpa [U, V] using threeSphere_actualOverlap_pathConnectedSpace
-  exact twoSetOpenCover_sameSideBlockSameSideTail_concat_cast_nullhomotopic_of_mapsTo
-    (U := U) (V := V) tailPts tailSegs p hclose hp hSouthBase hSouth
-    hNorthBase hNorth
+    change PathConnectedSpace
+      ((stereographic' 3 (-threeSphere_northPole)).source ∩
+        (stereographic' 3 threeSphere_northPole).source : Set ThreeSphere)
+    rw [Set.inter_comm]
+    exact threeSphere_actualOverlap_pathConnectedSpace
+  exact twoSetOpenCover_sameSideBlockSameSideTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo
+    (U := U) (V := V) tailPts tailSegs p hclose hp hNorthBase hNorth
+    hSouthBase hSouth
 
 /--
 The symmetric one-switch tail contraction: an arbitrary south-source path
@@ -9966,23 +10044,10 @@ theorem threeSphere_stereographic_southNorthBlockSouthTail_concat_cast_nullhomot
         (stereographic' 3 (-threeSphere_northPole)).source) :
     Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
       ((Path.refl x₀).cast rfl hclose) := by
-  let U : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
-  let V : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
-  letI : SimplyConnectedSpace U := by
-    simpa [U] using threeSphere_stereographic_source_simplyConnectedSpace
-      (-threeSphere_northPole)
-  letI : SimplyConnectedSpace V := by
-    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace
-      threeSphere_northPole
-  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
-    change PathConnectedSpace
-      ((stereographic' 3 (-threeSphere_northPole)).source ∩
-        (stereographic' 3 threeSphere_northPole).source : Set ThreeSphere)
-    rw [Set.inter_comm]
-    exact threeSphere_actualOverlap_pathConnectedSpace
-  exact twoSetOpenCover_sameSideBlockSameSideTail_concat_cast_nullhomotopic_of_mapsTo
-    (U := U) (V := V) tailPts tailSegs p hclose hp hNorthBase hNorth
-    hSouthBase hSouth
+  rcases threeSphere_stereographic_southNorthBlockSouthTail_concat_cast_homotopy_refl_forall_mem
+      tailPts tailSegs p hclose hp hNorthBase hNorth hSouthBase hSouth with
+    ⟨H, _hH⟩
+  exact ⟨H⟩
 
 /--
 An arbitrary north-source path followed by a finite north-source block and a
