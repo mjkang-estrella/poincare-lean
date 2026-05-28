@@ -823,6 +823,84 @@ theorem path_homotopy_cast_forall_mem_of_forall_mem
   exact hH t
 
 /--
+Left reassociation across four successive path factors stays inside a set when
+each factor stays inside that set.
+-/
+theorem path_four_left_assoc_homotopy_forall_mem
+    {X : Type u} [TopologicalSpace X] {S : Set X}
+    {x₀ x₁ x₂ x₃ x₄ x₅ : X}
+    (p : Path x₀ x₁) (P : Path x₁ x₂) (O : Path x₂ x₃)
+    (R : Path x₃ x₄) (T : Path x₄ x₅)
+    (hp : ∀ t, p t ∈ S) (hP : ∀ t, P t ∈ S)
+    (hO : ∀ t, O t ∈ S) (hR : ∀ t, R t ∈ S)
+    (hT : ∀ t, T t ∈ S) :
+    ∃ H : (p.trans (((P.trans O).trans R).trans T)).Homotopy
+        ((((p.trans P).trans O).trans R).trans T),
+      ∀ t, H t ∈ S := by
+  let A₀ : Path x₀ x₅ := p.trans (((P.trans O).trans R).trans T)
+  let A₁ : Path x₀ x₅ := (p.trans ((P.trans O).trans R)).trans T
+  let A₂ : Path x₀ x₅ := ((p.trans (P.trans O)).trans R).trans T
+  let A₃ : Path x₀ x₅ := (((p.trans P).trans O).trans R).trans T
+  let H₀ : A₀.Homotopy A₁ :=
+    (Path.Homotopy.transAssoc p ((P.trans O).trans R) T).symm
+  have hPO : ∀ t, (P.trans O) t ∈ S :=
+    path_trans_forall_mem_of_forall_mem P O hP hO
+  have hPOR : ∀ t, ((P.trans O).trans R) t ∈ S :=
+    path_trans_forall_mem_of_forall_mem (P.trans O) R hPO hR
+  have hA0Forward :
+      ∀ t, Path.Homotopy.transAssoc p ((P.trans O).trans R) T t ∈ S :=
+    path_transAssoc_forall_mem_of_forall_mem p ((P.trans O).trans R) T
+      hp hPOR hT
+  have hH₀ : ∀ t, H₀ t ∈ S :=
+    path_homotopy_symm_forall_mem_of_forall_mem
+      (Path.Homotopy.transAssoc p ((P.trans O).trans R) T) hA0Forward
+  let H₁core : (p.trans ((P.trans O).trans R)).Homotopy
+      ((p.trans (P.trans O)).trans R) :=
+    (Path.Homotopy.transAssoc p (P.trans O) R).symm
+  have hA1Forward : ∀ t, Path.Homotopy.transAssoc p (P.trans O) R t ∈ S :=
+    path_transAssoc_forall_mem_of_forall_mem p (P.trans O) R hp hPO hR
+  have hH₁core : ∀ t, H₁core t ∈ S :=
+    path_homotopy_symm_forall_mem_of_forall_mem
+      (Path.Homotopy.transAssoc p (P.trans O) R) hA1Forward
+  let H₁ : A₁.Homotopy A₂ := H₁core.hcomp (Path.Homotopy.refl T)
+  have hH₁ : ∀ t, H₁ t ∈ S :=
+    path_homotopy_hcomp_forall_mem_of_forall_mem
+      H₁core (Path.Homotopy.refl T) hH₁core
+      (fun t => by
+        change T t.2 ∈ S
+        exact hT t.2)
+  let H₂core : (p.trans (P.trans O)).Homotopy ((p.trans P).trans O) :=
+    (Path.Homotopy.transAssoc p P O).symm
+  have hA2Forward : ∀ t, Path.Homotopy.transAssoc p P O t ∈ S :=
+    path_transAssoc_forall_mem_of_forall_mem p P O hp hP hO
+  have hH₂core : ∀ t, H₂core t ∈ S :=
+    path_homotopy_symm_forall_mem_of_forall_mem
+      (Path.Homotopy.transAssoc p P O) hA2Forward
+  let H₂left : ((p.trans (P.trans O)).trans R).Homotopy
+      (((p.trans P).trans O).trans R) :=
+    H₂core.hcomp (Path.Homotopy.refl R)
+  have hH₂left : ∀ t, H₂left t ∈ S :=
+    path_homotopy_hcomp_forall_mem_of_forall_mem
+      H₂core (Path.Homotopy.refl R) hH₂core
+      (fun t => by
+        change R t.2 ∈ S
+        exact hR t.2)
+  let H₂ : A₂.Homotopy A₃ := H₂left.hcomp (Path.Homotopy.refl T)
+  have hH₂ : ∀ t, H₂ t ∈ S :=
+    path_homotopy_hcomp_forall_mem_of_forall_mem
+      H₂left (Path.Homotopy.refl T) hH₂left
+      (fun t => by
+        change T t.2 ∈ S
+        exact hT t.2)
+  let H01 : A₀.Homotopy A₂ := H₀.trans H₁
+  have hH01 : ∀ t, H01 t ∈ S :=
+    path_homotopy_trans_forall_mem_of_forall_mem H₀ H₁ hH₀ hH₁
+  let H : A₀.Homotopy A₃ := H01.trans H₂
+  have hH : ∀ t, H t ∈ S :=
+    path_homotopy_trans_forall_mem_of_forall_mem H01 H₂ hH01 hH₂
+  exact ⟨H, hH⟩
+
+/--
 Finite path concatenation can be split after a block of `L` segments even when
 the ambient length is only propositionally equal to `L + R`; the resulting
 endpoint cast records the arithmetic alignment of the split suffix.
