@@ -9787,6 +9787,41 @@ theorem threeSphere_stereographic_southNorthSouth_trans_trans_cast_nullhomotopic
 
 /--
 A north-source loop with an arbitrary finite south-source block between the
+two north pieces contracts through a homotopy whose image stays in the two
+stereographic chart sources.  This is the finite-block chart-switch contraction
+needed before forgetting to ordinary path homotopy.
+-/
+theorem threeSphere_stereographic_northSouthBlockNorth_concat_cast_homotopy_refl_forall_mem
+    {N : ℕ} {x₀ x₃ : ThreeSphere}
+    (m : Fin (N + 1) → ThreeSphere)
+    (p : Path x₀ (m 0))
+    (F : (k : Fin N) → Path (m k.castSucc) (m k.succ))
+    (r : Path (m (Fin.last N)) x₃) (hclose : x₃ = x₀)
+    (hp : Set.range p ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hmBase : m 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hF : ∀ k : Fin N,
+      Set.range (F k) ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hr : Set.range r ⊆ (stereographic' 3 threeSphere_northPole).source) :
+    ∃ H : ((p.trans (Path.concat m F)).trans r).Homotopy
+        ((Path.refl x₀).cast rfl hclose),
+      ∀ t, H t ∈
+        (stereographic' 3 threeSphere_northPole).source ∪
+          (stereographic' 3 (-threeSphere_northPole)).source := by
+  let U : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
+  let V : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  letI : SimplyConnectedSpace U := by
+    simpa [U] using threeSphere_stereographic_source_simplyConnectedSpace
+      threeSphere_northPole
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace
+      (-threeSphere_northPole)
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    simpa [U, V] using threeSphere_actualOverlap_pathConnectedSpace
+  exact twoSetOpenCover_sameSideBlock_cast_homotopy_refl_forall_mem_of_mapsTo
+    (U := U) (V := V) m p F r hclose hp hmBase hF hr
+
+/--
+A north-source loop with an arbitrary finite south-source block between the
 two north pieces is null-homotopic.  This packages the finite middle block as
 a single south-source path, then applies the three-piece excursion collapse.
 -/
@@ -9803,18 +9838,10 @@ theorem threeSphere_stereographic_northSouthBlockNorth_concat_cast_nullhomotopic
     (hr : Set.range r ⊆ (stereographic' 3 threeSphere_northPole).source) :
     Path.Homotopic ((p.trans (Path.concat m F)).trans r)
       ((Path.refl x₀).cast rfl hclose) := by
-  let U : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
-  let V : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
-  letI : SimplyConnectedSpace U := by
-    simpa [U] using threeSphere_stereographic_source_simplyConnectedSpace
-      threeSphere_northPole
-  letI : SimplyConnectedSpace V := by
-    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace
-      (-threeSphere_northPole)
-  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
-    simpa [U, V] using threeSphere_actualOverlap_pathConnectedSpace
-  exact twoSetOpenCover_sameSideBlock_cast_nullhomotopic_of_mapsTo
-    (U := U) (V := V) m p F r hclose hp hmBase hF hr
+  rcases threeSphere_stereographic_northSouthBlockNorth_concat_cast_homotopy_refl_forall_mem
+      m p F r hclose hp hmBase hF hr with
+    ⟨H, _hH⟩
+  exact ⟨H⟩
 
 /--
 The symmetric arbitrary-block excursion collapse: a finite north-source block
