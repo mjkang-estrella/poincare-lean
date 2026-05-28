@@ -3707,6 +3707,45 @@ theorem loop_homotopic_refl_of_mapsTo_simplyConnectedSubtype
     hbase hbase γ (Path.refl basepoint) hγ (fun _ => hbase)
 
 /--
+A two-piece based loop is nullhomotopic when the first piece stays in one
+simply connected set, the second stays in another, and the endpoints lie in a
+path-connected overlap.
+-/
+theorem twoSetOpenCover_twoPieceLoop_nullhomotopic_of_mapsTo
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {basepoint midpoint : Y}
+    (hbase : basepoint ∈ U ∩ V) (hmid : midpoint ∈ U ∩ V)
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set Y)]
+    (p : Path basepoint midpoint) (q : Path midpoint basepoint)
+    (hp : ∀ t, p t ∈ U) (hq : ∀ t, q t ∈ V) :
+    Path.Homotopic (p.trans q) (Path.refl basepoint) := by
+  let baseOverlap : (U ∩ V : Set Y) := ⟨basepoint, hbase⟩
+  let midOverlap : (U ∩ V : Set Y) := ⟨midpoint, hmid⟩
+  let overlapPath : Path baseOverlap midOverlap :=
+    PathConnectedSpace.somePath baseOverlap midOverlap
+  let incl : C((U ∩ V : Set Y), Y) :=
+    ⟨Subtype.val, continuous_subtype_val⟩
+  let r : Path basepoint midpoint := overlapPath.map incl.continuous
+  have hrU : ∀ t, r t ∈ U := by
+    intro t
+    exact (overlapPath t).2.1
+  have hrV : ∀ t, r t ∈ V := by
+    intro t
+    exact (overlapPath t).2.2
+  have hpR : Path.Homotopic p r :=
+    paths_homotopic_of_mapsTo_simplyConnectedSubtype
+      hbase.1 hmid.1 p r hp hrU
+  have hqR : Path.Homotopic q r.symm := by
+    have hrSymmV : ∀ t, r.symm t ∈ V := by
+      intro t
+      exact hrV (unitInterval.symm t)
+    exact
+      paths_homotopic_of_mapsTo_simplyConnectedSubtype
+        hmid.2 hbase.2 q r.symm hq hrSymmV
+  exact (Path.Homotopic.hcomp hpR hqR).trans
+    (Path.Homotopic.trans_symm r)
+
+/--
 In a path-connected space, triviality of the fundamental group at one basepoint
 is equivalent to simple-connectedness.
 -/
