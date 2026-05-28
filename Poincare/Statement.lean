@@ -33047,6 +33047,60 @@ theorem threeSphere_piOneSubsingletonStatement_of_simplyConnectedSpace_eq
       threeSphere_simplyConnectedSpace_iff_piOneSubsingletonStatement.mp inferInstance := by
   apply Subsingleton.elim
 
+/--
+The stereographic source-choice proof gives nullhomotopy of every based loop
+on the standard 3-sphere, after the already proved reconstruction of
+`SimplyConnectedSpace ThreeSphere`.
+-/
+theorem threeSphere_loopNullhomotopyStatement_of_sourceChoiceCollapse :
+    ThreeSphereLoopNullhomotopyStatement := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_sourceChoiceCollapse
+  exact threeSphere_loopNullhomotopyStatement_of_simplyConnectedSpace
+
+/--
+The source-choice proof gives homotopy uniqueness for every pair of parallel
+paths in the standard 3-sphere.
+-/
+theorem threeSphere_pathHomotopyStatement_of_sourceChoiceCollapse :
+    ThreeSpherePathHomotopyStatement := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_sourceChoiceCollapse
+  exact (threeSphere_pathHomotopyStatement_of_simplyConnectedSpace :
+    ThreeSpherePathHomotopyStatement)
+
+/--
+The source-choice proof gives uniqueness of every path-homotopy quotient in
+the standard 3-sphere.
+-/
+theorem threeSphere_pathQuotientSubsingletonStatement_of_sourceChoiceCollapse :
+    ThreeSpherePathQuotientSubsingletonStatement := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_sourceChoiceCollapse
+  exact (threeSphere_pathQuotientSubsingletonStatement_of_simplyConnectedSpace :
+    ThreeSpherePathQuotientSubsingletonStatement)
+
+/--
+The source-choice proof gives triviality of the fundamental group at every
+basepoint of the standard 3-sphere.
+-/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_sourceChoiceCollapse :
+    ThreeSphereFundamentalGroupSubsingletonStatement := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_sourceChoiceCollapse
+  exact (threeSphere_fundamentalGroupSubsingletonStatement_of_simplyConnectedSpace :
+    ThreeSphereFundamentalGroupSubsingletonStatement)
+
+/--
+The source-choice proof gives triviality of `π₁(S³, x)` at every basepoint.
+-/
+theorem threeSphere_piOneSubsingletonStatement_of_sourceChoiceCollapse :
+    ThreeSpherePiOneSubsingletonStatement := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_sourceChoiceCollapse
+  exact (threeSphere_piOneSubsingletonStatement_of_simplyConnectedSpace :
+    ThreeSpherePiOneSubsingletonStatement)
+
 /-- A based loop-nullhomotopy proof supplies path-homotopy uniqueness on `S^3`. -/
 theorem threeSphere_pathHomotopyStatement_of_basedLoopNullhomotopyStatement
     {basepoint : ThreeSphere}
