@@ -5794,6 +5794,55 @@ Length-aligned form of the generic flat first-return step.  The full
 first-opposite-run induction obtains this arithmetic split from a `start` and
 first `stop` index.
 -/
+theorem twoSetOpenCover_sameHead_prefixOppositeRunSameReturn_flat_tail_induction_step_homotopy_refl_forall_mem_of_length_eq
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {T A B C : ℕ} {x₀ : Y}
+    [SimplyConnectedSpace V] [PathConnectedSpace (U ∩ V : Set Y)]
+    (tailPts : Fin (T + 1) → Y)
+    (tailSegs : (k : Fin T) → Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last T) = x₀)
+    (hTailLen : T = A + (B + 1) + C)
+    (hp : Set.range p ⊆ U)
+    (hPrefBase : tailPts 0 ∈ U)
+    (hPref : ∀ k : Fin A,
+      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆ U)
+    (hOppBase : tailPts ⟨A, by omega⟩ ∈ V)
+    (hOpp : ∀ k : Fin B,
+      Set.range (tailSegs ⟨A + k.val, by omega⟩) ⊆ V)
+    (hReturn : Set.range (tailSegs ⟨A + B, by omega⟩) ⊆ U)
+    (hshort : ∀ q : Path x₀ (tailPts ⟨A + (B + 1), by omega⟩),
+      Set.range q ⊆ U →
+      let afterPts : Fin (C + 1) → Y := fun i =>
+        tailPts ⟨A + (B + 1) + i.val, by omega⟩
+      let afterSegs : (k : Fin C) → Path (afterPts k.castSucc) (afterPts k.succ) :=
+        fun k => tailSegs ⟨A + (B + 1) + k.val, by omega⟩
+      let afterClose : afterPts (Fin.last C) = x₀ := by
+        dsimp [afterPts]
+        have hidx :
+            (⟨A + (B + 1) + C, by omega⟩ : Fin (T + 1)) = Fin.last T := by
+          ext
+          change A + (B + 1) + C = T
+          omega
+        exact (congrArg tailPts hidx).trans hclose
+      ∃ H : (q.trans (Path.concat afterPts afterSegs)).Homotopy
+          ((Path.refl x₀).cast rfl afterClose),
+        ∀ t, H t ∈ U ∪ V) :
+    ∃ H : (p.trans (Path.concat tailPts tailSegs)).Homotopy
+        ((Path.refl x₀).cast rfl hclose),
+      ∀ t, H t ∈ U ∪ V := by
+  cases hTailLen
+  exact twoSetOpenCover_sameHead_prefixOppositeRunSameReturn_flat_tail_induction_step_homotopy_refl_forall_mem_of_mapsTo
+    (U := U) (V := V) tailPts tailSegs p hclose hp hPrefBase hPref
+    hOppBase hOpp hReturn
+    (by
+      intro q hq
+      simpa using hshort q hq)
+
+/--
+Length-aligned form of the generic flat first-return step.  The full
+first-opposite-run induction obtains this arithmetic split from a `start` and
+first `stop` index.
+-/
 theorem twoSetOpenCover_sameHead_prefixOppositeRunSameReturn_flat_tail_induction_step_of_length_eq
     {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {T A B C : ℕ} {x₀ : Y}
     [SimplyConnectedSpace V] [PathConnectedSpace (U ∩ V : Set Y)]
@@ -5835,6 +5884,104 @@ theorem twoSetOpenCover_sameHead_prefixOppositeRunSameReturn_flat_tail_induction
     (by
       intro q hq
       simpa using hshort q hq)
+
+/--
+Generic first-opposite-run induction for finite chart words in a two-set cover.
+Starting with a head path in `U`, any closed finite tail whose segments each lie
+in `U` or `V` contracts when both cover members are simply connected and their
+overlap is path connected.
+-/
+theorem twoSetOpenCover_sameHead_firstOppositeRun_tail_induction_homotopy_refl_forall_mem_of_mapsTo
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {N : ℕ} {x₀ : Y}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set Y)]
+    (tailPts : Fin (N + 1) → Y)
+    (tailSegs : (k : Fin N) →
+      Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last N) = x₀)
+    (hp : Set.range p ⊆ U)
+    (hchoice : ∀ k : Fin N,
+      Set.range (tailSegs k) ⊆ U ∨ Set.range (tailSegs k) ⊆ V) :
+    ∃ H : (p.trans (Path.concat tailPts tailSegs)).Homotopy
+        ((Path.refl x₀).cast rfl hclose),
+      ∀ t, H t ∈ U ∪ V := by
+  revert tailPts tailSegs p hclose hp hchoice
+  refine Nat.strong_induction_on N ?_
+  intro N ih tailPts tailSegs p hclose hp hchoice
+  refine
+    twoSetOpenCover_sameHead_firstOppositeRun_terminal_or_return_tail_induction_homotopy_refl_forall_mem_of_mapsTo
+      (U := U) (V := V) tailPts tailSegs p hclose hp hchoice ?_
+  intro start stop hstartstop hBefore hPrefStop hrun htail
+  let A : ℕ := start.val
+  let B : ℕ := stop.val - start.val
+  let C : ℕ := N - (stop.val + 1)
+  have hTailLen : N = A + (B + 1) + C := by
+    dsimp [A, B, C]
+    omega
+  have hClt : C < N := by
+    dsimp [C]
+    omega
+  have hPrefBase : tailPts 0 ∈ U :=
+    hp ⟨1, p.target⟩
+  have hPref : ∀ k : Fin A,
+      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆ U := by
+    intro k
+    simpa [A] using hBefore ⟨k.val, by omega⟩ k.isLt
+  have hOppBase : tailPts ⟨A, by omega⟩ ∈ V := by
+    have hStart := hrun start (by omega) hstartstop
+    simpa [A] using hStart ⟨0, (tailSegs start).source⟩
+  have hOpp : ∀ k : Fin B,
+      Set.range (tailSegs ⟨A + k.val, by omega⟩) ⊆ V := by
+    intro k
+    let j : Fin N := ⟨A + k.val, by
+      dsimp [A, B]
+      have hk := k.isLt
+      omega⟩
+    have hjle : start.val ≤ j.val := by
+      dsimp [j, A]
+      omega
+    have hjlt : j.val < stop.val := by
+      dsimp [j, A, B]
+      have hk := k.isLt
+      omega
+    simpa [j] using hrun j hjle hjlt
+  have hReturn :
+      Set.range (tailSegs ⟨A + B, by omega⟩) ⊆ U := by
+    have hstopIdx : (⟨A + B, by omega⟩ : Fin N) = stop := by
+      ext
+      dsimp [A, B]
+      omega
+    rw [hstopIdx]
+    exact hPrefStop
+  refine
+    twoSetOpenCover_sameHead_prefixOppositeRunSameReturn_flat_tail_induction_step_homotopy_refl_forall_mem_of_length_eq
+      (U := U) (V := V) tailPts tailSegs p hclose hTailLen hp hPrefBase hPref
+      hOppBase hOpp hReturn ?_
+  intro q hq
+  let afterPts : Fin (C + 1) → Y := fun i =>
+    tailPts ⟨A + (B + 1) + i.val, by omega⟩
+  let afterSegs : (k : Fin C) → Path (afterPts k.castSucc) (afterPts k.succ) :=
+    fun k => tailSegs ⟨A + (B + 1) + k.val, by omega⟩
+  have hafterClose : afterPts (Fin.last C) = x₀ := by
+    dsimp [afterPts]
+    have hidx :
+        (⟨A + (B + 1) + C, by
+          rw [← hTailLen]
+          exact Nat.lt_succ_self N⟩ : Fin (N + 1)) = Fin.last N := by
+      ext
+      change A + (B + 1) + C = N
+      omega
+    exact (congrArg tailPts hidx).trans hclose
+  have hafterChoice : ∀ k : Fin C,
+      Set.range (afterSegs k) ⊆ U ∨ Set.range (afterSegs k) ⊆ V := by
+    intro k
+    simpa [afterSegs] using
+      hchoice ⟨A + (B + 1) + k.val, by
+        have hk : k.val < C := k.isLt
+        omega⟩
+  simpa [afterPts, afterSegs] using
+    ih C hClt afterPts afterSegs q hafterClose hq hafterChoice
 
 /--
 Generic first-opposite-run induction for finite chart words in a two-set cover.
