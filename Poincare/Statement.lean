@@ -728,6 +728,27 @@ theorem path_transAssoc_forall_mem_of_forall_mem
   change (p.trans (q.trans r)) _ ∈ S
   exact htarget _
 
+/-- Reversing a path homotopy preserves a pointwise containment invariant. -/
+theorem path_homotopy_symm_forall_mem_of_forall_mem
+    {X : Type u} [TopologicalSpace X] {S : Set X} {x₀ x₁ : X}
+    {p q : Path x₀ x₁} (H : p.Homotopy q) (hH : ∀ t, H t ∈ S) :
+    ∀ t, H.symm t ∈ S := by
+  intro t
+  change H (unitInterval.symm t.1, t.2) ∈ S
+  exact hH _
+
+/-- Concatenating two path homotopies in homotopy time preserves containment. -/
+theorem path_homotopy_trans_forall_mem_of_forall_mem
+    {X : Type u} [TopologicalSpace X] {S : Set X} {x₀ x₁ : X}
+    {p q r : Path x₀ x₁} (H : p.Homotopy q) (K : q.Homotopy r)
+    (hH : ∀ t, H t ∈ S) (hK : ∀ t, K t ∈ S) :
+    ∀ t, (H.trans K) t ∈ S := by
+  intro t
+  rw [Path.Homotopy.trans_apply]
+  split_ifs
+  · exact hH _
+  · exact hK _
+
 /--
 Finite path concatenation can be split after a block of `L` segments even when
 the ambient length is only propositionally equal to `L + R`; the resulting
@@ -4484,6 +4505,141 @@ theorem twoSetOpenCover_sameSideBlock_cast_nullhomotopic_of_mapsTo
 
 /--
 A finite tail made of a block in one cover member followed by a return block
+in the bracketing member admits a nullhomotopy, preceded by a bracketing path,
+whose image stays in the two-set cover.
+-/
+theorem twoSetOpenCover_sameSideBlockSameSideTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {L R : ℕ} {x₀ : Y}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set Y)]
+    (tailPts : Fin (L + R + 1) → Y)
+    (tailSegs : (k : Fin (L + R)) →
+      Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last (L + R)) = x₀)
+    (hp : Set.range p ⊆ U)
+    (hVBase : tailPts 0 ∈ V)
+    (hV : ∀ k : Fin L, Set.range (tailSegs ⟨k.val, by omega⟩) ⊆ V)
+    (hUBase : tailPts ⟨L, by omega⟩ ∈ U)
+    (hU : ∀ k : Fin R, Set.range (tailSegs ⟨L + k.val, by omega⟩) ⊆ U) :
+    ∃ H : (p.trans (Path.concat tailPts tailSegs)).Homotopy
+        ((Path.refl x₀).cast rfl hclose),
+      ∀ t, H t ∈ U ∪ V := by
+  let vPts : Fin (L + 1) → Y := fun i => tailPts ⟨i.val, by omega⟩
+  let vSegs : (k : Fin L) → Path (vPts k.castSucc) (vPts k.succ) :=
+    fun k => tailSegs ⟨k.val, by omega⟩
+  let uPts : Fin (R + 1) → Y := fun i => tailPts ⟨L + i.val, by omega⟩
+  let uSegs : (k : Fin R) → Path (uPts k.castSucc) (uPts k.succ) :=
+    fun k => tailSegs ⟨L + k.val, by omega⟩
+  let Vpath : Path (tailPts 0) (tailPts ⟨L, by omega⟩) := Path.concat vPts vSegs
+  let Upath : Path (tailPts ⟨L, by omega⟩) (tailPts (Fin.last (L + R))) :=
+    Path.concat uPts uSegs
+  have htailSegs : ∀ k : Fin (L + R), Set.range (tailSegs k) ⊆ U ∪ V := by
+    intro k z hz
+    by_cases hk : k.val < L
+    · let kL : Fin L := ⟨k.val, hk⟩
+      have hidx : (⟨kL.val, by omega⟩ : Fin (L + R)) = k := by
+        ext
+        simp [kL]
+      exact Or.inr (hV kL (hidx.symm ▸ hz))
+    · let kR : Fin R := ⟨k.val - L, by omega⟩
+      have hidx : (⟨L + kR.val, by omega⟩ : Fin (L + R)) = k := by
+        ext
+        dsimp [kR]
+        omega
+      exact Or.inl (hU kR (hidx.symm ▸ hz))
+  rcases path_concat_split_homotopy_forall_mem_of_mapsTo
+      (S := U ∪ V) tailPts tailSegs (Or.inr hVBase) htailSegs with
+    ⟨Hsplit₀, hHsplit₀⟩
+  let Hsplit : (Path.concat tailPts tailSegs).Homotopy (Vpath.trans Upath) := by
+    change (Path.concat tailPts tailSegs).Homotopy
+      ((Path.concat (fun i : Fin (L + 1) => tailPts ⟨i.val, by omega⟩)
+        (fun k : Fin L => tailSegs ⟨k.val, by omega⟩)).trans
+        (Path.concat (fun j : Fin (R + 1) => tailPts ⟨L + j.val, by omega⟩)
+          (fun k : Fin R => tailSegs ⟨L + k.val, by omega⟩)))
+    exact Hsplit₀
+  have hHsplit : ∀ t, Hsplit t ∈ U ∪ V := by
+    intro t
+    exact hHsplit₀ t
+  let Hprefix : (p.trans (Path.concat tailPts tailSegs)).Homotopy
+      (p.trans (Vpath.trans Upath)) :=
+    (Path.Homotopy.refl p).hcomp Hsplit
+  have hHprefix : ∀ t, Hprefix t ∈ U ∪ V := by
+    intro t
+    dsimp [Hprefix]
+    rw [Path.Homotopy.hcomp_apply]
+    split_ifs
+    · exact Or.inl (hp ⟨_, rfl⟩)
+    · exact hHsplit _
+  have huRange : Set.range Upath ⊆ U := by
+    change Set.range (Path.concat uPts uSegs) ⊆ U
+    exact
+    path_concat_range_subset_of_mapsTo uPts uSegs
+      (by simpa [uPts] using hUBase)
+      (by
+        intro k
+        simpa [uSegs] using hU k)
+  have hvRange : Set.range Vpath ⊆ V := by
+    change Set.range (Path.concat vPts vSegs) ⊆ V
+    exact
+    path_concat_range_subset_of_mapsTo vPts vSegs
+      (by simpa [vPts] using hVBase)
+      (by
+        intro k
+        simpa [vSegs] using hV k)
+  have hcloseU : uPts (Fin.last R) = x₀ := by
+    simpa [uPts] using hclose
+  rcases twoSetOpenCover_sameSideBlock_cast_homotopy_refl_forall_mem_of_mapsTo
+      (U := U) (V := V) vPts p vSegs Upath hcloseU
+      hp (by simpa [vPts] using hVBase)
+      (by
+        intro k
+        simpa [vSegs] using hV k)
+      huRange with
+    ⟨Hcontract, hHcontract⟩
+  have htargetEq :
+      ((Path.refl x₀).cast rfl hcloseU) =
+        ((Path.refl x₀).cast rfl hclose) := by
+    apply Path.ext
+    funext _s
+    change x₀ = x₀
+    rfl
+  let HcontractCast : ((p.trans Vpath).trans Upath).Homotopy
+      ((Path.refl x₀).cast rfl hclose) := Hcontract.cast rfl htargetEq
+  have hHcontractCast : ∀ t, HcontractCast t ∈ U ∪ V := by
+    intro t
+    change Hcontract t ∈ U ∪ V
+    exact hHcontract t
+  let Hassoc : (p.trans (Vpath.trans Upath)).Homotopy ((p.trans Vpath).trans Upath) :=
+    (Path.Homotopy.transAssoc p Vpath Upath).symm
+  have hpUnion : ∀ t, p t ∈ U ∪ V := by
+    intro t
+    exact Or.inl (hp ⟨t, rfl⟩)
+  have hVpathUnion : ∀ t, Vpath t ∈ U ∪ V := by
+    intro t
+    exact Or.inr (hvRange ⟨t, rfl⟩)
+  have hUpathUnion : ∀ t, Upath t ∈ U ∪ V := by
+    intro t
+    exact Or.inl (huRange ⟨t, rfl⟩)
+  have hHassocForward : ∀ t, Path.Homotopy.transAssoc p Vpath Upath t ∈ U ∪ V :=
+    path_transAssoc_forall_mem_of_forall_mem p Vpath Upath
+      hpUnion hVpathUnion hUpathUnion
+  have hHassoc : ∀ t, Hassoc t ∈ U ∪ V :=
+    path_homotopy_symm_forall_mem_of_forall_mem
+      (Path.Homotopy.transAssoc p Vpath Upath) hHassocForward
+  let HassocContract : (p.trans (Vpath.trans Upath)).Homotopy
+      ((Path.refl x₀).cast rfl hclose) := Hassoc.trans HcontractCast
+  have hHassocContract : ∀ t, HassocContract t ∈ U ∪ V :=
+    path_homotopy_trans_forall_mem_of_forall_mem
+      Hassoc HcontractCast hHassoc hHcontractCast
+  let Htail : (p.trans (Path.concat tailPts tailSegs)).Homotopy
+      ((Path.refl x₀).cast rfl hclose) := Hprefix.trans HassocContract
+  refine ⟨Htail, ?_⟩
+  exact path_homotopy_trans_forall_mem_of_forall_mem
+    Hprefix HassocContract hHprefix hHassocContract
+
+/--
+A finite tail made of a block in one cover member followed by a return block
 in the bracketing member is nullhomotopic when preceded by a bracketing path.
 -/
 theorem twoSetOpenCover_sameSideBlockSameSideTail_concat_cast_nullhomotopic_of_mapsTo
@@ -4502,51 +4658,10 @@ theorem twoSetOpenCover_sameSideBlockSameSideTail_concat_cast_nullhomotopic_of_m
     (hU : ∀ k : Fin R, Set.range (tailSegs ⟨L + k.val, by omega⟩) ⊆ U) :
     Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
       ((Path.refl x₀).cast rfl hclose) := by
-  let vPts : Fin (L + 1) → Y := fun i => tailPts ⟨i.val, by omega⟩
-  let vSegs : (k : Fin L) → Path (vPts k.castSucc) (vPts k.succ) :=
-    fun k => tailSegs ⟨k.val, by omega⟩
-  let uPts : Fin (R + 1) → Y := fun i => tailPts ⟨L + i.val, by omega⟩
-  let uSegs : (k : Fin R) → Path (uPts k.castSucc) (uPts k.succ) :=
-    fun k => tailSegs ⟨L + k.val, by omega⟩
-  have hsplit :
-      Path.Homotopic (Path.concat tailPts tailSegs)
-        ((Path.concat vPts vSegs).trans (Path.concat uPts uSegs)) := by
-    change Path.Homotopic (Path.concat tailPts tailSegs)
-      ((Path.concat (fun i : Fin (L + 1) => tailPts ⟨i.val, by omega⟩)
-        (fun k : Fin L => tailSegs ⟨k.val, by omega⟩)).trans
-        (Path.concat (fun j : Fin (R + 1) => tailPts ⟨L + j.val, by omega⟩)
-          (fun k : Fin R => tailSegs ⟨L + k.val, by omega⟩)))
-    exact path_homotopic_concat_split tailPts tailSegs
-  have huRange : Set.range (Path.concat uPts uSegs) ⊆ U :=
-    path_concat_range_subset_of_mapsTo uPts uSegs
-      (by simpa [uPts] using hUBase)
-      (by
-        intro k
-        simpa [uSegs] using hU k)
-  have hcloseU : uPts (Fin.last R) = x₀ := by
-    simpa [uPts] using hclose
-  have hcontract :
-      Path.Homotopic
-        ((p.trans (Path.concat vPts vSegs)).trans (Path.concat uPts uSegs))
-        ((Path.refl x₀).cast rfl hcloseU) := by
-    exact twoSetOpenCover_sameSideBlock_cast_nullhomotopic_of_mapsTo
-      (U := U) (V := V) vPts p vSegs (Path.concat uPts uSegs) hcloseU
-      hp (by simpa [vPts] using hVBase)
-      (by
-        intro k
-        simpa [vSegs] using hV k)
-      huRange
-  have htargetEq :
-      ((Path.refl x₀).cast rfl hcloseU) =
-        ((Path.refl x₀).cast rfl hclose) := by
-    apply Path.ext
-    funext _s
-    change x₀ = x₀
-    rfl
-  exact (Path.Homotopic.hcomp (Path.Homotopic.refl p) hsplit).trans
-    ((Path.Homotopic.trans_assoc p (Path.concat vPts vSegs)
-      (Path.concat uPts uSegs)).symm.trans
-      (hcontract.trans (htargetEq ▸ Path.Homotopic.refl _)))
+  rcases twoSetOpenCover_sameSideBlockSameSideTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo
+      (U := U) (V := V) tailPts tailSegs p hclose hp hVBase hV hUBase hU with
+    ⟨H, _hH⟩
+  exact ⟨H⟩
 
 /--
 A finite tail made of a block in the same cover member as the prefix followed
