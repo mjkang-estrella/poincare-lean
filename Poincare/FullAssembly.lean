@@ -66,6 +66,24 @@ theorem onePoint_threeSpace_surgeryModel_isManifold :
     onePoint_threeSpace_smoothManifold
   infer_instance
 
+/--
+The original transported compactification atlas supplies the `C¹`
+surgery-model manifold evidence once its smooth compatibility has been proved.
+-/
+theorem onePoint_threeSpace_surgeryModel_isManifold_oldChartedSpace :
+    letI : ChartedSpace ThreeManifoldModel
+        (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+      onePoint_threeSpace_chartedSpace
+    IsManifold ThreeManifoldModelWithCorners 1
+      (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  letI : ChartedSpace ThreeManifoldModel
+      (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_chartedSpace
+  haveI : IsManifold (𝓡 3) ∞
+      (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_smoothManifold_oldChartedSpace
+  infer_instance
+
 end OnePointThreeSpaceSmoothManifold
 
 section OnePointThreeSpaceFiniteExtinction
