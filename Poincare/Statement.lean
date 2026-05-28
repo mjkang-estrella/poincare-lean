@@ -4971,6 +4971,62 @@ theorem simplyConnectedSpace_union_of_isOpen_pathConnected_inter
     (X := S) (U := UinS) (V := VinS) hUopen hVopen hcover
 
 /--
+In a simply connected subset, any two ambient paths with the same endpoints
+and image in the subset are homotopic through a homotopy that stays in the
+subset.
+-/
+theorem path_homotopy_forall_mem_of_isSimplyConnected
+    {X : Type u} [TopologicalSpace X] {s : Set X}
+    (hs : IsSimplyConnected s) {x y : X} (p q : Path x y)
+    (hp : ∀ t, p t ∈ s) (hq : ∀ t, q t ∈ s) :
+    ∃ F : p.Homotopy q, ∀ t, F t ∈ s := by
+  let xS : s := ⟨x, by simpa using hp 0⟩
+  let yS : s := ⟨y, by simpa using hp 1⟩
+  let pS : Path xS yS :=
+    { toFun := fun t => ⟨p t, hp t⟩
+      source' := by
+        ext
+        exact p.source
+      target' := by
+        ext
+        exact p.target
+      continuous_toFun := by fun_prop }
+  let qS : Path xS yS :=
+    { toFun := fun t => ⟨q t, hq t⟩
+      source' := by
+        ext
+        exact q.source
+      target' := by
+        ext
+        exact q.target
+      continuous_toFun := by fun_prop }
+  have hS : SimplyConnectedSpace s := hs
+  letI : SimplyConnectedSpace s := hS
+  rcases (SimplyConnectedSpace.paths_homotopic pS qS) with ⟨Fsub⟩
+  refine ⟨{
+    toFun := fun t => (Fsub t).1
+    continuous_toFun := by fun_prop
+    map_zero_left := by
+      intro t
+      change (Fsub (0, t)).1 = p t
+      exact congrArg Subtype.val (Fsub.map_zero_left t)
+    map_one_left := by
+      intro t
+      change (Fsub (1, t)).1 = q t
+      exact congrArg Subtype.val (Fsub.map_one_left t)
+    prop' := by
+      intro t z hz
+      rcases hz with hz | hz
+      · rw [hz]
+        exact congrArg Subtype.val (Fsub.prop' t 0 (by simp))
+      · rw [Set.mem_singleton_iff] at hz
+        rw [hz]
+        exact congrArg Subtype.val (Fsub.prop' t 1 (by simp))
+  }, ?_⟩
+  intro t
+  exact (Fsub t).2
+
+/--
 Loops contained in the union of two open simply connected subspaces with
 path-connected overlap contract through a homotopy that stays in the same
 union.
@@ -4986,6 +5042,24 @@ theorem union_loop_homotopy_refl_forall_mem_of_isOpen_pathConnected_inter
     simplyConnectedSpace_union_of_isOpen_pathConnected_inter
       (U := U) (V := V) hU hV
   exact (isSimplyConnected_iff_exists_homotopy_refl_forall_mem.mp hSC).2 x p hp
+
+/--
+Any two paths contained in the union of two open simply connected subspaces
+with path-connected overlap are homotopic through a homotopy that stays in the
+same union.
+-/
+theorem union_paths_homotopy_forall_mem_of_isOpen_pathConnected_inter
+    {X : Type u} [TopologicalSpace X] {U V : Set X}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set X)]
+    (hU : IsOpen U) (hV : IsOpen V)
+    {x y : X} (p q : Path x y)
+    (hp : ∀ t, p t ∈ U ∪ V) (hq : ∀ t, q t ∈ U ∪ V) :
+    ∃ F : p.Homotopy q, ∀ t, F t ∈ U ∪ V := by
+  have hSC : IsSimplyConnected (U ∪ V : Set X) :=
+    simplyConnectedSpace_union_of_isOpen_pathConnected_inter
+      (U := U) (V := V) hU hV
+  exact path_homotopy_forall_mem_of_isSimplyConnected hSC p q hp hq
 
 /--
 The basepoint-free two-set open-cover theorem collapses every path-homotopy
