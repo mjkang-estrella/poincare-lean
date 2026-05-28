@@ -2371,6 +2371,22 @@ theorem onePointThreeSpacePathQuotientSubsingletonStatement_eq :
   rfl
 
 /--
+A fixed-basepoint fundamental-group computation collapses every path-homotopy
+quotient on the one-point compactification model.
+-/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_basedFundamentalGroupSubsingleton
+    {basepoint : OnePoint (EuclideanSpace ℝ (Fin 3))}
+    (h : Subsingleton
+      (FundamentalGroup (OnePoint (EuclideanSpace ℝ (Fin 3))) basepoint)) :
+    OnePointThreeSpacePathQuotientSubsingletonStatement := by
+  rw [onePointThreeSpacePathQuotientSubsingletonStatement_eq]
+  letI : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_pathConnectedSpace
+  exact
+    pathQuotientSubsingleton_of_pathConnectedSpace_and_basedFundamentalGroupSubsingleton
+      basepoint h
+
+/--
 At a fixed compactification basepoint, uniqueness of the based path-homotopy
 quotient is equivalent to nullhomotopy of every loop based there.
 -/
