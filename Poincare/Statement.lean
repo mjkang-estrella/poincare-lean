@@ -491,6 +491,27 @@ theorem path_homotopic_concat_split
         (F (Fin.last (L + R)))
 
 /--
+Finite path concatenation can be split after a block of `L` segments even when
+the ambient length is only propositionally equal to `L + R`; the resulting
+endpoint cast records the arithmetic alignment of the split suffix.
+-/
+theorem path_homotopic_concat_split_of_length_eq
+    {X : Type u} [TopologicalSpace X] {N L R : ℕ} (hN : N = L + R)
+    (p : Fin (N + 1) → X)
+    (F : (k : Fin N) → Path (p k.castSucc) (p k.succ)) :
+    Path.Homotopic (Path.concat p F)
+      (((Path.concat (fun i : Fin (L + 1) => p ⟨i.val, by omega⟩)
+        (fun k : Fin L => F ⟨k.val, by omega⟩)).trans
+        (Path.concat (fun j : Fin (R + 1) => p ⟨L + j.val, by omega⟩)
+          (fun k : Fin R => F ⟨L + k.val, by omega⟩))).cast rfl
+        (by
+          apply congrArg p
+          apply Fin.ext
+          simp [hN])) := by
+  cases hN
+  simpa using path_homotopic_concat_split (L := L) (R := R) p F
+
+/--
 For a finite word whose entries each satisfy a left-or-right alternative,
 either every entry is left, or there is a first non-left entry; that entry is
 right and every earlier entry is left.
