@@ -86,6 +86,47 @@ theorem onePoint_threeSpace_surgeryModel_isManifold_oldChartedSpace :
 
 end OnePointThreeSpaceSmoothManifold
 
+section OnePointThreeSpaceConcreteFiniteExtinction
+
+attribute [local instance] onePoint_threeSpace_smoothChartedSpace
+
+/--
+For the one-point compactification model, the concrete smooth atlas and the
+source-choice `π₁` proof install the topology and smooth-manifold instances
+needed to consume a completed surgery package.  This avoids using the universal
+smoothability theorem-shaped input for this specific model.
+-/
+theorem onePoint_threeSpace_finite_extinction_of_sourceChoiceCollapse_and_surgery_packages
+    (surgeryPackages :
+      ∀ [T2Space (OnePoint (EuclideanSpace ℝ (Fin 3)))]
+        [ChartedSpace ThreeManifoldModel
+          (OnePoint (EuclideanSpace ℝ (Fin 3)))]
+        [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))]
+        [CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))]
+        [IsManifold ThreeManifoldModelWithCorners 1
+          (OnePoint (EuclideanSpace ℝ (Fin 3)))],
+          Nonempty (Σ n : ℕ∞ω,
+            FiniteExtinctionSurgeryPackage n
+              (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    FiniteExtinctionByRicciFlowWithSurgery
+      (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_t2Space
+  letI : ChartedSpace ThreeManifoldModel
+      (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_smoothChartedSpace
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_sourceChoiceCollapse
+  letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_compactSpace
+  letI : IsManifold ThreeManifoldModelWithCorners 1
+      (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_surgeryModel_isManifold
+  rcases surgeryPackages with ⟨⟨_n, package⟩⟩
+  exact finite_extinction_of_surgery_package package
+
+end OnePointThreeSpaceConcreteFiniteExtinction
+
 section OnePointThreeSpaceFiniteExtinction
 
 attribute [local instance] onePoint_threeSpace_chartedSpace
