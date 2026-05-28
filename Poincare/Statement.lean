@@ -24473,6 +24473,43 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_of_subpath_null
 
 /--
 An arbitrary finite stereographic source-choice subdivision of an equatorial
+loop contracts through a homotopy whose image stays in the north/south
+stereographic cover.
+-/
+theorem threeSphere_stereographicEquatorLoop_fullConcat_homotopy_refl_forall_mem_of_sourceChoice
+    (γ : Path threeSphere_equatorPoint threeSphere_equatorPoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval)
+    (h0 : t 0 = 0) (h1 : t (Fin.last N) = 1)
+    (hchoice : ∀ k : Fin N,
+      Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+          (stereographic' 3 threeSphere_northPole).source ∨
+        Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+          (stereographic' 3 (-threeSphere_northPole)).source) :
+    ∃ H :
+      (Path.concat (γ ∘ t) (fun k : Fin N =>
+        γ.subpath (t k.castSucc) (t k.succ))).Homotopy
+      ((Path.refl threeSphere_equatorPoint).cast
+        (by simp [h0]) (by simp [h1])),
+      ∀ s, H s ∈
+        (stereographic' 3 threeSphere_northPole).source ∪
+          (stereographic' 3 (-threeSphere_northPole)).source := by
+  letI : SimplyConnectedSpace (stereographic' 3 threeSphere_northPole).source :=
+    threeSphere_stereographic_source_simplyConnectedSpace threeSphere_northPole
+  letI : SimplyConnectedSpace (stereographic' 3 (-threeSphere_northPole)).source :=
+    threeSphere_stereographic_source_simplyConnectedSpace (-threeSphere_northPole)
+  letI : PathConnectedSpace
+      (((stereographic' 3 threeSphere_northPole).source ∩
+        (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere) :=
+    threeSphere_actualOverlap_pathConnectedSpace
+  simpa using
+    twoSetOpenCover_basedLoop_fullConcat_homotopy_refl_forall_mem_of_sourceChoice
+      (U := (stereographic' 3 threeSphere_northPole).source)
+      (V := (stereographic' 3 (-threeSphere_northPole)).source)
+      threeSphere_equatorPoint_mem_northPole_stereographic_source
+      γ t h0 h1 hchoice
+
+/--
+An arbitrary finite stereographic source-choice subdivision of an equatorial
 loop collapses as a path, not only in the quotient.  This consumes the
 north-headed first-run induction with the stationary path at the initial
 subdivision point as head.
@@ -24490,20 +24527,10 @@ theorem threeSphere_stereographicEquatorLoop_fullConcat_nullhomotopic_of_sourceC
       (Path.concat (γ ∘ t) (fun k : Fin N => γ.subpath (t k.castSucc) (t k.succ)))
       ((Path.refl threeSphere_equatorPoint).cast
         (by simp [h0]) (by simp [h1])) := by
-  letI : SimplyConnectedSpace (stereographic' 3 threeSphere_northPole).source :=
-    threeSphere_stereographic_source_simplyConnectedSpace threeSphere_northPole
-  letI : SimplyConnectedSpace (stereographic' 3 (-threeSphere_northPole)).source :=
-    threeSphere_stereographic_source_simplyConnectedSpace (-threeSphere_northPole)
-  letI : PathConnectedSpace
-      (((stereographic' 3 threeSphere_northPole).source ∩
-        (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere) :=
-    threeSphere_actualOverlap_pathConnectedSpace
-  simpa using
-    twoSetOpenCover_basedLoop_fullConcat_nullhomotopic_of_sourceChoice
-      (U := (stereographic' 3 threeSphere_northPole).source)
-      (V := (stereographic' 3 (-threeSphere_northPole)).source)
-      threeSphere_equatorPoint_mem_northPole_stereographic_source
-      γ t h0 h1 hchoice
+  rcases threeSphere_stereographicEquatorLoop_fullConcat_homotopy_refl_forall_mem_of_sourceChoice
+      γ t h0 h1 hchoice with
+    ⟨H, _hH⟩
+  exact ⟨H⟩
 
 /--
 Quotient form of the arbitrary finite stereographic source-choice collapse.
