@@ -4294,6 +4294,318 @@ theorem twoSetOpenCover_sameHead_firstOppositeRun_terminal_or_return_tail_induct
         (fun j hjle hjlt => (hrun j hjle hjlt).1) htail
 
 /--
+Flat non-terminal first-opposite-run step for an arbitrary finite tail split
+into a preferred prefix, an opposite run, one preferred return segment, and an
+arbitrary after-tail.
+-/
+theorem twoSetOpenCover_sameHead_prefixOppositeRunSameReturn_flat_tail_induction_step
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {A B C : ℕ} {x₀ : Y}
+    [SimplyConnectedSpace V] [PathConnectedSpace (U ∩ V : Set Y)]
+    (tailPts : Fin ((A + (B + 1) + C) + 1) → Y)
+    (tailSegs : (k : Fin (A + (B + 1) + C)) →
+      Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last (A + (B + 1) + C)) = x₀)
+    (hp : Set.range p ⊆ U)
+    (hPrefBase : tailPts 0 ∈ U)
+    (hPref : ∀ k : Fin A,
+      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆ U)
+    (hOppBase : tailPts ⟨A, by omega⟩ ∈ V)
+    (hOpp : ∀ k : Fin B,
+      Set.range (tailSegs ⟨A + k.val, by omega⟩) ⊆ V)
+    (hReturn : Set.range (tailSegs ⟨A + B, by omega⟩) ⊆ U)
+    (hshort : ∀ q : Path x₀ (tailPts ⟨A + (B + 1), by omega⟩),
+      Set.range q ⊆ U →
+      let afterPts : Fin (C + 1) → Y := fun i =>
+        tailPts ⟨A + (B + 1) + i.val, by omega⟩
+      let afterSegs : (k : Fin C) → Path (afterPts k.castSucc) (afterPts k.succ) :=
+        fun k => tailSegs ⟨A + (B + 1) + k.val, by omega⟩
+      Path.Homotopic (q.trans (Path.concat afterPts afterSegs))
+        ((Path.refl x₀).cast rfl hclose)) :
+    Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
+      ((Path.refl x₀).cast rfl hclose) := by
+  let prefixPts : Fin (A + 1) → Y := fun i =>
+    tailPts ⟨i.val, by omega⟩
+  let prefixSegs : (k : Fin A) → Path (prefixPts k.castSucc) (prefixPts k.succ) :=
+    fun k => tailSegs ⟨k.val, by omega⟩
+  let oppPts : Fin (B + 1) → Y := fun i =>
+    tailPts ⟨A + i.val, by omega⟩
+  let oppSegs : (k : Fin B) → Path (oppPts k.castSucc) (oppPts k.succ) :=
+    fun k => tailSegs ⟨A + k.val, by omega⟩
+  let returnPts : Fin (1 + 1) → Y := fun i =>
+    tailPts ⟨A + (B + i.val), by omega⟩
+  let returnSegs : (k : Fin 1) → Path (returnPts k.castSucc) (returnPts k.succ) :=
+    fun k => tailSegs ⟨A + (B + k.val), by omega⟩
+  let afterPts : Fin (C + 1) → Y := fun i =>
+    tailPts ⟨A + (B + 1) + i.val, by omega⟩
+  let afterSegs : (k : Fin C) → Path (afterPts k.castSucc) (afterPts k.succ) :=
+    fun k => tailSegs ⟨A + (B + 1) + k.val, by omega⟩
+  let frontPts : Fin ((A + (B + 1)) + 1) → Y := fun i =>
+    tailPts ⟨i.val, by omega⟩
+  let frontSegs : (k : Fin (A + (B + 1))) → Path (frontPts k.castSucc) (frontPts k.succ) :=
+    fun k => tailSegs ⟨k.val, by omega⟩
+  let restPts : Fin ((B + 1) + 1) → Y := fun i =>
+    tailPts ⟨A + i.val, by omega⟩
+  let restSegs : (k : Fin (B + 1)) → Path (restPts k.castSucc) (restPts k.succ) :=
+    fun k => tailSegs ⟨A + k.val, by omega⟩
+  have hjoin : oppPts 0 = prefixPts (Fin.last A) := by
+    rfl
+  have hsplitEnd :
+      Path.Homotopic (Path.concat tailPts tailSegs)
+        ((Path.concat frontPts frontSegs).trans
+          (Path.concat afterPts afterSegs)) := by
+    change Path.Homotopic (Path.concat tailPts tailSegs)
+      ((Path.concat (fun i : Fin ((A + (B + 1)) + 1) =>
+          tailPts ⟨i.val, by omega⟩)
+        (fun k : Fin (A + (B + 1)) => tailSegs ⟨k.val, by omega⟩)).trans
+        (Path.concat (fun i : Fin (C + 1) =>
+          tailPts ⟨A + (B + 1) + i.val, by omega⟩)
+          (fun k : Fin C => tailSegs ⟨A + (B + 1) + k.val, by omega⟩)))
+    exact path_homotopic_concat_split tailPts tailSegs
+  have hsplitFront :
+      Path.Homotopic (Path.concat frontPts frontSegs)
+        ((Path.concat prefixPts prefixSegs).trans
+          (Path.concat restPts restSegs)) := by
+    change Path.Homotopic (Path.concat frontPts frontSegs)
+      ((Path.concat (fun i : Fin (A + 1) => frontPts ⟨i.val, by omega⟩)
+        (fun k : Fin A => frontSegs ⟨k.val, by omega⟩)).trans
+        (Path.concat (fun i : Fin ((B + 1) + 1) => frontPts ⟨A + i.val, by omega⟩)
+          (fun k : Fin (B + 1) => frontSegs ⟨A + k.val, by omega⟩)))
+    exact path_homotopic_concat_split frontPts frontSegs
+  have hsplitRest :
+      Path.Homotopic (Path.concat restPts restSegs)
+        ((Path.concat oppPts oppSegs).trans
+          (Path.concat returnPts returnSegs)) := by
+    change Path.Homotopic (Path.concat restPts restSegs)
+      ((Path.concat (fun i : Fin (B + 1) => restPts ⟨i.val, by omega⟩)
+        (fun k : Fin B => restSegs ⟨k.val, by omega⟩)).trans
+        (Path.concat (fun i : Fin (1 + 1) => restPts ⟨B + i.val, by omega⟩)
+          (fun k : Fin 1 => restSegs ⟨B + k.val, by omega⟩)))
+    exact path_homotopic_concat_split restPts restSegs
+  have hfrontNorm :
+      Path.Homotopic (Path.concat frontPts frontSegs)
+        (((Path.concat prefixPts prefixSegs).trans
+          (Path.concat oppPts oppSegs)).trans
+          (Path.concat returnPts returnSegs)) := by
+    refine hsplitFront.trans ?_
+    refine (Path.Homotopic.hcomp (Path.Homotopic.refl _) hsplitRest).trans ?_
+    exact (Path.Homotopic.trans_assoc (Path.concat prefixPts prefixSegs)
+      (Path.concat oppPts oppSegs) (Path.concat returnPts returnSegs)).symm
+  have htailNorm :
+      Path.Homotopic (Path.concat tailPts tailSegs)
+        ((((Path.concat prefixPts prefixSegs).trans
+          (Path.concat oppPts oppSegs)).trans
+          (Path.concat returnPts returnSegs)).trans
+          (Path.concat afterPts afterSegs)) := by
+    exact hsplitEnd.trans
+      (Path.Homotopic.hcomp hfrontNorm (Path.Homotopic.refl _))
+  have hReturnBase : returnPts 0 ∈ U := by
+    have hsource := hReturn ⟨0, (tailSegs ⟨A + B, by omega⟩).source⟩
+    simpa [returnPts] using hsource
+  have hReturnSegs : ∀ k : Fin 1, Set.range (returnSegs k) ⊆ U := by
+    intro k
+    have hk : k = (0 : Fin 1) := by
+      ext
+      omega
+    subst k
+    simpa [returnSegs] using hReturn
+  have hreturnRange :
+      Set.range (Path.concat returnPts returnSegs) ⊆ U :=
+    path_concat_range_subset_of_mapsTo returnPts returnSegs hReturnBase hReturnSegs
+  have hcollapse :
+      Path.Homotopic
+        ((((p.trans (Path.concat prefixPts prefixSegs)).trans
+          ((Path.concat oppPts oppSegs).cast hjoin.symm rfl)).trans
+          (Path.concat returnPts returnSegs)).trans
+          (Path.concat afterPts afterSegs))
+        ((Path.refl x₀).cast rfl hclose) := by
+    exact twoSetOpenCover_samePrefixOppositeRunSameReturn_tail_induction_step_of_mapsTo
+      (U := U) (V := V) prefixPts prefixSegs oppPts oppSegs p hjoin
+      (Path.concat returnPts returnSegs) (Path.concat afterPts afterSegs) hclose
+      hp
+      (by simpa [prefixPts] using hPrefBase)
+      (by
+        intro k
+        simpa [prefixSegs] using hPref k)
+      (by simpa [oppPts] using hOppBase)
+      (by
+        intro k
+        simpa [oppSegs] using hOpp k)
+      hreturnRange
+      (by
+        intro q hq
+        simpa [afterPts, afterSegs] using hshort q hq)
+  have hnormHead :
+      Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
+        (p.trans ((((Path.concat prefixPts prefixSegs).trans
+          (Path.concat oppPts oppSegs)).trans
+          (Path.concat returnPts returnSegs)).trans
+          (Path.concat afterPts afterSegs))) :=
+    Path.Homotopic.hcomp (Path.Homotopic.refl p) htailNorm
+  let P := Path.concat prefixPts prefixSegs
+  let O := Path.concat oppPts oppSegs
+  let R := Path.concat returnPts returnSegs
+  let T := Path.concat afterPts afterSegs
+  have hassoc :
+      Path.Homotopic (p.trans (((P.trans O).trans R).trans T))
+        ((((p.trans P).trans O).trans R).trans T) := by
+    exact (Path.Homotopic.trans_assoc p ((P.trans O).trans R) T).symm.trans
+      (Path.Homotopic.hcomp
+        ((Path.Homotopic.trans_assoc p (P.trans O) R).symm.trans
+          (Path.Homotopic.hcomp
+            (Path.Homotopic.trans_assoc p P O).symm
+            (Path.Homotopic.refl R)))
+        (Path.Homotopic.refl T))
+  refine hnormHead.trans ?_
+  change Path.Homotopic (p.trans (((P.trans O).trans R).trans T))
+    ((Path.refl x₀).cast rfl hclose)
+  exact hassoc.trans (by simpa [P, O, R, T, hjoin] using hcollapse)
+
+/--
+Length-aligned form of the generic flat first-return step.  The full
+first-opposite-run induction obtains this arithmetic split from a `start` and
+first `stop` index.
+-/
+theorem twoSetOpenCover_sameHead_prefixOppositeRunSameReturn_flat_tail_induction_step_of_length_eq
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {T A B C : ℕ} {x₀ : Y}
+    [SimplyConnectedSpace V] [PathConnectedSpace (U ∩ V : Set Y)]
+    (tailPts : Fin (T + 1) → Y)
+    (tailSegs : (k : Fin T) → Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last T) = x₀)
+    (hTailLen : T = A + (B + 1) + C)
+    (hp : Set.range p ⊆ U)
+    (hPrefBase : tailPts 0 ∈ U)
+    (hPref : ∀ k : Fin A,
+      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆ U)
+    (hOppBase : tailPts ⟨A, by omega⟩ ∈ V)
+    (hOpp : ∀ k : Fin B,
+      Set.range (tailSegs ⟨A + k.val, by omega⟩) ⊆ V)
+    (hReturn : Set.range (tailSegs ⟨A + B, by omega⟩) ⊆ U)
+    (hshort : ∀ q : Path x₀ (tailPts ⟨A + (B + 1), by omega⟩),
+      Set.range q ⊆ U →
+      let afterPts : Fin (C + 1) → Y := fun i =>
+        tailPts ⟨A + (B + 1) + i.val, by omega⟩
+      let afterSegs : (k : Fin C) → Path (afterPts k.castSucc) (afterPts k.succ) :=
+        fun k => tailSegs ⟨A + (B + 1) + k.val, by omega⟩
+      let afterClose : afterPts (Fin.last C) = x₀ := by
+        dsimp [afterPts]
+        have hidx :
+            (⟨A + (B + 1) + C, by omega⟩ : Fin (T + 1)) = Fin.last T := by
+          ext
+          change A + (B + 1) + C = T
+          omega
+        exact (congrArg tailPts hidx).trans hclose
+      Path.Homotopic (q.trans (Path.concat afterPts afterSegs))
+        ((Path.refl x₀).cast rfl afterClose)) :
+    Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
+      ((Path.refl x₀).cast rfl hclose) := by
+  cases hTailLen
+  exact twoSetOpenCover_sameHead_prefixOppositeRunSameReturn_flat_tail_induction_step
+    (U := U) (V := V) tailPts tailSegs p hclose hp hPrefBase hPref
+    hOppBase hOpp hReturn
+    (by
+      intro q hq
+      simpa using hshort q hq)
+
+/--
+Generic first-opposite-run induction for finite chart words in a two-set cover.
+Starting with a head path in `U`, any closed finite tail whose segments each lie
+in `U` or `V` contracts when both cover members are simply connected and their
+overlap is path connected.
+-/
+theorem twoSetOpenCover_sameHead_firstOppositeRun_tail_induction
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {N : ℕ} {x₀ : Y}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set Y)]
+    (tailPts : Fin (N + 1) → Y)
+    (tailSegs : (k : Fin N) →
+      Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last N) = x₀)
+    (hp : Set.range p ⊆ U)
+    (hchoice : ∀ k : Fin N,
+      Set.range (tailSegs k) ⊆ U ∨ Set.range (tailSegs k) ⊆ V) :
+    Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
+      ((Path.refl x₀).cast rfl hclose) := by
+  revert tailPts tailSegs p hclose hp hchoice
+  refine Nat.strong_induction_on N ?_
+  intro N ih tailPts tailSegs p hclose hp hchoice
+  refine
+    twoSetOpenCover_sameHead_firstOppositeRun_terminal_or_return_tail_induction
+      (U := U) (V := V) tailPts tailSegs p hclose hp hchoice ?_
+  intro start stop hstartstop hBefore hPrefStop hrun htail
+  let A : ℕ := start.val
+  let B : ℕ := stop.val - start.val
+  let C : ℕ := N - (stop.val + 1)
+  have hTailLen : N = A + (B + 1) + C := by
+    dsimp [A, B, C]
+    omega
+  have hClt : C < N := by
+    dsimp [C]
+    omega
+  have hPrefBase : tailPts 0 ∈ U :=
+    hp ⟨1, p.target⟩
+  have hPref : ∀ k : Fin A,
+      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆ U := by
+    intro k
+    simpa [A] using hBefore ⟨k.val, by omega⟩ k.isLt
+  have hOppBase : tailPts ⟨A, by omega⟩ ∈ V := by
+    have hStart := hrun start (by omega) hstartstop
+    simpa [A] using hStart ⟨0, (tailSegs start).source⟩
+  have hOpp : ∀ k : Fin B,
+      Set.range (tailSegs ⟨A + k.val, by omega⟩) ⊆ V := by
+    intro k
+    let j : Fin N := ⟨A + k.val, by
+      dsimp [A, B]
+      have hk := k.isLt
+      omega⟩
+    have hjle : start.val ≤ j.val := by
+      dsimp [j, A]
+      omega
+    have hjlt : j.val < stop.val := by
+      dsimp [j, A, B]
+      have hk := k.isLt
+      omega
+    simpa [j] using hrun j hjle hjlt
+  have hReturn :
+      Set.range (tailSegs ⟨A + B, by omega⟩) ⊆ U := by
+    have hstopIdx : (⟨A + B, by omega⟩ : Fin N) = stop := by
+      ext
+      dsimp [A, B]
+      omega
+    rw [hstopIdx]
+    exact hPrefStop
+  refine
+    twoSetOpenCover_sameHead_prefixOppositeRunSameReturn_flat_tail_induction_step_of_length_eq
+      (U := U) (V := V) tailPts tailSegs p hclose hTailLen hp hPrefBase hPref
+      hOppBase hOpp hReturn ?_
+  intro q hq
+  let afterPts : Fin (C + 1) → Y := fun i =>
+    tailPts ⟨A + (B + 1) + i.val, by omega⟩
+  let afterSegs : (k : Fin C) → Path (afterPts k.castSucc) (afterPts k.succ) :=
+    fun k => tailSegs ⟨A + (B + 1) + k.val, by omega⟩
+  have hafterClose : afterPts (Fin.last C) = x₀ := by
+    dsimp [afterPts]
+    have hidx :
+        (⟨A + (B + 1) + C, by
+          rw [← hTailLen]
+          exact Nat.lt_succ_self N⟩ : Fin (N + 1)) = Fin.last N := by
+      ext
+      change A + (B + 1) + C = N
+      omega
+    exact (congrArg tailPts hidx).trans hclose
+  have hafterChoice : ∀ k : Fin C,
+      Set.range (afterSegs k) ⊆ U ∨ Set.range (afterSegs k) ⊆ V := by
+    intro k
+    simpa [afterSegs] using
+      hchoice ⟨A + (B + 1) + k.val, by
+        have hk : k.val < C := k.isLt
+        omega⟩
+  simpa [afterPts, afterSegs] using
+    ih C hClt afterPts afterSegs q hafterClose hq hafterChoice
+
+/--
 A path in one cover member, followed by a finite block in the other member,
 then a return path in the first member and a final closing path in the other
 member, is nullhomotopic.  The middle block is replaced through the overlap
@@ -9164,90 +9476,22 @@ theorem threeSphere_stereographic_northHead_firstSouthRun_tail_induction
     :
     Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
       ((Path.refl x₀).cast rfl hclose) := by
-  revert tailPts tailSegs p hclose hp hchoice
-  refine Nat.strong_induction_on N ?_
-  intro N ih tailPts tailSegs p hclose hp hchoice
-  refine
-    threeSphere_stereographic_northHead_firstSouthRun_terminal_or_return_tail_induction
-      tailPts tailSegs p hclose hp hchoice ?_
-  intro start stop hstartstop hBefore hNorthStop hrun htail
-  let A : ℕ := start.val
-  let B : ℕ := stop.val - start.val
-  let C : ℕ := N - (stop.val + 1)
-  have hTailLen : N = A + (B + 1) + C := by
-    dsimp [A, B, C]
-    omega
-  have hClt : C < N := by
-    dsimp [C]
-    omega
-  have hNorthBase :
-      tailPts 0 ∈ (stereographic' 3 threeSphere_northPole).source :=
-    hp ⟨1, p.target⟩
-  have hNorth : ∀ k : Fin A,
-      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
-        (stereographic' 3 threeSphere_northPole).source := by
-    intro k
-    simpa [A] using hBefore ⟨k.val, by omega⟩ k.isLt
-  have hSouthBase :
-      tailPts ⟨A, by omega⟩ ∈
-        (stereographic' 3 (-threeSphere_northPole)).source := by
-    have hStart := hrun start (by omega) hstartstop
-    simpa [A] using hStart ⟨0, (tailSegs start).source⟩
-  have hSouth : ∀ k : Fin B,
-      Set.range (tailSegs ⟨A + k.val, by omega⟩) ⊆
-        (stereographic' 3 (-threeSphere_northPole)).source := by
-    intro k
-    let j : Fin N := ⟨A + k.val, by
-      dsimp [A, B]
-      have hk := k.isLt
-      omega⟩
-    have hjle : start.val ≤ j.val := by
-      dsimp [j, A]
-      omega
-    have hjlt : j.val < stop.val := by
-      dsimp [j, A, B]
-      have hk := k.isLt
-      omega
-    simpa [j] using hrun j hjle hjlt
-  have hReturn :
-      Set.range (tailSegs ⟨A + B, by omega⟩) ⊆
-        (stereographic' 3 threeSphere_northPole).source := by
-    have hstopIdx : (⟨A + B, by omega⟩ : Fin N) = stop := by
-      ext
-      dsimp [A, B]
-      omega
-    rw [hstopIdx]
-    exact hNorthStop
-  refine
-    threeSphere_stereographic_northHead_prefixSouthRunNorthReturn_flat_tail_induction_step_of_length_eq
-      tailPts tailSegs p hclose hTailLen hp hNorthBase hNorth hSouthBase hSouth
-      hReturn ?_
-  intro q hq
-  let afterPts : Fin (C + 1) → ThreeSphere := fun i =>
-    tailPts ⟨A + (B + 1) + i.val, by omega⟩
-  let afterSegs : (k : Fin C) → Path (afterPts k.castSucc) (afterPts k.succ) :=
-    fun k => tailSegs ⟨A + (B + 1) + k.val, by omega⟩
-  have hafterClose : afterPts (Fin.last C) = x₀ := by
-    dsimp [afterPts]
-    have hidx :
-        (⟨A + (B + 1) + C, by
-          rw [← hTailLen]
-          exact Nat.lt_succ_self N⟩ : Fin (N + 1)) = Fin.last N := by
-      ext
-      change A + (B + 1) + C = N
-      omega
-    exact (congrArg tailPts hidx).trans hclose
-  have hafterChoice : ∀ k : Fin C,
-      Set.range (afterSegs k) ⊆ (stereographic' 3 threeSphere_northPole).source ∨
-        Set.range (afterSegs k) ⊆
-          (stereographic' 3 (-threeSphere_northPole)).source := by
-    intro k
-    simpa [afterSegs] using
-      hchoice ⟨A + (B + 1) + k.val, by
-        have hk : k.val < C := k.isLt
-        omega⟩
-  simpa [afterPts, afterSegs] using
-    ih C hClt afterPts afterSegs q hafterClose hq hafterChoice
+  let U : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
+  let V : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  letI : SimplyConnectedSpace U := by
+    simpa [U] using threeSphere_stereographic_source_simplyConnectedSpace
+      threeSphere_northPole
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace
+      (-threeSphere_northPole)
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    simpa [U, V] using threeSphere_actualOverlap_pathConnectedSpace
+  exact twoSetOpenCover_sameHead_firstOppositeRun_tail_induction
+    (U := U) (V := V) tailPts tailSegs p hclose
+    (by simpa [U] using hp)
+    (by
+      intro k
+      simpa [U, V] using hchoice k)
 
 /--
 Length-aligned form of the south-headed flat first-return step.  This is the
@@ -9314,90 +9558,26 @@ theorem threeSphere_stereographic_southHead_firstNorthRun_tail_induction
         Set.range (tailSegs k) ⊆ (stereographic' 3 threeSphere_northPole).source) :
     Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
       ((Path.refl x₀).cast rfl hclose) := by
-  revert tailPts tailSegs p hclose hp hchoice
-  refine Nat.strong_induction_on N ?_
-  intro N ih tailPts tailSegs p hclose hp hchoice
-  refine
-    threeSphere_stereographic_southHead_firstNorthRun_terminal_or_return_tail_induction
-      tailPts tailSegs p hclose hp hchoice ?_
-  intro start stop hstartstop hBefore hSouthStop hrun htail
-  let A : ℕ := start.val
-  let B : ℕ := stop.val - start.val
-  let C : ℕ := N - (stop.val + 1)
-  have hTailLen : N = A + (B + 1) + C := by
-    dsimp [A, B, C]
-    omega
-  have hClt : C < N := by
-    dsimp [C]
-    omega
-  have hSouthBase :
-      tailPts 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source :=
-    hp ⟨1, p.target⟩
-  have hSouth : ∀ k : Fin A,
-      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
-        (stereographic' 3 (-threeSphere_northPole)).source := by
-    intro k
-    simpa [A] using hBefore ⟨k.val, by omega⟩ k.isLt
-  have hNorthBase :
-      tailPts ⟨A, by omega⟩ ∈
-        (stereographic' 3 threeSphere_northPole).source := by
-    have hStart := hrun start (by omega) hstartstop
-    simpa [A] using hStart ⟨0, (tailSegs start).source⟩
-  have hNorth : ∀ k : Fin B,
-      Set.range (tailSegs ⟨A + k.val, by omega⟩) ⊆
-        (stereographic' 3 threeSphere_northPole).source := by
-    intro k
-    let j : Fin N := ⟨A + k.val, by
-      dsimp [A, B]
-      have hk := k.isLt
-      omega⟩
-    have hjle : start.val ≤ j.val := by
-      dsimp [j, A]
-      omega
-    have hjlt : j.val < stop.val := by
-      dsimp [j, A, B]
-      have hk := k.isLt
-      omega
-    simpa [j] using hrun j hjle hjlt
-  have hReturn :
-      Set.range (tailSegs ⟨A + B, by omega⟩) ⊆
-        (stereographic' 3 (-threeSphere_northPole)).source := by
-    have hstopIdx : (⟨A + B, by omega⟩ : Fin N) = stop := by
-      ext
-      dsimp [A, B]
-      omega
-    rw [hstopIdx]
-    exact hSouthStop
-  refine
-    threeSphere_stereographic_southHead_prefixNorthRunSouthReturn_flat_tail_induction_step_of_length_eq
-      tailPts tailSegs p hclose hTailLen hp hSouthBase hSouth hNorthBase hNorth
-      hReturn ?_
-  intro q hq
-  let afterPts : Fin (C + 1) → ThreeSphere := fun i =>
-    tailPts ⟨A + (B + 1) + i.val, by omega⟩
-  let afterSegs : (k : Fin C) → Path (afterPts k.castSucc) (afterPts k.succ) :=
-    fun k => tailSegs ⟨A + (B + 1) + k.val, by omega⟩
-  have hafterClose : afterPts (Fin.last C) = x₀ := by
-    dsimp [afterPts]
-    have hidx :
-        (⟨A + (B + 1) + C, by
-          rw [← hTailLen]
-          exact Nat.lt_succ_self N⟩ : Fin (N + 1)) = Fin.last N := by
-      ext
-      change A + (B + 1) + C = N
-      omega
-    exact (congrArg tailPts hidx).trans hclose
-  have hafterChoice : ∀ k : Fin C,
-      Set.range (afterSegs k) ⊆ (stereographic' 3 (-threeSphere_northPole)).source ∨
-        Set.range (afterSegs k) ⊆
-          (stereographic' 3 threeSphere_northPole).source := by
-    intro k
-    simpa [afterSegs] using
-      hchoice ⟨A + (B + 1) + k.val, by
-        have hk : k.val < C := k.isLt
-        omega⟩
-  simpa [afterPts, afterSegs] using
-    ih C hClt afterPts afterSegs q hafterClose hq hafterChoice
+  let U : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  let V : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
+  letI : SimplyConnectedSpace U := by
+    simpa [U] using threeSphere_stereographic_source_simplyConnectedSpace
+      (-threeSphere_northPole)
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace
+      threeSphere_northPole
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    change PathConnectedSpace
+      ((stereographic' 3 (-threeSphere_northPole)).source ∩
+        (stereographic' 3 threeSphere_northPole).source : Set ThreeSphere)
+    rw [Set.inter_comm]
+    exact threeSphere_actualOverlap_pathConnectedSpace
+  exact twoSetOpenCover_sameHead_firstOppositeRun_tail_induction
+    (U := U) (V := V) tailPts tailSegs p hclose
+    (by simpa [U] using hp)
+    (by
+      intro k
+      simpa [U, V] using hchoice k)
 
 /--
 The north replacement path produced from a bracketed finite south block gives
