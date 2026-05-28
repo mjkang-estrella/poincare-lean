@@ -740,6 +740,16 @@ theorem onePoint_threeSpace_simplyConnectedSpace_of_threeSphere_eq
         exact e.symm.toHomotopyEquiv.simplyConnectedSpace) := by
   apply Subsingleton.elim
 
+/--
+The finite source-choice collapse proof of simple-connectedness for the
+standard sphere transports to the one-point compactification model.
+-/
+theorem onePoint_threeSpace_simplyConnectedSpace_of_sourceChoiceCollapse :
+    SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_simplyConnectedSpace_of_sourceChoiceCollapse
+  exact onePoint_threeSpace_simplyConnectedSpace_of_threeSphere
+
 /-- Standard-sphere `π₁` triviality transports to compactification simple-connectedness. -/
 theorem onePoint_threeSpace_simplyConnectedSpace_of_threeSpherePiOneSubsingletonStatement
     (h : ThreeSpherePiOneSubsingletonStatement) :
