@@ -24591,6 +24591,39 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_of_subpath_null
   exact hConcat.trans (hSub.trans (htargetEq ▸ Path.Homotopic.refl _))
 
 /--
+Every based loop in `ThreeSphere` contracts through any antipodal stereographic
+cover.  The homotopy is kept inside the same chart union, so this is the direct
+loop-nullhomotopy consequence of the arbitrary antipodal overlap proof.
+-/
+theorem threeSphere_antipodalLoop_homotopy_refl_forall_mem
+    (v : ThreeSphere) {basepoint : ThreeSphere}
+    (γ : Path basepoint basepoint) :
+    ∃ H : γ.Homotopy (Path.refl basepoint),
+      ∀ z, H z ∈
+        (stereographic' 3 v).source ∪
+          (stereographic' 3 (-v)).source := by
+  let U : Set ThreeSphere := (stereographic' 3 v).source
+  let V : Set ThreeSphere := (stereographic' 3 (-v)).source
+  letI : SimplyConnectedSpace U := by
+    simpa [U] using threeSphere_stereographic_source_simplyConnectedSpace v
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace (-v)
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    simpa [U, V] using threeSphere_antipodalActualOverlap_pathConnectedSpace v
+  have hcover : U ∪ V = Set.univ := by
+    simpa [U, V] using threeSphere_stereographic_antipodal_sources_cover v
+  have hγ : ∀ t, γ t ∈ U ∪ V := by
+    intro t
+    rw [hcover]
+    trivial
+  simpa [U, V] using
+    union_loop_homotopy_refl_forall_mem_of_isOpen_pathConnected_inter
+      (U := U) (V := V)
+      (by simp [U])
+      (by simp [V])
+      γ hγ
+
+/--
 An arbitrary finite stereographic source-choice subdivision of an equatorial
 loop contracts through a homotopy whose image stays in the north/south
 stereographic cover.
