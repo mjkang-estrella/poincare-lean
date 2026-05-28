@@ -4824,6 +4824,122 @@ theorem threeSphere_stereographic_southHead_terminalNorthRun_tail_concat_cast_nu
       tailPts tailSegs p hclose hTailLen hp hSouthBase hSouth hNorthBase hNorth
 
 /--
+First-run reduction for arbitrary north-headed finite tails: the all-north
+branch and the terminal south-run branch are closed here, so only the
+non-terminal first-return branch remains as a shorter-tail continuation.
+-/
+theorem threeSphere_stereographic_northHead_firstSouthRun_terminal_or_return_tail_induction
+    {N : ℕ} {x₀ : ThreeSphere}
+    (tailPts : Fin (N + 1) → ThreeSphere)
+    (tailSegs : (k : Fin N) → Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last N) = x₀)
+    (hp : Set.range p ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hchoice : ∀ k : Fin N,
+      Set.range (tailSegs k) ⊆ (stereographic' 3 threeSphere_northPole).source ∨
+        Set.range (tailSegs k) ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hreturn : ∀ {start stop : Fin N}, start.val < stop.val →
+      (∀ j : Fin N, j.val < start.val →
+        Set.range (tailSegs j) ⊆
+          (stereographic' 3 threeSphere_northPole).source) →
+      Set.range (tailSegs stop) ⊆
+        (stereographic' 3 threeSphere_northPole).source →
+      (∀ j : Fin N, start.val ≤ j.val → j.val < stop.val →
+        Set.range (tailSegs j) ⊆
+          (stereographic' 3 (-threeSphere_northPole)).source) →
+      (∀ r : Fin (N - (stop.val + 1)),
+        Set.range (tailSegs ⟨stop.val + 1 + r.val,
+          by
+            have hs : stop.val < N := stop.isLt
+            have hr : r.val < N - (stop.val + 1) := r.isLt
+            omega⟩) ⊆ (stereographic' 3 threeSphere_northPole).source ∨
+        Set.range (tailSegs ⟨stop.val + 1 + r.val,
+          by
+            have hs : stop.val < N := stop.isLt
+            have hr : r.val < N - (stop.val + 1) := r.isLt
+            omega⟩) ⊆
+          (stereographic' 3 (-threeSphere_northPole)).source) →
+      Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
+        ((Path.refl x₀).cast rfl hclose)) :
+    Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
+      ((Path.refl x₀).cast rfl hclose) := by
+  rcases finite_first_opposite_run_or_all_preferred_with_tail_choice
+      (Preferred := fun k : Fin N =>
+        Set.range (tailSegs k) ⊆
+          (stereographic' 3 threeSphere_northPole).source)
+      (Opposite := fun k : Fin N =>
+        Set.range (tailSegs k) ⊆
+          (stereographic' 3 (-threeSphere_northPole)).source)
+      hchoice with hAll | hRun
+  · exact threeSphere_stereographic_source_head_concat_tail_nullhomotopic
+      threeSphere_northPole tailPts tailSegs p hp hAll hclose
+  · rcases hRun with ⟨start, _hSouthStart, _hNotNorthStart, hBefore, hRunOr⟩
+    rcases hRunOr with hTerminal | hStop
+    · exact
+        threeSphere_stereographic_northHead_terminalSouthRun_tail_concat_cast_nullhomotopic
+          tailPts tailSegs p hclose hp hBefore (fun j hj => (hTerminal j hj).1)
+    · rcases hStop with ⟨stop, hstartstop, hNorthStop, hrun, htail⟩
+      exact hreturn hstartstop hBefore hNorthStop
+        (fun j hjle hjlt => (hrun j hjle hjlt).1) htail
+
+/--
+Symmetric first-run reduction for arbitrary south-headed finite tails.
+-/
+theorem threeSphere_stereographic_southHead_firstNorthRun_terminal_or_return_tail_induction
+    {N : ℕ} {x₀ : ThreeSphere}
+    (tailPts : Fin (N + 1) → ThreeSphere)
+    (tailSegs : (k : Fin N) → Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last N) = x₀)
+    (hp : Set.range p ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hchoice : ∀ k : Fin N,
+      Set.range (tailSegs k) ⊆ (stereographic' 3 (-threeSphere_northPole)).source ∨
+        Set.range (tailSegs k) ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hreturn : ∀ {start stop : Fin N}, start.val < stop.val →
+      (∀ j : Fin N, j.val < start.val →
+        Set.range (tailSegs j) ⊆
+          (stereographic' 3 (-threeSphere_northPole)).source) →
+      Set.range (tailSegs stop) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source →
+      (∀ j : Fin N, start.val ≤ j.val → j.val < stop.val →
+        Set.range (tailSegs j) ⊆
+          (stereographic' 3 threeSphere_northPole).source) →
+      (∀ r : Fin (N - (stop.val + 1)),
+        Set.range (tailSegs ⟨stop.val + 1 + r.val,
+          by
+            have hs : stop.val < N := stop.isLt
+            have hr : r.val < N - (stop.val + 1) := r.isLt
+            omega⟩) ⊆ (stereographic' 3 (-threeSphere_northPole)).source ∨
+        Set.range (tailSegs ⟨stop.val + 1 + r.val,
+          by
+            have hs : stop.val < N := stop.isLt
+            have hr : r.val < N - (stop.val + 1) := r.isLt
+            omega⟩) ⊆
+          (stereographic' 3 threeSphere_northPole).source) →
+      Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
+        ((Path.refl x₀).cast rfl hclose)) :
+    Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
+      ((Path.refl x₀).cast rfl hclose) := by
+  rcases finite_first_opposite_run_or_all_preferred_with_tail_choice
+      (Preferred := fun k : Fin N =>
+        Set.range (tailSegs k) ⊆
+          (stereographic' 3 (-threeSphere_northPole)).source)
+      (Opposite := fun k : Fin N =>
+        Set.range (tailSegs k) ⊆
+          (stereographic' 3 threeSphere_northPole).source)
+      hchoice with hAll | hRun
+  · exact threeSphere_stereographic_source_head_concat_tail_nullhomotopic
+      (-threeSphere_northPole) tailPts tailSegs p hp hAll hclose
+  · rcases hRun with ⟨start, _hNorthStart, _hNotSouthStart, hBefore, hRunOr⟩
+    rcases hRunOr with hTerminal | hStop
+    · exact
+        threeSphere_stereographic_southHead_terminalNorthRun_tail_concat_cast_nullhomotopic
+          tailPts tailSegs p hclose hp hBefore (fun j hj => (hTerminal j hj).1)
+    · rcases hStop with ⟨stop, hstartstop, hSouthStop, hrun, htail⟩
+      exact hreturn hstartstop hBefore hSouthStop
+        (fun j hjle hjlt => (hrun j hjle hjlt).1) htail
+
+/--
 A finite south-source block bracketed by north-source paths can be replaced by
 an overlap path whose image lies in the north source.  This is the local
 block-replacement move needed for finite chart-word normalization.
