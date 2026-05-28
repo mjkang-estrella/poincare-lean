@@ -5321,6 +5321,307 @@ theorem twoSetOpenCover_sameHead_firstOppositeRun_terminal_or_return_tail_induct
         (fun j hjle hjlt => (hrun j hjle hjlt).1) htail
 
 /--
+Flat non-terminal first-opposite-run step for an arbitrary finite tail split,
+with an explicit nullhomotopy whose image stays in the two-set cover.
+-/
+theorem twoSetOpenCover_sameHead_prefixOppositeRunSameReturn_flat_tail_induction_step_homotopy_refl_forall_mem_of_mapsTo
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {A B C : ℕ} {x₀ : Y}
+    [SimplyConnectedSpace V] [PathConnectedSpace (U ∩ V : Set Y)]
+    (tailPts : Fin ((A + (B + 1) + C) + 1) → Y)
+    (tailSegs : (k : Fin (A + (B + 1) + C)) →
+      Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last (A + (B + 1) + C)) = x₀)
+    (hp : Set.range p ⊆ U)
+    (hPrefBase : tailPts 0 ∈ U)
+    (hPref : ∀ k : Fin A,
+      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆ U)
+    (hOppBase : tailPts ⟨A, by omega⟩ ∈ V)
+    (hOpp : ∀ k : Fin B,
+      Set.range (tailSegs ⟨A + k.val, by omega⟩) ⊆ V)
+    (hReturn : Set.range (tailSegs ⟨A + B, by omega⟩) ⊆ U)
+    (hshort : ∀ q : Path x₀ (tailPts ⟨A + (B + 1), by omega⟩),
+      Set.range q ⊆ U →
+      let afterPts : Fin (C + 1) → Y := fun i =>
+        tailPts ⟨A + (B + 1) + i.val, by omega⟩
+      let afterSegs : (k : Fin C) → Path (afterPts k.castSucc) (afterPts k.succ) :=
+        fun k => tailSegs ⟨A + (B + 1) + k.val, by omega⟩
+      ∃ H : (q.trans (Path.concat afterPts afterSegs)).Homotopy
+          ((Path.refl x₀).cast rfl hclose),
+        ∀ t, H t ∈ U ∪ V) :
+    ∃ H : (p.trans (Path.concat tailPts tailSegs)).Homotopy
+        ((Path.refl x₀).cast rfl hclose),
+      ∀ t, H t ∈ U ∪ V := by
+  let prefixPts : Fin (A + 1) → Y := fun i =>
+    tailPts ⟨i.val, by omega⟩
+  let prefixSegs : (k : Fin A) → Path (prefixPts k.castSucc) (prefixPts k.succ) :=
+    fun k => tailSegs ⟨k.val, by omega⟩
+  let oppPts : Fin (B + 1) → Y := fun i =>
+    tailPts ⟨A + i.val, by omega⟩
+  let oppSegs : (k : Fin B) → Path (oppPts k.castSucc) (oppPts k.succ) :=
+    fun k => tailSegs ⟨A + k.val, by omega⟩
+  let returnPts : Fin (1 + 1) → Y := fun i =>
+    tailPts ⟨A + (B + i.val), by omega⟩
+  let returnSegs : (k : Fin 1) → Path (returnPts k.castSucc) (returnPts k.succ) :=
+    fun k => tailSegs ⟨A + (B + k.val), by omega⟩
+  let afterPts : Fin (C + 1) → Y := fun i =>
+    tailPts ⟨A + (B + 1) + i.val, by omega⟩
+  let afterSegs : (k : Fin C) → Path (afterPts k.castSucc) (afterPts k.succ) :=
+    fun k => tailSegs ⟨A + (B + 1) + k.val, by omega⟩
+  let frontPts : Fin ((A + (B + 1)) + 1) → Y := fun i =>
+    tailPts ⟨i.val, by omega⟩
+  let frontSegs : (k : Fin (A + (B + 1))) → Path (frontPts k.castSucc) (frontPts k.succ) :=
+    fun k => tailSegs ⟨k.val, by omega⟩
+  let restPts : Fin ((B + 1) + 1) → Y := fun i =>
+    tailPts ⟨A + i.val, by omega⟩
+  let restSegs : (k : Fin (B + 1)) → Path (restPts k.castSucc) (restPts k.succ) :=
+    fun k => tailSegs ⟨A + k.val, by omega⟩
+  let P := Path.concat prefixPts prefixSegs
+  let O := Path.concat oppPts oppSegs
+  let R := Path.concat returnPts returnSegs
+  let T := Path.concat afterPts afterSegs
+  have hjoin : oppPts 0 = prefixPts (Fin.last A) := by
+    rfl
+  have hReturnBase : returnPts 0 ∈ U := by
+    have hsource := hReturn ⟨0, (tailSegs ⟨A + B, by omega⟩).source⟩
+    simpa [returnPts] using hsource
+  have hReturnSegs : ∀ k : Fin 1, Set.range (returnSegs k) ⊆ U := by
+    intro k
+    have hk : k = (0 : Fin 1) := by
+      ext
+      omega
+    subst k
+    simpa [returnSegs] using hReturn
+  have hreturnRange : Set.range R ⊆ U := by
+    change Set.range (Path.concat returnPts returnSegs) ⊆ U
+    exact path_concat_range_subset_of_mapsTo returnPts returnSegs hReturnBase hReturnSegs
+  rcases twoSetOpenCover_samePrefixOppositeRunSameReturn_tail_induction_step_homotopy_refl_forall_mem_of_mapsTo
+      (U := U) (V := V) prefixPts prefixSegs oppPts oppSegs p hjoin R T hclose
+      hp
+      (by simpa [prefixPts] using hPrefBase)
+      (by
+        intro k
+        simpa [prefixSegs] using hPref k)
+      (by simpa [oppPts] using hOppBase)
+      (by
+        intro k
+        simpa [oppSegs] using hOpp k)
+      hreturnRange
+      (by
+        intro q hq
+        simpa [afterPts, afterSegs, T] using hshort q hq) with
+    ⟨HcollapseRaw, hHcollapseRaw⟩
+  let Hcollapse :
+      ((((p.trans P).trans O).trans R).trans T).Homotopy
+        ((Path.refl x₀).cast rfl hclose) := by
+    simpa [P, O, R, T, hjoin] using HcollapseRaw
+  have hHcollapse : ∀ t, Hcollapse t ∈ U ∪ V := by
+    intro t
+    change HcollapseRaw t ∈ U ∪ V
+    exact hHcollapseRaw t
+  have hcollapseSourceRange :
+      Set.range ((((p.trans P).trans O).trans R).trans T) ⊆ U ∪ V := by
+    intro z hz
+    rcases hz with ⟨s, rfl⟩
+    have h := hHcollapse (0, s)
+    rw [Hcollapse.apply_zero s] at h
+    exact h
+  have hTRange : Set.range T ⊆ U ∪ V := by
+    intro z hz
+    exact hcollapseSourceRange (by
+      rw [Path.trans_range]
+      exact Or.inr hz)
+  have hAfterPathUnion : ∀ s, T s ∈ U ∪ V := by
+    intro s
+    exact hTRange ⟨s, rfl⟩
+  have hAfterSegsUnion : ∀ k : Fin C, Set.range (afterSegs k) ⊆ U ∪ V := by
+    have hTConcat : Set.range (Path.concat afterPts afterSegs) ⊆ U ∪ V := by
+      simpa [T] using hTRange
+    exact path_concat_segment_range_subset_of_concat_range afterPts afterSegs hTConcat
+  have hTailSegsUnion :
+      ∀ k : Fin (A + (B + 1) + C), Set.range (tailSegs k) ⊆ U ∪ V := by
+    intro k z hz
+    by_cases hkPref : k.val < A
+    · let j : Fin A := ⟨k.val, hkPref⟩
+      have hidx : (⟨j.val, by omega⟩ : Fin (A + (B + 1) + C)) = k := by
+        ext
+        simp [j]
+      exact Or.inl (hPref j (hidx.symm ▸ hz))
+    · by_cases hkOpp : k.val < A + B
+      · let j : Fin B := ⟨k.val - A, by omega⟩
+        have hidx : (⟨A + j.val, by omega⟩ : Fin (A + (B + 1) + C)) = k := by
+          ext
+          dsimp [j]
+          omega
+        exact Or.inr (hOpp j (hidx.symm ▸ hz))
+      · by_cases hkReturn : k.val = A + B
+        · have hidx : (⟨A + B, by omega⟩ : Fin (A + (B + 1) + C)) = k := by
+            ext
+            exact hkReturn.symm
+          exact Or.inl (hReturn (hidx.symm ▸ hz))
+        · let j : Fin C := ⟨k.val - (A + (B + 1)), by omega⟩
+          have hidx :
+              (⟨A + (B + 1) + j.val, by omega⟩ :
+                Fin (A + (B + 1) + C)) = k := by
+            ext
+            dsimp [j]
+            omega
+          have hz' :
+              z ∈ Set.range
+                (tailSegs
+                  (⟨A + (B + 1) + j.val, by omega⟩ :
+                    Fin (A + (B + 1) + C))) := by
+            rw [hidx]
+            exact hz
+          exact hAfterSegsUnion j (by simpa [afterSegs] using hz')
+  have hFrontSegsUnion :
+      ∀ k : Fin (A + (B + 1)), Set.range (frontSegs k) ⊆ U ∪ V := by
+    intro k z hz
+    simpa [frontSegs] using hTailSegsUnion ⟨k.val, by omega⟩ hz
+  have hRestSegsUnion :
+      ∀ k : Fin (B + 1), Set.range (restSegs k) ⊆ U ∪ V := by
+    intro k z hz
+    simpa [restSegs] using hTailSegsUnion ⟨A + k.val, by omega⟩ hz
+  rcases path_concat_split_homotopy_forall_mem_of_mapsTo
+      (S := U ∪ V) tailPts tailSegs (Or.inl hPrefBase) hTailSegsUnion with
+    ⟨HsplitEnd₀, hHsplitEnd₀⟩
+  let HsplitEnd :
+      (Path.concat tailPts tailSegs).Homotopy ((Path.concat frontPts frontSegs).trans T) := by
+    change (Path.concat tailPts tailSegs).Homotopy
+      ((Path.concat (fun i : Fin ((A + (B + 1)) + 1) =>
+          tailPts ⟨i.val, by omega⟩)
+        (fun k : Fin (A + (B + 1)) => tailSegs ⟨k.val, by omega⟩)).trans
+        (Path.concat (fun i : Fin (C + 1) =>
+          tailPts ⟨A + (B + 1) + i.val, by omega⟩)
+          (fun k : Fin C => tailSegs ⟨A + (B + 1) + k.val, by omega⟩)))
+    exact HsplitEnd₀
+  have hHsplitEnd : ∀ t, HsplitEnd t ∈ U ∪ V := by
+    intro t
+    change HsplitEnd₀ t ∈ U ∪ V
+    exact hHsplitEnd₀ t
+  rcases path_concat_split_homotopy_forall_mem_of_mapsTo
+      (S := U ∪ V) frontPts frontSegs (Or.inl hPrefBase) hFrontSegsUnion with
+    ⟨HsplitFront₀, hHsplitFront₀⟩
+  let HsplitFront :
+      (Path.concat frontPts frontSegs).Homotopy (P.trans (Path.concat restPts restSegs)) := by
+    change (Path.concat frontPts frontSegs).Homotopy
+      ((Path.concat (fun i : Fin (A + 1) => frontPts ⟨i.val, by omega⟩)
+        (fun k : Fin A => frontSegs ⟨k.val, by omega⟩)).trans
+        (Path.concat (fun i : Fin ((B + 1) + 1) => frontPts ⟨A + i.val, by omega⟩)
+          (fun k : Fin (B + 1) => frontSegs ⟨A + k.val, by omega⟩)))
+    exact HsplitFront₀
+  have hHsplitFront : ∀ t, HsplitFront t ∈ U ∪ V := by
+    intro t
+    change HsplitFront₀ t ∈ U ∪ V
+    exact hHsplitFront₀ t
+  rcases path_concat_split_homotopy_forall_mem_of_mapsTo
+      (S := U ∪ V) restPts restSegs (Or.inr hOppBase) hRestSegsUnion with
+    ⟨HsplitRest₀, hHsplitRest₀⟩
+  let HsplitRest : (Path.concat restPts restSegs).Homotopy (O.trans R) := by
+    change (Path.concat restPts restSegs).Homotopy
+      ((Path.concat (fun i : Fin (B + 1) => restPts ⟨i.val, by omega⟩)
+        (fun k : Fin B => restSegs ⟨k.val, by omega⟩)).trans
+        (Path.concat (fun i : Fin (1 + 1) => restPts ⟨B + i.val, by omega⟩)
+          (fun k : Fin 1 => restSegs ⟨B + k.val, by omega⟩)))
+    exact HsplitRest₀
+  have hHsplitRest : ∀ t, HsplitRest t ∈ U ∪ V := by
+    intro t
+    change HsplitRest₀ t ∈ U ∪ V
+    exact hHsplitRest₀ t
+  have hpUnion : ∀ t, p t ∈ U ∪ V := by
+    intro t
+    exact Or.inl (hp ⟨t, rfl⟩)
+  have hPRangeU : Set.range P ⊆ U := by
+    change Set.range (Path.concat prefixPts prefixSegs) ⊆ U
+    exact path_concat_range_subset_of_mapsTo prefixPts prefixSegs
+      (by simpa [prefixPts] using hPrefBase)
+      (by
+        intro k
+        simpa [prefixSegs] using hPref k)
+  have hORangeV : Set.range O ⊆ V := by
+    change Set.range (Path.concat oppPts oppSegs) ⊆ V
+    exact path_concat_range_subset_of_mapsTo oppPts oppSegs
+      (by simpa [oppPts] using hOppBase)
+      (by
+        intro k
+        simpa [oppSegs] using hOpp k)
+  have hPUnion : ∀ t, P t ∈ U ∪ V := by
+    intro t
+    exact Or.inl (hPRangeU ⟨t, rfl⟩)
+  have hOUnion : ∀ t, O t ∈ U ∪ V := by
+    intro t
+    exact Or.inr (hORangeV ⟨t, rfl⟩)
+  have hRUnion : ∀ t, R t ∈ U ∪ V := by
+    intro t
+    exact Or.inl (hreturnRange ⟨t, rfl⟩)
+  have hTUnion : ∀ t, T t ∈ U ∪ V := hAfterPathUnion
+  let HrestLift : (P.trans (Path.concat restPts restSegs)).Homotopy (P.trans (O.trans R)) :=
+    (Path.Homotopy.refl P).hcomp HsplitRest
+  have hHrestLift : ∀ t, HrestLift t ∈ U ∪ V := by
+    exact path_homotopy_hcomp_forall_mem_of_forall_mem
+      (Path.Homotopy.refl P) HsplitRest
+      (fun t => by
+        change P t.2 ∈ U ∪ V
+        exact hPUnion t.2)
+      hHsplitRest
+  let HassocFront : (P.trans (O.trans R)).Homotopy ((P.trans O).trans R) :=
+    (Path.Homotopy.transAssoc P O R).symm
+  have hHassocFront : ∀ t, HassocFront t ∈ U ∪ V := by
+    exact path_homotopy_symm_forall_mem_of_forall_mem
+      (Path.Homotopy.transAssoc P O R)
+      (path_transAssoc_forall_mem_of_forall_mem P O R hPUnion hOUnion hRUnion)
+  let HfrontTail : (P.trans (Path.concat restPts restSegs)).Homotopy ((P.trans O).trans R) :=
+    HrestLift.trans HassocFront
+  have hHfrontTail : ∀ t, HfrontTail t ∈ U ∪ V :=
+    path_homotopy_trans_forall_mem_of_forall_mem
+      HrestLift HassocFront hHrestLift hHassocFront
+  let HfrontNorm : (Path.concat frontPts frontSegs).Homotopy ((P.trans O).trans R) :=
+    HsplitFront.trans HfrontTail
+  have hHfrontNorm : ∀ t, HfrontNorm t ∈ U ∪ V :=
+    path_homotopy_trans_forall_mem_of_forall_mem
+      HsplitFront HfrontTail hHsplitFront hHfrontTail
+  let HtailLift :
+      ((Path.concat frontPts frontSegs).trans T).Homotopy (((P.trans O).trans R).trans T) :=
+    HfrontNorm.hcomp (Path.Homotopy.refl T)
+  have hHtailLift : ∀ t, HtailLift t ∈ U ∪ V := by
+    exact path_homotopy_hcomp_forall_mem_of_forall_mem
+      HfrontNorm (Path.Homotopy.refl T) hHfrontNorm
+      (fun t => by
+        change T t.2 ∈ U ∪ V
+        exact hTUnion t.2)
+  let HtailNorm : (Path.concat tailPts tailSegs).Homotopy (((P.trans O).trans R).trans T) :=
+    HsplitEnd.trans HtailLift
+  have hHtailNorm : ∀ t, HtailNorm t ∈ U ∪ V :=
+    path_homotopy_trans_forall_mem_of_forall_mem
+      HsplitEnd HtailLift hHsplitEnd hHtailLift
+  let HnormHead : (p.trans (Path.concat tailPts tailSegs)).Homotopy
+      (p.trans (((P.trans O).trans R).trans T)) :=
+    (Path.Homotopy.refl p).hcomp HtailNorm
+  have hHnormHead : ∀ t, HnormHead t ∈ U ∪ V := by
+    exact path_homotopy_hcomp_forall_mem_of_forall_mem
+      (Path.Homotopy.refl p) HtailNorm
+      (fun t => by
+        change p t.2 ∈ U ∪ V
+        exact hpUnion t.2)
+      hHtailNorm
+  rcases path_four_left_assoc_homotopy_forall_mem
+      (S := U ∪ V) p P O R T hpUnion hPUnion hOUnion hRUnion hTUnion with
+    ⟨Hassoc, hHassoc⟩
+  let HassocCollapse : (p.trans (((P.trans O).trans R).trans T)).Homotopy
+      ((Path.refl x₀).cast rfl hclose) :=
+    Hassoc.trans Hcollapse
+  have hHassocCollapse : ∀ t, HassocCollapse t ∈ U ∪ V :=
+    path_homotopy_trans_forall_mem_of_forall_mem
+      Hassoc Hcollapse hHassoc hHcollapse
+  let Hfinal : (p.trans (Path.concat tailPts tailSegs)).Homotopy
+      ((Path.refl x₀).cast rfl hclose) :=
+    HnormHead.trans HassocCollapse
+  have hHfinal : ∀ t, Hfinal t ∈ U ∪ V :=
+    path_homotopy_trans_forall_mem_of_forall_mem
+      HnormHead HassocCollapse hHnormHead hHassocCollapse
+  exact ⟨Hfinal, hHfinal⟩
+
+/--
 Flat non-terminal first-opposite-run step for an arbitrary finite tail split
 into a preferred prefix, an opposite run, one preferred return segment, and an
 arbitrary after-tail.
