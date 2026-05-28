@@ -6844,6 +6844,50 @@ theorem twoSetOpenCover_piOneSubsingleton_of_pathConnected_inter
 /--
 A path in one cover member, followed by a finite block in the other member,
 then a return path in the first member and a final closing path in the other
+member, contracts through an actual homotopy whose image stays in the cover.
+The middle block is first replaced through the overlap, and the resulting
+two-piece loop is then contracted.
+-/
+theorem twoSetOpenCover_sameSideBlockOppositeReturn_trans_cast_homotopy_refl_forall_mem_of_mapsTo
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {N : ℕ}
+    {x₀ x₃ x₄ : Y}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set Y)]
+    (m : Fin (N + 1) → Y)
+    (p : Path x₀ (m 0))
+    (F : (k : Fin N) → Path (m k.castSucc) (m k.succ))
+    (r : Path (m (Fin.last N)) x₃)
+    (s : Path x₃ x₄) (hclose : x₄ = x₀)
+    (hp : Set.range p ⊆ U) (hmBase : m 0 ∈ V)
+    (hF : ∀ k : Fin N, Set.range (F k) ⊆ V)
+    (hr : Set.range r ⊆ U) (hs : Set.range s ⊆ V) :
+    ∃ H : (((p.trans (Path.concat m F)).trans r).trans s).Homotopy
+        ((Path.refl x₀).cast rfl hclose),
+      ∀ t, H t ∈ U ∪ V := by
+  rcases twoSetOpenCover_sameSideBlock_homotopy_to_overlapBlock_forall_mem_of_mapsTo
+      (U := U) (V := V) m p F r hp hmBase hF hr with
+    ⟨q, _hqU, ⟨Hreplace, hHreplace⟩, htargetRange⟩
+  let HreplaceFull :
+      (((p.trans (Path.concat m F)).trans r).trans s).Homotopy
+        (((p.trans q).trans r).trans s) :=
+    Hreplace.hcomp (Path.Homotopy.refl s)
+  have hHreplaceFull : ∀ t, HreplaceFull t ∈ U ∪ V := by
+    exact path_homotopy_hcomp_forall_mem_of_forall_mem
+      Hreplace (Path.Homotopy.refl s) hHreplace
+      (fun t => by
+        change s t.2 ∈ U ∪ V
+        exact Or.inr (hs ⟨t.2, rfl⟩))
+  rcases twoSetOpenCover_twoPieceLoop_cast_homotopy_refl_forall_mem_of_mapsTo
+      (U := U) (V := V) ((p.trans q).trans r) s hclose
+      (fun t => htargetRange ⟨t, rfl⟩) (fun t => hs ⟨t, rfl⟩) with
+    ⟨Hcontract, hHcontract⟩
+  refine ⟨HreplaceFull.trans Hcontract, ?_⟩
+  exact path_homotopy_trans_forall_mem_of_forall_mem
+    HreplaceFull Hcontract hHreplaceFull hHcontract
+
+/--
+A path in one cover member, followed by a finite block in the other member,
+then a return path in the first member and a final closing path in the other
 member, is nullhomotopic.  The middle block is replaced through the overlap
 and the resulting two-piece loop is contracted.
 -/
@@ -6862,20 +6906,10 @@ theorem twoSetOpenCover_sameSideBlockOppositeReturn_trans_cast_nullhomotopic_of_
     (hr : Set.range r ⊆ U) (hs : Set.range s ⊆ V) :
     Path.Homotopic (((p.trans (Path.concat m F)).trans r).trans s)
       ((Path.refl x₀).cast rfl hclose) := by
-  rcases twoSetOpenCover_sameSideBlock_homotopic_to_overlapBlock_of_mapsTo
-      (U := U) (V := V) m p F r hp hmBase hF hr with
-    ⟨q, _hqU, hreplace, htargetRange⟩
-  have hreplaceFull :
-      Path.Homotopic (((p.trans (Path.concat m F)).trans r).trans s)
-        (((p.trans q).trans r).trans s) :=
-    Path.Homotopic.hcomp hreplace (Path.Homotopic.refl s)
-  have hcontract :
-      Path.Homotopic (((p.trans q).trans r).trans s)
-        ((Path.refl x₀).cast rfl hclose) :=
-    twoSetOpenCover_twoPieceLoop_cast_nullhomotopic_of_mapsTo
-      (U := U) (V := V) ((p.trans q).trans r) s hclose
-      (fun t => htargetRange ⟨t, rfl⟩) (fun t => hs ⟨t, rfl⟩)
-  exact hreplaceFull.trans hcontract
+  rcases twoSetOpenCover_sameSideBlockOppositeReturn_trans_cast_homotopy_refl_forall_mem_of_mapsTo
+      (U := U) (V := V) m p F r s hclose hp hmBase hF hr hs with
+    ⟨H, _hH⟩
+  exact ⟨H⟩
 
 /--
 A finite tail made of a block in the opposite cover member, a block returning
