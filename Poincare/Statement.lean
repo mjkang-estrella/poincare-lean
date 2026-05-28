@@ -305,15 +305,15 @@ theorem threeSphere_stereographic_source_contained_paths_homotopic
   simpa [hpmap, hqmap] using hmap
 
 /--
-A finite concatenation of paths whose pieces all stay inside one stereographic
-source also stays inside that source.
+A finite concatenation of paths whose pieces all stay inside a set also stays
+inside that set.
 -/
-theorem threeSphere_stereographic_source_concat_range_subset
-    (v : ThreeSphere) {N : ℕ} (p : Fin (N + 1) → ThreeSphere)
+theorem path_concat_range_subset_of_mapsTo
+    {Y : Type u} [TopologicalSpace Y] {S : Set Y} {N : ℕ}
+    (p : Fin (N + 1) → Y)
     (F : (k : Fin N) → Path (p k.castSucc) (p k.succ))
-    (hbase : p 0 ∈ (stereographic' 3 v).source)
-    (hF : ∀ k : Fin N, Set.range (F k) ⊆ (stereographic' 3 v).source) :
-    Set.range (Path.concat p F) ⊆ (stereographic' 3 v).source := by
+    (hbase : p 0 ∈ S) (hF : ∀ k : Fin N, Set.range (F k) ⊆ S) :
+    Set.range (Path.concat p F) ⊆ S := by
   induction N with
   | zero =>
       intro x hx
@@ -331,6 +331,18 @@ theorem threeSphere_stereographic_source_concat_range_subset
       · exact ih (p ∘ Fin.castSucc) (fun k => F k.castSucc)
           hbase (fun k => hF k.castSucc) hx
       · exact hF (Fin.last N) hx
+
+/--
+A finite concatenation of paths whose pieces all stay inside one stereographic
+source also stays inside that source.
+-/
+theorem threeSphere_stereographic_source_concat_range_subset
+    (v : ThreeSphere) {N : ℕ} (p : Fin (N + 1) → ThreeSphere)
+    (F : (k : Fin N) → Path (p k.castSucc) (p k.succ))
+    (hbase : p 0 ∈ (stereographic' 3 v).source)
+    (hF : ∀ k : Fin N, Set.range (F k) ⊆ (stereographic' 3 v).source) :
+    Set.range (Path.concat p F) ⊆ (stereographic' 3 v).source :=
+  path_concat_range_subset_of_mapsTo p F hbase hF
 
 /--
 A closed finite concatenation of paths inside one stereographic source is
@@ -3778,6 +3790,71 @@ theorem twoSetOpenCover_twoPieceLoop_cast_nullhomotopic_of_mapsTo
   simpa [qLoop] using hcast
 
 /--
+A finite block in one member of a two-set cover, bracketed by paths in the
+other member, can be replaced by an overlap path while keeping the bracketed
+path in the bracketing member.
+-/
+theorem twoSetOpenCover_sameSideBlock_homotopic_to_overlapBlock_of_mapsTo
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {N : ℕ}
+    {x₀ x₃ : Y}
+    [SimplyConnectedSpace V] [PathConnectedSpace (U ∩ V : Set Y)]
+    (m : Fin (N + 1) → Y)
+    (p : Path x₀ (m 0))
+    (F : (k : Fin N) → Path (m k.castSucc) (m k.succ))
+    (r : Path (m (Fin.last N)) x₃)
+    (hp : Set.range p ⊆ U) (hmBase : m 0 ∈ V)
+    (hF : ∀ k : Fin N, Set.range (F k) ⊆ V)
+    (hr : Set.range r ⊆ U) :
+    ∃ q : Path (m 0) (m (Fin.last N)),
+      Set.range q ⊆ U ∧
+      Path.Homotopic ((p.trans (Path.concat m F)).trans r) ((p.trans q).trans r) ∧
+      Set.range ((p.trans q).trans r) ⊆ U := by
+  have hmiddle : Set.range (Path.concat m F) ⊆ V :=
+    path_concat_range_subset_of_mapsTo m F hmBase hF
+  have hstartU : m 0 ∈ U := hp ⟨1, p.target⟩
+  have hstartV : m 0 ∈ V := hmBase
+  have hendU : m (Fin.last N) ∈ U := hr ⟨0, r.source⟩
+  have hendV : m (Fin.last N) ∈ V :=
+    hmiddle ⟨1, (Path.concat m F).target⟩
+  let startOverlap : (U ∩ V : Set Y) := ⟨m 0, hstartU, hstartV⟩
+  let endOverlap : (U ∩ V : Set Y) :=
+    ⟨m (Fin.last N), hendU, hendV⟩
+  let overlapPath : Path startOverlap endOverlap :=
+    PathConnectedSpace.somePath startOverlap endOverlap
+  let incl : C((U ∩ V : Set Y), Y) :=
+    ⟨Subtype.val, continuous_subtype_val⟩
+  let q : Path (m 0) (m (Fin.last N)) := overlapPath.map incl.continuous
+  have hqU : Set.range q ⊆ U := by
+    intro z hz
+    rcases hz with ⟨s, rfl⟩
+    exact (overlapPath s).2.1
+  have hqV : Set.range q ⊆ V := by
+    intro z hz
+    rcases hz with ⟨s, rfl⟩
+    exact (overlapPath s).2.2
+  have hreplaceMiddle : Path.Homotopic (Path.concat m F) q :=
+    paths_homotopic_of_mapsTo_simplyConnectedSubtype
+      hstartV hendV (Path.concat m F) q
+      (fun t => hmiddle ⟨t, rfl⟩) (fun t => hqV ⟨t, rfl⟩)
+  have hreplace :
+      Path.Homotopic ((p.trans (Path.concat m F)).trans r) ((p.trans q).trans r) :=
+    Path.Homotopic.hcomp
+      (Path.Homotopic.hcomp (Path.Homotopic.refl p) hreplaceMiddle)
+      (Path.Homotopic.refl r)
+  have htargetRange : Set.range ((p.trans q).trans r) ⊆ U := by
+    intro z hz
+    have hz' : z ∈ Set.range (p.trans q) ∪ Set.range r := by
+      simpa [Path.trans_range] using hz
+    rcases hz' with hzMid | hzR
+    · have hz'' : z ∈ Set.range p ∪ Set.range q := by
+        simpa [Path.trans_range] using hzMid
+      rcases hz'' with hzP | hzQ
+      · exact hp hzP
+      · exact hqU hzQ
+    · exact hr hzR
+  exact ⟨q, hqU, hreplace, htargetRange⟩
+
+/--
 In a path-connected space, triviality of the fundamental group at one basepoint
 is equivalent to simple-connectedness.
 -/
@@ -5182,53 +5259,13 @@ theorem threeSphere_stereographic_northSouthBlockNorth_homotopic_to_northBlock
         (stereographic' 3 threeSphere_northPole).source := by
   let U : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
   let V : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
-  have hmiddle : Set.range (Path.concat m F) ⊆ V :=
-    threeSphere_stereographic_source_concat_range_subset (-threeSphere_northPole)
-      m F hmBase hF
-  have hstartU : m 0 ∈ U := hp ⟨1, p.target⟩
-  have hstartV : m 0 ∈ V := hmBase
-  have hendU : m (Fin.last N) ∈ U := hr ⟨0, r.source⟩
-  have hendV : m (Fin.last N) ∈ V :=
-    hmiddle ⟨1, (Path.concat m F).target⟩
-  let startOverlap : (U ∩ V : Set ThreeSphere) := ⟨m 0, hstartU, hstartV⟩
-  let endOverlap : (U ∩ V : Set ThreeSphere) :=
-    ⟨m (Fin.last N), hendU, hendV⟩
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace
+      (-threeSphere_northPole)
   letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
     simpa [U, V] using threeSphere_actualOverlap_pathConnectedSpace
-  let overlapPath : Path startOverlap endOverlap :=
-    PathConnectedSpace.somePath startOverlap endOverlap
-  let incl : C((U ∩ V : Set ThreeSphere), ThreeSphere) :=
-    ⟨Subtype.val, continuous_subtype_val⟩
-  let q : Path (m 0) (m (Fin.last N)) := overlapPath.map incl.continuous
-  have hqU : Set.range q ⊆ U := by
-    intro z hz
-    rcases hz with ⟨s, rfl⟩
-    exact (overlapPath s).2.1
-  have hqV : Set.range q ⊆ V := by
-    intro z hz
-    rcases hz with ⟨s, rfl⟩
-    exact (overlapPath s).2.2
-  have hreplaceMiddle : Path.Homotopic (Path.concat m F) q := by
-    simpa [V] using
-      threeSphere_stereographic_source_contained_paths_homotopic
-        (-threeSphere_northPole) (Path.concat m F) q hmiddle hqV
-  have hreplace :
-      Path.Homotopic ((p.trans (Path.concat m F)).trans r) ((p.trans q).trans r) :=
-    Path.Homotopic.hcomp
-      (Path.Homotopic.hcomp (Path.Homotopic.refl p) hreplaceMiddle)
-      (Path.Homotopic.refl r)
-  have htargetRange : Set.range ((p.trans q).trans r) ⊆ U := by
-    intro z hz
-    have hz' : z ∈ Set.range (p.trans q) ∪ Set.range r := by
-      simpa [Path.trans_range] using hz
-    rcases hz' with hzMid | hzR
-    · have hz'' : z ∈ Set.range p ∪ Set.range q := by
-        simpa [Path.trans_range] using hzMid
-      rcases hz'' with hzP | hzQ
-      · exact hp hzP
-      · exact hqU hzQ
-    · exact hr hzR
-  exact ⟨q, hqU, hreplace, htargetRange⟩
+  exact twoSetOpenCover_sameSideBlock_homotopic_to_overlapBlock_of_mapsTo
+    (U := U) (V := V) m p F r hp hmBase hF hr
 
 /--
 The symmetric local replacement move: a finite north-source block bracketed by
@@ -5251,55 +5288,19 @@ theorem threeSphere_stereographic_southNorthBlockSouth_homotopic_to_southBlock
       Path.Homotopic ((p.trans (Path.concat m F)).trans r) ((p.trans q).trans r) ∧
       Set.range ((p.trans q).trans r) ⊆
         (stereographic' 3 (-threeSphere_northPole)).source := by
-  let U : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
-  let V : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
-  have hmiddle : Set.range (Path.concat m F) ⊆ U :=
-    threeSphere_stereographic_source_concat_range_subset threeSphere_northPole
-      m F hmBase hF
-  have hstartV : m 0 ∈ V := hp ⟨1, p.target⟩
-  have hstartU : m 0 ∈ U := hmBase
-  have hendV : m (Fin.last N) ∈ V := hr ⟨0, r.source⟩
-  have hendU : m (Fin.last N) ∈ U :=
-    hmiddle ⟨1, (Path.concat m F).target⟩
-  let startOverlap : (U ∩ V : Set ThreeSphere) := ⟨m 0, hstartU, hstartV⟩
-  let endOverlap : (U ∩ V : Set ThreeSphere) :=
-    ⟨m (Fin.last N), hendU, hendV⟩
+  let U : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  let V : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace
+      threeSphere_northPole
   letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
-    simpa [U, V] using threeSphere_actualOverlap_pathConnectedSpace
-  let overlapPath : Path startOverlap endOverlap :=
-    PathConnectedSpace.somePath startOverlap endOverlap
-  let incl : C((U ∩ V : Set ThreeSphere), ThreeSphere) :=
-    ⟨Subtype.val, continuous_subtype_val⟩
-  let q : Path (m 0) (m (Fin.last N)) := overlapPath.map incl.continuous
-  have hqU : Set.range q ⊆ U := by
-    intro z hz
-    rcases hz with ⟨s, rfl⟩
-    exact (overlapPath s).2.1
-  have hqV : Set.range q ⊆ V := by
-    intro z hz
-    rcases hz with ⟨s, rfl⟩
-    exact (overlapPath s).2.2
-  have hreplaceMiddle : Path.Homotopic (Path.concat m F) q := by
-    simpa [U] using
-      threeSphere_stereographic_source_contained_paths_homotopic
-        threeSphere_northPole (Path.concat m F) q hmiddle hqU
-  have hreplace :
-      Path.Homotopic ((p.trans (Path.concat m F)).trans r) ((p.trans q).trans r) :=
-    Path.Homotopic.hcomp
-      (Path.Homotopic.hcomp (Path.Homotopic.refl p) hreplaceMiddle)
-      (Path.Homotopic.refl r)
-  have htargetRange : Set.range ((p.trans q).trans r) ⊆ V := by
-    intro z hz
-    have hz' : z ∈ Set.range (p.trans q) ∪ Set.range r := by
-      simpa [Path.trans_range] using hz
-    rcases hz' with hzMid | hzR
-    · have hz'' : z ∈ Set.range p ∪ Set.range q := by
-        simpa [Path.trans_range] using hzMid
-      rcases hz'' with hzP | hzQ
-      · exact hp hzP
-      · exact hqV hzQ
-    · exact hr hzR
-  exact ⟨q, hqV, hreplace, htargetRange⟩
+    change PathConnectedSpace
+      ((stereographic' 3 (-threeSphere_northPole)).source ∩
+        (stereographic' 3 threeSphere_northPole).source : Set ThreeSphere)
+    rw [Set.inter_comm]
+    exact threeSphere_actualOverlap_pathConnectedSpace
+  exact twoSetOpenCover_sameSideBlock_homotopic_to_overlapBlock_of_mapsTo
+    (U := U) (V := V) m p F r hp hmBase hF hr
 
 /--
 A south-source interval run of an equatorial loop, reindexed as a finite block,
