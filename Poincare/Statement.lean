@@ -9092,9 +9092,20 @@ theorem threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockT
     Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
       ((Path.refl x₀).cast rfl hclose) := by
   cases hTailLen
-  exact threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic
-    tailPts tailSegs p hclose hp hSouthBase hSouth hNorthBase hNorth hSouthLastBase
-    hSouthLast hNorthLastBase hNorthLast
+  let U : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
+  let V : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  letI : SimplyConnectedSpace U := by
+    simpa [U] using threeSphere_stereographic_source_simplyConnectedSpace
+      threeSphere_northPole
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace
+      (-threeSphere_northPole)
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    simpa [U, V] using threeSphere_actualOverlap_pathConnectedSpace
+  exact twoSetOpenCover_oppositeSameOppositeSameTail_concat_cast_nullhomotopic_of_mapsTo
+    (U := U) (V := V) tailPts tailSegs p hclose hp
+    hSouthBase hSouth hNorthBase hNorth hSouthLastBase hSouthLast
+    hNorthLastBase hNorthLast
 
 /--
 An arbitrary south path followed by north, south, north, and south blocks is
@@ -9401,9 +9412,24 @@ theorem threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockT
     Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
       ((Path.refl x₀).cast rfl hclose) := by
   cases hTailLen
-  exact threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic
-    tailPts tailSegs p hclose hp hNorthBase hNorth hSouthBase hSouth hNorthLastBase
-    hNorthLast hSouthLastBase hSouthLast
+  let U : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  let V : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
+  letI : SimplyConnectedSpace U := by
+    simpa [U] using threeSphere_stereographic_source_simplyConnectedSpace
+      (-threeSphere_northPole)
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace
+      threeSphere_northPole
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    change PathConnectedSpace
+      ((stereographic' 3 (-threeSphere_northPole)).source ∩
+        (stereographic' 3 threeSphere_northPole).source : Set ThreeSphere)
+    rw [Set.inter_comm]
+    exact threeSphere_actualOverlap_pathConnectedSpace
+  exact twoSetOpenCover_oppositeSameOppositeSameTail_concat_cast_nullhomotopic_of_mapsTo
+    (U := U) (V := V) tailPts tailSegs p hclose hp
+    hNorthBase hNorth hSouthBase hSouth hNorthLastBase hNorthLast
+    hSouthLastBase hSouthLast
 
 /--
 An arbitrary north path followed by south, north, south, north, and south blocks
