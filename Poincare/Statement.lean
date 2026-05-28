@@ -4672,6 +4672,129 @@ theorem twoSetOpenCover_basedLoop_fullConcat_nullhomotopic_of_sourceChoice
   exact hdirect.trans (htargetEq ▸ Path.Homotopic.refl _)
 
 /--
+Any path in a two-set open cover admits a finite subdivision whose subpaths
+each lie in one member of the cover.  This is the open-cover source-choice
+input needed before applying the finite-word Van Kampen collapse.
+-/
+theorem twoSetOpenCover_path_sourceChoice_subpaths
+    {X : Type u} [TopologicalSpace X] {U V : Set X} {a b : X}
+    (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ)
+    (γ : Path a b) :
+    ∃ (N : ℕ) (t : Fin (N + 1) → unitInterval),
+      t 0 = 0 ∧ t (Fin.last N) = 1 ∧
+      ∀ k : Fin N,
+        Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆ U ∨
+          Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆ V := by
+  let coverSet : Bool → Set unitInterval := fun side =>
+    if side then {t : unitInterval | γ t ∈ U}
+    else {t : unitInterval | γ t ∈ V}
+  have hopen : ∀ side : Bool, IsOpen (coverSet side) := by
+    intro side
+    cases side
+    · simpa [coverSet] using hV.preimage γ.continuous
+    · simpa [coverSet] using hU.preimage γ.continuous
+  have hcoverI : (Set.univ : Set unitInterval) ⊆ ⋃ side, coverSet side := by
+    intro s _hs
+    have hsUV : γ s ∈ U ∪ V := by
+      rw [hcover]
+      trivial
+    rcases hsUV with hsU | hsV
+    · exact Set.mem_iUnion.mpr ⟨true, by simpa [coverSet] using hsU⟩
+    · exact Set.mem_iUnion.mpr ⟨false, by simpa [coverSet] using hsV⟩
+  rcases exists_monotone_Icc_subset_open_cover_unitInterval hopen hcoverI with
+    ⟨τ, hτ0, hmono, ⟨N, hN⟩, hsegment⟩
+  let t : Fin (N + 1) → unitInterval := fun k => τ k.val
+  refine ⟨N, t, ?_, ?_, ?_⟩
+  · simpa [t] using hτ0
+  · simpa [t] using hN N (le_refl N)
+  · intro k
+    have hle : τ k.val ≤ τ (k.val + 1) := hmono (Nat.le_succ k.val)
+    rcases hsegment k.val with ⟨side, hside⟩
+    cases side
+    · right
+      have hrange :
+          Set.range (γ.subpath (τ k.val) (τ (k.val + 1))) ⊆ V := by
+        rw [Path.range_subpath_of_le γ (τ k.val) (τ (k.val + 1)) hle]
+        rintro y ⟨r, hr, rfl⟩
+        simpa [coverSet] using hside hr
+      simpa only [t, Fin.val_castSucc, Fin.val_succ] using hrange
+    · left
+      have hrange :
+          Set.range (γ.subpath (τ k.val) (τ (k.val + 1))) ⊆ U := by
+        rw [Path.range_subpath_of_le γ (τ k.val) (τ (k.val + 1)) hle]
+        rintro y ⟨r, hr, rfl⟩
+        simpa [coverSet] using hside hr
+      simpa only [t, Fin.val_castSucc, Fin.val_succ] using hrange
+
+/--
+A finite source-choice subdivision from a two-set open cover contracts the
+original based loop, not only its finite concatenation representative.
+-/
+theorem twoSetOpenCover_basedLoop_nullhomotopic_of_sourceChoice
+    {X : Type u} [TopologicalSpace X] {U V : Set X} {basepoint : X}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set X)]
+    (hbase : basepoint ∈ U ∩ V)
+    (γ : Path basepoint basepoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval)
+    (h0 : t 0 = 0) (h1 : t (Fin.last N) = 1)
+    (hchoice : ∀ k : Fin N,
+      Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆ U ∨
+        Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆ V) :
+    Path.Homotopic γ (Path.refl basepoint) := by
+  have hsourceAt : γ (t 0) = basepoint := by
+    rw [h0]
+    exact γ.source
+  have htargetAt : γ (t (Fin.last N)) = basepoint := by
+    rw [h1]
+    exact γ.target
+  have hConcat :
+      Path.Homotopic
+        (Path.concat (γ ∘ t)
+          (fun k : Fin N => γ.subpath (t k.castSucc) (t k.succ)))
+        (γ.subpath (t 0) (t (Fin.last N))) :=
+    Path.Homotopic.concat_subpath γ t
+  have hSubpathCast :
+      γ.subpath (t 0) (t (Fin.last N)) =
+        γ.cast hsourceAt htargetAt := by
+    ext s
+    simp [Path.cast_coe, Path.subpath, h0, h1]
+  have hFull :
+      Path.Homotopic
+        (Path.concat (γ ∘ t)
+          (fun k : Fin N => γ.subpath (t k.castSucc) (t k.succ)))
+        ((Path.refl basepoint).cast hsourceAt htargetAt) :=
+    twoSetOpenCover_basedLoop_fullConcat_nullhomotopic_of_sourceChoice
+      (U := U) (V := V) hbase.1 γ t h0 h1 hchoice
+  have hCast :
+      Path.Homotopic
+        (γ.cast hsourceAt htargetAt)
+        ((Path.refl basepoint).cast hsourceAt htargetAt) := by
+    rw [← hSubpathCast]
+    exact hConcat.symm.trans hFull
+  have hCastBack :=
+    Path.Homotopic.pathCast hCast hsourceAt.symm htargetAt.symm
+  simpa [Path.cast] using hCastBack
+
+/--
+The two-set open-cover Van Kampen loop theorem: if the cover members are
+simply connected and their overlap is path connected, every loop based in the
+overlap is nullhomotopic.
+-/
+theorem twoSetOpenCover_basedLoop_nullhomotopic
+    {X : Type u} [TopologicalSpace X] {U V : Set X} {basepoint : X}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set X)]
+    (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ)
+    (hbase : basepoint ∈ U ∩ V)
+    (γ : Path basepoint basepoint) :
+    Path.Homotopic γ (Path.refl basepoint) := by
+  rcases twoSetOpenCover_path_sourceChoice_subpaths hU hV hcover γ with
+    ⟨N, t, h0, h1, hchoice⟩
+  exact twoSetOpenCover_basedLoop_nullhomotopic_of_sourceChoice
+    (U := U) (V := V) hbase γ t h0 h1 hchoice
+
+/--
 A path in one cover member, followed by a finite block in the other member,
 then a return path in the first member and a final closing path in the other
 member, is nullhomotopic.  The middle block is replaced through the overlap
@@ -32938,6 +33061,36 @@ theorem twoSetOpenCoverVanKampenPiOneSubsingletonStatement_eq :
         PathConnectedSpace (U ∩ V : Set X) →
         Subsingleton (HomotopyGroup.Pi 1 X basepoint)) :=
   rfl
+
+/--
+The general two-set Van Kampen `π₁` subsingleton theorem.  A based loop is
+first subdivided by the two open cover members, then the generic finite-word
+collapse contracts the finite representative, and quotient induction turns
+based-loop nullhomotopy into triviality of `π₁`.
+-/
+theorem twoSetOpenCoverVanKampenPiOneSubsingletonStatement :
+    TwoSetOpenCoverVanKampenPiOneSubsingletonStatement.{u} := by
+  intro X _ U V basepoint hU hV _hUV hcover hbase hSimpleU hSimpleV hOverlap
+  letI : SimplyConnectedSpace U := hSimpleU
+  letI : SimplyConnectedSpace V := hSimpleV
+  letI : PathConnectedSpace (U ∩ V : Set X) := hOverlap
+  have hnull :
+      ∀ γ : Path basepoint basepoint,
+        Path.Homotopic γ (Path.refl basepoint) := by
+    intro γ
+    exact twoSetOpenCover_basedLoop_nullhomotopic
+      (U := U) (V := V) hU hV hcover hbase γ
+  refine
+    ((HomotopyGroup.pi1EquivFundamentalGroup
+      (X := X) (x := basepoint)).subsingleton_congr).mpr ?_
+  change Subsingleton (Path.Homotopic.Quotient basepoint basepoint)
+  rw [subsingleton_iff]
+  intro a b
+  induction a using Quotient.inductionOn with
+  | h γ =>
+    induction b using Quotient.inductionOn with
+    | h δ =>
+      exact Quotient.sound ((hnull γ).trans (hnull δ).symm)
 
 /--
 The general two-set Van Kampen `π₁` contract specializes to the concrete
