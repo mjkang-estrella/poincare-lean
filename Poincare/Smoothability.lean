@@ -973,6 +973,21 @@ theorem smoothabilitySmoothManifoldStatement_eq :
   rfl
 
 /--
+The theorem-shaped `C∞` smooth-manifold output supplies the surgery-layer
+`C¹` manifold bridge, since the project model is definitionally the standard
+Euclidean 3-manifold model and `C∞` regularity implies `C¹` regularity.
+-/
+theorem smoothabilityBridgeStatement_of_smoothabilitySmoothManifoldStatement
+    (h : SmoothabilitySmoothManifoldStatement.{u}) :
+    SmoothabilityBridgeStatement.{u} := by
+  intro M _top _t2 _charted _simple _compact _smoothStructure
+    _smoothStructureDerivation
+  have htop : IsManifold (𝓡 3) ∞ M := h M
+  letI : IsManifold (𝓡 3) ∞ M := htop
+  dsimp [ThreeManifoldModelWithCorners, ThreeManifoldModel]
+  infer_instance
+
+/--
 Interface certifying that the theorem-shaped smoothability bridge follows from
 the constructed smooth atlas.
 -/
