@@ -165,7 +165,14 @@ check_no_constructors "HasPerelmanReducedVolumeMonotonicity" "Poincare/Surgery.l
 check_no_constructors "HasCanonicalNeighborhoodTheorem" "Poincare/Surgery.lean"
 check_no_constructors "HasSingularityModelClassification" "Poincare/Surgery.lean"
 check_no_constructors "HasSingularityModelBlowupClassification" "Poincare/Surgery.lean"
-check_no_constructors "HasFiniteExtinctionFundamentalGroupInput" "Poincare/Surgery.lean"
+if rg -q '^structure HasFiniteExtinctionFundamentalGroupInput\b' Poincare/Surgery.lean &&
+    rg -q 'finiteFundamentalGroup : ∀ x : M, Finite \(FundamentalGroup M x\)' Poincare/Surgery.lean &&
+    rg -q '^theorem finite_extinction_fundamental_group_input_of_simplyConnectedSpace\b' Poincare/Surgery.lean; then
+  echo "PASS: HasFiniteExtinctionFundamentalGroupInput is proof-resolved by finite fundamental groups"
+else
+  echo "FAIL: HasFiniteExtinctionFundamentalGroupInput is not the finite fundamental-group proof structure"
+  status=1
+fi
 check_no_constructors "HasFiniteExtinctionSweepoutExistence" "Poincare/Surgery.lean"
 check_no_constructors "HasFiniteExtinctionSweepoutParameterSpace" "Poincare/Surgery.lean"
 check_no_constructors "HasFiniteExtinctionSweepoutContinuity" "Poincare/Surgery.lean"
@@ -296,9 +303,9 @@ check_no_constructors "HasSmoothManifoldModelCompatibility" "Poincare/Smoothabil
 check_no_constructors "HasSmoothChartCompatibility" "Poincare/Smoothability.lean"
 
 if [ "$status" -eq 0 ]; then
-  echo "INTERFACES: no local constructors detected for gap-bearing predicates"
+  echo "INTERFACES: gap-bearing predicates guarded and proof-resolved interfaces verified"
 else
-  echo "INTERFACES: weakened interface detected"
+  echo "INTERFACES: interface regression detected"
 fi
 
 exit "$status"

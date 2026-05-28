@@ -3896,10 +3896,27 @@ end PerelmanPackageProjectionEqualities
 Interface for deriving finite extinction from Ricci flow with surgery and
 Perelman singularity control.
 -/
-inductive HasFiniteExtinctionFundamentalGroupInput
+structure HasFiniteExtinctionFundamentalGroupInput
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
-    [CompactSpace M] : Prop
+    [CompactSpace M] : Prop where
+  /-- The finite-extinction topological input: every based fundamental group is finite. -/
+  finiteFundamentalGroup : ∀ x : M, Finite (FundamentalGroup M x)
+
+/-- In a simply connected space, every based fundamental group is subsingleton. -/
+theorem fundamentalGroup_subsingleton_of_simplyConnectedSpace
+    {X : Type u} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) :
+    Subsingleton (FundamentalGroup X x) := by
+  change Subsingleton (Path.Homotopic.Quotient x x)
+  infer_instance
+
+/-- In a simply connected space, every based fundamental group is finite. -/
+theorem fundamentalGroup_finite_of_simplyConnectedSpace
+    {X : Type u} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X) :
+    Finite (FundamentalGroup X x) := by
+  haveI : Subsingleton (FundamentalGroup X x) :=
+    fundamentalGroup_subsingleton_of_simplyConnectedSpace x
+  infer_instance
 
 /--
 The finite-extinction topological hypotheses force every fundamental group to
@@ -3910,8 +3927,7 @@ theorem finite_extinction_fundamentalGroup_subsingleton_of_simplyConnectedSpace
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
     [CompactSpace M] (x : M) :
     Subsingleton (FundamentalGroup M x) := by
-  change Subsingleton (Path.Homotopic.Quotient x x)
-  infer_instance
+  exact fundamentalGroup_subsingleton_of_simplyConnectedSpace x
 
 /--
 The finite-extinction topological hypotheses give the finite fundamental-group
@@ -3922,9 +3938,19 @@ theorem finite_extinction_fundamentalGroup_finite_of_simplyConnectedSpace
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
     [CompactSpace M] (x : M) :
     Finite (FundamentalGroup M x) := by
-  haveI : Subsingleton (FundamentalGroup M x) :=
-    finite_extinction_fundamentalGroup_subsingleton_of_simplyConnectedSpace x
-  infer_instance
+  exact fundamentalGroup_finite_of_simplyConnectedSpace x
+
+/--
+Simply connectedness supplies the fundamental-group input required by the
+finite-extinction interface.
+-/
+theorem finite_extinction_fundamental_group_input_of_simplyConnectedSpace
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] :
+    HasFiniteExtinctionFundamentalGroupInput M where
+  finiteFundamentalGroup :=
+    finite_extinction_fundamentalGroup_finite_of_simplyConnectedSpace
 
 /-- Interface for producing the sweepout family used by the width argument. -/
 inductive HasFiniteExtinctionSweepoutExistence

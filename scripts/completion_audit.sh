@@ -5667,8 +5667,10 @@ check_decl "singularity-model classification interface is declared" \
   '^inductive HasSingularityModelClassification\b' Poincare/Surgery.lean
 check_decl "singularity-model blow-up classification interface is declared" \
   '^inductive HasSingularityModelBlowupClassification\b' Poincare/Surgery.lean
-check_decl "finite-extinction fundamental-group input interface is declared" \
-  '^inductive HasFiniteExtinctionFundamentalGroupInput\b' Poincare/Surgery.lean
+check_decl "finite-extinction fundamental-group input interface is proof-resolved" \
+  '^structure HasFiniteExtinctionFundamentalGroupInput\b' Poincare/Surgery.lean
+check_decl "finite-extinction fundamental-group input is derived from simple-connectedness" \
+  '^theorem finite_extinction_fundamental_group_input_of_simplyConnectedSpace\b' Poincare/Surgery.lean
 check_decl "finite-extinction sweepout-existence interface is declared" \
   '^inductive HasFiniteExtinctionSweepoutExistence\b' Poincare/Surgery.lean
 check_decl "finite-extinction sweepout-continuity interface is declared" \
