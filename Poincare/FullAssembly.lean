@@ -16,6 +16,35 @@ open scoped Manifold ContDiff
 
 namespace Poincare
 
+section OnePointThreeSpaceSmoothability
+
+attribute [local instance] onePoint_threeSpace_chartedSpace
+
+/--
+The theorem-shaped smoothability output applies to the concrete one-point
+compactification model once its transported 3-dimensional charted-space
+structure is installed.
+-/
+theorem onePoint_threeSpace_smoothManifold_of_smoothabilitySmoothManifoldStatement
+    (h : SmoothabilitySmoothManifoldStatement.{0}) :
+    IsManifold (𝓡 3) ∞ (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  exact h _
+
+/--
+The concrete `C∞` smoothability result supplies the `C¹` smooth-manifold
+evidence for the one-point compactification model used by the surgery layer.
+-/
+theorem onePoint_threeSpace_surgeryModel_isManifold_of_smoothabilitySmoothManifoldStatement
+    (h : SmoothabilitySmoothManifoldStatement.{0}) :
+    IsManifold ThreeManifoldModelWithCorners 1
+      (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  haveI :
+      IsManifold (𝓡 3) ∞ (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_smoothManifold_of_smoothabilitySmoothManifoldStatement h
+  infer_instance
+
+end OnePointThreeSpaceSmoothability
+
 /--
 The explicit smoothability and surgery package route exposes, for every target
 topological 3-manifold, the smooth manifold evidence, theorem-shaped
