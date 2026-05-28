@@ -45,6 +45,49 @@ theorem onePoint_threeSpace_surgeryModel_isManifold_of_smoothabilitySmoothManifo
 
 end OnePointThreeSpaceSmoothability
 
+section OnePointThreeSpaceFiniteExtinction
+
+attribute [local instance] onePoint_threeSpace_chartedSpace
+
+/--
+For the one-point compactification model, the source-choice `π₁` proof and the
+theorem-shaped smoothability output install the topology and smooth-manifold
+instances needed to consume a completed surgery package.
+-/
+theorem onePoint_threeSpace_finite_extinction_of_sourceChoiceCollapse_and_smoothabilitySmoothManifoldStatement_and_surgery_packages
+    (smooth : SmoothabilitySmoothManifoldStatement.{0})
+    (surgeryPackages :
+      ∀ [T2Space (OnePoint (EuclideanSpace ℝ (Fin 3)))]
+        [ChartedSpace ThreeManifoldModel
+          (OnePoint (EuclideanSpace ℝ (Fin 3)))]
+        [SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))]
+        [CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3)))]
+        [IsManifold ThreeManifoldModelWithCorners 1
+          (OnePoint (EuclideanSpace ℝ (Fin 3)))],
+          Nonempty (Σ n : ℕ∞ω,
+            FiniteExtinctionSurgeryPackage n
+              (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    FiniteExtinctionByRicciFlowWithSurgery
+      (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_t2Space
+  letI : ChartedSpace ThreeManifoldModel
+      (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_chartedSpace
+  letI : SimplyConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_simplyConnectedSpace_of_piOneSubsingletonStatement
+      onePoint_threeSpace_piOneSubsingletonStatement_of_sourceChoiceCollapse
+  letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_compactSpace
+  letI : IsManifold ThreeManifoldModelWithCorners 1
+      (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_surgeryModel_isManifold_of_smoothabilitySmoothManifoldStatement
+      smooth
+  rcases surgeryPackages with ⟨⟨_n, package⟩⟩
+  exact finite_extinction_of_surgery_package package
+
+end OnePointThreeSpaceFiniteExtinction
+
 /--
 The explicit smoothability and surgery package route exposes, for every target
 topological 3-manifold, the smooth manifold evidence, theorem-shaped
