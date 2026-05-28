@@ -2792,6 +2792,15 @@ theorem onePoint_threeSpace_piOneSubsingletonStatement_of_pathHomotopyStatement_
   funext h
   apply Subsingleton.elim
 
+/--
+The source-choice collapse proof gives triviality of `π₁` for the one-point
+compactification model at every basepoint.
+-/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_of_sourceChoiceCollapse :
+    OnePointThreeSpacePiOneSubsingletonStatement :=
+  onePoint_threeSpace_piOneSubsingletonStatement_of_pathHomotopyStatement
+    onePoint_threeSpace_pathHomotopyStatement_of_sourceChoiceCollapse
+
 /-- Compactification path-quotient uniqueness supplies the `π₁` formulation. -/
 theorem onePoint_threeSpace_piOneSubsingletonStatement_of_pathQuotientSubsingletonStatement
     (h : OnePointThreeSpacePathQuotientSubsingletonStatement) :
