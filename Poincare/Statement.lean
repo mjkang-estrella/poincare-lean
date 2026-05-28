@@ -6190,6 +6190,145 @@ theorem threeSphere_stereographic_southNorthBlockSouth_induction_step
     (hshort ((p.trans bridge).trans r) htargetRange)
 
 /--
+Non-terminal first-south-run step with an arbitrary finite north-source prefix:
+fold the prefix into the head path, replace the south run bracketed by a
+north-source return, and leave only the shorter tail to the continuation.
+-/
+theorem threeSphere_stereographic_northPrefixSouthRunNorthReturn_tail_induction_step
+    {A B : ℕ} {x₀ x₃ x₄ : ThreeSphere}
+    (northPts : Fin (A + 1) → ThreeSphere)
+    (northSegs : (k : Fin A) → Path (northPts k.castSucc) (northPts k.succ))
+    (southPts : Fin (B + 1) → ThreeSphere)
+    (southSegs : (k : Fin B) → Path (southPts k.castSucc) (southPts k.succ))
+    (p : Path x₀ (northPts 0))
+    (hjoin : southPts 0 = northPts (Fin.last A))
+    (r : Path (southPts (Fin.last B)) x₃)
+    (tail : Path x₃ x₄) (hclose : x₄ = x₀)
+    (hp : Set.range p ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hNorthBase : northPts 0 ∈ (stereographic' 3 threeSphere_northPole).source)
+    (hNorth : ∀ k : Fin A,
+      Set.range (northSegs k) ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hSouthBase : southPts 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouth : ∀ k : Fin B,
+      Set.range (southSegs k) ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hr : Set.range r ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hshort : ∀ q : Path x₀ x₃,
+      Set.range q ⊆ (stereographic' 3 threeSphere_northPole).source →
+      Path.Homotopic (q.trans tail) ((Path.refl x₀).cast rfl hclose)) :
+    Path.Homotopic
+      ((((p.trans (Path.concat northPts northSegs)).trans
+        ((Path.concat southPts southSegs).cast hjoin.symm rfl)).trans r).trans tail)
+      ((Path.refl x₀).cast rfl hclose) := by
+  let prefPath : Path x₀ (northPts (Fin.last A)) :=
+    p.trans (Path.concat northPts northSegs)
+  have hnorthConcat :
+      Set.range (Path.concat northPts northSegs) ⊆
+        (stereographic' 3 threeSphere_northPole).source :=
+    threeSphere_stereographic_source_concat_range_subset threeSphere_northPole
+      northPts northSegs hNorthBase hNorth
+  have hprefPath :
+      Set.range prefPath ⊆ (stereographic' 3 threeSphere_northPole).source := by
+    intro z hz
+    have hz' :
+        z ∈ Set.range p ∪ Set.range (Path.concat northPts northSegs) := by
+      simpa [prefPath, Path.trans_range] using hz
+    rcases hz' with hzP | hzN
+    · exact hp hzP
+    · exact hnorthConcat hzN
+  have hprefPathCast :
+      Set.range (prefPath.cast rfl hjoin) ⊆
+        (stereographic' 3 threeSphere_northPole).source := by
+    intro z hz
+    rcases hz with ⟨s, rfl⟩
+    exact hprefPath ⟨s, by simp [Path.cast_coe]⟩
+  have hcollapse :
+      Path.Homotopic
+        ((((prefPath.cast rfl hjoin).trans (Path.concat southPts southSegs)).trans r).trans tail)
+        ((Path.refl x₀).cast rfl hclose) := by
+    exact threeSphere_stereographic_northSouthBlockNorth_induction_step
+      southPts (prefPath.cast rfl hjoin) southSegs r tail hclose
+      hprefPathCast hSouthBase hSouth hr hshort
+  have hshift :
+      prefPath.trans ((Path.concat southPts southSegs).cast hjoin.symm rfl) =
+        (prefPath.cast rfl hjoin).trans (Path.concat southPts southSegs) := by
+    exact path_trans_source_cast_eq_target_cast_trans
+      prefPath (Path.concat southPts southSegs) hjoin
+  change Path.Homotopic
+    (((prefPath.trans ((Path.concat southPts southSegs).cast hjoin.symm rfl)).trans r).trans tail)
+    ((Path.refl x₀).cast rfl hclose)
+  rw [hshift]
+  exact hcollapse
+
+/--
+Symmetric non-terminal first-north-run step with an arbitrary finite
+south-source prefix.
+-/
+theorem threeSphere_stereographic_southPrefixNorthRunSouthReturn_tail_induction_step
+    {A B : ℕ} {x₀ x₃ x₄ : ThreeSphere}
+    (southPts : Fin (A + 1) → ThreeSphere)
+    (southSegs : (k : Fin A) → Path (southPts k.castSucc) (southPts k.succ))
+    (northPts : Fin (B + 1) → ThreeSphere)
+    (northSegs : (k : Fin B) → Path (northPts k.castSucc) (northPts k.succ))
+    (p : Path x₀ (southPts 0))
+    (hjoin : northPts 0 = southPts (Fin.last A))
+    (r : Path (northPts (Fin.last B)) x₃)
+    (tail : Path x₃ x₄) (hclose : x₄ = x₀)
+    (hp : Set.range p ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouthBase : southPts 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouth : ∀ k : Fin A,
+      Set.range (southSegs k) ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthBase : northPts 0 ∈ (stereographic' 3 threeSphere_northPole).source)
+    (hNorth : ∀ k : Fin B,
+      Set.range (northSegs k) ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hr : Set.range r ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hshort : ∀ q : Path x₀ x₃,
+      Set.range q ⊆ (stereographic' 3 (-threeSphere_northPole)).source →
+      Path.Homotopic (q.trans tail) ((Path.refl x₀).cast rfl hclose)) :
+    Path.Homotopic
+      ((((p.trans (Path.concat southPts southSegs)).trans
+        ((Path.concat northPts northSegs).cast hjoin.symm rfl)).trans r).trans tail)
+      ((Path.refl x₀).cast rfl hclose) := by
+  let prefPath : Path x₀ (southPts (Fin.last A)) :=
+    p.trans (Path.concat southPts southSegs)
+  have hsouthConcat :
+      Set.range (Path.concat southPts southSegs) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source :=
+    threeSphere_stereographic_source_concat_range_subset (-threeSphere_northPole)
+      southPts southSegs hSouthBase hSouth
+  have hprefPath :
+      Set.range prefPath ⊆ (stereographic' 3 (-threeSphere_northPole)).source := by
+    intro z hz
+    have hz' :
+        z ∈ Set.range p ∪ Set.range (Path.concat southPts southSegs) := by
+      simpa [prefPath, Path.trans_range] using hz
+    rcases hz' with hzP | hzS
+    · exact hp hzP
+    · exact hsouthConcat hzS
+  have hprefPathCast :
+      Set.range (prefPath.cast rfl hjoin) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source := by
+    intro z hz
+    rcases hz with ⟨s, rfl⟩
+    exact hprefPath ⟨s, by simp [Path.cast_coe]⟩
+  have hcollapse :
+      Path.Homotopic
+        ((((prefPath.cast rfl hjoin).trans (Path.concat northPts northSegs)).trans r).trans tail)
+        ((Path.refl x₀).cast rfl hclose) := by
+    exact threeSphere_stereographic_southNorthBlockSouth_induction_step
+      northPts (prefPath.cast rfl hjoin) northSegs r tail hclose
+      hprefPathCast hNorthBase hNorth hr hshort
+  have hshift :
+      prefPath.trans ((Path.concat northPts northSegs).cast hjoin.symm rfl) =
+        (prefPath.cast rfl hjoin).trans (Path.concat northPts northSegs) := by
+    exact path_trans_source_cast_eq_target_cast_trans
+      prefPath (Path.concat northPts northSegs) hjoin
+  change Path.Homotopic
+    (((prefPath.trans ((Path.concat northPts northSegs).cast hjoin.symm rfl)).trans r).trans tail)
+    ((Path.refl x₀).cast rfl hclose)
+  rw [hshift]
+  exact hcollapse
+
+/--
 The north replacement path produced from a bracketed finite south block gives
 an explicit two-step contraction: first replace the south block by an overlap
 path in the north source, then contract the resulting north-source loop.
