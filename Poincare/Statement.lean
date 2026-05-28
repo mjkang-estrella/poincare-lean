@@ -518,6 +518,178 @@ theorem path_homotopic_concat_split
         (F (Fin.last (L + R)))
 
 /--
+Finite path concatenation can be split after a block of `L` segments through a
+homotopy that stays inside the same set, provided all vertices and pieces stay
+there.  This is the contained algebraic split needed by finite two-set cover
+contractions.
+-/
+theorem path_concat_split_homotopy_forall_mem_of_mapsTo
+    {X : Type u} [TopologicalSpace X] {S : Set X} {L R : ℕ}
+    (p : Fin (L + R + 1) → X)
+    (F : (k : Fin (L + R)) → Path (p k.castSucc) (p k.succ))
+    (hbase : p 0 ∈ S)
+    (hF : ∀ k : Fin (L + R), Set.range (F k) ⊆ S) :
+    ∃ H : (Path.concat p F).Homotopy
+      ((Path.concat (fun i : Fin (L + 1) => p ⟨i.val, by omega⟩)
+        (fun k : Fin L => F ⟨k.val, by omega⟩)).trans
+        (Path.concat (fun j : Fin (R + 1) => p ⟨L + j.val, by omega⟩)
+          (fun k : Fin R => F ⟨L + k.val, by omega⟩))),
+      ∀ t, H t ∈ S := by
+  have hpPoint : ∀ i : Fin (L + R + 1), p i ∈ S := by
+    intro i
+    by_cases hi : i.val = 0
+    · have hidx : i = 0 := by
+        ext
+        exact hi
+      simpa [hidx] using hbase
+    · let k : Fin (L + R) := ⟨i.val - 1, by omega⟩
+      have hsucc : k.succ = i := by
+        ext
+        dsimp [k]
+        omega
+      have hend : p k.succ ∈ S := hF k ⟨1, (F k).target⟩
+      simpa [hsucc] using hend
+  have concatSubtypeVal :
+      ∀ {N : ℕ}
+      (p₀ : Fin (N + 1) → X)
+      (F₀ : (k : Fin N) → Path (p₀ k.castSucc) (p₀ k.succ))
+      (hp₀ : ∀ i : Fin (N + 1), p₀ i ∈ S)
+      (hF₀ : ∀ k : Fin N, Set.range (F₀ k) ⊆ S),
+      let pS : Fin (N + 1) → S := fun i => ⟨p₀ i, hp₀ i⟩
+      let FS : (k : Fin N) → Path (pS k.castSucc) (pS k.succ) := fun k =>
+        { toFun := fun t => ⟨F₀ k t, hF₀ k ⟨t, rfl⟩⟩
+          continuous_toFun := by
+            exact (F₀ k).continuous.subtype_mk (fun t => hF₀ k ⟨t, rfl⟩)
+          source' := by exact Subtype.ext (F₀ k).source
+          target' := by exact Subtype.ext (F₀ k).target }
+      ∀ t, ((Path.concat pS FS) t).1 = (Path.concat p₀ F₀) t := by
+    intro N
+    induction N with
+    | zero =>
+        intro p₀ F₀ hp₀ hF₀ pS FS t
+        rw [Path.concat_zero, Path.concat_zero]
+        rfl
+    | succ N ih =>
+        intro p₀ F₀ hp₀ hF₀ pS FS t
+        rw [Path.concat_succ, Path.concat_succ]
+        let AS : Path (pS 0) (pS (Fin.last N).castSucc) :=
+          Path.concat (pS ∘ Fin.castSucc) (fun k : Fin N => FS k.castSucc)
+        let BS : Path (pS (Fin.last N).castSucc) (pS (Fin.last (N + 1))) :=
+          FS (Fin.last N)
+        let A : Path (p₀ 0) (p₀ (Fin.last N).castSucc) :=
+          Path.concat (p₀ ∘ Fin.castSucc) (fun k : Fin N => F₀ k.castSucc)
+        let B : Path (p₀ (Fin.last N).castSucc) (p₀ (Fin.last (N + 1))) :=
+          F₀ (Fin.last N)
+        change ((AS.trans BS) t).1 = (A.trans B) t
+        have hleft : ((AS.trans BS) t).1 =
+            (if h : (t : ℝ) ≤ 1 / 2 then
+              AS ⟨2 * ↑t,
+                (unitInterval.mul_pos_mem_iff zero_lt_two).2 ⟨t.2.1, h⟩⟩
+            else
+              BS ⟨2 * ↑t - 1,
+                unitInterval.two_mul_sub_one_mem_iff.2
+                  ⟨(not_le.1 h).le, t.2.2⟩⟩).1 := by
+          exact congrArg Subtype.val (Path.trans_apply AS BS t)
+        rw [hleft]
+        rw [Path.trans_apply A B t]
+        split_ifs
+        · exact ih (p₀ ∘ Fin.castSucc) (fun k : Fin N => F₀ k.castSucc)
+            (fun i => hp₀ i.castSucc)
+            (fun k => hF₀ k.castSucc) _
+        · rfl
+  let pS : Fin (L + R + 1) → S := fun i => ⟨p i, hpPoint i⟩
+  let FS : (k : Fin (L + R)) → Path (pS k.castSucc) (pS k.succ) := fun k =>
+    { toFun := fun t => ⟨F k t, hF k ⟨t, rfl⟩⟩
+      continuous_toFun := by
+        exact (F k).continuous.subtype_mk (fun t => hF k ⟨t, rfl⟩)
+      source' := by
+        exact Subtype.ext (F k).source
+      target' := by
+        exact Subtype.ext (F k).target }
+  rcases path_homotopic_concat_split pS FS with ⟨Hsub⟩
+  have hsourceVal : ∀ t, ((Path.concat pS FS) t).1 = (Path.concat p F) t := by
+    exact concatSubtypeVal p F hpPoint hF
+  have htargetVal : ∀ t,
+      (((Path.concat (fun i : Fin (L + 1) => pS ⟨i.val, by omega⟩)
+        (fun k : Fin L => FS ⟨k.val, by omega⟩)).trans
+        (Path.concat (fun j : Fin (R + 1) => pS ⟨L + j.val, by omega⟩)
+          (fun k : Fin R => FS ⟨L + k.val, by omega⟩))) t).1 =
+      ((Path.concat (fun i : Fin (L + 1) => p ⟨i.val, by omega⟩)
+        (fun k : Fin L => F ⟨k.val, by omega⟩)).trans
+        (Path.concat (fun j : Fin (R + 1) => p ⟨L + j.val, by omega⟩)
+          (fun k : Fin R => F ⟨L + k.val, by omega⟩))) t := by
+    intro t
+    let PS : Path (pS 0) (pS ⟨L, by omega⟩) :=
+      Path.concat (fun i : Fin (L + 1) => pS ⟨i.val, by omega⟩)
+        (fun k : Fin L => FS ⟨k.val, by omega⟩)
+    let QS : Path (pS ⟨L, by omega⟩) (pS (Fin.last (L + R))) :=
+      Path.concat (fun j : Fin (R + 1) => pS ⟨L + j.val, by omega⟩)
+        (fun k : Fin R => FS ⟨L + k.val, by omega⟩)
+    let P : Path (p 0) (p ⟨L, by omega⟩) :=
+      Path.concat (fun i : Fin (L + 1) => p ⟨i.val, by omega⟩)
+        (fun k : Fin L => F ⟨k.val, by omega⟩)
+    let Q : Path (p ⟨L, by omega⟩) (p (Fin.last (L + R))) :=
+      Path.concat (fun j : Fin (R + 1) => p ⟨L + j.val, by omega⟩)
+        (fun k : Fin R => F ⟨L + k.val, by omega⟩)
+    change ((PS.trans QS) t).1 = (P.trans Q) t
+    have hleft : ((PS.trans QS) t).1 =
+        (if h : (t : ℝ) ≤ 1 / 2 then
+          PS ⟨2 * ↑t,
+            (unitInterval.mul_pos_mem_iff zero_lt_two).2 ⟨t.2.1, h⟩⟩
+        else
+          QS ⟨2 * ↑t - 1,
+            unitInterval.two_mul_sub_one_mem_iff.2
+              ⟨(not_le.1 h).le, t.2.2⟩⟩).1 := by
+      exact congrArg Subtype.val (Path.trans_apply PS QS t)
+    rw [hleft]
+    rw [Path.trans_apply P Q t]
+    have hprefixVal : ∀ s, (PS s).1 = P s := by
+      intro s
+      exact concatSubtypeVal
+        (fun i : Fin (L + 1) => p ⟨i.val, by omega⟩)
+        (fun k : Fin L => F ⟨k.val, by omega⟩)
+        (fun i => hpPoint ⟨i.val, by omega⟩)
+        (fun k => hF ⟨k.val, by omega⟩) s
+    have hsuffixVal : ∀ s, (QS s).1 = Q s := by
+      intro s
+      exact concatSubtypeVal
+        (fun j : Fin (R + 1) => p ⟨L + j.val, by omega⟩)
+        (fun k : Fin R => F ⟨L + k.val, by omega⟩)
+        (fun j => hpPoint ⟨L + j.val, by omega⟩)
+        (fun k => hF ⟨L + k.val, by omega⟩) s
+    split_ifs
+    · exact hprefixVal _
+    · exact hsuffixVal _
+  refine ⟨{
+    toFun := fun t => (Hsub t).1
+    continuous_toFun := by fun_prop
+    map_zero_left := by
+      intro t
+      change (Hsub (0, t)).1 = (Path.concat p F) t
+      exact (congrArg Subtype.val (Hsub.map_zero_left t)).trans (hsourceVal t)
+    map_one_left := by
+      intro t
+      change (Hsub (1, t)).1 =
+        ((Path.concat (fun i : Fin (L + 1) => p ⟨i.val, by omega⟩)
+          (fun k : Fin L => F ⟨k.val, by omega⟩)).trans
+          (Path.concat (fun j : Fin (R + 1) => p ⟨L + j.val, by omega⟩)
+            (fun k : Fin R => F ⟨L + k.val, by omega⟩))) t
+      exact (congrArg Subtype.val (Hsub.map_one_left t)).trans (htargetVal t)
+    prop' := by
+      intro t z hz
+      rcases hz with hz | hz
+      · rw [hz]
+        exact (congrArg Subtype.val (Hsub.prop' t 0 (by simp))).trans
+          (hsourceVal 0)
+      · rw [Set.mem_singleton_iff] at hz
+        rw [hz]
+        exact (congrArg Subtype.val (Hsub.prop' t 1 (by simp))).trans
+          (hsourceVal 1)
+  }, ?_⟩
+  intro t
+  exact (Hsub t).2
+
+/--
 Finite path concatenation can be split after a block of `L` segments even when
 the ambient length is only propositionally equal to `L + R`; the resulting
 endpoint cast records the arithmetic alignment of the split suffix.
