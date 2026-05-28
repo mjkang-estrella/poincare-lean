@@ -3008,6 +3008,112 @@ theorem euclideanThree_compl_singleton_pathConnectedSpace_eq
         (euclideanThree_isPathConnected_compl_singleton x) := by
   apply Subsingleton.elim
 
+/-- The antipode of `v` as a point of the stereographic source at `v`. -/
+noncomputable def threeSphere_antipodeInSource
+    (v : ThreeSphere) : (stereographic' 3 v).source :=
+  ⟨-v, threeSphere_antipode_mem_stereographic_source v⟩
+
+/--
+The stereographic chart image of the antipode of `v`, viewed in the chart
+source centered at `v`.
+-/
+noncomputable def threeSphere_antipodeChartImage
+    (v : ThreeSphere) : EuclideanSpace ℝ (Fin 3) :=
+  threeSphere_stereographic_source_homeomorph v
+    (threeSphere_antipodeInSource v)
+
+/--
+The stereographic chart at `v` identifies the model overlap around `v` with a
+punctured `ℝ³`, where the removed point is the image of `-v`.
+-/
+noncomputable def threeSphere_antipodalSourceOverlap_homeomorph_puncturedChart
+    (v : ThreeSphere) :
+    ({threeSphere_antipodeInSource v}ᶜ :
+      Set (stereographic' 3 v).source) ≃ₜ
+      ({threeSphere_antipodeChartImage v}ᶜ :
+        Set (EuclideanSpace ℝ (Fin 3))) :=
+  (threeSphere_stereographic_source_homeomorph v).subtype
+    (fun _p => by
+      simp [threeSphere_antipodeChartImage])
+
+/--
+The source-side model of the overlap of antipodal stereographic charts is
+path-connected, because it is homeomorphic to punctured `ℝ³`.
+-/
+theorem threeSphere_antipodalSourceOverlap_pathConnectedSpace
+    (v : ThreeSphere) :
+    PathConnectedSpace
+      ({threeSphere_antipodeInSource v}ᶜ :
+        Set (stereographic' 3 v).source) := by
+  letI : PathConnectedSpace
+      ({threeSphere_antipodeChartImage v}ᶜ :
+        Set (EuclideanSpace ℝ (Fin 3))) :=
+    euclideanThree_compl_singleton_pathConnectedSpace
+      (threeSphere_antipodeChartImage v)
+  exact
+    (threeSphere_antipodalSourceOverlap_homeomorph_puncturedChart v).symm.surjective.pathConnectedSpace
+      (threeSphere_antipodalSourceOverlap_homeomorph_puncturedChart v).symm.continuous
+
+/--
+The actual overlap of the two stereographic sources centered at `v` and `-v`
+is homeomorphic to the source-side complement of the antipode.
+-/
+noncomputable def threeSphere_antipodalActualOverlap_homeomorph_sourceOverlap
+    (v : ThreeSphere) :
+    (((stereographic' 3 v).source ∩
+      (stereographic' 3 (-v)).source) : Set ThreeSphere) ≃ₜ
+      ({threeSphere_antipodeInSource v}ᶜ :
+        Set (stereographic' 3 v).source) where
+  toFun p :=
+    ⟨⟨p.1, p.2.1⟩, by
+      rw [Set.mem_compl_iff]
+      intro h
+      have hantipodeSource : (p : ThreeSphere) ∈
+          (stereographic' 3 (-v)).source := p.2.2
+      have hp_ne_antipode : (p : ThreeSphere) ≠ -v := by
+        simpa [threeSphere_stereographic_source_eq_compl_singleton] using
+          hantipodeSource
+      have hpoint :
+          (⟨p.1, p.2.1⟩ : (stereographic' 3 v).source) =
+            threeSphere_antipodeInSource v := by
+        simpa using h
+      exact hp_ne_antipode (Subtype.ext_iff.mp hpoint)⟩
+  invFun p :=
+    ⟨p.1.1, by
+      constructor
+      · exact p.1.2
+      · rw [threeSphere_stereographic_source_eq_compl_singleton]
+        intro h
+        exact p.2 (Subtype.ext h)⟩
+  left_inv p := by
+    ext
+    rfl
+  right_inv p := by
+    ext
+    rfl
+  continuous_toFun := by
+    continuity
+  continuous_invFun := by
+    continuity
+
+/--
+Any antipodal pair of stereographic sources on the concrete `ThreeSphere` has
+path-connected overlap.  This is the chart-overlap topology input behind the
+two-set Van Kampen proof, with the fixed north/south case as a specialization.
+-/
+theorem threeSphere_antipodalActualOverlap_pathConnectedSpace
+    (v : ThreeSphere) :
+    PathConnectedSpace
+      (((stereographic' 3 v).source ∩
+        (stereographic' 3 (-v)).source) : Set ThreeSphere) := by
+  letI : PathConnectedSpace
+      ({threeSphere_antipodeInSource v}ᶜ :
+        Set (stereographic' 3 v).source) :=
+    threeSphere_antipodalSourceOverlap_pathConnectedSpace v
+  exact
+    (threeSphere_antipodalActualOverlap_homeomorph_sourceOverlap v).symm.surjective.pathConnectedSpace
+      (threeSphere_antipodalActualOverlap_homeomorph_sourceOverlap v).symm.continuous
+
 /--
 The complement of the south-pole image in the north-pole stereographic chart is
 path-connected in `ℝ³`.
@@ -3334,13 +3440,7 @@ theorem threeSphere_actualOverlap_pathConnectedSpace :
     PathConnectedSpace
       (((stereographic' 3 threeSphere_northPole).source ∩
         (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere) := by
-  letI : PathConnectedSpace
-      ({threeSphere_southPoleInNorthSource}ᶜ :
-        Set (stereographic' 3 threeSphere_northPole).source) :=
-    threeSphere_northSourceOverlap_pathConnectedSpace
-  exact
-    threeSphere_actualOverlap_homeomorph_northSourceOverlap.symm.surjective.pathConnectedSpace
-      threeSphere_actualOverlap_homeomorph_northSourceOverlap.symm.continuous
+  exact threeSphere_antipodalActualOverlap_pathConnectedSpace threeSphere_northPole
 
 /--
 The actual-overlap path-connectedness witness is the transported
