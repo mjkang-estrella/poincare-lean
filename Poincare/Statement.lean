@@ -3700,6 +3700,26 @@ theorem pathQuotientSubsingleton_of_pathConnectedSpace_and_basedFundamentalGroup
   exact ((simply_connected_iff_paths_homotopic).mp hSC).2
 
 /--
+In a path-connected space, triviality of `π₁` at one basepoint collapses
+`π₁` at every basepoint.
+-/
+theorem piOneSubsingleton_of_pathConnectedSpace_and_basedPiOneSubsingleton
+    {Y : Type u} [TopologicalSpace Y] (basepoint : Y)
+    [PathConnectedSpace Y]
+    (h : Subsingleton (HomotopyGroup.Pi 1 Y basepoint)) :
+    ∀ x : Y, Subsingleton (HomotopyGroup.Pi 1 Y x) := by
+  have hfg : Subsingleton (FundamentalGroup Y basepoint) :=
+    ((HomotopyGroup.pi1EquivFundamentalGroup
+      (X := Y) (x := basepoint)).subsingleton_congr).mp h
+  have hquot :
+      ∀ x y : Y, Subsingleton (Path.Homotopic.Quotient x y) :=
+    pathQuotientSubsingleton_of_pathConnectedSpace_and_basedFundamentalGroupSubsingleton
+      basepoint hfg
+  intro x
+  exact ((HomotopyGroup.pi1EquivFundamentalGroup
+    (X := Y) (x := x)).subsingleton_congr).mpr (hquot x x)
+
+/--
 Simple-connectedness is equivalent to path-connectedness plus trivial based
 fundamental groups at every basepoint.
 -/
@@ -32348,16 +32368,9 @@ theorem threeSphere_piOneSubsingletonStatement_of_basedPiOneSubsingleton
     {basepoint : ThreeSphere}
     (h : Subsingleton (HomotopyGroup.Pi 1 ThreeSphere basepoint)) :
     ThreeSpherePiOneSubsingletonStatement := by
-  let hLoop :=
-    (threeSphere_basedPiOneSubsingleton_iff_basedLoopNullhomotopyStatement
-      basepoint).mp h
-  letI : SimplyConnectedSpace ThreeSphere :=
-    threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hLoop
-  intro x
-  exact ((HomotopyGroup.pi1EquivFundamentalGroup
-    (X := ThreeSphere) (x := x)).subsingleton_congr).mpr (by
-      change Subsingleton (Path.Homotopic.Quotient x x)
-      infer_instance)
+  exact
+    piOneSubsingleton_of_pathConnectedSpace_and_basedPiOneSubsingleton
+      basepoint h
 
 /--
 The fixed `π₁`-to-global `π₁` route factors through the fixed-basepoint
