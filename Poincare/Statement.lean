@@ -3660,6 +3660,32 @@ theorem simplyConnectedSpace_iff_pathConnectedSpace_and_basedLoopNullhomotopy_eq
   apply Subsingleton.elim
 
 /--
+In a path-connected space, triviality of the fundamental group at one basepoint
+is equivalent to simple-connectedness.
+-/
+theorem simplyConnectedSpace_iff_pathConnectedSpace_and_basedFundamentalGroupSubsingleton
+    {Y : Type u} [TopologicalSpace Y] (basepoint : Y) :
+    SimplyConnectedSpace Y ↔
+      PathConnectedSpace Y ∧ Subsingleton (FundamentalGroup Y basepoint) := by
+  rw [simplyConnectedSpace_iff_pathConnectedSpace_and_basedLoopNullhomotopy basepoint]
+  constructor
+  · intro h
+    exact ⟨h.1, by
+      change Subsingleton (Path.Homotopic.Quotient basepoint basepoint)
+      rw [subsingleton_iff]
+      intro a b
+      induction a using Quotient.inductionOn with
+      | h γ =>
+        induction b using Quotient.inductionOn with
+        | h δ =>
+          exact Quotient.sound ((h.2 γ).trans (h.2 δ).symm)⟩
+  · intro h
+    exact ⟨h.1, fun γ => by
+      rw [← Path.Homotopic.Quotient.eq]
+      exact h.2.elim (⟦γ⟧ : Path.Homotopic.Quotient basepoint basepoint)
+        ⟦Path.refl basepoint⟧⟩
+
+/--
 Simple-connectedness is equivalent to path-connectedness plus trivial based
 fundamental groups at every basepoint.
 -/
@@ -32095,11 +32121,9 @@ theorem threeSphere_fundamentalGroupSubsingletonStatement_of_basedFundamentalGro
     {basepoint : ThreeSphere}
     (h : Subsingleton (FundamentalGroup ThreeSphere basepoint)) :
     ThreeSphereFundamentalGroupSubsingletonStatement := by
-  let hLoop :=
-    (threeSphere_basedFundamentalGroupSubsingleton_iff_basedLoopNullhomotopyStatement
-      basepoint).mp h
   letI : SimplyConnectedSpace ThreeSphere :=
-    threeSphere_simplyConnectedSpace_of_basedLoopNullhomotopyStatement hLoop
+    (simplyConnectedSpace_iff_pathConnectedSpace_and_basedFundamentalGroupSubsingleton
+      basepoint).mpr ⟨threeSphere_pathConnectedSpace, h⟩
   intro x
   change Subsingleton (Path.Homotopic.Quotient x x)
   infer_instance
