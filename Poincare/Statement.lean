@@ -3920,6 +3920,75 @@ theorem twoSetOpenCover_sameSideBlock_homotopic_to_overlapBlock_of_mapsTo
   exact ⟨q, hqU, hreplace, htargetRange⟩
 
 /--
+Non-terminal first-opposite-run step with an arbitrary finite preferred prefix:
+fold the preferred prefix into the head path, replace the opposite run by an
+overlap path in the preferred member, and leave the shorter tail to a
+continuation hypothesis.
+-/
+theorem twoSetOpenCover_samePrefixOppositeRunSameReturn_tail_induction_step_of_mapsTo
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {A B : ℕ}
+    {x₀ x₃ x₄ : Y}
+    [SimplyConnectedSpace V] [PathConnectedSpace (U ∩ V : Set Y)]
+    (prefPts : Fin (A + 1) → Y)
+    (prefSegs : (k : Fin A) → Path (prefPts k.castSucc) (prefPts k.succ))
+    (oppPts : Fin (B + 1) → Y)
+    (oppSegs : (k : Fin B) → Path (oppPts k.castSucc) (oppPts k.succ))
+    (p : Path x₀ (prefPts 0))
+    (hjoin : oppPts 0 = prefPts (Fin.last A))
+    (r : Path (oppPts (Fin.last B)) x₃)
+    (tail : Path x₃ x₄) (hclose : x₄ = x₀)
+    (hp : Set.range p ⊆ U)
+    (hPrefBase : prefPts 0 ∈ U)
+    (hPref : ∀ k : Fin A, Set.range (prefSegs k) ⊆ U)
+    (hOppBase : oppPts 0 ∈ V)
+    (hOpp : ∀ k : Fin B, Set.range (oppSegs k) ⊆ V)
+    (hr : Set.range r ⊆ U)
+    (hshort : ∀ q : Path x₀ x₃, Set.range q ⊆ U →
+      Path.Homotopic (q.trans tail) ((Path.refl x₀).cast rfl hclose)) :
+    Path.Homotopic
+      ((((p.trans (Path.concat prefPts prefSegs)).trans
+        ((Path.concat oppPts oppSegs).cast hjoin.symm rfl)).trans r).trans tail)
+      ((Path.refl x₀).cast rfl hclose) := by
+  let prefPath : Path x₀ (prefPts (Fin.last A)) :=
+    p.trans (Path.concat prefPts prefSegs)
+  have hprefConcat :
+      Set.range (Path.concat prefPts prefSegs) ⊆ U :=
+    path_concat_range_subset_of_mapsTo prefPts prefSegs hPrefBase hPref
+  have hprefPath :
+      Set.range prefPath ⊆ U := by
+    intro z hz
+    have hz' : z ∈ Set.range p ∪ Set.range (Path.concat prefPts prefSegs) := by
+      simpa [prefPath, Path.trans_range] using hz
+    rcases hz' with hzP | hzPref
+    · exact hp hzP
+    · exact hprefConcat hzPref
+  have hprefPathCast :
+      Set.range (prefPath.cast rfl hjoin) ⊆ U := by
+    intro z hz
+    rcases hz with ⟨s, rfl⟩
+    exact hprefPath ⟨s, by simp [Path.cast_coe]⟩
+  rcases twoSetOpenCover_sameSideBlock_homotopic_to_overlapBlock_of_mapsTo
+      (U := U) (V := V) oppPts (prefPath.cast rfl hjoin) oppSegs r
+      hprefPathCast hOppBase hOpp hr with
+    ⟨bridge, _hbridgeRange, hreplace, htargetRange⟩
+  have hcollapse :
+      Path.Homotopic
+        ((((prefPath.cast rfl hjoin).trans (Path.concat oppPts oppSegs)).trans r).trans tail)
+        ((Path.refl x₀).cast rfl hclose) :=
+    (Path.Homotopic.hcomp hreplace (Path.Homotopic.refl tail)).trans
+      (hshort (((prefPath.cast rfl hjoin).trans bridge).trans r) htargetRange)
+  have hshift :
+      prefPath.trans ((Path.concat oppPts oppSegs).cast hjoin.symm rfl) =
+        (prefPath.cast rfl hjoin).trans (Path.concat oppPts oppSegs) := by
+    exact path_trans_source_cast_eq_target_cast_trans
+      prefPath (Path.concat oppPts oppSegs) hjoin
+  change Path.Homotopic
+    (((prefPath.trans ((Path.concat oppPts oppSegs).cast hjoin.symm rfl)).trans r).trans tail)
+    ((Path.refl x₀).cast rfl hclose)
+  rw [hshift]
+  exact hcollapse
+
+/--
 A finite block in one member of a two-set cover, bracketed by paths in the
 other member and closing up to a loop, is nullhomotopic after replacing the
 block through the overlap and contracting inside the bracketing member.
@@ -8596,45 +8665,28 @@ theorem threeSphere_stereographic_northPrefixSouthRunNorthReturn_tail_induction_
       ((((p.trans (Path.concat northPts northSegs)).trans
         ((Path.concat southPts southSegs).cast hjoin.symm rfl)).trans r).trans tail)
       ((Path.refl x₀).cast rfl hclose) := by
-  let prefPath : Path x₀ (northPts (Fin.last A)) :=
-    p.trans (Path.concat northPts northSegs)
-  have hnorthConcat :
-      Set.range (Path.concat northPts northSegs) ⊆
-        (stereographic' 3 threeSphere_northPole).source :=
-    threeSphere_stereographic_source_concat_range_subset threeSphere_northPole
-      northPts northSegs hNorthBase hNorth
-  have hprefPath :
-      Set.range prefPath ⊆ (stereographic' 3 threeSphere_northPole).source := by
-    intro z hz
-    have hz' :
-        z ∈ Set.range p ∪ Set.range (Path.concat northPts northSegs) := by
-      simpa [prefPath, Path.trans_range] using hz
-    rcases hz' with hzP | hzN
-    · exact hp hzP
-    · exact hnorthConcat hzN
-  have hprefPathCast :
-      Set.range (prefPath.cast rfl hjoin) ⊆
-        (stereographic' 3 threeSphere_northPole).source := by
-    intro z hz
-    rcases hz with ⟨s, rfl⟩
-    exact hprefPath ⟨s, by simp [Path.cast_coe]⟩
-  have hcollapse :
-      Path.Homotopic
-        ((((prefPath.cast rfl hjoin).trans (Path.concat southPts southSegs)).trans r).trans tail)
-        ((Path.refl x₀).cast rfl hclose) := by
-    exact threeSphere_stereographic_northSouthBlockNorth_induction_step
-      southPts (prefPath.cast rfl hjoin) southSegs r tail hclose
-      hprefPathCast hSouthBase hSouth hr hshort
-  have hshift :
-      prefPath.trans ((Path.concat southPts southSegs).cast hjoin.symm rfl) =
-        (prefPath.cast rfl hjoin).trans (Path.concat southPts southSegs) := by
-    exact path_trans_source_cast_eq_target_cast_trans
-      prefPath (Path.concat southPts southSegs) hjoin
-  change Path.Homotopic
-    (((prefPath.trans ((Path.concat southPts southSegs).cast hjoin.symm rfl)).trans r).trans tail)
-    ((Path.refl x₀).cast rfl hclose)
-  rw [hshift]
-  exact hcollapse
+  let U : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
+  let V : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace
+      (-threeSphere_northPole)
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    simpa [U, V] using threeSphere_actualOverlap_pathConnectedSpace
+  exact twoSetOpenCover_samePrefixOppositeRunSameReturn_tail_induction_step_of_mapsTo
+    (U := U) (V := V) northPts northSegs southPts southSegs p hjoin r tail hclose
+    (by simpa [U] using hp)
+    (by simpa [U] using hNorthBase)
+    (by
+      intro k
+      simpa [U] using hNorth k)
+    (by simpa [V] using hSouthBase)
+    (by
+      intro k
+      simpa [V] using hSouth k)
+    (by simpa [U] using hr)
+    (by
+      intro q hq
+      exact hshort q (by simpa [U] using hq))
 
 /--
 Symmetric non-terminal first-north-run step with an arbitrary finite
@@ -8665,45 +8717,32 @@ theorem threeSphere_stereographic_southPrefixNorthRunSouthReturn_tail_induction_
       ((((p.trans (Path.concat southPts southSegs)).trans
         ((Path.concat northPts northSegs).cast hjoin.symm rfl)).trans r).trans tail)
       ((Path.refl x₀).cast rfl hclose) := by
-  let prefPath : Path x₀ (southPts (Fin.last A)) :=
-    p.trans (Path.concat southPts southSegs)
-  have hsouthConcat :
-      Set.range (Path.concat southPts southSegs) ⊆
-        (stereographic' 3 (-threeSphere_northPole)).source :=
-    threeSphere_stereographic_source_concat_range_subset (-threeSphere_northPole)
-      southPts southSegs hSouthBase hSouth
-  have hprefPath :
-      Set.range prefPath ⊆ (stereographic' 3 (-threeSphere_northPole)).source := by
-    intro z hz
-    have hz' :
-        z ∈ Set.range p ∪ Set.range (Path.concat southPts southSegs) := by
-      simpa [prefPath, Path.trans_range] using hz
-    rcases hz' with hzP | hzS
-    · exact hp hzP
-    · exact hsouthConcat hzS
-  have hprefPathCast :
-      Set.range (prefPath.cast rfl hjoin) ⊆
-        (stereographic' 3 (-threeSphere_northPole)).source := by
-    intro z hz
-    rcases hz with ⟨s, rfl⟩
-    exact hprefPath ⟨s, by simp [Path.cast_coe]⟩
-  have hcollapse :
-      Path.Homotopic
-        ((((prefPath.cast rfl hjoin).trans (Path.concat northPts northSegs)).trans r).trans tail)
-        ((Path.refl x₀).cast rfl hclose) := by
-    exact threeSphere_stereographic_southNorthBlockSouth_induction_step
-      northPts (prefPath.cast rfl hjoin) northSegs r tail hclose
-      hprefPathCast hNorthBase hNorth hr hshort
-  have hshift :
-      prefPath.trans ((Path.concat northPts northSegs).cast hjoin.symm rfl) =
-        (prefPath.cast rfl hjoin).trans (Path.concat northPts northSegs) := by
-    exact path_trans_source_cast_eq_target_cast_trans
-      prefPath (Path.concat northPts northSegs) hjoin
-  change Path.Homotopic
-    (((prefPath.trans ((Path.concat northPts northSegs).cast hjoin.symm rfl)).trans r).trans tail)
-    ((Path.refl x₀).cast rfl hclose)
-  rw [hshift]
-  exact hcollapse
+  let U : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  let V : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace
+      threeSphere_northPole
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    change PathConnectedSpace
+      ((stereographic' 3 (-threeSphere_northPole)).source ∩
+        (stereographic' 3 threeSphere_northPole).source : Set ThreeSphere)
+    rw [Set.inter_comm]
+    exact threeSphere_actualOverlap_pathConnectedSpace
+  exact twoSetOpenCover_samePrefixOppositeRunSameReturn_tail_induction_step_of_mapsTo
+    (U := U) (V := V) southPts southSegs northPts northSegs p hjoin r tail hclose
+    (by simpa [U] using hp)
+    (by simpa [U] using hSouthBase)
+    (by
+      intro k
+      simpa [U] using hSouth k)
+    (by simpa [V] using hNorthBase)
+    (by
+      intro k
+      simpa [V] using hNorth k)
+    (by simpa [U] using hr)
+    (by
+      intro q hq
+      exact hshort q (by simpa [U] using hq))
 
 /--
 Flat non-terminal first-south-run step for arbitrary finite tails split into a
