@@ -9,7 +9,7 @@ needed to identify the manifold with the standard 3-sphere.
 import Poincare.RicciFlowInterface
 import Mathlib.Topology.Compactification.OnePoint.Sphere
 
-universe u
+universe u v
 
 open scoped Manifold ContDiff
 
@@ -4636,12 +4636,16 @@ theorem onePoint_threeSpace_homotopy_manifold_prerequisites_of_pathQuotientSubsi
   apply Subsingleton.elim
 
 /--
-Any space recognized as the one-point compactification model inherits the same
-basic `C^0` 3-manifold prerequisite payload.
+A homeomorphism to a known compact path-connected locally path-connected
+topological 3-manifold transports the basic manifold prerequisites to the
+source.
 -/
-theorem topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace
-    {M : Type u} [TopologicalSpace M]
-    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+theorem topological_manifold_prerequisites_of_homeomorph
+    {M : Type u} {N : Type v} [TopologicalSpace M] [TopologicalSpace N]
+    [T2Space N] [CompactSpace N]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N] [IsManifold (𝓡 3) 0 N]
+    [PathConnectedSpace N] [LocPathConnectedSpace N]
+    (h : Nonempty (M ≃ₜ N)) :
     ∃ _t2 : T2Space M,
     ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
     ∃ _compact : CompactSpace M,
@@ -4651,15 +4655,6 @@ theorem topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace
     ∃ _connected : ConnectedSpace M,
       Nonempty M := by
   rcases h with ⟨e⟩
-  letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) := onePoint_threeSpace_t2Space
-  letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
-    onePoint_threeSpace_compactSpace
-  letI : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
-    onePoint_threeSpace_pathConnectedSpace
-  letI : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
-    onePoint_threeSpace_locPathConnectedSpace
-  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
-    onePoint_threeSpace_chartedSpace
   let charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M :=
     e.symm.isLocalHomeomorph.chartedSpace e.symm.surjective
   let topological : IsManifold (𝓡 3) 0 M := by
@@ -4675,8 +4670,36 @@ theorem topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace
   let nonempty : Nonempty M := by
     letI : PathConnectedSpace M := path
     infer_instance
-  exact ⟨e.symm.t2Space, charted, e.symm.compactSpace, topological, path, locPath,
-    connected, nonempty⟩
+  exact ⟨e.symm.t2Space, charted, e.symm.compactSpace, topological, path,
+    locPath, connected, nonempty⟩
+
+/--
+Any space recognized as the one-point compactification model inherits the same
+basic `C^0` 3-manifold prerequisite payload.
+-/
+theorem topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _compact : CompactSpace M,
+    ∃ _topological : IsManifold (𝓡 3) 0 M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) := onePoint_threeSpace_t2Space
+  letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_compactSpace
+  letI : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_pathConnectedSpace
+  letI : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_locPathConnectedSpace
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_chartedSpace
+  haveI : IsManifold (𝓡 3) 0 (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+    infer_instance
+  exact topological_manifold_prerequisites_of_homeomorph h
 
 /-- The compactification-recognition prerequisite route is explicit transport along the homeomorphism. -/
 theorem topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq
@@ -6319,30 +6342,15 @@ theorem topological_manifold_prerequisites_of_homeomorph_to_threeSphere
     ∃ _locPath : LocPathConnectedSpace M,
     ∃ _connected : ConnectedSpace M,
       Nonempty M := by
-  rcases h with ⟨e⟩
   letI : T2Space ThreeSphere := threeSphere_t2Space
   letI : CompactSpace ThreeSphere := threeSphere_compactSpace
   letI : PathConnectedSpace ThreeSphere := threeSphere_pathConnectedSpace
   letI : LocPathConnectedSpace ThreeSphere := threeSphere_locPathConnectedSpace
   letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere :=
     threeSphere_chartedSpace
-  let charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M :=
-    e.symm.isLocalHomeomorph.chartedSpace e.symm.surjective
-  let topological : IsManifold (𝓡 3) 0 M := by
-    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M := charted
+  haveI : IsManifold (𝓡 3) 0 ThreeSphere := by
     infer_instance
-  let path : PathConnectedSpace M :=
-    e.symm.surjective.pathConnectedSpace e.symm.continuous
-  let locPath : LocPathConnectedSpace M :=
-    e.isOpenEmbedding.locPathConnectedSpace
-  let connected : ConnectedSpace M := by
-    letI : PathConnectedSpace M := path
-    infer_instance
-  let nonempty : Nonempty M := by
-    letI : PathConnectedSpace M := path
-    infer_instance
-  exact ⟨e.symm.t2Space, charted, e.symm.compactSpace, topological, path,
-    locPath, connected, nonempty⟩
+  exact topological_manifold_prerequisites_of_homeomorph h
 
 /-- The direct target-recognition prerequisite route is explicit homeomorphism transport. -/
 theorem topological_manifold_prerequisites_of_homeomorph_to_threeSphere_eq
