@@ -4606,6 +4606,72 @@ theorem twoSetOpenCover_sameHead_firstOppositeRun_tail_induction
     ih C hClt afterPts afterSegs q hafterClose hq hafterChoice
 
 /--
+A finite source-choice subdivision of a based loop contracts in any two-set
+cover whose two members are simply connected and whose overlap is path
+connected.  This is the generic finite-word Van Kampen collapse consumed by the
+stereographic cover proof.
+-/
+theorem twoSetOpenCover_basedLoop_fullConcat_nullhomotopic_of_sourceChoice
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {basepoint : Y}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set Y)]
+    (hbaseU : basepoint ∈ U)
+    (γ : Path basepoint basepoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval)
+    (h0 : t 0 = 0) (h1 : t (Fin.last N) = 1)
+    (hchoice : ∀ k : Fin N,
+      Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆ U ∨
+        Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆ V) :
+    Path.Homotopic
+      (Path.concat (γ ∘ t) (fun k : Fin N =>
+        γ.subpath (t k.castSucc) (t k.succ)))
+      ((Path.refl basepoint).cast
+        (by simp [h0, γ.source])
+        (by simp [h1, γ.target])) := by
+  have hstartU : (γ ∘ t) 0 ∈ U := by
+    simpa [Function.comp_def, h0, γ.source] using hbaseU
+  have hp : Set.range (Path.refl ((γ ∘ t) 0)) ⊆ U := by
+    intro y hy
+    rcases hy with ⟨_s, rfl⟩
+    exact hstartU
+  have hclose : (γ ∘ t) (Fin.last N) = (γ ∘ t) 0 := by
+    dsimp [Function.comp_def]
+    rw [h1, h0]
+    exact γ.target.trans γ.source.symm
+  have hcollapse :
+      Path.Homotopic
+        ((Path.refl ((γ ∘ t) 0)).trans
+          (Path.concat (γ ∘ t) (fun k : Fin N =>
+            γ.subpath (t k.castSucc) (t k.succ))))
+        ((Path.refl ((γ ∘ t) 0)).cast rfl hclose) :=
+    twoSetOpenCover_sameHead_firstOppositeRun_tail_induction
+      (U := U) (V := V)
+      (γ ∘ t)
+      (fun k : Fin N => γ.subpath (t k.castSucc) (t k.succ))
+      (Path.refl ((γ ∘ t) 0))
+      hclose
+      hp
+      hchoice
+  have hdirect :
+      Path.Homotopic
+        (Path.concat (γ ∘ t) (fun k : Fin N =>
+          γ.subpath (t k.castSucc) (t k.succ)))
+        ((Path.refl ((γ ∘ t) 0)).cast rfl hclose) :=
+    (Path.Homotopic.refl_trans
+      (Path.concat (γ ∘ t) (fun k : Fin N =>
+        γ.subpath (t k.castSucc) (t k.succ)))).symm.trans hcollapse
+  have htargetEq :
+      ((Path.refl ((γ ∘ t) 0)).cast rfl hclose) =
+        ((Path.refl basepoint).cast
+          (by simp [h0, γ.source])
+          (by simp [h1, γ.target])) := by
+    apply Path.ext
+    funext _s
+    change (γ ∘ t) 0 = basepoint
+    simp [h0, γ.source]
+  exact hdirect.trans (htargetEq ▸ Path.Homotopic.refl _)
+
+/--
 A path in one cover member, followed by a finite block in the other member,
 then a return path in the first member and a final closing path in the other
 member, is nullhomotopic.  The middle block is replaced through the overlap
@@ -21987,50 +22053,20 @@ theorem threeSphere_stereographicEquatorLoop_fullConcat_nullhomotopic_of_sourceC
       (Path.concat (γ ∘ t) (fun k : Fin N => γ.subpath (t k.castSucc) (t k.succ)))
       ((Path.refl threeSphere_equatorPoint).cast
         (by simp [h0]) (by simp [h1])) := by
-  have hstartNorth :
-      (γ ∘ t) 0 ∈
-      (stereographic' 3 threeSphere_northPole).source := by
-    simpa [Function.comp_def, h0, γ.source] using
+  letI : SimplyConnectedSpace (stereographic' 3 threeSphere_northPole).source :=
+    threeSphere_stereographic_source_simplyConnectedSpace threeSphere_northPole
+  letI : SimplyConnectedSpace (stereographic' 3 (-threeSphere_northPole)).source :=
+    threeSphere_stereographic_source_simplyConnectedSpace (-threeSphere_northPole)
+  letI : PathConnectedSpace
+      (((stereographic' 3 threeSphere_northPole).source ∩
+        (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere) :=
+    threeSphere_actualOverlap_pathConnectedSpace
+  simpa using
+    twoSetOpenCover_basedLoop_fullConcat_nullhomotopic_of_sourceChoice
+      (U := (stereographic' 3 threeSphere_northPole).source)
+      (V := (stereographic' 3 (-threeSphere_northPole)).source)
       threeSphere_equatorPoint_mem_northPole_stereographic_source
-  have hp : Set.range (Path.refl ((γ ∘ t) 0)) ⊆
-      (stereographic' 3 threeSphere_northPole).source := by
-    intro y hy
-    rcases hy with ⟨_s, rfl⟩
-    exact hstartNorth
-  have hclose : (γ ∘ t) (Fin.last N) = (γ ∘ t) 0 := by
-    dsimp [Function.comp_def]
-    rw [h1, h0]
-    exact γ.target.trans γ.source.symm
-  have hcollapse :
-      Path.Homotopic
-        ((Path.refl ((γ ∘ t) 0)).trans
-          (Path.concat (γ ∘ t) (fun k : Fin N =>
-            γ.subpath (t k.castSucc) (t k.succ))))
-        ((Path.refl ((γ ∘ t) 0)).cast rfl hclose) :=
-    threeSphere_stereographic_northHead_firstSouthRun_tail_induction
-      (γ ∘ t)
-      (fun k : Fin N => γ.subpath (t k.castSucc) (t k.succ))
-      (Path.refl ((γ ∘ t) 0))
-      hclose
-      hp
-      hchoice
-  have hdirect :
-      Path.Homotopic
-        (Path.concat (γ ∘ t) (fun k : Fin N =>
-          γ.subpath (t k.castSucc) (t k.succ)))
-        ((Path.refl ((γ ∘ t) 0)).cast rfl hclose) :=
-    (Path.Homotopic.refl_trans
-      (Path.concat (γ ∘ t) (fun k : Fin N =>
-        γ.subpath (t k.castSucc) (t k.succ)))).symm.trans hcollapse
-  have htargetEq :
-      ((Path.refl ((γ ∘ t) 0)).cast rfl hclose) =
-        ((Path.refl threeSphere_equatorPoint).cast
-          (by simp [h0]) (by simp [h1])) := by
-    apply Path.ext
-    funext _s
-    change (γ ∘ t) 0 = threeSphere_equatorPoint
-    simp [h0, γ.source]
-  exact hdirect.trans (htargetEq ▸ Path.Homotopic.refl _)
+      γ t h0 h1 hchoice
 
 /--
 Quotient form of the arbitrary finite stereographic source-choice collapse.
