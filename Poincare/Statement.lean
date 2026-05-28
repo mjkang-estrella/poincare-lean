@@ -4892,6 +4892,22 @@ theorem twoSetOpenCover_pathQuotientSubsingleton_of_pathConnected_inter
   exact ((simply_connected_iff_paths_homotopic).mp hSC).2
 
 /--
+The basepoint-free two-set open-cover theorem gives homotopy uniqueness for
+every pair of ambient paths with the same endpoints.
+-/
+theorem twoSetOpenCover_paths_homotopic_of_pathConnected_inter
+    {X : Type u} [TopologicalSpace X] {U V : Set X}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set X)]
+    (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ)
+    {x y : X} (p q : Path x y) :
+    Path.Homotopic p q := by
+  have hSC : SimplyConnectedSpace X :=
+    twoSetOpenCover_simplyConnectedSpace_of_pathConnected_inter
+      (U := U) (V := V) hU hV hcover
+  exact ((simply_connected_iff_paths_homotopic').mp hSC).2 p q
+
+/--
 The same two-set open-cover hypotheses trivialize the first homotopy group at
 every ambient basepoint.
 -/
