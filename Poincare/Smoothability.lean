@@ -973,6 +973,18 @@ theorem smoothabilitySmoothManifoldStatement_eq :
   rfl
 
 /--
+A `C∞` manifold over the project's three-dimensional model supplies the `C¹`
+model-with-corners evidence consumed by the surgery layer.
+-/
+theorem surgeryModel_isManifold_of_smoothManifold
+    (M : Type u) [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    (h : IsManifold (𝓡 3) ∞ M) :
+    IsManifold ThreeManifoldModelWithCorners 1 M := by
+  letI : IsManifold (𝓡 3) ∞ M := h
+  dsimp [ThreeManifoldModelWithCorners, ThreeManifoldModel]
+  infer_instance
+
+/--
 The theorem-shaped `C∞` smooth-manifold output supplies the surgery-layer
 `C¹` manifold bridge, since the project model is definitionally the standard
 Euclidean 3-manifold model and `C∞` regularity implies `C¹` regularity.
@@ -982,10 +994,7 @@ theorem smoothabilityBridgeStatement_of_smoothabilitySmoothManifoldStatement
     SmoothabilityBridgeStatement.{u} := by
   intro M _top _t2 _charted _simple _compact _smoothStructure
     _smoothStructureDerivation
-  have htop : IsManifold (𝓡 3) ∞ M := h M
-  letI : IsManifold (𝓡 3) ∞ M := htop
-  dsimp [ThreeManifoldModelWithCorners, ThreeManifoldModel]
-  infer_instance
+  exact surgeryModel_isManifold_of_smoothManifold M (h M)
 
 /--
 Interface certifying that the theorem-shaped smoothability bridge follows from

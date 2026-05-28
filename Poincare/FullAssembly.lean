@@ -38,10 +38,8 @@ theorem onePoint_threeSpace_surgeryModel_isManifold_of_smoothabilitySmoothManifo
     (h : SmoothabilitySmoothManifoldStatement.{0}) :
     IsManifold ThreeManifoldModelWithCorners 1
       (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
-  haveI :
-      IsManifold (𝓡 3) ∞ (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
-    onePoint_threeSpace_smoothManifold_of_smoothabilitySmoothManifoldStatement h
-  infer_instance
+  exact surgeryModel_isManifold_of_smoothManifold _
+    (onePoint_threeSpace_smoothManifold_of_smoothabilitySmoothManifoldStatement h)
 
 end OnePointThreeSpaceSmoothability
 
@@ -61,10 +59,8 @@ theorem onePoint_threeSpace_surgeryModel_isManifold :
   letI : ChartedSpace ThreeManifoldModel
       (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
     onePoint_threeSpace_smoothChartedSpace
-  haveI : IsManifold (𝓡 3) ∞
-      (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+  exact surgeryModel_isManifold_of_smoothManifold _
     onePoint_threeSpace_smoothManifold
-  infer_instance
 
 /--
 The original transported compactification atlas supplies the `C¹`
@@ -79,10 +75,8 @@ theorem onePoint_threeSpace_surgeryModel_isManifold_oldChartedSpace :
   letI : ChartedSpace ThreeManifoldModel
       (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
     onePoint_threeSpace_chartedSpace
-  haveI : IsManifold (𝓡 3) ∞
-      (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+  exact surgeryModel_isManifold_of_smoothManifold _
     onePoint_threeSpace_smoothManifold_oldChartedSpace
-  infer_instance
 
 end OnePointThreeSpaceSmoothManifold
 
