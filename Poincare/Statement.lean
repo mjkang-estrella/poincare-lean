@@ -3933,19 +3933,17 @@ theorem twoSetOpenCover_twoPieceLoop_nullhomotopic_of_mapsTo
 /--
 A two-piece loop whose final endpoint is only propositionally equal to its
 start is nullhomotopic in the endpoint-cast form produced by finite
-subdivision concatenations.
+subdivision concatenations, through an actual homotopy whose image stays in the
+union of the two cover members.
 -/
-theorem twoSetOpenCover_twoPieceLoop_cast_nullhomotopic_of_mapsTo
+theorem twoSetOpenCover_twoPieceLoop_cast_homotopy_refl_forall_mem_of_mapsTo
     {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {x y z : Y}
     [SimplyConnectedSpace U] [SimplyConnectedSpace V]
     [PathConnectedSpace (U ∩ V : Set Y)]
     (p : Path x y) (q : Path y z) (hzx : z = x)
     (hp : ∀ t, p t ∈ U) (hq : ∀ t, q t ∈ V) :
-    Path.Homotopic (p.trans q) ((Path.refl x).cast rfl hzx) := by
-  let qLoop : Path y x := q.cast rfl hzx.symm
-  have hqLoop : ∀ t, qLoop t ∈ V := by
-    intro t
-    exact hq t
+    ∃ H : (p.trans q).Homotopy ((Path.refl x).cast rfl hzx),
+      ∀ t, H t ∈ U ∪ V := by
   have hbase : x ∈ U ∩ V := by
     refine ⟨?_, ?_⟩
     · simpa using hp 0
@@ -3956,11 +3954,81 @@ theorem twoSetOpenCover_twoPieceLoop_cast_nullhomotopic_of_mapsTo
     refine ⟨?_, ?_⟩
     · simpa using hp 1
     · simpa using hq 0
-  have hloop : Path.Homotopic (p.trans qLoop) (Path.refl x) :=
-    twoSetOpenCover_twoPieceLoop_nullhomotopic_of_mapsTo
-      hbase hmid p qLoop hp hqLoop
-  have hcast := Path.Homotopic.pathCast hloop rfl hzx
-  simpa [qLoop] using hcast
+  let baseOverlap : (U ∩ V : Set Y) := ⟨x, hbase⟩
+  let midOverlap : (U ∩ V : Set Y) := ⟨y, hmid⟩
+  let overlapPath : Path baseOverlap midOverlap :=
+    PathConnectedSpace.somePath baseOverlap midOverlap
+  let incl : C((U ∩ V : Set Y), Y) :=
+    ⟨Subtype.val, continuous_subtype_val⟩
+  let r : Path x y := overlapPath.map incl.continuous
+  let rBack : Path y z := r.symm.cast rfl hzx
+  have hrU : ∀ t, r t ∈ U := by
+    intro t
+    exact (overlapPath t).2.1
+  have hrV : ∀ t, r t ∈ V := by
+    intro t
+    exact (overlapPath t).2.2
+  have hrBackU : ∀ t, rBack t ∈ U := by
+    intro t
+    simpa [rBack, Path.cast_coe] using hrU (unitInterval.symm t)
+  have hrBackV : ∀ t, rBack t ∈ V := by
+    intro t
+    simpa [rBack, Path.cast_coe] using hrV (unitInterval.symm t)
+  have hUSC : IsSimplyConnected U := ‹SimplyConnectedSpace U›
+  rcases path_homotopy_forall_mem_of_isSimplyConnected hUSC p r hp hrU with
+    ⟨Hp, hHp⟩
+  have hVSC : IsSimplyConnected V := ‹SimplyConnectedSpace V›
+  rcases path_homotopy_forall_mem_of_isSimplyConnected hVSC q rBack hq hrBackV with
+    ⟨Hq, hHq⟩
+  let Hreplace : (p.trans q).Homotopy (r.trans rBack) := Hp.hcomp Hq
+  have hHreplace : ∀ t, Hreplace t ∈ U ∪ V := by
+    intro t
+    dsimp [Hreplace]
+    rw [Path.Homotopy.hcomp_apply]
+    split_ifs
+    · exact Or.inl (hHp _)
+    · exact Or.inr (hHq _)
+  have hrrU : ∀ t, (r.trans rBack) t ∈ U := by
+    intro t
+    have ht : (r.trans rBack) t ∈ Set.range (r.trans rBack) := ⟨t, rfl⟩
+    have ht' : (r.trans rBack) t ∈ Set.range r ∪ Set.range rBack := by
+      simpa [Path.trans_range] using ht
+    rcases ht' with htR | htBack
+    · rcases htR with ⟨s, hs⟩
+      rw [← hs]
+      exact hrU s
+    · rcases htBack with ⟨s, hs⟩
+      rw [← hs]
+      exact hrBackU s
+  have hreflU : ∀ t, ((Path.refl x).cast rfl hzx) t ∈ U := by
+    intro _t
+    simpa [Path.cast_coe] using hbase.1
+  rcases path_homotopy_forall_mem_of_isSimplyConnected hUSC
+      (r.trans rBack) ((Path.refl x).cast rfl hzx) hrrU hreflU with
+    ⟨Hcontract, hHcontract⟩
+  refine ⟨Hreplace.trans Hcontract, ?_⟩
+  intro t
+  rw [Path.Homotopy.trans_apply]
+  split_ifs
+  · exact hHreplace _
+  · exact Or.inl (hHcontract _)
+
+/--
+A two-piece loop whose final endpoint is only propositionally equal to its
+start is nullhomotopic in the endpoint-cast form produced by finite
+subdivision concatenations.
+-/
+theorem twoSetOpenCover_twoPieceLoop_cast_nullhomotopic_of_mapsTo
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {x y z : Y}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set Y)]
+    (p : Path x y) (q : Path y z) (hzx : z = x)
+    (hp : ∀ t, p t ∈ U) (hq : ∀ t, q t ∈ V) :
+    Path.Homotopic (p.trans q) ((Path.refl x).cast rfl hzx) := by
+  rcases twoSetOpenCover_twoPieceLoop_cast_homotopy_refl_forall_mem_of_mapsTo
+      (U := U) (V := V) p q hzx hp hq with
+    ⟨H, _hH⟩
+  exact ⟨H⟩
 
 /--
 A finite block in one member of a two-set cover, bracketed by paths in the
