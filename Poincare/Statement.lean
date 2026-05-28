@@ -5027,6 +5027,34 @@ theorem path_homotopy_forall_mem_of_isSimplyConnected
   exact (Fsub t).2
 
 /--
+The single-chart finite-concat collapse can be realized by an actual homotopy
+whose image stays inside the same stereographic source.
+-/
+theorem threeSphere_stereographic_source_contained_concat_loop_homotopy_refl
+    (v : ThreeSphere) {N : ℕ} (p : Fin (N + 1) → ThreeSphere)
+    (F : (k : Fin N) → Path (p k.castSucc) (p k.succ))
+    (hbase : p 0 ∈ (stereographic' 3 v).source)
+    (hF : ∀ k : Fin N, Set.range (F k) ⊆ (stereographic' 3 v).source)
+    (hend : p (Fin.last N) = p 0) :
+    ∃ H : ((Path.concat p F).cast rfl hend.symm).Homotopy (Path.refl (p 0)),
+      ∀ t, H t ∈ (stereographic' 3 v).source := by
+  have hconcat :
+      Set.range (Path.concat p F) ⊆ (stereographic' 3 v).source :=
+    threeSphere_stereographic_source_concat_range_subset v p F hbase hF
+  have hloop :
+      ∀ t, ((Path.concat p F).cast rfl hend.symm) t ∈
+        (stereographic' 3 v).source := by
+    intro t
+    exact hconcat ⟨t, by simp [Path.cast_coe]⟩
+  have hrefl : ∀ t, (Path.refl (p 0)) t ∈ (stereographic' 3 v).source := by
+    intro _t
+    simpa using hbase
+  have hSC : IsSimplyConnected (stereographic' 3 v).source :=
+    threeSphere_stereographic_source_simplyConnectedSpace v
+  exact path_homotopy_forall_mem_of_isSimplyConnected hSC
+    ((Path.concat p F).cast rfl hend.symm) (Path.refl (p 0)) hloop hrefl
+
+/--
 Loops contained in the union of two open simply connected subspaces with
 path-connected overlap contract through a homotopy that stays in the same
 union.
