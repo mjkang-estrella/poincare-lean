@@ -854,6 +854,74 @@ theorem path_homotopy_transRefl_forall_mem_of_forall_mem
   change p _ ∈ S
   exact hp _
 
+/-- The contraction of `p.symm.trans p` to a point stays in `p`'s image. -/
+theorem path_homotopy_reflSymmTrans_forall_mem_of_forall_mem
+    {X : Type u} [TopologicalSpace X] {S : Set X} {x₀ x₁ : X}
+    (p : Path x₀ x₁) (hp : ∀ t, p t ∈ S) :
+    ∀ t, Path.Homotopy.reflSymmTrans p t ∈ S := by
+  intro t
+  simp only [Path.Homotopy.reflSymmTrans, Path.Homotopy.reflTransSymm,
+    Path.Homotopy.cast_apply, Path.Homotopy.reflTransSymmAux]
+  change p _ ∈ S
+  exact hp _
+
+/--
+A nullhomotopy of the loop `p.trans q.symm` gives a homotopy from `p` to `q`,
+with pointwise containment preserved through the path-algebra reductions.
+-/
+theorem path_homotopy_forall_mem_of_trans_symm_loop_homotopy_refl_forall_mem
+    {X : Type u} [TopologicalSpace X] {S : Set X} {x y : X}
+    (p q : Path x y) (hp : ∀ t, p t ∈ S) (hq : ∀ t, q t ∈ S)
+    (hloop : ∃ H : (p.trans q.symm).Homotopy (Path.refl x),
+      ∀ z, H z ∈ S) :
+    ∃ F : p.Homotopy q, ∀ z, F z ∈ S := by
+  rcases hloop with ⟨Hloop, hHloop⟩
+  let H0 : p.Homotopy (p.trans (Path.refl y)) :=
+    (Path.Homotopy.transRefl p).symm
+  have hH0 : ∀ z, H0 z ∈ S :=
+    path_homotopy_symm_forall_mem_of_forall_mem
+      (Path.Homotopy.transRefl p)
+      (path_homotopy_transRefl_forall_mem_of_forall_mem p hp)
+  let H1 : (p.trans (Path.refl y)).Homotopy (p.trans (q.symm.trans q)) :=
+    (Path.Homotopy.refl p).hcomp (Path.Homotopy.reflSymmTrans q)
+  have hH1 : ∀ z, H1 z ∈ S :=
+    path_homotopy_hcomp_forall_mem_of_forall_mem
+      (Path.Homotopy.refl p) (Path.Homotopy.reflSymmTrans q)
+      (path_homotopy_refl_forall_mem_of_forall_mem p hp)
+      (path_homotopy_reflSymmTrans_forall_mem_of_forall_mem q hq)
+  let H2 : (p.trans (q.symm.trans q)).Homotopy ((p.trans q.symm).trans q) :=
+    (Path.Homotopy.transAssoc p q.symm q).symm
+  have hqSymm : ∀ t, q.symm t ∈ S := by
+    intro t
+    exact hq (unitInterval.symm t)
+  have hH2 : ∀ z, H2 z ∈ S :=
+    path_homotopy_symm_forall_mem_of_forall_mem
+      (Path.Homotopy.transAssoc p q.symm q)
+      (path_transAssoc_forall_mem_of_forall_mem p q.symm q hp hqSymm hq)
+  let H3 : ((p.trans q.symm).trans q).Homotopy ((Path.refl x).trans q) :=
+    Hloop.hcomp (Path.Homotopy.refl q)
+  have hH3 : ∀ z, H3 z ∈ S :=
+    path_homotopy_hcomp_forall_mem_of_forall_mem Hloop
+      (Path.Homotopy.refl q) hHloop
+      (path_homotopy_refl_forall_mem_of_forall_mem q hq)
+  let H4 : ((Path.refl x).trans q).Homotopy q :=
+    Path.Homotopy.reflTrans q
+  have hH4 : ∀ z, H4 z ∈ S :=
+    path_homotopy_reflTrans_forall_mem_of_forall_mem q hq
+  let F : p.Homotopy q := (((H0.trans H1).trans H2).trans H3).trans H4
+  have hF : ∀ z, F z ∈ S :=
+    path_homotopy_trans_forall_mem_of_forall_mem
+      (((H0.trans H1).trans H2).trans H3) H4
+      (path_homotopy_trans_forall_mem_of_forall_mem
+        ((H0.trans H1).trans H2) H3
+        (path_homotopy_trans_forall_mem_of_forall_mem
+          (H0.trans H1) H2
+          (path_homotopy_trans_forall_mem_of_forall_mem H0 H1 hH0 hH1)
+          hH2)
+        hH3)
+      hH4
+  exact ⟨F, hF⟩
+
 /-- Subpaths preserve containment in any set containing the original path. -/
 theorem path_subpath_forall_mem_of_forall_mem
     {X : Type u} [TopologicalSpace X] {S : Set X} {x₀ x₁ : X}
@@ -24622,6 +24690,34 @@ theorem threeSphere_antipodalLoop_homotopy_refl_forall_mem
       (by simp [U])
       (by simp [V])
       γ hγ
+
+/--
+Any two paths in `ThreeSphere` with the same endpoints are homotopic through
+any antipodal stereographic cover.  This is the path-homotopy uniqueness
+consequence of the arbitrary antipodal overlap proof.
+-/
+theorem threeSphere_antipodalPaths_homotopy_forall_mem
+    (v : ThreeSphere) {x y : ThreeSphere} (p q : Path x y) :
+    ∃ H : p.Homotopy q,
+      ∀ z, H z ∈
+        (stereographic' 3 v).source ∪
+          (stereographic' 3 (-v)).source := by
+  let U : Set ThreeSphere := (stereographic' 3 v).source
+  let V : Set ThreeSphere := (stereographic' 3 (-v)).source
+  have hcover : U ∪ V = Set.univ := by
+    simpa [U, V] using threeSphere_stereographic_antipodal_sources_cover v
+  have hp : ∀ t, p t ∈ U ∪ V := by
+    intro t
+    rw [hcover]
+    trivial
+  have hq : ∀ t, q t ∈ U ∪ V := by
+    intro t
+    rw [hcover]
+    trivial
+  simpa [U, V] using
+    path_homotopy_forall_mem_of_trans_symm_loop_homotopy_refl_forall_mem
+      p q hp hq
+      (threeSphere_antipodalLoop_homotopy_refl_forall_mem v (p.trans q.symm))
 
 /--
 An arbitrary finite stereographic source-choice subdivision of an equatorial
