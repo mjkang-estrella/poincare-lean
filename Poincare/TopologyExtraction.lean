@@ -3241,6 +3241,64 @@ global sphere chart with the standard smooth atlas on `ThreeSphere`.
     (OnePoint (EuclideanSpace ℝ (Fin 3)))
 
 /--
+The local-inverse charted space on the compactification with charts valued in
+`ThreeSphere`. It isolates the sphere-valued part of the original transported
+compactification atlas.
+-/
+@[reducible] noncomputable def onePoint_threeSpace_localInverseSphereChartedSpace :
+    ChartedSpace ThreeSphere (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  let e := Classical.choice threeSphere_homeomorph_onePoint_threeSpace
+  letI : ChartedSpace ThreeSphere ThreeSphere := chartedSpaceSelf ThreeSphere
+  exact e.isLocalHomeomorph.chartedSpace e.surjective
+
+/--
+Transitions between the local inverse sphere charts are restrictions of the
+identity on `ThreeSphere`.
+-/
+theorem onePoint_threeSpace_localInverseSphere_hasGroupoid :
+    letI : ChartedSpace ThreeSphere (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+      onePoint_threeSpace_localInverseSphereChartedSpace
+    HasGroupoid (OnePoint (EuclideanSpace ℝ (Fin 3)))
+      (@idRestrGroupoid ThreeSphere _) := by
+  let e := Classical.choice threeSphere_homeomorph_onePoint_threeSpace
+  letI : ChartedSpace ThreeSphere (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_localInverseSphereChartedSpace
+  refine ⟨?_⟩
+  intro f g hf hg
+  change f ∈
+      {x | ∃ p : OnePoint (EuclideanSpace ℝ (Fin 3)),
+        (e.isLocalHomeomorph.localInverseAt (e.surjective.hasRightInverse.choose p)).trans
+          (OpenPartialHomeomorph.refl ThreeSphere) = x} at hf
+  change g ∈
+      {x | ∃ p : OnePoint (EuclideanSpace ℝ (Fin 3)),
+        (e.isLocalHomeomorph.localInverseAt (e.surjective.hasRightInverse.choose p)).trans
+          (OpenPartialHomeomorph.refl ThreeSphere) = x} at hg
+  rcases hf with ⟨p, rfl⟩
+  rcases hg with ⟨r, rfl⟩
+  simp only [OpenPartialHomeomorph.trans_refl]
+  let lp := e.isLocalHomeomorph.localInverseAt (e.surjective.hasRightInverse.choose p)
+  let lr := e.isLocalHomeomorph.localInverseAt (e.surjective.hasRightInverse.choose r)
+  change lp.symm.trans lr ∈ @idRestrGroupoid ThreeSphere _
+  refine ⟨(lp.symm.trans lr).source, (lp.symm.trans lr).open_source, ?_⟩
+  constructor
+  · rfl
+  · intro x hx
+    simp only [OpenPartialHomeomorph.ofSet_apply]
+    change (lr ∘ lp.symm) x = x
+    simp only [OpenPartialHomeomorph.trans_source, Set.mem_inter_iff, Set.mem_preimage] at hx
+    rcases hx with ⟨_hxlptarget, hxlrsrc⟩
+    apply e.injective
+    calc
+      e ((lr ∘ lp.symm) x) = lp.symm x := by
+        simp [Function.comp_apply, lr,
+          e.isLocalHomeomorph.apply_localInverseAt_of_mem
+            (x := e.surjective.hasRightInverse.choose r) hxlrsrc]
+      _ = e x := by
+        dsimp [lp]
+        exact congrFun (e.isLocalHomeomorph.localInverseAt_symm
+          (e.surjective.hasRightInverse.choose p)) x
+
+/--
 Identity restrictions on the standard smooth sphere atlas are local
 structomorphisms.  This is the smooth compatibility input needed to compose
 the single compactification chart with the smooth `ThreeSphere` charts.
@@ -3283,6 +3341,94 @@ theorem onePoint_threeSpace_idRestr_liftPropOn_localStructomorph
     intro y hy
     exact hfs.eqOn hy
   exact hG.liftPropOn_congr hid hfid
+
+/--
+The original transported compactification atlas is smoothly compatible. Its
+charts factor through the local inverse sphere atlas and the standard smooth
+`ThreeSphere` atlas.
+-/
+theorem onePoint_threeSpace_smoothManifold_oldChartedSpace :
+    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+      onePoint_threeSpace_chartedSpace
+    IsManifold (𝓡 3) ∞ (OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  let e := Classical.choice threeSphere_homeomorph_onePoint_threeSpace
+  letI : ChartedSpace ThreeSphere (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_localInverseSphereChartedSpace
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_chartedSpace
+  haveI : IsManifold (𝓡 3) ∞ ThreeSphere := threeSphere_smoothManifold
+  haveI : HasGroupoid (OnePoint (EuclideanSpace ℝ (Fin 3)))
+      (@idRestrGroupoid ThreeSphere _) :=
+    onePoint_threeSpace_localInverseSphere_hasGroupoid
+  have hcomp :
+      @HasGroupoid (EuclideanSpace ℝ (Fin 3)) _
+        (OnePoint (EuclideanSpace ℝ (Fin 3))) _
+        (ChartedSpace.comp (EuclideanSpace ℝ (Fin 3)) ThreeSphere
+          (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        (contDiffGroupoid ∞ (𝓡 3)) := by
+    apply StructureGroupoid.HasGroupoid.comp
+      (G₂ := (@idRestrGroupoid ThreeSphere _))
+    intro f hf
+    exact onePoint_threeSpace_idRestr_liftPropOn_localStructomorph f hf
+  haveI :
+      HasGroupoid (OnePoint (EuclideanSpace ℝ (Fin 3)))
+        (contDiffGroupoid ∞ (𝓡 3)) := by
+    refine ⟨?_⟩
+    intro f g hf hg
+    have hfcomp : f ∈ @atlas (EuclideanSpace ℝ (Fin 3)) _
+        (OnePoint (EuclideanSpace ℝ (Fin 3))) _
+        (ChartedSpace.comp (EuclideanSpace ℝ (Fin 3)) ThreeSphere
+          (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+      change f ∈
+          {x | ∃ p : OnePoint (EuclideanSpace ℝ (Fin 3)),
+            (e.isLocalHomeomorph.localInverseAt (e.surjective.hasRightInverse.choose p)).trans
+              (chartAt (EuclideanSpace ℝ (Fin 3))
+                (e.surjective.hasRightInverse.choose p)) = x} at hf
+      rcases hf with ⟨p, rfl⟩
+      refine ⟨(e.isLocalHomeomorph.localInverseAt
+            (e.surjective.hasRightInverse.choose p)).trans
+          (OpenPartialHomeomorph.refl ThreeSphere), ?_,
+        chartAt (EuclideanSpace ℝ (Fin 3)) (e.surjective.hasRightInverse.choose p),
+        chart_mem_atlas _ _, ?_⟩
+      · change (e.isLocalHomeomorph.localInverseAt
+              (e.surjective.hasRightInverse.choose p)).trans
+            (OpenPartialHomeomorph.refl ThreeSphere) ∈
+          {x | ∃ p : OnePoint (EuclideanSpace ℝ (Fin 3)),
+            (e.isLocalHomeomorph.localInverseAt (e.surjective.hasRightInverse.choose p)).trans
+              (OpenPartialHomeomorph.refl ThreeSphere) = x}
+        exact ⟨p, rfl⟩
+      · simp only [OpenPartialHomeomorph.trans_refl]
+    have hgcomp : g ∈ @atlas (EuclideanSpace ℝ (Fin 3)) _
+        (OnePoint (EuclideanSpace ℝ (Fin 3))) _
+        (ChartedSpace.comp (EuclideanSpace ℝ (Fin 3)) ThreeSphere
+          (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+      change g ∈
+          {x | ∃ p : OnePoint (EuclideanSpace ℝ (Fin 3)),
+            (e.isLocalHomeomorph.localInverseAt (e.surjective.hasRightInverse.choose p)).trans
+              (chartAt (EuclideanSpace ℝ (Fin 3))
+                (e.surjective.hasRightInverse.choose p)) = x} at hg
+      rcases hg with ⟨p, rfl⟩
+      refine ⟨(e.isLocalHomeomorph.localInverseAt
+            (e.surjective.hasRightInverse.choose p)).trans
+          (OpenPartialHomeomorph.refl ThreeSphere), ?_,
+        chartAt (EuclideanSpace ℝ (Fin 3)) (e.surjective.hasRightInverse.choose p),
+        chart_mem_atlas _ _, ?_⟩
+      · change (e.isLocalHomeomorph.localInverseAt
+              (e.surjective.hasRightInverse.choose p)).trans
+            (OpenPartialHomeomorph.refl ThreeSphere) ∈
+          {x | ∃ p : OnePoint (EuclideanSpace ℝ (Fin 3)),
+            (e.isLocalHomeomorph.localInverseAt (e.surjective.hasRightInverse.choose p)).trans
+              (OpenPartialHomeomorph.refl ThreeSphere) = x}
+        exact ⟨p, rfl⟩
+      · simp only [OpenPartialHomeomorph.trans_refl]
+    exact @HasGroupoid.compatible (EuclideanSpace ℝ (Fin 3)) _
+      (OnePoint (EuclideanSpace ℝ (Fin 3))) _
+      (ChartedSpace.comp (EuclideanSpace ℝ (Fin 3)) ThreeSphere
+        (OnePoint (EuclideanSpace ℝ (Fin 3))))
+      (contDiffGroupoid ∞ (𝓡 3)) hcomp f g hfcomp hgcomp
+  exact IsManifold.mk
 
 /--
 The one-point compactification of `ℝ^3` carries a genuine smooth
