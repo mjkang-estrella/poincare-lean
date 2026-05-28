@@ -9064,6 +9064,38 @@ theorem simplyConnectedSpace_iff_pathConnectedSpace_and_basedFundamentalGroupSub
         ⟦Path.refl basepoint⟧⟩
 
 /--
+In a path-connected space, triviality of `π₁` at one basepoint is equivalent
+to simple-connectedness.
+-/
+theorem simplyConnectedSpace_iff_pathConnectedSpace_and_basedPiOneSubsingleton
+    {Y : Type u} [TopologicalSpace Y] (basepoint : Y) :
+    SimplyConnectedSpace Y ↔
+      PathConnectedSpace Y ∧ Subsingleton (HomotopyGroup.Pi 1 Y basepoint) := by
+  rw [simplyConnectedSpace_iff_pathConnectedSpace_and_basedFundamentalGroupSubsingleton
+    basepoint]
+  constructor
+  · intro h
+    exact ⟨h.1,
+      ((HomotopyGroup.pi1EquivFundamentalGroup
+        (X := Y) (x := basepoint)).subsingleton_congr).mpr h.2⟩
+  · intro h
+    exact ⟨h.1,
+      ((HomotopyGroup.pi1EquivFundamentalGroup
+        (X := Y) (x := basepoint)).subsingleton_congr).mp h.2⟩
+
+/--
+In a path-connected space, triviality of `π₁` at one basepoint supplies
+simple-connectedness.
+-/
+theorem simplyConnectedSpace_of_pathConnectedSpace_and_basedPiOneSubsingleton
+    {Y : Type u} [TopologicalSpace Y] (basepoint : Y)
+    [PathConnectedSpace Y]
+    (h : Subsingleton (HomotopyGroup.Pi 1 Y basepoint)) :
+    SimplyConnectedSpace Y :=
+  (simplyConnectedSpace_iff_pathConnectedSpace_and_basedPiOneSubsingleton
+    basepoint).mpr ⟨inferInstance, h⟩
+
+/--
 In a path-connected space, triviality of one based fundamental group collapses
 all path-homotopy quotients.
 -/
@@ -9086,12 +9118,10 @@ theorem pathQuotientSubsingleton_of_pathConnectedSpace_and_basedPiOneSubsingleto
     [PathConnectedSpace Y]
     (h : Subsingleton (HomotopyGroup.Pi 1 Y basepoint)) :
     ∀ x y : Y, Subsingleton (Path.Homotopic.Quotient x y) := by
-  have hfg : Subsingleton (FundamentalGroup Y basepoint) :=
-    ((HomotopyGroup.pi1EquivFundamentalGroup
-      (X := Y) (x := basepoint)).subsingleton_congr).mp h
   exact
-    pathQuotientSubsingleton_of_pathConnectedSpace_and_basedFundamentalGroupSubsingleton
-      basepoint hfg
+    ((simply_connected_iff_paths_homotopic).mp
+      (simplyConnectedSpace_of_pathConnectedSpace_and_basedPiOneSubsingleton
+        basepoint h)).2
 
 /--
 In a path-connected space, triviality of `π₁` at one basepoint collapses
