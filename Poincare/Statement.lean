@@ -10131,6 +10131,37 @@ Length-cast form of the one-switch north/south/north tail contraction.  It
 matches first-run suffixes whose concrete tail length `T` is known to split as
 `L + R`.
 -/
+theorem threeSphere_stereographic_northSouthBlockNorthTail_concat_cast_homotopy_refl_forall_mem_of_length_eq
+    {T L R : ℕ} {x₀ : ThreeSphere}
+    (tailPts : Fin (T + 1) → ThreeSphere)
+    (tailSegs : (k : Fin T) → Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last T) = x₀)
+    (hTailLen : T = L + R)
+    (hp : Set.range p ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hSouthBase : tailPts 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouth : ∀ k : Fin L,
+      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthBase : tailPts ⟨L, by omega⟩ ∈
+        (stereographic' 3 threeSphere_northPole).source)
+    (hNorth : ∀ k : Fin R,
+      Set.range (tailSegs ⟨L + k.val, by omega⟩) ⊆
+        (stereographic' 3 threeSphere_northPole).source) :
+    ∃ H : (p.trans (Path.concat tailPts tailSegs)).Homotopy
+        ((Path.refl x₀).cast rfl hclose),
+      ∀ t, H t ∈
+        (stereographic' 3 threeSphere_northPole).source ∪
+          (stereographic' 3 (-threeSphere_northPole)).source := by
+  cases hTailLen
+  exact threeSphere_stereographic_northSouthBlockNorthTail_concat_cast_homotopy_refl_forall_mem
+    tailPts tailSegs p hclose hp hSouthBase hSouth hNorthBase hNorth
+
+/--
+Length-cast form of the one-switch north/south/north tail contraction.  It
+matches first-run suffixes whose concrete tail length `T` is known to split as
+`L + R`.
+-/
 theorem threeSphere_stereographic_northSouthBlockNorthTail_concat_cast_nullhomotopic_of_length_eq
     {T L R : ℕ} {x₀ : ThreeSphere}
     (tailPts : Fin (T + 1) → ThreeSphere)
@@ -10150,9 +10181,41 @@ theorem threeSphere_stereographic_northSouthBlockNorthTail_concat_cast_nullhomot
         (stereographic' 3 threeSphere_northPole).source) :
     Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
       ((Path.refl x₀).cast rfl hclose) := by
+  rcases
+      threeSphere_stereographic_northSouthBlockNorthTail_concat_cast_homotopy_refl_forall_mem_of_length_eq
+        tailPts tailSegs p hclose hTailLen hp hSouthBase hSouth hNorthBase hNorth with
+    ⟨H, _hH⟩
+  exact ⟨H⟩
+
+/--
+Symmetric length-cast form of the one-switch south/north/south tail
+contraction, again aligned to the first-run suffix length `T = L + R`.
+-/
+theorem threeSphere_stereographic_southNorthBlockSouthTail_concat_cast_homotopy_refl_forall_mem_of_length_eq
+    {T L R : ℕ} {x₀ : ThreeSphere}
+    (tailPts : Fin (T + 1) → ThreeSphere)
+    (tailSegs : (k : Fin T) → Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last T) = x₀)
+    (hTailLen : T = L + R)
+    (hp : Set.range p ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthBase : tailPts 0 ∈ (stereographic' 3 threeSphere_northPole).source)
+    (hNorth : ∀ k : Fin L,
+      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hSouthBase : tailPts ⟨L, by omega⟩ ∈
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouth : ∀ k : Fin R,
+      Set.range (tailSegs ⟨L + k.val, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source) :
+    ∃ H : (p.trans (Path.concat tailPts tailSegs)).Homotopy
+        ((Path.refl x₀).cast rfl hclose),
+      ∀ t, H t ∈
+        (stereographic' 3 (-threeSphere_northPole)).source ∪
+          (stereographic' 3 threeSphere_northPole).source := by
   cases hTailLen
-  exact threeSphere_stereographic_northSouthBlockNorthTail_concat_cast_nullhomotopic
-    tailPts tailSegs p hclose hp hSouthBase hSouth hNorthBase hNorth
+  exact threeSphere_stereographic_southNorthBlockSouthTail_concat_cast_homotopy_refl_forall_mem
+    tailPts tailSegs p hclose hp hNorthBase hNorth hSouthBase hSouth
 
 /--
 Symmetric length-cast form of the one-switch south/north/south tail
@@ -10177,9 +10240,11 @@ theorem threeSphere_stereographic_southNorthBlockSouthTail_concat_cast_nullhomot
         (stereographic' 3 (-threeSphere_northPole)).source) :
     Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
       ((Path.refl x₀).cast rfl hclose) := by
-  cases hTailLen
-  exact threeSphere_stereographic_southNorthBlockSouthTail_concat_cast_nullhomotopic
-    tailPts tailSegs p hclose hp hNorthBase hNorth hSouthBase hSouth
+  rcases
+      threeSphere_stereographic_southNorthBlockSouthTail_concat_cast_homotopy_refl_forall_mem_of_length_eq
+        tailPts tailSegs p hclose hTailLen hp hNorthBase hNorth hSouthBase hSouth with
+    ⟨H, _hH⟩
+  exact ⟨H⟩
 
 /--
 Length-cast form for a north-source path, north-source block, and south-source
@@ -28182,10 +28247,13 @@ theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_south
     have hcore :
         Path.Homotopic
           ((q.cast rfl htailStart).trans (Path.concat tailPts tailSegs))
-          ((Path.refl (p 0)).cast rfl htailClose) :=
-      threeSphere_stereographic_northSouthBlockNorthTail_concat_cast_nullhomotopic_of_length_eq
-        tailPts tailSegs (q.cast rfl htailStart) htailClose hTailLen
-        hqCastRange hSouthBase hSouth hNorthBase hNorth
+          ((Path.refl (p 0)).cast rfl htailClose) := by
+      rcases
+          threeSphere_stereographic_northSouthBlockNorthTail_concat_cast_homotopy_refl_forall_mem_of_length_eq
+            tailPts tailSegs (q.cast rfl htailStart) htailClose hTailLen
+            hqCastRange hSouthBase hSouth hNorthBase hNorth with
+        ⟨H, _hH⟩
+      exact ⟨H⟩
     have hcoreCast :=
       Path.Homotopic.pathCast hcore rfl htailEnd.symm
     have hsourceEq :
@@ -32277,10 +32345,13 @@ theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_north
     have hcore :
         Path.Homotopic
           ((q.cast rfl htailStart).trans (Path.concat tailPts tailSegs))
-          ((Path.refl (p 0)).cast rfl htailClose) :=
-      threeSphere_stereographic_southNorthBlockSouthTail_concat_cast_nullhomotopic_of_length_eq
-        tailPts tailSegs (q.cast rfl htailStart) htailClose hTailLen
-        hqCastRange hNorthBase hNorth hSouthBase hSouth
+          ((Path.refl (p 0)).cast rfl htailClose) := by
+      rcases
+          threeSphere_stereographic_southNorthBlockSouthTail_concat_cast_homotopy_refl_forall_mem_of_length_eq
+            tailPts tailSegs (q.cast rfl htailStart) htailClose hTailLen
+            hqCastRange hNorthBase hNorth hSouthBase hSouth with
+        ⟨H, _hH⟩
+      exact ⟨H⟩
     have hcoreCast :=
       Path.Homotopic.pathCast hcore rfl htailEnd.symm
     have hsourceEq :
