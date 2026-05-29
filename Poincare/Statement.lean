@@ -7347,6 +7347,250 @@ theorem twoSetOpenCover_oppositeSameOppositeTail_concat_cast_nullhomotopic_of_ma
 /--
 A finite tail made of an initial block in the prefix cover member, then a
 block in the opposite member, and a final return block in the prefix member is
+contracted through an actual homotopy whose image stays in the cover.  The
+first block is absorbed into the prefix path, leaving the one-switch same-side
+tail contraction.
+-/
+theorem twoSetOpenCover_sameOppositeSameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo
+    {Y : Type u} [TopologicalSpace Y] {U V : Set Y} {L R A : ℕ} {x₀ : Y}
+    [SimplyConnectedSpace U] [SimplyConnectedSpace V]
+    [PathConnectedSpace (U ∩ V : Set Y)]
+    (tailPts : Fin (L + R + A + 1) → Y)
+    (tailSegs : (k : Fin (L + R + A)) →
+      Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last (L + R + A)) = x₀)
+    (hp : Set.range p ⊆ U)
+    (hU : ∀ k : Fin L, Set.range (tailSegs ⟨k.val, by omega⟩) ⊆ U)
+    (hVBase : tailPts ⟨L, by omega⟩ ∈ V)
+    (hV : ∀ k : Fin R, Set.range (tailSegs ⟨L + k.val, by omega⟩) ⊆ V)
+    (hULastBase : tailPts ⟨L + R, by omega⟩ ∈ U)
+    (hULast : ∀ k : Fin A,
+      Set.range (tailSegs ⟨L + R + k.val, by omega⟩) ⊆ U) :
+    ∃ H : (p.trans (Path.concat tailPts tailSegs)).Homotopy
+        ((Path.refl x₀).cast rfl hclose),
+      ∀ t, H t ∈ U ∪ V := by
+  let prefixPts : Fin (L + R + 1) → Y := fun i =>
+    tailPts ⟨i.val, by omega⟩
+  let prefixSegs : (k : Fin (L + R)) → Path (prefixPts k.castSucc) (prefixPts k.succ) :=
+    fun k => tailSegs ⟨k.val, by omega⟩
+  let uPts : Fin (L + 1) → Y := fun i =>
+    prefixPts ⟨i.val, by omega⟩
+  let uSegs : (k : Fin L) → Path (uPts k.castSucc) (uPts k.succ) :=
+    fun k => prefixSegs ⟨k.val, by omega⟩
+  let vPts : Fin (R + 1) → Y := fun i =>
+    prefixPts ⟨L + i.val, by omega⟩
+  let vSegs : (k : Fin R) → Path (vPts k.castSucc) (vPts k.succ) :=
+    fun k => prefixSegs ⟨L + k.val, by omega⟩
+  let uLastPts : Fin (A + 1) → Y := fun i =>
+    tailPts ⟨L + R + i.val, by omega⟩
+  let uLastSegs : (k : Fin A) →
+      Path (uLastPts k.castSucc) (uLastPts k.succ) :=
+    fun k => tailSegs ⟨L + R + k.val, by omega⟩
+  let Upath := Path.concat uPts uSegs
+  let Vpath := Path.concat vPts vSegs
+  let UlastPath := Path.concat uLastPts uLastSegs
+  have hstartU : tailPts 0 ∈ U := hp ⟨1, p.target⟩
+  have hTailSegsUnion :
+      ∀ k : Fin (L + R + A), Set.range (tailSegs k) ⊆ U ∪ V := by
+    intro k z hz
+    by_cases hkU : k.val < L
+    · let j : Fin L := ⟨k.val, hkU⟩
+      have hidx : (⟨j.val, by omega⟩ : Fin (L + R + A)) = k := by
+        ext
+        simp [j]
+      exact Or.inl (hU j (hidx.symm ▸ hz))
+    · by_cases hkV : k.val < L + R
+      · let j : Fin R := ⟨k.val - L, by omega⟩
+        have hidx : (⟨L + j.val, by omega⟩ : Fin (L + R + A)) = k := by
+          ext
+          dsimp [j]
+          omega
+        exact Or.inr (hV j (hidx.symm ▸ hz))
+      · let j : Fin A := ⟨k.val - (L + R), by omega⟩
+        have hidx : (⟨L + R + j.val, by omega⟩ : Fin (L + R + A)) = k := by
+          ext
+          dsimp [j]
+          omega
+        exact Or.inl (hULast j (hidx.symm ▸ hz))
+  have hPrefixSegsUnion :
+      ∀ k : Fin (L + R), Set.range (prefixSegs k) ⊆ U ∪ V := by
+    intro k z hz
+    simpa [prefixSegs] using hTailSegsUnion ⟨k.val, by omega⟩ hz
+  rcases path_concat_split_homotopy_forall_mem_of_mapsTo
+      (S := U ∪ V) tailPts tailSegs (Or.inl hstartU) hTailSegsUnion with
+    ⟨HsplitEnd₀, hHsplitEnd₀⟩
+  let HsplitEnd :
+      (Path.concat tailPts tailSegs).Homotopy
+        ((Path.concat prefixPts prefixSegs).trans UlastPath) := by
+    change (Path.concat tailPts tailSegs).Homotopy
+      ((Path.concat (fun i : Fin (L + R + 1) => tailPts ⟨i.val, by omega⟩)
+        (fun k : Fin (L + R) => tailSegs ⟨k.val, by omega⟩)).trans
+        (Path.concat (fun i : Fin (A + 1) => tailPts ⟨L + R + i.val, by omega⟩)
+          (fun k : Fin A => tailSegs ⟨L + R + k.val, by omega⟩)))
+    exact HsplitEnd₀
+  have hHsplitEnd : ∀ t, HsplitEnd t ∈ U ∪ V := by
+    intro t
+    change HsplitEnd₀ t ∈ U ∪ V
+    exact hHsplitEnd₀ t
+  rcases path_concat_split_homotopy_forall_mem_of_mapsTo
+      (S := U ∪ V) prefixPts prefixSegs
+      (Or.inl (by simpa [prefixPts] using hstartU)) hPrefixSegsUnion with
+    ⟨HsplitPrefix₀, hHsplitPrefix₀⟩
+  let HsplitPrefix :
+      (Path.concat prefixPts prefixSegs).Homotopy (Upath.trans Vpath) := by
+    change (Path.concat prefixPts prefixSegs).Homotopy
+      ((Path.concat (fun i : Fin (L + 1) => prefixPts ⟨i.val, by omega⟩)
+        (fun k : Fin L => prefixSegs ⟨k.val, by omega⟩)).trans
+        (Path.concat (fun i : Fin (R + 1) => prefixPts ⟨L + i.val, by omega⟩)
+          (fun k : Fin R => prefixSegs ⟨L + k.val, by omega⟩)))
+    exact HsplitPrefix₀
+  have hHsplitPrefix : ∀ t, HsplitPrefix t ∈ U ∪ V := by
+    intro t
+    change HsplitPrefix₀ t ∈ U ∪ V
+    exact hHsplitPrefix₀ t
+  have huRange : Set.range Upath ⊆ U := by
+    change Set.range (Path.concat uPts uSegs) ⊆ U
+    exact path_concat_range_subset_of_mapsTo uPts uSegs
+      (by simpa [uPts, prefixPts] using hstartU)
+      (by
+        intro k
+        simpa [uSegs, prefixSegs] using hU k)
+  have hprefixRange : Set.range (p.trans Upath) ⊆ U := by
+    change Set.range (p.trans (Path.concat uPts uSegs)) ⊆ U
+    intro z hz
+    have hz' : z ∈ Set.range p ∪ Set.range (Path.concat uPts uSegs) := by
+      simpa [Path.trans_range] using hz
+    rcases hz' with hzP | hzU
+    · exact hp hzP
+    · exact huRange hzU
+  have hvRange : Set.range Vpath ⊆ V := by
+    change Set.range (Path.concat vPts vSegs) ⊆ V
+    exact path_concat_range_subset_of_mapsTo vPts vSegs
+      (by simpa [vPts, prefixPts] using hVBase)
+      (by
+        intro k
+        simpa [vSegs, prefixSegs] using hV k)
+  have huLastRange : Set.range UlastPath ⊆ U := by
+    change Set.range (Path.concat uLastPts uLastSegs) ⊆ U
+    exact path_concat_range_subset_of_mapsTo uLastPts uLastSegs
+      (by simpa [uLastPts] using hULastBase)
+      (by
+        intro k
+        simpa [uLastSegs] using hULast k)
+  have hUlastUnion : ∀ t, UlastPath t ∈ U ∪ V := by
+    intro t
+    exact Or.inl (huLastRange ⟨t, rfl⟩)
+  let HsplitPrefixLift :
+      ((Path.concat prefixPts prefixSegs).trans UlastPath).Homotopy
+        ((Upath.trans Vpath).trans UlastPath) :=
+    HsplitPrefix.hcomp (Path.Homotopy.refl UlastPath)
+  have hHsplitPrefixLift : ∀ t, HsplitPrefixLift t ∈ U ∪ V := by
+    exact path_homotopy_hcomp_forall_mem_of_forall_mem
+      HsplitPrefix (Path.Homotopy.refl UlastPath) hHsplitPrefix
+      (fun t => by
+        change UlastPath t.2 ∈ U ∪ V
+        exact hUlastUnion t.2)
+  let Hsplit : (Path.concat tailPts tailSegs).Homotopy
+      ((Upath.trans Vpath).trans UlastPath) :=
+    HsplitEnd.trans HsplitPrefixLift
+  have hHsplit : ∀ t, Hsplit t ∈ U ∪ V :=
+    path_homotopy_trans_forall_mem_of_forall_mem
+      HsplitEnd HsplitPrefixLift hHsplitEnd hHsplitPrefixLift
+  have hcloseULast : uLastPts (Fin.last A) = x₀ := by
+    simpa [uLastPts] using hclose
+  rcases twoSetOpenCover_sameSideBlock_cast_homotopy_refl_forall_mem_of_mapsTo
+      (U := U) (V := V) vPts (p.trans Upath) vSegs UlastPath hcloseULast
+      hprefixRange
+      (by simpa [vPts, prefixPts] using hVBase)
+      (by
+        intro k
+        simpa [vSegs, prefixSegs] using hV k)
+      huLastRange with
+    ⟨Hcontract, hHcontract⟩
+  have htargetEq :
+      ((Path.refl x₀).cast rfl hcloseULast) =
+        ((Path.refl x₀).cast rfl hclose) := by
+    apply Path.ext
+    funext _s
+    change x₀ = x₀
+    rfl
+  let HcontractCast : (((p.trans Upath).trans Vpath).trans UlastPath).Homotopy
+      ((Path.refl x₀).cast rfl hclose) := Hcontract.cast rfl htargetEq
+  have hHcontractCast : ∀ t, HcontractCast t ∈ U ∪ V := by
+    intro t
+    change Hcontract t ∈ U ∪ V
+    exact hHcontract t
+  have hpUnion : ∀ t, p t ∈ U ∪ V := by
+    intro t
+    exact Or.inl (hp ⟨t, rfl⟩)
+  have hUpathUnion : ∀ t, Upath t ∈ U ∪ V := by
+    intro t
+    exact Or.inl (huRange ⟨t, rfl⟩)
+  have hVpathUnion : ∀ t, Vpath t ∈ U ∪ V := by
+    intro t
+    exact Or.inr (hvRange ⟨t, rfl⟩)
+  have hUVUnion : ∀ t, (Upath.trans Vpath) t ∈ U ∪ V :=
+    path_trans_forall_mem_of_forall_mem Upath Vpath hUpathUnion hVpathUnion
+  let HnormHead : (p.trans (Path.concat tailPts tailSegs)).Homotopy
+      (p.trans ((Upath.trans Vpath).trans UlastPath)) :=
+    (Path.Homotopy.refl p).hcomp Hsplit
+  have hHnormHead : ∀ t, HnormHead t ∈ U ∪ V := by
+    exact path_homotopy_hcomp_forall_mem_of_forall_mem
+      (Path.Homotopy.refl p) Hsplit
+      (fun t => by
+        change p t.2 ∈ U ∪ V
+        exact hpUnion t.2)
+      hHsplit
+  let HassocOuter : (p.trans ((Upath.trans Vpath).trans UlastPath)).Homotopy
+      ((p.trans (Upath.trans Vpath)).trans UlastPath) :=
+    (Path.Homotopy.transAssoc p (Upath.trans Vpath) UlastPath).symm
+  have hHassocOuter : ∀ t, HassocOuter t ∈ U ∪ V := by
+    exact path_homotopy_symm_forall_mem_of_forall_mem
+      (Path.Homotopy.transAssoc p (Upath.trans Vpath) UlastPath)
+      (path_transAssoc_forall_mem_of_forall_mem p (Upath.trans Vpath)
+        UlastPath hpUnion hUVUnion hUlastUnion)
+  let HassocInnerCore :
+      (p.trans (Upath.trans Vpath)).Homotopy ((p.trans Upath).trans Vpath) :=
+    (Path.Homotopy.transAssoc p Upath Vpath).symm
+  have hHassocInnerCore : ∀ t, HassocInnerCore t ∈ U ∪ V := by
+    exact path_homotopy_symm_forall_mem_of_forall_mem
+      (Path.Homotopy.transAssoc p Upath Vpath)
+      (path_transAssoc_forall_mem_of_forall_mem p Upath Vpath
+        hpUnion hUpathUnion hVpathUnion)
+  let HassocInner :
+      ((p.trans (Upath.trans Vpath)).trans UlastPath).Homotopy
+        (((p.trans Upath).trans Vpath).trans UlastPath) :=
+    HassocInnerCore.hcomp (Path.Homotopy.refl UlastPath)
+  have hHassocInner : ∀ t, HassocInner t ∈ U ∪ V := by
+    exact path_homotopy_hcomp_forall_mem_of_forall_mem
+      HassocInnerCore (Path.Homotopy.refl UlastPath) hHassocInnerCore
+      (fun t => by
+        change UlastPath t.2 ∈ U ∪ V
+        exact hUlastUnion t.2)
+  let Hassoc :
+      (p.trans ((Upath.trans Vpath).trans UlastPath)).Homotopy
+        (((p.trans Upath).trans Vpath).trans UlastPath) :=
+    HassocOuter.trans HassocInner
+  have hHassoc : ∀ t, Hassoc t ∈ U ∪ V :=
+    path_homotopy_trans_forall_mem_of_forall_mem
+      HassocOuter HassocInner hHassocOuter hHassocInner
+  let Hcollapse : (p.trans ((Upath.trans Vpath).trans UlastPath)).Homotopy
+      ((Path.refl x₀).cast rfl hclose) :=
+    Hassoc.trans HcontractCast
+  have hHcollapse : ∀ t, Hcollapse t ∈ U ∪ V :=
+    path_homotopy_trans_forall_mem_of_forall_mem
+      Hassoc HcontractCast hHassoc hHcontractCast
+  let Hfinal : (p.trans (Path.concat tailPts tailSegs)).Homotopy
+      ((Path.refl x₀).cast rfl hclose) :=
+    HnormHead.trans Hcollapse
+  refine ⟨Hfinal, ?_⟩
+  exact path_homotopy_trans_forall_mem_of_forall_mem
+    HnormHead Hcollapse hHnormHead hHcollapse
+
+/--
+A finite tail made of an initial block in the prefix cover member, then a
+block in the opposite member, and a final return block in the prefix member is
 nullhomotopic.  The first block is absorbed into the prefix path, leaving the
 one-switch same-side tail contraction.
 -/
@@ -7368,102 +7612,11 @@ theorem twoSetOpenCover_sameOppositeSameTail_concat_cast_nullhomotopic_of_mapsTo
       Set.range (tailSegs ⟨L + R + k.val, by omega⟩) ⊆ U) :
     Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
       ((Path.refl x₀).cast rfl hclose) := by
-  let prefixPts : Fin (L + R + 1) → Y := fun i =>
-    tailPts ⟨i.val, by omega⟩
-  let prefixSegs : (k : Fin (L + R)) → Path (prefixPts k.castSucc) (prefixPts k.succ) :=
-    fun k => tailSegs ⟨k.val, by omega⟩
-  let uPts : Fin (L + 1) → Y := fun i =>
-    prefixPts ⟨i.val, by omega⟩
-  let uSegs : (k : Fin L) → Path (uPts k.castSucc) (uPts k.succ) :=
-    fun k => prefixSegs ⟨k.val, by omega⟩
-  let vPts : Fin (R + 1) → Y := fun i =>
-    prefixPts ⟨L + i.val, by omega⟩
-  let vSegs : (k : Fin R) → Path (vPts k.castSucc) (vPts k.succ) :=
-    fun k => prefixSegs ⟨L + k.val, by omega⟩
-  let uLastPts : Fin (A + 1) → Y := fun i =>
-    tailPts ⟨L + R + i.val, by omega⟩
-  let uLastSegs : (k : Fin A) →
-      Path (uLastPts k.castSucc) (uLastPts k.succ) :=
-    fun k => tailSegs ⟨L + R + k.val, by omega⟩
-  have hsplitEnd :
-      Path.Homotopic (Path.concat tailPts tailSegs)
-        ((Path.concat prefixPts prefixSegs).trans
-          (Path.concat uLastPts uLastSegs)) := by
-    change Path.Homotopic (Path.concat tailPts tailSegs)
-      ((Path.concat (fun i : Fin (L + R + 1) => tailPts ⟨i.val, by omega⟩)
-        (fun k : Fin (L + R) => tailSegs ⟨k.val, by omega⟩)).trans
-        (Path.concat (fun i : Fin (A + 1) => tailPts ⟨L + R + i.val, by omega⟩)
-          (fun k : Fin A => tailSegs ⟨L + R + k.val, by omega⟩)))
-    exact path_homotopic_concat_split tailPts tailSegs
-  have hsplitPrefix :
-      Path.Homotopic (Path.concat prefixPts prefixSegs)
-        ((Path.concat uPts uSegs).trans
-          (Path.concat vPts vSegs)) := by
-    change Path.Homotopic (Path.concat prefixPts prefixSegs)
-      ((Path.concat (fun i : Fin (L + 1) => prefixPts ⟨i.val, by omega⟩)
-        (fun k : Fin L => prefixSegs ⟨k.val, by omega⟩)).trans
-        (Path.concat (fun i : Fin (R + 1) => prefixPts ⟨L + i.val, by omega⟩)
-          (fun k : Fin R => prefixSegs ⟨L + k.val, by omega⟩)))
-    exact path_homotopic_concat_split prefixPts prefixSegs
-  have hsplit :
-      Path.Homotopic (Path.concat tailPts tailSegs)
-        (((Path.concat uPts uSegs).trans
-          (Path.concat vPts vSegs)).trans
-          (Path.concat uLastPts uLastSegs)) :=
-    hsplitEnd.trans (Path.Homotopic.hcomp hsplitPrefix (Path.Homotopic.refl _))
-  have huRange : Set.range (Path.concat uPts uSegs) ⊆ U :=
-    path_concat_range_subset_of_mapsTo uPts uSegs
-      (by
-        have hstart : tailPts 0 ∈ U := hp ⟨1, p.target⟩
-        simpa [uPts, prefixPts] using hstart)
-      (by
-        intro k
-        simpa [uSegs, prefixSegs] using hU k)
-  have hprefixRange : Set.range (p.trans (Path.concat uPts uSegs)) ⊆ U := by
-    intro z hz
-    have hz' : z ∈ Set.range p ∪ Set.range (Path.concat uPts uSegs) := by
-      simpa [Path.trans_range] using hz
-    rcases hz' with hzP | hzU
-    · exact hp hzP
-    · exact huRange hzU
-  have huLastRange : Set.range (Path.concat uLastPts uLastSegs) ⊆ U :=
-    path_concat_range_subset_of_mapsTo uLastPts uLastSegs
-      (by simpa [uLastPts] using hULastBase)
-      (by
-        intro k
-        simpa [uLastSegs] using hULast k)
-  have hcloseULast : uLastPts (Fin.last A) = x₀ := by
-    simpa [uLastPts] using hclose
-  have hcontract :
-      Path.Homotopic
-        (((p.trans (Path.concat uPts uSegs)).trans
-          (Path.concat vPts vSegs)).trans
-          (Path.concat uLastPts uLastSegs))
-        ((Path.refl x₀).cast rfl hcloseULast) := by
-    exact twoSetOpenCover_sameSideBlock_cast_nullhomotopic_of_mapsTo
-      (U := U) (V := V) vPts (p.trans (Path.concat uPts uSegs)) vSegs
-      (Path.concat uLastPts uLastSegs) hcloseULast hprefixRange
-      (by simpa [vPts, prefixPts] using hVBase)
-      (by
-        intro k
-        simpa [vSegs, prefixSegs] using hV k)
-      huLastRange
-  have htargetEq :
-      ((Path.refl x₀).cast rfl hcloseULast) =
-        ((Path.refl x₀).cast rfl hclose) := by
-    apply Path.ext
-    funext _s
-    change x₀ = x₀
-    rfl
-  exact (Path.Homotopic.hcomp (Path.Homotopic.refl p) hsplit).trans
-    (((Path.Homotopic.trans_assoc p
-      ((Path.concat uPts uSegs).trans (Path.concat vPts vSegs))
-      (Path.concat uLastPts uLastSegs)).symm.trans
-      (Path.Homotopic.hcomp
-        (Path.Homotopic.trans_assoc p (Path.concat uPts uSegs)
-          (Path.concat vPts vSegs)).symm
-        (Path.Homotopic.refl _))).trans
-      (hcontract.trans (htargetEq ▸ Path.Homotopic.refl _)))
+  rcases twoSetOpenCover_sameOppositeSameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo
+      (U := U) (V := V) tailPts tailSegs p hclose hp hU hVBase hV
+      hULastBase hULast with
+    ⟨H, _hH⟩
+  exact ⟨H⟩
 
 /--
 A finite tail made of alternating opposite, prefix, opposite, and prefix cover
@@ -13577,6 +13730,57 @@ theorem threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockTail_concat
 
 /--
 An arbitrary north-source path followed by finite north, south, and north tail
+blocks contracts through the north/south stereographic cover.  The first finite
+block is absorbed into the leading north-source path, leaving the mixed
+north/south/north contraction.
+-/
+theorem threeSphere_stereographic_northNorthBlockSouthBlockNorthBlockTail_concat_cast_homotopy_refl_forall_mem
+    {L R A : ℕ} {x₀ : ThreeSphere}
+    (tailPts : Fin (L + R + A + 1) → ThreeSphere)
+    (tailSegs : (k : Fin (L + R + A)) →
+      Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last (L + R + A)) = x₀)
+    (hp : Set.range p ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hNorthBase : tailPts 0 ∈ (stereographic' 3 threeSphere_northPole).source)
+    (hNorth : ∀ k : Fin L,
+      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hSouthBase : tailPts ⟨L, by omega⟩ ∈
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouth : ∀ k : Fin R,
+      Set.range (tailSegs ⟨L + k.val, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthLastBase : tailPts ⟨L + R, by omega⟩ ∈
+        (stereographic' 3 threeSphere_northPole).source)
+    (hNorthLast : ∀ k : Fin A,
+      Set.range (tailSegs ⟨L + R + k.val, by omega⟩) ⊆
+        (stereographic' 3 threeSphere_northPole).source) :
+    ∃ H : (p.trans (Path.concat tailPts tailSegs)).Homotopy
+        ((Path.refl x₀).cast rfl hclose),
+      ∀ t, H t ∈ (stereographic' 3 threeSphere_northPole).source ∪
+        (stereographic' 3 (-threeSphere_northPole)).source := by
+  let U : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
+  let V : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  letI : SimplyConnectedSpace U := by
+    simpa [U] using threeSphere_stereographic_source_simplyConnectedSpace
+      threeSphere_northPole
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace
+      (-threeSphere_northPole)
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    simpa [U, V] using threeSphere_actualOverlap_pathConnectedSpace
+  have _hNorthBase := hNorthBase
+  rcases twoSetOpenCover_sameOppositeSameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo
+    (U := U) (V := V) tailPts tailSegs p hclose hp
+    hNorth hSouthBase hSouth hNorthLastBase hNorthLast with
+    ⟨H, hH⟩
+  refine ⟨H, ?_⟩
+  intro t
+  simpa [U, V] using hH t
+
+/--
+An arbitrary north-source path followed by finite north, south, and north tail
 blocks is null-homotopic.  The first finite block is absorbed into the leading
 north-source path, leaving the mixed north/south/north contraction.
 -/
@@ -13604,20 +13808,46 @@ theorem threeSphere_stereographic_northNorthBlockSouthBlockNorthBlockTail_concat
         (stereographic' 3 threeSphere_northPole).source) :
     Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
       ((Path.refl x₀).cast rfl hclose) := by
-  let U : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
-  let V : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
-  letI : SimplyConnectedSpace U := by
-    simpa [U] using threeSphere_stereographic_source_simplyConnectedSpace
-      threeSphere_northPole
-  letI : SimplyConnectedSpace V := by
-    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace
-      (-threeSphere_northPole)
-  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
-    simpa [U, V] using threeSphere_actualOverlap_pathConnectedSpace
-  have _hNorthBase := hNorthBase
-  exact twoSetOpenCover_sameOppositeSameTail_concat_cast_nullhomotopic_of_mapsTo
-    (U := U) (V := V) tailPts tailSegs p hclose hp
-    hNorth hSouthBase hSouth hNorthLastBase hNorthLast
+  rcases threeSphere_stereographic_northNorthBlockSouthBlockNorthBlockTail_concat_cast_homotopy_refl_forall_mem
+      tailPts tailSegs p hclose hp hNorthBase hNorth hSouthBase hSouth
+      hNorthLastBase hNorthLast with
+    ⟨H, _hH⟩
+  exact ⟨H⟩
+
+/--
+Length-cast form of the same-source north/north/south/north two-switch tail
+contraction, aligned to first-run suffixes whose length splits as `L + R + A`.
+-/
+theorem threeSphere_stereographic_northNorthBlockSouthBlockNorthBlockTail_concat_cast_homotopy_refl_forall_mem_of_length_eq
+    {T L R A : ℕ} {x₀ : ThreeSphere}
+    (tailPts : Fin (T + 1) → ThreeSphere)
+    (tailSegs : (k : Fin T) → Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last T) = x₀)
+    (hTailLen : T = L + R + A)
+    (hp : Set.range p ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hNorthBase : tailPts 0 ∈ (stereographic' 3 threeSphere_northPole).source)
+    (hNorth : ∀ k : Fin L,
+      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hSouthBase : tailPts ⟨L, by omega⟩ ∈
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouth : ∀ k : Fin R,
+      Set.range (tailSegs ⟨L + k.val, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthLastBase : tailPts ⟨L + R, by omega⟩ ∈
+        (stereographic' 3 threeSphere_northPole).source)
+    (hNorthLast : ∀ k : Fin A,
+      Set.range (tailSegs ⟨L + R + k.val, by omega⟩) ⊆
+        (stereographic' 3 threeSphere_northPole).source) :
+    ∃ H : (p.trans (Path.concat tailPts tailSegs)).Homotopy
+        ((Path.refl x₀).cast rfl hclose),
+      ∀ t, H t ∈ (stereographic' 3 threeSphere_northPole).source ∪
+        (stereographic' 3 (-threeSphere_northPole)).source := by
+  cases hTailLen
+  exact threeSphere_stereographic_northNorthBlockSouthBlockNorthBlockTail_concat_cast_homotopy_refl_forall_mem
+    tailPts tailSegs p hclose hp hNorthBase hNorth hSouthBase hSouth
+    hNorthLastBase hNorthLast
 
 /--
 Length-cast form of the same-source north/north/south/north two-switch tail
@@ -13647,10 +13877,66 @@ theorem threeSphere_stereographic_northNorthBlockSouthBlockNorthBlockTail_concat
         (stereographic' 3 threeSphere_northPole).source) :
     Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
       ((Path.refl x₀).cast rfl hclose) := by
-  cases hTailLen
-  exact threeSphere_stereographic_northNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic
-    tailPts tailSegs p hclose hp hNorthBase hNorth hSouthBase hSouth
-    hNorthLastBase hNorthLast
+  rcases
+      threeSphere_stereographic_northNorthBlockSouthBlockNorthBlockTail_concat_cast_homotopy_refl_forall_mem_of_length_eq
+        tailPts tailSegs p hclose hTailLen hp hNorthBase hNorth hSouthBase hSouth
+        hNorthLastBase hNorthLast with
+    ⟨H, _hH⟩
+  exact ⟨H⟩
+
+/--
+Symmetric same-source tail contraction: an arbitrary south-source path followed
+by finite south, north, and south tail blocks contracts through the south/north
+stereographic cover.
+-/
+theorem threeSphere_stereographic_southSouthBlockNorthBlockSouthBlockTail_concat_cast_homotopy_refl_forall_mem
+    {L R A : ℕ} {x₀ : ThreeSphere}
+    (tailPts : Fin (L + R + A + 1) → ThreeSphere)
+    (tailSegs : (k : Fin (L + R + A)) →
+      Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last (L + R + A)) = x₀)
+    (hp : Set.range p ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouthBase : tailPts 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouth : ∀ k : Fin L,
+      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthBase : tailPts ⟨L, by omega⟩ ∈
+        (stereographic' 3 threeSphere_northPole).source)
+    (hNorth : ∀ k : Fin R,
+      Set.range (tailSegs ⟨L + k.val, by omega⟩) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hSouthLastBase : tailPts ⟨L + R, by omega⟩ ∈
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouthLast : ∀ k : Fin A,
+      Set.range (tailSegs ⟨L + R + k.val, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source) :
+    ∃ H : (p.trans (Path.concat tailPts tailSegs)).Homotopy
+        ((Path.refl x₀).cast rfl hclose),
+      ∀ t, H t ∈ (stereographic' 3 (-threeSphere_northPole)).source ∪
+        (stereographic' 3 threeSphere_northPole).source := by
+  let U : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  let V : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
+  letI : SimplyConnectedSpace U := by
+    simpa [U] using threeSphere_stereographic_source_simplyConnectedSpace
+      (-threeSphere_northPole)
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace
+      threeSphere_northPole
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    change PathConnectedSpace
+      ((stereographic' 3 (-threeSphere_northPole)).source ∩
+        (stereographic' 3 threeSphere_northPole).source : Set ThreeSphere)
+    rw [Set.inter_comm]
+    exact threeSphere_actualOverlap_pathConnectedSpace
+  have _hSouthBase := hSouthBase
+  rcases twoSetOpenCover_sameOppositeSameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo
+    (U := U) (V := V) tailPts tailSegs p hclose hp
+    hSouth hNorthBase hNorth hSouthLastBase hSouthLast with
+    ⟨H, hH⟩
+  refine ⟨H, ?_⟩
+  intro t
+  simpa [U, V] using hH t
 
 /--
 Symmetric same-source tail contraction: an arbitrary south-source path followed
@@ -13680,24 +13966,46 @@ theorem threeSphere_stereographic_southSouthBlockNorthBlockSouthBlockTail_concat
         (stereographic' 3 (-threeSphere_northPole)).source) :
     Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
       ((Path.refl x₀).cast rfl hclose) := by
-  let U : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
-  let V : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
-  letI : SimplyConnectedSpace U := by
-    simpa [U] using threeSphere_stereographic_source_simplyConnectedSpace
-      (-threeSphere_northPole)
-  letI : SimplyConnectedSpace V := by
-    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace
-      threeSphere_northPole
-  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
-    change PathConnectedSpace
-      ((stereographic' 3 (-threeSphere_northPole)).source ∩
-        (stereographic' 3 threeSphere_northPole).source : Set ThreeSphere)
-    rw [Set.inter_comm]
-    exact threeSphere_actualOverlap_pathConnectedSpace
-  have _hSouthBase := hSouthBase
-  exact twoSetOpenCover_sameOppositeSameTail_concat_cast_nullhomotopic_of_mapsTo
-    (U := U) (V := V) tailPts tailSegs p hclose hp
-    hSouth hNorthBase hNorth hSouthLastBase hSouthLast
+  rcases threeSphere_stereographic_southSouthBlockNorthBlockSouthBlockTail_concat_cast_homotopy_refl_forall_mem
+      tailPts tailSegs p hclose hp hSouthBase hSouth hNorthBase hNorth
+      hSouthLastBase hSouthLast with
+    ⟨H, _hH⟩
+  exact ⟨H⟩
+
+/--
+Length-cast form of the same-source south/south/north/south two-switch tail
+contraction, aligned to first-run suffixes whose length splits as `L + R + A`.
+-/
+theorem threeSphere_stereographic_southSouthBlockNorthBlockSouthBlockTail_concat_cast_homotopy_refl_forall_mem_of_length_eq
+    {T L R A : ℕ} {x₀ : ThreeSphere}
+    (tailPts : Fin (T + 1) → ThreeSphere)
+    (tailSegs : (k : Fin T) → Path (tailPts k.castSucc) (tailPts k.succ))
+    (p : Path x₀ (tailPts 0))
+    (hclose : tailPts (Fin.last T) = x₀)
+    (hTailLen : T = L + R + A)
+    (hp : Set.range p ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouthBase : tailPts 0 ∈ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouth : ∀ k : Fin L,
+      Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hNorthBase : tailPts ⟨L, by omega⟩ ∈
+        (stereographic' 3 threeSphere_northPole).source)
+    (hNorth : ∀ k : Fin R,
+      Set.range (tailSegs ⟨L + k.val, by omega⟩) ⊆
+        (stereographic' 3 threeSphere_northPole).source)
+    (hSouthLastBase : tailPts ⟨L + R, by omega⟩ ∈
+        (stereographic' 3 (-threeSphere_northPole)).source)
+    (hSouthLast : ∀ k : Fin A,
+      Set.range (tailSegs ⟨L + R + k.val, by omega⟩) ⊆
+        (stereographic' 3 (-threeSphere_northPole)).source) :
+    ∃ H : (p.trans (Path.concat tailPts tailSegs)).Homotopy
+        ((Path.refl x₀).cast rfl hclose),
+      ∀ t, H t ∈ (stereographic' 3 (-threeSphere_northPole)).source ∪
+        (stereographic' 3 threeSphere_northPole).source := by
+  cases hTailLen
+  exact threeSphere_stereographic_southSouthBlockNorthBlockSouthBlockTail_concat_cast_homotopy_refl_forall_mem
+    tailPts tailSegs p hclose hp hSouthBase hSouth hNorthBase hNorth
+    hSouthLastBase hSouthLast
 
 /--
 Length-cast form of the same-source south/south/north/south two-switch tail
@@ -13727,10 +14035,12 @@ theorem threeSphere_stereographic_southSouthBlockNorthBlockSouthBlockTail_concat
         (stereographic' 3 (-threeSphere_northPole)).source) :
     Path.Homotopic (p.trans (Path.concat tailPts tailSegs))
       ((Path.refl x₀).cast rfl hclose) := by
-  cases hTailLen
-  exact threeSphere_stereographic_southSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic
-    tailPts tailSegs p hclose hp hSouthBase hSouth hNorthBase hNorth
-    hSouthLastBase hSouthLast
+  rcases
+      threeSphere_stereographic_southSouthBlockNorthBlockSouthBlockTail_concat_cast_homotopy_refl_forall_mem_of_length_eq
+        tailPts tailSegs p hclose hTailLen hp hSouthBase hSouth hNorthBase hNorth
+        hSouthLastBase hSouthLast with
+    ⟨H, _hH⟩
+  exact ⟨H⟩
 
 /--
 An arbitrary north path followed by south, north, south, and north blocks is
@@ -32070,10 +32380,13 @@ theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_north
     have hcore :
         Path.Homotopic
           ((q.cast rfl htailStart).trans (Path.concat tailPts tailSegs))
-          ((Path.refl (p 0)).cast rfl htailClose) :=
-      threeSphere_stereographic_northNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic_of_length_eq
-        tailPts tailSegs (q.cast rfl htailStart) htailClose hTailLen
-        hqCastRange hNorthBase hNorth hSouthBase hSouth hNorthLastBase hNorthLast
+          ((Path.refl (p 0)).cast rfl htailClose) := by
+      rcases
+          threeSphere_stereographic_northNorthBlockSouthBlockNorthBlockTail_concat_cast_homotopy_refl_forall_mem_of_length_eq
+            tailPts tailSegs (q.cast rfl htailStart) htailClose hTailLen
+            hqCastRange hNorthBase hNorth hSouthBase hSouth hNorthLastBase hNorthLast with
+        ⟨H, _hH⟩
+      exact ⟨H⟩
     have hcoreCast :=
       Path.Homotopic.pathCast hcore rfl htailEnd.symm
     have hsourceEq :
@@ -32346,10 +32659,13 @@ theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_south
     have hcore :
         Path.Homotopic
           ((q.cast rfl htailStart).trans (Path.concat tailPts tailSegs))
-          ((Path.refl (p 0)).cast rfl htailClose) :=
-      threeSphere_stereographic_southSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic_of_length_eq
-        tailPts tailSegs (q.cast rfl htailStart) htailClose hTailLen
-        hqCastRange hSouthBase hSouth hNorthBase hNorth hSouthLastBase hSouthLast
+          ((Path.refl (p 0)).cast rfl htailClose) := by
+      rcases
+          threeSphere_stereographic_southSouthBlockNorthBlockSouthBlockTail_concat_cast_homotopy_refl_forall_mem_of_length_eq
+            tailPts tailSegs (q.cast rfl htailStart) htailClose hTailLen
+            hqCastRange hSouthBase hSouth hNorthBase hNorth hSouthLastBase hSouthLast with
+        ⟨H, _hH⟩
+      exact ⟨H⟩
     have hcoreCast :=
       Path.Homotopic.pathCast hcore rfl htailEnd.symm
     have hsourceEq :
