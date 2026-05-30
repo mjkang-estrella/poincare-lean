@@ -6609,6 +6609,47 @@ theorem topological_manifold_prerequisites_of_homeomorph_to_threeSphere
     infer_instance
   exact topological_manifold_prerequisites_of_homeomorph h
 
+/--
+Recognition against the project target sphere transports the standard smooth
+manifold prerequisite payload to the recognized source.
+-/
+theorem smooth_manifold_prerequisites_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _compact : CompactSpace M,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  letI : T2Space ThreeSphere := threeSphere_t2Space
+  letI : CompactSpace ThreeSphere := threeSphere_compactSpace
+  letI : PathConnectedSpace ThreeSphere := threeSphere_pathConnectedSpace
+  letI : LocPathConnectedSpace ThreeSphere := threeSphere_locPathConnectedSpace
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere :=
+    threeSphere_chartedSpace
+  haveI : IsManifold (𝓡 3) ∞ ThreeSphere := threeSphere_smoothManifold
+  rcases h with ⟨e⟩
+  let charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M :=
+    e.symm.isLocalHomeomorph.chartedSpace e.symm.surjective
+  let smooth : IsManifold (𝓡 3) ∞ M := by
+    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M := charted
+    exact smoothManifold_of_homeomorph_transportedChartedSpace e
+  let path : PathConnectedSpace M :=
+    e.symm.surjective.pathConnectedSpace e.symm.continuous
+  let locPath : LocPathConnectedSpace M :=
+    e.isOpenEmbedding.locPathConnectedSpace
+  let connected : ConnectedSpace M := by
+    letI : PathConnectedSpace M := path
+    infer_instance
+  let nonempty : Nonempty M := by
+    letI : PathConnectedSpace M := path
+    infer_instance
+  exact ⟨e.symm.t2Space, charted, e.symm.compactSpace, smooth, path,
+    locPath, connected, nonempty⟩
+
 /-- The direct target-recognition prerequisite route is explicit homeomorphism transport. -/
 theorem topological_manifold_prerequisites_of_homeomorph_to_threeSphere_eq
     {M : Type u} [TopologicalSpace M]
@@ -21847,6 +21888,43 @@ theorem orbitRelQuotient_sphere_recognition_and_poincare_candidate_prerequisites
   refine ⟨hgroup, hmk, hrel, hQ, ?_⟩
   exact poincare_candidate_prerequisites_of_homeomorph_to_threeSphere
     (M := MulAction.orbitRel.Quotient G E) hQ
+
+/--
+For a free properly discontinuous action on a space already recognized as
+`S³`, a simply connected canonical orbit quotient is itself `S³` and carries a
+transported smooth 3-manifold structure.
+-/
+theorem orbitRelQuotient_smooth_sphere_recognition_and_prerequisites_of_homeomorph_to_threeSphere
+    {E G : Type u} [TopologicalSpace E]
+    [Group G] [MulAction G E] [ContinuousConstSMul G E]
+    [ProperlyDiscontinuousSMul G E]
+    [IsCancelSMul G E]
+    [SimplyConnectedSpace (MulAction.orbitRel.Quotient G E)]
+    (hE : Nonempty (E ≃ₜ ThreeSphere)) :
+    Subsingleton G ∧
+      IsHomeomorph (Quotient.mk (MulAction.orbitRel G E)) ∧
+      MulAction.orbitRel G E = ⊥ ∧
+      Nonempty (MulAction.orbitRel.Quotient G E ≃ₜ ThreeSphere) ∧
+      (∃ _t2 : T2Space (MulAction.orbitRel.Quotient G E),
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (MulAction.orbitRel.Quotient G E),
+      ∃ _simple : SimplyConnectedSpace (MulAction.orbitRel.Quotient G E),
+      ∃ _smooth : IsManifold (𝓡 3) ∞ (MulAction.orbitRel.Quotient G E),
+      ∃ _compact : CompactSpace (MulAction.orbitRel.Quotient G E),
+      ∃ _path : PathConnectedSpace (MulAction.orbitRel.Quotient G E),
+      ∃ _locPath : LocPathConnectedSpace (MulAction.orbitRel.Quotient G E),
+      ∃ _connected : ConnectedSpace (MulAction.orbitRel.Quotient G E),
+        Nonempty (MulAction.orbitRel.Quotient G E)) := by
+  rcases orbitRelQuotient_model_trivial_of_simplyConnected_quotient
+      (E := E) (G := G) hE with
+    ⟨hgroup, hQ⟩
+  rcases orbitRelQuotient_mk_isHomeomorph_and_orbitRel_eq_bot_of_simplyConnected_quotient
+      (E := E) (G := G) hE with
+    ⟨hmk, hrel⟩
+  rcases smooth_manifold_prerequisites_of_homeomorph_to_threeSphere hQ with
+    ⟨t2, charted, compact, smooth, path, locPath, connected, nonempty⟩
+  exact ⟨hgroup, hmk, hrel, hQ, t2, charted, inferInstance, smooth,
+    compact, path, locPath, connected, nonempty⟩
 
 /--
 Deck transformations over a covering map are determined by one value on a
