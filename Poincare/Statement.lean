@@ -3470,6 +3470,30 @@ theorem threeSphere_stereographic_sources_inter_pathConnectedSpace
   exact threeSphere_countableComplement_pathConnectedSpace
     ((Set.countable_singleton a).union (Set.countable_singleton b))
 
+/-- The overlap of any two stereographic chart sources on `ThreeSphere` is open. -/
+theorem threeSphere_stereographic_sources_inter_isOpen
+    (a b : ThreeSphere) :
+    IsOpen
+      (((stereographic' 3 a).source ∩
+        (stereographic' 3 b).source) : Set ThreeSphere) :=
+  (threeSphere_stereographic_source_isOpen a).inter
+    (threeSphere_stereographic_source_isOpen b)
+
+/--
+The overlap of any two stereographic chart sources on `ThreeSphere` is locally
+path-connected, because it is an open subspace of the locally path-connected
+sphere.
+-/
+theorem threeSphere_stereographic_sources_inter_locPathConnectedSpace
+    (a b : ThreeSphere) :
+    LocPathConnectedSpace
+      (((stereographic' 3 a).source ∩
+        (stereographic' 3 b).source) : Set ThreeSphere) := by
+  letI : LocPathConnectedSpace ThreeSphere :=
+    ChartedSpace.locPathConnectedSpace
+      (H := EuclideanSpace ℝ (Fin 3)) (M := ThreeSphere)
+  exact (threeSphere_stereographic_sources_inter_isOpen a b).locPathConnectedSpace
+
 /-- A second point, distinct from `a`, as a point of the stereographic source at `a`. -/
 noncomputable def threeSphere_pointInStereographicSource
     (a b : ThreeSphere) (hab : b ≠ a) : (stereographic' 3 a).source :=
