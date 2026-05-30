@@ -3340,6 +3340,39 @@ theorem euclideanThree_compl_singleton_pathConnectedSpace_eq
         (euclideanThree_isPathConnected_compl_singleton x) := by
   apply Subsingleton.elim
 
+/-- Punctured `ℝ³` embeds openly in `ℝ³` by the subtype inclusion. -/
+theorem euclideanThree_compl_singleton_isOpenEmbedding
+    (x : EuclideanSpace ℝ (Fin 3)) :
+    Topology.IsOpenEmbedding
+      ((Subtype.val) : ({x}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) →
+        EuclideanSpace ℝ (Fin 3)) :=
+  (isOpen_compl_singleton :
+    IsOpen ({x}ᶜ : Set (EuclideanSpace ℝ (Fin 3)))).isOpenEmbedding_subtypeVal
+
+/--
+The subtype of punctured `ℝ³` carries the charted-space structure induced by
+its open embedding into `ℝ³`.
+-/
+@[implicit_reducible]
+noncomputable def euclideanThree_compl_singleton_chartedSpace
+    (x : EuclideanSpace ℝ (Fin 3)) :
+    ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      ({x}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) := by
+  haveI : Nonempty ({x}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+    (euclideanThree_compl_singleton_pathConnectedSpace x).nonempty
+  exact (euclideanThree_compl_singleton_isOpenEmbedding x).singletonChartedSpace
+
+/-- Punctured `ℝ³` is a smooth 3-manifold under the induced open-subspace chart. -/
+theorem euclideanThree_compl_singleton_smoothManifold
+    (x : EuclideanSpace ℝ (Fin 3)) :
+    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        ({x}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+      euclideanThree_compl_singleton_chartedSpace x
+    IsManifold (𝓡 3) ∞ ({x}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) := by
+  haveI : Nonempty ({x}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+    (euclideanThree_compl_singleton_pathConnectedSpace x).nonempty
+  exact (euclideanThree_compl_singleton_isOpenEmbedding x).isManifold_singleton
+
 /--
 In any stereographic source of `ThreeSphere`, the complement of a countable
 subset is path-connected.  The proof transports mathlib's countable-complement
@@ -3580,15 +3613,10 @@ theorem threeSphere_twoPointComplement_puncturedChart_isOpenEmbedding
           EuclideanSpace ℝ (Fin 3))) := by
   let e := threeSphere_twoPointComplement_homeomorph_puncturedChart hab
   let puncture : EuclideanSpace ℝ (Fin 3) := threeSphere_twoPointChartImage a b hab
-  have htarget : Topology.IsOpenEmbedding
-      ((Subtype.val) : ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) →
-        EuclideanSpace ℝ (Fin 3)) :=
-    (isOpen_compl_singleton :
-      IsOpen ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3)))).isOpenEmbedding_subtypeVal
   change Topology.IsOpenEmbedding
     (((Subtype.val) : ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) →
       EuclideanSpace ℝ (Fin 3)) ∘ e)
-  exact htarget.comp e.isOpenEmbedding
+  exact (euclideanThree_compl_singleton_isOpenEmbedding puncture).comp e.isOpenEmbedding
 
 /--
 The overlap of two distinct stereographic sources is homeomorphic to punctured
@@ -3619,15 +3647,10 @@ theorem threeSphere_stereographicSources_inter_puncturedChart_isOpenEmbedding
           EuclideanSpace ℝ (Fin 3))) := by
   let e := threeSphere_stereographicSources_inter_homeomorph_puncturedChart hab
   let puncture : EuclideanSpace ℝ (Fin 3) := threeSphere_twoPointChartImage a b hab
-  have htarget : Topology.IsOpenEmbedding
-      ((Subtype.val) : ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) →
-        EuclideanSpace ℝ (Fin 3)) :=
-    (isOpen_compl_singleton :
-      IsOpen ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3)))).isOpenEmbedding_subtypeVal
   change Topology.IsOpenEmbedding
     (((Subtype.val) : ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) →
       EuclideanSpace ℝ (Fin 3)) ∘ e)
-  exact htarget.comp e.isOpenEmbedding
+  exact (euclideanThree_compl_singleton_isOpenEmbedding puncture).comp e.isOpenEmbedding
 
 /--
 The complement of any two distinct points in `ThreeSphere` is path-connected.
