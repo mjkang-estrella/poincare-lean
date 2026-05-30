@@ -3307,6 +3307,81 @@ theorem euclideanThree_compl_singleton_pathConnectedSpace_eq
         (euclideanThree_isPathConnected_compl_singleton x) := by
   apply Subsingleton.elim
 
+/--
+In any stereographic source of `ThreeSphere`, the complement of a countable
+subset is path-connected.  The proof transports mathlib's countable-complement
+theorem for real vector spaces across the stereographic homeomorphism to `ℝ³`.
+-/
+theorem threeSphere_stereographicSource_countableComplement_pathConnectedSpace
+    (a : ThreeSphere) {s : Set (stereographic' 3 a).source}
+    (hs : s.Countable) :
+    PathConnectedSpace (sᶜ : Set (stereographic' 3 a).source) := by
+  let e := threeSphere_stereographic_source_homeomorph a
+  let t : Set (EuclideanSpace ℝ (Fin 3)) := e '' s
+  have ht : t.Countable := hs.image e
+  letI : PathConnectedSpace (tᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+    isPathConnected_iff_pathConnectedSpace.mp
+      (ht.isPathConnected_compl_of_one_lt_rank euclideanThree_rank_gt_one)
+  have hpre : (sᶜ : Set (stereographic' 3 a).source) =
+      e ⁻¹' (tᶜ : Set (EuclideanSpace ℝ (Fin 3))) := by
+    ext x
+    simp [t, e]
+  exact (e.sets hpre).symm.surjective.pathConnectedSpace
+    (e.sets hpre).symm.continuous
+
+/--
+If a countable subset of `ThreeSphere` contains the stereographic center `a`,
+then its complement is path-connected.  Removing `a` places the complement
+inside the chart source at `a`, where it becomes the complement of a countable
+subset of `ℝ³`.
+-/
+noncomputable def threeSphere_countableComplement_homeomorph_sourceComplement
+    {s : Set ThreeSphere} {a : ThreeSphere} (ha : a ∈ s) :
+    (sᶜ : Set ThreeSphere) ≃ₜ
+      ({p : (stereographic' 3 a).source | (p : ThreeSphere) ∈ s}ᶜ :
+        Set (stereographic' 3 a).source) where
+  toFun p :=
+    ⟨⟨p.1, by
+      rw [threeSphere_stereographic_source_eq_compl_singleton]
+      intro h
+      exact p.2 (h ▸ ha)⟩, by
+      rw [Set.mem_compl_iff]
+      intro hp
+      exact p.2 hp⟩
+  invFun p :=
+    ⟨p.1.1, by
+      rw [Set.mem_compl_iff]
+      intro hp
+      exact p.2 hp⟩
+  left_inv p := by
+    ext
+    rfl
+  right_inv p := by
+    ext
+    rfl
+  continuous_toFun := by
+    continuity
+  continuous_invFun := by
+    continuity
+
+/--
+The complement of a countable subset of `ThreeSphere` is path-connected when
+the subset contains the chosen stereographic center.
+-/
+theorem threeSphere_countableComplement_pathConnectedSpace_of_mem
+    {s : Set ThreeSphere} (hs : s.Countable)
+    {a : ThreeSphere} (ha : a ∈ s) :
+    PathConnectedSpace (sᶜ : Set ThreeSphere) := by
+  let t : Set (stereographic' 3 a).source :=
+    {p : (stereographic' 3 a).source | (p : ThreeSphere) ∈ s}
+  have ht : t.Countable := by
+    simpa [t] using hs.preimage Subtype.val_injective
+  letI : PathConnectedSpace (tᶜ : Set (stereographic' 3 a).source) :=
+    threeSphere_stereographicSource_countableComplement_pathConnectedSpace a ht
+  exact
+    (threeSphere_countableComplement_homeomorph_sourceComplement ha).symm.surjective.pathConnectedSpace
+      (threeSphere_countableComplement_homeomorph_sourceComplement ha).symm.continuous
+
 /-- A second point, distinct from `a`, as a point of the stereographic source at `a`. -/
 noncomputable def threeSphere_pointInStereographicSource
     (a b : ThreeSphere) (hab : b ≠ a) : (stereographic' 3 a).source :=
@@ -3374,20 +3449,16 @@ noncomputable def threeSphere_twoPointComplement_homeomorph_puncturedChart
 
 /--
 The complement of any two distinct points in `ThreeSphere` is path-connected.
-The proof sends the complement through stereographic projection to punctured
-`ℝ³`, whose path-connectedness follows from the rank computation above.
+This is the two-point finite/countable specialization of the countable
+complement theorem.
 -/
 theorem threeSphere_twoPointComplement_pathConnectedSpace
     {a b : ThreeSphere} (hab : b ≠ a) :
     PathConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) := by
-  letI : PathConnectedSpace
-      ({threeSphere_twoPointChartImage a b hab}ᶜ :
-        Set (EuclideanSpace ℝ (Fin 3))) :=
-    euclideanThree_compl_singleton_pathConnectedSpace
-      (threeSphere_twoPointChartImage a b hab)
-  exact
-    (threeSphere_twoPointComplement_homeomorph_puncturedChart hab).symm.surjective.pathConnectedSpace
-      (threeSphere_twoPointComplement_homeomorph_puncturedChart hab).symm.continuous
+  have _ : b ≠ a := hab
+  exact threeSphere_countableComplement_pathConnectedSpace_of_mem
+    ((Set.countable_singleton a).union (Set.countable_singleton b))
+    (Or.inl rfl)
 
 /-- The antipode of `v` as a point of the stereographic source at `v`. -/
 noncomputable def threeSphere_antipodeInSource
