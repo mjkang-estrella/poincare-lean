@@ -8102,6 +8102,232 @@ theorem threeSphere_stereographic_sources_union_simplyConnectedSpace
       (by exact threeSphere_stereographic_source_isOpen b)
 
 /--
+The unit two-sphere in `ℝ³`, used as the angular factor in punctured `ℝ³`.
+-/
+abbrev TwoSphere : Type :=
+  Metric.sphere (0 : EuclideanSpace ℝ (Fin 3)) (1 : ℝ)
+
+/-- A concrete north-pole point of the two-sphere. -/
+noncomputable def twoSphere_northPole : TwoSphere :=
+  let v : EuclideanSpace ℝ (Fin 3) := .single 0 1
+  ⟨v, by simp [v]⟩
+
+/-- The `ℝ²` rank witness used for stereographic-overlap path-connectedness. -/
+theorem euclideanTwo_rank_gt_one :
+    1 < Module.rank ℝ (EuclideanSpace ℝ (Fin 2)) := by
+  rw [(EuclideanSpace.equiv (Fin 2) ℝ).toLinearEquiv.rank_eq]
+  rw [rank_fin_fun]
+  norm_num
+
+/--
+The ambient vector space for `TwoSphere` has the finrank required by
+mathlib's `stereographic' 2` chart constructor.
+-/
+instance twoSphere_stereographic_finrank_fact :
+    Fact (Module.finrank ℝ (EuclideanSpace ℝ (Fin 3)) = 2 + 1) :=
+  ⟨by simp [EuclideanSpace]⟩
+
+/-- A stereographic source of `TwoSphere` is homeomorphic to `ℝ²`. -/
+noncomputable def twoSphere_stereographic_source_homeomorph
+    (v : TwoSphere) :
+    (stereographic' 2 v).source ≃ₜ EuclideanSpace ℝ (Fin 2) :=
+  (stereographic' 2 v).toHomeomorphSourceTarget.trans
+    ((Homeomorph.setCongr (stereographic'_target v)).trans
+      (Homeomorph.Set.univ (EuclideanSpace ℝ (Fin 2))))
+
+/-- Every stereographic source of `TwoSphere` is simply connected. -/
+theorem twoSphere_stereographic_source_simplyConnectedSpace
+    (v : TwoSphere) :
+    SimplyConnectedSpace (stereographic' 2 v).source :=
+  (twoSphere_stereographic_source_homeomorph v).toHomotopyEquiv.simplyConnectedSpace
+
+/-- The stereographic source at `v` is the complement of the chart center. -/
+theorem twoSphere_stereographic_source_eq_compl_singleton
+    (v : TwoSphere) :
+    (stereographic' 2 v).source = {v}ᶜ :=
+  stereographic'_source v
+
+/-- Each stereographic source of `TwoSphere` is open. -/
+theorem twoSphere_stereographic_source_isOpen
+    (v : TwoSphere) :
+    IsOpen (stereographic' 2 v).source :=
+  (stereographic' 2 v).open_source
+
+/-- Distinct stereographic sources cover `TwoSphere`. -/
+theorem twoSphere_stereographic_sources_cover_of_ne
+    {a b : TwoSphere} (hab : a ≠ b) :
+    (stereographic' 2 a).source ∪ (stereographic' 2 b).source = Set.univ := by
+  ext x
+  constructor
+  · intro _hx
+    trivial
+  · intro _hx
+    by_cases hxa : x = a
+    · right
+      rw [twoSphere_stereographic_source_eq_compl_singleton]
+      exact by simpa [Set.mem_compl_iff, Set.mem_singleton_iff, hxa] using hab
+    · left
+      rw [twoSphere_stereographic_source_eq_compl_singleton]
+      exact by simpa [Set.mem_compl_iff, Set.mem_singleton_iff] using hxa
+
+/--
+In any stereographic source of `TwoSphere`, the complement of a countable
+subset is path-connected.  The proof transports mathlib's
+countable-complement theorem for `ℝ²` through stereographic coordinates.
+-/
+theorem twoSphere_stereographicSource_countableComplement_pathConnectedSpace
+    (a : TwoSphere) {s : Set (stereographic' 2 a).source}
+    (hs : s.Countable) :
+    PathConnectedSpace (sᶜ : Set (stereographic' 2 a).source) := by
+  let e := twoSphere_stereographic_source_homeomorph a
+  let t : Set (EuclideanSpace ℝ (Fin 2)) := e '' s
+  have ht : t.Countable := hs.image e
+  letI : PathConnectedSpace (tᶜ : Set (EuclideanSpace ℝ (Fin 2))) :=
+    isPathConnected_iff_pathConnectedSpace.mp
+      (ht.isPathConnected_compl_of_one_lt_rank euclideanTwo_rank_gt_one)
+  have hpre : (sᶜ : Set (stereographic' 2 a).source) =
+      e ⁻¹' (tᶜ : Set (EuclideanSpace ℝ (Fin 2))) := by
+    ext x
+    simp [t, e]
+  exact (e.sets hpre).symm.surjective.pathConnectedSpace
+    (e.sets hpre).symm.continuous
+
+/--
+If a countable subset of `TwoSphere` contains the stereographic center, its
+complement is homeomorphic to a countable complement inside that chart source.
+-/
+noncomputable def twoSphere_countableComplement_homeomorph_sourceComplement
+    {s : Set TwoSphere} {a : TwoSphere} (ha : a ∈ s) :
+    (sᶜ : Set TwoSphere) ≃ₜ
+      ({p : (stereographic' 2 a).source | (p : TwoSphere) ∈ s}ᶜ :
+        Set (stereographic' 2 a).source) where
+  toFun p :=
+    ⟨⟨p.1, by
+      rw [twoSphere_stereographic_source_eq_compl_singleton]
+      intro h
+      exact p.2 (h ▸ ha)⟩, by
+      rw [Set.mem_compl_iff]
+      intro hp
+      exact p.2 hp⟩
+  invFun p :=
+    ⟨p.1.1, by
+      rw [Set.mem_compl_iff]
+      intro hp
+      exact p.2 hp⟩
+  left_inv p := by
+    ext
+    rfl
+  right_inv p := by
+    ext
+    rfl
+  continuous_toFun := by
+    continuity
+  continuous_invFun := by
+    continuity
+
+/--
+The complement of a countable subset of `TwoSphere` is path-connected when the
+subset contains the chosen stereographic center.
+-/
+theorem twoSphere_countableComplement_pathConnectedSpace_of_mem
+    {s : Set TwoSphere} (hs : s.Countable)
+    {a : TwoSphere} (ha : a ∈ s) :
+    PathConnectedSpace (sᶜ : Set TwoSphere) := by
+  let t : Set (stereographic' 2 a).source :=
+    {p : (stereographic' 2 a).source | (p : TwoSphere) ∈ s}
+  have ht : t.Countable := by
+    simpa [t] using hs.preimage Subtype.val_injective
+  letI : PathConnectedSpace (tᶜ : Set (stereographic' 2 a).source) :=
+    twoSphere_stereographicSource_countableComplement_pathConnectedSpace a ht
+  exact
+    (twoSphere_countableComplement_homeomorph_sourceComplement ha).symm.surjective.pathConnectedSpace
+      (twoSphere_countableComplement_homeomorph_sourceComplement ha).symm.continuous
+
+/--
+The complement of any countable subset of `TwoSphere` is path-connected.
+-/
+theorem twoSphere_countableComplement_pathConnectedSpace
+    {s : Set TwoSphere} (hs : s.Countable) :
+    PathConnectedSpace (sᶜ : Set TwoSphere) := by
+  by_cases hne : s.Nonempty
+  · rcases hne with ⟨a, ha⟩
+    exact twoSphere_countableComplement_pathConnectedSpace_of_mem hs ha
+  · have hs_empty : s = ∅ := Set.not_nonempty_iff_eq_empty.mp hne
+    rw [hs_empty, Set.compl_empty]
+    have hpath : PathConnectedSpace TwoSphere := by
+      exact isPathConnected_iff_pathConnectedSpace.mp (by
+        simpa [TwoSphere] using
+          (isPathConnected_sphere euclideanThree_rank_gt_one
+            (0 : EuclideanSpace ℝ (Fin 3)) (by norm_num) :
+            IsPathConnected
+              (Metric.sphere (0 : EuclideanSpace ℝ (Fin 3)) (1 : ℝ))))
+    exact isPathConnected_iff_pathConnectedSpace.mp (by
+      simpa using
+        (pathConnectedSpace_iff_univ.mp hpath :
+          IsPathConnected (Set.univ : Set TwoSphere)))
+
+/-- Two stereographic sources on `TwoSphere` intersect in a two-point complement. -/
+theorem twoSphere_stereographic_sources_inter_eq_twoPointComplement
+    (a b : TwoSphere) :
+    (((stereographic' 2 a).source ∩
+      (stereographic' 2 b).source) : Set TwoSphere) =
+      ({a} ∪ {b})ᶜ := by
+  ext x
+  rw [Set.mem_inter_iff]
+  rw [twoSphere_stereographic_source_eq_compl_singleton,
+    twoSphere_stereographic_source_eq_compl_singleton]
+  simp only [Set.mem_compl_iff, Set.mem_singleton_iff, Set.mem_union]
+  tauto
+
+/-- Any two stereographic chart sources on `TwoSphere` have path-connected overlap. -/
+theorem twoSphere_stereographic_sources_inter_pathConnectedSpace
+    (a b : TwoSphere) :
+    PathConnectedSpace
+      (((stereographic' 2 a).source ∩
+        (stereographic' 2 b).source) : Set TwoSphere) := by
+  rw [twoSphere_stereographic_sources_inter_eq_twoPointComplement a b]
+  exact twoSphere_countableComplement_pathConnectedSpace
+    ((Set.countable_singleton a).union (Set.countable_singleton b))
+
+/--
+The two-sphere is simply connected.  The proof uses the two stereographic
+sources centered at any distinct points: each source is homeomorphic to `ℝ²`,
+their overlap is path-connected, and the two-set Van Kampen theorem applies.
+-/
+theorem twoSphere_simplyConnectedSpace_of_distinct_stereographic_sources
+    {a b : TwoSphere} (hab : a ≠ b) :
+    SimplyConnectedSpace TwoSphere := by
+  let U : Set TwoSphere := (stereographic' 2 a).source
+  let V : Set TwoSphere := (stereographic' 2 b).source
+  letI : SimplyConnectedSpace U := by
+    simpa [U] using twoSphere_stereographic_source_simplyConnectedSpace a
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using twoSphere_stereographic_source_simplyConnectedSpace b
+  letI : PathConnectedSpace (U ∩ V : Set TwoSphere) := by
+    simpa [U, V] using twoSphere_stereographic_sources_inter_pathConnectedSpace a b
+  exact twoSetOpenCover_simplyConnectedSpace_of_pathConnected_inter
+    (X := TwoSphere) (U := U) (V := V)
+    (by exact twoSphere_stereographic_source_isOpen a)
+    (by exact twoSphere_stereographic_source_isOpen b)
+    (by simpa [U, V] using twoSphere_stereographic_sources_cover_of_ne hab)
+
+/-- No point of `TwoSphere` is equal to its antipode. -/
+theorem twoSphere_antipodal_ne_self
+    (v : TwoSphere) :
+    v ≠ -v :=
+  ne_neg_of_mem_unit_sphere ℝ v
+
+/--
+The two-sphere is simply connected, proved from its two antipodal stereographic
+sources and the two-set Van Kampen theorem.
+-/
+theorem twoSphere_simplyConnectedSpace :
+    SimplyConnectedSpace TwoSphere :=
+  twoSphere_simplyConnectedSpace_of_distinct_stereographic_sources
+    (a := twoSphere_northPole) (b := -twoSphere_northPole)
+    (twoSphere_antipodal_ne_self twoSphere_northPole)
+
+/--
 The single-chart finite-concat collapse can be realized by an actual homotopy
 whose image stays inside the same stereographic source.
 -/
