@@ -21722,6 +21722,38 @@ theorem quotientCovering_orbit_eq_singleton_of_simplyConnected_base
 
 /--
 For a quotient covering over a simply connected, locally path-connected base,
+each base fiber is an orbit, and the covering-collapse argument makes that
+orbit a singleton.  This is the fiberwise form of the trivial deck quotient
+step used by the spherical space-form branch.
+-/
+theorem quotientCovering_fiber_eq_orbit_singleton_of_simplyConnected_base
+    {E X G : Type u} [TopologicalSpace E] [TopologicalSpace X]
+    [Group G] [MulAction G E]
+    [PreconnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
+    {p : E → X} (h : IsQuotientCoveringMap p G) (e₀ : E) (x : X) :
+    ∃ e : E, p ⁻¹' {x} = MulAction.orbit G e ∧
+      MulAction.orbit G e = {e} := by
+  have hbij : Function.Bijective p :=
+    coveringMap_bijective_of_simplyConnected_base h.isCoveringMap e₀
+  rcases hbij.2 x with ⟨e, he⟩
+  have hfiber_orbit : p ⁻¹' {x} = MulAction.orbit G e := by
+    ext e'
+    change (p e' = x) ↔ e' ∈ MulAction.orbit G e
+    rw [← he]
+    exact h.apply_eq_iff_mem_orbit
+  have horbit_singleton : MulAction.orbit G e = {e} := by
+    ext e'
+    rw [Set.mem_singleton_iff]
+    constructor
+    · intro horbit
+      exact hbij.1 (h.apply_eq_iff_mem_orbit.mpr horbit)
+    · intro heq
+      rw [heq]
+      exact MulAction.mem_orbit_self e
+  exact ⟨e, hfiber_orbit, horbit_singleton⟩
+
+/--
+For a quotient covering over a simply connected, locally path-connected base,
 the acting group is trivial once the total space is preconnected and inhabited.
 -/
 theorem quotientCovering_group_trivial_of_simplyConnected_base
