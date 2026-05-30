@@ -21512,6 +21512,44 @@ theorem orbitRelQuotient_mk_isHomeomorph_and_orbitRel_eq_bot_of_simplyConnected_
     quotientCovering_orbitRel_eq_bot_of_simplyConnected_base hq⟩
 
 /--
+For a free properly discontinuous action on a space already recognized as
+`S³`, a simply connected canonical orbit quotient is itself the project target:
+the acting group is trivial, the quotient projection is a homeomorphism, the
+orbit relation is equality, and the quotient carries the full Poincare-candidate
+prerequisite payload.
+-/
+theorem orbitRelQuotient_sphere_recognition_and_poincare_candidate_prerequisites_of_homeomorph_to_threeSphere
+    {E G : Type u} [TopologicalSpace E]
+    [Group G] [MulAction G E] [ContinuousConstSMul G E]
+    [ProperlyDiscontinuousSMul G E]
+    [IsCancelSMul G E]
+    [SimplyConnectedSpace (MulAction.orbitRel.Quotient G E)]
+    (hE : Nonempty (E ≃ₜ ThreeSphere)) :
+    Subsingleton G ∧
+      IsHomeomorph (Quotient.mk (MulAction.orbitRel G E)) ∧
+      MulAction.orbitRel G E = ⊥ ∧
+      Nonempty (MulAction.orbitRel.Quotient G E ≃ₜ ThreeSphere) ∧
+      (∃ _t2 : T2Space (MulAction.orbitRel.Quotient G E),
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (MulAction.orbitRel.Quotient G E),
+      ∃ _simple : SimplyConnectedSpace (MulAction.orbitRel.Quotient G E),
+      ∃ _compact : CompactSpace (MulAction.orbitRel.Quotient G E),
+      ∃ _topological : IsManifold (𝓡 3) 0 (MulAction.orbitRel.Quotient G E),
+      ∃ _path : PathConnectedSpace (MulAction.orbitRel.Quotient G E),
+      ∃ _locPath : LocPathConnectedSpace (MulAction.orbitRel.Quotient G E),
+      ∃ _connected : ConnectedSpace (MulAction.orbitRel.Quotient G E),
+        Nonempty (MulAction.orbitRel.Quotient G E)) := by
+  rcases orbitRelQuotient_model_trivial_of_simplyConnected_quotient
+      (E := E) (G := G) hE with
+    ⟨hgroup, hQ⟩
+  rcases orbitRelQuotient_mk_isHomeomorph_and_orbitRel_eq_bot_of_simplyConnected_quotient
+      (E := E) (G := G) hE with
+    ⟨hmk, hrel⟩
+  refine ⟨hgroup, hmk, hrel, hQ, ?_⟩
+  exact poincare_candidate_prerequisites_of_homeomorph_to_threeSphere
+    (M := MulAction.orbitRel.Quotient G E) hQ
+
+/--
 Deck transformations over a covering map are determined by one value on a
 preconnected total space.  This is the concrete covering-space rigidity input
 needed by the spherical-space-form deck-group branch.
