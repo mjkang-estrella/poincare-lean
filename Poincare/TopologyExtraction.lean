@@ -4884,6 +4884,44 @@ theorem topological_manifold_prerequisites_of_homeomorph
     locPath, connected, nonempty⟩
 
 /--
+A homeomorphism to a known smooth compact path-connected locally
+path-connected 3-manifold transports the smooth manifold prerequisites to the
+source.
+-/
+theorem smooth_manifold_prerequisites_of_homeomorph
+    {M : Type u} {N : Type v} [TopologicalSpace M] [TopologicalSpace N]
+    [T2Space N] [CompactSpace N]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N] [IsManifold (𝓡 3) ∞ N]
+    [PathConnectedSpace N] [LocPathConnectedSpace N]
+    (h : Nonempty (M ≃ₜ N)) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _compact : CompactSpace M,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  rcases h with ⟨e⟩
+  let charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M :=
+    e.symm.isLocalHomeomorph.chartedSpace e.symm.surjective
+  let smooth : IsManifold (𝓡 3) ∞ M := by
+    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M := charted
+    exact smoothManifold_of_homeomorph_transportedChartedSpace e
+  let path : PathConnectedSpace M :=
+    e.symm.surjective.pathConnectedSpace e.symm.continuous
+  let locPath : LocPathConnectedSpace M :=
+    e.isOpenEmbedding.locPathConnectedSpace
+  let connected : ConnectedSpace M := by
+    letI : PathConnectedSpace M := path
+    infer_instance
+  let nonempty : Nonempty M := by
+    letI : PathConnectedSpace M := path
+    infer_instance
+  exact ⟨e.symm.t2Space, charted, e.symm.compactSpace, smooth, path,
+    locPath, connected, nonempty⟩
+
+/--
 Simple-connectedness transports from a target to a source along a recognizing
 homeomorphism.
 -/
@@ -4984,6 +5022,36 @@ theorem topological_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_
         exact ⟨e.symm.t2Space, charted, e.symm.compactSpace, topological, path, locPath,
           connected, nonempty⟩) := by
   apply Subsingleton.elim
+
+/--
+Any space recognized as the one-point compactification model inherits the
+transported smooth 3-manifold prerequisite payload.
+-/
+theorem smooth_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _compact : CompactSpace M,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ M,
+    ∃ _path : PathConnectedSpace M,
+    ∃ _locPath : LocPathConnectedSpace M,
+    ∃ _connected : ConnectedSpace M,
+      Nonempty M := by
+  letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_t2Space
+  letI : CompactSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_compactSpace
+  letI : PathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_pathConnectedSpace
+  letI : LocPathConnectedSpace (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_locPathConnectedSpace
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_chartedSpace
+  haveI : IsManifold (𝓡 3) ∞ (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_smoothManifold_oldChartedSpace
+  exact smooth_manifold_prerequisites_of_homeomorph h
 
 /--
 If the standard sphere is simply connected, any source recognized as the
@@ -6631,24 +6699,7 @@ theorem smooth_manifold_prerequisites_of_homeomorph_to_threeSphere
   letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ThreeSphere :=
     threeSphere_chartedSpace
   haveI : IsManifold (𝓡 3) ∞ ThreeSphere := threeSphere_smoothManifold
-  rcases h with ⟨e⟩
-  let charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M :=
-    e.symm.isLocalHomeomorph.chartedSpace e.symm.surjective
-  let smooth : IsManifold (𝓡 3) ∞ M := by
-    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M := charted
-    exact smoothManifold_of_homeomorph_transportedChartedSpace e
-  let path : PathConnectedSpace M :=
-    e.symm.surjective.pathConnectedSpace e.symm.continuous
-  let locPath : LocPathConnectedSpace M :=
-    e.isOpenEmbedding.locPathConnectedSpace
-  let connected : ConnectedSpace M := by
-    letI : PathConnectedSpace M := path
-    infer_instance
-  let nonempty : Nonempty M := by
-    letI : PathConnectedSpace M := path
-    infer_instance
-  exact ⟨e.symm.t2Space, charted, e.symm.compactSpace, smooth, path,
-    locPath, connected, nonempty⟩
+  exact smooth_manifold_prerequisites_of_homeomorph h
 
 /-- The direct target-recognition prerequisite route is explicit homeomorphism transport. -/
 theorem topological_manifold_prerequisites_of_homeomorph_to_threeSphere_eq
