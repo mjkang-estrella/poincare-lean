@@ -21150,6 +21150,69 @@ theorem quotientCovering_smul_eq_self_of_simplyConnected_base
 
 /--
 For a quotient covering over a simply connected, locally path-connected base,
+each orbit in the total space is a singleton.  Membership in the orbit is
+unpacked to one group action element, which is pointwise trivial by the
+preceding theorem.
+-/
+theorem quotientCovering_mem_orbit_iff_eq_of_simplyConnected_base
+    {E X G : Type u} [TopologicalSpace E] [TopologicalSpace X]
+    [Group G] [MulAction G E]
+    [PreconnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
+    {p : E → X} (h : IsQuotientCoveringMap p G) (e e' : E) :
+    e ∈ MulAction.orbit G e' ↔ e = e' := by
+  constructor
+  · intro he
+    rcases MulAction.mem_orbit_iff.mp he with ⟨g, rfl⟩
+    exact quotientCovering_smul_eq_self_of_simplyConnected_base h e' g e'
+  · intro heq
+    rw [heq]
+    exact MulAction.mem_orbit_self e'
+
+/--
+The orbit relation of a quotient covering over a simply connected,
+locally path-connected base is equality on the total space.
+-/
+theorem quotientCovering_orbitRel_iff_eq_of_simplyConnected_base
+    {E X G : Type u} [TopologicalSpace E] [TopologicalSpace X]
+    [Group G] [MulAction G E]
+    [PreconnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
+    {p : E → X} (h : IsQuotientCoveringMap p G) (e e' : E) :
+    MulAction.orbitRel G E e e' ↔ e = e' := by
+  rw [MulAction.orbitRel_apply]
+  exact quotientCovering_mem_orbit_iff_eq_of_simplyConnected_base h e e'
+
+/--
+As a setoid, the orbit relation of such a quotient covering is the bottom
+relation: two total-space points lie in the same orbit exactly when they are
+equal.
+-/
+theorem quotientCovering_orbitRel_eq_bot_of_simplyConnected_base
+    {E X G : Type u} [TopologicalSpace E] [TopologicalSpace X]
+    [Group G] [MulAction G E]
+    [PreconnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
+    {p : E → X} (h : IsQuotientCoveringMap p G) :
+    MulAction.orbitRel G E = ⊥ := by
+  apply Setoid.ext
+  intro e e'
+  rw [quotientCovering_orbitRel_iff_eq_of_simplyConnected_base h e e']
+  rfl
+
+/--
+Equivalently, every total-space orbit of such a quotient covering is exactly
+the singleton containing its base point.
+-/
+theorem quotientCovering_orbit_eq_singleton_of_simplyConnected_base
+    {E X G : Type u} [TopologicalSpace E] [TopologicalSpace X]
+    [Group G] [MulAction G E]
+    [PreconnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
+    {p : E → X} (h : IsQuotientCoveringMap p G) (e : E) :
+    MulAction.orbit G e = {e} := by
+  ext e'
+  rw [Set.mem_singleton_iff]
+  exact quotientCovering_mem_orbit_iff_eq_of_simplyConnected_base h e' e
+
+/--
+For a quotient covering over a simply connected, locally path-connected base,
 the acting group is trivial once the total space is preconnected and inhabited.
 -/
 theorem quotientCovering_group_trivial_of_simplyConnected_base
