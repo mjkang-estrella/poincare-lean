@@ -3343,6 +3343,26 @@ theorem euclideanThree_compl_singleton_pathConnectedSpace_eq
         (euclideanThree_isPathConnected_compl_singleton x) := by
   apply Subsingleton.elim
 
+/--
+Translation identifies the complement of an arbitrary point in `ℝ³` with the
+zero-punctured model.
+-/
+noncomputable def euclideanThree_compl_singleton_homeomorph_zero
+    (x : EuclideanSpace ℝ (Fin 3)) :
+    ({x}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) ≃ₜ
+      ({0}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+  (Homeomorph.addRight (-x)).subtype (fun y => by
+    constructor
+    · intro hy hzero
+      apply hy
+      have hsub : y - x = 0 := by
+        simpa [sub_eq_add_neg] using hzero
+      exact sub_eq_zero.mp hsub
+    · intro hy hxy
+      apply hy
+      subst hxy
+      simp)
+
 /-- Punctured `ℝ³` embeds openly in `ℝ³` by the subtype inclusion. -/
 theorem euclideanThree_compl_singleton_isOpenEmbedding
     (x : EuclideanSpace ℝ (Fin 3)) :
@@ -8414,6 +8434,47 @@ theorem euclideanThree_compl_zero_simplyConnectedSpace :
     euclideanThree_unitSphere_prod_positiveRay_simplyConnectedSpace
   exact (homeomorphUnitSphereProd
     (EuclideanSpace ℝ (Fin 3))).toHomotopyEquiv.simplyConnectedSpace
+
+/--
+The complement of any point in three-dimensional Euclidean space is simply
+connected, by translation to the zero-punctured radial model.
+-/
+theorem euclideanThree_compl_singleton_simplyConnectedSpace
+    (x : EuclideanSpace ℝ (Fin 3)) :
+    SimplyConnectedSpace ({x}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) := by
+  letI : SimplyConnectedSpace ({0}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+    euclideanThree_compl_zero_simplyConnectedSpace
+  exact (euclideanThree_compl_singleton_homeomorph_zero x).toHomotopyEquiv.simplyConnectedSpace
+
+/--
+The complement of two distinct points in `ThreeSphere` is simply connected,
+transported from the punctured `ℝ³` stereographic model.
+-/
+theorem threeSphere_twoPointComplement_simplyConnectedSpace
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    SimplyConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) := by
+  let puncture : EuclideanSpace ℝ (Fin 3) := threeSphere_twoPointChartImage a b hab
+  letI : SimplyConnectedSpace ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+    euclideanThree_compl_singleton_simplyConnectedSpace puncture
+  exact
+    (threeSphere_twoPointComplement_homeomorph_puncturedChart
+      hab).toHomotopyEquiv.simplyConnectedSpace
+
+/--
+The overlap of two distinct stereographic chart sources on `ThreeSphere` is
+simply connected, via its punctured `ℝ³` chart model.
+-/
+theorem threeSphere_stereographicSources_inter_simplyConnectedSpace
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    SimplyConnectedSpace
+      (((stereographic' 3 a).source ∩
+        (stereographic' 3 b).source) : Set ThreeSphere) := by
+  let puncture : EuclideanSpace ℝ (Fin 3) := threeSphere_twoPointChartImage a b hab
+  letI : SimplyConnectedSpace ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+    euclideanThree_compl_singleton_simplyConnectedSpace puncture
+  exact
+    (threeSphere_stereographicSources_inter_homeomorph_puncturedChart
+      hab).toHomotopyEquiv.simplyConnectedSpace
 
 /--
 The single-chart finite-concat collapse can be realized by an actual homotopy
