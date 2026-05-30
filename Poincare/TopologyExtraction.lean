@@ -21723,6 +21723,29 @@ theorem quotientCovering_group_trivial_of_simplyConnected_base
   exact h.isCancelSMul.right_cancel' g (1 : G) e₀ hsmul
 
 /--
+For a quotient covering over a simply connected, locally path-connected base,
+the deck/action group is subsingleton.  Covering injectivity identifies the
+two translates of one total-space point, and freeness cancels the action.
+-/
+theorem quotientCovering_group_subsingleton_of_simplyConnected_base
+    {E X G : Type u} [TopologicalSpace E] [TopologicalSpace X]
+    [Group G] [MulAction G E]
+    [PreconnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
+    {p : E → X} (h : IsQuotientCoveringMap p G) (e₀ : E) :
+    Subsingleton G := by
+  have hinj : Function.Injective p :=
+    coveringMap_injective_of_simplyConnected_base h.isCoveringMap e₀
+  refine ⟨fun g g' => ?_⟩
+  have hsmul : g • e₀ = g' • e₀ := by
+    apply hinj
+    calc
+      p (g • e₀) = p e₀ :=
+        h.apply_eq_iff_mem_orbit.mpr (MulAction.mem_orbit e₀ g)
+      _ = p (g' • e₀) :=
+        (h.apply_eq_iff_mem_orbit.mpr (MulAction.mem_orbit e₀ g')).symm
+  exact h.isCancelSMul.right_cancel' g g' e₀ hsmul
+
+/--
 The projection of an inhabited preconnected quotient covering over a simply
 connected, locally path-connected base is itself a homeomorphism.
 -/
@@ -21808,10 +21831,8 @@ theorem threeSphere_quotient_trivial_of_simplyConnected_quotient
   let h : IsQuotientCoveringMap
       (Quotient.mk (MulAction.orbitRel G ThreeSphere)) G :=
     isQuotientCoveringMap_quotientMk_of_properlyDiscontinuousSMul
-  have hgroup : ∀ g : G, g = 1 :=
-    quotientCovering_group_trivial_of_simplyConnected_base h e₀
   refine ⟨?_, ?_⟩
-  · exact ⟨fun g g' => (hgroup g).trans (hgroup g').symm⟩
+  · exact quotientCovering_group_subsingleton_of_simplyConnected_base h e₀
   · exact quotientCovering_homeomorph_to_threeSphere_of_simplyConnected_base
       h e₀ threeSphere_self_homeomorph
 
@@ -21888,11 +21909,15 @@ theorem orbitRelQuotient_model_trivial_of_simplyConnected_target
   letI : LocPathConnectedSpace (MulAction.orbitRel.Quotient G E) := inferInstance
   letI : LocPathConnectedSpace M := φQ.symm.isOpenEmbedding.locPathConnectedSpace
   let e₀ : E := φE.symm (Classical.choice threeSphere_nonempty)
-  have hgroup : ∀ g : G, g = 1 :=
-    orbitRelQuotient_group_trivial_of_simplyConnected_target ⟨φQ⟩ e₀
+  let hq : IsQuotientCoveringMap
+      (Quotient.mk (MulAction.orbitRel G E)) G :=
+    isQuotientCoveringMap_quotientMk_of_properlyDiscontinuousSMul
+  let h : IsQuotientCoveringMap
+      (φQ ∘ Quotient.mk (MulAction.orbitRel G E)) G :=
+    hq.homeomorph_comp φQ
   rcases orbitRelQuotient_homeomorph_total_of_simplyConnected_target ⟨φQ⟩ e₀ with ⟨φM⟩
   refine ⟨?_, ?_⟩
-  · exact ⟨fun g g' => (hgroup g).trans (hgroup g').symm⟩
+  · exact quotientCovering_group_subsingleton_of_simplyConnected_base h e₀
   · exact ⟨φM.trans φE⟩
 
 /--
