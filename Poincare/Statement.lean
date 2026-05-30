@@ -3407,6 +3407,30 @@ theorem threeSphere_countableComplement_pathConnectedSpace
         (pathConnectedSpace_iff_univ.mp hpath :
           IsPathConnected (Set.univ : Set ThreeSphere)))
 
+/--
+The intersection of any two stereographic chart sources on `ThreeSphere` is
+path-connected.  Each chart source is the complement of its center, so the
+intersection is the complement of a two-point finite, hence countable, set.
+-/
+theorem threeSphere_stereographic_sources_inter_pathConnectedSpace
+    (a b : ThreeSphere) :
+    PathConnectedSpace
+      (((stereographic' 3 a).source ∩
+        (stereographic' 3 b).source) : Set ThreeSphere) := by
+  have hEq :
+      (((stereographic' 3 a).source ∩
+        (stereographic' 3 b).source) : Set ThreeSphere) =
+        ({a} ∪ {b})ᶜ := by
+    ext x
+    rw [Set.mem_inter_iff]
+    rw [threeSphere_stereographic_source_eq_compl_singleton,
+      threeSphere_stereographic_source_eq_compl_singleton]
+    simp only [Set.mem_compl_iff, Set.mem_singleton_iff, Set.mem_union]
+    tauto
+  rw [hEq]
+  exact threeSphere_countableComplement_pathConnectedSpace
+    ((Set.countable_singleton a).union (Set.countable_singleton b))
+
 /-- A second point, distinct from `a`, as a point of the stereographic source at `a`. -/
 noncomputable def threeSphere_pointInStereographicSource
     (a b : ThreeSphere) (hab : b ≠ a) : (stereographic' 3 a).source :=
