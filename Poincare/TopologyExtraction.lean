@@ -21464,6 +21464,51 @@ theorem orbitRelQuotient_model_trivial_of_simplyConnected_target
   · exact ⟨φM.trans φE⟩
 
 /--
+If a simply connected target is identified with the orbit quotient of a space
+already recognized as `S³`, the quotient projection into that target is a
+homeomorphism, every total-space orbit is a singleton, the deck obstruction
+vanishes, and the target is `S³`.
+-/
+theorem orbitRelQuotient_target_projection_orbit_rigidity_of_homeomorph_to_threeSphere
+    {E M G : Type u} [TopologicalSpace E] [TopologicalSpace M]
+    [Group G] [MulAction G E] [ContinuousConstSMul G E]
+    [ProperlyDiscontinuousSMul G E]
+    [IsCancelSMul G E]
+    [SimplyConnectedSpace M]
+    (hE : Nonempty (E ≃ₜ ThreeSphere))
+    (φQ : MulAction.orbitRel.Quotient G E ≃ₜ M) :
+    IsHomeomorph (φQ ∘ Quotient.mk (MulAction.orbitRel G E)) ∧
+      MulAction.orbitRel G E = ⊥ ∧
+      (∀ e : E, MulAction.orbit G e = {e}) ∧
+      (∀ g : G, g = 1) ∧
+      Nonempty (M ≃ₜ ThreeSphere) := by
+  rcases hE with ⟨φE⟩
+  let hE' : Nonempty (E ≃ₜ ThreeSphere) := ⟨φE⟩
+  letI : T2Space E := t2Space_of_homeomorph_to_threeSphere hE'
+  letI : LocallyCompactSpace E :=
+    locallyCompactSpace_of_homeomorph_to_threeSphere hE'
+  letI : PreconnectedSpace E := preconnectedSpace_of_homeomorph_to_threeSphere hE'
+  letI : LocPathConnectedSpace E :=
+    locPathConnectedSpace_of_homeomorph_to_threeSphere hE'
+  letI : LocPathConnectedSpace (MulAction.orbitRel.Quotient G E) := inferInstance
+  letI : LocPathConnectedSpace M := φQ.symm.isOpenEmbedding.locPathConnectedSpace
+  let e₀ : E := φE.symm (Classical.choice threeSphere_nonempty)
+  let p : E → M := φQ ∘ Quotient.mk (MulAction.orbitRel G E)
+  let hq : IsQuotientCoveringMap
+      (Quotient.mk (MulAction.orbitRel G E)) G :=
+    isQuotientCoveringMap_quotientMk_of_properlyDiscontinuousSMul
+  let h : IsQuotientCoveringMap p G :=
+    hq.homeomorph_comp φQ
+  have hhome : IsHomeomorph p :=
+    quotientCovering_isHomeomorph_of_simplyConnected_base h e₀
+  let hp : E ≃ₜ M := hhome.homeomorph p
+  exact ⟨hhome,
+    quotientCovering_orbitRel_eq_bot_of_simplyConnected_base h,
+    fun e => quotientCovering_orbit_eq_singleton_of_simplyConnected_base h e,
+    quotientCovering_group_trivial_of_simplyConnected_base h e₀,
+    ⟨hp.symm.trans φE⟩⟩
+
+/--
 For a free properly discontinuous action on any space already recognized as
 `S³`, a simply connected canonical orbit quotient has trivial acting group and
 is itself `S³`.  This is the direct canonical-quotient form of the spherical
