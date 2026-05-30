@@ -21611,6 +21611,22 @@ theorem coveringMap_isHomeomorph_of_simplyConnected_base
       coveringMap_injective_of_simplyConnected_base cov e₀⟩
 
 /--
+A covering over a simply connected, locally path-connected base transfers
+`S³` recognition from its preconnected total space to the base.  The covering
+collapses to a homeomorphism, and the resulting homeomorphism composes with the
+given recognition of the total space.
+-/
+theorem coveringMap_homeomorph_to_threeSphere_of_simplyConnected_base
+    {E X : Type u} [TopologicalSpace E] [TopologicalSpace X]
+    [PreconnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
+    {p : E → X} (cov : IsCoveringMap p)
+    (x₀ : X) (e₀ : E) (he₀ : p e₀ = x₀)
+    (hE : Nonempty (E ≃ₜ ThreeSphere)) :
+    Nonempty (X ≃ₜ ThreeSphere) :=
+  homeomorph_to_threeSphere_of_homeomorph
+    (covering_homeomorph_total_of_simplyConnected_base cov x₀ e₀ he₀) hE
+
+/--
 For a quotient covering over a simply connected, locally path-connected base,
 each deck action element fixes every point of the total space.  The covering
 injectivity theorem supplies the uniqueness of lifts, while the quotient-cover
@@ -21729,10 +21745,8 @@ theorem quotientCovering_homeomorph_to_threeSphere_of_simplyConnected_base
     {p : E → X} (h : IsQuotientCoveringMap p G) (e₀ : E)
     (hE : Nonempty (E ≃ₜ ThreeSphere)) :
     Nonempty (X ≃ₜ ThreeSphere) := by
-  rcases hE with ⟨φ⟩
-  let hp : E ≃ₜ X :=
-    (quotientCovering_isHomeomorph_of_simplyConnected_base h e₀).homeomorph p
-  exact ⟨hp.symm.trans φ⟩
+  exact coveringMap_homeomorph_to_threeSphere_of_simplyConnected_base
+    h.isCoveringMap (p e₀) e₀ rfl hE
 
 /--
 An orbit quotient of a space recognized as `S³` inherits the compact,
