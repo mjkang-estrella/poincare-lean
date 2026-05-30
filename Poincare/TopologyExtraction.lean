@@ -21132,6 +21132,24 @@ theorem coveringMap_injective_of_simplyConnected_base
 
 /--
 For a quotient covering over a simply connected, locally path-connected base,
+each deck action element fixes every point of the total space.  The covering
+injectivity theorem supplies the uniqueness of lifts, while the quotient-cover
+fiber description says `e` and `g • e` project to the same base point.
+-/
+theorem quotientCovering_smul_eq_self_of_simplyConnected_base
+    {E X G : Type u} [TopologicalSpace E] [TopologicalSpace X]
+    [Group G] [MulAction G E]
+    [PreconnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
+    {p : E → X} (h : IsQuotientCoveringMap p G) (e₀ : E) (g : G) (e : E) :
+    g • e = e := by
+  have hinj : Function.Injective p :=
+    coveringMap_injective_of_simplyConnected_base h.isCoveringMap e₀
+  have hp : p (g • e) = p e :=
+    h.apply_eq_iff_mem_orbit.mpr (MulAction.mem_orbit e g)
+  exact hinj hp
+
+/--
+For a quotient covering over a simply connected, locally path-connected base,
 the acting group is trivial once the total space is preconnected and inhabited.
 -/
 theorem quotientCovering_group_trivial_of_simplyConnected_base
@@ -21141,12 +21159,8 @@ theorem quotientCovering_group_trivial_of_simplyConnected_base
     {p : E → X} (h : IsQuotientCoveringMap p G) (e₀ : E) :
     ∀ g : G, g = 1 := by
   intro g
-  have hinj : Function.Injective p :=
-    coveringMap_injective_of_simplyConnected_base h.isCoveringMap e₀
-  have hp : p (g • e₀) = p e₀ :=
-    h.apply_eq_iff_mem_orbit.mpr (MulAction.mem_orbit e₀ g)
   have hsmul : g • e₀ = (1 : G) • e₀ := by
-    simpa using hinj hp
+    simpa using quotientCovering_smul_eq_self_of_simplyConnected_base h e₀ g e₀
   exact h.isCancelSMul.right_cancel' g (1 : G) e₀ hsmul
 
 /--
@@ -21316,6 +21330,28 @@ theorem covering_deckTransform_eq_refl_of_simplyConnected_base
   refine covering_deckTransform_eq_refl_of_fixed cov φ hφ e₀ ?_
   exact coveringMap_injective_of_simplyConnected_base cov e₀
     (by simpa [Function.comp_def] using congrFun hφ e₀)
+
+/--
+In a quotient covering over a simply connected, locally path-connected base,
+any homeomorphism realizing the action by a fixed group element is the identity
+deck transformation.  The orbit-fiber characterization makes such a
+homeomorphism a deck transformation, and simple connectedness forces it to be
+`refl`.
+-/
+theorem quotientCovering_smulDeckTransform_eq_refl_of_simplyConnected_base
+    {E X G : Type u} [TopologicalSpace E] [TopologicalSpace X]
+    [Group G] [MulAction G E]
+    [PreconnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
+    {p : E → X} (h : IsQuotientCoveringMap p G) (e₀ : E) (g : G)
+    (φ : E ≃ₜ E) (hφ : ∀ e : E, φ e = g • e) :
+    φ = Homeomorph.refl E := by
+  have hdeck : p ∘ φ = p := by
+    funext e
+    change p (φ e) = p e
+    rw [hφ e]
+    exact h.apply_eq_iff_mem_orbit.mpr (MulAction.mem_orbit e g)
+  exact covering_deckTransform_eq_refl_of_simplyConnected_base h.isCoveringMap
+    φ hdeck e₀
 
 /--
 Interface for the decomposition information obtained from finite extinction.
