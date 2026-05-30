@@ -851,6 +851,68 @@ theorem onePoint_threeSpace_twoPointComplement_simplyConnectedSpace
       hqp).toHomotopyEquiv.simplyConnectedSpace
 
 /--
+The punctured Euclidean chart embeds a two-point compactification complement as
+an open subspace of `ℝ³`.
+-/
+theorem onePoint_threeSpace_twoPointComplement_puncturedEuclidean_isOpenEmbedding
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    Topology.IsOpenEmbedding
+      (fun x : (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) =>
+        ((onePoint_threeSpace_twoPointComplement_homeomorph_puncturedEuclidean hqp x :
+          ({onePoint_threeSpace_compl_singleton_homeomorph_euclidean p
+              (onePoint_threeSpace_pointInComplement hqp)}ᶜ :
+            Set (EuclideanSpace ℝ (Fin 3)))) :
+          EuclideanSpace ℝ (Fin 3))) := by
+  let e := onePoint_threeSpace_twoPointComplement_homeomorph_puncturedEuclidean hqp
+  let puncture : EuclideanSpace ℝ (Fin 3) :=
+    onePoint_threeSpace_compl_singleton_homeomorph_euclidean p
+      (onePoint_threeSpace_pointInComplement hqp)
+  change Topology.IsOpenEmbedding
+    (((Subtype.val) : ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) →
+      EuclideanSpace ℝ (Fin 3)) ∘ e)
+  exact (euclideanThree_compl_singleton_isOpenEmbedding puncture).comp e.isOpenEmbedding
+
+/--
+The punctured Euclidean chart supplies a charted-space structure on the
+two-point compactification complement.
+-/
+@[implicit_reducible]
+noncomputable def onePoint_threeSpace_twoPointComplement_puncturedEuclideanChartedSpace
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  haveI : Nonempty
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+    letI : SimplyConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+      onePoint_threeSpace_twoPointComplement_simplyConnectedSpace hqp
+    infer_instance
+  exact
+    (onePoint_threeSpace_twoPointComplement_puncturedEuclidean_isOpenEmbedding
+      hqp).singletonChartedSpace
+
+/--
+The complement of two distinct points in the one-point compactification model is
+a smooth 3-manifold when charted by its punctured Euclidean model.
+-/
+theorem onePoint_threeSpace_twoPointComplement_smoothManifold_via_puncturedEuclidean
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+      onePoint_threeSpace_twoPointComplement_puncturedEuclideanChartedSpace hqp
+    IsManifold (𝓡 3) ∞
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  haveI : Nonempty
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+    letI : SimplyConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+      onePoint_threeSpace_twoPointComplement_simplyConnectedSpace hqp
+    infer_instance
+  exact
+    (onePoint_threeSpace_twoPointComplement_puncturedEuclidean_isOpenEmbedding
+      hqp).isManifold_singleton
+
+/--
 Simple-connectedness of the standard sphere transports to the one-point
 compactification model along the named homeomorphism.
 -/
