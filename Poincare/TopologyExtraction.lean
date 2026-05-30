@@ -21191,6 +21191,55 @@ theorem coveringMap_injective_of_simplyConnected_base
     _ = e' := congrFun hright e'
 
 /--
+Every fiber of an inhabited preconnected covering over a simply connected,
+locally path-connected base has exactly one point.  This is the fiberwise form
+of the covering-collapse argument: the lifted identity map supplies existence,
+and covering-map lift uniqueness supplies uniqueness.
+-/
+theorem coveringMap_existsUnique_preimage_of_simplyConnected_base
+    {E X : Type u} [TopologicalSpace E] [TopologicalSpace X]
+    [PreconnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
+    {p : E → X} (cov : IsCoveringMap p) (e₀ : E) (x : X) :
+    ∃! e : E, p e = x := by
+  rcases cov.existsUnique_continuousMap_lifts
+      (ContinuousMap.id X) (p e₀) e₀ rfl with
+    ⟨F, hF, _hUnique⟩
+  have hleft : ∀ x : X, p (F x) = x := by
+    intro x
+    exact congrFun hF.2 x
+  have hright : F ∘ p = id := by
+    have hcomp : p ∘ (F ∘ p) = p ∘ id := by
+      funext e
+      exact hleft (p e)
+    exact cov.eq_of_comp_eq (F.continuous.comp cov.continuous)
+      continuous_id hcomp e₀ (by
+        simpa [Function.comp_def] using hF.1)
+  refine ⟨F x, hleft x, ?_⟩
+  intro e he
+  calc
+    e = F (p e) := (congrFun hright e).symm
+    _ = F x := by rw [he]
+
+/--
+An inhabited preconnected covering over a simply connected, locally
+path-connected base is a homeomorphism.  The fiber singleton theorem supplies
+surjectivity, and covering-map lift uniqueness supplies injectivity.
+-/
+theorem coveringMap_isHomeomorph_of_simplyConnected_base
+    {E X : Type u} [TopologicalSpace E] [TopologicalSpace X]
+    [PreconnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
+    {p : E → X} (cov : IsCoveringMap p) (e₀ : E) :
+    IsHomeomorph p := by
+  have hsurj : Function.Surjective p := by
+    intro x
+    rcases coveringMap_existsUnique_preimage_of_simplyConnected_base cov e₀ x with
+      ⟨e, he, _⟩
+    exact ⟨e, he⟩
+  exact isHomeomorph_iff_isQuotientMap_injective.mpr
+    ⟨cov.isQuotientMap hsurj,
+      coveringMap_injective_of_simplyConnected_base cov e₀⟩
+
+/--
 For a quotient covering over a simply connected, locally path-connected base,
 each deck action element fixes every point of the total space.  The covering
 injectivity theorem supplies the uniqueness of lifts, while the quotient-cover
@@ -21296,9 +21345,7 @@ theorem quotientCovering_isHomeomorph_of_simplyConnected_base
     [PreconnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
     {p : E → X} (h : IsQuotientCoveringMap p G) (e₀ : E) :
     IsHomeomorph p := by
-  exact isHomeomorph_iff_isQuotientMap_injective.mpr
-    ⟨h.toIsQuotientMap,
-      coveringMap_injective_of_simplyConnected_base h.isCoveringMap e₀⟩
+  exact coveringMap_isHomeomorph_of_simplyConnected_base h.isCoveringMap e₀
 
 /--
 If the universal-cover side of a quotient covering is already identified with
