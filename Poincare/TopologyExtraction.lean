@@ -21317,6 +21317,49 @@ theorem quotientCovering_homeomorph_to_threeSphere_of_simplyConnected_base
   exact ⟨hp.symm.trans φ⟩
 
 /--
+An orbit quotient of a space recognized as `S³` inherits the compact,
+path-connected, locally path-connected, connected, nonempty, Hausdorff, and
+topological 3-manifold structure expected of a spherical space-form candidate.
+-/
+theorem orbitRelQuotient_topological_manifold_prerequisites_of_homeomorph_to_threeSphere
+    {E G : Type u} [TopologicalSpace E]
+    [Group G] [MulAction G E] [ContinuousConstSMul G E]
+    [ProperlyDiscontinuousSMul G E]
+    [IsCancelSMul G E]
+    (hE : Nonempty (E ≃ₜ ThreeSphere)) :
+    ∃ _t2 : T2Space (MulAction.orbitRel.Quotient G E),
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) (MulAction.orbitRel.Quotient G E),
+    ∃ _topological : IsManifold (𝓡 3) 0 (MulAction.orbitRel.Quotient G E),
+    ∃ _compact : CompactSpace (MulAction.orbitRel.Quotient G E),
+    ∃ _path : PathConnectedSpace (MulAction.orbitRel.Quotient G E),
+    ∃ _locPath : LocPathConnectedSpace (MulAction.orbitRel.Quotient G E),
+    ∃ _connected : ConnectedSpace (MulAction.orbitRel.Quotient G E),
+      Nonempty (MulAction.orbitRel.Quotient G E) := by
+  rcases topological_manifold_prerequisites_of_homeomorph_to_threeSphere hE with
+    ⟨t2E, chartedE, compactE, topologicalE, pathE, locPathE, connectedE,
+      nonemptyE⟩
+  letI : T2Space E := t2E
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) E := chartedE
+  letI : IsManifold (𝓡 3) 0 E := topologicalE
+  letI : CompactSpace E := compactE
+  letI : LocallyCompactSpace E :=
+    locallyCompactSpace_of_homeomorph_to_threeSphere hE
+  letI : PathConnectedSpace E := pathE
+  letI : LocPathConnectedSpace E := locPathE
+  letI : ConnectedSpace E := connectedE
+  letI : Nonempty E := nonemptyE
+  let hq : IsQuotientCoveringMap
+      (Quotient.mk (MulAction.orbitRel G E)) G :=
+    isQuotientCoveringMap_quotientMk_of_properlyDiscontinuousSMul
+  let chartedQ :
+      ChartedSpace (EuclideanSpace ℝ (Fin 3)) (MulAction.orbitRel.Quotient G E) :=
+    hq.isCoveringMap.isLocalHomeomorph.chartedSpace Quotient.mk_surjective
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (MulAction.orbitRel.Quotient G E) := chartedQ
+  exact ⟨inferInstance, chartedQ, inferInstance, inferInstance, inferInstance,
+    inferInstance, inferInstance, inferInstance⟩
+
+/--
 A free properly discontinuous action on `S³` with simply connected orbit
 quotient has trivial acting group, and the orbit quotient is again `S³`.
 -/
