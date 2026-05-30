@@ -3382,6 +3382,31 @@ theorem threeSphere_countableComplement_pathConnectedSpace_of_mem
     (threeSphere_countableComplement_homeomorph_sourceComplement ha).symm.surjective.pathConnectedSpace
       (threeSphere_countableComplement_homeomorph_sourceComplement ha).symm.continuous
 
+/--
+The complement of any countable subset of `ThreeSphere` is path-connected.
+For a nonempty deleted set, choose one deleted point as the stereographic
+center; for the empty deleted set, this is the path-connectedness of the whole
+standard sphere.
+-/
+theorem threeSphere_countableComplement_pathConnectedSpace
+    {s : Set ThreeSphere} (hs : s.Countable) :
+    PathConnectedSpace (sᶜ : Set ThreeSphere) := by
+  by_cases hne : s.Nonempty
+  · rcases hne with ⟨a, ha⟩
+    exact threeSphere_countableComplement_pathConnectedSpace_of_mem hs ha
+  · have hs_empty : s = ∅ := Set.not_nonempty_iff_eq_empty.mp hne
+    rw [hs_empty, Set.compl_empty]
+    have hpath : PathConnectedSpace ThreeSphere := by
+      exact isPathConnected_iff_pathConnectedSpace.mp (by
+        simpa [ThreeSphere] using
+          (isPathConnected_sphere threeSphere_euclidean_rank_gt_one
+            (0 : EuclideanSpace ℝ (Fin 4)) (by norm_num) :
+            IsPathConnected (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))))
+    exact isPathConnected_iff_pathConnectedSpace.mp (by
+      simpa using
+        (pathConnectedSpace_iff_univ.mp hpath :
+          IsPathConnected (Set.univ : Set ThreeSphere)))
+
 /-- A second point, distinct from `a`, as a point of the stereographic source at `a`. -/
 noncomputable def threeSphere_pointInStereographicSource
     (a b : ThreeSphere) (hab : b ≠ a) : (stereographic' 3 a).source :=
@@ -3456,9 +3481,8 @@ theorem threeSphere_twoPointComplement_pathConnectedSpace
     {a b : ThreeSphere} (hab : b ≠ a) :
     PathConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) := by
   have _ : b ≠ a := hab
-  exact threeSphere_countableComplement_pathConnectedSpace_of_mem
+  exact threeSphere_countableComplement_pathConnectedSpace
     ((Set.countable_singleton a).union (Set.countable_singleton b))
-    (Or.inl rfl)
 
 /-- The antipode of `v` as a point of the stereographic source at `v`. -/
 noncomputable def threeSphere_antipodeInSource
