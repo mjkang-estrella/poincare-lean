@@ -41569,6 +41569,32 @@ theorem threeSphereStereographicVanKampenConclusionStatement_eq :
   rfl
 
 /--
+The concrete stereographic Van Kampen conclusion: the verified north/south
+chart-cover input tuple contracts every equatorial based loop.
+-/
+theorem threeSphere_stereographicVanKampenConclusionStatement :
+    ThreeSphereStereographicVanKampenConclusionStatement := by
+  intro inputs
+  rcases inputs with
+    ⟨northSimple, southSimple, northOpen, southOpen, cover, _overlapOpen,
+      overlapPath, basepoint, _overlapNonempty⟩
+  rw [threeSphereStereographicVanKampenLoopStatement_eq,
+    threeSphereBasedLoopNullhomotopyStatement_eq]
+  letI : SimplyConnectedSpace (stereographic' 3 threeSphere_northPole).source :=
+    northSimple
+  letI : SimplyConnectedSpace (stereographic' 3 (-threeSphere_northPole)).source :=
+    southSimple
+  letI : PathConnectedSpace
+      (((stereographic' 3 threeSphere_northPole).source ∩
+        (stereographic' 3 (-threeSphere_northPole)).source) : Set ThreeSphere) :=
+    overlapPath
+  intro γ
+  exact twoSetOpenCover_basedLoop_nullhomotopic
+    (U := (stereographic' 3 threeSphere_northPole).source)
+    (V := (stereographic' 3 (-threeSphere_northPole)).source)
+    northOpen southOpen cover basepoint γ
+
+/--
 The `π₁`-level output expected from the stereographic Van Kampen computation:
 from the verified cover inputs, the first homotopy group at the equatorial
 overlap basepoint is trivial as a type.
@@ -41697,6 +41723,15 @@ theorem threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatem
   rw [threeSphereStereographicVanKampenReductionStatement_eq]
   exact ⟨threeSphere_stereographicCoverOverlapPackage_vanKampenInputs,
     h threeSphere_stereographicCoverOverlapPackage_vanKampenInputs⟩
+
+/--
+The full stereographic Van Kampen reduction follows from the proved concrete
+conclusion and the already verified chart-cover inputs.
+-/
+theorem threeSphere_stereographicVanKampenReductionStatement :
+    ThreeSphereStereographicVanKampenReductionStatement :=
+  threeSphere_stereographicVanKampenReductionStatement_of_conclusionStatement
+    threeSphere_stereographicVanKampenConclusionStatement
 
 /--
 The conclusion-to-reduction route pairs the proved stereographic cover inputs
