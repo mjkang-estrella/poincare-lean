@@ -13,8 +13,11 @@ the canonical mathlib statement file `Mathlib.Geometry.Manifold.PoincareConjectu
 -/
 
 import Mathlib.Geometry.Manifold.PoincareConjecture
+import Mathlib.Analysis.Convex.Contractible
 import Mathlib.Analysis.Normed.Module.Connected
+import Mathlib.Analysis.Normed.Module.Ball.RadialEquiv
 import Mathlib.Topology.Homotopy.HomotopyGroup
+import Mathlib.Topology.Homotopy.Product
 import Mathlib.Topology.Subpath
 
 universe u
@@ -8326,6 +8329,91 @@ theorem twoSphere_simplyConnectedSpace :
   twoSphere_simplyConnectedSpace_of_distinct_stereographic_sources
     (a := twoSphere_northPole) (b := -twoSphere_northPole)
     (twoSphere_antipodal_ne_self twoSphere_northPole)
+
+/-- The product of two path-connected spaces is path-connected. -/
+theorem pathConnectedSpace_prod
+    {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
+    [PathConnectedSpace X] [PathConnectedSpace Y] :
+    PathConnectedSpace (X × Y) where
+  nonempty := by
+    rcases (PathConnectedSpace.nonempty : Nonempty X) with ⟨x⟩
+    rcases (PathConnectedSpace.nonempty : Nonempty Y) with ⟨y⟩
+    exact ⟨(x, y)⟩
+  joined := by
+    intro x y
+    rcases PathConnectedSpace.joined x.1 y.1 with ⟨px⟩
+    rcases PathConnectedSpace.joined x.2 y.2 with ⟨py⟩
+    exact ⟨px.prod py⟩
+
+/--
+The product of two simply connected spaces is simply connected.  The proof
+uses the product/projection equivalence for path-homotopy classes.
+-/
+theorem simplyConnectedSpace_prod
+    {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
+    [SimplyConnectedSpace X] [SimplyConnectedSpace Y] :
+    SimplyConnectedSpace (X × Y) := by
+  rw [simply_connected_iff_paths_homotopic']
+  constructor
+  · exact pathConnectedSpace_prod
+  · intro x y p q
+    rw [← Path.Homotopic.Quotient.eq]
+    calc
+      Path.Homotopic.Quotient.mk p =
+          Path.Homotopic.prod
+            (Path.Homotopic.projLeft (Path.Homotopic.Quotient.mk p))
+            (Path.Homotopic.projRight (Path.Homotopic.Quotient.mk p)) := by
+        symm
+        exact Path.Homotopic.prod_projLeft_projRight (Path.Homotopic.Quotient.mk p)
+      _ = Path.Homotopic.prod
+            (Path.Homotopic.projLeft (Path.Homotopic.Quotient.mk q))
+            (Path.Homotopic.projRight (Path.Homotopic.Quotient.mk q)) := by
+        congr 1
+        · apply Subsingleton.elim
+        · apply Subsingleton.elim
+      _ = Path.Homotopic.Quotient.mk q := by
+        exact Path.Homotopic.prod_projLeft_projRight (Path.Homotopic.Quotient.mk q)
+
+/-- The positive real ray is contractible by convexity. -/
+theorem positiveRealRay_contractibleSpace :
+    ContractibleSpace (Set.Ioi (0 : ℝ)) :=
+  (convex_Ioi (0 : ℝ)).contractibleSpace ⟨1, by simp⟩
+
+/-- The positive real ray is simply connected. -/
+theorem positiveRealRay_simplyConnectedSpace :
+    SimplyConnectedSpace (Set.Ioi (0 : ℝ)) := by
+  letI : ContractibleSpace (Set.Ioi (0 : ℝ)) :=
+    positiveRealRay_contractibleSpace
+  infer_instance
+
+/--
+The radial product `S² × (0,∞)` is simply connected: `S²` was proved
+simply connected above and the positive ray is contractible.
+-/
+theorem euclideanThree_unitSphere_prod_positiveRay_simplyConnectedSpace :
+    SimplyConnectedSpace
+      (Metric.sphere (0 : EuclideanSpace ℝ (Fin 3)) (1 : ℝ) ×
+        Set.Ioi (0 : ℝ)) := by
+  letI : SimplyConnectedSpace TwoSphere :=
+    twoSphere_simplyConnectedSpace
+  letI : SimplyConnectedSpace (Set.Ioi (0 : ℝ)) :=
+    positiveRealRay_simplyConnectedSpace
+  simpa [TwoSphere] using
+    (simplyConnectedSpace_prod
+      (X := TwoSphere) (Y := Set.Ioi (0 : ℝ)))
+
+/--
+The punctured three-dimensional Euclidean space is simply connected.  This
+uses the radial homeomorphism to `S² × (0,∞)` and the new `S²` proof above.
+-/
+theorem euclideanThree_compl_zero_simplyConnectedSpace :
+    SimplyConnectedSpace ({0}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) := by
+  letI : SimplyConnectedSpace
+      (Metric.sphere (0 : EuclideanSpace ℝ (Fin 3)) (1 : ℝ) ×
+        Set.Ioi (0 : ℝ)) :=
+    euclideanThree_unitSphere_prod_positiveRay_simplyConnectedSpace
+  exact (homeomorphUnitSphereProd
+    (EuclideanSpace ℝ (Fin 3))).toHomotopyEquiv.simplyConnectedSpace
 
 /--
 The single-chart finite-concat collapse can be realized by an actual homotopy
