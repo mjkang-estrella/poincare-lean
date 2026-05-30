@@ -12012,23 +12012,53 @@ even when the return endpoint is definitionally a separate point later
 identified with the start.  This is the endpoint-cast form needed by finite
 subdivision concatenations of loops.
 -/
+theorem threeSphere_stereographic_northSouth_trans_cast_homotopy_refl_forall_mem
+    {x y z : ThreeSphere} (p : Path x y) (q : Path y z) (hzx : z = x)
+    (hp : Set.range p ⊆ (stereographic' 3 threeSphere_northPole).source)
+    (hq : Set.range q ⊆ (stereographic' 3 (-threeSphere_northPole)).source) :
+    ∃ H : (p.trans q).Homotopy ((Path.refl x).cast rfl hzx),
+      ∀ t, H t ∈
+        (stereographic' 3 threeSphere_northPole).source ∪
+          (stereographic' 3 (-threeSphere_northPole)).source := by
+  let U : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
+  let V : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  letI : SimplyConnectedSpace U := by
+    simpa [U] using threeSphere_stereographic_source_simplyConnectedSpace
+      threeSphere_northPole
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace
+      (-threeSphere_northPole)
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    simpa [U, V] using threeSphere_actualOverlap_pathConnectedSpace
+  have hpUnion : Set.range p ⊆ U ∪ V := by
+    intro w hw
+    exact Or.inl (by simpa [U] using hp hw)
+  have hqUnion : Set.range q ⊆ U ∪ V := by
+    intro w hw
+    exact Or.inr (by simpa [V] using hq hw)
+  have htransRange : Set.range (p.trans q) ⊆ U ∪ V := by
+    simpa [Path.trans_range] using Set.union_subset hpUnion hqUnion
+  have hreflRange : ∀ t, ((Path.refl x).cast rfl hzx) t ∈ U ∪ V := by
+    intro _t
+    left
+    simpa [U, Path.cast_coe] using hp ⟨0, p.source⟩
+  change ∃ H : (p.trans q).Homotopy ((Path.refl x).cast rfl hzx),
+      ∀ t, H t ∈ U ∪ V
+  exact union_paths_homotopy_forall_mem_of_isOpen_pathConnected_inter
+    (U := U) (V := V) (by simp [U]) (by simp [V])
+    (p.trans q) ((Path.refl x).cast rfl hzx)
+    (by intro t; exact htransRange ⟨t, rfl⟩)
+    hreflRange
+
 theorem threeSphere_stereographic_northSouth_trans_cast_nullhomotopic
     {x y z : ThreeSphere} (p : Path x y) (q : Path y z) (hzx : z = x)
     (hp : Set.range p ⊆ (stereographic' 3 threeSphere_northPole).source)
     (hq : Set.range q ⊆ (stereographic' 3 (-threeSphere_northPole)).source) :
     Path.Homotopic (p.trans q) ((Path.refl x).cast rfl hzx) := by
-  let qLoop : Path y x := q.cast rfl hzx.symm
-  have hqLoop :
-      Set.range qLoop ⊆
-        (stereographic' 3 (-threeSphere_northPole)).source := by
-    intro w hw
-    rcases hw with ⟨s, rfl⟩
-    exact hq ⟨s, by simp [qLoop, Path.cast_coe]⟩
-  have hloop :
-      Path.Homotopic (p.trans qLoop) (Path.refl x) :=
-    threeSphere_stereographic_northSouth_loop_nullhomotopic p qLoop hp hqLoop
-  have hcast := Path.Homotopic.pathCast hloop rfl hzx
-  simpa [qLoop] using hcast
+  rcases threeSphere_stereographic_northSouth_trans_cast_homotopy_refl_forall_mem
+      p q hzx hp hq with
+    ⟨H, _hH⟩
+  exact ⟨H⟩
 
 /--
 A two-segment loop with the first segment in the south stereographic source
@@ -12081,23 +12111,57 @@ A south-source path followed by a north-source return path is null-homotopic
 in the endpoint-cast form required by finite subdivision concatenations of
 loops.
 -/
+theorem threeSphere_stereographic_southNorth_trans_cast_homotopy_refl_forall_mem
+    {x y z : ThreeSphere} (p : Path x y) (q : Path y z) (hzx : z = x)
+    (hp : Set.range p ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
+    (hq : Set.range q ⊆ (stereographic' 3 threeSphere_northPole).source) :
+    ∃ H : (p.trans q).Homotopy ((Path.refl x).cast rfl hzx),
+      ∀ t, H t ∈
+        (stereographic' 3 (-threeSphere_northPole)).source ∪
+          (stereographic' 3 threeSphere_northPole).source := by
+  let U : Set ThreeSphere := (stereographic' 3 (-threeSphere_northPole)).source
+  let V : Set ThreeSphere := (stereographic' 3 threeSphere_northPole).source
+  letI : SimplyConnectedSpace U := by
+    simpa [U] using threeSphere_stereographic_source_simplyConnectedSpace
+      (-threeSphere_northPole)
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace
+      threeSphere_northPole
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    change PathConnectedSpace
+      ((stereographic' 3 (-threeSphere_northPole)).source ∩
+        (stereographic' 3 threeSphere_northPole).source : Set ThreeSphere)
+    rw [Set.inter_comm]
+    exact threeSphere_actualOverlap_pathConnectedSpace
+  have hpUnion : Set.range p ⊆ U ∪ V := by
+    intro w hw
+    exact Or.inl (by simpa [U] using hp hw)
+  have hqUnion : Set.range q ⊆ U ∪ V := by
+    intro w hw
+    exact Or.inr (by simpa [V] using hq hw)
+  have htransRange : Set.range (p.trans q) ⊆ U ∪ V := by
+    simpa [Path.trans_range] using Set.union_subset hpUnion hqUnion
+  have hreflRange : ∀ t, ((Path.refl x).cast rfl hzx) t ∈ U ∪ V := by
+    intro _t
+    left
+    simpa [U, Path.cast_coe] using hp ⟨0, p.source⟩
+  change ∃ H : (p.trans q).Homotopy ((Path.refl x).cast rfl hzx),
+      ∀ t, H t ∈ U ∪ V
+  exact union_paths_homotopy_forall_mem_of_isOpen_pathConnected_inter
+    (U := U) (V := V) (by simp [U]) (by simp [V])
+    (p.trans q) ((Path.refl x).cast rfl hzx)
+    (by intro t; exact htransRange ⟨t, rfl⟩)
+    hreflRange
+
 theorem threeSphere_stereographic_southNorth_trans_cast_nullhomotopic
     {x y z : ThreeSphere} (p : Path x y) (q : Path y z) (hzx : z = x)
     (hp : Set.range p ⊆ (stereographic' 3 (-threeSphere_northPole)).source)
     (hq : Set.range q ⊆ (stereographic' 3 threeSphere_northPole).source) :
     Path.Homotopic (p.trans q) ((Path.refl x).cast rfl hzx) := by
-  let qLoop : Path y x := q.cast rfl hzx.symm
-  have hqLoop :
-      Set.range qLoop ⊆
-        (stereographic' 3 threeSphere_northPole).source := by
-    intro w hw
-    rcases hw with ⟨s, rfl⟩
-    exact hq ⟨s, by simp [qLoop, Path.cast_coe]⟩
-  have hloop :
-      Path.Homotopic (p.trans qLoop) (Path.refl x) :=
-    threeSphere_stereographic_southNorth_loop_nullhomotopic p qLoop hp hqLoop
-  have hcast := Path.Homotopic.pathCast hloop rfl hzx
-  simpa [qLoop] using hcast
+  rcases threeSphere_stereographic_southNorth_trans_cast_homotopy_refl_forall_mem
+      p q hzx hp hq with
+    ⟨H, _hH⟩
+  exact ⟨H⟩
 
 /--
 A three-piece chart excursion that leaves the north stereographic source for a
