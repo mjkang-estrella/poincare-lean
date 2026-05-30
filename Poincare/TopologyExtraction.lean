@@ -21593,6 +21593,23 @@ theorem coveringMap_existsUnique_preimage_of_simplyConnected_base
 
 /--
 An inhabited preconnected covering over a simply connected, locally
+path-connected base has bijective projection.  The lifted identity map gives
+unique fibers, so existence and uniqueness assemble into bijectivity before
+using any quotient-map topology.
+-/
+theorem coveringMap_bijective_of_simplyConnected_base
+    {E X : Type u} [TopologicalSpace E] [TopologicalSpace X]
+    [PreconnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
+    {p : E → X} (cov : IsCoveringMap p) (e₀ : E) :
+    Function.Bijective p := by
+  refine ⟨coveringMap_injective_of_simplyConnected_base cov e₀, ?_⟩
+  intro x
+  rcases coveringMap_existsUnique_preimage_of_simplyConnected_base cov e₀ x with
+    ⟨e, he, _⟩
+  exact ⟨e, he⟩
+
+/--
+An inhabited preconnected covering over a simply connected, locally
 path-connected base is a homeomorphism.  The fiber singleton theorem supplies
 surjectivity, and covering-map lift uniqueness supplies injectivity.
 -/
@@ -21601,14 +21618,10 @@ theorem coveringMap_isHomeomorph_of_simplyConnected_base
     [PreconnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
     {p : E → X} (cov : IsCoveringMap p) (e₀ : E) :
     IsHomeomorph p := by
-  have hsurj : Function.Surjective p := by
-    intro x
-    rcases coveringMap_existsUnique_preimage_of_simplyConnected_base cov e₀ x with
-      ⟨e, he, _⟩
-    exact ⟨e, he⟩
+  have hbij : Function.Bijective p :=
+    coveringMap_bijective_of_simplyConnected_base cov e₀
   exact isHomeomorph_iff_isQuotientMap_injective.mpr
-    ⟨cov.isQuotientMap hsurj,
-      coveringMap_injective_of_simplyConnected_base cov e₀⟩
+    ⟨cov.isQuotientMap hbij.2, hbij.1⟩
 
 /--
 A covering over a simply connected, locally path-connected base transfers
