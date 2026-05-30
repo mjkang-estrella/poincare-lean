@@ -30992,6 +30992,57 @@ theorem threeSphere_stereographicSources_fullConcat_homotopy_refl_forall_mem_of_
       (U := U) (V := V) hbase γ t h0 h1 hchoice
 
 /--
+For two distinct stereographic centers, an arbitrary finite source-choice
+subdivision of any based loop contracts through the two-source union.  The
+distinct-center cover decides which of the two sources contains the basepoint,
+so no separate basepoint-in-first-source hypothesis is needed.
+-/
+theorem threeSphere_stereographicSources_fullConcat_homotopy_refl_forall_mem_of_sourceChoice_of_ne
+    {a b : ThreeSphere} (hab : a ≠ b) {basepoint : ThreeSphere}
+    (γ : Path basepoint basepoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval)
+    (h0 : t 0 = 0) (h1 : t (Fin.last N) = 1)
+    (hchoice : ∀ k : Fin N,
+      Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+          (stereographic' 3 a).source ∨
+        Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+          (stereographic' 3 b).source) :
+    ∃ H :
+      (Path.concat (γ ∘ t) (fun k : Fin N =>
+        γ.subpath (t k.castSucc) (t k.succ))).Homotopy
+      ((Path.refl basepoint).cast
+        (by simp [h0, γ.source])
+        (by simp [h1, γ.target])),
+      ∀ s, H s ∈
+        (stereographic' 3 a).source ∪ (stereographic' 3 b).source := by
+  let U : Set ThreeSphere := (stereographic' 3 a).source
+  let V : Set ThreeSphere := (stereographic' 3 b).source
+  have hcover : U ∪ V = Set.univ := by
+    simpa [U, V] using threeSphere_stereographic_sources_cover_of_ne hab
+  by_cases hbaseU : basepoint ∈ U
+  · simpa [U, V] using
+      threeSphere_stereographicSources_fullConcat_homotopy_refl_forall_mem_of_sourceChoice
+        (a := a) (b := b) hbaseU γ t h0 h1 hchoice
+  · have hbaseV : basepoint ∈ V := by
+      have hmem : basepoint ∈ U ∪ V := by
+        rw [hcover]
+        trivial
+      exact hmem.resolve_left hbaseU
+    have hchoice' : ∀ k : Fin N,
+        Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆ V ∨
+          Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆ U := by
+      intro k
+      rcases hchoice k with hkU | hkV
+      · exact Or.inr (by simpa [U] using hkU)
+      · exact Or.inl (by simpa [V] using hkV)
+    rcases threeSphere_stereographicSources_fullConcat_homotopy_refl_forall_mem_of_sourceChoice
+        (a := b) (b := a) hbaseV γ t h0 h1 hchoice' with
+      ⟨H, hH⟩
+    refine ⟨H, ?_⟩
+    intro s
+    simpa [U, V, Set.union_comm] using hH s
+
+/--
 An arbitrary finite stereographic source-choice subdivision of an equatorial
 loop contracts through a homotopy whose image stays in the north/south
 stereographic cover.
