@@ -21759,6 +21759,39 @@ theorem orbitRelQuotient_model_trivial_of_simplyConnected_target
   · exact ⟨φM.trans φE⟩
 
 /--
+If a free properly discontinuous action on a space already recognized as `S³`
+has a simply connected orbit-quotient target, then the acting group is trivial,
+the target is `S³`, and the target carries the transported smooth 3-manifold
+prerequisite payload.
+-/
+theorem orbitRelQuotient_model_smooth_recognition_of_simplyConnected_target
+    {E M G : Type u} [TopologicalSpace E] [TopologicalSpace M]
+    [Group G] [MulAction G E] [ContinuousConstSMul G E]
+    [ProperlyDiscontinuousSMul G E]
+    [IsCancelSMul G E]
+    [SimplyConnectedSpace M]
+    (hE : Nonempty (E ≃ₜ ThreeSphere))
+    (hM : Nonempty (MulAction.orbitRel.Quotient G E ≃ₜ M)) :
+    Subsingleton G ∧
+      Nonempty (M ≃ₜ ThreeSphere) ∧
+      (∃ _t2 : T2Space M,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+      ∃ _simple : SimplyConnectedSpace M,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ M,
+      ∃ _compact : CompactSpace M,
+      ∃ _path : PathConnectedSpace M,
+      ∃ _locPath : LocPathConnectedSpace M,
+      ∃ _connected : ConnectedSpace M,
+        Nonempty M) := by
+  rcases orbitRelQuotient_model_trivial_of_simplyConnected_target
+      (E := E) (M := M) (G := G) hE hM with
+    ⟨hgroup, hSphere⟩
+  rcases smooth_manifold_prerequisites_of_homeomorph_to_threeSphere hSphere with
+    ⟨t2, charted, compact, smooth, path, locPath, connected, nonempty⟩
+  exact ⟨hgroup, hSphere, t2, charted, inferInstance, smooth, compact, path,
+    locPath, connected, nonempty⟩
+
+/--
 If a simply connected target is identified with the orbit quotient of a space
 already recognized as `S³`, the quotient projection into that target is a
 homeomorphism, every total-space orbit is a singleton, the deck obstruction
@@ -21915,16 +21948,14 @@ theorem orbitRelQuotient_smooth_sphere_recognition_and_prerequisites_of_homeomor
       ∃ _locPath : LocPathConnectedSpace (MulAction.orbitRel.Quotient G E),
       ∃ _connected : ConnectedSpace (MulAction.orbitRel.Quotient G E),
         Nonempty (MulAction.orbitRel.Quotient G E)) := by
-  rcases orbitRelQuotient_model_trivial_of_simplyConnected_quotient
-      (E := E) (G := G) hE with
-    ⟨hgroup, hQ⟩
+  rcases orbitRelQuotient_model_smooth_recognition_of_simplyConnected_target
+      (E := E) (M := MulAction.orbitRel.Quotient G E) (G := G)
+      hE ⟨Homeomorph.refl _⟩ with
+    ⟨hgroup, hQ, hsmooth⟩
   rcases orbitRelQuotient_mk_isHomeomorph_and_orbitRel_eq_bot_of_simplyConnected_quotient
       (E := E) (G := G) hE with
     ⟨hmk, hrel⟩
-  rcases smooth_manifold_prerequisites_of_homeomorph_to_threeSphere hQ with
-    ⟨t2, charted, compact, smooth, path, locPath, connected, nonempty⟩
-  exact ⟨hgroup, hmk, hrel, hQ, t2, charted, inferInstance, smooth,
-    compact, path, locPath, connected, nonempty⟩
+  exact ⟨hgroup, hmk, hrel, hQ, hsmooth⟩
 
 /--
 Deck transformations over a covering map are determined by one value on a
