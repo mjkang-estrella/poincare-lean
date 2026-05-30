@@ -1822,6 +1822,29 @@ theorem threeSphere_stereographic_antipodal_sources_cover
       exact hx
 
 /--
+Stereographic sources centered at any two distinct points cover the whole
+`ThreeSphere`.  Each source is the complement of its center, so a point equal
+to one center lies in the other source and every other point lies in the first.
+-/
+theorem threeSphere_stereographic_sources_cover_of_ne
+    {a b : ThreeSphere} (hab : a ≠ b) :
+    (stereographic' 3 a).source ∪ (stereographic' 3 b).source =
+      Set.univ := by
+  ext x
+  constructor
+  · intro _hx
+    trivial
+  · intro _hx
+    by_cases hxa : x = a
+    · right
+      rw [threeSphere_stereographic_source_eq_compl_singleton]
+      intro hxb
+      exact hab (hxa.symm.trans hxb)
+    · left
+      rw [threeSphere_stereographic_source_eq_compl_singleton]
+      exact hxa
+
+/--
 The antipodal-source cover statement is exactly the complement-of-singleton
 description of the two stereographic sources.
 -/
