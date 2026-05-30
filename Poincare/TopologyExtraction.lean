@@ -21746,8 +21746,55 @@ theorem quotientCovering_group_subsingleton_of_simplyConnected_base
   exact h.isCancelSMul.right_cancel' g g' e₀ hsmul
 
 /--
+For a quotient covering with trivial acting group, the projection is injective.
+The quotient-covering fiber description identifies equal fibers with orbits,
+and a subsingleton acting group makes every orbit a singleton.
+-/
+theorem quotientCovering_injective_of_subsingleton_group
+    {E X G : Type u} [TopologicalSpace E] [TopologicalSpace X]
+    [Group G] [MulAction G E]
+    {p : E → X} (h : IsQuotientCoveringMap p G) (hG : Subsingleton G) :
+    Function.Injective p := by
+  letI : Subsingleton G := hG
+  intro e e' hp
+  have horbit : e ∈ MulAction.orbit G e' :=
+    h.apply_eq_iff_mem_orbit.mp hp
+  rcases MulAction.mem_orbit_iff.mp horbit with ⟨g, rfl⟩
+  have hg : g = 1 := Subsingleton.elim g 1
+  simp [hg]
+
+/--
+For a quotient covering with trivial acting group, the projection is a
+homeomorphism.  This is the data-level trivial-deck-quotient step: freeness is
+not needed once quotient-covering fibers and group triviality give injectivity.
+-/
+theorem quotientCovering_isHomeomorph_of_subsingleton_group
+    {E X G : Type u} [TopologicalSpace E] [TopologicalSpace X]
+    [Group G] [MulAction G E]
+    {p : E → X} (h : IsQuotientCoveringMap p G) (hG : Subsingleton G) :
+    IsHomeomorph p := by
+  exact isHomeomorph_iff_isQuotientMap_injective.mpr
+    ⟨h.toIsQuotientMap,
+      quotientCovering_injective_of_subsingleton_group h hG⟩
+
+/--
+Equivalently, a quotient covering with trivial acting group identifies the base
+with the total space by an actual homeomorphism.
+-/
+theorem quotientCovering_homeomorph_base_total_of_subsingleton_group
+    {E X G : Type u} [TopologicalSpace E] [TopologicalSpace X]
+    [Group G] [MulAction G E]
+    {p : E → X} (h : IsQuotientCoveringMap p G) (hG : Subsingleton G) :
+    Nonempty (X ≃ₜ E) := by
+  let hp : E ≃ₜ X :=
+    (quotientCovering_isHomeomorph_of_subsingleton_group h hG).homeomorph p
+  exact ⟨hp.symm⟩
+
+/--
 The projection of an inhabited preconnected quotient covering over a simply
-connected, locally path-connected base is itself a homeomorphism.
+connected, locally path-connected base is itself a homeomorphism.  The
+previous deck-group collapse supplies the trivial group input, and triviality
+of quotient-covering fibers then identifies the quotient with the cover.
 -/
 theorem quotientCovering_isHomeomorph_of_simplyConnected_base
     {E X G : Type u} [TopologicalSpace E] [TopologicalSpace X]
@@ -21755,7 +21802,21 @@ theorem quotientCovering_isHomeomorph_of_simplyConnected_base
     [PreconnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
     {p : E → X} (h : IsQuotientCoveringMap p G) (e₀ : E) :
     IsHomeomorph p := by
-  exact coveringMap_isHomeomorph_of_simplyConnected_base h.isCoveringMap e₀
+  exact quotientCovering_isHomeomorph_of_subsingleton_group h
+    (quotientCovering_group_subsingleton_of_simplyConnected_base h e₀)
+
+/--
+Over a simply connected, locally path-connected base, a quotient covering
+identifies the base with the total space by an actual homeomorphism.
+-/
+theorem quotientCovering_homeomorph_base_total_of_simplyConnected_base
+    {E X G : Type u} [TopologicalSpace E] [TopologicalSpace X]
+    [Group G] [MulAction G E]
+    [PreconnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
+    {p : E → X} (h : IsQuotientCoveringMap p G) (e₀ : E) :
+    Nonempty (X ≃ₜ E) := by
+  exact quotientCovering_homeomorph_base_total_of_subsingleton_group h
+    (quotientCovering_group_subsingleton_of_simplyConnected_base h e₀)
 
 /--
 If the universal-cover side of a quotient covering is already identified with
@@ -21768,8 +21829,8 @@ theorem quotientCovering_homeomorph_to_threeSphere_of_simplyConnected_base
     {p : E → X} (h : IsQuotientCoveringMap p G) (e₀ : E)
     (hE : Nonempty (E ≃ₜ ThreeSphere)) :
     Nonempty (X ≃ₜ ThreeSphere) := by
-  exact coveringMap_homeomorph_to_threeSphere_of_simplyConnected_base
-    h.isCoveringMap (p e₀) e₀ rfl hE
+  exact homeomorph_to_threeSphere_of_homeomorph
+    (quotientCovering_homeomorph_base_total_of_simplyConnected_base h e₀) hE
 
 /--
 An orbit quotient of a space recognized as `S³` inherits the compact,
@@ -21857,8 +21918,35 @@ theorem orbitRelQuotient_homeomorph_total_of_simplyConnected_target
   let h : IsQuotientCoveringMap
       (φM ∘ Quotient.mk (MulAction.orbitRel G E)) G :=
     hq.homeomorph_comp φM
-  exact covering_homeomorph_total_of_simplyConnected_base h.isCoveringMap
-    (φM (Quotient.mk (MulAction.orbitRel G E) e₀)) e₀ rfl
+  exact quotientCovering_homeomorph_base_total_of_simplyConnected_base h e₀
+
+/--
+For a free properly discontinuous action on a space already recognized as
+`S³`, simple connectedness of the canonical orbit quotient identifies that
+quotient with the total space.  This is the concrete homeomorphism form of the
+trivial deck quotient step.
+-/
+theorem orbitRelQuotient_homeomorph_total_of_simplyConnected_quotient
+    {E G : Type u} [TopologicalSpace E]
+    [Group G] [MulAction G E] [ContinuousConstSMul G E]
+    [ProperlyDiscontinuousSMul G E]
+    [IsCancelSMul G E]
+    [SimplyConnectedSpace (MulAction.orbitRel.Quotient G E)]
+    (hE : Nonempty (E ≃ₜ ThreeSphere)) :
+    Nonempty (MulAction.orbitRel.Quotient G E ≃ₜ E) := by
+  rcases hE with ⟨φE⟩
+  let hE' : Nonempty (E ≃ₜ ThreeSphere) := ⟨φE⟩
+  letI : T2Space E := t2Space_of_homeomorph_to_threeSphere hE'
+  letI : LocallyCompactSpace E :=
+    locallyCompactSpace_of_homeomorph_to_threeSphere hE'
+  letI : PreconnectedSpace E :=
+    preconnectedSpace_of_homeomorph_to_threeSphere hE'
+  letI : LocPathConnectedSpace E :=
+    locPathConnectedSpace_of_homeomorph_to_threeSphere hE'
+  letI : LocPathConnectedSpace (MulAction.orbitRel.Quotient G E) := inferInstance
+  let e₀ : E := φE.symm (Classical.choice threeSphere_nonempty)
+  exact orbitRelQuotient_homeomorph_total_of_simplyConnected_target
+    (M := MulAction.orbitRel.Quotient G E) ⟨Homeomorph.refl _⟩ e₀
 
 /--
 If an orbit quotient is homeomorphic to a simply connected target, then the
