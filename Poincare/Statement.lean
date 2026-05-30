@@ -3307,6 +3307,88 @@ theorem euclideanThree_compl_singleton_pathConnectedSpace_eq
         (euclideanThree_isPathConnected_compl_singleton x) := by
   apply Subsingleton.elim
 
+/-- A second point, distinct from `a`, as a point of the stereographic source at `a`. -/
+noncomputable def threeSphere_pointInStereographicSource
+    (a b : ThreeSphere) (hab : b ≠ a) : (stereographic' 3 a).source :=
+  ⟨b, by
+    rw [threeSphere_stereographic_source_eq_compl_singleton]
+    exact hab⟩
+
+/-- The stereographic chart image of a second point under the chart centered at `a`. -/
+noncomputable def threeSphere_twoPointChartImage
+    (a b : ThreeSphere) (hab : b ≠ a) : EuclideanSpace ℝ (Fin 3) :=
+  threeSphere_stereographic_source_homeomorph a
+    (threeSphere_pointInStereographicSource a b hab)
+
+/--
+The complement of two distinct points in `ThreeSphere`, viewed inside the
+stereographic source at the first point, is the source with the second point
+removed.
+-/
+noncomputable def threeSphere_twoPointComplement_homeomorph_sourcePunctured
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    (({a} ∪ {b})ᶜ : Set ThreeSphere) ≃ₜ
+      ({threeSphere_pointInStereographicSource a b hab}ᶜ :
+        Set (stereographic' 3 a).source) where
+  toFun p :=
+    ⟨⟨p.1, by
+      rw [threeSphere_stereographic_source_eq_compl_singleton]
+      intro h
+      exact p.2 (Or.inl h)⟩, by
+      rw [Set.mem_compl_iff]
+      intro h
+      have hval : p.1 = b := congrArg Subtype.val h
+      exact p.2 (Or.inr hval)⟩
+  invFun p :=
+    ⟨p.1.1, by
+      rw [Set.mem_compl_iff]
+      intro h
+      rcases h with ha | hb
+      · have hsource_ne : p.1.1 ≠ a := by
+          simpa [threeSphere_stereographic_source_eq_compl_singleton] using p.1.2
+        exact hsource_ne ha
+      · exact p.2 (Subtype.ext hb)⟩
+  left_inv p := by
+    ext
+    rfl
+  right_inv p := by
+    ext
+    rfl
+  continuous_toFun := by
+    continuity
+  continuous_invFun := by
+    continuity
+
+/--
+Stereographic projection identifies the complement of two distinct points in
+`ThreeSphere` with punctured `ℝ³`.
+-/
+noncomputable def threeSphere_twoPointComplement_homeomorph_puncturedChart
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    (({a} ∪ {b})ᶜ : Set ThreeSphere) ≃ₜ
+      ({threeSphere_twoPointChartImage a b hab}ᶜ :
+        Set (EuclideanSpace ℝ (Fin 3))) :=
+  (threeSphere_twoPointComplement_homeomorph_sourcePunctured hab).trans
+    ((threeSphere_stereographic_source_homeomorph a).subtype
+      (fun _p => by simp [threeSphere_twoPointChartImage]))
+
+/--
+The complement of any two distinct points in `ThreeSphere` is path-connected.
+The proof sends the complement through stereographic projection to punctured
+`ℝ³`, whose path-connectedness follows from the rank computation above.
+-/
+theorem threeSphere_twoPointComplement_pathConnectedSpace
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    PathConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) := by
+  letI : PathConnectedSpace
+      ({threeSphere_twoPointChartImage a b hab}ᶜ :
+        Set (EuclideanSpace ℝ (Fin 3))) :=
+    euclideanThree_compl_singleton_pathConnectedSpace
+      (threeSphere_twoPointChartImage a b hab)
+  exact
+    (threeSphere_twoPointComplement_homeomorph_puncturedChart hab).symm.surjective.pathConnectedSpace
+      (threeSphere_twoPointComplement_homeomorph_puncturedChart hab).symm.continuous
+
 /-- The antipode of `v` as a point of the stereographic source at `v`. -/
 noncomputable def threeSphere_antipodeInSource
     (v : ThreeSphere) : (stereographic' 3 v).source :=
@@ -3786,19 +3868,22 @@ theorem threeSphere_northSouthPole_compl_isPathConnected :
     IsPathConnected
       (({threeSphere_northPole} ∪ {-threeSphere_northPole})ᶜ :
         Set ThreeSphere) := by
-  rw [← threeSphere_stereographic_antipodal_sources_inter threeSphere_northPole]
-  exact threeSphere_actualOverlap_isPathConnected
+  exact isPathConnected_iff_pathConnectedSpace.mpr
+    (threeSphere_twoPointComplement_pathConnectedSpace
+      (a := threeSphere_northPole) (b := -threeSphere_northPole)
+      (threeSphere_antipodal_ne_self threeSphere_northPole))
 
 /--
 The two-pole complement path-connectedness proof rewrites the complement as
-the north/south stereographic overlap and uses the overlap path-connectedness
-proof.
+the arbitrary two-point complement theorem for the antipodal north/south pair.
 -/
 theorem threeSphere_northSouthPole_compl_isPathConnected_eq :
     threeSphere_northSouthPole_compl_isPathConnected =
       (by
-        rw [← threeSphere_stereographic_antipodal_sources_inter threeSphere_northPole]
-        exact threeSphere_actualOverlap_isPathConnected) := by
+        exact isPathConnected_iff_pathConnectedSpace.mpr
+          (threeSphere_twoPointComplement_pathConnectedSpace
+            (a := threeSphere_northPole) (b := -threeSphere_northPole)
+            (threeSphere_antipodal_ne_self threeSphere_northPole))) := by
   apply Subsingleton.elim
 
 /--
