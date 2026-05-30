@@ -3864,6 +3864,90 @@ theorem threeSphere_antipodalSourceOverlap_pathConnectedSpace
       (threeSphere_antipodalSourceOverlap_homeomorph_puncturedChart v).symm.continuous
 
 /--
+The restricted stereographic chart embeds the source-side antipodal overlap
+model as punctured `ℝ³`.
+-/
+theorem threeSphere_antipodalSourceOverlap_puncturedChart_isOpenEmbedding
+    (v : ThreeSphere) :
+    Topology.IsOpenEmbedding
+      (fun p : ({threeSphere_antipodeInSource v}ᶜ :
+          Set (stereographic' 3 v).source) =>
+        ((threeSphere_antipodalSourceOverlap_homeomorph_puncturedChart v p :
+          ({threeSphere_antipodeChartImage v}ᶜ :
+            Set (EuclideanSpace ℝ (Fin 3)))) :
+          EuclideanSpace ℝ (Fin 3))) := by
+  let e := threeSphere_antipodalSourceOverlap_homeomorph_puncturedChart v
+  let puncture : EuclideanSpace ℝ (Fin 3) := threeSphere_antipodeChartImage v
+  change Topology.IsOpenEmbedding
+    (((Subtype.val) : ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) →
+      EuclideanSpace ℝ (Fin 3)) ∘ e)
+  exact (euclideanThree_compl_singleton_isOpenEmbedding puncture).comp e.isOpenEmbedding
+
+/--
+The source-side antipodal overlap inherits the punctured stereographic charted
+space from its open embedding into `ℝ³`.
+-/
+@[implicit_reducible]
+noncomputable def threeSphere_antipodalSourceOverlap_puncturedChartChartedSpace
+    (v : ThreeSphere) :
+    ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      ({threeSphere_antipodeInSource v}ᶜ :
+        Set (stereographic' 3 v).source) := by
+  haveI : Nonempty
+      ({threeSphere_antipodeInSource v}ᶜ :
+        Set (stereographic' 3 v).source) :=
+    (threeSphere_antipodalSourceOverlap_pathConnectedSpace v).nonempty
+  exact (threeSphere_antipodalSourceOverlap_puncturedChart_isOpenEmbedding v).singletonChartedSpace
+
+/--
+The source-side antipodal overlap is smoothly identified with punctured `ℝ³`
+by the restricted stereographic chart.
+-/
+noncomputable def threeSphere_antipodalSourceOverlap_diffeomorph_puncturedChart
+    (v : ThreeSphere) :
+    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        ({threeSphere_antipodeInSource v}ᶜ :
+          Set (stereographic' 3 v).source) :=
+      threeSphere_antipodalSourceOverlap_puncturedChartChartedSpace v
+    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        ({threeSphere_antipodeChartImage v}ᶜ :
+          Set (EuclideanSpace ℝ (Fin 3))) :=
+      euclideanThree_compl_singleton_chartedSpace
+        (threeSphere_antipodeChartImage v)
+    ({threeSphere_antipodeInSource v}ᶜ :
+        Set (stereographic' 3 v).source) ≃ₘ⟮𝓡 3, 𝓡 3⟯
+      ({threeSphere_antipodeChartImage v}ᶜ :
+        Set (EuclideanSpace ℝ (Fin 3))) := by
+  let puncture : EuclideanSpace ℝ (Fin 3) := threeSphere_antipodeChartImage v
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      ({threeSphere_antipodeInSource v}ᶜ :
+        Set (stereographic' 3 v).source) :=
+    threeSphere_antipodalSourceOverlap_puncturedChartChartedSpace v
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+    euclideanThree_compl_singleton_chartedSpace puncture
+  let e := threeSphere_antipodalSourceOverlap_homeomorph_puncturedChart v
+  let hsource := threeSphere_antipodalSourceOverlap_puncturedChart_isOpenEmbedding v
+  let htarget := euclideanThree_compl_singleton_isOpenEmbedding puncture
+  haveI : Nonempty
+      ({threeSphere_antipodeInSource v}ᶜ :
+        Set (stereographic' 3 v).source) :=
+    (threeSphere_antipodalSourceOverlap_pathConnectedSpace v).nonempty
+  haveI : Nonempty ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+    (euclideanThree_compl_singleton_pathConnectedSpace puncture).nonempty
+  exact
+    { toEquiv := e.toEquiv
+      contMDiff_toFun := by
+        exact ContMDiff.of_comp_isOpenEmbedding (h' := htarget) (by
+          simpa [e, puncture] using
+            contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource)
+      contMDiff_invFun := by
+        exact ContMDiff.of_comp_isOpenEmbedding (h' := hsource)
+          ((contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) htarget).congr
+            (fun q => by
+              exact congrArg Subtype.val (e.apply_symm_apply q))) }
+
+/--
 The actual overlap of the two stereographic sources centered at `v` and `-v`
 is homeomorphic to the source-side complement of the antipode.
 -/
@@ -3922,6 +4006,102 @@ theorem threeSphere_antipodalActualOverlap_pathConnectedSpace
   exact
     (threeSphere_antipodalActualOverlap_homeomorph_sourceOverlap v).symm.surjective.pathConnectedSpace
       (threeSphere_antipodalActualOverlap_homeomorph_sourceOverlap v).symm.continuous
+
+/--
+The source-side punctured chart embeds the actual antipodal chart overlap as
+punctured `ℝ³`.
+-/
+theorem threeSphere_antipodalActualOverlap_puncturedChart_isOpenEmbedding
+    (v : ThreeSphere) :
+    Topology.IsOpenEmbedding
+      (fun p : (((stereographic' 3 v).source ∩
+          (stereographic' 3 (-v)).source) : Set ThreeSphere) =>
+        ((threeSphere_antipodalSourceOverlap_homeomorph_puncturedChart v
+          (threeSphere_antipodalActualOverlap_homeomorph_sourceOverlap v p) :
+          ({threeSphere_antipodeChartImage v}ᶜ :
+            Set (EuclideanSpace ℝ (Fin 3)))) :
+          EuclideanSpace ℝ (Fin 3))) := by
+  let e := threeSphere_antipodalActualOverlap_homeomorph_sourceOverlap v
+  let htarget := threeSphere_antipodalSourceOverlap_puncturedChart_isOpenEmbedding v
+  change Topology.IsOpenEmbedding
+    ((fun p : ({threeSphere_antipodeInSource v}ᶜ :
+      Set (stereographic' 3 v).source) =>
+        ((threeSphere_antipodalSourceOverlap_homeomorph_puncturedChart v p :
+          ({threeSphere_antipodeChartImage v}ᶜ :
+            Set (EuclideanSpace ℝ (Fin 3)))) :
+          EuclideanSpace ℝ (Fin 3))) ∘ e)
+  exact htarget.comp e.isOpenEmbedding
+
+/--
+The actual antipodal overlap inherits the source-side punctured stereographic
+charted-space structure.
+-/
+@[implicit_reducible]
+noncomputable def threeSphere_antipodalActualOverlap_puncturedChartChartedSpace
+    (v : ThreeSphere) :
+    ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      ((((stereographic' 3 v).source ∩
+        (stereographic' 3 (-v)).source) : Set ThreeSphere)) := by
+  haveI : Nonempty
+      ((((stereographic' 3 v).source ∩
+        (stereographic' 3 (-v)).source) : Set ThreeSphere)) :=
+    (threeSphere_antipodalActualOverlap_pathConnectedSpace v).nonempty
+  exact (threeSphere_antipodalActualOverlap_puncturedChart_isOpenEmbedding v).singletonChartedSpace
+
+/--
+The actual antipodal chart overlap is smoothly identified with the source-side
+punctured overlap model.
+-/
+noncomputable def threeSphere_antipodalActualOverlap_diffeomorph_sourceOverlap
+    (v : ThreeSphere) :
+    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        ((((stereographic' 3 v).source ∩
+          (stereographic' 3 (-v)).source) : Set ThreeSphere)) :=
+      threeSphere_antipodalActualOverlap_puncturedChartChartedSpace v
+    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        ({threeSphere_antipodeInSource v}ᶜ :
+          Set (stereographic' 3 v).source) :=
+      threeSphere_antipodalSourceOverlap_puncturedChartChartedSpace v
+    (((stereographic' 3 v).source ∩
+      (stereographic' 3 (-v)).source) : Set ThreeSphere) ≃ₘ⟮𝓡 3, 𝓡 3⟯
+      ({threeSphere_antipodeInSource v}ᶜ :
+        Set (stereographic' 3 v).source) := by
+  let e := threeSphere_antipodalActualOverlap_homeomorph_sourceOverlap v
+  let hsource := threeSphere_antipodalActualOverlap_puncturedChart_isOpenEmbedding v
+  let htarget := threeSphere_antipodalSourceOverlap_puncturedChart_isOpenEmbedding v
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      ((((stereographic' 3 v).source ∩
+        (stereographic' 3 (-v)).source) : Set ThreeSphere)) :=
+    threeSphere_antipodalActualOverlap_puncturedChartChartedSpace v
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      ({threeSphere_antipodeInSource v}ᶜ :
+        Set (stereographic' 3 v).source) :=
+    threeSphere_antipodalSourceOverlap_puncturedChartChartedSpace v
+  haveI : Nonempty
+      ((((stereographic' 3 v).source ∩
+        (stereographic' 3 (-v)).source) : Set ThreeSphere)) :=
+    (threeSphere_antipodalActualOverlap_pathConnectedSpace v).nonempty
+  haveI : Nonempty
+      ({threeSphere_antipodeInSource v}ᶜ :
+        Set (stereographic' 3 v).source) :=
+    (threeSphere_antipodalSourceOverlap_pathConnectedSpace v).nonempty
+  exact
+    { toEquiv := e.toEquiv
+      contMDiff_toFun := by
+        exact ContMDiff.of_comp_isOpenEmbedding (h' := htarget) (by
+          simpa [e] using
+            contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource)
+      contMDiff_invFun := by
+        exact ContMDiff.of_comp_isOpenEmbedding (h' := hsource)
+          ((contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) htarget).congr
+            (fun q => by
+              exact congrArg
+                (fun r =>
+                  ((threeSphere_antipodalSourceOverlap_homeomorph_puncturedChart v r :
+                    ({threeSphere_antipodeChartImage v}ᶜ :
+                      Set (EuclideanSpace ℝ (Fin 3)))) :
+                    EuclideanSpace ℝ (Fin 3)))
+                (e.apply_symm_apply q))) }
 
 /--
 The complement of the south-pole image in the north-pole stereographic chart is
