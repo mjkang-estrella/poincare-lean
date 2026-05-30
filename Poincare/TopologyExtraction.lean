@@ -21102,6 +21102,34 @@ theorem covering_homeomorph_total_of_simplyConnected_base
     continuous_invFun := cov.continuous }⟩
 
 /--
+The projection of a covering over a simply connected, locally path-connected
+base is injective when the total space is preconnected and inhabited.
+-/
+theorem coveringMap_injective_of_simplyConnected_base
+    {E X : Type u} [TopologicalSpace E] [TopologicalSpace X]
+    [PreconnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
+    {p : E → X} (cov : IsCoveringMap p) (e₀ : E) :
+    Function.Injective p := by
+  rcases cov.existsUnique_continuousMap_lifts
+      (ContinuousMap.id X) (p e₀) e₀ rfl with
+    ⟨F, hF, _hUnique⟩
+  have hleft : ∀ x : X, p (F x) = x := by
+    intro x
+    exact congrFun hF.2 x
+  have hright : F ∘ p = id := by
+    have hcomp : p ∘ (F ∘ p) = p ∘ id := by
+      funext e
+      exact hleft (p e)
+    exact cov.eq_of_comp_eq (F.continuous.comp cov.continuous)
+      continuous_id hcomp e₀ (by
+        simpa [Function.comp_def] using hF.1)
+  intro e e' h
+  calc
+    e = F (p e) := (congrFun hright e).symm
+    _ = F (p e') := by rw [h]
+    _ = e' := congrFun hright e'
+
+/--
 Deck transformations over a covering map are determined by one value on a
 preconnected total space.  This is the concrete covering-space rigidity input
 needed by the spherical-space-form deck-group branch.
@@ -21131,6 +21159,20 @@ theorem covering_deckTransform_eq_refl_of_fixed
     φ = Homeomorph.refl E := by
   exact covering_deckTransform_eq_of_eq_at cov φ (Homeomorph.refl E)
     hφ rfl e₀ hfix
+
+/--
+Over a simply connected, locally path-connected base, every deck
+transformation of a preconnected covering with a chosen point is trivial.
+-/
+theorem covering_deckTransform_eq_refl_of_simplyConnected_base
+    {E X : Type u} [TopologicalSpace E] [TopologicalSpace X]
+    [PreconnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
+    {p : E → X} (cov : IsCoveringMap p)
+    (φ : E ≃ₜ E) (hφ : p ∘ φ = p) (e₀ : E) :
+    φ = Homeomorph.refl E := by
+  refine covering_deckTransform_eq_refl_of_fixed cov φ hφ e₀ ?_
+  exact coveringMap_injective_of_simplyConnected_base cov e₀
+    (by simpa [Function.comp_def] using congrFun hφ e₀)
 
 /--
 Interface for the decomposition information obtained from finite extinction.
