@@ -3548,6 +3548,73 @@ noncomputable def threeSphere_twoPointChartImage
     (threeSphere_pointInStereographicSource a b hab)
 
 /--
+The named puncture for the two-chart overlap is exactly the stereographic image
+of the second center in the chart centered at the first.
+-/
+theorem threeSphere_twoPointChartImage_eq_stereographic_apply
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    (stereographic' 3 a) b = threeSphere_twoPointChartImage a b hab := by
+  rw [threeSphere_twoPointChartImage, threeSphere_stereographic_source_homeomorph]
+  change (stereographic' 3 a) b =
+    (((stereographic' 3 a).toHomeomorphSourceTarget
+      (threeSphere_pointInStereographicSource a b hab)) :
+        EuclideanSpace ℝ (Fin 3))
+  rfl
+
+/--
+Any change of coordinates between two stereographic charts of `ThreeSphere`
+belongs to the smooth structure groupoid.
+-/
+theorem threeSphere_stereographicTransition_mem_contDiffGroupoid
+    (a b : ThreeSphere) :
+    (stereographic' 3 a).symm.trans (stereographic' 3 b) ∈
+      contDiffGroupoid ∞ (𝓡 3) := by
+  have ha : (stereographic' 3 a) ∈
+      atlas (EuclideanSpace ℝ (Fin 3)) ThreeSphere := by
+    exact ⟨a, rfl⟩
+  have hb : (stereographic' 3 b) ∈
+      atlas (EuclideanSpace ℝ (Fin 3)) ThreeSphere := by
+    exact ⟨b, rfl⟩
+  simpa using StructureGroupoid.compatible
+    (contDiffGroupoid ∞ (𝓡 3)) ha hb
+
+/--
+The coordinate transition from the stereographic chart centered at `a` to the
+one centered at `b` is smooth on the named punctured Euclidean overlap.
+-/
+theorem threeSphere_stereographicTransition_contMDiffOn_puncturedChart
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    ContMDiffOn (𝓡 3) (𝓡 3) ∞
+      (fun x : EuclideanSpace ℝ (Fin 3) =>
+        (stereographic' 3 b) ((stereographic' 3 a).symm x))
+      ({threeSphere_twoPointChartImage a b hab}ᶜ :
+        Set (EuclideanSpace ℝ (Fin 3))) := by
+  have htransition :
+      ContMDiffOn (𝓡 3) (𝓡 3) ∞
+        ((stereographic' 3 a).symm.trans (stereographic' 3 b))
+        ((stereographic' 3 a).symm.trans (stereographic' 3 b)).source :=
+    contMDiffOn_of_mem_contDiffGroupoid
+      (threeSphere_stereographicTransition_mem_contDiffGroupoid a b)
+  refine htransition.mono ?_
+  intro x hx
+  rw [Set.mem_compl_iff, Set.mem_singleton_iff] at hx
+  change x ∈ (stereographic' 3 a).target ∩
+      (stereographic' 3 a).symm ⁻¹' (stereographic' 3 b).source
+  constructor
+  · simp
+  · rw [Set.mem_preimage, stereographic'_source]
+    rw [Set.mem_compl_iff, Set.mem_singleton_iff]
+    intro hxb
+    apply hx
+    calc
+      x = (stereographic' 3 a) ((stereographic' 3 a).symm x) := by
+        exact ((stereographic' 3 a).right_inv (by simp)).symm
+      _ = (stereographic' 3 a) b := by
+        rw [hxb]
+      _ = threeSphere_twoPointChartImage a b hab :=
+        threeSphere_twoPointChartImage_eq_stereographic_apply hab
+
+/--
 The complement of two distinct points in `ThreeSphere`, viewed inside the
 stereographic source at the first point, is the source with the second point
 removed.
