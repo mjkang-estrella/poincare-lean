@@ -3441,6 +3441,22 @@ theorem threeSphere_countableComplement_pathConnectedSpace
           IsPathConnected (Set.univ : Set ThreeSphere)))
 
 /--
+Two stereographic sources on `ThreeSphere` intersect in the complement of
+their two centers.
+-/
+theorem threeSphere_stereographic_sources_inter_eq_twoPointComplement
+    (a b : ThreeSphere) :
+    (((stereographic' 3 a).source ∩
+      (stereographic' 3 b).source) : Set ThreeSphere) =
+      ({a} ∪ {b})ᶜ := by
+  ext x
+  rw [Set.mem_inter_iff]
+  rw [threeSphere_stereographic_source_eq_compl_singleton,
+    threeSphere_stereographic_source_eq_compl_singleton]
+  simp only [Set.mem_compl_iff, Set.mem_singleton_iff, Set.mem_union]
+  tauto
+
+/--
 The intersection of any two stereographic chart sources on `ThreeSphere` is
 path-connected.  Each chart source is the complement of its center, so the
 intersection is the complement of a two-point finite, hence countable, set.
@@ -3450,17 +3466,7 @@ theorem threeSphere_stereographic_sources_inter_pathConnectedSpace
     PathConnectedSpace
       (((stereographic' 3 a).source ∩
         (stereographic' 3 b).source) : Set ThreeSphere) := by
-  have hEq :
-      (((stereographic' 3 a).source ∩
-        (stereographic' 3 b).source) : Set ThreeSphere) =
-        ({a} ∪ {b})ᶜ := by
-    ext x
-    rw [Set.mem_inter_iff]
-    rw [threeSphere_stereographic_source_eq_compl_singleton,
-      threeSphere_stereographic_source_eq_compl_singleton]
-    simp only [Set.mem_compl_iff, Set.mem_singleton_iff, Set.mem_union]
-    tauto
-  rw [hEq]
+  rw [threeSphere_stereographic_sources_inter_eq_twoPointComplement a b]
   exact threeSphere_countableComplement_pathConnectedSpace
     ((Set.countable_singleton a).union (Set.countable_singleton b))
 
@@ -3528,6 +3534,20 @@ noncomputable def threeSphere_twoPointComplement_homeomorph_puncturedChart
   (threeSphere_twoPointComplement_homeomorph_sourcePunctured hab).trans
     ((threeSphere_stereographic_source_homeomorph a).subtype
       (fun _p => by simp [threeSphere_twoPointChartImage]))
+
+/--
+The overlap of two distinct stereographic sources is homeomorphic to punctured
+`ℝ³`, using the chart centered at the first point.
+-/
+noncomputable def threeSphere_stereographicSources_inter_homeomorph_puncturedChart
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    (((stereographic' 3 a).source ∩
+      (stereographic' 3 b).source) : Set ThreeSphere) ≃ₜ
+      ({threeSphere_twoPointChartImage a b hab}ᶜ :
+        Set (EuclideanSpace ℝ (Fin 3))) :=
+  (Homeomorph.setCongr
+    (threeSphere_stereographic_sources_inter_eq_twoPointComplement a b)).trans
+    (threeSphere_twoPointComplement_homeomorph_puncturedChart hab)
 
 /--
 The complement of any two distinct points in `ThreeSphere` is path-connected.
