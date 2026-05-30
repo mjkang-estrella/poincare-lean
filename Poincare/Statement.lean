@@ -30955,6 +30955,43 @@ theorem threeSphere_stereographic_sources_paths_homotopy_forall_mem_of_ne
       p q hp hq
 
 /--
+An arbitrary finite source-choice subdivision of a based loop contracts through
+the union of any two stereographic sources.  The basepoint is required to lie in
+the first source, and each finite subpath segment is required to lie in one of
+the two chosen sources.
+-/
+theorem threeSphere_stereographicSources_fullConcat_homotopy_refl_forall_mem_of_sourceChoice
+    {a b : ThreeSphere} {basepoint : ThreeSphere}
+    (hbase : basepoint ∈ (stereographic' 3 a).source)
+    (γ : Path basepoint basepoint)
+    {N : ℕ} (t : Fin (N + 1) → unitInterval)
+    (h0 : t 0 = 0) (h1 : t (Fin.last N) = 1)
+    (hchoice : ∀ k : Fin N,
+      Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+          (stereographic' 3 a).source ∨
+        Set.range (γ.subpath (t k.castSucc) (t k.succ)) ⊆
+          (stereographic' 3 b).source) :
+    ∃ H :
+      (Path.concat (γ ∘ t) (fun k : Fin N =>
+        γ.subpath (t k.castSucc) (t k.succ))).Homotopy
+      ((Path.refl basepoint).cast
+        (by simp [h0, γ.source])
+        (by simp [h1, γ.target])),
+      ∀ s, H s ∈
+        (stereographic' 3 a).source ∪ (stereographic' 3 b).source := by
+  let U : Set ThreeSphere := (stereographic' 3 a).source
+  let V : Set ThreeSphere := (stereographic' 3 b).source
+  letI : SimplyConnectedSpace U := by
+    simpa [U] using threeSphere_stereographic_source_simplyConnectedSpace a
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace b
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    simpa [U, V] using threeSphere_stereographic_sources_inter_pathConnectedSpace a b
+  simpa [U, V] using
+    twoSetOpenCover_basedLoop_fullConcat_homotopy_refl_forall_mem_of_sourceChoice
+      (U := U) (V := V) hbase γ t h0 h1 hchoice
+
+/--
 An arbitrary finite stereographic source-choice subdivision of an equatorial
 loop contracts through a homotopy whose image stays in the north/south
 stereographic cover.
