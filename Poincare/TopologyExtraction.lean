@@ -6494,6 +6494,39 @@ theorem locPathConnectedSpace_of_homeomorph_to_threeSphere
   letI : LocPathConnectedSpace ThreeSphere := threeSphere_locPathConnectedSpace
   exact φ.isOpenEmbedding.locPathConnectedSpace
 
+/--
+Any space recognized as the project target sphere is Hausdorff.
+-/
+theorem t2Space_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    T2Space M := by
+  rcases h with ⟨φ⟩
+  letI : T2Space ThreeSphere := threeSphere_t2Space
+  exact φ.symm.t2Space
+
+/--
+Any space recognized as the project target sphere is compact.
+-/
+theorem compactSpace_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    CompactSpace M := by
+  rcases h with ⟨φ⟩
+  letI : CompactSpace ThreeSphere := threeSphere_compactSpace
+  exact φ.symm.compactSpace
+
+/--
+Any space recognized as the project target sphere is locally compact.
+-/
+theorem locallyCompactSpace_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    LocallyCompactSpace M := by
+  letI : T2Space M := t2Space_of_homeomorph_to_threeSphere h
+  letI : CompactSpace M := compactSpace_of_homeomorph_to_threeSphere h
+  infer_instance
+
 /-- The direct target-recognition simple-connectedness route agrees with the compactification route. -/
 theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_onePoint_route_eq
     {M : Type u} [TopologicalSpace M] [SimplyConnectedSpace ThreeSphere]
@@ -21361,7 +21394,7 @@ simply connected target, then the acting group is trivial and the target is
 theorem orbitRelQuotient_model_trivial_of_simplyConnected_target
     {E M G : Type u} [TopologicalSpace E] [TopologicalSpace M]
     [Group G] [MulAction G E] [ContinuousConstSMul G E]
-    [ProperlyDiscontinuousSMul G E] [LocallyCompactSpace E] [T2Space E]
+    [ProperlyDiscontinuousSMul G E]
     [IsCancelSMul G E]
     [SimplyConnectedSpace M]
     (hE : Nonempty (E ≃ₜ ThreeSphere))
@@ -21369,6 +21402,10 @@ theorem orbitRelQuotient_model_trivial_of_simplyConnected_target
     Subsingleton G ∧ Nonempty (M ≃ₜ ThreeSphere) := by
   rcases hE with ⟨φE⟩
   rcases hM with ⟨φQ⟩
+  letI : T2Space E :=
+    t2Space_of_homeomorph_to_threeSphere ⟨φE⟩
+  letI : LocallyCompactSpace E :=
+    locallyCompactSpace_of_homeomorph_to_threeSphere ⟨φE⟩
   letI : PreconnectedSpace E :=
     preconnectedSpace_of_homeomorph_to_threeSphere ⟨φE⟩
   letI : LocPathConnectedSpace E :=
@@ -21382,6 +21419,23 @@ theorem orbitRelQuotient_model_trivial_of_simplyConnected_target
   refine ⟨?_, ?_⟩
   · exact ⟨fun g g' => (hgroup g).trans (hgroup g').symm⟩
   · exact ⟨φM.trans φE⟩
+
+/--
+For a free properly discontinuous action on any space already recognized as
+`S³`, a simply connected canonical orbit quotient has trivial acting group and
+is itself `S³`.  This is the direct canonical-quotient form of the spherical
+space-form obstruction removal.
+-/
+theorem orbitRelQuotient_model_trivial_of_simplyConnected_quotient
+    {E G : Type u} [TopologicalSpace E]
+    [Group G] [MulAction G E] [ContinuousConstSMul G E]
+    [ProperlyDiscontinuousSMul G E]
+    [IsCancelSMul G E]
+    [SimplyConnectedSpace (MulAction.orbitRel.Quotient G E)]
+    (hE : Nonempty (E ≃ₜ ThreeSphere)) :
+    Subsingleton G ∧ Nonempty (MulAction.orbitRel.Quotient G E ≃ₜ ThreeSphere) := by
+  exact orbitRelQuotient_model_trivial_of_simplyConnected_target
+    (M := MulAction.orbitRel.Quotient G E) hE ⟨Homeomorph.refl _⟩
 
 /--
 Deck transformations over a covering map are determined by one value on a
