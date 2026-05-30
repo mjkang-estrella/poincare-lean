@@ -9,6 +9,7 @@ needed to identify the manifold with the standard 3-sphere.
 import Poincare.RicciFlowInterface
 import Mathlib.Topology.Compactification.OnePoint.Sphere
 import Mathlib.Topology.Covering.Basic
+import Mathlib.Topology.Homotopy.Lifting
 
 universe u v
 
@@ -21066,6 +21067,39 @@ theorem homeomorph_to_threeSphere_iff_threeSphere_homeomorph_eq
         · exact threeSphere_homeomorph_of_homeomorph_to_threeSphere
         · exact homeomorph_to_threeSphere_of_threeSphere_homeomorph) := by
   apply Subsingleton.elim
+
+/--
+A covering over a simply connected, locally path-connected base has only one
+sheet when the total space is preconnected and one fiber point is fixed.  The
+proof lifts the identity map and then uses covering-map separatedness to show
+that the lift is inverse to the projection.
+-/
+theorem covering_homeomorph_total_of_simplyConnected_base
+    {E X : Type u} [TopologicalSpace E] [TopologicalSpace X]
+    [PreconnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
+    {p : E → X} (cov : IsCoveringMap p)
+    (x₀ : X) (e₀ : E) (he₀ : p e₀ = x₀) :
+    Nonempty (X ≃ₜ E) := by
+  rcases cov.existsUnique_continuousMap_lifts
+      (ContinuousMap.id X) x₀ e₀ he₀ with
+    ⟨F, hF, _hUnique⟩
+  have hleft : ∀ x : X, p (F x) = x := by
+    intro x
+    exact congrFun hF.2 x
+  have hright : F ∘ p = id := by
+    have hcomp : p ∘ (F ∘ p) = p ∘ id := by
+      funext e
+      exact hleft (p e)
+    exact cov.eq_of_comp_eq (F.continuous.comp cov.continuous)
+      continuous_id hcomp e₀ (by
+        simpa [Function.comp_def, he₀] using hF.1)
+  exact ⟨{
+    toFun := F
+    invFun := p
+    left_inv := hleft
+    right_inv := fun e => congrFun hright e
+    continuous_toFun := F.continuous
+    continuous_invFun := cov.continuous }⟩
 
 /--
 Deck transformations over a covering map are determined by one value on a
