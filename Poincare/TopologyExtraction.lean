@@ -21438,6 +21438,37 @@ theorem orbitRelQuotient_model_trivial_of_simplyConnected_quotient
     (M := MulAction.orbitRel.Quotient G E) hE ⟨Homeomorph.refl _⟩
 
 /--
+For a free properly discontinuous action on a space already recognized as
+`S³`, simple connectedness of the canonical orbit quotient makes the quotient
+projection itself a homeomorphism and collapses the orbit relation to equality.
+-/
+theorem orbitRelQuotient_mk_isHomeomorph_and_orbitRel_eq_bot_of_simplyConnected_quotient
+    {E G : Type u} [TopologicalSpace E]
+    [Group G] [MulAction G E] [ContinuousConstSMul G E]
+    [ProperlyDiscontinuousSMul G E]
+    [IsCancelSMul G E]
+    [SimplyConnectedSpace (MulAction.orbitRel.Quotient G E)]
+    (hE : Nonempty (E ≃ₜ ThreeSphere)) :
+    IsHomeomorph (Quotient.mk (MulAction.orbitRel G E)) ∧
+      MulAction.orbitRel G E = ⊥ := by
+  rcases hE with ⟨φE⟩
+  letI : T2Space E :=
+    t2Space_of_homeomorph_to_threeSphere ⟨φE⟩
+  letI : LocallyCompactSpace E :=
+    locallyCompactSpace_of_homeomorph_to_threeSphere ⟨φE⟩
+  letI : PreconnectedSpace E :=
+    preconnectedSpace_of_homeomorph_to_threeSphere ⟨φE⟩
+  letI : LocPathConnectedSpace E :=
+    locPathConnectedSpace_of_homeomorph_to_threeSphere ⟨φE⟩
+  letI : LocPathConnectedSpace (MulAction.orbitRel.Quotient G E) := inferInstance
+  let e₀ : E := φE.symm (Classical.choice threeSphere_nonempty)
+  let hq : IsQuotientCoveringMap
+      (Quotient.mk (MulAction.orbitRel G E)) G :=
+    isQuotientCoveringMap_quotientMk_of_properlyDiscontinuousSMul
+  exact ⟨quotientCovering_isHomeomorph_of_simplyConnected_base hq e₀,
+    quotientCovering_orbitRel_eq_bot_of_simplyConnected_base hq⟩
+
+/--
 Deck transformations over a covering map are determined by one value on a
 preconnected total space.  This is the concrete covering-space rigidity input
 needed by the spherical-space-form deck-group branch.
