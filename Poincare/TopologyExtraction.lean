@@ -21204,6 +21204,36 @@ theorem threeSphere_quotient_trivial_of_simplyConnected_quotient
       h e₀ threeSphere_self_homeomorph
 
 /--
+If a free properly discontinuous spherical quotient model is homeomorphic to a
+simply connected target, then the acting group is trivial and the target is
+`S³`.
+-/
+theorem orbitRelQuotient_model_trivial_of_simplyConnected_target
+    {E M G : Type u} [TopologicalSpace E] [TopologicalSpace M]
+    [Group G] [MulAction G E] [ContinuousConstSMul G E]
+    [ProperlyDiscontinuousSMul G E] [LocallyCompactSpace E] [T2Space E]
+    [IsCancelSMul G E] [PreconnectedSpace E]
+    [SimplyConnectedSpace M] [LocPathConnectedSpace M]
+    (hE : Nonempty (E ≃ₜ ThreeSphere))
+    (hM : Nonempty (MulAction.orbitRel.Quotient G E ≃ₜ M)) :
+    Subsingleton G ∧ Nonempty (M ≃ₜ ThreeSphere) := by
+  rcases hE with ⟨φE⟩
+  rcases hM with ⟨φM⟩
+  let e₀ : E := φE.symm (Classical.choice threeSphere_nonempty)
+  let hq : IsQuotientCoveringMap
+      (Quotient.mk (MulAction.orbitRel G E)) G :=
+    isQuotientCoveringMap_quotientMk_of_properlyDiscontinuousSMul
+  let h : IsQuotientCoveringMap
+      (φM ∘ Quotient.mk (MulAction.orbitRel G E)) G :=
+    hq.homeomorph_comp φM
+  have hgroup : ∀ g : G, g = 1 :=
+    quotientCovering_group_trivial_of_simplyConnected_base h e₀
+  refine ⟨?_, ?_⟩
+  · exact ⟨fun g g' => (hgroup g).trans (hgroup g').symm⟩
+  · exact quotientCovering_homeomorph_to_threeSphere_of_simplyConnected_base
+      h e₀ ⟨φE⟩
+
+/--
 Deck transformations over a covering map are determined by one value on a
 preconnected total space.  This is the concrete covering-space rigidity input
 needed by the spherical-space-form deck-group branch.
