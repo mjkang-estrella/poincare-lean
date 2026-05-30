@@ -3456,6 +3456,13 @@ theorem threeSphere_stereographic_sources_inter_eq_twoPointComplement
   simp only [Set.mem_compl_iff, Set.mem_singleton_iff, Set.mem_union]
   tauto
 
+/-- The complement of two points in `ThreeSphere` is an open subspace. -/
+theorem threeSphere_twoPointComplement_isOpen
+    (a b : ThreeSphere) :
+    IsOpen (({a} ∪ {b})ᶜ : Set ThreeSphere) := by
+  rw [Set.compl_union]
+  exact isOpen_compl_singleton.inter isOpen_compl_singleton
+
 /--
 The intersection of any two stereographic chart sources on `ThreeSphere` is
 path-connected.  Each chart source is the complement of its center, so the
@@ -3560,6 +3567,30 @@ noncomputable def threeSphere_twoPointComplement_homeomorph_puncturedChart
       (fun _p => by simp [threeSphere_twoPointChartImage]))
 
 /--
+The punctured stereographic chart embeds the two-point complement in `ThreeSphere`
+as the open punctured subspace of `ℝ³`.
+-/
+theorem threeSphere_twoPointComplement_puncturedChart_isOpenEmbedding
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    Topology.IsOpenEmbedding
+      (fun p : (({a} ∪ {b})ᶜ : Set ThreeSphere) =>
+        ((threeSphere_twoPointComplement_homeomorph_puncturedChart hab p :
+          ({threeSphere_twoPointChartImage a b hab}ᶜ :
+            Set (EuclideanSpace ℝ (Fin 3)))) :
+          EuclideanSpace ℝ (Fin 3))) := by
+  let e := threeSphere_twoPointComplement_homeomorph_puncturedChart hab
+  let puncture : EuclideanSpace ℝ (Fin 3) := threeSphere_twoPointChartImage a b hab
+  have htarget : Topology.IsOpenEmbedding
+      ((Subtype.val) : ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) →
+        EuclideanSpace ℝ (Fin 3)) :=
+    (isOpen_compl_singleton :
+      IsOpen ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3)))).isOpenEmbedding_subtypeVal
+  change Topology.IsOpenEmbedding
+    (((Subtype.val) : ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) →
+      EuclideanSpace ℝ (Fin 3)) ∘ e)
+  exact htarget.comp e.isOpenEmbedding
+
+/--
 The overlap of two distinct stereographic sources is homeomorphic to punctured
 `ℝ³`, using the chart centered at the first point.
 -/
@@ -3584,6 +3615,33 @@ theorem threeSphere_twoPointComplement_pathConnectedSpace
   have _ : b ≠ a := hab
   exact threeSphere_countableComplement_pathConnectedSpace
     ((Set.countable_singleton a).union (Set.countable_singleton b))
+
+/--
+The punctured stereographic chart supplies a charted-space structure on the
+two-point complement.
+-/
+@[implicit_reducible]
+noncomputable def threeSphere_twoPointComplement_puncturedChartChartedSpace
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (({a} ∪ {b})ᶜ : Set ThreeSphere) := by
+  haveI : Nonempty (({a} ∪ {b})ᶜ : Set ThreeSphere) :=
+    (threeSphere_twoPointComplement_pathConnectedSpace hab).nonempty
+  exact (threeSphere_twoPointComplement_puncturedChart_isOpenEmbedding hab).singletonChartedSpace
+
+/--
+The complement of two distinct points in `ThreeSphere` is a smooth
+3-manifold when charted by the punctured stereographic model.
+-/
+theorem threeSphere_twoPointComplement_smoothManifold_via_puncturedChart
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (({a} ∪ {b})ᶜ : Set ThreeSphere) :=
+      threeSphere_twoPointComplement_puncturedChartChartedSpace hab
+    IsManifold (𝓡 3) ∞ (({a} ∪ {b})ᶜ : Set ThreeSphere) := by
+  haveI : Nonempty (({a} ∪ {b})ᶜ : Set ThreeSphere) :=
+    (threeSphere_twoPointComplement_pathConnectedSpace hab).nonempty
+  exact (threeSphere_twoPointComplement_puncturedChart_isOpenEmbedding hab).isManifold_singleton
 
 /-- The antipode of `v` as a point of the stereographic source at `v`. -/
 noncomputable def threeSphere_antipodeInSource
