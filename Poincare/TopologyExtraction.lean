@@ -21837,6 +21837,43 @@ theorem orbitRelQuotient_target_projection_orbit_rigidity_of_homeomorph_to_three
     ⟨hp.symm.trans φE⟩⟩
 
 /--
+A simply connected spherical orbit-quotient target has rigid projection data
+and carries the transported smooth 3-manifold prerequisite payload.
+-/
+theorem orbitRelQuotient_target_projection_smooth_rigidity_of_homeomorph_to_threeSphere
+    {E M G : Type u} [TopologicalSpace E] [TopologicalSpace M]
+    [Group G] [MulAction G E] [ContinuousConstSMul G E]
+    [ProperlyDiscontinuousSMul G E]
+    [IsCancelSMul G E]
+    [SimplyConnectedSpace M]
+    (hE : Nonempty (E ≃ₜ ThreeSphere))
+    (φQ : MulAction.orbitRel.Quotient G E ≃ₜ M) :
+    Subsingleton G ∧
+      IsHomeomorph (φQ ∘ Quotient.mk (MulAction.orbitRel G E)) ∧
+      MulAction.orbitRel G E = ⊥ ∧
+      (∀ e : E, MulAction.orbit G e = {e}) ∧
+      (∀ g : G, g = 1) ∧
+      Nonempty (M ≃ₜ ThreeSphere) ∧
+      (∃ _t2 : T2Space M,
+      ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+      ∃ _simple : SimplyConnectedSpace M,
+      ∃ _smooth : IsManifold (𝓡 3) ∞ M,
+      ∃ _compact : CompactSpace M,
+      ∃ _path : PathConnectedSpace M,
+      ∃ _locPath : LocPathConnectedSpace M,
+      ∃ _connected : ConnectedSpace M,
+        Nonempty M) := by
+  rcases orbitRelQuotient_target_projection_orbit_rigidity_of_homeomorph_to_threeSphere
+      (E := E) (M := M) (G := G) hE φQ with
+    ⟨hhome, hrel, horbit, htrivial, hSphere⟩
+  rcases smooth_manifold_prerequisites_of_homeomorph_to_threeSphere hSphere with
+    ⟨t2, charted, compact, smooth, path, locPath, connected, nonempty⟩
+  let hgroup : Subsingleton G :=
+    ⟨fun g g' => (htrivial g).trans (htrivial g').symm⟩
+  exact ⟨hgroup, hhome, hrel, horbit, htrivial, hSphere, t2, charted,
+    inferInstance, smooth, compact, path, locPath, connected, nonempty⟩
+
+/--
 For a free properly discontinuous action on any space already recognized as
 `S³`, a simply connected canonical orbit quotient has trivial acting group and
 is itself `S³`.  This is the direct canonical-quotient form of the spherical
@@ -21948,13 +21985,10 @@ theorem orbitRelQuotient_smooth_sphere_recognition_and_prerequisites_of_homeomor
       ∃ _locPath : LocPathConnectedSpace (MulAction.orbitRel.Quotient G E),
       ∃ _connected : ConnectedSpace (MulAction.orbitRel.Quotient G E),
         Nonempty (MulAction.orbitRel.Quotient G E)) := by
-  rcases orbitRelQuotient_model_smooth_recognition_of_simplyConnected_target
+  rcases orbitRelQuotient_target_projection_smooth_rigidity_of_homeomorph_to_threeSphere
       (E := E) (M := MulAction.orbitRel.Quotient G E) (G := G)
-      hE ⟨Homeomorph.refl _⟩ with
-    ⟨hgroup, hQ, hsmooth⟩
-  rcases orbitRelQuotient_mk_isHomeomorph_and_orbitRel_eq_bot_of_simplyConnected_quotient
-      (E := E) (G := G) hE with
-    ⟨hmk, hrel⟩
+      hE (Homeomorph.refl _) with
+    ⟨hgroup, hmk, hrel, _horbit, _htrivial, hQ, hsmooth⟩
   exact ⟨hgroup, hmk, hrel, hQ, hsmooth⟩
 
 /--
