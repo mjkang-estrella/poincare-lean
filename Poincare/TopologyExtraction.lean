@@ -7740,6 +7740,32 @@ theorem poincare_candidate_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq
           connected, nonempty⟩) := by
   apply Subsingleton.elim
 
+/--
+Compactification recognition supplies the smooth source structure and
+simple-connectedness needed to specialize the smooth Poincare statement to a
+smooth diffeomorphism conclusion.
+-/
+theorem diffeomorph_payload_to_threeSphere_of_smoothPoincareConjectureStatement_and_homeomorph_to_onePoint_threeSpace
+    (hSmooth : SmoothPoincareConjectureStatement.{u})
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ _smooth : IsManifold (𝓡 3) ∞ M,
+      Nonempty (M ≃ₘ⟮𝓡 3, 𝓡 3⟯ ThreeSphere) := by
+  rcases smooth_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace h with
+    ⟨t2, charted, compact, smooth, _path, _locPath, _connected, _nonempty⟩
+  let simple : SimplyConnectedSpace M :=
+    simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace h
+  letI : T2Space M := t2
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M := charted
+  letI : SimplyConnectedSpace M := simple
+  letI : CompactSpace M := compact
+  letI : IsManifold (𝓡 3) ∞ M := smooth
+  exact ⟨t2, charted, simple, compact, smooth, hSmooth M⟩
+
 /-- The direct target candidate prerequisite route agrees with the compactification route. -/
 theorem poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_onePoint_route_eq
     {M : Type u} [TopologicalSpace M] [SimplyConnectedSpace M]
