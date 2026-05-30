@@ -6467,6 +6467,20 @@ theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_eq
         exact e.toHomotopyEquiv.simplyConnectedSpace) := by
   apply Subsingleton.elim
 
+/--
+Any space recognized as the project target sphere is preconnected.  We transport
+connectedness back along the inverse recognizing homeomorphism and then forget
+from connectedness to preconnectedness.
+-/
+theorem preconnectedSpace_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    PreconnectedSpace M := by
+  rcases h with ⟨φ⟩
+  letI : ConnectedSpace ThreeSphere := threeSphere_connectedSpace
+  letI : ConnectedSpace M := φ.symm.surjective.connectedSpace φ.symm.continuous
+  exact ConnectedSpace.toPreconnectedSpace
+
 /-- The direct target-recognition simple-connectedness route agrees with the compactification route. -/
 theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_onePoint_route_eq
     {M : Type u} [TopologicalSpace M] [SimplyConnectedSpace ThreeSphere]
@@ -21335,12 +21349,14 @@ theorem orbitRelQuotient_model_trivial_of_simplyConnected_target
     {E M G : Type u} [TopologicalSpace E] [TopologicalSpace M]
     [Group G] [MulAction G E] [ContinuousConstSMul G E]
     [ProperlyDiscontinuousSMul G E] [LocallyCompactSpace E] [T2Space E]
-    [IsCancelSMul G E] [PreconnectedSpace E]
+    [IsCancelSMul G E]
     [SimplyConnectedSpace M] [LocPathConnectedSpace M]
     (hE : Nonempty (E ≃ₜ ThreeSphere))
     (hM : Nonempty (MulAction.orbitRel.Quotient G E ≃ₜ M)) :
     Subsingleton G ∧ Nonempty (M ≃ₜ ThreeSphere) := by
   rcases hE with ⟨φE⟩
+  letI : PreconnectedSpace E :=
+    preconnectedSpace_of_homeomorph_to_threeSphere ⟨φE⟩
   let e₀ : E := φE.symm (Classical.choice threeSphere_nonempty)
   have hgroup : ∀ g : G, g = 1 :=
     orbitRelQuotient_group_trivial_of_simplyConnected_target hM e₀
