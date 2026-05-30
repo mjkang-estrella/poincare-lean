@@ -725,6 +725,46 @@ theorem onePoint_threeSpace_nonempty_eq :
   apply Subsingleton.elim
 
 /--
+Deleting any point from the one-point compactification model leaves the
+Euclidean chart model.  The proof transports the puncture to `ThreeSphere`,
+uses the stereographic source complement there, and then applies the
+stereographic chart.
+-/
+noncomputable def onePoint_threeSpace_compl_singleton_homeomorph_euclidean
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+      EuclideanSpace ℝ (Fin 3) := by
+  let e : OnePoint (EuclideanSpace ℝ (Fin 3)) ≃ₜ ThreeSphere :=
+    Classical.choice onePoint_threeSpace_homeomorph_threeSphere
+  let hCompl :
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+        ({e p}ᶜ : Set ThreeSphere) :=
+    e.subtype (fun x => by
+      simp only [Set.mem_compl_iff, Set.mem_singleton_iff]
+      constructor
+      · intro hx hxeq
+        exact hx (e.injective hxeq)
+      · intro hx hxp
+        exact hx (by rw [hxp]))
+  exact
+    hCompl.trans
+      ((Homeomorph.setCongr
+        (threeSphere_stereographic_source_eq_compl_singleton (e p)).symm).trans
+        (threeSphere_stereographic_source_homeomorph (e p)))
+
+/--
+The complement of any point in the one-point compactification model is simply
+connected, via its Euclidean chart model.
+-/
+theorem onePoint_threeSpace_compl_singleton_simplyConnectedSpace
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    SimplyConnectedSpace
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  letI : SimplyConnectedSpace (EuclideanSpace ℝ (Fin 3)) := inferInstance
+  exact
+    (onePoint_threeSpace_compl_singleton_homeomorph_euclidean p).toHomotopyEquiv.simplyConnectedSpace
+
+/--
 Simple-connectedness of the standard sphere transports to the one-point
 compactification model along the named homeomorphism.
 -/
