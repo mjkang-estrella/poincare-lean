@@ -765,6 +765,92 @@ theorem onePoint_threeSpace_compl_singleton_simplyConnectedSpace
     (onePoint_threeSpace_compl_singleton_homeomorph_euclidean p).toHomotopyEquiv.simplyConnectedSpace
 
 /--
+The second point of a two-point complement, viewed in the chart obtained by
+deleting the first point from the one-point compactification model.
+-/
+noncomputable def onePoint_threeSpace_pointInComplement
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+  ⟨q, by
+    rw [Set.mem_compl_iff, Set.mem_singleton_iff]
+    exact hqp⟩
+
+/--
+The complement of two distinct compactification points, viewed inside the
+complement of the first point, is the first-point complement with the second
+point removed.
+-/
+noncomputable def onePoint_threeSpace_twoPointComplement_homeomorph_sourcePunctured
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+      ({onePoint_threeSpace_pointInComplement hqp}ᶜ :
+        Set ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) where
+  toFun x :=
+    ⟨⟨x.1, by
+      rw [Set.mem_compl_iff, Set.mem_singleton_iff]
+      intro hx
+      exact x.2 (Or.inl hx)⟩, by
+      rw [Set.mem_compl_iff]
+      intro hx
+      have hval : x.1 = q := congrArg Subtype.val hx
+      exact x.2 (Or.inr hval)⟩
+  invFun x :=
+    ⟨x.1.1, by
+      rw [Set.mem_compl_iff]
+      intro hx
+      rcases hx with hp | hq
+      · exact x.1.2 hp
+      · exact x.2 (Subtype.ext hq)⟩
+  left_inv x := by
+    ext
+    rfl
+  right_inv x := by
+    ext
+    rfl
+  continuous_toFun := by
+    continuity
+  continuous_invFun := by
+    continuity
+
+/--
+Deleting two distinct points from the one-point compactification model leaves a
+punctured Euclidean chart.
+-/
+noncomputable def onePoint_threeSpace_twoPointComplement_homeomorph_puncturedEuclidean
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+      ({onePoint_threeSpace_compl_singleton_homeomorph_euclidean p
+          (onePoint_threeSpace_pointInComplement hqp)}ᶜ :
+        Set (EuclideanSpace ℝ (Fin 3))) :=
+  (onePoint_threeSpace_twoPointComplement_homeomorph_sourcePunctured hqp).trans
+    ((onePoint_threeSpace_compl_singleton_homeomorph_euclidean p).subtype
+      (fun x => by
+        simp only [Set.mem_compl_iff, Set.mem_singleton_iff]
+        constructor
+        · intro hx hxeq
+          exact hx ((onePoint_threeSpace_compl_singleton_homeomorph_euclidean p).injective hxeq)
+        · intro hx hxp
+          exact hx (by rw [hxp])))
+
+/--
+The complement of any two distinct points in the one-point compactification
+model is simply connected, because the first puncture gives a Euclidean chart
+and the second puncture becomes a puncture in `ℝ³`.
+-/
+theorem onePoint_threeSpace_twoPointComplement_simplyConnectedSpace
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    SimplyConnectedSpace
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  let puncture : EuclideanSpace ℝ (Fin 3) :=
+    onePoint_threeSpace_compl_singleton_homeomorph_euclidean p
+      (onePoint_threeSpace_pointInComplement hqp)
+  letI : SimplyConnectedSpace ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+    euclideanThree_compl_singleton_simplyConnectedSpace puncture
+  exact
+    (onePoint_threeSpace_twoPointComplement_homeomorph_puncturedEuclidean
+      hqp).toHomotopyEquiv.simplyConnectedSpace
+
+/--
 Simple-connectedness of the standard sphere transports to the one-point
 compactification model along the named homeomorphism.
 -/
