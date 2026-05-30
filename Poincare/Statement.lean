@@ -11652,6 +11652,19 @@ theorem pathQuotientSubsingleton_of_pathConnectedSpace_and_basedPiOneSubsingleto
         basepoint h)).2
 
 /--
+In a path-connected space, triviality of one based fundamental group collapses
+fundamental groups at every basepoint.
+-/
+theorem fundamentalGroupSubsingleton_of_pathConnectedSpace_and_basedFundamentalGroupSubsingleton
+    {Y : Type u} [TopologicalSpace Y] (basepoint : Y)
+    [PathConnectedSpace Y]
+    (h : Subsingleton (FundamentalGroup Y basepoint)) :
+    ∀ x : Y, Subsingleton (FundamentalGroup Y x) := by
+  intro x
+  exact ((FundamentalGroup.fundamentalGroupMulEquivOfPathConnected
+    (X := Y) basepoint x).toEquiv.subsingleton_congr).mp h
+
+/--
 In a path-connected space, triviality of `π₁` at one basepoint collapses
 `π₁` at every basepoint.
 -/
