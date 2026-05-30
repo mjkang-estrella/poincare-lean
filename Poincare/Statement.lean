@@ -3615,6 +3615,198 @@ theorem threeSphere_stereographicTransition_contMDiffOn_puncturedChart
         threeSphere_twoPointChartImage_eq_stereographic_apply hab
 
 /--
+A point in the named punctured coordinate image for the chart centered at `a`
+pulls back to the source of the chart centered at `b`.
+-/
+theorem threeSphere_stereographicTransition_source_mem_puncturedChart
+    {a b : ThreeSphere} (hab : b ≠ a)
+    {x : EuclideanSpace ℝ (Fin 3)}
+    (hx : x ∈ ({threeSphere_twoPointChartImage a b hab}ᶜ :
+        Set (EuclideanSpace ℝ (Fin 3)))) :
+    (stereographic' 3 a).symm x ∈ (stereographic' 3 b).source := by
+  rw [Set.mem_compl_iff, Set.mem_singleton_iff] at hx
+  rw [stereographic'_source, Set.mem_compl_iff, Set.mem_singleton_iff]
+  intro hxb
+  apply hx
+  calc
+    x = (stereographic' 3 a) ((stereographic' 3 a).symm x) := by
+      exact ((stereographic' 3 a).right_inv (by simp)).symm
+    _ = (stereographic' 3 a) b := by
+      rw [hxb]
+    _ = threeSphere_twoPointChartImage a b hab :=
+      threeSphere_twoPointChartImage_eq_stereographic_apply hab
+
+/--
+The stereographic coordinate transition carries the named punctured chart image
+for `(a,b)` into the named punctured chart image for `(b,a)`.
+-/
+theorem threeSphere_stereographicTransition_mapsTo_puncturedChart
+    {a b : ThreeSphere} (hab : b ≠ a) (hba : a ≠ b) :
+    Set.MapsTo
+      (fun x : EuclideanSpace ℝ (Fin 3) =>
+        (stereographic' 3 b) ((stereographic' 3 a).symm x))
+      ({threeSphere_twoPointChartImage a b hab}ᶜ :
+        Set (EuclideanSpace ℝ (Fin 3)))
+      ({threeSphere_twoPointChartImage b a hba}ᶜ :
+        Set (EuclideanSpace ℝ (Fin 3))) := by
+  intro x hx
+  rw [Set.mem_compl_iff, Set.mem_singleton_iff] at hx ⊢
+  intro htarget
+  have hsourceA : (stereographic' 3 a).symm x ∈ (stereographic' 3 a).source := by
+    exact (stereographic' 3 a).map_target (by simp)
+  have hsourceB : (stereographic' 3 a).symm x ∈ (stereographic' 3 b).source :=
+    threeSphere_stereographicTransition_source_mem_puncturedChart hab hx
+  have ha_sourceB : a ∈ (stereographic' 3 b).source := by
+    rw [stereographic'_source]
+    exact hba
+  have hpoint : (stereographic' 3 a).symm x = a := by
+    have hleft := (stereographic' 3 b).left_inv hsourceB
+    have hright := (stereographic' 3 b).left_inv ha_sourceB
+    have htarget' : (stereographic' 3 b) ((stereographic' 3 a).symm x) =
+        threeSphere_twoPointChartImage b a hba := by
+      simpa using htarget
+    rw [htarget'] at hleft
+    rw [← threeSphere_twoPointChartImage_eq_stereographic_apply hba] at hleft
+    exact (by simpa [hright] using hleft.symm)
+  have hnot : (stereographic' 3 a).symm x ≠ a := by
+    rw [stereographic'_source] at hsourceA
+    exact hsourceA
+  exact hnot hpoint
+
+/--
+For two distinct stereographic centers, the actual coordinate transition is a
+smooth diffeomorphism between the two named punctured Euclidean overlap models.
+-/
+noncomputable def threeSphere_stereographicTransition_diffeomorph_puncturedCharts
+    {a b : ThreeSphere} (hab : b ≠ a) (hba : a ≠ b) :
+    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        ({threeSphere_twoPointChartImage a b hab}ᶜ :
+          Set (EuclideanSpace ℝ (Fin 3))) :=
+      euclideanThree_compl_singleton_chartedSpace
+        (threeSphere_twoPointChartImage a b hab)
+    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        ({threeSphere_twoPointChartImage b a hba}ᶜ :
+          Set (EuclideanSpace ℝ (Fin 3))) :=
+      euclideanThree_compl_singleton_chartedSpace
+        (threeSphere_twoPointChartImage b a hba)
+    ({threeSphere_twoPointChartImage a b hab}ᶜ :
+        Set (EuclideanSpace ℝ (Fin 3))) ≃ₘ⟮𝓡 3, 𝓡 3⟯
+      ({threeSphere_twoPointChartImage b a hba}ᶜ :
+        Set (EuclideanSpace ℝ (Fin 3))) := by
+  let punctureAB : EuclideanSpace ℝ (Fin 3) := threeSphere_twoPointChartImage a b hab
+  let punctureBA : EuclideanSpace ℝ (Fin 3) := threeSphere_twoPointChartImage b a hba
+  let sourceSet : Set (EuclideanSpace ℝ (Fin 3)) := {punctureAB}ᶜ
+  let targetSet : Set (EuclideanSpace ℝ (Fin 3)) := {punctureBA}ᶜ
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) sourceSet :=
+    euclideanThree_compl_singleton_chartedSpace punctureAB
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) targetSet :=
+    euclideanThree_compl_singleton_chartedSpace punctureBA
+  haveI : Nonempty sourceSet :=
+    (euclideanThree_compl_singleton_pathConnectedSpace punctureAB).nonempty
+  haveI : Nonempty targetSet :=
+    (euclideanThree_compl_singleton_pathConnectedSpace punctureBA).nonempty
+  let F : sourceSet → targetSet := fun x =>
+    ⟨(stereographic' 3 b) ((stereographic' 3 a).symm x.1), by
+      exact threeSphere_stereographicTransition_mapsTo_puncturedChart hab hba x.2⟩
+  let G : targetSet → sourceSet := fun y =>
+    ⟨(stereographic' 3 a) ((stereographic' 3 b).symm y.1), by
+      exact threeSphere_stereographicTransition_mapsTo_puncturedChart hba hab y.2⟩
+  refine
+    { toEquiv :=
+        { toFun := F
+          invFun := G
+          left_inv := ?_
+          right_inv := ?_ }
+      contMDiff_toFun := ?_
+      contMDiff_invFun := ?_ }
+  · intro x
+    apply Subtype.ext
+    dsimp [F, G]
+    have hsourceB : (stereographic' 3 a).symm x.1 ∈ (stereographic' 3 b).source :=
+      threeSphere_stereographicTransition_source_mem_puncturedChart hab x.2
+    rw [(stereographic' 3 b).left_inv hsourceB]
+    exact (stereographic' 3 a).right_inv (by simp)
+  · intro y
+    apply Subtype.ext
+    dsimp [F, G]
+    have hsourceA : (stereographic' 3 b).symm y.1 ∈ (stereographic' 3 a).source :=
+      threeSphere_stereographicTransition_source_mem_puncturedChart hba y.2
+    rw [(stereographic' 3 a).left_inv hsourceA]
+    exact (stereographic' 3 b).right_inv (by simp)
+  · exact ContMDiff.of_comp_isOpenEmbedding
+      (h' := euclideanThree_compl_singleton_isOpenEmbedding punctureBA) (by
+        have hsubval : ContMDiff (𝓡 3) (𝓡 3) ∞
+            ((Subtype.val) : sourceSet → EuclideanSpace ℝ (Fin 3)) := by
+          exact contMDiff_isOpenEmbedding
+            (I := 𝓡 3) (n := ∞)
+            (euclideanThree_compl_singleton_isOpenEmbedding punctureAB)
+        have hcomp : ContMDiff (𝓡 3) (𝓡 3) ∞
+            ((fun x : EuclideanSpace ℝ (Fin 3) =>
+              (stereographic' 3 b) ((stereographic' 3 a).symm x)) ∘
+                ((Subtype.val) : sourceSet → EuclideanSpace ℝ (Fin 3))) := by
+          exact (threeSphere_stereographicTransition_contMDiffOn_puncturedChart hab).comp_contMDiff
+            hsubval (fun x => x.2)
+        simpa [F, Function.comp_def, sourceSet, targetSet, punctureAB, punctureBA] using hcomp)
+  · exact ContMDiff.of_comp_isOpenEmbedding
+      (h' := euclideanThree_compl_singleton_isOpenEmbedding punctureAB) (by
+        have hsubval : ContMDiff (𝓡 3) (𝓡 3) ∞
+            ((Subtype.val) : targetSet → EuclideanSpace ℝ (Fin 3)) := by
+          exact contMDiff_isOpenEmbedding
+            (I := 𝓡 3) (n := ∞)
+            (euclideanThree_compl_singleton_isOpenEmbedding punctureBA)
+        have hcomp : ContMDiff (𝓡 3) (𝓡 3) ∞
+            ((fun x : EuclideanSpace ℝ (Fin 3) =>
+              (stereographic' 3 a) ((stereographic' 3 b).symm x)) ∘
+                ((Subtype.val) : targetSet → EuclideanSpace ℝ (Fin 3))) := by
+          exact (threeSphere_stereographicTransition_contMDiffOn_puncturedChart hba).comp_contMDiff
+            hsubval (fun x => x.2)
+        simpa [G, Function.comp_def, sourceSet, targetSet, punctureAB, punctureBA] using hcomp)
+
+/-- The punctured-chart diffeomorphism applies as the actual coordinate transition. -/
+theorem threeSphere_stereographicTransition_diffeomorph_puncturedCharts_apply
+    {a b : ThreeSphere} (hab : b ≠ a) (hba : a ≠ b)
+    (x : ({threeSphere_twoPointChartImage a b hab}ᶜ :
+      Set (EuclideanSpace ℝ (Fin 3)))) :
+    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        ({threeSphere_twoPointChartImage a b hab}ᶜ :
+          Set (EuclideanSpace ℝ (Fin 3))) :=
+      euclideanThree_compl_singleton_chartedSpace
+        (threeSphere_twoPointChartImage a b hab)
+    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        ({threeSphere_twoPointChartImage b a hba}ᶜ :
+          Set (EuclideanSpace ℝ (Fin 3))) :=
+      euclideanThree_compl_singleton_chartedSpace
+        (threeSphere_twoPointChartImage b a hba)
+    ((threeSphere_stereographicTransition_diffeomorph_puncturedCharts hab hba x :
+      ({threeSphere_twoPointChartImage b a hba}ᶜ :
+        Set (EuclideanSpace ℝ (Fin 3)))) : EuclideanSpace ℝ (Fin 3)) =
+      (stereographic' 3 b) ((stereographic' 3 a).symm
+        (x : EuclideanSpace ℝ (Fin 3))) :=
+  rfl
+
+/-- The inverse punctured-chart diffeomorphism is the reverse coordinate transition. -/
+theorem threeSphere_stereographicTransition_diffeomorph_puncturedCharts_symm_apply
+    {a b : ThreeSphere} (hab : b ≠ a) (hba : a ≠ b)
+    (y : ({threeSphere_twoPointChartImage b a hba}ᶜ :
+      Set (EuclideanSpace ℝ (Fin 3)))) :
+    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        ({threeSphere_twoPointChartImage a b hab}ᶜ :
+          Set (EuclideanSpace ℝ (Fin 3))) :=
+      euclideanThree_compl_singleton_chartedSpace
+        (threeSphere_twoPointChartImage a b hab)
+    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        ({threeSphere_twoPointChartImage b a hba}ᶜ :
+          Set (EuclideanSpace ℝ (Fin 3))) :=
+      euclideanThree_compl_singleton_chartedSpace
+        (threeSphere_twoPointChartImage b a hba)
+    (((threeSphere_stereographicTransition_diffeomorph_puncturedCharts hab hba).symm y :
+      ({threeSphere_twoPointChartImage a b hab}ᶜ :
+        Set (EuclideanSpace ℝ (Fin 3)))) : EuclideanSpace ℝ (Fin 3)) =
+      (stereographic' 3 a) ((stereographic' 3 b).symm
+        (y : EuclideanSpace ℝ (Fin 3))) :=
+  rfl
+
+/--
 The complement of two distinct points in `ThreeSphere`, viewed inside the
 stereographic source at the first point, is the source with the second point
 removed.
