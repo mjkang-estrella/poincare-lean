@@ -8,6 +8,7 @@ needed to identify the manifold with the standard 3-sphere.
 
 import Poincare.RicciFlowInterface
 import Mathlib.Topology.Compactification.OnePoint.Sphere
+import Mathlib.Topology.Covering.Basic
 
 universe u v
 
@@ -21065,6 +21066,37 @@ theorem homeomorph_to_threeSphere_iff_threeSphere_homeomorph_eq
         · exact threeSphere_homeomorph_of_homeomorph_to_threeSphere
         · exact homeomorph_to_threeSphere_of_threeSphere_homeomorph) := by
   apply Subsingleton.elim
+
+/--
+Deck transformations over a covering map are determined by one value on a
+preconnected total space.  This is the concrete covering-space rigidity input
+needed by the spherical-space-form deck-group branch.
+-/
+theorem covering_deckTransform_eq_of_eq_at
+    {E X : Type u} [TopologicalSpace E] [TopologicalSpace X]
+    [PreconnectedSpace E]
+    {p : E → X} (cov : IsCoveringMap p)
+    (φ ψ : E ≃ₜ E) (hφ : p ∘ φ = p) (hψ : p ∘ ψ = p)
+    (e₀ : E) (hfix : φ e₀ = ψ e₀) :
+    φ = ψ := by
+  ext e
+  exact congrFun
+    (cov.eq_of_comp_eq φ.continuous ψ.continuous
+      (hφ.trans hψ.symm) e₀ hfix) e
+
+/--
+A deck transformation with a fixed point is the identity on a preconnected
+total space.  This isolates the fixed-point-to-trivial-deck step used in
+spherical-space-form recognition.
+-/
+theorem covering_deckTransform_eq_refl_of_fixed
+    {E X : Type u} [TopologicalSpace E] [TopologicalSpace X]
+    [PreconnectedSpace E]
+    {p : E → X} (cov : IsCoveringMap p)
+    (φ : E ≃ₜ E) (hφ : p ∘ φ = p) (e₀ : E) (hfix : φ e₀ = e₀) :
+    φ = Homeomorph.refl E := by
+  exact covering_deckTransform_eq_of_eq_at cov φ (Homeomorph.refl E)
+    hφ rfl e₀ hfix
 
 /--
 Interface for the decomposition information obtained from finite extinction.
