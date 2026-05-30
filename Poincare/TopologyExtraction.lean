@@ -21150,6 +21150,36 @@ theorem quotientCovering_group_trivial_of_simplyConnected_base
   exact h.isCancelSMul.right_cancel' g (1 : G) e₀ hsmul
 
 /--
+The projection of an inhabited preconnected quotient covering over a simply
+connected, locally path-connected base is itself a homeomorphism.
+-/
+theorem quotientCovering_isHomeomorph_of_simplyConnected_base
+    {E X G : Type u} [TopologicalSpace E] [TopologicalSpace X]
+    [Group G] [MulAction G E]
+    [PreconnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
+    {p : E → X} (h : IsQuotientCoveringMap p G) (e₀ : E) :
+    IsHomeomorph p := by
+  exact isHomeomorph_iff_isQuotientMap_injective.mpr
+    ⟨h.toIsQuotientMap,
+      coveringMap_injective_of_simplyConnected_base h.isCoveringMap e₀⟩
+
+/--
+If the universal-cover side of a quotient covering is already identified with
+`S³`, simple connectedness forces the quotient/base side to be `S³` as well.
+-/
+theorem quotientCovering_homeomorph_to_threeSphere_of_simplyConnected_base
+    {E X G : Type u} [TopologicalSpace E] [TopologicalSpace X]
+    [Group G] [MulAction G E]
+    [PreconnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
+    {p : E → X} (h : IsQuotientCoveringMap p G) (e₀ : E)
+    (hE : Nonempty (E ≃ₜ ThreeSphere)) :
+    Nonempty (X ≃ₜ ThreeSphere) := by
+  rcases hE with ⟨φ⟩
+  let hp : E ≃ₜ X :=
+    (quotientCovering_isHomeomorph_of_simplyConnected_base h e₀).homeomorph p
+  exact ⟨hp.symm.trans φ⟩
+
+/--
 Deck transformations over a covering map are determined by one value on a
 preconnected total space.  This is the concrete covering-space rigidity input
 needed by the spherical-space-form deck-group branch.
