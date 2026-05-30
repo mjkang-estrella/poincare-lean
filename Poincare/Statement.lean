@@ -7424,6 +7424,40 @@ theorem union_loop_homotopy_refl_forall_mem_of_isOpen_pathConnected_inter
   exact (isSimplyConnected_iff_exists_homotopy_refl_forall_mem.mp hSC).2 x p hp
 
 /--
+For any two distinct stereographic centers, every based loop in `ThreeSphere`
+contracts through the union of the two corresponding chart sources.  The cover
+condition comes from distinctness of the centers; the contraction uses the
+two-set Van Kampen theorem for the open simply connected sources and their
+path-connected overlap.
+-/
+theorem threeSphere_stereographic_sources_loop_homotopy_refl_forall_mem_of_ne
+    {a b : ThreeSphere} (hab : a ≠ b) {basepoint : ThreeSphere}
+    (γ : Path basepoint basepoint) :
+    ∃ H : γ.Homotopy (Path.refl basepoint),
+      ∀ z, H z ∈
+        (stereographic' 3 a).source ∪ (stereographic' 3 b).source := by
+  let U : Set ThreeSphere := (stereographic' 3 a).source
+  let V : Set ThreeSphere := (stereographic' 3 b).source
+  letI : SimplyConnectedSpace U := by
+    simpa [U] using threeSphere_stereographic_source_simplyConnectedSpace a
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace b
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    simpa [U, V] using threeSphere_stereographic_sources_inter_pathConnectedSpace a b
+  have hcover : U ∪ V = Set.univ := by
+    simpa [U, V] using threeSphere_stereographic_sources_cover_of_ne hab
+  have hγ : ∀ t, γ t ∈ U ∪ V := by
+    intro t
+    rw [hcover]
+    trivial
+  simpa [U, V] using
+    union_loop_homotopy_refl_forall_mem_of_isOpen_pathConnected_inter
+      (U := U) (V := V)
+      (by exact threeSphere_stereographic_source_isOpen a)
+      (by exact threeSphere_stereographic_source_isOpen b)
+      γ hγ
+
+/--
 Any two paths contained in the union of two open simply connected subspaces
 with path-connected overlap are homotopic through a homotopy that stays in the
 same union.
