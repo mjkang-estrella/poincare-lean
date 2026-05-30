@@ -30918,6 +30918,43 @@ theorem threeSphere_antipodalPaths_homotopy_forall_mem
       (threeSphere_antipodalLoop_homotopy_refl_forall_mem v (p.trans q.symm))
 
 /--
+For any two distinct stereographic centers, any two paths in `ThreeSphere`
+with the same endpoints are homotopic through the union of the two chart
+sources.  This is the path-homotopy counterpart of the arbitrary distinct-cover
+loop contraction theorem.
+-/
+theorem threeSphere_stereographic_sources_paths_homotopy_forall_mem_of_ne
+    {a b : ThreeSphere} (hab : a ≠ b) {x y : ThreeSphere}
+    (p q : Path x y) :
+    ∃ H : p.Homotopy q,
+      ∀ z, H z ∈
+        (stereographic' 3 a).source ∪ (stereographic' 3 b).source := by
+  let U : Set ThreeSphere := (stereographic' 3 a).source
+  let V : Set ThreeSphere := (stereographic' 3 b).source
+  letI : SimplyConnectedSpace U := by
+    simpa [U] using threeSphere_stereographic_source_simplyConnectedSpace a
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace b
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    simpa [U, V] using threeSphere_stereographic_sources_inter_pathConnectedSpace a b
+  have hcover : U ∪ V = Set.univ := by
+    simpa [U, V] using threeSphere_stereographic_sources_cover_of_ne hab
+  have hp : ∀ t, p t ∈ U ∪ V := by
+    intro t
+    rw [hcover]
+    trivial
+  have hq : ∀ t, q t ∈ U ∪ V := by
+    intro t
+    rw [hcover]
+    trivial
+  simpa [U, V] using
+    union_paths_homotopy_forall_mem_of_isOpen_pathConnected_inter
+      (U := U) (V := V)
+      (by exact threeSphere_stereographic_source_isOpen a)
+      (by exact threeSphere_stereographic_source_isOpen b)
+      p q hp hq
+
+/--
 An arbitrary finite stereographic source-choice subdivision of an equatorial
 loop contracts through a homotopy whose image stays in the north/south
 stereographic cover.
