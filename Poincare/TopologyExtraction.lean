@@ -9,6 +9,7 @@ needed to identify the manifold with the standard 3-sphere.
 import Poincare.RicciFlowInterface
 import Mathlib.Topology.Compactification.OnePoint.Sphere
 import Mathlib.Topology.Covering.Basic
+import Mathlib.Topology.Covering.Quotient
 import Mathlib.Topology.Homotopy.Lifting
 
 universe u v
@@ -21128,6 +21129,25 @@ theorem coveringMap_injective_of_simplyConnected_base
     e = F (p e) := (congrFun hright e).symm
     _ = F (p e') := by rw [h]
     _ = e' := congrFun hright e'
+
+/--
+For a quotient covering over a simply connected, locally path-connected base,
+the acting group is trivial once the total space is preconnected and inhabited.
+-/
+theorem quotientCovering_group_trivial_of_simplyConnected_base
+    {E X G : Type u} [TopologicalSpace E] [TopologicalSpace X]
+    [Group G] [MulAction G E]
+    [PreconnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
+    {p : E → X} (h : IsQuotientCoveringMap p G) (e₀ : E) :
+    ∀ g : G, g = 1 := by
+  intro g
+  have hinj : Function.Injective p :=
+    coveringMap_injective_of_simplyConnected_base h.isCoveringMap e₀
+  have hp : p (g • e₀) = p e₀ :=
+    h.apply_eq_iff_mem_orbit.mpr (MulAction.mem_orbit e₀ g)
+  have hsmul : g • e₀ = (1 : G) • e₀ := by
+    simpa using hinj hp
+  exact h.isCancelSMul.right_cancel' g (1 : G) e₀ hsmul
 
 /--
 Deck transformations over a covering map are determined by one value on a
