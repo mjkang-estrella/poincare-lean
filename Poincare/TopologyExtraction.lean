@@ -21180,6 +21180,30 @@ theorem quotientCovering_homeomorph_to_threeSphere_of_simplyConnected_base
   exact ⟨hp.symm.trans φ⟩
 
 /--
+A free properly discontinuous action on `S³` with simply connected orbit
+quotient has trivial acting group, and the orbit quotient is again `S³`.
+-/
+theorem threeSphere_quotient_trivial_of_simplyConnected_quotient
+    {G : Type} [Group G] [MulAction G ThreeSphere]
+    [ContinuousConstSMul G ThreeSphere]
+    [ProperlyDiscontinuousSMul G ThreeSphere]
+    [IsCancelSMul G ThreeSphere]
+    [SimplyConnectedSpace (Quotient (MulAction.orbitRel G ThreeSphere))]
+    [LocPathConnectedSpace (Quotient (MulAction.orbitRel G ThreeSphere))] :
+    Subsingleton G ∧
+      Nonempty ((Quotient (MulAction.orbitRel G ThreeSphere)) ≃ₜ ThreeSphere) := by
+  rcases threeSphere_nonempty with ⟨e₀⟩
+  let h : IsQuotientCoveringMap
+      (Quotient.mk (MulAction.orbitRel G ThreeSphere)) G :=
+    isQuotientCoveringMap_quotientMk_of_properlyDiscontinuousSMul
+  have hgroup : ∀ g : G, g = 1 :=
+    quotientCovering_group_trivial_of_simplyConnected_base h e₀
+  refine ⟨?_, ?_⟩
+  · exact ⟨fun g g' => (hgroup g).trans (hgroup g').symm⟩
+  · exact quotientCovering_homeomorph_to_threeSphere_of_simplyConnected_base
+      h e₀ threeSphere_self_homeomorph
+
+/--
 Deck transformations over a covering map are determined by one value on a
 preconnected total space.  This is the concrete covering-space rigidity input
 needed by the spherical-space-form deck-group branch.
