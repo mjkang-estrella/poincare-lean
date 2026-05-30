@@ -6481,6 +6481,19 @@ theorem preconnectedSpace_of_homeomorph_to_threeSphere
   letI : ConnectedSpace M := φ.symm.surjective.connectedSpace φ.symm.continuous
   exact ConnectedSpace.toPreconnectedSpace
 
+/--
+Any space recognized as the project target sphere is locally path-connected.
+The recognizing homeomorphism is an open embedding into the locally
+path-connected standard sphere.
+-/
+theorem locPathConnectedSpace_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    LocPathConnectedSpace M := by
+  rcases h with ⟨φ⟩
+  letI : LocPathConnectedSpace ThreeSphere := threeSphere_locPathConnectedSpace
+  exact φ.isOpenEmbedding.locPathConnectedSpace
+
 /-- The direct target-recognition simple-connectedness route agrees with the compactification route. -/
 theorem simplyConnectedSpace_of_homeomorph_to_threeSphere_onePoint_route_eq
     {M : Type u} [TopologicalSpace M] [SimplyConnectedSpace ThreeSphere]
@@ -21279,10 +21292,10 @@ theorem threeSphere_quotient_trivial_of_simplyConnected_quotient
     [ContinuousConstSMul G ThreeSphere]
     [ProperlyDiscontinuousSMul G ThreeSphere]
     [IsCancelSMul G ThreeSphere]
-    [SimplyConnectedSpace (Quotient (MulAction.orbitRel G ThreeSphere))]
-    [LocPathConnectedSpace (Quotient (MulAction.orbitRel G ThreeSphere))] :
+    [SimplyConnectedSpace (Quotient (MulAction.orbitRel G ThreeSphere))] :
     Subsingleton G ∧
       Nonempty ((Quotient (MulAction.orbitRel G ThreeSphere)) ≃ₜ ThreeSphere) := by
+  letI : LocPathConnectedSpace ThreeSphere := threeSphere_locPathConnectedSpace
   rcases threeSphere_nonempty with ⟨e₀⟩
   let h : IsQuotientCoveringMap
       (Quotient.mk (MulAction.orbitRel G ThreeSphere)) G :=
@@ -21350,17 +21363,22 @@ theorem orbitRelQuotient_model_trivial_of_simplyConnected_target
     [Group G] [MulAction G E] [ContinuousConstSMul G E]
     [ProperlyDiscontinuousSMul G E] [LocallyCompactSpace E] [T2Space E]
     [IsCancelSMul G E]
-    [SimplyConnectedSpace M] [LocPathConnectedSpace M]
+    [SimplyConnectedSpace M]
     (hE : Nonempty (E ≃ₜ ThreeSphere))
     (hM : Nonempty (MulAction.orbitRel.Quotient G E ≃ₜ M)) :
     Subsingleton G ∧ Nonempty (M ≃ₜ ThreeSphere) := by
   rcases hE with ⟨φE⟩
+  rcases hM with ⟨φQ⟩
   letI : PreconnectedSpace E :=
     preconnectedSpace_of_homeomorph_to_threeSphere ⟨φE⟩
+  letI : LocPathConnectedSpace E :=
+    locPathConnectedSpace_of_homeomorph_to_threeSphere ⟨φE⟩
+  letI : LocPathConnectedSpace (MulAction.orbitRel.Quotient G E) := inferInstance
+  letI : LocPathConnectedSpace M := φQ.symm.isOpenEmbedding.locPathConnectedSpace
   let e₀ : E := φE.symm (Classical.choice threeSphere_nonempty)
   have hgroup : ∀ g : G, g = 1 :=
-    orbitRelQuotient_group_trivial_of_simplyConnected_target hM e₀
-  rcases orbitRelQuotient_homeomorph_total_of_simplyConnected_target hM e₀ with ⟨φM⟩
+    orbitRelQuotient_group_trivial_of_simplyConnected_target ⟨φQ⟩ e₀
+  rcases orbitRelQuotient_homeomorph_total_of_simplyConnected_target ⟨φQ⟩ e₀ with ⟨φM⟩
   refine ⟨?_, ?_⟩
   · exact ⟨fun g g' => (hgroup g).trans (hgroup g').symm⟩
   · exact ⟨φM.trans φE⟩
