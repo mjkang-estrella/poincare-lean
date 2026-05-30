@@ -7354,6 +7354,31 @@ theorem simplyConnectedSpace_union_of_isOpen_pathConnected_inter
     (X := S) (U := UinS) (V := VinS) hUopen hVopen hcover
 
 /--
+The union of any two stereographic chart sources on `ThreeSphere` is simply
+connected.  The proof applies the two-set Van Kampen theorem to the two open
+simply connected chart sources and the arbitrary-source overlap
+path-connectedness proved above.
+-/
+theorem threeSphere_stereographic_sources_union_simplyConnectedSpace
+    (a b : ThreeSphere) :
+    SimplyConnectedSpace
+      (((stereographic' 3 a).source ∪
+        (stereographic' 3 b).source) : Set ThreeSphere) := by
+  let U : Set ThreeSphere := (stereographic' 3 a).source
+  let V : Set ThreeSphere := (stereographic' 3 b).source
+  letI : SimplyConnectedSpace U := by
+    simpa [U] using threeSphere_stereographic_source_simplyConnectedSpace a
+  letI : SimplyConnectedSpace V := by
+    simpa [V] using threeSphere_stereographic_source_simplyConnectedSpace b
+  letI : PathConnectedSpace (U ∩ V : Set ThreeSphere) := by
+    simpa [U, V] using threeSphere_stereographic_sources_inter_pathConnectedSpace a b
+  simpa [U, V] using
+    simplyConnectedSpace_union_of_isOpen_pathConnected_inter
+      (U := U) (V := V)
+      (by exact threeSphere_stereographic_source_isOpen a)
+      (by exact threeSphere_stereographic_source_isOpen b)
+
+/--
 The single-chart finite-concat collapse can be realized by an actual homotopy
 whose image stays inside the same stereographic source.
 -/
