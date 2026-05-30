@@ -934,6 +934,20 @@ theorem path_subpath_forall_mem_of_forall_mem
   exact hp _
 
 /--
+A subpath stays in a set whenever the corresponding closed parameter interval
+is contained in that set's path preimage.  This is the path-to-source-choice
+conversion used by the finite Van Kampen subdivision argument.
+-/
+theorem path_subpath_range_subset_of_Icc_subset
+    {X : Type u} [TopologicalSpace X] {S : Set X} {x₀ x₁ : X}
+    (p : Path x₀ x₁) {t₀ t₁ : unitInterval} (hle : t₀ ≤ t₁)
+    (hsub : Set.Icc t₀ t₁ ⊆ {t : unitInterval | p t ∈ S}) :
+    Set.range (p.subpath t₀ t₁) ⊆ S := by
+  rw [Path.range_subpath_of_le p t₀ t₁ hle]
+  rintro y ⟨r, hr, rfl⟩
+  exact hsub hr
+
+/--
 The unreduced subpath-trans-subpath homotopy preserves containment in any set
 containing the original path.
 -/
@@ -2410,13 +2424,9 @@ theorem threeSphere_stereographicEquatorLoopSubpathSegmentRangeStatement_of_cont
   have hle : τ n ≤ τ (n + 1) := hmono (Nat.le_succ n)
   rcases hsegment n with hn | hs
   · left
-    rw [Path.range_subpath_of_le γ (τ n) (τ (n + 1)) hle]
-    rintro y ⟨r, hr, rfl⟩
-    exact hn hr
+    exact path_subpath_range_subset_of_Icc_subset γ hle hn
   · right
-    rw [Path.range_subpath_of_le γ (τ n) (τ (n + 1)) hle]
-    rintro y ⟨r, hr, rfl⟩
-    exact hs hr
+    exact path_subpath_range_subset_of_Icc_subset γ hle hs
 
 /--
 The subpath range projection rewrites each monotone subpath range as the image
@@ -7028,16 +7038,14 @@ theorem twoSetOpenCover_path_sourceChoice_subpaths
     · right
       have hrange :
           Set.range (γ.subpath (τ k.val) (τ (k.val + 1))) ⊆ V := by
-        rw [Path.range_subpath_of_le γ (τ k.val) (τ (k.val + 1)) hle]
-        rintro y ⟨r, hr, rfl⟩
-        simpa [coverSet] using hside hr
+        exact path_subpath_range_subset_of_Icc_subset γ hle
+          (by simpa [coverSet] using hside)
       simpa only [t, Fin.val_castSucc, Fin.val_succ] using hrange
     · left
       have hrange :
           Set.range (γ.subpath (τ k.val) (τ (k.val + 1))) ⊆ U := by
-        rw [Path.range_subpath_of_le γ (τ k.val) (τ (k.val + 1)) hle]
-        rintro y ⟨r, hr, rfl⟩
-        simpa [coverSet] using hside hr
+        exact path_subpath_range_subset_of_Icc_subset γ hle
+          (by simpa [coverSet] using hside)
       simpa only [t, Fin.val_castSucc, Fin.val_succ] using hrange
 
 /--
