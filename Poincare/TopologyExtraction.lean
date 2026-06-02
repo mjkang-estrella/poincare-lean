@@ -949,6 +949,18 @@ theorem onePoint_threeSpace_twoPointComplement_puncturedEuclidean_isOpenEmbeddin
   exact (euclideanThree_compl_singleton_isOpenEmbedding puncture).comp e.isOpenEmbedding
 
 /--
+The complement of two distinct compactification points is locally
+path-connected, transported through its punctured Euclidean open embedding.
+-/
+theorem onePoint_threeSpace_twoPointComplement_locPathConnectedSpace
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    LocPathConnectedSpace
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  exact
+    (onePoint_threeSpace_twoPointComplement_puncturedEuclidean_isOpenEmbedding
+      hqp).locPathConnectedSpace
+
+/--
 The punctured Euclidean chart supplies a charted-space structure on the
 two-point compactification complement.
 -/
