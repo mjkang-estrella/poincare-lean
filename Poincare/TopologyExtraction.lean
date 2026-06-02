@@ -913,6 +913,59 @@ theorem onePoint_threeSpace_twoPointComplement_smoothManifold_via_puncturedEucli
       hqp).isManifold_singleton
 
 /--
+The punctured Euclidean chart identifies a two-point compactification complement
+with punctured `ℝ³` by a smooth diffeomorphism.
+-/
+noncomputable def onePoint_threeSpace_twoPointComplement_diffeomorph_puncturedEuclidean
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+      onePoint_threeSpace_twoPointComplement_puncturedEuclideanChartedSpace hqp
+    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        ({onePoint_threeSpace_compl_singleton_homeomorph_euclidean p
+            (onePoint_threeSpace_pointInComplement hqp)}ᶜ :
+          Set (EuclideanSpace ℝ (Fin 3))) :=
+      euclideanThree_compl_singleton_chartedSpace
+        (onePoint_threeSpace_compl_singleton_homeomorph_euclidean p
+          (onePoint_threeSpace_pointInComplement hqp))
+    (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₘ⟮𝓡 3, 𝓡 3⟯
+      ({onePoint_threeSpace_compl_singleton_homeomorph_euclidean p
+          (onePoint_threeSpace_pointInComplement hqp)}ᶜ :
+        Set (EuclideanSpace ℝ (Fin 3))) := by
+  let puncture : EuclideanSpace ℝ (Fin 3) :=
+    onePoint_threeSpace_compl_singleton_homeomorph_euclidean p
+      (onePoint_threeSpace_pointInComplement hqp)
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    onePoint_threeSpace_twoPointComplement_puncturedEuclideanChartedSpace hqp
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+    euclideanThree_compl_singleton_chartedSpace puncture
+  let e := onePoint_threeSpace_twoPointComplement_homeomorph_puncturedEuclidean hqp
+  let hsource :=
+    onePoint_threeSpace_twoPointComplement_puncturedEuclidean_isOpenEmbedding hqp
+  let htarget := euclideanThree_compl_singleton_isOpenEmbedding puncture
+  haveI : Nonempty
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+    letI : SimplyConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+      onePoint_threeSpace_twoPointComplement_simplyConnectedSpace hqp
+    infer_instance
+  haveI : Nonempty ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+    (euclideanThree_compl_singleton_pathConnectedSpace puncture).nonempty
+  exact
+    { toEquiv := e.toEquiv
+      contMDiff_toFun := by
+        exact ContMDiff.of_comp_isOpenEmbedding (h' := htarget) (by
+          simpa [e, puncture] using
+            contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource)
+      contMDiff_invFun := by
+        exact ContMDiff.of_comp_isOpenEmbedding (h' := hsource)
+          ((contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) htarget).congr
+            (fun x => by
+              exact congrArg Subtype.val (e.apply_symm_apply x))) }
+
+/--
 Simple-connectedness of the standard sphere transports to the one-point
 compactification model along the named homeomorphism.
 -/
