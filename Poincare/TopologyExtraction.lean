@@ -973,6 +973,21 @@ theorem onePoint_threeSpace_twoPointComplement_locPathConnectedSpace
       hqp).locPathConnectedSpace
 
 /--
+Simple-connectedness of the actual two-point compactification complement
+collapses its based fundamental group.
+-/
+theorem onePoint_threeSpace_twoPointComplement_fundamentalGroup_subsingleton
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (x : (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    Subsingleton (FundamentalGroup
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x) := by
+  letI : SimplyConnectedSpace
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    onePoint_threeSpace_twoPointComplement_simplyConnectedSpace hqp
+  change Subsingleton (Path.Homotopic.Quotient x x)
+  infer_instance
+
+/--
 The punctured Euclidean chart supplies a charted-space structure on the
 two-point compactification complement.
 -/
