@@ -3982,6 +3982,19 @@ theorem finite_extinction_piOne_finite_of_fundamentalGroupInput
   haveI : Finite (FundamentalGroup M x) := h.finiteFundamentalGroup x
   exact piOne_finite_of_fundamentalGroup_finite x
 
+/--
+Simply connectedness supplies the finite `π₁` input used by the
+finite-extinction layer.
+-/
+theorem finite_extinction_piOne_finite_of_simplyConnectedSpace
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] (x : M) :
+    Finite (HomotopyGroup.Pi 1 M x) := by
+  have fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M :=
+    finite_extinction_fundamental_group_input_of_simplyConnectedSpace
+  exact finite_extinction_piOne_finite_of_fundamentalGroupInput fundamentalGroup x
+
 /-- Interface for producing the sweepout family used by the width argument. -/
 inductive HasFiniteExtinctionSweepoutExistence
     (M : Type u) [TopologicalSpace M] [T2Space M]
