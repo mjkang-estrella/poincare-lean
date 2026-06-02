@@ -765,6 +765,82 @@ theorem onePoint_threeSpace_compl_singleton_simplyConnectedSpace
     (onePoint_threeSpace_compl_singleton_homeomorph_euclidean p).toHomotopyEquiv.simplyConnectedSpace
 
 /--
+The Euclidean chart embeds a one-point compactification complement as the whole
+Euclidean model.
+-/
+theorem onePoint_threeSpace_compl_singleton_euclidean_isOpenEmbedding
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    Topology.IsOpenEmbedding
+      (fun x : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) =>
+        onePoint_threeSpace_compl_singleton_homeomorph_euclidean p x) := by
+  exact (onePoint_threeSpace_compl_singleton_homeomorph_euclidean p).isOpenEmbedding
+
+/--
+The Euclidean chart supplies a charted-space structure on the complement of a
+single compactification point.
+-/
+@[implicit_reducible]
+noncomputable def onePoint_threeSpace_compl_singleton_euclideanChartedSpace
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  haveI : Nonempty ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+    letI : SimplyConnectedSpace
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+      onePoint_threeSpace_compl_singleton_simplyConnectedSpace p
+    infer_instance
+  exact (onePoint_threeSpace_compl_singleton_euclidean_isOpenEmbedding p).singletonChartedSpace
+
+/--
+The complement of any single point in the one-point compactification model is a
+smooth 3-manifold when charted by its Euclidean model.
+-/
+theorem onePoint_threeSpace_compl_singleton_smoothManifold_via_euclidean
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+      onePoint_threeSpace_compl_singleton_euclideanChartedSpace p
+    IsManifold (𝓡 3) ∞
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  haveI : Nonempty ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+    letI : SimplyConnectedSpace
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+      onePoint_threeSpace_compl_singleton_simplyConnectedSpace p
+    infer_instance
+  exact (onePoint_threeSpace_compl_singleton_euclidean_isOpenEmbedding p).isManifold_singleton
+
+/--
+Deleting any point from the one-point compactification model gives a smooth
+Euclidean chart.
+-/
+noncomputable def onePoint_threeSpace_compl_singleton_diffeomorph_euclidean
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+      onePoint_threeSpace_compl_singleton_euclideanChartedSpace p
+    ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₘ⟮𝓡 3, 𝓡 3⟯
+      EuclideanSpace ℝ (Fin 3) := by
+  letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    onePoint_threeSpace_compl_singleton_euclideanChartedSpace p
+  let e := onePoint_threeSpace_compl_singleton_homeomorph_euclidean p
+  let hsource := onePoint_threeSpace_compl_singleton_euclidean_isOpenEmbedding p
+  haveI : Nonempty ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+    letI : SimplyConnectedSpace
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+      onePoint_threeSpace_compl_singleton_simplyConnectedSpace p
+    infer_instance
+  exact
+    { toEquiv := e.toEquiv
+      contMDiff_toFun := by
+        simpa [e] using contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource
+      contMDiff_invFun := by
+        exact ContMDiff.of_comp_isOpenEmbedding (h' := hsource)
+          ((contMDiff_id.congr
+            (fun x => by
+              exact e.apply_symm_apply x))) }
+
+/--
 The second point of a two-point complement, viewed in the chart obtained by
 deleting the first point from the one-point compactification model.
 -/
