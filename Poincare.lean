@@ -8,6 +8,10 @@ import Poincare.AnalyticFoundation
 import Poincare.Surgery
 import Poincare.Smoothability
 import Poincare.TopologyExtraction
+import Poincare.ProofProgress.OnePointSingleComplementTopology
+import Poincare.ProofProgress.OnePointTwoPointComplementTopology
+import Poincare.ProofProgress.OnePointThreeSphereTwoPoint
+import Poincare.ProofProgress.ThreeSphereTwoPointPiOne
 import Poincare.FullAssembly
 import Poincare.Dependencies
 import Poincare.DependencyProjections
