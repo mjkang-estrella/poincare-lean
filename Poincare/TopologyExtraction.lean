@@ -776,6 +776,18 @@ theorem onePoint_threeSpace_compl_singleton_euclidean_isOpenEmbedding
   exact (onePoint_threeSpace_compl_singleton_homeomorph_euclidean p).isOpenEmbedding
 
 /--
+The complement of any single point in the one-point compactification model is
+locally path-connected, transported through its Euclidean open embedding.
+-/
+theorem onePoint_threeSpace_compl_singleton_locPathConnectedSpace
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    LocPathConnectedSpace
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  exact
+    (onePoint_threeSpace_compl_singleton_euclidean_isOpenEmbedding
+      p).locPathConnectedSpace
+
+/--
 The Euclidean chart supplies a charted-space structure on the complement of a
 single compactification point.
 -/
