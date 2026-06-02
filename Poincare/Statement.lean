@@ -3901,6 +3901,15 @@ theorem threeSphere_twoPointComplement_puncturedChart_isOpenEmbedding
   exact (euclideanThree_compl_singleton_isOpenEmbedding puncture).comp e.isOpenEmbedding
 
 /--
+The complement of two distinct points in `ThreeSphere` is locally
+path-connected, transported through its punctured stereographic chart.
+-/
+theorem threeSphere_twoPointComplement_locPathConnectedSpace
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    LocPathConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) := by
+  exact (threeSphere_twoPointComplement_puncturedChart_isOpenEmbedding hab).locPathConnectedSpace
+
+/--
 The overlap of two distinct stereographic sources is homeomorphic to punctured
 `ℝ³`, using the chart centered at the first point.
 -/
