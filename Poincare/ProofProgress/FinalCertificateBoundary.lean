@@ -1,0 +1,526 @@
+/-
+Final certificate boundary for the canonical completion payload.
+
+This module does not define the reserved final theorem.  It records the
+smallest package-layer boundary found by the current assembly bridge: the
+canonical completion target and payload need universal finite extinction
+together with the post-extinction topology extraction bridge.
+-/
+
+import Poincare.CanonicalBridges
+import Poincare.ProofProgress.FullAssemblyClosure
+import Poincare.ProofProgress.TopologyProductionPackageNextField
+
+universe u
+
+open scoped Manifold ContDiff
+
+namespace Poincare
+
+/--
+Minimal production package inputs for the current canonical completion route.
+
+The topology package remains part of the fuller assembly payload because it
+supplies the post-extinction extraction bridge used by the canonical completion
+target/payload after smoothability turns topological targets into smooth surgery
+targets.
+-/
+structure FinalCertificateMinimalPackageInputs where
+  /-- Moise/smoothability package for target topological 3-manifolds. -/
+  smoothability :
+    dependencyPackageLayerRequirement.{u}
+      DependencyPackageLayer.smoothabilityPackage
+  /-- Finite-extinction surgery package family for all smooth target manifolds. -/
+  finiteExtinction :
+    dependencyPackageLayerRequirement.{u}
+      DependencyPackageLayer.finiteExtinctionPackage
+
+/--
+Primitive named input for the canonical completion route after the production
+packages have already assembled finite extinction for topological targets.
+-/
+structure FinalCertificatePrimitiveInputs where
+  /-- Universal finite extinction for the topological target family. -/
+  universalFiniteExtinction : UniversalFiniteExtinctionStatement.{u}
+  /-- Extraction from finite-extinction outputs to the 3-sphere conclusion. -/
+  extinctionImpliesSphere : ExtinctionImpliesSphereStatement.{u}
+
+/--
+The old three-package final assembly boundary projects to the two package
+inputs actually used by the canonical completion route.
+-/
+def finalCertificateMinimalPackageInputs_of_finalAssemblyPackageBoundaryInputs
+    (inputs : FinalAssemblyPackageBoundaryInputs.{u}) :
+    FinalCertificateMinimalPackageInputs.{u} where
+  smoothability := inputs.smoothability
+  finiteExtinction := inputs.finiteExtinction
+
+/--
+The two production package inputs assemble the primitive named universal
+finite-extinction input consumed by `CompletionTarget`.
+-/
+def finalCertificatePrimitiveInputs_of_minimalPackageInputs
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    FinalCertificatePrimitiveInputs.{u} where
+  universalFiniteExtinction :=
+    universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+      inputs.smoothability inputs.finiteExtinction
+  extinctionImpliesSphere := extractSphere
+
+/-- The primitive finite-extinction input proves the canonical completion target. -/
+theorem canonical_completion_target_of_finalCertificatePrimitiveInputs
+    (inputs : FinalCertificatePrimitiveInputs.{u}) :
+    canonicalCompletionTarget.{u} :=
+  canonical_completion_target_of_universalFiniteExtinctionStatement
+    inputs.universalFiniteExtinction
+    inputs.extinctionImpliesSphere
+
+/-- The primitive finite-extinction input exposes the canonical completion payload. -/
+theorem canonical_completion_payload_of_finalCertificatePrimitiveInputs
+    (inputs : FinalCertificatePrimitiveInputs.{u}) :
+    ∃ _target : canonicalCompletionTarget.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  canonical_completion_payload_of_universalFiniteExtinctionStatement
+    inputs.universalFiniteExtinction
+    inputs.extinctionImpliesSphere
+
+/--
+The two minimal package inputs prove the canonical completion target by first
+assembling the primitive universal finite-extinction statement.
+-/
+theorem canonical_completion_target_of_finalCertificateMinimalPackageInputs
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    canonicalCompletionTarget.{u} :=
+  canonical_completion_target_of_finalCertificatePrimitiveInputs
+    (finalCertificatePrimitiveInputs_of_minimalPackageInputs inputs extractSphere)
+
+/--
+The two minimal package inputs expose the canonical completion payload by first
+assembling the primitive universal finite-extinction statement.
+-/
+theorem canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    ∃ _target : canonicalCompletionTarget.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  canonical_completion_payload_of_finalCertificatePrimitiveInputs
+    (finalCertificatePrimitiveInputs_of_minimalPackageInputs inputs extractSphere)
+
+/--
+Single-statement boundary: the current canonical completion target and payload
+close conditionally from the smoothability package, the finite-extinction
+package layer, and the explicit post-extinction extraction bridge.
+-/
+theorem final_certificate_boundary_of_smoothability_and_finiteExtinctionPackage
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let inputs : FinalCertificateMinimalPackageInputs.{u} :=
+    { smoothability := smoothability
+      finiteExtinction := finiteExtinction }
+  exact
+    ⟨ canonical_completion_target_of_finalCertificateMinimalPackageInputs
+        inputs extractSphere
+    , canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+        inputs extractSphere
+    ⟩
+
+/--
+The canonical payload obtained from the old three-input boundary is the payload
+obtained from its two-input final-certificate projection.
+-/
+theorem canonical_completion_payload_of_finalAssemblyPackageBoundaryInputs_to_minimalPackageInputs_eq
+    (inputs : FinalAssemblyPackageBoundaryInputs.{u}) :
+    canonical_completion_payload_of_finalAssemblyPackageBoundaryInputs
+        inputs =
+      canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+        (finalCertificateMinimalPackageInputs_of_finalAssemblyPackageBoundaryInputs
+          inputs)
+        (extinction_implies_sphere_of_topology_package inputs.topology) := by
+  apply Subsingleton.elim
+
+/--
+The canonical target obtained from the old three-input boundary is the target
+obtained from its two-input final-certificate projection.
+-/
+theorem canonical_completion_target_of_finalAssemblyPackageBoundaryInputs_to_minimalPackageInputs_eq
+    (inputs : FinalAssemblyPackageBoundaryInputs.{u}) :
+    canonical_completion_target_of_finalAssemblyPackageBoundaryInputs
+        inputs =
+      canonical_completion_target_of_finalCertificateMinimalPackageInputs
+        (finalCertificateMinimalPackageInputs_of_finalAssemblyPackageBoundaryInputs
+          inputs)
+        (extinction_implies_sphere_of_topology_package inputs.topology) := by
+  apply Subsingleton.elim
+
+/--
+The checked certificate proposition still carries the repository's current
+remaining-dependency package field.  Given that field and the primitive
+universal finite-extinction input, the existing certificate constructor closes.
+-/
+theorem completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+    (dependencies : RemainingDependencyPackage.{u})
+    (inputs : FinalCertificatePrimitiveInputs.{u}) :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+    dependencies inputs.universalFiniteExtinction
+
+/--
+The certificate constructor above has the same canonical completion payload as
+the primitive universal finite-extinction route.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (inputs : FinalCertificatePrimitiveInputs.{u}) :
+    canonical_completion_payload_of_completion_certificate
+        (completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+          dependencies inputs) =
+      canonical_completion_payload_of_finalCertificatePrimitiveInputs inputs := by
+  exact
+    canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_eq
+      dependencies inputs.universalFiniteExtinction
+
+/--
+The checked certificate proposition itself has no extra primitive
+finite-extinction field: existing projections make it equivalent to the current
+remaining dependency package.
+-/
+theorem final_certificate_iff_remainingDependencyPackage :
+    PoincareCompletionCertificate.{u} ↔ RemainingDependencyPackage.{u} :=
+  poincareCompletionCertificate_iff_remainingDependencyPackage
+
+/--
+The remaining dependency package can be repackaged as the three production
+package inputs used by the full assembly boundary.
+-/
+def finalAssemblyPackageBoundaryInputs_of_remainingDependencyPackage
+    (dependencies : RemainingDependencyPackage.{u}) :
+    FinalAssemblyPackageBoundaryInputs.{u} where
+  smoothability := dependencies.smoothability
+  finiteExtinction := dependencies.surgery
+  topology := dependencies.topology
+
+/-- The three production package inputs supply the remaining dependency package. -/
+def remainingDependencyPackage_of_finalAssemblyPackageBoundaryInputs
+    (inputs : FinalAssemblyPackageBoundaryInputs.{u}) :
+    RemainingDependencyPackage.{u} :=
+  remainingDependencyPackage_iff_poincareProofDependencies.mpr
+    (poincareProofDependencies_of_finalAssemblyPackageBoundaryInputs inputs)
+
+/--
+The full assembly package boundary is exactly the nonempty data form of the
+remaining dependency package.
+-/
+theorem nonempty_finalAssemblyPackageBoundaryInputs_iff_remainingDependencyPackage :
+    Nonempty (FinalAssemblyPackageBoundaryInputs.{u}) ↔
+      RemainingDependencyPackage.{u} := by
+  constructor
+  · rintro ⟨inputs⟩
+    exact remainingDependencyPackage_of_finalAssemblyPackageBoundaryInputs inputs
+  · intro dependencies
+    exact ⟨finalAssemblyPackageBoundaryInputs_of_remainingDependencyPackage
+      dependencies⟩
+
+/--
+The checked certificate is therefore equivalent to the nonempty three-package
+final assembly boundary.  The topology package is still present here because it
+is part of `RemainingDependencyPackage`.
+-/
+theorem final_certificate_iff_nonempty_finalAssemblyPackageBoundaryInputs :
+    PoincareCompletionCertificate.{u} ↔
+      Nonempty (FinalAssemblyPackageBoundaryInputs.{u}) := by
+  constructor
+  · intro certificate
+    exact
+      ⟨finalAssemblyPackageBoundaryInputs_of_remainingDependencyPackage
+        (remaining_dependency_package_of_completion_certificate certificate)⟩
+  · rintro ⟨inputs⟩
+    exact
+      completion_certificate_of_remaining_dependency_package
+        (remainingDependencyPackage_of_finalAssemblyPackageBoundaryInputs
+          inputs)
+
+/-- The old three-input final assembly boundary closes the checked certificate. -/
+theorem completion_certificate_of_finalAssemblyPackageBoundaryInputs
+    (inputs : FinalAssemblyPackageBoundaryInputs.{u}) :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_remaining_dependency_package
+    (remainingDependencyPackage_of_finalAssemblyPackageBoundaryInputs inputs)
+
+/--
+The certificate from the three-input boundary is exactly the existing
+remaining-dependency certificate constructor applied to the same repackaged
+dependency field.
+-/
+theorem completion_certificate_of_finalAssemblyPackageBoundaryInputs_eq
+    (inputs : FinalAssemblyPackageBoundaryInputs.{u}) :
+    completion_certificate_of_finalAssemblyPackageBoundaryInputs inputs =
+      completion_certificate_of_remaining_dependency_package
+        (remainingDependencyPackage_of_finalAssemblyPackageBoundaryInputs
+          inputs) := by
+  apply Subsingleton.elim
+
+/--
+The two-input canonical boundary plus the topology package is precisely enough
+to close the checked certificate, because those three fields reconstruct
+`RemainingDependencyPackage`.
+-/
+theorem completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_finalAssemblyPackageBoundaryInputs
+    { smoothability := inputs.smoothability
+      finiteExtinction := inputs.finiteExtinction
+      topology := topology }
+
+/--
+The current certificate boundary, expressed directly as named package-layer
+requirements: smoothability, finite extinction, and topology.
+-/
+theorem completion_certificate_of_smoothability_finiteExtinctionPackage_and_topologyPackage
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+    { smoothability := smoothability
+      finiteExtinction := finiteExtinction }
+    topology
+
+/--
+The simply connected extinction-recognition prefix now supplies the topology
+package-layer requirement consumed by final assembly.
+-/
+def topologyPackage_requirement_of_simplyConnectedExtinctionRecognitionPrefixPackage
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    dependencyPackageLayerRequirement.{u}
+      DependencyPackageLayer.topologyPackage :=
+  extinctionTopologyExtractionPackage_of_simplyConnectedExtinctionRecognitionPrefixPackage
+    recognitionPrefix
+
+/--
+The two non-topology final-certificate package inputs plus the simply connected
+recognition prefix reconstruct the old three-input final assembly boundary.
+-/
+def finalAssemblyPackageBoundaryInputs_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    FinalAssemblyPackageBoundaryInputs.{u} where
+  smoothability := inputs.smoothability
+  finiteExtinction := inputs.finiteExtinction
+  topology :=
+    topologyPackage_requirement_of_simplyConnectedExtinctionRecognitionPrefixPackage
+      recognitionPrefix
+
+/--
+After the topology package is constructed from the recognition prefix, the
+checked completion certificate only still needs the smoothability and
+finite-extinction package inputs carried by `FinalCertificateMinimalPackageInputs`.
+-/
+theorem completion_certificate_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_finalAssemblyPackageBoundaryInputs
+    (finalAssemblyPackageBoundaryInputs_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+      inputs recognitionPrefix)
+
+/--
+The canonical target, canonical payload, and checked certificate close from the
+two non-topology package inputs plus the simply connected recognition prefix.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  let topology :=
+    topologyPackage_requirement_of_simplyConnectedExtinctionRecognitionPrefixPackage
+      recognitionPrefix
+  ⟨ canonical_completion_target_of_finalCertificateMinimalPackageInputs
+      inputs (extinction_implies_sphere_of_topology_package topology)
+  , canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+      inputs (extinction_implies_sphere_of_topology_package topology)
+  , completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+      inputs topology
+  ⟩
+
+/--
+Projecting the remaining dependency package out of the certificate built from
+the three package inputs recovers the same repackaged dependency field.
+-/
+theorem remainingDependencyPackage_of_completion_certificate_of_finalAssemblyPackageBoundaryInputs_eq
+    (inputs : FinalAssemblyPackageBoundaryInputs.{u}) :
+    remaining_dependency_package_of_completion_certificate
+        (completion_certificate_of_finalAssemblyPackageBoundaryInputs inputs) =
+      remainingDependencyPackage_of_finalAssemblyPackageBoundaryInputs
+        inputs := by
+  apply Subsingleton.elim
+
+/--
+Every checked certificate projects back to the three package-layer requirements
+carried by `RemainingDependencyPackage`.
+-/
+theorem package_layer_requirements_payload_of_final_certificate
+    (certificate : PoincareCompletionCertificate.{u}) :
+    ∃ _smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage,
+    ∃ _finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage := by
+  let dependencies : RemainingDependencyPackage.{u} :=
+    remaining_dependency_package_of_completion_certificate certificate
+  exact ⟨dependencies.smoothability, dependencies.surgery,
+    dependencies.topology⟩
+
+/-- A checked certificate forces the smoothability package-layer requirement. -/
+theorem smoothabilityPackage_requirement_of_final_certificate
+    (certificate : PoincareCompletionCertificate.{u}) :
+    dependencyPackageLayerRequirement.{u}
+      DependencyPackageLayer.smoothabilityPackage := by
+  rcases package_layer_requirements_payload_of_final_certificate
+      certificate with
+    ⟨smoothability, _finiteExtinction, _topology⟩
+  exact smoothability
+
+/-- A checked certificate forces the finite-extinction package-layer requirement. -/
+theorem finiteExtinctionPackage_requirement_of_final_certificate
+    (certificate : PoincareCompletionCertificate.{u}) :
+    dependencyPackageLayerRequirement.{u}
+      DependencyPackageLayer.finiteExtinctionPackage := by
+  rcases package_layer_requirements_payload_of_final_certificate
+      certificate with
+    ⟨_smoothability, finiteExtinction, _topology⟩
+  exact finiteExtinction
+
+/-- A checked certificate forces the topology package-layer requirement. -/
+theorem topologyPackage_requirement_of_final_certificate
+    (certificate : PoincareCompletionCertificate.{u}) :
+    dependencyPackageLayerRequirement.{u}
+      DependencyPackageLayer.topologyPackage := by
+  rcases package_layer_requirements_payload_of_final_certificate
+      certificate with
+    ⟨_smoothability, _finiteExtinction, topology⟩
+  exact topology
+
+/--
+Exact remaining certificate boundary as named package-layer requirements.  This
+is the same data as `RemainingDependencyPackage`, unfolded through the current
+package crosswalk.
+-/
+theorem final_certificate_iff_named_package_layer_requirements :
+    PoincareCompletionCertificate.{u} ↔
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage := by
+  constructor
+  · exact package_layer_requirements_payload_of_final_certificate
+  · rintro ⟨smoothability, finiteExtinction, topology⟩
+    exact
+      completion_certificate_of_smoothability_finiteExtinctionPackage_and_topologyPackage
+        smoothability finiteExtinction topology
+
+/--
+Equivalent phrasing: the two-input canonical boundary plus the topology package
+is exactly the current checked-certificate boundary.
+-/
+theorem final_certificate_iff_minimalPackageInputs_and_topologyPackage :
+    PoincareCompletionCertificate.{u} ↔
+      ∃ _inputs : FinalCertificateMinimalPackageInputs.{u},
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage := by
+  constructor
+  · intro certificate
+    exact
+      ⟨ { smoothability :=
+            smoothabilityPackage_requirement_of_final_certificate certificate
+          finiteExtinction :=
+            finiteExtinctionPackage_requirement_of_final_certificate
+              certificate }
+      , topologyPackage_requirement_of_final_certificate certificate
+      ⟩
+  · rintro ⟨inputs, topology⟩
+    exact
+      completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+        inputs topology
+
+/--
+Once the two canonical package inputs are fixed, the checked completion
+certificate is equivalent to the topology package alone. Thus the remaining
+certificate boundary over the current canonical route is exactly the topology
+package field unless another compiled projection constructs that field.
+-/
+theorem final_certificate_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+    (inputs : FinalCertificateMinimalPackageInputs.{u}) :
+    PoincareCompletionCertificate.{u} ↔
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage := by
+  constructor
+  · exact topologyPackage_requirement_of_final_certificate
+  · intro topology
+    exact
+      completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+        inputs topology
+
+/--
+Exact remaining boundary for upgrading the current canonical route to the
+checked completion certificate. The two canonical package inputs provide
+universal finite extinction; the topology package supplies the extraction bridge
+needed for the canonical target, payload, and checked certificate.
+-/
+theorem canonical_payload_and_final_certificate_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+    (inputs : FinalCertificateMinimalPackageInputs.{u}) :
+    (canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u}) ↔
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage := by
+  constructor
+  · intro payload
+    exact topologyPackage_requirement_of_final_certificate payload.2.2
+  · intro topology
+    exact
+      ⟨ canonical_completion_target_of_finalCertificateMinimalPackageInputs
+          inputs
+          (extinction_implies_sphere_of_topology_package topology)
+      , canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+          inputs
+          (extinction_implies_sphere_of_topology_package topology)
+      , completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+          inputs topology
+      ⟩
+
+end Poincare

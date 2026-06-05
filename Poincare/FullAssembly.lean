@@ -117,7 +117,7 @@ theorem onePoint_threeSpace_finite_extinction_of_sourceChoiceCollapse_and_surger
       (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
     onePoint_threeSpace_surgeryModel_isManifold
   rcases surgeryPackages with ⟨⟨_n, package⟩⟩
-  exact finite_extinction_of_surgery_package package
+  exact finite_extinction_from_statement_payload_of_surgery_package package
 
 end OnePointThreeSpaceConcreteFiniteExtinction
 
@@ -160,7 +160,7 @@ theorem onePoint_threeSpace_finite_extinction_of_sourceChoiceCollapse_and_smooth
     onePoint_threeSpace_surgeryModel_isManifold_of_smoothabilitySmoothManifoldStatement
       smooth
   rcases surgeryPackages with ⟨⟨_n, package⟩⟩
-  exact finite_extinction_of_surgery_package package
+  exact finite_extinction_from_statement_payload_of_surgery_package package
 
 end OnePointThreeSpaceFiniteExtinction
 
@@ -332,11 +332,13 @@ theorem poincare_conjecture_of_smoothability_and_surgery_packages
         [ChartedSpace ThreeManifoldModel M]
         [SimplyConnectedSpace M] [CompactSpace M]
         [IsManifold ThreeManifoldModelWithCorners 1 M],
-          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     PoincareConjectureStatement.{u} :=
   poincare_conjecture_of_universalFiniteExtinctionStatement
     (universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
       smoothabilityPackage surgeryPackages)
+    extractSphere
 
 /--
 The smoothability/surgery Poincare endpoint is exactly the
@@ -350,12 +352,14 @@ theorem poincare_conjecture_of_smoothability_and_surgery_packages_eq
         [ChartedSpace ThreeManifoldModel M]
         [SimplyConnectedSpace M] [CompactSpace M]
         [IsManifold ThreeManifoldModelWithCorners 1 M],
-          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     poincare_conjecture_of_smoothability_and_surgery_packages
-        smoothabilityPackage surgeryPackages =
+        smoothabilityPackage surgeryPackages extractSphere =
       poincare_conjecture_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
-          smoothabilityPackage surgeryPackages) := by
+          smoothabilityPackage surgeryPackages)
+        extractSphere := by
   apply Subsingleton.elim
 
 /--
@@ -369,12 +373,14 @@ theorem poincare_conjecture_payload_of_smoothability_and_surgery_packages
         [ChartedSpace ThreeManifoldModel M]
         [SimplyConnectedSpace M] [CompactSpace M]
         [IsManifold ThreeManifoldModelWithCorners 1 M],
-          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
   universalFiniteExtinctionStatement_completion_payload
     (universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
       smoothabilityPackage surgeryPackages)
+    extractSphere
 
 /--
 The smoothability/surgery package endpoint payload is exactly the universal
@@ -388,12 +394,14 @@ theorem poincare_conjecture_payload_of_smoothability_and_surgery_packages_eq
         [ChartedSpace ThreeManifoldModel M]
         [SimplyConnectedSpace M] [CompactSpace M]
         [IsManifold ThreeManifoldModelWithCorners 1 M],
-          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     poincare_conjecture_payload_of_smoothability_and_surgery_packages
-        smoothabilityPackage surgeryPackages =
+        smoothabilityPackage surgeryPackages extractSphere =
       universalFiniteExtinctionStatement_completion_payload
         (universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
-          smoothabilityPackage surgeryPackages) := by
+          smoothabilityPackage surgeryPackages)
+        extractSphere := by
   apply Subsingleton.elim
 
 /--
@@ -578,11 +586,13 @@ theorem poincare_conjecture_of_smoothability_and_boundary_surgery_packages
         [IsManifold ThreeManifoldModelWithCorners 1 M],
           Nonempty
             (Σ n : ℕ∞ω,
-              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     PoincareConjectureStatement.{u} :=
   poincare_conjecture_of_universalFiniteExtinctionStatement
     (universalFiniteExtinctionStatement_of_smoothability_and_boundary_surgery_packages
       smoothabilityPackage surgeryPackages)
+    extractSphere
 
 /--
 The boundary-carrying smoothability/surgery Poincare endpoint is exactly the
@@ -598,12 +608,14 @@ theorem poincare_conjecture_of_smoothability_and_boundary_surgery_packages_eq
         [IsManifold ThreeManifoldModelWithCorners 1 M],
           Nonempty
             (Σ n : ℕ∞ω,
-              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     poincare_conjecture_of_smoothability_and_boundary_surgery_packages
-        smoothabilityPackage surgeryPackages =
+        smoothabilityPackage surgeryPackages extractSphere =
       poincare_conjecture_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_smoothability_and_boundary_surgery_packages
-          smoothabilityPackage surgeryPackages) := by
+          smoothabilityPackage surgeryPackages)
+        extractSphere := by
   apply Subsingleton.elim
 
 /--
@@ -620,12 +632,14 @@ theorem poincare_conjecture_payload_of_smoothability_and_boundary_surgery_packag
         [IsManifold ThreeManifoldModelWithCorners 1 M],
           Nonempty
             (Σ n : ℕ∞ω,
-              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     ∃ _target : PoincareConjectureStatement.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
   universalFiniteExtinctionStatement_completion_payload
     (universalFiniteExtinctionStatement_of_smoothability_and_boundary_surgery_packages
       smoothabilityPackage surgeryPackages)
+    extractSphere
 
 /--
 The boundary-carrying smoothability/surgery package endpoint payload is exactly
@@ -641,12 +655,14 @@ theorem poincare_conjecture_payload_of_smoothability_and_boundary_surgery_packag
         [IsManifold ThreeManifoldModelWithCorners 1 M],
           Nonempty
             (Σ n : ℕ∞ω,
-              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     poincare_conjecture_payload_of_smoothability_and_boundary_surgery_packages
-        smoothabilityPackage surgeryPackages =
+        smoothabilityPackage surgeryPackages extractSphere =
       universalFiniteExtinctionStatement_completion_payload
         (universalFiniteExtinctionStatement_of_smoothability_and_boundary_surgery_packages
-          smoothabilityPackage surgeryPackages) := by
+          smoothabilityPackage surgeryPackages)
+        extractSphere := by
   apply Subsingleton.elim
 
 /--

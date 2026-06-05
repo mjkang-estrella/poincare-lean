@@ -417,6 +417,44 @@ theorem poincare_payload_of_finite_extinction_and_onePoint_threeSpace_recognitio
   apply Subsingleton.elim
 
 /--
+Proof-bearing finite-extinction payload recognizing the target manifold as the
+one-point compactification model.
+
+The payload is indexed by the extinction witness to keep the recognition data
+finite-extinction scoped, even though the stored endpoint is the actual
+homeomorphism witness to the one-point model.
+-/
+structure ExtinctionOnePointThreeSpaceRecognitionData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (_extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    Prop where
+  /-- The finite-extinction recognition endpoint as a one-point compactification model. -/
+  homeomorphism :
+    Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+
+/--
+Named finite-extinction one-point compactification recognition payload family.
+-/
+def ExtinctionOnePointThreeSpaceRecognitionDataStatement : Prop :=
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M),
+      ExtinctionOnePointThreeSpaceRecognitionData M extinction
+
+/-- The named finite-extinction one-point payload statement expands to its pointwise data shape. -/
+theorem extinctionOnePointThreeSpaceRecognitionDataStatement_eq :
+    ExtinctionOnePointThreeSpaceRecognitionDataStatement.{u} =
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        (extinction : FiniteExtinctionByRicciFlowWithSurgery M),
+          ExtinctionOnePointThreeSpaceRecognitionData M extinction) :=
+  rfl
+
+/--
 Named compactification-recognition statement after finite extinction.
 
 This is the same topology-extraction target as
@@ -439,6 +477,17 @@ theorem extinctionOnePointThreeSpaceRecognitionStatement_eq :
           FiniteExtinctionByRicciFlowWithSurgery M →
             Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
   rfl
+
+/--
+The explicit finite-extinction one-point compactification payload supplies the
+named recognition statement by projecting the stored homeomorphism witness.
+-/
+theorem extinctionOnePointThreeSpaceRecognitionStatement_of_data
+    (recognizeData :
+      ExtinctionOnePointThreeSpaceRecognitionDataStatement.{u}) :
+    ExtinctionOnePointThreeSpaceRecognitionStatement.{u} := by
+  intro M _top _t2 _charted _simple _compact extinction
+  exact (recognizeData M extinction).homeomorphism
 
 /--
 The named compactification-recognition statement after extinction satisfies the
@@ -587,9 +636,11 @@ with the existing universal finite-extinction target route.
 theorem poincare_statement_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement_universal_route_eq :
     poincare_statement_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement =
       (fun finiteExtinction : UniversalFiniteExtinctionStatement.{u} =>
-        fun _recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u} =>
+        fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u} =>
           poincare_statement_of_universalFiniteExtinctionStatement
-            finiteExtinction) := by
+            finiteExtinction
+            (extinction_implies_sphere_of_extinctionOnePointThreeSpaceRecognitionStatement
+              recognize)) := by
   funext finiteExtinction recognize
   apply Subsingleton.elim
 
@@ -626,9 +677,11 @@ with the existing universal finite-extinction payload route.
 theorem poincare_payload_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement_universal_route_eq :
     poincare_payload_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement =
       (fun finiteExtinction : UniversalFiniteExtinctionStatement.{u} =>
-        fun _recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u} =>
+        fun recognize : ExtinctionOnePointThreeSpaceRecognitionStatement.{u} =>
           poincare_payload_of_universalFiniteExtinctionStatement
-            finiteExtinction) := by
+            finiteExtinction
+            (extinction_implies_sphere_of_extinctionOnePointThreeSpaceRecognitionStatement
+              recognize)) := by
   funext finiteExtinction recognize
   apply Subsingleton.elim
 
@@ -752,6 +805,30 @@ noncomputable def onePoint_threeSpace_compl_singleton_homeomorph_euclidean
         (threeSphere_stereographic_source_eq_compl_singleton (e p)).symm).trans
         (threeSphere_stereographic_source_homeomorph (e p)))
 
+/-- The one-point complement chart is the stereographic transport construction. -/
+theorem onePoint_threeSpace_compl_singleton_homeomorph_euclidean_eq
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    onePoint_threeSpace_compl_singleton_homeomorph_euclidean p =
+      (by
+        let e : OnePoint (EuclideanSpace ℝ (Fin 3)) ≃ₜ ThreeSphere :=
+          Classical.choice onePoint_threeSpace_homeomorph_threeSphere
+        let hCompl :
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+              ({e p}ᶜ : Set ThreeSphere) :=
+          e.subtype (fun x => by
+            simp only [Set.mem_compl_iff, Set.mem_singleton_iff]
+            constructor
+            · intro hx hxeq
+              exact hx (e.injective hxeq)
+            · intro hx hxp
+              exact hx (by rw [hxp]))
+        exact
+          hCompl.trans
+            ((Homeomorph.setCongr
+              (threeSphere_stereographic_source_eq_compl_singleton (e p)).symm).trans
+              (threeSphere_stereographic_source_homeomorph (e p)))) := by
+  rfl
+
 /--
 The complement of any point in the one-point compactification model is simply
 connected, via its Euclidean chart model.
@@ -803,6 +880,19 @@ noncomputable def onePoint_threeSpace_compl_singleton_euclideanChartedSpace
     infer_instance
   exact (onePoint_threeSpace_compl_singleton_euclidean_isOpenEmbedding p).singletonChartedSpace
 
+/-- The complement charted-space structure is induced by the Euclidean open embedding. -/
+theorem onePoint_threeSpace_compl_singleton_euclideanChartedSpace_eq
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    onePoint_threeSpace_compl_singleton_euclideanChartedSpace p =
+      (by
+        haveI : Nonempty ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+          letI : SimplyConnectedSpace
+              ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+            onePoint_threeSpace_compl_singleton_simplyConnectedSpace p
+          infer_instance
+        exact (onePoint_threeSpace_compl_singleton_euclidean_isOpenEmbedding p).singletonChartedSpace) := by
+  rfl
+
 /--
 The complement of any single point in the one-point compactification model is a
 smooth 3-manifold when charted by its Euclidean model.
@@ -852,6 +942,32 @@ noncomputable def onePoint_threeSpace_compl_singleton_diffeomorph_euclidean
             (fun x => by
               exact e.apply_symm_apply x))) }
 
+/-- The smooth one-point complement chart is built from the Euclidean homeomorphism. -/
+theorem onePoint_threeSpace_compl_singleton_diffeomorph_euclidean_eq
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    onePoint_threeSpace_compl_singleton_diffeomorph_euclidean p =
+      (by
+        letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+          onePoint_threeSpace_compl_singleton_euclideanChartedSpace p
+        let e := onePoint_threeSpace_compl_singleton_homeomorph_euclidean p
+        let hsource := onePoint_threeSpace_compl_singleton_euclidean_isOpenEmbedding p
+        haveI : Nonempty ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+          letI : SimplyConnectedSpace
+              ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+            onePoint_threeSpace_compl_singleton_simplyConnectedSpace p
+          infer_instance
+        exact
+          { toEquiv := e.toEquiv
+            contMDiff_toFun := by
+              simpa [e] using contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource
+            contMDiff_invFun := by
+              exact ContMDiff.of_comp_isOpenEmbedding (h' := hsource)
+                ((contMDiff_id.congr
+                  (fun x => by
+                    exact e.apply_symm_apply x))) }) := by
+  rfl
+
 /--
 The second point of a two-point complement, viewed in the chart obtained by
 deleting the first point from the one-point compactification model.
@@ -862,6 +978,15 @@ noncomputable def onePoint_threeSpace_pointInComplement
   ⟨q, by
     rw [Set.mem_compl_iff, Set.mem_singleton_iff]
     exact hqp⟩
+
+/-- The second point in the first complement is the subtype point with proof `q ≠ p`. -/
+theorem onePoint_threeSpace_pointInComplement_eq
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    onePoint_threeSpace_pointInComplement hqp =
+      ⟨q, by
+        rw [Set.mem_compl_iff, Set.mem_singleton_iff]
+        exact hqp⟩ := by
+  rfl
 
 /--
 The complement of two distinct compactification points, viewed inside the
@@ -900,6 +1025,38 @@ noncomputable def onePoint_threeSpace_twoPointComplement_homeomorph_sourcePunctu
   continuous_invFun := by
     continuity
 
+/-- The source-punctured chart is the explicit subtype rearrangement. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_sourcePunctured_eq
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    onePoint_threeSpace_twoPointComplement_homeomorph_sourcePunctured hqp =
+      { toFun x :=
+          ⟨⟨x.1, by
+            rw [Set.mem_compl_iff, Set.mem_singleton_iff]
+            intro hx
+            exact x.2 (Or.inl hx)⟩, by
+            rw [Set.mem_compl_iff]
+            intro hx
+            have hval : x.1 = q := congrArg Subtype.val hx
+            exact x.2 (Or.inr hval)⟩
+        invFun x :=
+          ⟨x.1.1, by
+            rw [Set.mem_compl_iff]
+            intro hx
+            rcases hx with hp | hq
+            · exact x.1.2 hp
+            · exact x.2 (Subtype.ext hq)⟩
+        left_inv x := by
+          ext
+          rfl
+        right_inv x := by
+          ext
+          rfl
+        continuous_toFun := by
+          continuity
+        continuous_invFun := by
+          continuity } := by
+  rfl
+
 /--
 Deleting two distinct points from the one-point compactification model leaves a
 punctured Euclidean chart.
@@ -919,6 +1076,21 @@ noncomputable def onePoint_threeSpace_twoPointComplement_homeomorph_puncturedEuc
           exact hx ((onePoint_threeSpace_compl_singleton_homeomorph_euclidean p).injective hxeq)
         · intro hx hxp
           exact hx (by rw [hxp])))
+
+/-- The two-point complement chart is source puncturing followed by the Euclidean chart. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_puncturedEuclidean_eq
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    onePoint_threeSpace_twoPointComplement_homeomorph_puncturedEuclidean hqp =
+      (onePoint_threeSpace_twoPointComplement_homeomorph_sourcePunctured hqp).trans
+        ((onePoint_threeSpace_compl_singleton_homeomorph_euclidean p).subtype
+          (fun x => by
+            simp only [Set.mem_compl_iff, Set.mem_singleton_iff]
+            constructor
+            · intro hx hxeq
+              exact hx ((onePoint_threeSpace_compl_singleton_homeomorph_euclidean p).injective hxeq)
+            · intro hx hxp
+              exact hx (by rw [hxp]))) := by
+  rfl
 
 /--
 The complement of any two distinct points in the one-point compactification
@@ -1006,6 +1178,22 @@ noncomputable def onePoint_threeSpace_twoPointComplement_puncturedEuclideanChart
     (onePoint_threeSpace_twoPointComplement_puncturedEuclidean_isOpenEmbedding
       hqp).singletonChartedSpace
 
+/-- The two-point complement charted-space structure is induced by the punctured chart. -/
+theorem onePoint_threeSpace_twoPointComplement_puncturedEuclideanChartedSpace_eq
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    onePoint_threeSpace_twoPointComplement_puncturedEuclideanChartedSpace hqp =
+      (by
+        haveI : Nonempty
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+          letI : SimplyConnectedSpace
+              (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+            onePoint_threeSpace_twoPointComplement_simplyConnectedSpace hqp
+          infer_instance
+        exact
+          (onePoint_threeSpace_twoPointComplement_puncturedEuclidean_isOpenEmbedding
+            hqp).singletonChartedSpace) := by
+  rfl
+
 /--
 The complement of two distinct points in the one-point compactification model is
 a smooth 3-manifold when charted by its punctured Euclidean model.
@@ -1079,6 +1267,45 @@ noncomputable def onePoint_threeSpace_twoPointComplement_diffeomorph_puncturedEu
           ((contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) htarget).congr
             (fun x => by
               exact congrArg Subtype.val (e.apply_symm_apply x))) }
+
+/-- The smooth two-point complement chart is built from the punctured Euclidean homeomorphism. -/
+theorem onePoint_threeSpace_twoPointComplement_diffeomorph_puncturedEuclidean_eq
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    onePoint_threeSpace_twoPointComplement_diffeomorph_puncturedEuclidean hqp =
+      (by
+        let puncture : EuclideanSpace ℝ (Fin 3) :=
+          onePoint_threeSpace_compl_singleton_homeomorph_euclidean p
+            (onePoint_threeSpace_pointInComplement hqp)
+        letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+          onePoint_threeSpace_twoPointComplement_puncturedEuclideanChartedSpace hqp
+        letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+            ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+          euclideanThree_compl_singleton_chartedSpace puncture
+        let e := onePoint_threeSpace_twoPointComplement_homeomorph_puncturedEuclidean hqp
+        let hsource :=
+          onePoint_threeSpace_twoPointComplement_puncturedEuclidean_isOpenEmbedding hqp
+        let htarget := euclideanThree_compl_singleton_isOpenEmbedding puncture
+        haveI : Nonempty
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+          letI : SimplyConnectedSpace
+              (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+            onePoint_threeSpace_twoPointComplement_simplyConnectedSpace hqp
+          infer_instance
+        haveI : Nonempty ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+          (euclideanThree_compl_singleton_pathConnectedSpace puncture).nonempty
+        exact
+          { toEquiv := e.toEquiv
+            contMDiff_toFun := by
+              exact ContMDiff.of_comp_isOpenEmbedding (h' := htarget) (by
+                simpa [e, puncture] using
+                  contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource)
+            contMDiff_invFun := by
+              exact ContMDiff.of_comp_isOpenEmbedding (h' := hsource)
+                ((contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) htarget).congr
+                  (fun x => by
+                    exact congrArg Subtype.val (e.apply_symm_apply x))) }) := by
+  rfl
 
 /--
 Simple-connectedness of the standard sphere transports to the one-point
@@ -22710,6 +22937,44 @@ theorem quotientCovering_smulDeckTransform_eq_refl_of_simplyConnected_base
     φ hdeck e₀
 
 /--
+Raw finite-extinction certificate that a concrete post-extinction topological
+decomposition has been produced.
+
+This is intentionally separate from `HasExtinctionTopologyDecomposition`: the
+interface can now be constructed from certified data, but finite extinction
+still has to supply that data.
+-/
+inductive ExtinctionTopologyDecompositionRealization
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (_extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (_componentIndex : Type u) : Prop
+
+/--
+Explicit payload for the decomposition information obtained from finite
+extinction.
+
+The finite component index records that the decomposition is actual
+finite-extinction topology data, while the realization certificate is the
+future production proof that those indexed pieces are realized by the given
+extinction witness.
+-/
+structure ExtinctionTopologyDecompositionData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    Type (u + 1) where
+  /-- The finite family of post-extinction topological components. -/
+  componentIndex : Type u
+  /-- The component family is finite, as supplied by finite extinction. -/
+  finiteComponentIndex : Fintype componentIndex
+  /-- Certificate that the indexed components realize the extinction topology. -/
+  realization :
+    ExtinctionTopologyDecompositionRealization M extinction componentIndex
+
+/--
 Interface for the decomposition information obtained from finite extinction.
 
 This stands for the topological output of the extinction argument before the
@@ -22719,7 +22984,2028 @@ inductive HasExtinctionTopologyDecomposition
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
-    (_extinction : FiniteExtinctionByRicciFlowWithSurgery M) : Prop
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) : Prop where
+  /-- Certified finite-extinction decomposition data inhabits the interface. -/
+  | ofData :
+      ExtinctionTopologyDecompositionData M extinction →
+      HasExtinctionTopologyDecomposition M extinction
+
+/--
+Proof-bearing one-point compactification recognition payload after a concrete
+finite-extinction decomposition is fixed.
+
+This is the decomposition-indexed form of
+`ExtinctionOnePointThreeSpaceRecognitionData`.
+-/
+structure ExtinctionOnePointThreeSpaceRecognitionDataAfterDecomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (_decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- The fixed-decomposition recognition endpoint as a one-point model. -/
+  homeomorphism :
+    Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+
+/--
+Concrete fixed-decomposition homeomorphism data recognizing the target
+manifold as the one-point compactification model.
+
+Unlike `ExtinctionOnePointThreeSpaceRecognitionDataAfterDecomposition`, this
+stores the actual homeomorphism witness rather than only its propositional
+nonemptiness.
+-/
+structure ExtinctionOnePointThreeSpaceHomeomorphismDataAfterDecomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (_decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Type (u + 1) where
+  /-- The fixed-decomposition homeomorphism to the one-point compactification model. -/
+  homeomorphism :
+    M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))
+
+/--
+Fixed-decomposition construction data for the one-point compactification
+homeomorphism.
+
+This stores the elementary ingredients needed to build the homeomorphism:
+the underlying equivalence and continuity of both directions.
+-/
+structure ExtinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (_decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Type (u + 1) where
+  /-- The underlying equivalence with the one-point compactification model. -/
+  toEquiv :
+    M ≃ OnePoint (EuclideanSpace ℝ (Fin 3))
+  /-- Continuity of the forward map in the underlying equivalence. -/
+  continuous_toFun : Continuous toEquiv
+  /-- Continuity of the inverse map in the underlying equivalence. -/
+  continuous_invFun : Continuous toEquiv.symm
+
+/--
+Fixed-decomposition equivalence data for the one-point compactification model.
+
+This is the algebraic part of the homeomorphism construction, before proving
+continuity of the forward and inverse maps.
+-/
+structure ExtinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (_decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Type (u + 1) where
+  /-- The underlying equivalence with the one-point compactification model. -/
+  toEquiv :
+    M ≃ OnePoint (EuclideanSpace ℝ (Fin 3))
+
+/--
+Continuity data for a fixed-decomposition equivalence to the one-point
+compactification model.
+-/
+structure ExtinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (equivalenceData :
+      ExtinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition
+        M extinction decomposition) :
+    Prop where
+  /-- Continuity of the equivalence map. -/
+  continuous_toFun : Continuous equivalenceData.toEquiv
+  /-- Continuity of the inverse equivalence map. -/
+  continuous_invFun : Continuous equivalenceData.toEquiv.symm
+
+/--
+Selected fixed-decomposition equivalence data together with continuity for that
+same selected equivalence.
+
+This avoids choosing an equivalence from a `Nonempty` statement and then trying
+to prove continuity for whatever `Classical.choice` selected.
+-/
+structure ExtinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Type (u + 1) where
+  /-- The selected equivalence data. -/
+  equivalenceData :
+    ExtinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition
+      M extinction decomposition
+  /-- Continuity data for the selected equivalence. -/
+  continuityData :
+    ExtinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition
+      M extinction decomposition equivalenceData
+
+/--
+Raw forward/inverse map data for constructing the fixed-decomposition
+equivalence to the one-point compactification model.
+
+This exposes the map-level construction below the `Equiv` wrapper.
+-/
+structure ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (_decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Type (u + 1) where
+  /-- The forward map to the one-point compactification model. -/
+  toFun :
+    M → OnePoint (EuclideanSpace ℝ (Fin 3))
+  /-- The inverse map from the one-point compactification model. -/
+  invFun :
+    OnePoint (EuclideanSpace ℝ (Fin 3)) → M
+  /-- The inverse map is a left inverse to the forward map. -/
+  left_inv :
+    Function.LeftInverse invFun toFun
+  /-- The inverse map is a right inverse to the forward map. -/
+  right_inv :
+    Function.RightInverse invFun toFun
+
+/--
+Continuity data for raw forward/inverse maps used to construct the
+fixed-decomposition one-point equivalence.
+-/
+structure ExtinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition) :
+    Prop where
+  /-- Continuity of the forward map. -/
+  continuous_toFun : Continuous mapData.toFun
+  /-- Continuity of the inverse map. -/
+  continuous_invFun : Continuous mapData.invFun
+
+/--
+Forward-continuity data for the raw forward/inverse maps used to construct the
+fixed-decomposition one-point equivalence.
+
+The inverse continuity is recovered from compactness of the source and
+Hausdorffness of the one-point model once the inverse laws have made the maps
+an equivalence.
+-/
+structure ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition) :
+    Prop where
+  /-- Continuity of the forward map. -/
+  continuous_toFun : Continuous mapData.toFun
+
+/--
+Selected raw forward/inverse maps together with continuity for those exact
+maps.
+
+This is the witness-shaped source below the homeomorphism-construction
+payload: it fixes the algebraic inverse laws and the point-set continuity data
+before wrapping them as an equivalence or homeomorphism.
+-/
+structure ExtinctionOnePointThreeSpaceForwardInverseMapWithContinuityDataAfterDecomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Type (u + 1) where
+  /-- The selected raw forward/inverse maps and inverse laws. -/
+  mapData :
+    ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+      M extinction decomposition
+  /-- Continuity of the selected forward and inverse maps. -/
+  continuityData :
+    ExtinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition
+      M extinction decomposition mapData
+
+/--
+Raw forward-map data for the fixed-decomposition one-point compactification
+model.
+
+This isolates construction of the underlying function before proving continuity,
+injectivity, or surjectivity.
+-/
+structure ExtinctionOnePointThreeSpaceForwardMapDataAfterDecomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (_decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Type (u + 1) where
+  /-- The constructed forward map to the one-point compactification model. -/
+  toFun :
+    M → OnePoint (EuclideanSpace ℝ (Fin 3))
+
+/--
+Continuity data for a fixed raw forward map to the one-point model.
+-/
+structure ExtinctionOnePointThreeSpaceForwardMapContinuityDataAfterDecomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardMapDataAfterDecomposition
+        M extinction decomposition) :
+    Prop where
+  /-- The constructed raw forward map is continuous. -/
+  continuous_toFun : Continuous mapData.toFun
+
+/--
+Injectivity data for a fixed raw forward map to the one-point model.
+-/
+structure ExtinctionOnePointThreeSpaceForwardMapInjectivityDataAfterDecomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardMapDataAfterDecomposition
+        M extinction decomposition) :
+    Prop where
+  /-- The constructed raw forward map is injective. -/
+  injective_toFun : Function.Injective mapData.toFun
+
+/--
+Surjectivity data for a fixed raw forward map to the one-point model.
+-/
+structure ExtinctionOnePointThreeSpaceForwardMapSurjectivityDataAfterDecomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardMapDataAfterDecomposition
+        M extinction decomposition) :
+    Prop where
+  /-- The constructed raw forward map is surjective. -/
+  surjective_toFun : Function.Surjective mapData.toFun
+
+/--
+Continuous forward-map data for the fixed-decomposition one-point
+compactification model.
+
+This isolates construction of the continuous map before proving injectivity
+and surjectivity.
+-/
+structure ExtinctionOnePointThreeSpaceContinuousForwardMapDataAfterDecomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (_decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Type (u + 1) where
+  /-- The constructed forward map to the one-point compactification model. -/
+  toFun :
+    M → OnePoint (EuclideanSpace ℝ (Fin 3))
+  /-- Continuity of the constructed forward map. -/
+  continuous_toFun : Continuous toFun
+
+/--
+Raw forward-map data plus continuity supplies the continuous-forward-map
+payload.
+-/
+def extinctionOnePointThreeSpaceContinuousForwardMapDataAfterDecomposition_of_forwardMapData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardMapDataAfterDecomposition
+        M extinction decomposition)
+    (continuityData :
+      ExtinctionOnePointThreeSpaceForwardMapContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    ExtinctionOnePointThreeSpaceContinuousForwardMapDataAfterDecomposition
+      M extinction decomposition where
+  toFun := mapData.toFun
+  continuous_toFun := continuityData.continuous_toFun
+
+/-- Definitional equality for assembling continuous-forward-map data. -/
+theorem extinctionOnePointThreeSpaceContinuousForwardMapDataAfterDecomposition_of_forwardMapData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardMapDataAfterDecomposition
+        M extinction decomposition)
+    (continuityData :
+      ExtinctionOnePointThreeSpaceForwardMapContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    extinctionOnePointThreeSpaceContinuousForwardMapDataAfterDecomposition_of_forwardMapData
+        M extinction decomposition mapData continuityData =
+      { toFun := mapData.toFun,
+        continuous_toFun := continuityData.continuous_toFun } :=
+  rfl
+
+/--
+Injectivity data for a fixed continuous forward map to the one-point model.
+-/
+structure ExtinctionOnePointThreeSpaceContinuousForwardMapInjectivityDataAfterDecomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapDataAfterDecomposition
+        M extinction decomposition) :
+    Prop where
+  /-- The constructed forward map is injective. -/
+  injective_toFun : Function.Injective mapData.toFun
+
+/--
+Surjectivity data for a fixed continuous forward map to the one-point model.
+-/
+structure ExtinctionOnePointThreeSpaceContinuousForwardMapSurjectivityDataAfterDecomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapDataAfterDecomposition
+        M extinction decomposition) :
+    Prop where
+  /-- The constructed forward map is surjective. -/
+  surjective_toFun : Function.Surjective mapData.toFun
+
+/--
+Continuous forward-map data together with explicit injectivity and
+surjectivity proofs.
+
+This is the source below `Function.Bijective`: it separates the map
+construction from the two point-set facts needed to recover bijectivity.
+-/
+structure ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Type (u + 1) where
+  /-- The constructed continuous forward map. -/
+  mapData :
+    ExtinctionOnePointThreeSpaceContinuousForwardMapDataAfterDecomposition
+      M extinction decomposition
+  /-- Injectivity proof for the constructed forward map. -/
+  injectivityData :
+    ExtinctionOnePointThreeSpaceContinuousForwardMapInjectivityDataAfterDecomposition
+      M extinction decomposition mapData
+  /-- Surjectivity proof for the constructed forward map. -/
+  surjectivityData :
+    ExtinctionOnePointThreeSpaceContinuousForwardMapSurjectivityDataAfterDecomposition
+      M extinction decomposition mapData
+
+/--
+Raw forward-map data, continuity, injectivity, and surjectivity supply the
+continuous-map/injectivity/surjectivity payload while keeping all point-set
+proofs attached to the same selected raw map.
+-/
+def extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecomposition_of_forwardMapData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardMapDataAfterDecomposition
+        M extinction decomposition)
+    (continuityData :
+      ExtinctionOnePointThreeSpaceForwardMapContinuityDataAfterDecomposition
+        M extinction decomposition mapData)
+    (injectivityData :
+      ExtinctionOnePointThreeSpaceForwardMapInjectivityDataAfterDecomposition
+        M extinction decomposition mapData)
+    (surjectivityData :
+      ExtinctionOnePointThreeSpaceForwardMapSurjectivityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecomposition
+      M extinction decomposition where
+  mapData :=
+    extinctionOnePointThreeSpaceContinuousForwardMapDataAfterDecomposition_of_forwardMapData
+      M extinction decomposition mapData continuityData
+  injectivityData :=
+    { injective_toFun := injectivityData.injective_toFun }
+  surjectivityData :=
+    { surjective_toFun := surjectivityData.surjective_toFun }
+
+/-- Definitional equality for assembling continuous injective/surjective data. -/
+theorem extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecomposition_of_forwardMapData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardMapDataAfterDecomposition
+        M extinction decomposition)
+    (continuityData :
+      ExtinctionOnePointThreeSpaceForwardMapContinuityDataAfterDecomposition
+        M extinction decomposition mapData)
+    (injectivityData :
+      ExtinctionOnePointThreeSpaceForwardMapInjectivityDataAfterDecomposition
+        M extinction decomposition mapData)
+    (surjectivityData :
+      ExtinctionOnePointThreeSpaceForwardMapSurjectivityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecomposition_of_forwardMapData
+        M extinction decomposition mapData continuityData injectivityData surjectivityData =
+      { mapData :=
+          extinctionOnePointThreeSpaceContinuousForwardMapDataAfterDecomposition_of_forwardMapData
+            M extinction decomposition mapData continuityData,
+        injectivityData :=
+          { injective_toFun := injectivityData.injective_toFun },
+        surjectivityData :=
+          { surjective_toFun := surjectivityData.surjective_toFun } } :=
+  rfl
+
+/--
+Point-set data for a single selected raw forward map after an extinction
+decomposition is fixed.
+
+This packages construction, continuity, injectivity, and surjectivity together
+so downstream routes do not independently choose incompatible map witnesses.
+-/
+structure ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Type (u + 1) where
+  /-- The selected raw forward map. -/
+  mapData :
+    ExtinctionOnePointThreeSpaceForwardMapDataAfterDecomposition
+      M extinction decomposition
+  /-- Continuity proof for the selected raw forward map. -/
+  continuityData :
+    ExtinctionOnePointThreeSpaceForwardMapContinuityDataAfterDecomposition
+      M extinction decomposition mapData
+  /-- Injectivity proof for the selected raw forward map. -/
+  injectivityData :
+    ExtinctionOnePointThreeSpaceForwardMapInjectivityDataAfterDecomposition
+      M extinction decomposition mapData
+  /-- Surjectivity proof for the selected raw forward map. -/
+  surjectivityData :
+    ExtinctionOnePointThreeSpaceForwardMapSurjectivityDataAfterDecomposition
+      M extinction decomposition mapData
+
+/--
+Point-set proof data for a fixed selected raw forward map.
+
+This is the proof-only half below `ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition`:
+the raw map is supplied separately, and the continuity, injectivity, and
+surjectivity proofs are all attached to that same map.
+-/
+structure ExtinctionOnePointThreeSpaceForwardMapPointSetProofDataAfterDecomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardMapDataAfterDecomposition
+        M extinction decomposition) :
+    Prop where
+  /-- Continuity proof for the selected raw forward map. -/
+  continuityData :
+    ExtinctionOnePointThreeSpaceForwardMapContinuityDataAfterDecomposition
+      M extinction decomposition mapData
+  /-- Injectivity proof for the selected raw forward map. -/
+  injectivityData :
+    ExtinctionOnePointThreeSpaceForwardMapInjectivityDataAfterDecomposition
+      M extinction decomposition mapData
+  /-- Surjectivity proof for the selected raw forward map. -/
+  surjectivityData :
+    ExtinctionOnePointThreeSpaceForwardMapSurjectivityDataAfterDecomposition
+      M extinction decomposition mapData
+
+/--
+Raw forward-map data plus its bundled point-set proof data supply the point-set
+payload for that same selected map.
+-/
+def extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition_of_forwardMapData_and_pointSetProofData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardMapDataAfterDecomposition
+        M extinction decomposition)
+    (pointSetProofData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetProofDataAfterDecomposition
+        M extinction decomposition mapData) :
+    ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition
+      M extinction decomposition where
+  mapData := mapData
+  continuityData := pointSetProofData.continuityData
+  injectivityData := pointSetProofData.injectivityData
+  surjectivityData := pointSetProofData.surjectivityData
+
+/-- Definitional equality for assembling raw forward-map point-set data. -/
+theorem extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition_of_forwardMapData_and_pointSetProofData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardMapDataAfterDecomposition
+        M extinction decomposition)
+    (pointSetProofData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetProofDataAfterDecomposition
+        M extinction decomposition mapData) :
+    extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition_of_forwardMapData_and_pointSetProofData
+        M extinction decomposition mapData pointSetProofData =
+      { mapData := mapData,
+        continuityData := pointSetProofData.continuityData,
+        injectivityData := pointSetProofData.injectivityData,
+        surjectivityData := pointSetProofData.surjectivityData } :=
+  rfl
+
+/--
+Raw forward/inverse map data exposes the raw forward map datum.
+-/
+def extinctionOnePointThreeSpaceForwardMapDataAfterDecomposition_of_forwardInverseMapData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceForwardMapDataAfterDecomposition
+      M extinction decomposition where
+  toFun := mapData.toFun
+
+/-- Definitional equality for projecting raw forward-map data. -/
+theorem extinctionOnePointThreeSpaceForwardMapDataAfterDecomposition_of_forwardInverseMapData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition) :
+    extinctionOnePointThreeSpaceForwardMapDataAfterDecomposition_of_forwardInverseMapData
+        M extinction decomposition mapData =
+      { toFun := mapData.toFun } :=
+  rfl
+
+/--
+Forward-continuous raw forward/inverse maps supply the point-set proof data for
+the projected raw forward map. Continuity is stored directly; injectivity and
+surjectivity follow from the inverse laws.
+-/
+def extinctionOnePointThreeSpaceForwardMapPointSetProofDataAfterDecomposition_of_forwardInverseMapForwardContinuityData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    ExtinctionOnePointThreeSpaceForwardMapPointSetProofDataAfterDecomposition
+      M extinction decomposition
+      (extinctionOnePointThreeSpaceForwardMapDataAfterDecomposition_of_forwardInverseMapData
+        M extinction decomposition mapData) where
+  continuityData :=
+    { continuous_toFun := forwardContinuityData.continuous_toFun }
+  injectivityData :=
+    { injective_toFun := by
+        intro x y hxy
+        calc
+          x = mapData.invFun (mapData.toFun x) := (mapData.left_inv x).symm
+          _ = mapData.invFun (mapData.toFun y) := congrArg mapData.invFun hxy
+          _ = y := mapData.left_inv y }
+  surjectivityData :=
+    { surjective_toFun := by
+        intro y
+        exact ⟨mapData.invFun y, mapData.right_inv y⟩ }
+
+/-- Definitional equality for deriving point-set proofs from inverse laws. -/
+theorem extinctionOnePointThreeSpaceForwardMapPointSetProofDataAfterDecomposition_of_forwardInverseMapForwardContinuityData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    extinctionOnePointThreeSpaceForwardMapPointSetProofDataAfterDecomposition_of_forwardInverseMapForwardContinuityData
+        M extinction decomposition mapData forwardContinuityData =
+      { continuityData :=
+          { continuous_toFun := forwardContinuityData.continuous_toFun },
+        injectivityData :=
+          { injective_toFun := by
+              intro x y hxy
+              calc
+                x = mapData.invFun (mapData.toFun x) := (mapData.left_inv x).symm
+                _ = mapData.invFun (mapData.toFun y) := congrArg mapData.invFun hxy
+                _ = y := mapData.left_inv y },
+        surjectivityData :=
+          { surjective_toFun := by
+              intro y
+              exact ⟨mapData.invFun y, mapData.right_inv y⟩ } } :=
+  rfl
+
+/--
+Raw forward/inverse map data plus forward continuity supplies point-set data
+for the projected raw forward map.
+-/
+def extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition_of_forwardInverseMapData_and_forwardContinuityData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition
+      M extinction decomposition :=
+  extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition_of_forwardMapData_and_pointSetProofData
+    M extinction decomposition
+    (extinctionOnePointThreeSpaceForwardMapDataAfterDecomposition_of_forwardInverseMapData
+      M extinction decomposition mapData)
+    (extinctionOnePointThreeSpaceForwardMapPointSetProofDataAfterDecomposition_of_forwardInverseMapForwardContinuityData
+      M extinction decomposition mapData forwardContinuityData)
+
+/-- Definitional equality for the forward/inverse-map point-set route. -/
+theorem extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition_of_forwardInverseMapData_and_forwardContinuityData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition_of_forwardInverseMapData_and_forwardContinuityData
+        M extinction decomposition mapData forwardContinuityData =
+      extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition_of_forwardMapData_and_pointSetProofData
+        M extinction decomposition
+        (extinctionOnePointThreeSpaceForwardMapDataAfterDecomposition_of_forwardInverseMapData
+          M extinction decomposition mapData)
+        (extinctionOnePointThreeSpaceForwardMapPointSetProofDataAfterDecomposition_of_forwardInverseMapForwardContinuityData
+          M extinction decomposition mapData forwardContinuityData) :=
+  rfl
+
+/--
+Point-set data for one selected raw forward map supplies the combined
+continuous-map/injectivity/surjectivity payload.
+-/
+def extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecomposition_of_forwardMapPointSetData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecomposition
+      M extinction decomposition :=
+  extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecomposition_of_forwardMapData
+    M extinction decomposition
+    pointSetData.mapData
+    pointSetData.continuityData
+    pointSetData.injectivityData
+    pointSetData.surjectivityData
+
+/-- Definitional equality for the point-set forward-map route. -/
+theorem extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecomposition_of_forwardMapPointSetData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition
+        M extinction decomposition) :
+    extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecomposition_of_forwardMapPointSetData
+        M extinction decomposition pointSetData =
+      extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecomposition_of_forwardMapData
+        M extinction decomposition
+        pointSetData.mapData
+        pointSetData.continuityData
+        pointSetData.injectivityData
+        pointSetData.surjectivityData :=
+  rfl
+
+/--
+Continuous bijective forward-map data for the fixed-decomposition one-point
+compactification model.
+
+This isolates the forward map construction below the paired raw-map payload:
+the inverse map and inverse laws are recovered from bijectivity.
+-/
+structure ExtinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (_decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Type (u + 1) where
+  /-- The constructed forward map to the one-point compactification model. -/
+  toFun :
+    M → OnePoint (EuclideanSpace ℝ (Fin 3))
+  /-- Continuity of the constructed forward map. -/
+  continuous_toFun : Continuous toFun
+  /-- The constructed forward map is bijective. -/
+  bijective_toFun : Function.Bijective toFun
+
+/--
+Explicit continuous-map, injectivity, and surjectivity data supplies the
+continuous-bijective forward-map payload.
+-/
+def extinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition_of_continuousForwardMapInjectiveSurjectiveData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (injectiveSurjectiveData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition
+      M extinction decomposition where
+  toFun := injectiveSurjectiveData.mapData.toFun
+  continuous_toFun := injectiveSurjectiveData.mapData.continuous_toFun
+  bijective_toFun :=
+    ⟨injectiveSurjectiveData.injectivityData.injective_toFun,
+      injectiveSurjectiveData.surjectivityData.surjective_toFun⟩
+
+/-- Definitional equality for assembling a continuous-bijective map from split data. -/
+theorem extinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition_of_continuousForwardMapInjectiveSurjectiveData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (injectiveSurjectiveData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecomposition
+        M extinction decomposition) :
+    extinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition_of_continuousForwardMapInjectiveSurjectiveData
+        M extinction decomposition injectiveSurjectiveData =
+      { toFun := injectiveSurjectiveData.mapData.toFun,
+        continuous_toFun := injectiveSurjectiveData.mapData.continuous_toFun,
+        bijective_toFun :=
+          ⟨injectiveSurjectiveData.injectivityData.injective_toFun,
+            injectiveSurjectiveData.surjectivityData.surjective_toFun⟩ } :=
+  rfl
+
+/--
+Paired raw map data and forward-continuity data for the fixed-decomposition
+one-point compactification model.
+
+This is the witness-shaped source below the previous separated map and
+continuity statements: it asks for one constructed raw equivalence together
+with continuity of that constructed forward map.
+-/
+structure ExtinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Type (u + 1) where
+  /-- The chosen raw forward/inverse maps and inverse laws. -/
+  mapData :
+    ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+      M extinction decomposition
+  /-- Continuity of the chosen forward map. -/
+  forwardContinuityData :
+    ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+      M extinction decomposition mapData
+
+/--
+Raw forward/inverse map data together with forward continuity supplies paired
+forward-continuous map data.
+-/
+def extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition_of_forwardInverseMapData_and_forwardContinuityData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    ExtinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition
+      M extinction decomposition where
+  mapData := mapData
+  forwardContinuityData := forwardContinuityData
+
+/-- Definitional equality for assembling paired forward-continuous map data. -/
+theorem extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition_of_forwardInverseMapData_and_forwardContinuityData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition_of_forwardInverseMapData_and_forwardContinuityData
+        M extinction decomposition mapData forwardContinuityData =
+      { mapData := mapData,
+        forwardContinuityData := forwardContinuityData } :=
+  rfl
+
+/--
+Raw forward/inverse map data builds the fixed-decomposition equivalence data.
+-/
+def extinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition_of_forwardInverseMapData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition
+      M extinction decomposition where
+  toEquiv :=
+    { toFun := mapData.toFun
+      invFun := mapData.invFun
+      left_inv := mapData.left_inv
+      right_inv := mapData.right_inv }
+
+/-- Definitional equality for the forward/inverse-map-to-equivalence wrapper. -/
+theorem extinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition_of_forwardInverseMapData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition) :
+    extinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition_of_forwardInverseMapData
+        M extinction decomposition mapData =
+      { toEquiv :=
+          { toFun := mapData.toFun,
+            invFun := mapData.invFun,
+            left_inv := mapData.left_inv,
+            right_inv := mapData.right_inv } } :=
+  rfl
+
+/--
+Every fixed-decomposition equivalence data item exposes raw forward/inverse
+map data.
+-/
+def extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_of_equivalenceData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (equivalenceData :
+      ExtinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+      M extinction decomposition where
+  toFun := equivalenceData.toEquiv
+  invFun := equivalenceData.toEquiv.symm
+  left_inv := equivalenceData.toEquiv.left_inv
+  right_inv := equivalenceData.toEquiv.right_inv
+
+/-- Definitional equality for extracting raw maps from equivalence data. -/
+theorem extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_of_equivalenceData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (equivalenceData :
+      ExtinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition
+        M extinction decomposition) :
+    extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_of_equivalenceData
+        M extinction decomposition equivalenceData =
+      { toFun := equivalenceData.toEquiv,
+        invFun := equivalenceData.toEquiv.symm,
+        left_inv := equivalenceData.toEquiv.left_inv,
+        right_inv := equivalenceData.toEquiv.right_inv } :=
+  rfl
+
+/--
+Continuity data for a fixed-decomposition equivalence supplies forward
+continuity for the raw maps extracted from that same equivalence.
+-/
+def extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_of_equivalenceContinuityData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (equivalenceData :
+      ExtinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition
+        M extinction decomposition)
+    (continuityData :
+      ExtinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition
+        M extinction decomposition equivalenceData) :
+    ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+      M extinction decomposition
+      (extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_of_equivalenceData
+        M extinction decomposition equivalenceData) where
+  continuous_toFun := continuityData.continuous_toFun
+
+/--
+Definitional equality for extracting forward continuity from
+equivalence-continuity data.
+-/
+theorem extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_of_equivalenceContinuityData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (equivalenceData :
+      ExtinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition
+        M extinction decomposition)
+    (continuityData :
+      ExtinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition
+        M extinction decomposition equivalenceData) :
+    extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_of_equivalenceContinuityData
+        M extinction decomposition equivalenceData continuityData =
+      { continuous_toFun := continuityData.continuous_toFun } :=
+  rfl
+
+/--
+Equivalence data plus continuity data supplies paired forward-continuous map
+data for the raw maps extracted from that same equivalence.
+-/
+def extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition_of_equivalenceData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (equivalenceData :
+      ExtinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition
+        M extinction decomposition)
+    (continuityData :
+      ExtinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition
+        M extinction decomposition equivalenceData) :
+    ExtinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition
+      M extinction decomposition :=
+  extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition_of_forwardInverseMapData_and_forwardContinuityData
+    M extinction decomposition
+    (extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_of_equivalenceData
+      M extinction decomposition equivalenceData)
+    (extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_of_equivalenceContinuityData
+      M extinction decomposition equivalenceData continuityData)
+
+/--
+Definitional equality for constructing paired forward-continuous data from
+equivalence data and continuity data.
+-/
+theorem extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition_of_equivalenceData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (equivalenceData :
+      ExtinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition
+        M extinction decomposition)
+    (continuityData :
+      ExtinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition
+        M extinction decomposition equivalenceData) :
+    extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition_of_equivalenceData
+        M extinction decomposition equivalenceData continuityData =
+      extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition_of_forwardInverseMapData_and_forwardContinuityData
+        M extinction decomposition
+        (extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_of_equivalenceData
+          M extinction decomposition equivalenceData)
+        (extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_of_equivalenceContinuityData
+          M extinction decomposition equivalenceData continuityData) :=
+  rfl
+
+/--
+Continuity of raw forward/inverse maps supplies continuity for the equivalence
+they construct.
+-/
+def extinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition_of_forwardInverseMapContinuityData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (continuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    ExtinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition
+      M extinction decomposition
+      (extinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition_of_forwardInverseMapData
+        M extinction decomposition mapData) where
+  continuous_toFun := continuityData.continuous_toFun
+  continuous_invFun := continuityData.continuous_invFun
+
+/--
+Forward continuity of raw forward/inverse maps supplies full continuity data:
+the inverse is continuous because the maps form an equivalence from a compact
+space to the Hausdorff one-point compactification model.
+-/
+def extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuityData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    ExtinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition
+      M extinction decomposition mapData where
+  continuous_toFun := forwardContinuityData.continuous_toFun
+  continuous_invFun := by
+    letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+      onePoint_threeSpace_t2Space
+    let e : M ≃ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+      { toFun := mapData.toFun
+        invFun := mapData.invFun
+        left_inv := mapData.left_inv
+        right_inv := mapData.right_inv }
+    have he : Continuous e := by
+      simpa [e] using forwardContinuityData.continuous_toFun
+    change Continuous e.symm
+    exact he.continuous_symm_of_equiv_compact_to_t2
+
+/-- Definitional equality for the forward-continuity-to-full-continuity wrapper. -/
+theorem extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuityData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuityData
+        M extinction decomposition mapData forwardContinuityData =
+      { continuous_toFun := forwardContinuityData.continuous_toFun,
+        continuous_invFun := by
+          letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+            onePoint_threeSpace_t2Space
+          let e : M ≃ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+            { toFun := mapData.toFun
+              invFun := mapData.invFun
+              left_inv := mapData.left_inv
+              right_inv := mapData.right_inv }
+          have he : Continuous e := by
+            simpa [e] using forwardContinuityData.continuous_toFun
+          change Continuous e.symm
+          exact he.continuous_symm_of_equiv_compact_to_t2 } :=
+  rfl
+
+/-- Definitional equality for the raw-map-continuity-to-equivalence-continuity wrapper. -/
+theorem extinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition_of_forwardInverseMapContinuityData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (continuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    extinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition_of_forwardInverseMapContinuityData
+        M extinction decomposition mapData continuityData =
+      { continuous_toFun := continuityData.continuous_toFun,
+        continuous_invFun := continuityData.continuous_invFun } :=
+  rfl
+
+/--
+Forward continuity supplies full raw-map continuity via the compact-to-Hausdorff
+inverse-continuity theorem.
+-/
+theorem extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuityData_toFun
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    (extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuityData
+        M extinction decomposition mapData forwardContinuityData).continuous_toFun =
+      forwardContinuityData.continuous_toFun :=
+  rfl
+
+/--
+Paired forward-continuous map data exposes its raw forward/inverse map datum.
+-/
+def extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_of_forwardContinuousMapData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (forwardContinuousMapData :
+      ExtinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+      M extinction decomposition :=
+  forwardContinuousMapData.mapData
+
+/-- Definitional equality for projecting raw maps from paired forward-continuous map data. -/
+theorem extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_of_forwardContinuousMapData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (forwardContinuousMapData :
+      ExtinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition
+        M extinction decomposition) :
+    extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_of_forwardContinuousMapData
+        M extinction decomposition forwardContinuousMapData =
+      forwardContinuousMapData.mapData :=
+  rfl
+
+/--
+Paired forward-continuous map data exposes forward continuity for its chosen
+raw maps.
+-/
+def extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_of_forwardContinuousMapData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (forwardContinuousMapData :
+      ExtinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+      M extinction decomposition
+      (extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_of_forwardContinuousMapData
+        M extinction decomposition forwardContinuousMapData) :=
+  forwardContinuousMapData.forwardContinuityData
+
+/-- Definitional equality for projecting forward continuity from paired map data. -/
+theorem extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_of_forwardContinuousMapData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (forwardContinuousMapData :
+      ExtinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition
+        M extinction decomposition) :
+    extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_of_forwardContinuousMapData
+        M extinction decomposition forwardContinuousMapData =
+      forwardContinuousMapData.forwardContinuityData :=
+  rfl
+
+/--
+Paired forward-continuous map data supplies full continuity data for its chosen
+raw maps.
+-/
+def extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuousMapData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (forwardContinuousMapData :
+      ExtinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition
+      M extinction decomposition
+      (extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_of_forwardContinuousMapData
+        M extinction decomposition forwardContinuousMapData) :=
+  extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuityData
+    M extinction decomposition
+    (extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_of_forwardContinuousMapData
+      M extinction decomposition forwardContinuousMapData)
+    (extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_of_forwardContinuousMapData
+      M extinction decomposition forwardContinuousMapData)
+
+/-- Definitional equality for upgrading paired forward-continuous map data to full continuity. -/
+theorem extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuousMapData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (forwardContinuousMapData :
+      ExtinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition
+        M extinction decomposition) :
+    extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuousMapData
+        M extinction decomposition forwardContinuousMapData =
+      extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuityData
+        M extinction decomposition
+        (extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_of_forwardContinuousMapData
+          M extinction decomposition forwardContinuousMapData)
+        (extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_of_forwardContinuousMapData
+          M extinction decomposition forwardContinuousMapData) :=
+  rfl
+
+/--
+Raw forward/inverse map data together with continuity for those maps supplies
+the selected map-with-continuity payload.
+-/
+def extinctionOnePointThreeSpaceForwardInverseMapWithContinuityDataAfterDecomposition_of_forwardInverseMapData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (continuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    ExtinctionOnePointThreeSpaceForwardInverseMapWithContinuityDataAfterDecomposition
+      M extinction decomposition where
+  mapData := mapData
+  continuityData := continuityData
+
+/-- Definitional equality for bundling raw maps with continuity. -/
+theorem extinctionOnePointThreeSpaceForwardInverseMapWithContinuityDataAfterDecomposition_of_forwardInverseMapData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (continuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    extinctionOnePointThreeSpaceForwardInverseMapWithContinuityDataAfterDecomposition_of_forwardInverseMapData
+        M extinction decomposition mapData continuityData =
+      { mapData := mapData,
+        continuityData := continuityData } :=
+  rfl
+
+/--
+Forward continuity of raw forward/inverse maps supplies the selected
+map-with-continuity payload by deriving inverse continuity from the
+compact-to-Hausdorff theorem.
+-/
+def extinctionOnePointThreeSpaceForwardInverseMapWithContinuityDataAfterDecomposition_of_forwardContinuityData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    ExtinctionOnePointThreeSpaceForwardInverseMapWithContinuityDataAfterDecomposition
+      M extinction decomposition :=
+  extinctionOnePointThreeSpaceForwardInverseMapWithContinuityDataAfterDecomposition_of_forwardInverseMapData
+    M extinction decomposition mapData
+    (extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuityData
+      M extinction decomposition mapData forwardContinuityData)
+
+/-- Definitional equality for the forward-continuity-to-selected-continuity wrapper. -/
+theorem extinctionOnePointThreeSpaceForwardInverseMapWithContinuityDataAfterDecomposition_of_forwardContinuityData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    extinctionOnePointThreeSpaceForwardInverseMapWithContinuityDataAfterDecomposition_of_forwardContinuityData
+        M extinction decomposition mapData forwardContinuityData =
+      extinctionOnePointThreeSpaceForwardInverseMapWithContinuityDataAfterDecomposition_of_forwardInverseMapData
+        M extinction decomposition mapData
+        (extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuityData
+          M extinction decomposition mapData forwardContinuityData) :=
+  rfl
+
+/--
+Paired forward-continuous map data supplies selected forward/inverse maps with
+full continuity for those same maps.
+-/
+def extinctionOnePointThreeSpaceForwardInverseMapWithContinuityDataAfterDecomposition_of_forwardContinuousMapData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (forwardContinuousMapData :
+      ExtinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceForwardInverseMapWithContinuityDataAfterDecomposition
+      M extinction decomposition :=
+  extinctionOnePointThreeSpaceForwardInverseMapWithContinuityDataAfterDecomposition_of_forwardInverseMapData
+    M extinction decomposition
+    (extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_of_forwardContinuousMapData
+      M extinction decomposition forwardContinuousMapData)
+    (extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuousMapData
+      M extinction decomposition forwardContinuousMapData)
+
+/-- Definitional equality for projecting selected map-with-continuity data. -/
+theorem extinctionOnePointThreeSpaceForwardInverseMapWithContinuityDataAfterDecomposition_of_forwardContinuousMapData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (forwardContinuousMapData :
+      ExtinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition
+        M extinction decomposition) :
+    extinctionOnePointThreeSpaceForwardInverseMapWithContinuityDataAfterDecomposition_of_forwardContinuousMapData
+        M extinction decomposition forwardContinuousMapData =
+      extinctionOnePointThreeSpaceForwardInverseMapWithContinuityDataAfterDecomposition_of_forwardInverseMapData
+        M extinction decomposition
+        (extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_of_forwardContinuousMapData
+          M extinction decomposition forwardContinuousMapData)
+        (extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuousMapData
+          M extinction decomposition forwardContinuousMapData) :=
+  rfl
+
+/--
+Selected forward/inverse maps with continuity supply selected
+equivalence-with-continuity data for the same maps.
+-/
+def extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_of_forwardInverseMapWithContinuityData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (selectedMapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapWithContinuityDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition
+      M extinction decomposition where
+  equivalenceData :=
+    extinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition_of_forwardInverseMapData
+      M extinction decomposition selectedMapData.mapData
+  continuityData :=
+    extinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition_of_forwardInverseMapContinuityData
+      M extinction decomposition selectedMapData.mapData selectedMapData.continuityData
+
+/-- Definitional equality for the selected raw-map-to-equivalence wrapper. -/
+theorem extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_of_forwardInverseMapWithContinuityData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (selectedMapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapWithContinuityDataAfterDecomposition
+        M extinction decomposition) :
+    extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_of_forwardInverseMapWithContinuityData
+        M extinction decomposition selectedMapData =
+      { equivalenceData :=
+          extinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition_of_forwardInverseMapData
+            M extinction decomposition selectedMapData.mapData,
+        continuityData :=
+          extinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition_of_forwardInverseMapContinuityData
+            M extinction decomposition selectedMapData.mapData selectedMapData.continuityData } :=
+  rfl
+
+/--
+Paired forward-continuous map data supplies point-set data for the projected
+raw forward map.
+-/
+def extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition_of_forwardContinuousMapData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (forwardContinuousMapData :
+      ExtinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition
+      M extinction decomposition :=
+  extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition_of_forwardInverseMapData_and_forwardContinuityData
+    M extinction decomposition
+    (extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_of_forwardContinuousMapData
+      M extinction decomposition forwardContinuousMapData)
+    (extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_of_forwardContinuousMapData
+      M extinction decomposition forwardContinuousMapData)
+
+/-- Definitional equality for the paired forward-continuous map point-set route. -/
+theorem extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition_of_forwardContinuousMapData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (forwardContinuousMapData :
+      ExtinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition
+        M extinction decomposition) :
+    extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition_of_forwardContinuousMapData
+        M extinction decomposition forwardContinuousMapData =
+      extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition_of_forwardInverseMapData_and_forwardContinuityData
+        M extinction decomposition
+        (extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_of_forwardContinuousMapData
+          M extinction decomposition forwardContinuousMapData)
+        (extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_of_forwardContinuousMapData
+          M extinction decomposition forwardContinuousMapData) :=
+  rfl
+
+/--
+Equivalence data plus continuity data builds the fixed-decomposition
+homeomorphism-construction data.
+-/
+def extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_of_equivalenceData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (equivalenceData :
+      ExtinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition
+        M extinction decomposition)
+    (continuityData :
+      ExtinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition
+        M extinction decomposition equivalenceData) :
+    ExtinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
+      M extinction decomposition where
+  toEquiv := equivalenceData.toEquiv
+  continuous_toFun := continuityData.continuous_toFun
+  continuous_invFun := continuityData.continuous_invFun
+
+/--
+Raw forward/inverse map data plus continuity builds the fixed-decomposition
+homeomorphism-construction data.
+-/
+def extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_of_forwardInverseMapData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (continuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    ExtinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
+      M extinction decomposition where
+  toEquiv :=
+    { toFun := mapData.toFun
+      invFun := mapData.invFun
+      left_inv := mapData.left_inv
+      right_inv := mapData.right_inv }
+  continuous_toFun := continuityData.continuous_toFun
+  continuous_invFun := continuityData.continuous_invFun
+
+/--
+Paired forward-continuous map data builds the fixed-decomposition
+homeomorphism-construction data.
+-/
+def extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_of_forwardContinuousMapData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (forwardContinuousMapData :
+      ExtinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
+      M extinction decomposition :=
+  extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_of_forwardInverseMapData
+    M extinction decomposition
+    (extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_of_forwardContinuousMapData
+      M extinction decomposition forwardContinuousMapData)
+    (extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuousMapData
+      M extinction decomposition forwardContinuousMapData)
+
+/-- Definitional equality for constructing homeomorphism data from paired forward-continuous maps. -/
+theorem extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_of_forwardContinuousMapData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (forwardContinuousMapData :
+      ExtinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition
+        M extinction decomposition) :
+    extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_of_forwardContinuousMapData
+        M extinction decomposition forwardContinuousMapData =
+      extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_of_forwardInverseMapData
+        M extinction decomposition
+        (extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_of_forwardContinuousMapData
+          M extinction decomposition forwardContinuousMapData)
+        (extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuousMapData
+          M extinction decomposition forwardContinuousMapData) :=
+  rfl
+
+/-- Definitional equality for the raw-map-to-construction wrapper. -/
+theorem extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_of_forwardInverseMapData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (continuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_of_forwardInverseMapData
+        M extinction decomposition mapData continuityData =
+      { toEquiv :=
+          { toFun := mapData.toFun,
+            invFun := mapData.invFun,
+            left_inv := mapData.left_inv,
+            right_inv := mapData.right_inv },
+        continuous_toFun := continuityData.continuous_toFun,
+        continuous_invFun := continuityData.continuous_invFun } :=
+  rfl
+
+/--
+Selected forward/inverse maps with continuity build the fixed-decomposition
+homeomorphism-construction data.
+-/
+def extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_of_forwardInverseMapWithContinuityData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (selectedMapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapWithContinuityDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
+      M extinction decomposition :=
+  extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_of_forwardInverseMapData
+    M extinction decomposition selectedMapData.mapData selectedMapData.continuityData
+
+/-- Definitional equality for the selected raw-map-to-construction wrapper. -/
+theorem extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_of_forwardInverseMapWithContinuityData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (selectedMapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapWithContinuityDataAfterDecomposition
+        M extinction decomposition) :
+    extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_of_forwardInverseMapWithContinuityData
+        M extinction decomposition selectedMapData =
+      extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_of_forwardInverseMapData
+        M extinction decomposition selectedMapData.mapData selectedMapData.continuityData :=
+  rfl
+
+/-- Definitional equality for the equivalence-data-to-construction wrapper. -/
+theorem extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_of_equivalenceData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (equivalenceData :
+      ExtinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition
+        M extinction decomposition)
+    (continuityData :
+      ExtinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition
+        M extinction decomposition equivalenceData) :
+    extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_of_equivalenceData
+        M extinction decomposition equivalenceData continuityData =
+      { toEquiv := equivalenceData.toEquiv,
+        continuous_toFun := continuityData.continuous_toFun,
+        continuous_invFun := continuityData.continuous_invFun } :=
+  rfl
+
+/--
+Homeomorphism-construction data exposes its underlying equivalence data.
+-/
+def extinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition_of_constructionData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (constructionData :
+      ExtinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition
+      M extinction decomposition where
+  toEquiv := constructionData.toEquiv
+
+/-- Definitional equality for projecting equivalence data from construction data. -/
+theorem extinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition_of_constructionData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (constructionData :
+      ExtinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
+        M extinction decomposition) :
+    extinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition_of_constructionData
+        M extinction decomposition constructionData =
+      { toEquiv := constructionData.toEquiv } :=
+  rfl
+
+/--
+Homeomorphism-construction data exposes continuity for the equivalence data
+projected from that same construction payload.
+-/
+def extinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition_of_constructionData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (constructionData :
+      ExtinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition
+      M extinction decomposition
+      (extinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition_of_constructionData
+        M extinction decomposition constructionData) where
+  continuous_toFun := constructionData.continuous_toFun
+  continuous_invFun := constructionData.continuous_invFun
+
+/-- Definitional equality for projecting equivalence continuity from construction data. -/
+theorem extinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition_of_constructionData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (constructionData :
+      ExtinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
+        M extinction decomposition) :
+    extinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition_of_constructionData
+        M extinction decomposition constructionData =
+      { continuous_toFun := constructionData.continuous_toFun,
+        continuous_invFun := constructionData.continuous_invFun } :=
+  rfl
+
+/--
+Homeomorphism-construction data supplies a selected equivalence together with
+continuity for that exact equivalence.
+-/
+def extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_of_constructionData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (constructionData :
+      ExtinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition
+      M extinction decomposition where
+  equivalenceData :=
+    extinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition_of_constructionData
+      M extinction decomposition constructionData
+  continuityData :=
+    extinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition_of_constructionData
+      M extinction decomposition constructionData
+
+/-- Definitional equality for extracting selected equivalence-with-continuity data. -/
+theorem extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_of_constructionData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (constructionData :
+      ExtinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
+        M extinction decomposition) :
+    extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_of_constructionData
+        M extinction decomposition constructionData =
+      { equivalenceData :=
+          extinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition_of_constructionData
+            M extinction decomposition constructionData,
+        continuityData :=
+          extinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition_of_constructionData
+            M extinction decomposition constructionData } :=
+  rfl
+
+/--
+Selected equivalence-with-continuity data exposes its equivalence witness.
+-/
+def extinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition_of_equivalenceWithContinuityData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (selectedData :
+      ExtinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition
+      M extinction decomposition :=
+  selectedData.equivalenceData
+
+/-- Definitional equality for projecting the selected equivalence witness. -/
+theorem extinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition_of_equivalenceWithContinuityData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (selectedData :
+      ExtinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition
+        M extinction decomposition) :
+    extinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition_of_equivalenceWithContinuityData
+        M extinction decomposition selectedData =
+      selectedData.equivalenceData :=
+  rfl
+
+/--
+Selected equivalence-with-continuity data exposes continuity for its selected
+equivalence witness.
+-/
+def extinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition_of_equivalenceWithContinuityData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (selectedData :
+      ExtinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition
+      M extinction decomposition
+      (extinctionOnePointThreeSpaceEquivalenceDataAfterDecomposition_of_equivalenceWithContinuityData
+        M extinction decomposition selectedData) :=
+  selectedData.continuityData
+
+/-- Definitional equality for projecting selected equivalence continuity. -/
+theorem extinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition_of_equivalenceWithContinuityData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (selectedData :
+      ExtinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition
+        M extinction decomposition) :
+    extinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition_of_equivalenceWithContinuityData
+        M extinction decomposition selectedData =
+      selectedData.continuityData :=
+  rfl
+
+/--
+Selected equivalence-with-continuity data builds the fixed-decomposition
+homeomorphism-construction data.
+-/
+def extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_of_equivalenceWithContinuityData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (selectedData :
+      ExtinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
+      M extinction decomposition :=
+  extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_of_equivalenceData
+    M extinction decomposition selectedData.equivalenceData
+    selectedData.continuityData
+
+/-- Definitional equality for rebuilding construction data from selected equivalence data. -/
+theorem extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_of_equivalenceWithContinuityData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (selectedData :
+      ExtinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition
+        M extinction decomposition) :
+    extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_of_equivalenceWithContinuityData
+        M extinction decomposition selectedData =
+      extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_of_equivalenceData
+        M extinction decomposition selectedData.equivalenceData
+        selectedData.continuityData :=
+  rfl
+
+/--
+Selected equivalence-with-continuity data supplies paired forward-continuous
+map data for the same selected equivalence.
+-/
+def extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition_of_equivalenceWithContinuityData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (selectedData :
+      ExtinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition
+      M extinction decomposition :=
+  extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition_of_equivalenceData
+    M extinction decomposition selectedData.equivalenceData
+    selectedData.continuityData
+
+/--
+Definitional equality for constructing paired forward-continuous map data from
+selected equivalence-with-continuity data.
+-/
+theorem extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition_of_equivalenceWithContinuityData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (selectedData :
+      ExtinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition
+        M extinction decomposition) :
+    extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition_of_equivalenceWithContinuityData
+        M extinction decomposition selectedData =
+      extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition_of_equivalenceData
+        M extinction decomposition selectedData.equivalenceData
+        selectedData.continuityData :=
+  rfl
+
+/--
+The elementary fixed-decomposition construction data builds the concrete
+one-point compactification homeomorphism datum.
+-/
+def extinctionOnePointThreeSpaceHomeomorphismDataAfterDecomposition_of_constructionData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (constructionData :
+      ExtinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
+        M extinction decomposition) :
+  ExtinctionOnePointThreeSpaceHomeomorphismDataAfterDecomposition
+      M extinction decomposition :=
+  ⟨{ toFun := constructionData.toEquiv,
+      invFun := constructionData.toEquiv.symm,
+      left_inv := constructionData.toEquiv.left_inv,
+      right_inv := constructionData.toEquiv.right_inv,
+      continuous_toFun := constructionData.continuous_toFun,
+      continuous_invFun := constructionData.continuous_invFun }⟩
+
+/-- Definitional equality for the construction-data-to-homeomorphism wrapper. -/
+theorem extinctionOnePointThreeSpaceHomeomorphismDataAfterDecomposition_of_constructionData_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (constructionData :
+      ExtinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
+        M extinction decomposition) :
+    extinctionOnePointThreeSpaceHomeomorphismDataAfterDecomposition_of_constructionData
+        M extinction decomposition constructionData =
+      ⟨{ toFun := constructionData.toEquiv,
+          invFun := constructionData.toEquiv.symm,
+          left_inv := constructionData.toEquiv.left_inv,
+          right_inv := constructionData.toEquiv.right_inv,
+          continuous_toFun := constructionData.continuous_toFun,
+          continuous_invFun := constructionData.continuous_invFun }⟩ :=
+  rfl
+
+/--
+Concrete fixed-decomposition homeomorphism data supplies the propositional
+fixed-decomposition one-point recognition payload.
+-/
+theorem extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_homeomorphismData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (homeomorphismData :
+      ExtinctionOnePointThreeSpaceHomeomorphismDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceRecognitionDataAfterDecomposition
+      M extinction decomposition :=
+  ⟨⟨homeomorphismData.homeomorphism⟩⟩
+
+/--
+Forgetting the fixed decomposition turns decomposition-indexed one-point
+recognition payload into finite-extinction one-point recognition payload.
+-/
+theorem extinctionOnePointThreeSpaceRecognitionData_of_afterDecompositionData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (recognizeData :
+      ExtinctionOnePointThreeSpaceRecognitionDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceRecognitionData M extinction :=
+  ⟨recognizeData.homeomorphism⟩
+
+/--
+Raw finite-extinction certificate that a reconstructed topological surgery
+trace realizes a fixed post-extinction decomposition.
+-/
+inductive ExtinctionSurgeryTraceRealization
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (_decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (_traceStage : Type u) : Prop
+
+/--
+Explicit payload reconstructing the topological surgery trace represented by
+the post-extinction decomposition.
+
+The finite trace-stage index records the discrete surgery trace being
+reconstructed, and the realization certificate is the production proof that it
+matches the fixed extinction decomposition.
+-/
+structure ExtinctionSurgeryTraceReconstructionData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Type (u + 1) where
+  /-- The finite sequence of topological surgery-trace stages. -/
+  traceStage : Type u
+  /-- The reconstructed surgery trace has finitely many stages. -/
+  finiteTraceStage : Fintype traceStage
+  /-- Certificate that the trace stages realize the fixed decomposition. -/
+  realization :
+    ExtinctionSurgeryTraceRealization M extinction decomposition traceStage
 
 /--
 Interface reconstructing the topological surgery trace represented by the
@@ -22730,58 +25016,808 @@ inductive HasExtinctionSurgeryTraceReconstruction
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
-    (_decomposition : HasExtinctionTopologyDecomposition M extinction) : Prop
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Certified finite surgery-trace data inhabits the interface. -/
+  | ofData :
+      ExtinctionSurgeryTraceReconstructionData
+        M extinction decomposition →
+      HasExtinctionSurgeryTraceReconstruction M extinction decomposition
 
 /--
-Interface for canceling the topological handles recorded by the surgery trace.
+Named production payload for the final homeomorphism to the standard 3-sphere.
+
+This is the project-owned data wrapper immediately before the raw
+`Nonempty (M ≃ₜ ThreeSphere)` package field.
 -/
-inductive HasExtinctionSurgeryTraceHandleCancellation
+structure FinalHomeomorphismPayloadData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (_decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- The final homeomorphism witness consumed by the package field. -/
+  homeomorphism : Nonempty (M ≃ₜ ThreeSphere)
+
+/--
+Named production datum for the explicit construction of the final
+homeomorphism to the standard 3-sphere.
+
+The witness carries the final homeomorphism payload required before the
+package can expose the raw `Nonempty (M ≃ₜ ThreeSphere)` field.
+-/
+structure FinalHomeomorphismConstructionData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Final homeomorphism payload used by the package extraction field. -/
+  finalHomeomorphismPayloadData :
+    FinalHomeomorphismPayloadData M extinction decomposition
+
+/--
+Named production datum for extracting the final homeomorphism from the simply
+connected recognition step.
+
+The witness carries the final homeomorphism-construction datum consumed before
+the package can expose the raw `Nonempty (M ≃ₜ ThreeSphere)` field.
+-/
+structure ExtractHomeomorphismData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Final homeomorphism construction used by the package extraction field. -/
+  finalHomeomorphismConstructionData :
+    FinalHomeomorphismConstructionData M extinction decomposition
+
+/--
+Named production datum for the simply connected extinction recognition step
+after the spherical homeomorphism has been lifted.
+
+The witness carries the homeomorphism-extraction datum consumed by the next
+topology-package field, so simply connected recognition records the final
+homeomorphism input it exposes.
+-/
+structure SimplyConnectedExtinctionRecognitionData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Homeomorphism-extraction datum used after simply connected recognition. -/
+  extractHomeomorphismData :
+    ExtractHomeomorphismData M extinction decomposition
+
+/--
+Named production datum lifting the final homeomorphism through the trivial
+spherical quotient.
+
+The witness carries the simply connected recognition datum consumed by the
+next topology-package field, so the lift records the recognition input it
+exposes.
+-/
+structure SphericalSpaceFormHomeomorphismLiftData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Simply connected extinction recognition used after the lift. -/
+  simplyConnectedExtinctionRecognitionData :
+    SimplyConnectedExtinctionRecognitionData M extinction decomposition
+
+/--
+Named production datum turning the trivial spherical quotient into the
+homeomorphism used by the final quotient route.
+
+The witness carries the homeomorphism-lift datum consumed by the next
+topology-package field, so the trivial quotient homeomorphism records the
+lift input it exposes.
+-/
+structure SphericalSpaceFormTrivialQuotientHomeomorphismData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Homeomorphism lift used after the trivial quotient homeomorphism. -/
+  sphericalSpaceFormHomeomorphismLiftData :
+    SphericalSpaceFormHomeomorphismLiftData
+      M extinction decomposition
+
+/--
+Named production datum turning the trivial deck quotient identification into
+the trivial spherical-space-form quotient used by the final homeomorphism route.
+
+The witness carries the trivial-quotient-homeomorphism datum consumed by the
+next topology-package field, so the trivial quotient records the final
+quotient homeomorphism input it exposes.
+-/
+structure TrivialSphericalSpaceFormQuotientData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Trivial quotient homeomorphism used after the trivial spherical quotient. -/
+  sphericalSpaceFormTrivialQuotientHomeomorphismData :
+    SphericalSpaceFormTrivialQuotientHomeomorphismData
+      M extinction decomposition
+
+/--
+Named production datum identifying the quotient by a trivial deck action with
+the covering space itself.
+
+The witness carries the trivial-spherical-quotient datum consumed by the next
+topology-package field, so quotient identification records the trivial
+quotient input it exposes.
+-/
+structure SphericalSpaceFormTrivialDeckQuotientIdentificationData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Trivial spherical quotient used after trivial-deck-quotient identification. -/
+  trivialSphericalSpaceFormQuotientData :
+    TrivialSphericalSpaceFormQuotientData M extinction decomposition
+
+/--
+Named production datum for trivializing the deck action after deck-group
+triviality has been established.
+
+The witness carries the quotient-identification datum consumed by the next
+topology-package field, so deck-action trivialization records the trivial
+quotient identification it exposes.
+-/
+structure SphericalSpaceFormDeckActionTrivializationData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Trivial-deck-quotient identification used after action trivialization. -/
+  sphericalSpaceFormTrivialDeckQuotientIdentificationData :
+    SphericalSpaceFormTrivialDeckQuotientIdentificationData
+      M extinction decomposition
+
+/--
+Named production datum for ruling out nontrivial deck groups/quotients in the
+simply connected spherical-space-form case.
+
+The witness carries the deck-action-trivialization datum consumed by the next
+topology-package field, so deck-group triviality records the action
+trivialization it exposes.
+-/
+structure SphericalSpaceFormDeckGroupTrivialityData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Deck-action trivialization used after deck-group triviality. -/
+  sphericalSpaceFormDeckActionTrivializationData :
+    SphericalSpaceFormDeckActionTrivializationData M extinction decomposition
+
+/--
+Named production datum for proper discontinuity and freeness of the spherical
+space-form deck action.
+
+The witness carries the deck-group-triviality datum consumed by the next
+topology-package field, so deck-action properness records the triviality
+input it exposes.
+-/
+structure SphericalSpaceFormDeckActionPropernessData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Deck-group triviality used after deck-action properness. -/
+  sphericalSpaceFormDeckGroupTrivialityData :
+    SphericalSpaceFormDeckGroupTrivialityData M extinction decomposition
+
+/--
+Named production datum identifying the spherical-space-form deck group with
+the computed fundamental group.
+
+The witness carries the deck-action-properness datum consumed by the next
+topology-package field, so the deck-group identification records the action
+properness it exposes.
+-/
+structure SphericalSpaceFormDeckGroupIdentificationData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Deck-action properness used after deck-group identification. -/
+  sphericalSpaceFormDeckActionPropernessData :
+    SphericalSpaceFormDeckActionPropernessData M extinction decomposition
+
+/--
+Named production datum for computing the fundamental group of the spherical
+space form pieces arising after the extinction reduction.
+
+The witness carries the deck-group-identification datum consumed by the next
+topology-package field, so the computation records the deck-group
+identification it exposes.
+-/
+structure SphericalSpaceFormFundamentalGroupComputationData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Deck-group identification used after the fundamental-group computation. -/
+  sphericalSpaceFormDeckGroupIdentificationData :
+    SphericalSpaceFormDeckGroupIdentificationData M extinction decomposition
+
+/--
+Named production datum for the covering projection from the universal cover
+to the spherical quotient.
+
+The witness carries the fundamental-group computation datum consumed by the
+next topology-package field, so the covering projection records the
+fundamental-group computation it exposes.
+-/
+structure SphericalSpaceFormCoveringProjectionData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Fundamental-group computation used after the spherical covering projection. -/
+  sphericalSpaceFormFundamentalGroupComputationData :
+    SphericalSpaceFormFundamentalGroupComputationData M extinction decomposition
+
+/--
+Named production datum for identifying the quotient and universal-cover data
+as a covering model of the spherical space form.
+
+The witness carries the covering-projection datum consumed by the next
+topology-package field, so the covering model records the projection it
+exposes.
+-/
+structure SphericalSpaceFormCoveringModelData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Covering-projection datum used after the spherical covering model. -/
+  sphericalSpaceFormCoveringProjectionData :
+    SphericalSpaceFormCoveringProjectionData M extinction decomposition
+
+/--
+Named production datum for identifying the spherical space form universal
+cover with the standard 3-sphere.
+
+The witness carries the covering-model datum consumed by the next
+topology-package field, so the universal-cover identification records the
+covering model it exposes.
+-/
+structure SphericalSpaceFormUniversalCoverData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Covering-model datum used after the spherical universal cover. -/
+  sphericalSpaceFormCoveringModelData :
+    SphericalSpaceFormCoveringModelData M extinction decomposition
+
+/--
+Named production datum for realizing the spherical quotient model as a free
+action on the sphere.
+
+The witness carries the universal-cover datum consumed by the next
+topology-package field, so the free action records the standard-cover
+identification it exposes.
+-/
+structure SphericalSpaceFormFreeActionData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Universal-cover datum used after the spherical free action. -/
+  sphericalSpaceFormUniversalCoverData :
+    SphericalSpaceFormUniversalCoverData M extinction decomposition
+
+/--
+Named production datum for identifying the spherical quotient model after
+spherical-space-form classification.
+
+The witness carries the free-action datum consumed by the next topology-package
+field, so the quotient model records the free action it exposes.
+-/
+structure SphericalSpaceFormQuotientModelData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Free-action datum used after the spherical quotient model. -/
+  sphericalSpaceFormFreeActionData :
+    SphericalSpaceFormFreeActionData M extinction decomposition
+
+/--
+Named production datum for applying the spherical-space-form classification
+theorem after the extinction reduction.
+
+The witness carries the quotient-model datum consumed by the next
+topology-package field, so classification records the quotient model it
+exposes.
+-/
+structure SphericalSpaceFormClassificationData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Quotient-model datum used after spherical-space-form classification. -/
+  sphericalSpaceFormQuotientModelData :
+    SphericalSpaceFormQuotientModelData M extinction decomposition
+
+/--
+Named production datum for reducing the finite-extinction pieces to spherical
+space forms.
+
+The witness carries the spherical-space-form classification datum consumed by
+the next topology-package field, so the reduction records the classification
+input it exposes.
+-/
+structure ExtinctionSphericalSpaceFormReductionData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Classification datum used after spherical-space-form reduction. -/
+  sphericalSpaceFormClassificationData :
+    SphericalSpaceFormClassificationData M extinction decomposition
+
+/--
+Named production datum for forcing the surviving prime factor to be simply
+connected after the connected-sum van Kampen computation.
+
+The witness carries the spherical-space-form reduction datum consumed by the
+next topology-package field, so simply-connected-prime-factor control records
+the reduction it exposes.
+-/
+structure ExtinctionSimplyConnectedPrimeFactorControlData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Spherical-space-form reduction datum used after prime-factor control. -/
+  sphericalSpaceFormReductionData :
+    ExtinctionSphericalSpaceFormReductionData M extinction decomposition
+
+/--
+Named production datum for the van Kampen computation of the connected-sum
+fundamental group selected by the extinction topology.
+
+The witness carries the simply-connected-prime-factor control datum consumed
+by the next topology-package field, so the van Kampen calculation records the
+surviving-prime control it exposes.
+-/
+structure ExtinctionConnectedSumVanKampenCalculationData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Simply-connected-prime-factor datum used after van Kampen calculation. -/
+  simplyConnectedPrimeFactorControlData :
+    ExtinctionSimplyConnectedPrimeFactorControlData M extinction decomposition
+
+/--
+Named production datum for controlling fundamental groups under the
+connected-sum collapse selected by the extinction topology.
+
+The witness carries the van Kampen calculation datum consumed by the next
+topology-package field, so fundamental-group control records the calculation
+it exposes.
+-/
+structure ExtinctionConnectedSumFundamentalGroupControlData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Van Kampen calculation datum used after fundamental-group control. -/
+  connectedSumVanKampenCalculationData :
+    ExtinctionConnectedSumVanKampenCalculationData M extinction decomposition
+
+/--
+Named production datum for collapsing the connected-sum decomposition selected
+by the extinction topology.
+
+The witness carries the fundamental-group-control datum consumed by the next
+topology-package field, so connected-sum collapse records the group-control
+theorem it exposes.
+-/
+structure ExtinctionConnectedSumCollapseData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Fundamental-group-control datum used after connected-sum collapse. -/
+  connectedSumFundamentalGroupControlData :
+    ExtinctionConnectedSumFundamentalGroupControlData M extinction decomposition
+
+/--
+Named production datum for recognizing the irreducible prime factors selected
+by the extinction decomposition.
+
+The witness carries the connected-sum collapse datum consumed by the next
+topology-package field, so irreducible-factor recognition records the collapse
+theorem it exposes.
+-/
+structure ExtinctionIrreducibleFactorRecognitionData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Connected-sum collapse datum used after irreducible-factor recognition. -/
+  connectedSumCollapseData :
+    ExtinctionConnectedSumCollapseData M extinction decomposition
+
+/--
+Named production datum for the irreducibility theorem applied to the prime
+pieces selected by the extinction decomposition.
+
+The witness carries the irreducible-factor recognition datum consumed by the
+next topology-package field, so irreducibility records the recognition theorem
+it exposes.
+-/
+structure ExtinctionIrreducibilityData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Irreducible-factor recognition datum used after irreducibility. -/
+  irreducibleFactorRecognitionData :
+    ExtinctionIrreducibleFactorRecognitionData M extinction decomposition
+
+/--
+Named production datum for uniqueness of the prime factors selected by the
+extinction prime decomposition.
+
+The witness carries the irreducibility datum consumed by the next
+topology-package field, so prime-factor uniqueness records the irreducibility
+theorem it exposes.
+-/
+structure ExtinctionPrimeFactorUniquenessData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Irreducibility datum used after prime-factor uniqueness. -/
+  irreducibilityData :
+    ExtinctionIrreducibilityData M extinction decomposition
+
+/--
+Named production datum for compatibility and uniqueness of the prime
+decomposition selected by extinction topology.
+
+The witness carries the prime-factor uniqueness datum consumed by the next
+topology package field, so compatibility records the uniqueness theorem it
+exposes.
+-/
+structure ExtinctionPrimeDecompositionCompatibilityData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Prime-factor uniqueness datum used after compatibility is established. -/
+  primeFactorUniquenessData :
+    ExtinctionPrimeFactorUniquenessData M extinction decomposition
+
+/--
+Named production datum for applying the loop theorem to control compressions
+in the prime-decomposition cuts.
+
+The witness carries the prime-decomposition compatibility datum consumed by
+the next topology package field, so loop-theorem application records the
+compatibility theorem it exposes.
+-/
+structure ExtinctionLoopTheoremApplicationData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Prime-decomposition compatibility datum used after loop-theorem application. -/
+  primeDecompositionCompatibilityData :
+    ExtinctionPrimeDecompositionCompatibilityData M extinction decomposition
+
+/--
+Named production datum for producing embedded spheres realizing the
+prime-decomposition cuts.
+
+The witness carries the loop-theorem datum consumed by the next topology
+package field, so embedded-sphere production records the compression-control
+theorem it exposes.
+-/
+structure ExtinctionEmbeddedSphereProductionData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Loop-theorem datum used after embedded sphere production. -/
+  loopTheoremApplicationData :
+    ExtinctionLoopTheoremApplicationData M extinction decomposition
+
+/--
+Named production datum for the sphere-theorem input used to extract prime
+factors from the extinction topology.
+
+The witness carries the embedded-sphere-production datum consumed by the next
+topology-package field, so the sphere-theorem application records the cut
+spheres it produces.
+-/
+structure ExtinctionSphereTheoremApplicationData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Embedded-sphere production datum used after the sphere-theorem input. -/
+  embeddedSphereProductionData :
+    ExtinctionEmbeddedSphereProductionData M extinction decomposition
+
+/--
+Named production datum for the existence theorem backing the
+prime/connected-sum decomposition extracted from extinction topology.
+
+The witness carries the sphere-theorem datum consumed by the next
+topology-package field, so prime-decomposition existence records the theorem
+input used to extract the prime factors.
+-/
+structure ExtinctionPrimeDecompositionExistenceData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Sphere-theorem datum used after prime decomposition exists. -/
+  sphereTheoremApplicationData :
+    ExtinctionSphereTheoremApplicationData M extinction decomposition
+
+/--
+Interface for extracting a prime/connected-sum decomposition from the
+post-extinction topology data.
+
+The witness carries the existence datum consumed by the next topology-package
+field, so the prime-decomposition interface records the theorem establishing
+that the decomposition exists.
+-/
+structure HasExtinctionPrimeDecomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Existence datum for this prime/connected-sum decomposition. -/
+  primeDecompositionExistenceData :
+    ExtinctionPrimeDecompositionExistenceData M extinction decomposition
+
+/--
+Named production datum for the 3-sphere recognition/classification theorem
+needed after the extinction decomposition is known.
+
+The witness carries the prime-decomposition family consumed by the next
+topology-package field, so package-level recognition records the topological
+decomposition theorem it exposes.
+-/
+structure ThreeSphereRecognitionData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M] : Prop where
+  /-- Prime decomposition data for every finite-extinction decomposition of `M`. -/
+  primeDecomposition :
+    ∀ (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+      (decomposition : HasExtinctionTopologyDecomposition M extinction),
+        HasExtinctionPrimeDecomposition M extinction decomposition
+
+/--
+Named production datum for proving that boundary components in the extinction
+inventory are spheres.
+
+The witness carries the 3-sphere recognition data used by the next topology
+package field, so boundary-sphere control records the recognition theorem it
+feeds into.
+-/
+structure ExtinctionComponentBoundarySphereControlData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (_decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Recognition data for the manifold underlying this extinction boundary control. -/
+  threeSphereRecognitionData : ThreeSphereRecognitionData M
+
+/--
+Named production datum for inventorying extinction components before
+prime-factor recognition.
+
+The witness carries the boundary-sphere-control data used by the next topology
+package field, so component inventory records the boundary control it exposes.
+-/
+structure ExtinctionComponentInventoryData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Boundary-sphere-control data recorded by the component inventory. -/
+  componentBoundarySphereControlData :
+    ExtinctionComponentBoundarySphereControlData M extinction decomposition
+
+/--
+Named production datum for identifying discarded extinction components up to
+homeomorphism.
+
+The witness carries the component-inventory data used by the next topology
+package field, so the discarded-component classification is tied to the
+inventory it records.
+-/
+structure ExtinctionDiscardedComponentHomeomorphismClassificationData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Component-inventory data recorded by the discarded-component classification. -/
+  componentInventoryData :
+    ExtinctionComponentInventoryData M extinction decomposition
+
+/--
+Interface for classifying the topological components produced at extinction.
+
+The witness carries the discarded-component homeomorphism data used by the next
+topology-package field, so component classification is a real production datum
+rather than a detached marker.
+-/
+structure HasExtinctionComponentClassification
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- Homeomorphism classification data for components discarded at extinction. -/
+  discardedComponentHomeomorphismClassificationData :
+    ExtinctionDiscardedComponentHomeomorphismClassificationData
+      M extinction decomposition
+
+/--
+Explicit payload for canceling the handles recorded by a reconstructed surgery
+trace.
+
+The present topology interface records the component-classification output
+produced by cancellation. Keeping this as a separate datum prevents the handle
+cancellation field from becoming true for an arbitrary reconstructed trace:
+finite extinction must still supply this trace-indexed cancellation payload.
+-/
+structure ExtinctionSurgeryTraceHandleCancellationData
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
     (decomposition : HasExtinctionTopologyDecomposition M extinction)
     (_surgeryTrace :
-      HasExtinctionSurgeryTraceReconstruction M extinction decomposition) : Prop
+      HasExtinctionSurgeryTraceReconstruction M extinction decomposition) :
+    Prop where
+  /-- Component classification produced by canceling the reconstructed trace. -/
+  componentClassification :
+    HasExtinctionComponentClassification M extinction decomposition
 
 /--
-Interface for classifying the topological components produced at extinction.
+Interface for canceling the topological handles recorded by the surgery trace.
+
+The witness carries the component-classification datum produced after the
+reconstructed trace has been simplified, so the cancellation field is not a
+standalone marker detached from the next topology-package field.
 -/
-inductive HasExtinctionComponentClassification
+structure HasExtinctionSurgeryTraceHandleCancellation
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
-    (_decomposition : HasExtinctionTopologyDecomposition M extinction) : Prop
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (_surgeryTrace :
+      HasExtinctionSurgeryTraceReconstruction M extinction decomposition) :
+    Prop where
+  /-- Component classification produced by canceling the reconstructed trace. -/
+  componentClassification :
+    HasExtinctionComponentClassification M extinction decomposition
 
 /--
 Interface for identifying discarded extinction components up to homeomorphism.
 -/
-inductive HasExtinctionDiscardedComponentHomeomorphismClassification
+structure HasExtinctionDiscardedComponentHomeomorphismClassification
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
     (decomposition : HasExtinctionTopologyDecomposition M extinction)
     (_componentClassification :
-      HasExtinctionComponentClassification M extinction decomposition) : Prop
+      HasExtinctionComponentClassification M extinction decomposition) :
+    Prop where
+  /-- The discarded-component homeomorphism data stored by component classification. -/
+  data :
+    ExtinctionDiscardedComponentHomeomorphismClassificationData
+      M extinction decomposition
 
 /--
 Interface inventorying extinction components before prime-factor recognition.
 -/
-inductive HasExtinctionComponentInventory
+structure HasExtinctionComponentInventory
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
     (decomposition : HasExtinctionTopologyDecomposition M extinction)
     (_componentClassification :
-      HasExtinctionComponentClassification M extinction decomposition) : Prop
+      HasExtinctionComponentClassification M extinction decomposition) :
+    Prop where
+  /-- The component-inventory data stored upstream by component classification. -/
+  data : ExtinctionComponentInventoryData M extinction decomposition
 
 /--
 Interface for proving that boundary components in the extinction inventory are spheres.
 -/
-inductive HasExtinctionComponentBoundarySphereControl
+structure HasExtinctionComponentBoundarySphereControl
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -22791,59 +25827,61 @@ inductive HasExtinctionComponentBoundarySphereControl
       HasExtinctionComponentClassification M extinction decomposition)
     (_componentInventory :
       HasExtinctionComponentInventory
-        M extinction decomposition componentClassification) : Prop
+        M extinction decomposition componentClassification) :
+    Prop where
+  /-- The boundary-sphere-control data stored by the component inventory. -/
+  data : ExtinctionComponentBoundarySphereControlData M extinction decomposition
 
 /--
 Interface for the 3-sphere recognition/classification theorem needed after the
 extinction decomposition is known.
 -/
-inductive HasThreeSphereRecognition
+structure HasThreeSphereRecognition
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (_decomposition :
       ∀ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
-        HasExtinctionTopologyDecomposition M extinction) : Prop
+        HasExtinctionTopologyDecomposition M extinction) :
+    Prop where
+  /-- The recognition data backing the 3-sphere recognition interface. -/
+  data : ThreeSphereRecognitionData M
 
 /--
-Interface for extracting a prime/connected-sum decomposition from the
-post-extinction topology data.
+Interface for existence of the prime decomposition used in the extinction
+argument.
 -/
-inductive HasExtinctionPrimeDecomposition
-    (M : Type u) [TopologicalSpace M] [T2Space M]
-    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
-    [SimplyConnectedSpace M] [CompactSpace M]
-    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
-    (_decomposition : HasExtinctionTopologyDecomposition M extinction) : Prop
-
-/--
-Interface for existence of the prime decomposition used in the extinction argument.
--/
-inductive HasExtinctionPrimeDecompositionExistence
+structure HasExtinctionPrimeDecompositionExistence
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
     (decomposition : HasExtinctionTopologyDecomposition M extinction)
     (_primeDecomposition :
-      HasExtinctionPrimeDecomposition M extinction decomposition) : Prop
+      HasExtinctionPrimeDecomposition M extinction decomposition) :
+    Prop where
+  /-- The existence datum stored by the prime decomposition. -/
+  data : ExtinctionPrimeDecompositionExistenceData M extinction decomposition
 
 /--
 Interface for the sphere-theorem input used to extract prime factors.
 -/
-inductive HasExtinctionSphereTheoremApplication
+structure HasExtinctionSphereTheoremApplication
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
     (decomposition : HasExtinctionTopologyDecomposition M extinction)
     (_primeDecomposition :
-      HasExtinctionPrimeDecomposition M extinction decomposition) : Prop
+      HasExtinctionPrimeDecomposition M extinction decomposition) :
+    Prop where
+  /-- The sphere-theorem datum stored by prime-decomposition existence. -/
+  data : ExtinctionSphereTheoremApplicationData M extinction decomposition
 
 /--
 Interface for producing embedded spheres that realize prime-decomposition cuts.
 -/
-inductive HasExtinctionEmbeddedSphereProduction
+structure HasExtinctionEmbeddedSphereProduction
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -22853,12 +25891,15 @@ inductive HasExtinctionEmbeddedSphereProduction
       HasExtinctionPrimeDecomposition M extinction decomposition)
     (_sphereTheorem :
       HasExtinctionSphereTheoremApplication
-        M extinction decomposition primeDecomposition) : Prop
+        M extinction decomposition primeDecomposition) :
+    Prop where
+  /-- Embedded-sphere production datum stored by the sphere-theorem input. -/
+  data : ExtinctionEmbeddedSphereProductionData M extinction decomposition
 
 /--
 Interface for the loop-theorem input used to control compressions in the cuts.
 -/
-inductive HasExtinctionLoopTheoremApplication
+structure HasExtinctionLoopTheoremApplication
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -22868,13 +25909,16 @@ inductive HasExtinctionLoopTheoremApplication
       HasExtinctionPrimeDecomposition M extinction decomposition)
     (_sphereTheorem :
       HasExtinctionSphereTheoremApplication
-        M extinction decomposition primeDecomposition) : Prop
+        M extinction decomposition primeDecomposition) :
+    Prop where
+  /-- The loop-theorem datum stored by embedded-sphere production. -/
+  data : ExtinctionLoopTheoremApplicationData M extinction decomposition
 
 /--
 Interface for compatibility and uniqueness of the prime decomposition used by
 the extinction classification.
 -/
-inductive HasExtinctionPrimeDecompositionCompatibility
+structure HasExtinctionPrimeDecompositionCompatibility
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -22883,12 +25927,15 @@ inductive HasExtinctionPrimeDecompositionCompatibility
     (_componentClassification :
       HasExtinctionComponentClassification M extinction decomposition)
     (_primeDecomposition :
-      HasExtinctionPrimeDecomposition M extinction decomposition) : Prop
+      HasExtinctionPrimeDecomposition M extinction decomposition) :
+    Prop where
+  /-- The compatibility datum stored by loop-theorem application. -/
+  data : ExtinctionPrimeDecompositionCompatibilityData M extinction decomposition
 
 /--
 Interface for uniqueness of the prime factors selected by the decomposition.
 -/
-inductive HasExtinctionPrimeFactorUniqueness
+structure HasExtinctionPrimeFactorUniqueness
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -22901,25 +25948,31 @@ inductive HasExtinctionPrimeFactorUniqueness
     (_primeDecompositionCompatibility :
       HasExtinctionPrimeDecompositionCompatibility
         M extinction decomposition componentClassification
-        primeDecomposition) : Prop
+        primeDecomposition) :
+    Prop where
+  /-- The prime-factor uniqueness datum stored by compatibility. -/
+  data : ExtinctionPrimeFactorUniquenessData M extinction decomposition
 
 /--
 Interface for the irreducibility input applied to the prime pieces produced by
 finite extinction.
 -/
-inductive HasExtinctionIrreducibility
+structure HasExtinctionIrreducibility
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
     (decomposition : HasExtinctionTopologyDecomposition M extinction)
     (_primeDecomposition :
-      HasExtinctionPrimeDecomposition M extinction decomposition) : Prop
+      HasExtinctionPrimeDecomposition M extinction decomposition) :
+    Prop where
+  /-- The irreducibility datum stored by prime-factor uniqueness. -/
+  data : ExtinctionIrreducibilityData M extinction decomposition
 
 /--
 Interface recognizing the irreducible prime factors arising after extinction.
 -/
-inductive HasExtinctionIrreducibleFactorRecognition
+structure HasExtinctionIrreducibleFactorRecognition
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -22929,13 +25982,16 @@ inductive HasExtinctionIrreducibleFactorRecognition
       HasExtinctionPrimeDecomposition M extinction decomposition)
     (_irreducibility :
       HasExtinctionIrreducibility
-        M extinction decomposition primeDecomposition) : Prop
+        M extinction decomposition primeDecomposition) :
+    Prop where
+  /-- The recognition datum stored by irreducibility. -/
+  data : ExtinctionIrreducibleFactorRecognitionData M extinction decomposition
 
 /--
 Interface for collapsing the connected-sum decomposition to the surviving prime
 factor relevant to the simply connected target.
 -/
-inductive HasExtinctionConnectedSumCollapse
+structure HasExtinctionConnectedSumCollapse
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -22945,12 +26001,15 @@ inductive HasExtinctionConnectedSumCollapse
       HasExtinctionPrimeDecomposition M extinction decomposition)
     (_irreducibility :
       HasExtinctionIrreducibility
-        M extinction decomposition primeDecomposition) : Prop
+        M extinction decomposition primeDecomposition) :
+    Prop where
+  /-- The connected-sum collapse datum stored by irreducible-factor recognition. -/
+  data : ExtinctionConnectedSumCollapseData M extinction decomposition
 
 /--
 Interface for the fundamental-group control used when collapsing connected sums.
 -/
-inductive HasExtinctionConnectedSumFundamentalGroupControl
+structure HasExtinctionConnectedSumFundamentalGroupControl
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -22963,12 +26022,17 @@ inductive HasExtinctionConnectedSumFundamentalGroupControl
         M extinction decomposition primeDecomposition)
     (_connectedSumCollapse :
       HasExtinctionConnectedSumCollapse
-        M extinction decomposition primeDecomposition irreducibility) : Prop
+        M extinction decomposition primeDecomposition irreducibility) :
+    Prop where
+  /-- The fundamental-group-control datum stored by connected-sum collapse. -/
+  data :
+    ExtinctionConnectedSumFundamentalGroupControlData
+      M extinction decomposition
 
 /--
 Interface for the van Kampen computation of the connected-sum fundamental group.
 -/
-inductive HasExtinctionConnectedSumVanKampenCalculation
+structure HasExtinctionConnectedSumVanKampenCalculation
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -22985,12 +26049,17 @@ inductive HasExtinctionConnectedSumVanKampenCalculation
     (_fundamentalGroupControl :
       HasExtinctionConnectedSumFundamentalGroupControl
         M extinction decomposition primeDecomposition irreducibility
-        connectedSumCollapse) : Prop
+        connectedSumCollapse) :
+    Prop where
+  /-- The van Kampen calculation datum stored by fundamental-group control. -/
+  data :
+    ExtinctionConnectedSumVanKampenCalculationData
+      M extinction decomposition
 
 /--
 Interface for forcing the surviving prime factor to be simply connected.
 -/
-inductive HasExtinctionSimplyConnectedPrimeFactorControl
+structure HasExtinctionSimplyConnectedPrimeFactorControl
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -23007,13 +26076,18 @@ inductive HasExtinctionSimplyConnectedPrimeFactorControl
     (_fundamentalGroupControl :
       HasExtinctionConnectedSumFundamentalGroupControl
         M extinction decomposition primeDecomposition irreducibility
-        connectedSumCollapse) : Prop
+        connectedSumCollapse) :
+    Prop where
+  /-- The simply-connected-prime-factor datum stored by van Kampen calculation. -/
+  data :
+    ExtinctionSimplyConnectedPrimeFactorControlData
+      M extinction decomposition
 
 /--
 Interface for reducing the finite-extinction decomposition to spherical space
 form pieces.
 -/
-inductive HasExtinctionSphericalSpaceFormReduction
+structure HasExtinctionSphericalSpaceFormReduction
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -23026,13 +26100,18 @@ inductive HasExtinctionSphericalSpaceFormReduction
         M extinction decomposition primeDecomposition)
     (_connectedSumCollapse :
       HasExtinctionConnectedSumCollapse
-        M extinction decomposition primeDecomposition irreducibility) : Prop
+        M extinction decomposition primeDecomposition irreducibility) :
+    Prop where
+  /-- The spherical-space-form reduction datum stored by prime-factor control. -/
+  data :
+    ExtinctionSphericalSpaceFormReductionData
+      M extinction decomposition
 
 /--
 Interface for the spherical-space-form classification theorem applied after
 prime and connected-sum reduction.
 -/
-inductive HasSphericalSpaceFormClassification
+structure HasSphericalSpaceFormClassification
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -23049,12 +26128,17 @@ inductive HasSphericalSpaceFormClassification
     (_sphericalReduction :
       HasExtinctionSphericalSpaceFormReduction
         M extinction decomposition primeDecomposition irreducibility
-        connectedSumCollapse) : Prop
+        connectedSumCollapse) :
+    Prop where
+  /-- The classification datum stored by spherical-space-form reduction. -/
+  data :
+    SphericalSpaceFormClassificationData
+      M extinction decomposition
 
 /--
 Interface for identifying the surviving pieces with spherical quotient models.
 -/
-inductive HasSphericalSpaceFormQuotientModel
+structure HasSphericalSpaceFormQuotientModel
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -23071,12 +26155,17 @@ inductive HasSphericalSpaceFormQuotientModel
     (_sphericalReduction :
       HasExtinctionSphericalSpaceFormReduction
         M extinction decomposition primeDecomposition irreducibility
-        connectedSumCollapse) : Prop
+        connectedSumCollapse) :
+    Prop where
+  /-- The quotient-model datum stored by spherical-space-form classification. -/
+  data :
+    SphericalSpaceFormQuotientModelData
+      M extinction decomposition
 
 /--
 Interface for realizing a spherical space form as a free action on the sphere.
 -/
-inductive HasSphericalSpaceFormFreeAction
+structure HasSphericalSpaceFormFreeAction
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -23097,13 +26186,18 @@ inductive HasSphericalSpaceFormFreeAction
     (_quotientModel :
       HasSphericalSpaceFormQuotientModel
         M extinction decomposition primeDecomposition irreducibility
-        connectedSumCollapse sphericalReduction) : Prop
+        connectedSumCollapse sphericalReduction) :
+    Prop where
+  /-- The free-action datum stored by the spherical quotient model. -/
+  data :
+    SphericalSpaceFormFreeActionData
+      M extinction decomposition
 
 /--
 Interface for proving that the spherical space form universal cover is the
 standard 3-sphere.
 -/
-inductive HasSphericalSpaceFormUniversalCover
+structure HasSphericalSpaceFormUniversalCover
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -23124,13 +26218,18 @@ inductive HasSphericalSpaceFormUniversalCover
     (_quotientModel :
       HasSphericalSpaceFormQuotientModel
         M extinction decomposition primeDecomposition irreducibility
-        connectedSumCollapse sphericalReduction) : Prop
+        connectedSumCollapse sphericalReduction) :
+    Prop where
+  /-- The universal-cover datum stored by the spherical free action. -/
+  data :
+    SphericalSpaceFormUniversalCoverData
+      M extinction decomposition
 
 /--
 Interface identifying the quotient and universal-cover data as a covering
 model of the spherical space form.
 -/
-inductive HasSphericalSpaceFormCoveringModel
+structure HasSphericalSpaceFormCoveringModel
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -23155,12 +26254,17 @@ inductive HasSphericalSpaceFormCoveringModel
     (_universalCover :
       HasSphericalSpaceFormUniversalCover
         M extinction decomposition primeDecomposition irreducibility
-        connectedSumCollapse sphericalReduction quotientModel) : Prop
+        connectedSumCollapse sphericalReduction quotientModel) :
+    Prop where
+  /-- The covering-model datum stored by the spherical universal cover. -/
+  data :
+    SphericalSpaceFormCoveringModelData
+      M extinction decomposition
 
 /--
 Interface for the covering projection from the universal cover to the quotient.
 -/
-inductive HasSphericalSpaceFormCoveringProjection
+structure HasSphericalSpaceFormCoveringProjection
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -23190,13 +26294,18 @@ inductive HasSphericalSpaceFormCoveringProjection
       HasSphericalSpaceFormCoveringModel
         M extinction decomposition primeDecomposition irreducibility
         connectedSumCollapse sphericalReduction quotientModel
-        universalCover) : Prop
+        universalCover) :
+    Prop where
+  /-- The covering-projection datum stored by the spherical covering model. -/
+  data :
+    SphericalSpaceFormCoveringProjectionData
+      M extinction decomposition
 
 /--
 Interface for computing the fundamental group of the spherical space form
 pieces arising after the extinction reduction.
 -/
-inductive HasSphericalSpaceFormFundamentalGroupComputation
+structure HasSphericalSpaceFormFundamentalGroupComputation
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -23213,13 +26322,18 @@ inductive HasSphericalSpaceFormFundamentalGroupComputation
     (_sphericalReduction :
       HasExtinctionSphericalSpaceFormReduction
         M extinction decomposition primeDecomposition irreducibility
-        connectedSumCollapse) : Prop
+        connectedSumCollapse) :
+    Prop where
+  /-- The fundamental-group computation datum stored by the covering projection. -/
+  data :
+    SphericalSpaceFormFundamentalGroupComputationData
+      M extinction decomposition
 
 /--
 Interface identifying the spherical-space-form deck group with the computed
 fundamental group.
 -/
-inductive HasSphericalSpaceFormDeckGroupIdentification
+structure HasSphericalSpaceFormDeckGroupIdentification
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -23244,12 +26358,17 @@ inductive HasSphericalSpaceFormDeckGroupIdentification
     (_fundamentalGroupComputation :
       HasSphericalSpaceFormFundamentalGroupComputation
         M extinction decomposition primeDecomposition irreducibility
-        connectedSumCollapse sphericalReduction) : Prop
+        connectedSumCollapse sphericalReduction) :
+    Prop where
+  /-- The deck-group-identification datum stored by the fundamental-group computation. -/
+  data :
+    SphericalSpaceFormDeckGroupIdentificationData
+      M extinction decomposition
 
 /--
 Interface for proper discontinuity and freeness of the deck action.
 -/
-inductive HasSphericalSpaceFormDeckActionProperness
+structure HasSphericalSpaceFormDeckActionProperness
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -23279,13 +26398,18 @@ inductive HasSphericalSpaceFormDeckActionProperness
       HasSphericalSpaceFormDeckGroupIdentification
         M extinction decomposition primeDecomposition irreducibility
         connectedSumCollapse sphericalReduction quotientModel
-        fundamentalGroupComputation) : Prop
+        fundamentalGroupComputation) :
+    Prop where
+  /-- The deck-action-properness datum stored by deck-group identification. -/
+  data :
+    SphericalSpaceFormDeckActionPropernessData
+      M extinction decomposition
 
 /--
 Interface for ruling out nontrivial deck groups/quotients using simple
 connectedness of the original manifold.
 -/
-inductive HasSphericalSpaceFormDeckGroupTriviality
+structure HasSphericalSpaceFormDeckGroupTriviality
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -23306,13 +26430,18 @@ inductive HasSphericalSpaceFormDeckGroupTriviality
     (_fundamentalGroupComputation :
       HasSphericalSpaceFormFundamentalGroupComputation
         M extinction decomposition primeDecomposition irreducibility
-        connectedSumCollapse sphericalReduction) : Prop
+        connectedSumCollapse sphericalReduction) :
+    Prop where
+  /-- The deck-group-triviality datum stored by deck-action properness. -/
+  data :
+    SphericalSpaceFormDeckGroupTrivialityData
+      M extinction decomposition
 
 /--
 Interface converting deck-group identification and triviality into a trivial
 covering action.
 -/
-inductive HasSphericalSpaceFormDeckActionTrivialization
+structure HasSphericalSpaceFormDeckActionTrivialization
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -23347,12 +26476,17 @@ inductive HasSphericalSpaceFormDeckActionTrivialization
       HasSphericalSpaceFormDeckGroupTriviality
         M extinction decomposition primeDecomposition irreducibility
         connectedSumCollapse sphericalReduction
-        fundamentalGroupComputation) : Prop
+        fundamentalGroupComputation) :
+    Prop where
+  /-- The deck-action-trivialization datum stored by deck-group triviality. -/
+  data :
+    SphericalSpaceFormDeckActionTrivializationData
+      M extinction decomposition
 
 /--
 Interface identifying the quotient by a trivial deck action with the cover itself.
 -/
-inductive HasSphericalSpaceFormTrivialDeckQuotientIdentification
+structure HasSphericalSpaceFormTrivialDeckQuotientIdentification
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -23393,13 +26527,18 @@ inductive HasSphericalSpaceFormTrivialDeckQuotientIdentification
         M extinction decomposition primeDecomposition irreducibility
         connectedSumCollapse sphericalReduction quotientModel
         fundamentalGroupComputation deckGroupIdentification
-        deckGroupTriviality) : Prop
+        deckGroupTriviality) :
+    Prop where
+  /-- The trivial-deck-quotient identification datum stored by trivialization. -/
+  data :
+    SphericalSpaceFormTrivialDeckQuotientIdentificationData
+      M extinction decomposition
 
 /--
 Interface for the simply connected reduction that rules out nontrivial
 spherical space form factors.
 -/
-inductive HasSimplyConnectedExtinctionRecognition
+structure HasSimplyConnectedExtinctionRecognition
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -23424,13 +26563,105 @@ inductive HasSimplyConnectedExtinctionRecognition
     (_deckGroupTriviality :
       HasSphericalSpaceFormDeckGroupTriviality
         M extinction decomposition primeDecomposition irreducibility
-        connectedSumCollapse sphericalReduction fundamentalGroupComputation) : Prop
+        connectedSumCollapse sphericalReduction fundamentalGroupComputation) :
+    Prop where
+  /-- The recognition datum exposed after the spherical homeomorphism lift. -/
+  data :
+    SimplyConnectedExtinctionRecognitionData M extinction decomposition
+
+/--
+The final payload directly exposes the raw homeomorphism witness consumed by
+the topology package.
+-/
+theorem homeomorphism_of_final_homeomorphism_payload_data
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (finalHomeomorphismPayloadData :
+      FinalHomeomorphismPayloadData M extinction decomposition) :
+    Nonempty (M ≃ₜ ThreeSphere) :=
+  finalHomeomorphismPayloadData.homeomorphism
+
+/--
+The extraction datum exposes the raw final homeomorphism through its stored
+construction payload.
+-/
+theorem homeomorphism_of_extract_homeomorphism_data
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (extractHomeomorphismData :
+      ExtractHomeomorphismData M extinction decomposition) :
+    Nonempty (M ≃ₜ ThreeSphere) :=
+  homeomorphism_of_final_homeomorphism_payload_data
+    M extinction decomposition
+    extractHomeomorphismData.finalHomeomorphismConstructionData.finalHomeomorphismPayloadData
+
+/--
+Simply connected recognition data exposes the raw final homeomorphism through
+its stored extraction datum.
+-/
+theorem homeomorphism_of_simply_connected_extinction_recognition_data
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (simplyConnectedExtinctionRecognitionData :
+      SimplyConnectedExtinctionRecognitionData M extinction decomposition) :
+    Nonempty (M ≃ₜ ThreeSphere) :=
+  homeomorphism_of_extract_homeomorphism_data
+    M extinction decomposition
+    simplyConnectedExtinctionRecognitionData.extractHomeomorphismData
+
+/--
+The package-level simply connected recognition route exposes the raw final
+homeomorphism through its stored recognition data.
+-/
+theorem homeomorphism_of_simply_connected_extinction_recognition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (primeDecomposition :
+      HasExtinctionPrimeDecomposition M extinction decomposition)
+    (irreducibility :
+      HasExtinctionIrreducibility
+        M extinction decomposition primeDecomposition)
+    (connectedSumCollapse :
+      HasExtinctionConnectedSumCollapse
+        M extinction decomposition primeDecomposition irreducibility)
+    (sphericalReduction :
+      HasExtinctionSphericalSpaceFormReduction
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse)
+    (fundamentalGroupComputation :
+      HasSphericalSpaceFormFundamentalGroupComputation
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction)
+    (deckGroupTriviality :
+      HasSphericalSpaceFormDeckGroupTriviality
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction fundamentalGroupComputation)
+    (simplyConnectedRecognition :
+      HasSimplyConnectedExtinctionRecognition
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction fundamentalGroupComputation
+        deckGroupTriviality) :
+    Nonempty (M ≃ₜ ThreeSphere) :=
+  homeomorphism_of_simply_connected_extinction_recognition_data
+    M extinction decomposition simplyConnectedRecognition.data
 
 /--
 Interface turning the trivial deck group result into a trivial spherical
 quotient.
 -/
-inductive HasTrivialSphericalSpaceFormQuotient
+structure HasTrivialSphericalSpaceFormQuotient
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -23464,13 +26695,17 @@ inductive HasTrivialSphericalSpaceFormQuotient
     (_deckGroupTriviality :
       HasSphericalSpaceFormDeckGroupTriviality
         M extinction decomposition primeDecomposition irreducibility
-        connectedSumCollapse sphericalReduction fundamentalGroupComputation) : Prop
+        connectedSumCollapse sphericalReduction fundamentalGroupComputation) :
+    Prop where
+  /-- The trivial-spherical-quotient datum exposed after quotient identification. -/
+  data :
+    TrivialSphericalSpaceFormQuotientData M extinction decomposition
 
 /--
 Interface turning the trivial quotient statement into the final quotient
 homeomorphism used by the extraction assembly.
 -/
-inductive HasSphericalSpaceFormTrivialQuotientHomeomorphism
+structure HasSphericalSpaceFormTrivialQuotientHomeomorphism
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -23514,12 +26749,17 @@ inductive HasSphericalSpaceFormTrivialQuotientHomeomorphism
         M extinction decomposition primeDecomposition irreducibility
         connectedSumCollapse sphericalReduction quotientModel
         fundamentalGroupComputation deckGroupIdentification
-        deckGroupTriviality) : Prop
+        deckGroupTriviality) :
+    Prop where
+  /-- The trivial-quotient-homeomorphism datum exposed by the trivial quotient. -/
+  data :
+    SphericalSpaceFormTrivialQuotientHomeomorphismData
+      M extinction decomposition
 
 /--
 Interface lifting the final homeomorphism through the trivial spherical quotient.
 -/
-inductive HasSphericalSpaceFormHomeomorphismLift
+structure HasSphericalSpaceFormHomeomorphismLift
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -23569,13 +26809,18 @@ inductive HasSphericalSpaceFormHomeomorphismLift
         M extinction decomposition primeDecomposition irreducibility
         connectedSumCollapse sphericalReduction quotientModel universalCover
         fundamentalGroupComputation deckGroupIdentification deckGroupTriviality
-        trivialQuotient) : Prop
+        trivialQuotient) :
+    Prop where
+  /-- The homeomorphism-lift datum exposed by the trivial quotient homeomorphism. -/
+  data :
+    SphericalSpaceFormHomeomorphismLiftData
+      M extinction decomposition
 
 /--
 Interface assembling the topological classification outputs into the final
 homeomorphism to the standard sphere.
 -/
-inductive HasExtinctionHomeomorphismAssembly
+structure HasExtinctionHomeomorphismAssembly
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -23620,13 +26865,80 @@ inductive HasExtinctionHomeomorphismAssembly
         M extinction decomposition primeDecomposition irreducibility
         connectedSumCollapse sphericalReduction quotientModel
         fundamentalGroupComputation deckGroupIdentification deckGroupTriviality)
-    (_homeomorphism : Nonempty (M ≃ₜ ThreeSphere)) : Prop
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere)) :
+    Prop where
+  /-- The final payload used to assemble the raw homeomorphism. -/
+  finalHomeomorphismPayloadData :
+    FinalHomeomorphismPayloadData M extinction decomposition
+  /-- The package homeomorphism is the witness exposed by the stored payload. -/
+  homeomorphism_eq :
+    homeomorphism =
+      homeomorphism_of_final_homeomorphism_payload_data
+        M extinction decomposition finalHomeomorphismPayloadData
+
+/--
+Simply connected recognition supplies the assembly interface for any raw
+homeomorphism witness, using the final payload stored in the recognition data.
+-/
+theorem extinction_homeomorphism_assembly_of_simply_connected_extinction_recognition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (primeDecomposition :
+      HasExtinctionPrimeDecomposition M extinction decomposition)
+    (irreducibility :
+      HasExtinctionIrreducibility
+        M extinction decomposition primeDecomposition)
+    (connectedSumCollapse :
+      HasExtinctionConnectedSumCollapse
+        M extinction decomposition primeDecomposition irreducibility)
+    (sphericalReduction :
+      HasExtinctionSphericalSpaceFormReduction
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse)
+    (quotientModel :
+      HasSphericalSpaceFormQuotientModel
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction)
+    (fundamentalGroupComputation :
+      HasSphericalSpaceFormFundamentalGroupComputation
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction)
+    (deckGroupIdentification :
+      HasSphericalSpaceFormDeckGroupIdentification
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction quotientModel
+        fundamentalGroupComputation)
+    (deckGroupTriviality :
+      HasSphericalSpaceFormDeckGroupTriviality
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction fundamentalGroupComputation)
+    (simplyConnectedRecognition :
+      HasSimplyConnectedExtinctionRecognition
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction fundamentalGroupComputation
+        deckGroupTriviality)
+    (trivialQuotient :
+      HasTrivialSphericalSpaceFormQuotient
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction quotientModel
+        fundamentalGroupComputation deckGroupIdentification deckGroupTriviality)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere)) :
+    HasExtinctionHomeomorphismAssembly M extinction decomposition
+      primeDecomposition irreducibility connectedSumCollapse sphericalReduction
+      quotientModel fundamentalGroupComputation deckGroupIdentification
+      deckGroupTriviality simplyConnectedRecognition trivialQuotient
+      homeomorphism :=
+  ⟨simplyConnectedRecognition.data.extractHomeomorphismData.finalHomeomorphismConstructionData.finalHomeomorphismPayloadData,
+    Subsingleton.elim _ _⟩
 
 /--
 Interface certifying that the preceding topology inputs derive the projected
 homeomorphism to the standard 3-sphere.
 -/
-inductive HasExtinctionHomeomorphismDerivation
+structure HasExtinctionHomeomorphismDerivation
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -23672,12 +26984,83 @@ inductive HasExtinctionHomeomorphismDerivation
         connectedSumCollapse sphericalReduction quotientModel
         fundamentalGroupComputation deckGroupIdentification deckGroupTriviality)
     (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
-    (_homeomorphismAssembly :
+    (homeomorphismAssembly :
       HasExtinctionHomeomorphismAssembly M extinction decomposition
         primeDecomposition irreducibility connectedSumCollapse sphericalReduction
         quotientModel fundamentalGroupComputation deckGroupIdentification
         deckGroupTriviality simplyConnectedRecognition trivialQuotient
-        homeomorphism) : Prop
+        homeomorphism) :
+    Prop where
+  /--
+  The final homeomorphism is the one derived from the payload stored by the
+  assembled classification data.
+  -/
+  homeomorphism_eq :
+    homeomorphism =
+      homeomorphism_of_final_homeomorphism_payload_data M extinction
+        decomposition homeomorphismAssembly.finalHomeomorphismPayloadData
+
+/--
+The final assembly certificate supplies the homeomorphism-derivation interface.
+-/
+theorem extinction_homeomorphism_derivation_of_homeomorphism_assembly
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (primeDecomposition :
+      HasExtinctionPrimeDecomposition M extinction decomposition)
+    (irreducibility :
+      HasExtinctionIrreducibility
+        M extinction decomposition primeDecomposition)
+    (connectedSumCollapse :
+      HasExtinctionConnectedSumCollapse
+        M extinction decomposition primeDecomposition irreducibility)
+    (sphericalReduction :
+      HasExtinctionSphericalSpaceFormReduction
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse)
+    (fundamentalGroupComputation :
+      HasSphericalSpaceFormFundamentalGroupComputation
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction)
+    (deckGroupTriviality :
+      HasSphericalSpaceFormDeckGroupTriviality
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction fundamentalGroupComputation)
+    (simplyConnectedRecognition :
+      HasSimplyConnectedExtinctionRecognition
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction fundamentalGroupComputation
+        deckGroupTriviality)
+    (quotientModel :
+      HasSphericalSpaceFormQuotientModel
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction)
+    (deckGroupIdentification :
+      HasSphericalSpaceFormDeckGroupIdentification
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction quotientModel
+        fundamentalGroupComputation)
+    (trivialQuotient :
+      HasTrivialSphericalSpaceFormQuotient
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction quotientModel
+        fundamentalGroupComputation deckGroupIdentification deckGroupTriviality)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (homeomorphismAssembly :
+      HasExtinctionHomeomorphismAssembly M extinction decomposition
+        primeDecomposition irreducibility connectedSumCollapse sphericalReduction
+        quotientModel fundamentalGroupComputation deckGroupIdentification
+        deckGroupTriviality simplyConnectedRecognition trivialQuotient
+        homeomorphism) :
+    HasExtinctionHomeomorphismDerivation M extinction decomposition
+      primeDecomposition irreducibility connectedSumCollapse sphericalReduction
+      fundamentalGroupComputation deckGroupTriviality simplyConnectedRecognition
+      quotientModel deckGroupIdentification trivialQuotient homeomorphism
+      homeomorphismAssembly :=
+  ⟨homeomorphismAssembly.homeomorphism_eq⟩
 
 /--
 The fixed-manifold topology extraction statement: finite extinction gives a

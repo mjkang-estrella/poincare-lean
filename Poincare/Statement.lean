@@ -3363,6 +3363,26 @@ noncomputable def euclideanThree_compl_singleton_homeomorph_zero
       subst hxy
       simp)
 
+/--
+The arbitrary punctured-`ℝ³` model is translated to the zero-punctured model by
+adding `-x`.
+-/
+theorem euclideanThree_compl_singleton_homeomorph_zero_eq
+    (x : EuclideanSpace ℝ (Fin 3)) :
+    euclideanThree_compl_singleton_homeomorph_zero x =
+      (Homeomorph.addRight (-x)).subtype (fun y => by
+        constructor
+        · intro hy hzero
+          apply hy
+          have hsub : y - x = 0 := by
+            simpa [sub_eq_add_neg] using hzero
+          exact sub_eq_zero.mp hsub
+        · intro hy hxy
+          apply hy
+          subst hxy
+          simp) :=
+  rfl
+
 /-- Punctured `ℝ³` embeds openly in `ℝ³` by the subtype inclusion. -/
 theorem euclideanThree_compl_singleton_isOpenEmbedding
     (x : EuclideanSpace ℝ (Fin 3)) :
@@ -3384,6 +3404,19 @@ noncomputable def euclideanThree_compl_singleton_chartedSpace
   haveI : Nonempty ({x}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
     (euclideanThree_compl_singleton_pathConnectedSpace x).nonempty
   exact (euclideanThree_compl_singleton_isOpenEmbedding x).singletonChartedSpace
+
+/--
+The punctured-`ℝ³` charted-space structure is the singleton charted space from
+the open subtype embedding.
+-/
+theorem euclideanThree_compl_singleton_chartedSpace_eq
+    (x : EuclideanSpace ℝ (Fin 3)) :
+    euclideanThree_compl_singleton_chartedSpace x =
+      (by
+        haveI : Nonempty ({x}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+          (euclideanThree_compl_singleton_pathConnectedSpace x).nonempty
+        exact (euclideanThree_compl_singleton_isOpenEmbedding x).singletonChartedSpace) :=
+  rfl
 
 /-- Punctured `ℝ³` is a smooth 3-manifold under the induced open-subspace chart. -/
 theorem euclideanThree_compl_singleton_smoothManifold
@@ -3452,6 +3485,40 @@ noncomputable def threeSphere_countableComplement_homeomorph_sourceComplement
     continuity
   continuous_invFun := by
     continuity
+
+/--
+The countable-complement homeomorphism into a stereographic source is the
+identity on underlying points, with proofs transported between subtype shapes.
+-/
+theorem threeSphere_countableComplement_homeomorph_sourceComplement_eq
+    {s : Set ThreeSphere} {a : ThreeSphere} (ha : a ∈ s) :
+    threeSphere_countableComplement_homeomorph_sourceComplement ha =
+      { toFun := fun p =>
+          ⟨⟨p.1, by
+            rw [threeSphere_stereographic_source_eq_compl_singleton]
+            intro h
+            exact p.2 (h ▸ ha)⟩, by
+            rw [Set.mem_compl_iff]
+            intro hp
+            exact p.2 hp⟩
+        invFun := fun p =>
+          ⟨p.1.1, by
+            rw [Set.mem_compl_iff]
+            intro hp
+            exact p.2 hp⟩
+        left_inv := by
+          intro p
+          ext
+          rfl
+        right_inv := by
+          intro p
+          ext
+          rfl
+        continuous_toFun := by
+          continuity
+        continuous_invFun := by
+          continuity } := by
+  rfl
 
 /--
 The complement of a countable subset of `ThreeSphere` is path-connected when
@@ -3564,11 +3631,34 @@ noncomputable def threeSphere_pointInStereographicSource
     rw [threeSphere_stereographic_source_eq_compl_singleton]
     exact hab⟩
 
+/--
+The named second point in the stereographic source is `b`, using `hab` to prove
+it avoids the chart center.
+-/
+theorem threeSphere_pointInStereographicSource_eq
+    (a b : ThreeSphere) (hab : b ≠ a) :
+    threeSphere_pointInStereographicSource a b hab =
+      ⟨b, by
+        rw [threeSphere_stereographic_source_eq_compl_singleton]
+        exact hab⟩ :=
+  rfl
+
 /-- The stereographic chart image of a second point under the chart centered at `a`. -/
 noncomputable def threeSphere_twoPointChartImage
     (a b : ThreeSphere) (hab : b ≠ a) : EuclideanSpace ℝ (Fin 3) :=
   threeSphere_stereographic_source_homeomorph a
     (threeSphere_pointInStereographicSource a b hab)
+
+/--
+The named two-point chart image is the stereographic source homeomorphism
+applied to the named source point.
+-/
+theorem threeSphere_twoPointChartImage_eq
+    (a b : ThreeSphere) (hab : b ≠ a) :
+    threeSphere_twoPointChartImage a b hab =
+      threeSphere_stereographic_source_homeomorph a
+        (threeSphere_pointInStereographicSource a b hab) :=
+  rfl
 
 /--
 The named puncture for the two-chart overlap is exactly the stereographic image
@@ -3785,6 +3875,84 @@ noncomputable def threeSphere_stereographicTransition_diffeomorph_puncturedChart
             hsubval (fun x => x.2)
         simpa [G, Function.comp_def, sourceSet, targetSet, punctureAB, punctureBA] using hcomp)
 
+/--
+The punctured-coordinate transition diffeomorphism is the forward/reverse
+stereographic coordinate change between the two named punctured chart images.
+-/
+theorem threeSphere_stereographicTransition_diffeomorph_puncturedCharts_eq
+    {a b : ThreeSphere} (hab : b ≠ a) (hba : a ≠ b) :
+    threeSphere_stereographicTransition_diffeomorph_puncturedCharts hab hba =
+      (by
+        let punctureAB : EuclideanSpace ℝ (Fin 3) := threeSphere_twoPointChartImage a b hab
+        let punctureBA : EuclideanSpace ℝ (Fin 3) := threeSphere_twoPointChartImage b a hba
+        let sourceSet : Set (EuclideanSpace ℝ (Fin 3)) := {punctureAB}ᶜ
+        let targetSet : Set (EuclideanSpace ℝ (Fin 3)) := {punctureBA}ᶜ
+        letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) sourceSet :=
+          euclideanThree_compl_singleton_chartedSpace punctureAB
+        letI : ChartedSpace (EuclideanSpace ℝ (Fin 3)) targetSet :=
+          euclideanThree_compl_singleton_chartedSpace punctureBA
+        haveI : Nonempty sourceSet :=
+          (euclideanThree_compl_singleton_pathConnectedSpace punctureAB).nonempty
+        haveI : Nonempty targetSet :=
+          (euclideanThree_compl_singleton_pathConnectedSpace punctureBA).nonempty
+        let F : sourceSet → targetSet := fun x =>
+          ⟨(stereographic' 3 b) ((stereographic' 3 a).symm x.1), by
+            exact threeSphere_stereographicTransition_mapsTo_puncturedChart hab hba x.2⟩
+        let G : targetSet → sourceSet := fun y =>
+          ⟨(stereographic' 3 a) ((stereographic' 3 b).symm y.1), by
+            exact threeSphere_stereographicTransition_mapsTo_puncturedChart hba hab y.2⟩
+        refine
+          { toEquiv :=
+              { toFun := F
+                invFun := G
+                left_inv := ?_
+                right_inv := ?_ }
+            contMDiff_toFun := ?_
+            contMDiff_invFun := ?_ }
+        · intro x
+          apply Subtype.ext
+          dsimp [F, G]
+          have hsourceB : (stereographic' 3 a).symm x.1 ∈ (stereographic' 3 b).source :=
+            threeSphere_stereographicTransition_source_mem_puncturedChart hab x.2
+          rw [(stereographic' 3 b).left_inv hsourceB]
+          exact (stereographic' 3 a).right_inv (by simp)
+        · intro y
+          apply Subtype.ext
+          dsimp [F, G]
+          have hsourceA : (stereographic' 3 b).symm y.1 ∈ (stereographic' 3 a).source :=
+            threeSphere_stereographicTransition_source_mem_puncturedChart hba y.2
+          rw [(stereographic' 3 a).left_inv hsourceA]
+          exact (stereographic' 3 b).right_inv (by simp)
+        · exact ContMDiff.of_comp_isOpenEmbedding
+            (h' := euclideanThree_compl_singleton_isOpenEmbedding punctureBA) (by
+              have hsubval : ContMDiff (𝓡 3) (𝓡 3) ∞
+                  ((Subtype.val) : sourceSet → EuclideanSpace ℝ (Fin 3)) := by
+                exact contMDiff_isOpenEmbedding
+                  (I := 𝓡 3) (n := ∞)
+                  (euclideanThree_compl_singleton_isOpenEmbedding punctureAB)
+              have hcomp : ContMDiff (𝓡 3) (𝓡 3) ∞
+                  ((fun x : EuclideanSpace ℝ (Fin 3) =>
+                    (stereographic' 3 b) ((stereographic' 3 a).symm x)) ∘
+                      ((Subtype.val) : sourceSet → EuclideanSpace ℝ (Fin 3))) := by
+                exact (threeSphere_stereographicTransition_contMDiffOn_puncturedChart hab).comp_contMDiff
+                  hsubval (fun x => x.2)
+              simpa [F, Function.comp_def, sourceSet, targetSet, punctureAB, punctureBA] using hcomp)
+        · exact ContMDiff.of_comp_isOpenEmbedding
+            (h' := euclideanThree_compl_singleton_isOpenEmbedding punctureAB) (by
+              have hsubval : ContMDiff (𝓡 3) (𝓡 3) ∞
+                  ((Subtype.val) : targetSet → EuclideanSpace ℝ (Fin 3)) := by
+                exact contMDiff_isOpenEmbedding
+                  (I := 𝓡 3) (n := ∞)
+                  (euclideanThree_compl_singleton_isOpenEmbedding punctureBA)
+              have hcomp : ContMDiff (𝓡 3) (𝓡 3) ∞
+                  ((fun x : EuclideanSpace ℝ (Fin 3) =>
+                    (stereographic' 3 a) ((stereographic' 3 b).symm x)) ∘
+                      ((Subtype.val) : targetSet → EuclideanSpace ℝ (Fin 3))) := by
+                exact (threeSphere_stereographicTransition_contMDiffOn_puncturedChart hba).comp_contMDiff
+                  hsubval (fun x => x.2)
+              simpa [G, Function.comp_def, sourceSet, targetSet, punctureAB, punctureBA] using hcomp)) :=
+  rfl
+
 /-- The punctured-chart diffeomorphism applies as the actual coordinate transition. -/
 theorem threeSphere_stereographicTransition_diffeomorph_puncturedCharts_apply
     {a b : ThreeSphere} (hab : b ≠ a) (hba : a ≠ b)
@@ -3869,6 +4037,45 @@ noncomputable def threeSphere_twoPointComplement_homeomorph_sourcePunctured
     continuity
 
 /--
+The two-point-complement/source-puncture homeomorphism is the identity on
+underlying points with membership proofs converted between subtype shapes.
+-/
+theorem threeSphere_twoPointComplement_homeomorph_sourcePunctured_eq
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    threeSphere_twoPointComplement_homeomorph_sourcePunctured hab =
+      { toFun := fun p =>
+          ⟨⟨p.1, by
+            rw [threeSphere_stereographic_source_eq_compl_singleton]
+            intro h
+            exact p.2 (Or.inl h)⟩, by
+            rw [Set.mem_compl_iff]
+            intro h
+            have hval : p.1 = b := congrArg Subtype.val h
+            exact p.2 (Or.inr hval)⟩
+        invFun := fun p =>
+          ⟨p.1.1, by
+            rw [Set.mem_compl_iff]
+            intro h
+            rcases h with ha | hb
+            · have hsource_ne : p.1.1 ≠ a := by
+                simpa [threeSphere_stereographic_source_eq_compl_singleton] using p.1.2
+              exact hsource_ne ha
+            · exact p.2 (Subtype.ext hb)⟩
+        left_inv := by
+          intro p
+          ext
+          rfl
+        right_inv := by
+          intro p
+          ext
+          rfl
+        continuous_toFun := by
+          continuity
+        continuous_invFun := by
+          continuity } := by
+  rfl
+
+/--
 Stereographic projection identifies the complement of two distinct points in
 `ThreeSphere` with punctured `ℝ³`.
 -/
@@ -3880,6 +4087,18 @@ noncomputable def threeSphere_twoPointComplement_homeomorph_puncturedChart
   (threeSphere_twoPointComplement_homeomorph_sourcePunctured hab).trans
     ((threeSphere_stereographic_source_homeomorph a).subtype
       (fun _p => by simp [threeSphere_twoPointChartImage]))
+
+/--
+The two-point-complement chart homeomorphism is the source-puncture
+homeomorphism followed by the restricted stereographic source homeomorphism.
+-/
+theorem threeSphere_twoPointComplement_homeomorph_puncturedChart_eq
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    threeSphere_twoPointComplement_homeomorph_puncturedChart hab =
+      (threeSphere_twoPointComplement_homeomorph_sourcePunctured hab).trans
+        ((threeSphere_stereographic_source_homeomorph a).subtype
+          (fun _p => by simp [threeSphere_twoPointChartImage])) :=
+  rfl
 
 /--
 The punctured stereographic chart embeds the two-point complement in `ThreeSphere`
@@ -3922,6 +4141,18 @@ noncomputable def threeSphere_stereographicSources_inter_homeomorph_puncturedCha
   (Homeomorph.setCongr
     (threeSphere_stereographic_sources_inter_eq_twoPointComplement a b)).trans
     (threeSphere_twoPointComplement_homeomorph_puncturedChart hab)
+
+/--
+The two-source overlap chart homeomorphism first rewrites the overlap as the
+two-point complement, then applies the punctured stereographic chart.
+-/
+theorem threeSphere_stereographicSources_inter_homeomorph_puncturedChart_eq
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    threeSphere_stereographicSources_inter_homeomorph_puncturedChart hab =
+      (Homeomorph.setCongr
+        (threeSphere_stereographic_sources_inter_eq_twoPointComplement a b)).trans
+        (threeSphere_twoPointComplement_homeomorph_puncturedChart hab) :=
+  rfl
 
 /--
 The punctured stereographic chart embeds the overlap of two distinct
@@ -3969,6 +4200,19 @@ noncomputable def threeSphere_twoPointComplement_puncturedChartChartedSpace
   exact (threeSphere_twoPointComplement_puncturedChart_isOpenEmbedding hab).singletonChartedSpace
 
 /--
+The two-point-complement charted-space structure is the singleton charted space
+from its punctured stereographic open embedding.
+-/
+theorem threeSphere_twoPointComplement_puncturedChartChartedSpace_eq
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    threeSphere_twoPointComplement_puncturedChartChartedSpace hab =
+      (by
+        haveI : Nonempty (({a} ∪ {b})ᶜ : Set ThreeSphere) :=
+          (threeSphere_twoPointComplement_pathConnectedSpace hab).nonempty
+        exact (threeSphere_twoPointComplement_puncturedChart_isOpenEmbedding hab).singletonChartedSpace) :=
+  rfl
+
+/--
 The complement of two distinct points in `ThreeSphere` is a smooth
 3-manifold when charted by the punctured stereographic model.
 -/
@@ -3997,6 +4241,21 @@ noncomputable def threeSphere_stereographicSources_inter_puncturedChartChartedSp
         (stereographic' 3 b).source) : Set ThreeSphere) :=
     (threeSphere_stereographic_sources_inter_pathConnectedSpace a b).nonempty
   exact (threeSphere_stereographicSources_inter_puncturedChart_isOpenEmbedding hab).singletonChartedSpace
+
+/--
+The two-source-overlap charted-space structure is the singleton charted space
+from its punctured stereographic open embedding.
+-/
+theorem threeSphere_stereographicSources_inter_puncturedChartChartedSpace_eq
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    threeSphere_stereographicSources_inter_puncturedChartChartedSpace hab =
+      (by
+        haveI : Nonempty
+            (((stereographic' 3 a).source ∩
+              (stereographic' 3 b).source) : Set ThreeSphere) :=
+          (threeSphere_stereographic_sources_inter_pathConnectedSpace a b).nonempty
+        exact (threeSphere_stereographicSources_inter_puncturedChart_isOpenEmbedding hab).singletonChartedSpace) :=
+  rfl
 
 /--
 The overlap of two distinct stereographic chart sources on `ThreeSphere` is a
@@ -4061,6 +4320,42 @@ noncomputable def threeSphere_twoPointComplement_diffeomorph_puncturedChart
               exact congrArg Subtype.val (e.apply_symm_apply q))) }
 
 /--
+The two-point-complement diffeomorphism is the named punctured-chart
+homeomorphism equipped with smoothness from the source and target open
+embeddings.
+-/
+theorem threeSphere_twoPointComplement_diffeomorph_puncturedChart_eq
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    threeSphere_twoPointComplement_diffeomorph_puncturedChart hab =
+      (by
+        let puncture : EuclideanSpace ℝ (Fin 3) := threeSphere_twoPointChartImage a b hab
+        letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+            (({a} ∪ {b})ᶜ : Set ThreeSphere) :=
+          threeSphere_twoPointComplement_puncturedChartChartedSpace hab
+        letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+            ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+          euclideanThree_compl_singleton_chartedSpace puncture
+        let e := threeSphere_twoPointComplement_homeomorph_puncturedChart hab
+        let hsource := threeSphere_twoPointComplement_puncturedChart_isOpenEmbedding hab
+        let htarget := euclideanThree_compl_singleton_isOpenEmbedding puncture
+        haveI : Nonempty (({a} ∪ {b})ᶜ : Set ThreeSphere) :=
+          (threeSphere_twoPointComplement_pathConnectedSpace hab).nonempty
+        haveI : Nonempty ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+          (euclideanThree_compl_singleton_pathConnectedSpace puncture).nonempty
+        exact
+          { toEquiv := e.toEquiv
+            contMDiff_toFun := by
+              exact ContMDiff.of_comp_isOpenEmbedding (h' := htarget) (by
+                simpa [e, puncture] using
+                  contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource)
+            contMDiff_invFun := by
+              exact ContMDiff.of_comp_isOpenEmbedding (h' := hsource)
+                ((contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) htarget).congr
+                  (fun q => by
+                    exact congrArg Subtype.val (e.apply_symm_apply q))) }) :=
+  rfl
+
+/--
 The punctured stereographic chart identifies the overlap of two distinct
 stereographic sources with punctured `ℝ³` by a smooth diffeomorphism.
 -/
@@ -4108,10 +4403,59 @@ noncomputable def threeSphere_stereographicSources_inter_diffeomorph_puncturedCh
             (fun q => by
               exact congrArg Subtype.val (e.apply_symm_apply q))) }
 
+/--
+The two-source-overlap diffeomorphism is the named punctured-chart
+homeomorphism equipped with smoothness from the source and target open
+embeddings.
+-/
+theorem threeSphere_stereographicSources_inter_diffeomorph_puncturedChart_eq
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    threeSphere_stereographicSources_inter_diffeomorph_puncturedChart hab =
+      (by
+        let puncture : EuclideanSpace ℝ (Fin 3) := threeSphere_twoPointChartImage a b hab
+        letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+            (((stereographic' 3 a).source ∩
+              (stereographic' 3 b).source) : Set ThreeSphere) :=
+          threeSphere_stereographicSources_inter_puncturedChartChartedSpace hab
+        letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+            ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+          euclideanThree_compl_singleton_chartedSpace puncture
+        let e := threeSphere_stereographicSources_inter_homeomorph_puncturedChart hab
+        let hsource := threeSphere_stereographicSources_inter_puncturedChart_isOpenEmbedding hab
+        let htarget := euclideanThree_compl_singleton_isOpenEmbedding puncture
+        haveI : Nonempty
+            (((stereographic' 3 a).source ∩
+              (stereographic' 3 b).source) : Set ThreeSphere) :=
+          (threeSphere_stereographic_sources_inter_pathConnectedSpace a b).nonempty
+        haveI : Nonempty ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+          (euclideanThree_compl_singleton_pathConnectedSpace puncture).nonempty
+        exact
+          { toEquiv := e.toEquiv
+            contMDiff_toFun := by
+              exact ContMDiff.of_comp_isOpenEmbedding (h' := htarget) (by
+                simpa [e, puncture] using
+                  contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource)
+            contMDiff_invFun := by
+              exact ContMDiff.of_comp_isOpenEmbedding (h' := hsource)
+                ((contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) htarget).congr
+                  (fun q => by
+                    exact congrArg Subtype.val (e.apply_symm_apply q))) }) :=
+  rfl
+
 /-- The antipode of `v` as a point of the stereographic source at `v`. -/
 noncomputable def threeSphere_antipodeInSource
     (v : ThreeSphere) : (stereographic' 3 v).source :=
   ⟨-v, threeSphere_antipode_mem_stereographic_source v⟩
+
+/--
+The antipodal source point is `-v`, with membership supplied by the antipodal
+source lemma.
+-/
+theorem threeSphere_antipodeInSource_eq
+    (v : ThreeSphere) :
+    threeSphere_antipodeInSource v =
+      ⟨-v, threeSphere_antipode_mem_stereographic_source v⟩ :=
+  rfl
 
 /--
 The stereographic chart image of the antipode of `v`, viewed in the chart
@@ -4121,6 +4465,17 @@ noncomputable def threeSphere_antipodeChartImage
     (v : ThreeSphere) : EuclideanSpace ℝ (Fin 3) :=
   threeSphere_stereographic_source_homeomorph v
     (threeSphere_antipodeInSource v)
+
+/--
+The antipode chart image is the named stereographic source homeomorphism
+applied to the named antipodal source point.
+-/
+theorem threeSphere_antipodeChartImage_eq
+    (v : ThreeSphere) :
+    threeSphere_antipodeChartImage v =
+      threeSphere_stereographic_source_homeomorph v
+        (threeSphere_antipodeInSource v) :=
+  rfl
 
 /--
 The stereographic chart at `v` identifies the model overlap around `v` with a
@@ -4135,6 +4490,18 @@ noncomputable def threeSphere_antipodalSourceOverlap_homeomorph_puncturedChart
   (threeSphere_stereographic_source_homeomorph v).subtype
     (fun _p => by
       simp [threeSphere_antipodeChartImage])
+
+/--
+The antipodal source-overlap chart homeomorphism is the subtype restriction of
+the named stereographic source homeomorphism.
+-/
+theorem threeSphere_antipodalSourceOverlap_homeomorph_puncturedChart_eq
+    (v : ThreeSphere) :
+    threeSphere_antipodalSourceOverlap_homeomorph_puncturedChart v =
+      (threeSphere_stereographic_source_homeomorph v).subtype
+        (fun _p => by
+          simp [threeSphere_antipodeChartImage]) :=
+  rfl
 
 /--
 The source-side model of the overlap of antipodal stereographic charts is
@@ -4191,6 +4558,21 @@ noncomputable def threeSphere_antipodalSourceOverlap_puncturedChartChartedSpace
   exact (threeSphere_antipodalSourceOverlap_puncturedChart_isOpenEmbedding v).singletonChartedSpace
 
 /--
+The source-side antipodal overlap charted-space structure is the singleton
+charted space from the restricted punctured-chart open embedding.
+-/
+theorem threeSphere_antipodalSourceOverlap_puncturedChartChartedSpace_eq
+    (v : ThreeSphere) :
+    threeSphere_antipodalSourceOverlap_puncturedChartChartedSpace v =
+      (by
+        haveI : Nonempty
+            ({threeSphere_antipodeInSource v}ᶜ :
+              Set (stereographic' 3 v).source) :=
+          (threeSphere_antipodalSourceOverlap_pathConnectedSpace v).nonempty
+        exact (threeSphere_antipodalSourceOverlap_puncturedChart_isOpenEmbedding v).singletonChartedSpace) :=
+  rfl
+
+/--
 The source-side antipodal overlap is smoothly identified with punctured `ℝ³`
 by the restricted stereographic chart.
 -/
@@ -4239,6 +4621,45 @@ noncomputable def threeSphere_antipodalSourceOverlap_diffeomorph_puncturedChart
               exact congrArg Subtype.val (e.apply_symm_apply q))) }
 
 /--
+The source-side antipodal-overlap diffeomorphism is the restricted chart
+homeomorphism equipped with smoothness from the source and target open
+embeddings.
+-/
+theorem threeSphere_antipodalSourceOverlap_diffeomorph_puncturedChart_eq
+    (v : ThreeSphere) :
+    threeSphere_antipodalSourceOverlap_diffeomorph_puncturedChart v =
+      (by
+        let puncture : EuclideanSpace ℝ (Fin 3) := threeSphere_antipodeChartImage v
+        letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+            ({threeSphere_antipodeInSource v}ᶜ :
+              Set (stereographic' 3 v).source) :=
+          threeSphere_antipodalSourceOverlap_puncturedChartChartedSpace v
+        letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+            ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+          euclideanThree_compl_singleton_chartedSpace puncture
+        let e := threeSphere_antipodalSourceOverlap_homeomorph_puncturedChart v
+        let hsource := threeSphere_antipodalSourceOverlap_puncturedChart_isOpenEmbedding v
+        let htarget := euclideanThree_compl_singleton_isOpenEmbedding puncture
+        haveI : Nonempty
+            ({threeSphere_antipodeInSource v}ᶜ :
+              Set (stereographic' 3 v).source) :=
+          (threeSphere_antipodalSourceOverlap_pathConnectedSpace v).nonempty
+        haveI : Nonempty ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+          (euclideanThree_compl_singleton_pathConnectedSpace puncture).nonempty
+        exact
+          { toEquiv := e.toEquiv
+            contMDiff_toFun := by
+              exact ContMDiff.of_comp_isOpenEmbedding (h' := htarget) (by
+                simpa [e, puncture] using
+                  contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource)
+            contMDiff_invFun := by
+              exact ContMDiff.of_comp_isOpenEmbedding (h' := hsource)
+                ((contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) htarget).congr
+                  (fun q => by
+                    exact congrArg Subtype.val (e.apply_symm_apply q))) }) :=
+  rfl
+
+/--
 The actual overlap of the two stereographic sources centered at `v` and `-v`
 is homeomorphic to the source-side complement of the antipode.
 -/
@@ -4279,6 +4700,49 @@ noncomputable def threeSphere_antipodalActualOverlap_homeomorph_sourceOverlap
     continuity
   continuous_invFun := by
     continuity
+
+/--
+The actual antipodal-overlap/source-overlap homeomorphism is the identity on
+underlying points, with source-membership and antipode-exclusion proofs
+transported between subtype presentations.
+-/
+theorem threeSphere_antipodalActualOverlap_homeomorph_sourceOverlap_eq
+    (v : ThreeSphere) :
+    threeSphere_antipodalActualOverlap_homeomorph_sourceOverlap v =
+      { toFun := fun p =>
+          ⟨⟨p.1, p.2.1⟩, by
+            rw [Set.mem_compl_iff]
+            intro h
+            have hantipodeSource : (p : ThreeSphere) ∈
+                (stereographic' 3 (-v)).source := p.2.2
+            have hp_ne_antipode : (p : ThreeSphere) ≠ -v := by
+              simpa [threeSphere_stereographic_source_eq_compl_singleton] using
+                hantipodeSource
+            have hpoint :
+                (⟨p.1, p.2.1⟩ : (stereographic' 3 v).source) =
+                  threeSphere_antipodeInSource v := by
+              simpa using h
+            exact hp_ne_antipode (Subtype.ext_iff.mp hpoint)⟩
+        invFun := fun p =>
+          ⟨p.1.1, by
+            constructor
+            · exact p.1.2
+            · rw [threeSphere_stereographic_source_eq_compl_singleton]
+              intro h
+              exact p.2 (Subtype.ext h)⟩
+        left_inv := by
+          intro p
+          ext
+          rfl
+        right_inv := by
+          intro p
+          ext
+          rfl
+        continuous_toFun := by
+          continuity
+        continuous_invFun := by
+          continuity } := by
+  rfl
 
 /--
 Any antipodal pair of stereographic sources on the concrete `ThreeSphere` has
@@ -4340,6 +4804,21 @@ noncomputable def threeSphere_antipodalActualOverlap_puncturedChartChartedSpace
   exact (threeSphere_antipodalActualOverlap_puncturedChart_isOpenEmbedding v).singletonChartedSpace
 
 /--
+The actual antipodal overlap charted-space structure is the singleton charted
+space from the source-side punctured-chart open embedding.
+-/
+theorem threeSphere_antipodalActualOverlap_puncturedChartChartedSpace_eq
+    (v : ThreeSphere) :
+    threeSphere_antipodalActualOverlap_puncturedChartChartedSpace v =
+      (by
+        haveI : Nonempty
+            ((((stereographic' 3 v).source ∩
+              (stereographic' 3 (-v)).source) : Set ThreeSphere)) :=
+          (threeSphere_antipodalActualOverlap_pathConnectedSpace v).nonempty
+        exact (threeSphere_antipodalActualOverlap_puncturedChart_isOpenEmbedding v).singletonChartedSpace) :=
+  rfl
+
+/--
 The actual antipodal chart overlap is smoothly identified with the source-side
 punctured overlap model.
 -/
@@ -4393,6 +4872,53 @@ noncomputable def threeSphere_antipodalActualOverlap_diffeomorph_sourceOverlap
                       Set (EuclideanSpace ℝ (Fin 3)))) :
                     EuclideanSpace ℝ (Fin 3)))
                 (e.apply_symm_apply q))) }
+
+/--
+The actual antipodal-overlap diffeomorphism is the actual/source-overlap
+homeomorphism equipped with smoothness from the actual and source-side open
+embeddings.
+-/
+theorem threeSphere_antipodalActualOverlap_diffeomorph_sourceOverlap_eq
+    (v : ThreeSphere) :
+    threeSphere_antipodalActualOverlap_diffeomorph_sourceOverlap v =
+      (by
+        let e := threeSphere_antipodalActualOverlap_homeomorph_sourceOverlap v
+        let hsource := threeSphere_antipodalActualOverlap_puncturedChart_isOpenEmbedding v
+        let htarget := threeSphere_antipodalSourceOverlap_puncturedChart_isOpenEmbedding v
+        letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+            ((((stereographic' 3 v).source ∩
+              (stereographic' 3 (-v)).source) : Set ThreeSphere)) :=
+          threeSphere_antipodalActualOverlap_puncturedChartChartedSpace v
+        letI : ChartedSpace (EuclideanSpace ℝ (Fin 3))
+            ({threeSphere_antipodeInSource v}ᶜ :
+              Set (stereographic' 3 v).source) :=
+          threeSphere_antipodalSourceOverlap_puncturedChartChartedSpace v
+        haveI : Nonempty
+            ((((stereographic' 3 v).source ∩
+              (stereographic' 3 (-v)).source) : Set ThreeSphere)) :=
+          (threeSphere_antipodalActualOverlap_pathConnectedSpace v).nonempty
+        haveI : Nonempty
+            ({threeSphere_antipodeInSource v}ᶜ :
+              Set (stereographic' 3 v).source) :=
+          (threeSphere_antipodalSourceOverlap_pathConnectedSpace v).nonempty
+        exact
+          { toEquiv := e.toEquiv
+            contMDiff_toFun := by
+              exact ContMDiff.of_comp_isOpenEmbedding (h' := htarget) (by
+                simpa [e] using
+                  contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource)
+            contMDiff_invFun := by
+              exact ContMDiff.of_comp_isOpenEmbedding (h' := hsource)
+                ((contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) htarget).congr
+                  (fun q => by
+                    exact congrArg
+                      (fun r =>
+                        ((threeSphere_antipodalSourceOverlap_homeomorph_puncturedChart v r :
+                          ({threeSphere_antipodeChartImage v}ᶜ :
+                            Set (EuclideanSpace ℝ (Fin 3)))) :
+                          EuclideanSpace ℝ (Fin 3)))
+                      (e.apply_symm_apply q))) }) :=
+  rfl
 
 /--
 The complement of the south-pole image in the north-pole stereographic chart is
@@ -8139,10 +8665,22 @@ The unit two-sphere in `ℝ³`, used as the angular factor in punctured `ℝ³`.
 abbrev TwoSphere : Type :=
   Metric.sphere (0 : EuclideanSpace ℝ (Fin 3)) (1 : ℝ)
 
+/-- The two-sphere is the unit metric sphere in three-dimensional Euclidean space. -/
+theorem twoSphere_eq :
+    TwoSphere = Metric.sphere (0 : EuclideanSpace ℝ (Fin 3)) (1 : ℝ) :=
+  rfl
+
 /-- A concrete north-pole point of the two-sphere. -/
 noncomputable def twoSphere_northPole : TwoSphere :=
   let v : EuclideanSpace ℝ (Fin 3) := .single 0 1
   ⟨v, by simp [v]⟩
+
+/-- The two-sphere north pole is the first coordinate unit vector. -/
+theorem twoSphere_northPole_eq :
+    twoSphere_northPole =
+      (let v : EuclideanSpace ℝ (Fin 3) := .single 0 1
+       ⟨v, by simp [v]⟩) :=
+  rfl
 
 /-- The `ℝ²` rank witness used for stereographic-overlap path-connectedness. -/
 theorem euclideanTwo_rank_gt_one :
@@ -8166,6 +8704,18 @@ noncomputable def twoSphere_stereographic_source_homeomorph
   (stereographic' 2 v).toHomeomorphSourceTarget.trans
     ((Homeomorph.setCongr (stereographic'_target v)).trans
       (Homeomorph.Set.univ (EuclideanSpace ℝ (Fin 2))))
+
+/--
+The two-sphere stereographic source homeomorphism is the source-target chart
+homeomorphism followed by the target-universe identification.
+-/
+theorem twoSphere_stereographic_source_homeomorph_eq
+    (v : TwoSphere) :
+    twoSphere_stereographic_source_homeomorph v =
+      (stereographic' 2 v).toHomeomorphSourceTarget.trans
+        ((Homeomorph.setCongr (stereographic'_target v)).trans
+          (Homeomorph.Set.univ (EuclideanSpace ℝ (Fin 2)))) :=
+  rfl
 
 /-- Every stereographic source of `TwoSphere` is simply connected. -/
 theorem twoSphere_stereographic_source_simplyConnectedSpace
@@ -8256,6 +8806,41 @@ noncomputable def twoSphere_countableComplement_homeomorph_sourceComplement
     continuity
   continuous_invFun := by
     continuity
+
+/--
+The two-sphere countable-complement homeomorphism into a stereographic source
+is the identity on underlying points, with proofs transported between subtype
+shapes.
+-/
+theorem twoSphere_countableComplement_homeomorph_sourceComplement_eq
+    {s : Set TwoSphere} {a : TwoSphere} (ha : a ∈ s) :
+    twoSphere_countableComplement_homeomorph_sourceComplement ha =
+      { toFun := fun p =>
+          ⟨⟨p.1, by
+            rw [twoSphere_stereographic_source_eq_compl_singleton]
+            intro h
+            exact p.2 (h ▸ ha)⟩, by
+            rw [Set.mem_compl_iff]
+            intro hp
+            exact p.2 hp⟩
+        invFun := fun p =>
+          ⟨p.1.1, by
+            rw [Set.mem_compl_iff]
+            intro hp
+            exact p.2 hp⟩
+        left_inv := by
+          intro p
+          ext
+          rfl
+        right_inv := by
+          intro p
+          ext
+          rfl
+        continuous_toFun := by
+          continuity
+        continuous_invFun := by
+          continuity } := by
+  rfl
 
 /--
 The complement of a countable subset of `TwoSphere` is path-connected when the
