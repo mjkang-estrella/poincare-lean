@@ -27013,6 +27013,58 @@ theorem finite_extinction_conclusion_statement_of_volume_differential_inputs
       conclusionCertificate conclusionEq)
 
 /--
+Assemble the theorem-shaped finite-extinction statement from the same
+fixed-flow volume-differential inputs and identified production certificate.
+-/
+theorem finite_extinction_statement_of_volume_differential_inputs
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (finiteFundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
+    (sweepout :
+      HasFiniteExtinctionSweepoutExistence M finiteFundamentalGroup)
+    (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control)
+    (widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory)
+    (surgeryDiscardControl :
+      HasFiniteExtinctionSurgeryDiscardControl
+        flow surgery control widthTheory widthEvolution)
+    (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control)
+    (componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching)
+    (derivation : HasFiniteExtinctionDerivation flow surgery control)
+    (volumeEvolutionFormula :
+      HasFiniteExtinctionVolumeEvolutionFormula
+        flow surgery control pinching componentControl)
+    (surgeryVolumeNonincrease :
+      HasFiniteExtinctionSurgeryVolumeNonincrease
+        flow surgery control pinching componentControl)
+    (scalarCurvatureDifferentialInequality :
+      HasFiniteExtinctionScalarCurvatureDifferentialInequality
+        flow surgery control pinching componentControl)
+    (volumeDifferentialInequality :
+      HasFiniteExtinctionVolumeDifferentialInequality
+        flow surgery control pinching componentControl)
+    (conclusionCertificate :
+      FiniteExtinctionByRicciFlowWithSurgeryProductionCertificate M)
+    (conclusionEq :
+      FiniteExtinctionByRicciFlowWithSurgery.of_production_certificate
+        conclusionCertificate = finiteExtinction) :
+    FiniteExtinctionStatement n M :=
+  ⟨flow, surgery, control, finiteExtinction,
+    finite_extinction_conclusion_statement_of_volume_differential_inputs
+      flow surgery control finiteExtinction finiteFundamentalGroup sweepout
+      widthTheory widthEvolution surgeryDiscardControl pinching
+      componentControl derivation volumeEvolutionFormula
+      surgeryVolumeNonincrease scalarCurvatureDifferentialInequality
+      volumeDifferentialInequality conclusionCertificate conclusionEq⟩
+
+/--
 A package of future geometric-analysis inputs sufficient to produce finite
 extinction for a smooth compact simply connected 3-manifold.
 -/

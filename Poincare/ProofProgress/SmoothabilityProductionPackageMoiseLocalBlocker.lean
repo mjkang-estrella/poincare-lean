@@ -16375,30 +16375,29 @@ theorem smoothabilityPackageBridgeFields_of_localInverseTransportedChartAtModelB
       inputs)
 
 /--
-Once the local source-equivalence inverse model is supplied explicitly,
-one-point recognition constructs the package fields through the theorem-shaped
-bridge.
+Once the local source-equivalence inverse model is supplied explicitly, the
+forward transported-atlas compatibility bridge constructs the package fields.
 -/
 theorem smoothabilityPackageBridgeFields_of_localInverseTransportedChartAtEqOnSourceBridgeInputs
     (inputs :
       OnePointRecognitionAmbientChartLocalInverseTransportedChartAtEqOnSourceBridgeInputs.{u}) :
     SmoothabilityPackageBridgeFields.{u} :=
-  smoothabilityPackageBridgeFields_of_onePointRecognitionAmbientChartLocalInverseTransportedChartAtEqOnSource
-    inputs.recognize
-    inputs.ambientChartLocalInverseTransportedChartAtEqOnSource
+  smoothabilityPackageBridgeFields_of_forwardChartTransportedAtlasCompatibleBridgeInputs
+    (forwardChartTransportedAtlasCompatibleBridgeInputs_of_localInverseTransportedChartAtEqOnSourceBridgeInputs
+      inputs)
 
 /--
 Once the unfolded target/source and inverse-map identities are supplied
-explicitly, one-point recognition constructs the package fields through the
-theorem-shaped bridge.
+explicitly, the forward transported-atlas compatibility bridge constructs the
+package fields.
 -/
 theorem smoothabilityPackageBridgeFields_of_localInverseTransportedChartAtTargetEqInvEqBridgeInputs
     (inputs :
       OnePointRecognitionAmbientChartLocalInverseTransportedChartAtTargetEqInvEqBridgeInputs.{u}) :
     SmoothabilityPackageBridgeFields.{u} :=
-  smoothabilityPackageBridgeFields_of_onePointRecognitionAmbientChartLocalInverseTransportedChartAtTargetEqInvEq
-    inputs.recognize
-    inputs.ambientChartLocalInverseTransportedChartAtTargetEqInvEq
+  smoothabilityPackageBridgeFields_of_forwardChartTransportedAtlasCompatibleBridgeInputs
+    (forwardChartTransportedAtlasCompatibleBridgeInputs_of_localInverseTransportedChartAtTargetEqInvEqBridgeInputs
+      inputs)
 
 /--
 Once the manifold-side local source-intersection and forward-chart equality germ
