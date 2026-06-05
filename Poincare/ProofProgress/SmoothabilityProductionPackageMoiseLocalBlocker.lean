@@ -6800,6 +6800,75 @@ theorem homeomorphToOnePoint_threeSpace_transportedLocalInverseChart_source_none
     ⟨q, homeomorphToOnePoint_threeSpace_mem_transportedLocalInverseChart_source e q⟩
 
 /--
+The transported one-point `chartAt` chart lies in the explicit local-inverse
+chart range at the same point.
+-/
+theorem homeomorphToOnePoint_threeSpace_transportedChartAt_mem_transportedLocalInverseChart_range
+    {M : Type u} [TopologicalSpace M]
+    (e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) (q : M) :
+    @ChartedSpace.chartAt ThreeManifoldModel _ M _
+        (homeomorphToOnePoint_threeSpace_smoothChartedSpace e) q ∈
+      Set.range (homeomorphToOnePoint_threeSpace_transportedLocalInverseChart e) := by
+  rw [← homeomorphToOnePoint_threeSpace_transportedLocalInverseChart_eq_chartAt e q]
+  exact homeomorphToOnePoint_threeSpace_transportedLocalInverseChart_mem_range e q
+
+/--
+Any chart identified with the transported one-point `chartAt` at `q` lies in
+the explicit transported local-inverse chart range.
+-/
+theorem homeomorphToOnePoint_threeSpace_chart_eq_transportedChartAt_mem_transportedLocalInverseChart_range
+    {M : Type u} [TopologicalSpace M]
+    (e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+    {c : OpenPartialHomeomorph M ThreeManifoldModel} {q : M}
+    (hc :
+      c =
+        @ChartedSpace.chartAt ThreeManifoldModel _ M _
+          (homeomorphToOnePoint_threeSpace_smoothChartedSpace e) q) :
+    c ∈ Set.range (homeomorphToOnePoint_threeSpace_transportedLocalInverseChart e) := by
+  rw [hc]
+  exact homeomorphToOnePoint_threeSpace_transportedChartAt_mem_transportedLocalInverseChart_range e q
+
+/--
+If an ambient atlas chart is the ambient selected chart at a source point, and
+the ambient selected chart agrees there with the transported selected chart,
+then the chart lies in the transported local-inverse chart range.
+-/
+theorem homeomorphToOnePoint_threeSpace_chart_eq_ambientChartAt_mem_transportedLocalInverseChart_range_of_selectedSourceCompatibilityCore
+    (selectedCompat :
+      OnePointRecognitionAmbientChartAtSelectedSourceCompatibilityCorePayload.{u})
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    (e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+    {c : OpenPartialHomeomorph M ThreeManifoldModel}
+    (hcAtlas : c ∈ atlas ThreeManifoldModel M)
+    {q : M} (hq : q ∈ c.source)
+    (hselect : c = @ChartedSpace.chartAt ThreeManifoldModel _ M _ inferInstance q) :
+    c ∈ Set.range (homeomorphToOnePoint_threeSpace_transportedLocalInverseChart e) := by
+  have hcompat :
+      @ChartedSpace.chartAt ThreeManifoldModel _ M _ inferInstance q =
+        @ChartedSpace.chartAt ThreeManifoldModel _ M _
+          (homeomorphToOnePoint_threeSpace_smoothChartedSpace e) q :=
+    selectedCompat e hcAtlas hq hselect
+  exact
+    homeomorphToOnePoint_threeSpace_chart_eq_transportedChartAt_mem_transportedLocalInverseChart_range
+      e (hselect.trans hcompat)
+
+/--
+Selector choice on atlas-chart sources plus selected-source compatibility
+constructs the source-nonempty local-inverse range input.
+-/
+theorem onePointRecognitionAmbientAtlasSourceNonemptySubsetTransportedLocalInverseChartRangeCorePayload_of_chartAtSelectsAtlasChartOnSourceCore_and_selectedSourceCompatibilityCore
+    (selects :
+      OnePointRecognitionAmbientChartAtSelectsAtlasChartOnSourceCorePayload.{u})
+    (selectedCompat :
+      OnePointRecognitionAmbientChartAtSelectedSourceCompatibilityCorePayload.{u}) :
+    OnePointRecognitionAmbientAtlasSourceNonemptySubsetTransportedLocalInverseChartRangeCorePayload.{u} := by
+  intro M _top _charted e c hc hsource
+  rcases hsource with ⟨q, hq⟩
+  exact
+    homeomorphToOnePoint_threeSpace_chart_eq_ambientChartAt_mem_transportedLocalInverseChart_range_of_selectedSourceCompatibilityCore
+      selectedCompat e hc hq (selects hc hq)
+
+/--
 The core atlas-field range comparison supplies the current recognition-shaped
 range payload.
 -/

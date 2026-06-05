@@ -10444,6 +10444,37 @@ theorem extinctionOnePointThreeSpaceCanonicalForwardInverseMapToFunPointwiseChar
       hRawToFun x
 
 /--
+Pointwise raw `invFun` uniqueness turns an existential selected raw-map backing
+datum into coherence for the inverse field of the particular raw map selected
+from the statement-level forward/inverse-map data.
+-/
+theorem extinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedInvFunRawMapChoiceDataAfterMapSelectionDataStatement_of_pointwiseInvFunUniquenessData_and_selectedRawMapData
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (forwardInverseMapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (pointwiseInvFunUniquenessData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataPointwiseInvFunUniquenessAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData) :
+    ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedInvFunRawMapChoiceDataAfterMapSelectionDataStatement
+      mapSelectionData forwardInverseMapData := by
+  intro M _top _t2 _charted _simple _compact extinction decomposition
+  dsimp
+  intro y
+  rcases selectedRawMapData M extinction decomposition with
+    ⟨rawMapData, _hRawToFun, hRawInvFun⟩
+  calc
+    (Classical.choice (forwardInverseMapData M extinction decomposition)).invFun y =
+        rawMapData.invFun y :=
+      pointwiseInvFunUniquenessData M extinction decomposition
+        (Classical.choice (forwardInverseMapData M extinction decomposition))
+        rawMapData y
+    _ = (Classical.choice (mapSelectionData M extinction decomposition)).2 y :=
+      hRawInvFun y
+
+/--
 Raw forward/inverse map data plus selected raw `toFun` and `invFun`
 choice-coherence data supplies the full selected raw-map backing payload.
 -/

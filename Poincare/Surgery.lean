@@ -15122,6 +15122,175 @@ theorem KappaSolutionPointedRescalingPayload.pointedRescalingKappaScale_positive
   rw [payload.pointedRescalingKappaScale_eq_ancientLimitKappaScale]
   exact limitExtractionPayload.ancientLimitKappaScalePositive
 
+section KappaSolutionPointedRescalingSubsequenceEstimateLemmas
+
+variable
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload
+        entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload
+        entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload
+        conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload
+        entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload
+        entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload
+        entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload
+        entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {limitExtractionPayload :
+      AncientKappaSolutionLimitExtractionPayload
+        hamiltonCompactnessPayload}
+
+/--
+The blowup radius at the Hamilton-compactness subsequence selected by a
+pointed rescaling is positive.
+-/
+theorem KappaSolutionPointedRescalingPayload.subsequenceBlowupRadius_positive
+    (payload : KappaSolutionPointedRescalingPayload limitExtractionPayload)
+    (index : payload.pointedRescalingDomain) :
+    0 <
+      collapsedBallBlowupPayload.blowupRadius
+        (hamiltonCompactnessPayload.subsequenceToBlowupIndex
+          (limitExtractionPayload.limitExtractionToCompactnessIndex
+            (payload.pointedRescalingToLimitExtractionIndex index))) := by
+  rw [← payload.pointedRescalingRadius_eq_subsequenceBlowupRadius index]
+  exact payload.pointedRescalingRadius_positive index
+
+/--
+The blowup rescaling factor at the Hamilton-compactness subsequence selected by
+a pointed rescaling is positive.
+-/
+theorem KappaSolutionPointedRescalingPayload.subsequenceBlowupRescalingFactor_positive
+    (payload : KappaSolutionPointedRescalingPayload limitExtractionPayload)
+    (index : payload.pointedRescalingDomain) :
+    0 <
+      collapsedBallBlowupPayload.rescalingFactor
+        (hamiltonCompactnessPayload.subsequenceToBlowupIndex
+          (limitExtractionPayload.limitExtractionToCompactnessIndex
+            (payload.pointedRescalingToLimitExtractionIndex index))) := by
+  rw [← payload.parabolicRescalingFactor_eq_subsequenceBlowupRescalingFactor index]
+  exact payload.parabolicRescalingFactor_positive index
+
+/--
+The Hamilton-subsequence blowup radius is controlled by the pointed-rescaling
+envelope.
+-/
+theorem KappaSolutionPointedRescalingPayload.subsequenceBlowupRadius_le_pointedRescalingEnvelope
+    (payload : KappaSolutionPointedRescalingPayload limitExtractionPayload)
+    (index : payload.pointedRescalingDomain) :
+    collapsedBallBlowupPayload.blowupRadius
+        (hamiltonCompactnessPayload.subsequenceToBlowupIndex
+          (limitExtractionPayload.limitExtractionToCompactnessIndex
+            (payload.pointedRescalingToLimitExtractionIndex index))) ≤
+      payload.pointedRescalingEnvelope := by
+  rw [← payload.pointedRescalingRadius_eq_subsequenceBlowupRadius index]
+  exact payload.pointedRescalingRadius_le_envelope index
+
+/--
+The Hamilton-subsequence blowup rescaling factor is controlled by the
+pointed-rescaling envelope.
+-/
+theorem KappaSolutionPointedRescalingPayload.subsequenceBlowupRescalingFactor_le_pointedRescalingEnvelope
+    (payload : KappaSolutionPointedRescalingPayload limitExtractionPayload)
+    (index : payload.pointedRescalingDomain) :
+    collapsedBallBlowupPayload.rescalingFactor
+        (hamiltonCompactnessPayload.subsequenceToBlowupIndex
+          (limitExtractionPayload.limitExtractionToCompactnessIndex
+            (payload.pointedRescalingToLimitExtractionIndex index))) ≤
+      payload.pointedRescalingEnvelope := by
+  rw [← payload.parabolicRescalingFactor_eq_subsequenceBlowupRescalingFactor index]
+  exact payload.parabolicRescalingFactor_le_envelope index
+
+/--
+Pointed-rescaling radii inherit Hamilton-compactness radius control along the
+selected subsequence.
+-/
+theorem KappaSolutionPointedRescalingPayload.pointedRescalingRadius_le_compactnessRadiusScale
+    (payload : KappaSolutionPointedRescalingPayload limitExtractionPayload)
+    (index : payload.pointedRescalingDomain) :
+    payload.pointedRescalingRadius index ≤
+      hamiltonCompactnessPayload.compactnessRadiusScale := by
+  rw [payload.pointedRescalingRadius_eq_subsequenceBlowupRadius index]
+  exact
+    hamiltonCompactnessPayload.blowupRadius_le_compactnessRadiusScale
+      (limitExtractionPayload.limitExtractionToCompactnessIndex
+        (payload.pointedRescalingToLimitExtractionIndex index))
+
+end KappaSolutionPointedRescalingSubsequenceEstimateLemmas
+
 /-- Interface for pointed parabolic rescalings used to form kappa-solution limits. -/
 inductive HasKappaSolutionPointedRescaling
     {n : ℕ∞ω}

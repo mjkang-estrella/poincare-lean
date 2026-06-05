@@ -1817,6 +1817,58 @@ theorem stationary_zero_riemann_curvature_construction_initial_time_commuting_pa
   simp [pair.Xext_eq]
 
 /--
+Zero of the base-vector coefficient transports back to zero of the selected
+forward coefficient expression.  This is the pointwise zero transport supplied
+by the selected representative's value theorem.
+-/
+theorem stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_forward_connection_coefficient_expression_zero_of_base_vector_expression_zero_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (curvatureConstructionAtTime :
+      RiemannCurvatureTensorConstructionData
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)))
+    {x : M} {X Y : TangentSpace ThreeManifoldModelWithCorners x}
+    (pair :
+      StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairRepresentativeCurrentApi
+        (M := M) X Y)
+    (baseVectorConnectionCoefficientZeroAtTime :
+      let metricCompatibleConnectionAtTime :=
+        curvatureConstructionAtTime.connectionTheoryAtTime.metricCompatibleConnectionAtTime
+      let torsionFreeConnectionAtTime :=
+        metricCompatibleConnectionAtTime.torsionFreeConnectionAtTime
+      let connectionAtTime :=
+        torsionFreeConnectionAtTime.uniqueConnectionAtTime.connectionAtTime
+      connectionAtTime 0 pair.Yext x X = 0) :
+    let metricCompatibleConnectionAtTime :=
+      curvatureConstructionAtTime.connectionTheoryAtTime.metricCompatibleConnectionAtTime
+    let torsionFreeConnectionAtTime :=
+      metricCompatibleConnectionAtTime.torsionFreeConnectionAtTime
+    let connectionAtTime :=
+      torsionFreeConnectionAtTime.uniqueConnectionAtTime.connectionAtTime
+    connectionAtTime 0 pair.Yext x (pair.Xext x) = 0 :=
+  (stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_forward_connection_coefficient_expression_eq_base_vector_expression_current_api
+    metric identifiesDerivative identifiesRicci curvatureConstructionAtTime pair).trans
+    baseVectorConnectionCoefficientZeroAtTime
+
+/--
 For the representatives selected from an existential smooth extension source,
 the forward connection coefficient can be evaluated using the requested base
 vector `X` instead of the selected representative value `Xext x`.
@@ -1867,6 +1919,68 @@ theorem stationary_zero_riemann_curvature_construction_initial_time_commuting_pa
       metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
       ((stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_tangent_vector_field_extension_exists_current_api
         extensionExists).initial_time_commuting_pair_representatives X Y)
+
+/--
+For representatives selected from an existential smooth extension source,
+zero of the base-vector coefficient expression gives zero of the selected
+forward coefficient expression.
+-/
+theorem stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_forward_connection_coefficient_expression_zero_of_base_vector_expression_zero_of_tangent_vector_field_extension_exists_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (curvatureConstructionAtTime :
+      RiemannCurvatureTensorConstructionData
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)))
+    (extensionExists :
+      ∀ {x : M} (X : TangentSpace ThreeManifoldModelWithCorners x),
+        ∃ Xext : (y : M) → TangentSpace ThreeManifoldModelWithCorners y,
+          Xext x = X ∧
+            StationaryZeroSmoothTangentVectorFieldAtPointCurrentApi Xext x)
+    {x : M} (X Y : TangentSpace ThreeManifoldModelWithCorners x)
+    (baseVectorConnectionCoefficientZeroAtTime :
+      let pair :=
+        (stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_tangent_vector_field_extension_exists_current_api
+          extensionExists).initial_time_commuting_pair_representatives X Y
+      let metricCompatibleConnectionAtTime :=
+        curvatureConstructionAtTime.connectionTheoryAtTime.metricCompatibleConnectionAtTime
+      let torsionFreeConnectionAtTime :=
+        metricCompatibleConnectionAtTime.torsionFreeConnectionAtTime
+      let connectionAtTime :=
+        torsionFreeConnectionAtTime.uniqueConnectionAtTime.connectionAtTime
+      connectionAtTime 0 pair.Yext x X = 0) :
+    let pair :=
+      (stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_tangent_vector_field_extension_exists_current_api
+        extensionExists).initial_time_commuting_pair_representatives X Y
+    let metricCompatibleConnectionAtTime :=
+      curvatureConstructionAtTime.connectionTheoryAtTime.metricCompatibleConnectionAtTime
+    let torsionFreeConnectionAtTime :=
+      metricCompatibleConnectionAtTime.torsionFreeConnectionAtTime
+    let connectionAtTime :=
+      torsionFreeConnectionAtTime.uniqueConnectionAtTime.connectionAtTime
+    connectionAtTime 0 pair.Yext x (pair.Xext x) = 0 :=
+  stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_forward_connection_coefficient_expression_zero_of_base_vector_expression_zero_current_api
+    metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+    ((stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_tangent_vector_field_extension_exists_current_api
+      extensionExists).initial_time_commuting_pair_representatives X Y)
+    baseVectorConnectionCoefficientZeroAtTime
 
 /--
 Normal-coordinate Christoffel-symbol data for the selected base-vector
@@ -7006,9 +7120,13 @@ theorem stationary_zero_riemann_curvature_construction_initial_time_commuting_pa
       metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
       initialTimeCommutingPairRepresentativeAtTime
       forwardBaseVectorConnectionCoefficientZeroAtTime X Y
-  simpa [StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairForwardBaseVectorConnectionCoefficientZeroCurrentApi,
+  simpa [
+    StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairForwardBaseVectorConnectionCoefficientZeroCurrentApi,
     StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairForwardConnectionCoefficientZeroCurrentApi,
-    pair, pair.Xext_eq] using hbase
+    pair
+  ] using
+    stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_forward_connection_coefficient_expression_zero_of_base_vector_expression_zero_current_api
+      metric identifiesDerivative identifiesRicci curvatureConstructionAtTime pair hbase
 
 /--
 Forward connection-coefficient zero data is narrowed to the base-vector
