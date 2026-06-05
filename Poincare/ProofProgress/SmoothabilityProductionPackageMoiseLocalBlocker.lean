@@ -6746,6 +6746,60 @@ theorem homeomorphToOnePoint_threeSpace_smoothChartedSpace_atlas_eq_transportedL
   rfl
 
 /--
+Each explicit transported local-inverse chart is, tautologically, in the range
+of the transported local-inverse chart constructor.
+-/
+theorem homeomorphToOnePoint_threeSpace_transportedLocalInverseChart_mem_range
+    {M : Type u} [TopologicalSpace M]
+    (e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) (q : M) :
+    homeomorphToOnePoint_threeSpace_transportedLocalInverseChart e q ∈
+      Set.range (homeomorphToOnePoint_threeSpace_transportedLocalInverseChart e) := by
+  exact ⟨q, rfl⟩
+
+/--
+Each explicit transported local-inverse chart is an atlas chart for the
+transported one-point charted space.
+-/
+theorem homeomorphToOnePoint_threeSpace_transportedLocalInverseChart_mem_smoothChartedSpace_atlas
+    {M : Type u} [TopologicalSpace M]
+    (e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) (q : M) :
+    homeomorphToOnePoint_threeSpace_transportedLocalInverseChart e q ∈
+      @atlas ThreeManifoldModel _ M _
+        (homeomorphToOnePoint_threeSpace_smoothChartedSpace e) := by
+  rw [homeomorphToOnePoint_threeSpace_transportedLocalInverseChart_eq_chartAt]
+  exact
+    @chart_mem_atlas ThreeManifoldModel M _ _
+      (homeomorphToOnePoint_threeSpace_smoothChartedSpace e) q
+
+/--
+The source point used to select the transported local-inverse chart belongs to
+that chart's source.
+-/
+theorem homeomorphToOnePoint_threeSpace_mem_transportedLocalInverseChart_source
+    {M : Type u} [TopologicalSpace M]
+    (e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) (q : M) :
+    q ∈ (homeomorphToOnePoint_threeSpace_transportedLocalInverseChart e q).source := by
+  have hSource :
+      q ∈
+        (@ChartedSpace.chartAt ThreeManifoldModel _ M _
+          (homeomorphToOnePoint_threeSpace_smoothChartedSpace e) q).source :=
+    @mem_chart_source ThreeManifoldModel M _ _
+      (homeomorphToOnePoint_threeSpace_smoothChartedSpace e) q
+  simp [homeomorphToOnePoint_threeSpace_transportedLocalInverseChart_eq_chartAt,
+    hSource]
+
+/--
+Every explicit transported local-inverse chart has a nonempty source, witnessed
+by the point at which it is selected.
+-/
+theorem homeomorphToOnePoint_threeSpace_transportedLocalInverseChart_source_nonempty
+    {M : Type u} [TopologicalSpace M]
+    (e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) (q : M) :
+    ∃ x : M, x ∈ (homeomorphToOnePoint_threeSpace_transportedLocalInverseChart e q).source := by
+  exact
+    ⟨q, homeomorphToOnePoint_threeSpace_mem_transportedLocalInverseChart_source e q⟩
+
+/--
 The core atlas-field range comparison supplies the current recognition-shaped
 range payload.
 -/

@@ -1544,6 +1544,44 @@ noncomputable def stationary_zero_riemann_curvature_construction_initial_time_co
       extensionExists)
 
 /--
+For the representatives selected from an existential smooth extension source,
+the first selected vector field still has the prescribed value at the base
+point.
+-/
+theorem stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_Xext_eq_of_tangent_vector_field_extension_exists_current_api
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (extensionExists :
+      ∀ {x : M} (X : TangentSpace ThreeManifoldModelWithCorners x),
+        ∃ Xext : (y : M) → TangentSpace ThreeManifoldModelWithCorners y,
+          Xext x = X ∧
+            StationaryZeroSmoothTangentVectorFieldAtPointCurrentApi Xext x)
+    {x : M} (X Y : TangentSpace ThreeManifoldModelWithCorners x) :
+    ((stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_tangent_vector_field_extension_exists_current_api
+      extensionExists).initial_time_commuting_pair_representatives X Y).Xext x = X :=
+  ((stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_tangent_vector_field_extension_exists_current_api
+    extensionExists).initial_time_commuting_pair_representatives X Y).Xext_eq
+
+/--
+For the representatives selected from an existential smooth extension source,
+the second selected vector field still has the prescribed value at the base
+point.
+-/
+theorem stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_Yext_eq_of_tangent_vector_field_extension_exists_current_api
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (extensionExists :
+      ∀ {x : M} (X : TangentSpace ThreeManifoldModelWithCorners x),
+        ∃ Xext : (y : M) → TangentSpace ThreeManifoldModelWithCorners y,
+          Xext x = X ∧
+            StationaryZeroSmoothTangentVectorFieldAtPointCurrentApi Xext x)
+    {x : M} (X Y : TangentSpace ThreeManifoldModelWithCorners x) :
+    ((stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_tangent_vector_field_extension_exists_current_api
+      extensionExists).initial_time_commuting_pair_representatives X Y).Yext x = Y :=
+  ((stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_tangent_vector_field_extension_exists_current_api
+    extensionExists).initial_time_commuting_pair_representatives X Y).Yext_eq
+
+/--
 The remaining local normal-coordinate condition for a chosen commuting-pair
 representative: the selected initial connection has zero `∇_X Y` term and the
 base-point Lie bracket vanishes.
@@ -1735,6 +1773,100 @@ def StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairForwardBas
   let connectionAtTime :=
     torsionFreeConnectionAtTime.uniqueConnectionAtTime.connectionAtTime
   connectionAtTime 0 pair.Yext x X = 0
+
+/--
+The selected representative's value theorem rewrites the actual forward
+connection-coefficient expression to the base-vector coefficient expression.
+-/
+theorem stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_forward_connection_coefficient_expression_eq_base_vector_expression_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (curvatureConstructionAtTime :
+      RiemannCurvatureTensorConstructionData
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)))
+    {x : M} {X Y : TangentSpace ThreeManifoldModelWithCorners x}
+    (pair :
+      StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairRepresentativeCurrentApi
+        (M := M) X Y) :
+    let metricCompatibleConnectionAtTime :=
+      curvatureConstructionAtTime.connectionTheoryAtTime.metricCompatibleConnectionAtTime
+    let torsionFreeConnectionAtTime :=
+      metricCompatibleConnectionAtTime.torsionFreeConnectionAtTime
+    let connectionAtTime :=
+      torsionFreeConnectionAtTime.uniqueConnectionAtTime.connectionAtTime
+    connectionAtTime 0 pair.Yext x (pair.Xext x) =
+      connectionAtTime 0 pair.Yext x X := by
+  simp [pair.Xext_eq]
+
+/--
+For the representatives selected from an existential smooth extension source,
+the forward connection coefficient can be evaluated using the requested base
+vector `X` instead of the selected representative value `Xext x`.
+-/
+theorem stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_forward_connection_coefficient_expression_eq_base_vector_expression_of_tangent_vector_field_extension_exists_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (curvatureConstructionAtTime :
+      RiemannCurvatureTensorConstructionData
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)))
+    (extensionExists :
+      ∀ {x : M} (X : TangentSpace ThreeManifoldModelWithCorners x),
+        ∃ Xext : (y : M) → TangentSpace ThreeManifoldModelWithCorners y,
+          Xext x = X ∧
+            StationaryZeroSmoothTangentVectorFieldAtPointCurrentApi Xext x)
+    {x : M} (X Y : TangentSpace ThreeManifoldModelWithCorners x) :
+    let pair :=
+      (stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_tangent_vector_field_extension_exists_current_api
+        extensionExists).initial_time_commuting_pair_representatives X Y
+    let metricCompatibleConnectionAtTime :=
+      curvatureConstructionAtTime.connectionTheoryAtTime.metricCompatibleConnectionAtTime
+    let torsionFreeConnectionAtTime :=
+      metricCompatibleConnectionAtTime.torsionFreeConnectionAtTime
+    let connectionAtTime :=
+      torsionFreeConnectionAtTime.uniqueConnectionAtTime.connectionAtTime
+    connectionAtTime 0 pair.Yext x (pair.Xext x) =
+      connectionAtTime 0 pair.Yext x X := by
+  simpa using
+    stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_forward_connection_coefficient_expression_eq_base_vector_expression_current_api
+      metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+      ((stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_tangent_vector_field_extension_exists_current_api
+        extensionExists).initial_time_commuting_pair_representatives X Y)
 
 /--
 Normal-coordinate Christoffel-symbol data for the selected base-vector

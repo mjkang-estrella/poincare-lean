@@ -6896,6 +6896,31 @@ noncomputable def
       ∀ x : M, rawMapData.toFun x = selectedMaps.1 x
 
 /--
+The raw forward/inverse map selected from a fixed forward/inverse-map-data
+statement has inverse field equal to the selected canonical inverse map.
+
+This is the inverse-field analogue of selected raw `toFun` choice-coherence,
+and is the concrete pointwise source needed to extract inverse laws for the
+selected canonical map pair from the raw datum's inverse-law fields.
+-/
+noncomputable def
+    ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedInvFunRawMapChoiceDataAfterMapSelectionDataStatement
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (forwardInverseMapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u}) :
+    Prop :=
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction),
+      let selectedMaps := Classical.choice (mapSelectionData M extinction decomposition)
+      let rawMapData := Classical.choice (forwardInverseMapData M extinction decomposition)
+      ∀ y : OnePoint (EuclideanSpace ℝ (Fin 3)),
+        rawMapData.invFun y = selectedMaps.2 y
+
+/--
 Pointwise characterization of the forward field of raw forward/inverse map data
 against the selected canonical forward map.
 -/
@@ -8563,6 +8588,29 @@ theorem extinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedToFunRawMa
           let selectedMaps := Classical.choice (mapSelectionData M extinction decomposition)
           let rawMapData := Classical.choice (forwardInverseMapData M extinction decomposition)
           ∀ x : M, rawMapData.toFun x = selectedMaps.1 x) :=
+  rfl
+
+/--
+The selected raw inverse-map choice-coherence payload expands to pointwise
+agreement between the selected raw datum's `invFun` and the selected inverse
+map.
+-/
+theorem extinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedInvFunRawMapChoiceDataAfterMapSelectionDataStatement_eq
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (forwardInverseMapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u}) :
+    ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedInvFunRawMapChoiceDataAfterMapSelectionDataStatement
+        mapSelectionData forwardInverseMapData =
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+        (decomposition : HasExtinctionTopologyDecomposition M extinction),
+          let selectedMaps := Classical.choice (mapSelectionData M extinction decomposition)
+          let rawMapData := Classical.choice (forwardInverseMapData M extinction decomposition)
+          ∀ y : OnePoint (EuclideanSpace ℝ (Fin 3)),
+            rawMapData.invFun y = selectedMaps.2 y) :=
   rfl
 
 /--
@@ -10394,6 +10442,119 @@ theorem extinctionOnePointThreeSpaceCanonicalForwardInverseMapToFunPointwiseChar
       pointwiseToFunUniquenessData M extinction decomposition data rawMapData x
     _ = (Classical.choice (mapSelectionData M extinction decomposition)).1 x :=
       hRawToFun x
+
+/--
+Raw forward/inverse map data plus selected raw `toFun` and `invFun`
+choice-coherence data supplies the full selected raw-map backing payload.
+-/
+theorem extinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement_of_forwardInverseMapDataAfterDecompositionStatement_and_selectedToFunInvFunRawMapChoiceData
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (forwardInverseMapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (selectedToFunRawMapChoiceData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedToFunRawMapChoiceDataAfterMapSelectionDataStatement
+        mapSelectionData forwardInverseMapData)
+    (selectedInvFunRawMapChoiceData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedInvFunRawMapChoiceDataAfterMapSelectionDataStatement
+        mapSelectionData forwardInverseMapData) :
+    ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+      mapSelectionData := by
+  intro M _top _t2 _charted _simple _compact extinction decomposition
+  exact
+    ⟨Classical.choice (forwardInverseMapData M extinction decomposition),
+      selectedToFunRawMapChoiceData M extinction decomposition,
+      selectedInvFunRawMapChoiceData M extinction decomposition⟩
+
+/--
+Raw forward/inverse map data plus selected raw `toFun` and `invFun`
+choice-coherence data supplies the left-inverse law for the selected canonical
+map pair.
+-/
+theorem extinctionOnePointThreeSpaceCanonicalMapSelectionLeftInverseLawDataAfterMapSelectionDataStatement_of_forwardInverseMapDataAfterDecompositionStatement_and_selectedToFunInvFunRawMapChoiceData
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (forwardInverseMapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (selectedToFunRawMapChoiceData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedToFunRawMapChoiceDataAfterMapSelectionDataStatement
+        mapSelectionData forwardInverseMapData)
+    (selectedInvFunRawMapChoiceData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedInvFunRawMapChoiceDataAfterMapSelectionDataStatement
+        mapSelectionData forwardInverseMapData) :
+    ExtinctionOnePointThreeSpaceCanonicalMapSelectionLeftInverseLawDataAfterMapSelectionDataStatement
+      mapSelectionData := by
+  intro M _top _t2 _charted _simple _compact extinction decomposition
+  let selectedMaps := Classical.choice (mapSelectionData M extinction decomposition)
+  let rawMapData := Classical.choice (forwardInverseMapData M extinction decomposition)
+  change Function.LeftInverse selectedMaps.2 selectedMaps.1
+  intro x
+  calc
+    selectedMaps.2 (selectedMaps.1 x)
+        = rawMapData.invFun (selectedMaps.1 x) :=
+          (selectedInvFunRawMapChoiceData M extinction decomposition
+            (selectedMaps.1 x)).symm
+    _ = rawMapData.invFun (rawMapData.toFun x) := by
+          rw [← selectedToFunRawMapChoiceData M extinction decomposition x]
+    _ = x := rawMapData.left_inv x
+
+/--
+Raw forward/inverse map data plus selected raw `toFun` and `invFun`
+choice-coherence data supplies the right-inverse law for the selected canonical
+map pair.
+-/
+theorem extinctionOnePointThreeSpaceCanonicalMapSelectionRightInverseLawDataAfterMapSelectionDataStatement_of_forwardInverseMapDataAfterDecompositionStatement_and_selectedToFunInvFunRawMapChoiceData
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (forwardInverseMapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (selectedToFunRawMapChoiceData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedToFunRawMapChoiceDataAfterMapSelectionDataStatement
+        mapSelectionData forwardInverseMapData)
+    (selectedInvFunRawMapChoiceData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedInvFunRawMapChoiceDataAfterMapSelectionDataStatement
+        mapSelectionData forwardInverseMapData) :
+    ExtinctionOnePointThreeSpaceCanonicalMapSelectionRightInverseLawDataAfterMapSelectionDataStatement
+      mapSelectionData := by
+  intro M _top _t2 _charted _simple _compact extinction decomposition
+  let selectedMaps := Classical.choice (mapSelectionData M extinction decomposition)
+  let rawMapData := Classical.choice (forwardInverseMapData M extinction decomposition)
+  change Function.RightInverse selectedMaps.2 selectedMaps.1
+  intro y
+  calc
+    selectedMaps.1 (selectedMaps.2 y)
+        = rawMapData.toFun (selectedMaps.2 y) :=
+          (selectedToFunRawMapChoiceData M extinction decomposition
+            (selectedMaps.2 y)).symm
+    _ = rawMapData.toFun (rawMapData.invFun y) := by
+          rw [← selectedInvFunRawMapChoiceData M extinction decomposition y]
+    _ = y := rawMapData.right_inv y
+
+/--
+Raw forward/inverse map data plus selected raw `toFun` and `invFun`
+choice-coherence data supplies both selected map-pair inverse laws.
+-/
+theorem extinctionOnePointThreeSpaceCanonicalMapSelectionForwardInverseLawDataAfterMapSelectionDataStatement_of_forwardInverseMapDataAfterDecompositionStatement_and_selectedToFunInvFunRawMapChoiceData
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (forwardInverseMapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (selectedToFunRawMapChoiceData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedToFunRawMapChoiceDataAfterMapSelectionDataStatement
+        mapSelectionData forwardInverseMapData)
+    (selectedInvFunRawMapChoiceData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedInvFunRawMapChoiceDataAfterMapSelectionDataStatement
+        mapSelectionData forwardInverseMapData) :
+    ExtinctionOnePointThreeSpaceCanonicalMapSelectionForwardInverseLawDataAfterMapSelectionDataStatement
+      mapSelectionData :=
+  extinctionOnePointThreeSpaceCanonicalMapSelectionForwardInverseLawDataAfterMapSelectionDataStatement_of_leftRightInverseLawData
+    mapSelectionData
+    (extinctionOnePointThreeSpaceCanonicalMapSelectionLeftInverseLawDataAfterMapSelectionDataStatement_of_forwardInverseMapDataAfterDecompositionStatement_and_selectedToFunInvFunRawMapChoiceData
+      mapSelectionData forwardInverseMapData selectedToFunRawMapChoiceData
+      selectedInvFunRawMapChoiceData)
+    (extinctionOnePointThreeSpaceCanonicalMapSelectionRightInverseLawDataAfterMapSelectionDataStatement_of_forwardInverseMapDataAfterDecompositionStatement_and_selectedToFunInvFunRawMapChoiceData
+      mapSelectionData forwardInverseMapData selectedToFunRawMapChoiceData
+      selectedInvFunRawMapChoiceData)
 
 /--
 Pointwise raw `toFun` uniqueness plus a selected raw `toFun` backing datum
