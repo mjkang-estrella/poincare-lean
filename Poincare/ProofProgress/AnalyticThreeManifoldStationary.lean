@@ -11539,6 +11539,123 @@ theorem stationary_zero_riemann_curvature_construction_initial_time_commuting_pa
       normalRepresentativeAtTime) X Y
 
 /--
+For commuting-pair representatives selected from normal representatives, the
+forward connection coefficient can be evaluated using the requested base vector
+`X` instead of the selected representative value `Xext x`.
+-/
+theorem stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_forward_connection_coefficient_expression_eq_base_vector_expression_of_normal_representatives_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (curvatureConstructionAtTime :
+      RiemannCurvatureTensorConstructionData
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)))
+    (normalRepresentativeAtTime :
+      StationaryZeroRiemannCurvatureConstructionNormalRepresentativeDataCurrentApi
+        metric identifiesDerivative identifiesRicci curvatureConstructionAtTime)
+    {x : M} (X Y : TangentSpace ThreeManifoldModelWithCorners x) :
+    let pair :=
+      (stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_tangent_vector_field_extension_exists_current_api
+        (stationary_zero_tangent_vector_field_extension_exists_of_normal_representatives_current_api
+          metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+          normalRepresentativeAtTime)).initial_time_commuting_pair_representatives X Y
+    let metricCompatibleConnectionAtTime :=
+      curvatureConstructionAtTime.connectionTheoryAtTime.metricCompatibleConnectionAtTime
+    let torsionFreeConnectionAtTime :=
+      metricCompatibleConnectionAtTime.torsionFreeConnectionAtTime
+    let connectionAtTime :=
+      torsionFreeConnectionAtTime.uniqueConnectionAtTime.connectionAtTime
+    connectionAtTime 0 pair.Yext x (pair.Xext x) =
+      connectionAtTime 0 pair.Yext x X :=
+  stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_forward_connection_coefficient_expression_eq_base_vector_expression_of_tangent_vector_field_extension_exists_current_api
+    metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+    (stationary_zero_tangent_vector_field_extension_exists_of_normal_representatives_current_api
+      metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+      normalRepresentativeAtTime) X Y
+
+/--
+For commuting-pair representatives selected from normal representatives, zero
+of the base-vector coefficient expression gives zero of the selected forward
+coefficient expression.
+-/
+theorem stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_forward_connection_coefficient_expression_zero_of_base_vector_expression_zero_of_normal_representatives_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (curvatureConstructionAtTime :
+      RiemannCurvatureTensorConstructionData
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)))
+    (normalRepresentativeAtTime :
+      StationaryZeroRiemannCurvatureConstructionNormalRepresentativeDataCurrentApi
+        metric identifiesDerivative identifiesRicci curvatureConstructionAtTime)
+    {x : M} (X Y : TangentSpace ThreeManifoldModelWithCorners x)
+    (baseVectorConnectionCoefficientZeroAtTime :
+      let pair :=
+        (stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_tangent_vector_field_extension_exists_current_api
+          (stationary_zero_tangent_vector_field_extension_exists_of_normal_representatives_current_api
+            metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+            normalRepresentativeAtTime)).initial_time_commuting_pair_representatives X Y
+      let metricCompatibleConnectionAtTime :=
+        curvatureConstructionAtTime.connectionTheoryAtTime.metricCompatibleConnectionAtTime
+      let torsionFreeConnectionAtTime :=
+        metricCompatibleConnectionAtTime.torsionFreeConnectionAtTime
+      let connectionAtTime :=
+        torsionFreeConnectionAtTime.uniqueConnectionAtTime.connectionAtTime
+      connectionAtTime 0 pair.Yext x X = 0) :
+    let pair :=
+      (stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_tangent_vector_field_extension_exists_current_api
+        (stationary_zero_tangent_vector_field_extension_exists_of_normal_representatives_current_api
+          metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+          normalRepresentativeAtTime)).initial_time_commuting_pair_representatives X Y
+    let metricCompatibleConnectionAtTime :=
+      curvatureConstructionAtTime.connectionTheoryAtTime.metricCompatibleConnectionAtTime
+    let torsionFreeConnectionAtTime :=
+      metricCompatibleConnectionAtTime.torsionFreeConnectionAtTime
+    let connectionAtTime :=
+      torsionFreeConnectionAtTime.uniqueConnectionAtTime.connectionAtTime
+    connectionAtTime 0 pair.Yext x (pair.Xext x) = 0 :=
+  stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_forward_connection_coefficient_expression_zero_of_base_vector_expression_zero_of_tangent_vector_field_extension_exists_current_api
+    metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+    (stationary_zero_tangent_vector_field_extension_exists_of_normal_representatives_current_api
+      metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+      normalRepresentativeAtTime) X Y
+    baseVectorConnectionCoefficientZeroAtTime
+
+/--
 Normal representatives supply the combined commutator-extension witness used to
 apply the stored curvature-construction commutator formula.
 -/

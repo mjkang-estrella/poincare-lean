@@ -15385,6 +15385,36 @@ theorem KappaSolutionPointedRescalingPayload.one_le_hamiltonCompactnessEnvelope
     (payload.one_le_compactnessCurvatureBound index)
     hamiltonCompactnessPayload.compactnessCurvatureBound_le_hamiltonEnvelope
 
+/--
+The ancient compactness envelope is at least one once it absorbs Hamilton
+compactness data for a normalized pointed rescaling.
+-/
+theorem AncientKappaSolutionCompactnessPayload.one_le_ancientCompactnessConvergenceEnvelope_of_pointedRescaling
+    (compactnessPayload :
+      AncientKappaSolutionCompactnessPayload hamiltonCompactnessPayload)
+    (pointedRescalingPayload :
+      KappaSolutionPointedRescalingPayload limitExtractionPayload)
+    (index : pointedRescalingPayload.pointedRescalingDomain) :
+    1 ≤ compactnessPayload.ancientCompactnessConvergenceEnvelope :=
+  le_trans
+    (pointedRescalingPayload.one_le_hamiltonCompactnessEnvelope index)
+    compactnessPayload.hamiltonCompactnessEnvelope_le_ancientCompactnessEnvelope
+
+/--
+The ancient limit-extraction envelope is at least one once it absorbs Hamilton
+compactness data for a normalized pointed rescaling.
+-/
+theorem AncientKappaSolutionLimitExtractionPayload.one_le_ancientLimitExtractionEnvelope_of_pointedRescaling
+    (limitExtractionPayload :
+      AncientKappaSolutionLimitExtractionPayload hamiltonCompactnessPayload)
+    (pointedRescalingPayload :
+      KappaSolutionPointedRescalingPayload limitExtractionPayload)
+    (index : pointedRescalingPayload.pointedRescalingDomain) :
+    1 ≤ limitExtractionPayload.ancientLimitExtractionEnvelope :=
+  le_trans
+    (pointedRescalingPayload.one_le_hamiltonCompactnessEnvelope index)
+    limitExtractionPayload.hamiltonCompactnessEnvelope_le_ancientLimitExtractionEnvelope
+
 end KappaSolutionPointedRescalingSubsequenceEstimateLemmas
 
 /-- Interface for pointed parabolic rescalings used to form kappa-solution limits. -/

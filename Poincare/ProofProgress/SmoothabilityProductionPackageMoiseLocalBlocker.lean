@@ -7565,6 +7565,25 @@ theorem onePointRecognitionAmbientAtlasEqTransportedLocalInverseChartRangeCorePa
   exact Set.Subset.antisymm (ambientSubset e) (rangeSubset e)
 
 /--
+Source-pointed ambient selector generation plus pointwise `chartAt`
+compatibility closes the forward inclusion side of the exact local-inverse
+range equality; the remaining hypothesis is precisely the reverse range
+inclusion.
+-/
+theorem onePointRecognitionAmbientAtlasEqTransportedLocalInverseChartRangeCorePayload_of_selectedByAmbientChartAtOnSourceCore_and_chartAtPointwiseCompatibilityCore_and_rangeSubset
+    (selected :
+      OnePointRecognitionAmbientAtlasSelectedByAmbientChartAtOnSourceCorePayload.{u})
+    (chartAtCompat :
+      OnePointRecognitionAmbientChartAtPointwiseCompatibilityCorePayload.{u})
+    (rangeSubset :
+      OnePointRecognitionTransportedLocalInverseChartRangeSubsetAmbientAtlasCorePayload.{u}) :
+    OnePointRecognitionAmbientAtlasEqTransportedLocalInverseChartRangeCorePayload.{u} :=
+  onePointRecognitionAmbientAtlasEqTransportedLocalInverseChartRangeCorePayload_of_subset_and_rangeSubset
+    (onePointRecognitionAmbientAtlasSubsetTransportedLocalInverseChartRangeCorePayload_of_selectedByAmbientChartAtOnSourceCore_and_chartAtPointwiseCompatibilityCore
+      selected chartAtCompat)
+    rangeSubset
+
+/--
 The core atlas-range equality is exactly the pair of its two inclusion
 directions.
 -/
