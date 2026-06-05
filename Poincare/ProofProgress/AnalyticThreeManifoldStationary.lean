@@ -7738,6 +7738,192 @@ structure StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairConn
       initialTimeCommutingPairRepresentativeAtTime
 
 /--
+Base-vector coefficient-zero data already supplies the stored forward
+coefficient-zero payload.  This keeps the selected coefficient route below the
+connection-zero interface, with the only remaining source being the
+base-vector normal-coordinate coefficient calculation.
+-/
+def stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_forward_connection_coefficient_zero_data_of_forward_base_vector_connection_coefficient_zero_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (curvatureConstructionAtTime :
+      RiemannCurvatureTensorConstructionData
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)))
+    (initialTimeCommutingPairRepresentativeAtTime :
+      StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairRepresentativeDataCurrentApi
+        (M := M))
+    (forwardBaseVectorConnectionCoefficientZeroAtTime :
+      StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairForwardBaseVectorConnectionCoefficientZeroDataCurrentApi
+        metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+        initialTimeCommutingPairRepresentativeAtTime) :
+    StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairForwardConnectionCoefficientZeroDataCurrentApi
+      metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+      initialTimeCommutingPairRepresentativeAtTime where
+  initialTimeCommutingPairForwardBaseVectorConnectionCoefficientZeroAtTime :=
+    forwardBaseVectorConnectionCoefficientZeroAtTime
+
+/--
+Base-vector coefficient-zero data fills the forward mixed connection-term
+payload by first transporting through the selected representative value
+equation.
+-/
+def stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_forward_connection_term_zero_data_of_forward_base_vector_connection_coefficient_zero_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (curvatureConstructionAtTime :
+      RiemannCurvatureTensorConstructionData
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)))
+    (initialTimeCommutingPairRepresentativeAtTime :
+      StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairRepresentativeDataCurrentApi
+        (M := M))
+    (forwardBaseVectorConnectionCoefficientZeroAtTime :
+      StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairForwardBaseVectorConnectionCoefficientZeroDataCurrentApi
+        metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+        initialTimeCommutingPairRepresentativeAtTime) :
+    StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairForwardConnectionTermZeroDataCurrentApi
+      metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+      initialTimeCommutingPairRepresentativeAtTime where
+  initialTimeCommutingPairForwardConnectionCoefficientZeroAtTime :=
+    stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_forward_connection_coefficient_zero_data_of_forward_base_vector_connection_coefficient_zero_data_current_api
+      metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+      initialTimeCommutingPairRepresentativeAtTime
+      forwardBaseVectorConnectionCoefficientZeroAtTime
+
+/--
+Base-vector coefficient-zero data fills the connection-zero data record
+directly.  This removes the need to consume a broader commuting-pair
+connection-zero package when the normal-coordinate coefficient calculation is
+already available.
+-/
+def stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_connection_zero_data_of_forward_base_vector_connection_coefficient_zero_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (curvatureConstructionAtTime :
+      RiemannCurvatureTensorConstructionData
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)))
+    (initialTimeCommutingPairRepresentativeAtTime :
+      StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairRepresentativeDataCurrentApi
+        (M := M))
+    (forwardBaseVectorConnectionCoefficientZeroAtTime :
+      StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairForwardBaseVectorConnectionCoefficientZeroDataCurrentApi
+        metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+        initialTimeCommutingPairRepresentativeAtTime) :
+    StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairConnectionZeroDataCurrentApi
+      metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+      initialTimeCommutingPairRepresentativeAtTime where
+  initialTimeCommutingPairForwardConnectionTermZeroAtTime :=
+    stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_forward_connection_term_zero_data_of_forward_base_vector_connection_coefficient_zero_data_current_api
+      metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+      initialTimeCommutingPairRepresentativeAtTime
+      forwardBaseVectorConnectionCoefficientZeroAtTime
+
+/--
+Christoffel-formula data plus metric-first-derivative vanishing supplies the
+connection-zero data through the base-vector coefficient calculation.  The new
+remaining analytic source is the specific Christoffel/metric-derivative
+normal-coordinate fact, not the broader connection-zero package.
+-/
+def stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_connection_zero_data_of_christoffel_formula_and_metric_first_derivative_vanishing_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (curvatureConstructionAtTime :
+      RiemannCurvatureTensorConstructionData
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)))
+    (initialTimeCommutingPairRepresentativeAtTime :
+      StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairRepresentativeDataCurrentApi
+        (M := M))
+    (christoffelFormulaAtTime :
+      StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairForwardNormalCoordinateChristoffelFormulaDataCurrentApi
+        metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+        initialTimeCommutingPairRepresentativeAtTime)
+    (metricFirstDerivativeVanishingAtTime :
+      StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairForwardNormalCoordinateMetricFirstDerivativeVanishingDataCurrentApi
+        metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+        initialTimeCommutingPairRepresentativeAtTime christoffelFormulaAtTime) :
+    StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairConnectionZeroDataCurrentApi
+      metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+      initialTimeCommutingPairRepresentativeAtTime :=
+  stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_connection_zero_data_of_forward_base_vector_connection_coefficient_zero_data_current_api
+    metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+    initialTimeCommutingPairRepresentativeAtTime
+    (stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_forward_base_vector_connection_coefficient_zero_data_of_christoffel_formula_and_metric_first_derivative_vanishing_data_current_api
+      metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+      initialTimeCommutingPairRepresentativeAtTime
+      christoffelFormulaAtTime metricFirstDerivativeVanishingAtTime)
+
+/--
 Direct selected connection-coefficient zero data, with the matching
 normal-coordinate coefficient-identification and Christoffel-formula payloads,
 fills the connection-zero data record by constructing its forward-term source.
@@ -8305,6 +8491,54 @@ theorem stationary_zero_riemann_curvature_construction_initial_time_commuting_pa
     metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
     initialTimeCommutingPairRepresentativeAtTime
     connectionZeroAtTime.initialTimeCommutingPairForwardConnectionTermZeroAtTime
+
+/--
+The lower base-vector coefficient-zero source exposes the same selected
+connection-zero proposition as the broader connection-zero package.
+-/
+theorem stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_connection_zero_of_forward_base_vector_connection_coefficient_zero_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (curvatureConstructionAtTime :
+      RiemannCurvatureTensorConstructionData
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)))
+    (initialTimeCommutingPairRepresentativeAtTime :
+      StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairRepresentativeDataCurrentApi
+        (M := M))
+    (forwardBaseVectorConnectionCoefficientZeroAtTime :
+      StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairForwardBaseVectorConnectionCoefficientZeroDataCurrentApi
+        metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+        initialTimeCommutingPairRepresentativeAtTime) :
+    ∀ {x : M} (X Y : TangentSpace ThreeManifoldModelWithCorners x),
+      StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairConnectionZeroCurrentApi
+        metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+        (initialTimeCommutingPairRepresentativeAtTime.initial_time_commuting_pair_representatives
+          X Y) :=
+  stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_connection_zero_of_connection_zero_data_current_api
+    metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+    initialTimeCommutingPairRepresentativeAtTime
+    (stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_connection_zero_data_of_forward_base_vector_connection_coefficient_zero_data_current_api
+      metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+      initialTimeCommutingPairRepresentativeAtTime
+      forwardBaseVectorConnectionCoefficientZeroAtTime)
 
 /--
 Connection-zero data for the chosen commuting-pair representatives also

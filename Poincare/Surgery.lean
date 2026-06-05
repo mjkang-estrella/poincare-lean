@@ -20837,6 +20837,225 @@ structure SingularityModelClassificationPayload
       singularityModelClassificationDefect model ≤
         singularityModelClassificationEnvelope
 
+section CanonicalNeighborhoodEnvelopeLowerBoundLemmas
+
+variable
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload
+        entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload
+        entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload
+        conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload
+        entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload
+        entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload
+        entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload
+        entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {limitExtractionPayload :
+      AncientKappaSolutionLimitExtractionPayload
+        hamiltonCompactnessPayload}
+    {ancientCompactnessPayload :
+      AncientKappaSolutionCompactnessPayload
+        hamiltonCompactnessPayload}
+    {scaleControlPayload :
+      CanonicalNeighborhoodScaleControlPayload
+        ancientCompactnessPayload}
+    {stabilityPayload :
+      CanonicalNeighborhoodStabilityPayload scaleControlPayload}
+    {persistencePayload :
+      CanonicalNeighborhoodPersistenceAcrossScalesPayload
+        stabilityPayload}
+    {neckCapPayload :
+      CanonicalNeighborhoodNeckCapDichotomyPayload
+        persistencePayload}
+    {classificationPayload :
+      CanonicalNeighborhoodClassificationPayload neckCapPayload}
+    {canonicalNeighborhoodTheoremPayload :
+      CanonicalNeighborhoodTheoremPayload classificationPayload}
+    {pointedRescalingPayload :
+      KappaSolutionPointedRescalingPayload limitExtractionPayload}
+
+/--
+The canonical-neighborhood stability envelope is at least one once it absorbs
+scale-control data for a normalized pointed rescaling.
+-/
+theorem CanonicalNeighborhoodStabilityPayload.one_le_stabilityEnvelope_of_pointedRescaling
+    (payload : CanonicalNeighborhoodStabilityPayload scaleControlPayload)
+    (pointedRescalingPayload :
+      KappaSolutionPointedRescalingPayload limitExtractionPayload)
+    (index : pointedRescalingPayload.pointedRescalingDomain) :
+    1 ≤ payload.stabilityEnvelope :=
+  le_trans
+    (CanonicalNeighborhoodScaleControlPayload.one_le_canonicalScaleControlEnvelope_of_pointedRescaling
+      scaleControlPayload pointedRescalingPayload index)
+    payload.scaleControlEnvelope_le_stabilityEnvelope
+
+/--
+The cross-scale persistence envelope is at least one once it absorbs the
+stability envelope for a normalized pointed rescaling.
+-/
+theorem CanonicalNeighborhoodPersistenceAcrossScalesPayload.one_le_persistenceEnvelope_of_pointedRescaling
+    (payload :
+      CanonicalNeighborhoodPersistenceAcrossScalesPayload stabilityPayload)
+    (pointedRescalingPayload :
+      KappaSolutionPointedRescalingPayload limitExtractionPayload)
+    (index : pointedRescalingPayload.pointedRescalingDomain) :
+    1 ≤ payload.persistenceEnvelope :=
+  le_trans
+    (CanonicalNeighborhoodStabilityPayload.one_le_stabilityEnvelope_of_pointedRescaling
+      stabilityPayload pointedRescalingPayload index)
+    payload.stabilityEnvelope_le_persistenceEnvelope
+
+/--
+The neck/cap dichotomy envelope is at least one once it absorbs cross-scale
+persistence data for a normalized pointed rescaling.
+-/
+theorem CanonicalNeighborhoodNeckCapDichotomyPayload.one_le_neckCapDichotomyEnvelope_of_pointedRescaling
+    (payload :
+      CanonicalNeighborhoodNeckCapDichotomyPayload persistencePayload)
+    (pointedRescalingPayload :
+      KappaSolutionPointedRescalingPayload limitExtractionPayload)
+    (index : pointedRescalingPayload.pointedRescalingDomain) :
+    1 ≤ payload.neckCapDichotomyEnvelope :=
+  le_trans
+    (CanonicalNeighborhoodPersistenceAcrossScalesPayload.one_le_persistenceEnvelope_of_pointedRescaling
+      persistencePayload pointedRescalingPayload index)
+    payload.persistenceEnvelope_le_neckCapDichotomyEnvelope
+
+/--
+The canonical-neighborhood classification envelope is at least one once it
+absorbs neck/cap dichotomy data for a normalized pointed rescaling.
+-/
+theorem CanonicalNeighborhoodClassificationPayload.one_le_classificationEnvelope_of_pointedRescaling
+    (payload : CanonicalNeighborhoodClassificationPayload neckCapPayload)
+    (pointedRescalingPayload :
+      KappaSolutionPointedRescalingPayload limitExtractionPayload)
+    (index : pointedRescalingPayload.pointedRescalingDomain) :
+    1 ≤ payload.classificationEnvelope :=
+  le_trans
+    (CanonicalNeighborhoodNeckCapDichotomyPayload.one_le_neckCapDichotomyEnvelope_of_pointedRescaling
+      neckCapPayload pointedRescalingPayload index)
+    payload.neckCapDichotomyEnvelope_le_classificationEnvelope
+
+/--
+The canonical-neighborhood theorem envelope is at least one once it absorbs
+classification data for a normalized pointed rescaling.
+-/
+theorem CanonicalNeighborhoodTheoremPayload.one_le_canonicalNeighborhoodTheoremEnvelope_of_pointedRescaling
+    (payload : CanonicalNeighborhoodTheoremPayload classificationPayload)
+    (pointedRescalingPayload :
+      KappaSolutionPointedRescalingPayload limitExtractionPayload)
+    (index : pointedRescalingPayload.pointedRescalingDomain) :
+    1 ≤ payload.canonicalNeighborhoodTheoremEnvelope :=
+  le_trans
+    (CanonicalNeighborhoodClassificationPayload.one_le_classificationEnvelope_of_pointedRescaling
+      classificationPayload pointedRescalingPayload index)
+    payload.classificationEnvelope_le_theoremEnvelope
+
+variable
+    {curvatureNormalizationPayload :
+      KappaSolutionCurvatureNormalizationPayload pointedRescalingPayload}
+    {structurePayload :
+      KappaSolutionStructureTheoryPayload
+        curvatureNormalizationPayload}
+    {nonnegativeCurvatureOperatorPayload :
+      KappaSolutionNonnegativeCurvatureOperatorPayload
+        structurePayload}
+    {asymptoticSolitonPayload :
+      KappaSolutionAsymptoticSolitonPayload
+        nonnegativeCurvatureOperatorPayload}
+
+/--
+The singularity-model classification envelope is at least one once it absorbs
+canonical-neighborhood theorem data for a normalized pointed rescaling.
+-/
+theorem SingularityModelClassificationPayload.one_le_singularityModelClassificationEnvelope_of_pointedRescaling
+    (payload :
+      SingularityModelClassificationPayload
+        asymptoticSolitonPayload canonicalNeighborhoodTheoremPayload)
+    (index : pointedRescalingPayload.pointedRescalingDomain) :
+    1 ≤ payload.singularityModelClassificationEnvelope :=
+  le_trans
+    (CanonicalNeighborhoodTheoremPayload.one_le_canonicalNeighborhoodTheoremEnvelope_of_pointedRescaling
+      canonicalNeighborhoodTheoremPayload pointedRescalingPayload index)
+    payload.canonicalNeighborhoodTheoremEnvelope_le_singularityModelClassificationEnvelope
+
+end CanonicalNeighborhoodEnvelopeLowerBoundLemmas
+
 /-- Interface for classification of singularity models needed by surgery control. -/
 inductive HasSingularityModelClassification
     {n : ℕ∞ω}

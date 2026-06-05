@@ -13684,6 +13684,58 @@ theorem extinctionOnePointThreeSpaceRecognitionStatement_of_decompositionData_an
       forwardContinuityData)
 
 /--
+Explicit decomposition data plus selected raw-map data and forward continuity
+supplies the finite-extinction one-point recognition payload family, without
+separately assuming raw forward/inverse map data.
+-/
+theorem extinctionOnePointThreeSpaceRecognitionDataStatement_of_decompositionData_and_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+    (decompositionData :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        (extinction : FiniteExtinctionByRicciFlowWithSurgery M),
+          ExtinctionTopologyDecompositionData M extinction)
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    ExtinctionOnePointThreeSpaceRecognitionDataStatement.{u} :=
+  extinctionOnePointThreeSpaceRecognitionDataStatement_of_decompositionData_and_forwardInverseMapDataAfterDecomposition_and_forwardContinuityDataAfterDecomposition
+    decompositionData
+    (extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement_of_selectedRawMapData
+      mapSelectionData selectedRawMapData)
+    forwardContinuityData
+
+/--
+Explicit decomposition data plus selected raw-map data and forward continuity
+supplies the finite-extinction one-point recognition statement, without
+separately assuming raw forward/inverse map data.
+-/
+theorem extinctionOnePointThreeSpaceRecognitionStatement_of_decompositionData_and_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+    (decompositionData :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        (extinction : FiniteExtinctionByRicciFlowWithSurgery M),
+          ExtinctionTopologyDecompositionData M extinction)
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    ExtinctionOnePointThreeSpaceRecognitionStatement.{u} :=
+  extinctionOnePointThreeSpaceRecognitionStatement_of_decompositionData_and_forwardInverseMapDataAfterDecomposition_and_forwardContinuityDataAfterDecomposition
+    decompositionData
+    (extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement_of_selectedRawMapData
+      mapSelectionData selectedRawMapData)
+    forwardContinuityData
+
+/--
 Explicit decomposition data plus paired forward-continuous map data supplies
 the finite-extinction one-point recognition payload family.
 -/
@@ -23978,6 +24030,27 @@ def extinctionTopologySphericalSpaceFormHomeomorphismLiftPrefixPackage_of_surger
     surgeryTracePrefix mapData
     (extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecompositionStatement_of_forwardContinuityDataAfterDecompositionStatement
       forwardContinuityData)
+
+/--
+A surgery-trace prefix plus selected raw-map data and forward continuity
+advances through the spherical homeomorphism lift, eliminating the separate
+forward-inverse-map-data assumption.
+-/
+def extinctionTopologySphericalSpaceFormHomeomorphismLiftPrefixPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceSelectedRawMapDataAfterDecomposition_and_forwardContinuityDataAfterDecomposition
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    ExtinctionTopologySphericalSpaceFormHomeomorphismLiftPrefixPackage.{u} :=
+  extinctionTopologySphericalSpaceFormHomeomorphismLiftPrefixPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_and_forwardContinuityDataAfterDecomposition
+    surgeryTracePrefix
+    (extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement_of_selectedRawMapData
+      mapSelectionData selectedRawMapData)
+    forwardContinuityData
 
 /--
 A surgery-trace prefix plus paired forward-continuous map data advances
