@@ -26535,6 +26535,34 @@ theorem finite_extinction_differential_inequality_integration_of_volume_decay_es
     volumeDifferentialInequality volumeDecayEstimate
 
 /--
+Surgery-volume nonincrease and finite-time integration directly construct the
+surgery-time summability interface for the same time bound.
+-/
+theorem finite_extinction_surgery_time_summability_of_finite_time_integration
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {pinching : HasFiniteExtinctionCurvaturePinching flow surgery control}
+    {componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching}
+    {timeBound :
+      HasFiniteExtinctionTimeBound flow surgery control pinching componentControl}
+    (surgeryVolumeNonincrease :
+      HasFiniteExtinctionSurgeryVolumeNonincrease
+        flow surgery control pinching componentControl)
+    (finiteTimeIntegration :
+      HasFiniteExtinctionFiniteTimeIntegration
+        flow surgery control pinching componentControl timeBound) :
+    HasFiniteExtinctionSurgeryTimeSummability
+      flow surgery control pinching componentControl timeBound :=
+  HasFiniteExtinctionSurgeryTimeSummability.of_finite_time_integration
+    surgeryVolumeNonincrease finiteTimeIntegration
+
+/--
 Finite-time integration together with surgery-time summability directly gives
 the extinction-time contradiction interface for the same time bound.
 -/
@@ -26610,6 +26638,130 @@ inductive HasFiniteExtinctionConclusionDerivation
       HasFiniteExtinctionConclusionDerivation
         flow surgery control pinching componentControl timeBound derivation
         finiteExtinction
+
+/--
+The late finite-extinction estimates and an identified production certificate
+directly construct the conclusion-derivation interface.
+-/
+theorem finite_extinction_conclusion_derivation_of_extinction_time_contradiction
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {pinching : HasFiniteExtinctionCurvaturePinching flow surgery control}
+    {componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching}
+    {timeBound :
+      HasFiniteExtinctionTimeBound flow surgery control pinching componentControl}
+    {derivation : HasFiniteExtinctionDerivation flow surgery control}
+    {finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    (volumeDecayEstimate :
+      HasFiniteExtinctionVolumeDecayEstimate
+        flow surgery control pinching componentControl)
+    (differentialInequalityIntegration :
+      HasFiniteExtinctionDifferentialInequalityIntegration
+        flow surgery control pinching componentControl timeBound)
+    (finiteTimeIntegration :
+      HasFiniteExtinctionFiniteTimeIntegration
+        flow surgery control pinching componentControl timeBound)
+    (surgeryTimeSummability :
+      HasFiniteExtinctionSurgeryTimeSummability
+        flow surgery control pinching componentControl timeBound)
+    (extinctionTimeContradiction :
+      HasFiniteExtinctionExtinctionTimeContradiction
+        flow surgery control pinching componentControl timeBound)
+    (conclusionCertificate :
+      FiniteExtinctionByRicciFlowWithSurgeryProductionCertificate M)
+    (conclusionEq :
+      FiniteExtinctionByRicciFlowWithSurgery.of_production_certificate
+        conclusionCertificate = finiteExtinction) :
+    HasFiniteExtinctionConclusionDerivation
+      flow surgery control pinching componentControl timeBound derivation
+      finiteExtinction :=
+  HasFiniteExtinctionConclusionDerivation.of_extinction_time_contradiction
+    volumeDecayEstimate differentialInequalityIntegration finiteTimeIntegration
+    surgeryTimeSummability extinctionTimeContradiction conclusionCertificate
+    conclusionEq
+
+/--
+The lower volume-differential tuple, together with a production certificate,
+constructs the full conclusion-derivation interface without using a surgery
+package projection.
+-/
+theorem finite_extinction_conclusion_derivation_of_volume_differential_inputs
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {pinching : HasFiniteExtinctionCurvaturePinching flow surgery control}
+    {componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching}
+    {derivation : HasFiniteExtinctionDerivation flow surgery control}
+    {finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    (volumeEvolutionFormula :
+      HasFiniteExtinctionVolumeEvolutionFormula
+        flow surgery control pinching componentControl)
+    (surgeryVolumeNonincrease :
+      HasFiniteExtinctionSurgeryVolumeNonincrease
+        flow surgery control pinching componentControl)
+    (scalarCurvatureDifferentialInequality :
+      HasFiniteExtinctionScalarCurvatureDifferentialInequality
+        flow surgery control pinching componentControl)
+    (volumeDifferentialInequality :
+      HasFiniteExtinctionVolumeDifferentialInequality
+        flow surgery control pinching componentControl)
+    (conclusionCertificate :
+      FiniteExtinctionByRicciFlowWithSurgeryProductionCertificate M)
+    (conclusionEq :
+      FiniteExtinctionByRicciFlowWithSurgery.of_production_certificate
+        conclusionCertificate = finiteExtinction) :
+    HasFiniteExtinctionConclusionDerivation
+      flow surgery control pinching componentControl
+      (finite_extinction_time_bound_of_volume_differential_inputs
+        volumeEvolutionFormula surgeryVolumeNonincrease
+        scalarCurvatureDifferentialInequality volumeDifferentialInequality)
+      derivation finiteExtinction := by
+  let timeBound :=
+    finite_extinction_time_bound_of_volume_differential_inputs
+      volumeEvolutionFormula surgeryVolumeNonincrease
+      scalarCurvatureDifferentialInequality volumeDifferentialInequality
+  let volumeDecayEstimate :=
+    finite_extinction_volume_decay_estimate_of_volume_differential_inputs
+      volumeEvolutionFormula surgeryVolumeNonincrease
+      scalarCurvatureDifferentialInequality volumeDifferentialInequality
+  let finiteTimeIntegration :
+      HasFiniteExtinctionFiniteTimeIntegration
+        flow surgery control pinching componentControl timeBound :=
+    finite_extinction_finite_time_integration_of_volume_decay_estimate
+      (timeBound := timeBound) volumeDecayEstimate
+  let differentialInequalityIntegration :
+      HasFiniteExtinctionDifferentialInequalityIntegration
+        flow surgery control pinching componentControl timeBound :=
+    finite_extinction_differential_inequality_integration_of_volume_decay_estimate
+      (timeBound := timeBound) volumeDifferentialInequality volumeDecayEstimate
+  let surgeryTimeSummability :
+      HasFiniteExtinctionSurgeryTimeSummability
+        flow surgery control pinching componentControl timeBound :=
+    finite_extinction_surgery_time_summability_of_finite_time_integration
+      (timeBound := timeBound) surgeryVolumeNonincrease finiteTimeIntegration
+  let extinctionTimeContradiction :
+      HasFiniteExtinctionExtinctionTimeContradiction
+        flow surgery control pinching componentControl timeBound :=
+    finite_extinction_extinction_time_contradiction_of_time_bound_estimates
+      (timeBound := timeBound) finiteTimeIntegration surgeryTimeSummability
+  exact
+    finite_extinction_conclusion_derivation_of_extinction_time_contradiction
+      (timeBound := timeBound) (derivation := derivation)
+      (finiteExtinction := finiteExtinction) volumeDecayEstimate
+      differentialInequalityIntegration finiteTimeIntegration
+      surgeryTimeSummability extinctionTimeContradiction conclusionCertificate
+      conclusionEq
 
 /--
 The fixed-flow finite-extinction conclusion statement: the finite-extinction

@@ -24652,6 +24652,26 @@ def extinctionTopologyExtractionPackage_of_simplyConnectedExtinctionRecognitionP
             recognitionPrefix M extinction))
 
 /--
+A surgery-trace prefix plus selected raw-map data and forward continuity
+supplies the full topology extraction package, eliminating the separate
+forward-inverse-map-data assumption.
+-/
+def extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceSelectedRawMapDataAfterDecomposition_and_forwardContinuityDataAfterDecomposition
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    ExtinctionTopologyExtractionPackage.{u} :=
+  extinctionTopologyExtractionPackage_of_simplyConnectedExtinctionRecognitionPrefixPackage
+    (extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceSelectedRawMapDataAfterDecomposition_and_forwardContinuityDataAfterDecomposition
+      surgeryTracePrefix mapSelectionData selectedRawMapData
+      forwardContinuityData)
+
+/--
 Once final homeomorphism payload data is supplied, the next package field is
 the raw final homeomorphism. This proof-progress theorem records the explicit
 payload-to-field bridge without asserting a constructorless negation of

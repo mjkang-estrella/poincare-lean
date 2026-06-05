@@ -8638,6 +8638,54 @@ theorem stationary_zero_riemann_curvature_construction_initial_time_commuting_pa
       forwardBaseVectorConnectionCoefficientZeroAtTime)
 
 /--
+Forward coefficient normal representatives expose the pointwise
+connection-zero proposition for the representatives selected from the same
+source, via the narrower base-vector coefficient-zero data route.
+-/
+theorem stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_connection_zero_of_forward_connection_coefficient_normal_representatives_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (curvatureConstructionAtTime :
+      RiemannCurvatureTensorConstructionData
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)))
+    (forwardConnectionCoefficientNormalRepresentativeAtTime :
+      StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairForwardConnectionCoefficientNormalRepresentativeDataCurrentApi
+        metric identifiesDerivative identifiesRicci curvatureConstructionAtTime) :
+    ∀ {x : M} (X Y : TangentSpace ThreeManifoldModelWithCorners x),
+      StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairConnectionZeroCurrentApi
+        metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+        ((stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_forward_connection_coefficient_normal_representatives_current_api
+          metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+          forwardConnectionCoefficientNormalRepresentativeAtTime).initial_time_commuting_pair_representatives
+            X Y) :=
+  stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_connection_zero_of_forward_base_vector_connection_coefficient_zero_data_current_api
+    metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+    (stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_forward_connection_coefficient_normal_representatives_current_api
+      metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+      forwardConnectionCoefficientNormalRepresentativeAtTime)
+    (stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_forward_base_vector_connection_coefficient_zero_data_of_forward_connection_coefficient_normal_representatives_current_api
+      metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+      forwardConnectionCoefficientNormalRepresentativeAtTime)
+
+/--
 Connection-zero data for the chosen commuting-pair representatives also
 supplies the base-vector form of the same initial forward coefficient.  The
 only extra step is the representative value rewrite from `Xext x` back to `X`.
