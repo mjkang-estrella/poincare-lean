@@ -15351,6 +15351,40 @@ theorem KappaSolutionPointedRescalingPayload.pointedRescalingCurvatureScale_le_c
       (limitExtractionPayload.limitExtractionToCompactnessIndex
         (payload.pointedRescalingToLimitExtractionIndex index))
 
+/--
+The Hamilton compactness curvature bound is at least the normalized curvature
+scale one along any pointed-rescaling subsequence.
+-/
+theorem KappaSolutionPointedRescalingPayload.one_le_compactnessCurvatureBound
+    (payload : KappaSolutionPointedRescalingPayload limitExtractionPayload)
+    (index : payload.pointedRescalingDomain) :
+    1 ≤ hamiltonCompactnessPayload.compactnessCurvatureBound := by
+  rw [← payload.pointedRescalingCurvatureScale_eq_one index]
+  exact payload.pointedRescalingCurvatureScale_le_compactnessCurvatureBound index
+
+/--
+The Hamilton compactness curvature bound is positive because it dominates the
+normalized curvature scale one.
+-/
+theorem KappaSolutionPointedRescalingPayload.compactnessCurvatureBound_positive
+    (payload : KappaSolutionPointedRescalingPayload limitExtractionPayload)
+    (index : payload.pointedRescalingDomain) :
+    0 < hamiltonCompactnessPayload.compactnessCurvatureBound :=
+  lt_of_lt_of_le zero_lt_one
+    (payload.one_le_compactnessCurvatureBound index)
+
+/--
+The aggregate Hamilton compactness envelope is at least one once it absorbs the
+curvature bound for a normalized pointed rescaling.
+-/
+theorem KappaSolutionPointedRescalingPayload.one_le_hamiltonCompactnessEnvelope
+    (payload : KappaSolutionPointedRescalingPayload limitExtractionPayload)
+    (index : payload.pointedRescalingDomain) :
+    1 ≤ hamiltonCompactnessPayload.hamiltonCompactnessEnvelope :=
+  le_trans
+    (payload.one_le_compactnessCurvatureBound index)
+    hamiltonCompactnessPayload.compactnessCurvatureBound_le_hamiltonEnvelope
+
 end KappaSolutionPointedRescalingSubsequenceEstimateLemmas
 
 /-- Interface for pointed parabolic rescalings used to form kappa-solution limits. -/

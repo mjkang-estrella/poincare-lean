@@ -11292,6 +11292,87 @@ noncomputable def stationary_zero_tangent_vector_field_extension_of_normal_repre
       normalRepresentativeAtTime)
 
 /--
+The raw tangent-vector-field representative selected from normal
+representatives has the prescribed value at its base point.
+-/
+theorem stationary_zero_tangent_vector_field_raw_extension_value_at_point_of_normal_representatives_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (curvatureConstructionAtTime :
+      RiemannCurvatureTensorConstructionData
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)))
+    (normalRepresentativeAtTime :
+      StationaryZeroRiemannCurvatureConstructionNormalRepresentativeDataCurrentApi
+        metric identifiesDerivative identifiesRicci curvatureConstructionAtTime)
+    {x : M} (X : TangentSpace ThreeManifoldModelWithCorners x) :
+    ((stationary_zero_tangent_vector_field_extension_of_normal_representatives_current_api
+      metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+      normalRepresentativeAtTime).valueExtensionAtPoint.rawExtensionAtPoint.tangent_vector_field_raw_extension
+        X).Xext x = X :=
+  (stationary_zero_tangent_vector_field_extension_of_normal_representatives_current_api
+    metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+    normalRepresentativeAtTime).valueExtensionAtPoint.valueAtPoint.tangent_vector_field_value_at_point X
+
+/--
+The raw tangent-vector-field representative selected from normal
+representatives carries the smoothness evidence at its base point.
+-/
+theorem stationary_zero_tangent_vector_field_raw_extension_smoothAt_of_normal_representatives_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (curvatureConstructionAtTime :
+      RiemannCurvatureTensorConstructionData
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)))
+    (normalRepresentativeAtTime :
+      StationaryZeroRiemannCurvatureConstructionNormalRepresentativeDataCurrentApi
+        metric identifiesDerivative identifiesRicci curvatureConstructionAtTime)
+    {x : M} (X : TangentSpace ThreeManifoldModelWithCorners x) :
+    StationaryZeroSmoothTangentVectorFieldAtPointCurrentApi
+      ((stationary_zero_tangent_vector_field_extension_of_normal_representatives_current_api
+        metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+        normalRepresentativeAtTime).valueExtensionAtPoint.rawExtensionAtPoint.tangent_vector_field_raw_extension
+          X).Xext x :=
+  (stationary_zero_tangent_vector_field_extension_of_normal_representatives_current_api
+    metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+    normalRepresentativeAtTime).smoothnessAtPoint.tangent_vector_field_extension_smoothAt X
+
+/--
 Normal representatives supply the combined commutator-extension witness used to
 apply the stored curvature-construction commutator formula.
 -/

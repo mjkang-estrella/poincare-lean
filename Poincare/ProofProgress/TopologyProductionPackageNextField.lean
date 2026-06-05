@@ -10494,6 +10494,28 @@ theorem extinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedInvFunRawM
       hRawInvFun y
 
 /--
+Pointwise raw `toFun` uniqueness, via the inverse-law fields stored in raw
+forward/inverse map data, supplies selected raw `invFun` choice-coherence.
+-/
+theorem extinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedInvFunRawMapChoiceDataAfterMapSelectionDataStatement_of_pointwiseToFunUniquenessData_and_selectedRawMapData
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (forwardInverseMapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (pointwiseToFunUniquenessData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataPointwiseToFunUniquenessAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData) :
+    ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedInvFunRawMapChoiceDataAfterMapSelectionDataStatement
+      mapSelectionData forwardInverseMapData :=
+  extinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedInvFunRawMapChoiceDataAfterMapSelectionDataStatement_of_pointwiseInvFunUniquenessData_and_selectedRawMapData
+    mapSelectionData forwardInverseMapData
+    (extinctionOnePointThreeSpaceForwardInverseMapDataPointwiseInvFunUniquenessAfterDecompositionStatement_of_pointwiseToFunUniquenessData
+      pointwiseToFunUniquenessData)
+    selectedRawMapData
+
+/--
 Raw forward/inverse map data plus selected raw `toFun` and `invFun`
 choice-coherence data supplies the full selected raw-map backing payload.
 -/
@@ -10677,6 +10699,26 @@ theorem extinctionOnePointThreeSpaceCanonicalForwardInverseMapInvFunPointwiseCha
       pointwiseInvFunUniquenessData M extinction decomposition data rawMapData y
     _ = (Classical.choice (mapSelectionData M extinction decomposition)).2 y :=
       hRawInvFun y
+
+/--
+Pointwise raw `toFun` uniqueness, via raw-map inverse laws, supplies the
+selected raw `invFun` characterization payload.
+-/
+theorem extinctionOnePointThreeSpaceCanonicalForwardInverseMapInvFunPointwiseCharacterizationAfterMapSelectionDataStatement_of_pointwiseToFunUniquenessData_and_selectedRawMapData
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (pointwiseToFunUniquenessData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataPointwiseToFunUniquenessAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData) :
+    ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapInvFunPointwiseCharacterizationAfterMapSelectionDataStatement
+      mapSelectionData :=
+  extinctionOnePointThreeSpaceCanonicalForwardInverseMapInvFunPointwiseCharacterizationAfterMapSelectionDataStatement_of_pointwiseInvFunUniquenessData_and_selectedRawMapData
+    mapSelectionData
+    (extinctionOnePointThreeSpaceForwardInverseMapDataPointwiseInvFunUniquenessAfterDecompositionStatement_of_pointwiseToFunUniquenessData
+      pointwiseToFunUniquenessData)
+    selectedRawMapData
 
 /--
 Explicit inverse laws for every continuous forward-map datum supply pointwise

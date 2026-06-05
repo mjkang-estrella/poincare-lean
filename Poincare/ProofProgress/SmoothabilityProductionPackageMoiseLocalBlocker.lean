@@ -6916,6 +6916,38 @@ theorem onePointRecognitionAmbientAtlasSourceNonemptySubsetTransportedLocalInver
       e (hq.trans (chartAtCompat e q))
 
 /--
+Source-pointed ambient selected-chart generation plus pointwise selected-chart
+compatibility directly gives source-pointed transported `chartAt` generation.
+-/
+theorem onePointRecognitionAmbientAtlasSelectedByTransportedChartAtOnSourceCorePayload_of_selectedByAmbientChartAtOnSourceCore_and_chartAtPointwiseCompatibilityCore
+    (selected :
+      OnePointRecognitionAmbientAtlasSelectedByAmbientChartAtOnSourceCorePayload.{u})
+    (chartAtCompat :
+      OnePointRecognitionAmbientChartAtPointwiseCompatibilityCorePayload.{u}) :
+    OnePointRecognitionAmbientAtlasSelectedByTransportedChartAtOnSourceCorePayload.{u} := by
+  intro M _top _charted e c hc
+  rcases selected hc with ⟨q, hqSource, hq⟩
+  refine ⟨q, hqSource, ?_⟩
+  exact hq.trans (chartAtCompat e q)
+
+/--
+The same selected-chart data gives source-pointed generation by the explicit
+transported local-inverse chart constructor.
+-/
+theorem onePointRecognitionAmbientAtlasSelectedByTransportedLocalInverseChartOnSourceCorePayload_of_selectedByAmbientChartAtOnSourceCore_and_chartAtPointwiseCompatibilityCore
+    (selected :
+      OnePointRecognitionAmbientAtlasSelectedByAmbientChartAtOnSourceCorePayload.{u})
+    (chartAtCompat :
+      OnePointRecognitionAmbientChartAtPointwiseCompatibilityCorePayload.{u}) :
+    OnePointRecognitionAmbientAtlasSelectedByTransportedLocalInverseChartOnSourceCorePayload.{u} := by
+  intro M _top _charted e c hc
+  rcases selected hc with ⟨q, hqSource, hq⟩
+  refine ⟨q, hqSource, ?_⟩
+  exact
+    (hq.trans (chartAtCompat e q)).trans
+      (homeomorphToOnePoint_threeSpace_transportedLocalInverseChart_eq_chartAt e q).symm
+
+/--
 The core atlas-field range comparison supplies the current recognition-shaped
 range payload.
 -/
