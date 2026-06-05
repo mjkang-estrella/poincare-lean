@@ -10142,6 +10142,25 @@ theorem extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionState
   exact ⟨rawMapData⟩
 
 /--
+Selected raw-map backing data plus the all-map forward-continuity statement
+supplies paired forward-continuous map data, without separately assuming raw
+forward/inverse map data.
+-/
+theorem extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    ExtinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement.{u} :=
+  extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_forwardInverseMapDataAfterDecompositionStatement_and_forwardContinuityDataAfterDecompositionStatement
+    (extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement_of_selectedRawMapData
+      mapSelectionData selectedRawMapData)
+    forwardContinuityData
+
+/--
 Full selected raw-map backing data supplies the narrower selected raw `toFun`
 backing payload.
 -/
@@ -20127,6 +20146,44 @@ theorem finalHomeomorphismPayloadDataAfterDecompositionStatement_of_extinctionOn
     mapData
     (extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecompositionStatement_of_forwardContinuityDataAfterDecompositionStatement
       forwardContinuityData)
+
+/--
+Selected raw-map backing data plus forward-continuity data supplies the raw
+final homeomorphism after decomposition, eliminating the separate
+forward-inverse-map-data assumption.
+-/
+theorem finalHomeomorphismAfterDecompositionStatement_of_extinctionOnePointThreeSpaceSelectedRawMapDataAfterDecompositionStatement_and_forwardContinuityDataAfterDecompositionStatement
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    FinalHomeomorphismAfterDecompositionStatement.{u} :=
+  finalHomeomorphismAfterDecompositionStatement_of_extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement_and_forwardContinuityDataAfterDecompositionStatement
+    (extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement_of_selectedRawMapData
+      mapSelectionData selectedRawMapData)
+    forwardContinuityData
+
+/--
+Selected raw-map backing data plus forward-continuity data supplies the final
+homeomorphism payload after decomposition, eliminating the separate
+forward-inverse-map-data assumption.
+-/
+theorem finalHomeomorphismPayloadDataAfterDecompositionStatement_of_extinctionOnePointThreeSpaceSelectedRawMapDataAfterDecompositionStatement_and_forwardContinuityDataAfterDecompositionStatement
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    FinalHomeomorphismPayloadDataAfterDecompositionStatement.{u} :=
+  finalHomeomorphismPayloadDataAfterDecompositionStatement_of_extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement_and_forwardContinuityDataAfterDecompositionStatement
+    (extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement_of_selectedRawMapData
+      mapSelectionData selectedRawMapData)
+    forwardContinuityData
 
 /--
 Paired forward-continuous map data supplies the raw final homeomorphism after

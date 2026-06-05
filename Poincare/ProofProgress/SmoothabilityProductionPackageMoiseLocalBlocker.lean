@@ -7494,6 +7494,44 @@ theorem onePointRecognitionTransportedLocalInverseChartRangeSubsetAmbientAtlasCo
   exact payload e hTransported
 
 /--
+Pointwise ambient/transported selected-chart compatibility identifies each
+explicit transported local-inverse chart with an ambient selected chart.
+-/
+theorem homeomorphToOnePoint_threeSpace_transportedLocalInverseChart_mem_ambientChartAt_range_of_pointwiseCompatibilityCore
+    (chartAtCompat :
+      OnePointRecognitionAmbientChartAtPointwiseCompatibilityCorePayload.{u})
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    (e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) (q : M) :
+    homeomorphToOnePoint_threeSpace_transportedLocalInverseChart e q ∈
+      Set.range (@ChartedSpace.chartAt ThreeManifoldModel _ M _ inferInstance) := by
+  refine ⟨q, ?_⟩
+  exact
+    (chartAtCompat e q).trans
+      (homeomorphToOnePoint_threeSpace_transportedLocalInverseChart_eq_chartAt e q).symm
+
+/--
+Ambient atlas equality with the ambient selected-chart range plus pointwise
+ambient/transported selected-chart compatibility supplies the reverse
+transported local-inverse chart-range inclusion.
+-/
+theorem onePointRecognitionTransportedLocalInverseChartRangeSubsetAmbientAtlasCorePayload_of_eqAmbientChartAtRangeCore_and_chartAtPointwiseCompatibilityCore
+    (eqRange :
+      OnePointRecognitionAmbientAtlasEqAmbientChartAtRangeCorePayload.{u})
+    (chartAtCompat :
+      OnePointRecognitionAmbientChartAtPointwiseCompatibilityCorePayload.{u}) :
+    OnePointRecognitionTransportedLocalInverseChartRangeSubsetAmbientAtlasCorePayload.{u} := by
+  intro M _top _charted e c hc
+  rcases hc with ⟨q, hq⟩
+  have hAmbientRange :
+      c ∈ Set.range (@ChartedSpace.chartAt ThreeManifoldModel _ M _ inferInstance) := by
+    rw [← hq]
+    exact
+      homeomorphToOnePoint_threeSpace_transportedLocalInverseChart_mem_ambientChartAt_range_of_pointwiseCompatibilityCore
+        chartAtCompat e q
+  have hEq := eqRange (M := M)
+  rwa [hEq]
+
+/--
 Reverse inclusion from the local-inverse chart range into the ambient atlas is
 equivalently reverse inclusion from the transported atlas.
 -/
@@ -7582,6 +7620,25 @@ theorem onePointRecognitionAmbientAtlasEqTransportedLocalInverseChartRangeCorePa
     (onePointRecognitionAmbientAtlasSubsetTransportedLocalInverseChartRangeCorePayload_of_selectedByAmbientChartAtOnSourceCore_and_chartAtPointwiseCompatibilityCore
       selected chartAtCompat)
     rangeSubset
+
+/--
+Source-pointed ambient selector generation, ambient atlas equality with the
+ambient selected-chart range, and pointwise ambient/transported `chartAt`
+compatibility recover the exact transported local-inverse chart-range equality
+without taking the reverse range inclusion as a separate input.
+-/
+theorem onePointRecognitionAmbientAtlasEqTransportedLocalInverseChartRangeCorePayload_of_selectedByAmbientChartAtOnSourceCore_and_eqAmbientChartAtRangeCore_and_chartAtPointwiseCompatibilityCore
+    (selected :
+      OnePointRecognitionAmbientAtlasSelectedByAmbientChartAtOnSourceCorePayload.{u})
+    (eqRange :
+      OnePointRecognitionAmbientAtlasEqAmbientChartAtRangeCorePayload.{u})
+    (chartAtCompat :
+      OnePointRecognitionAmbientChartAtPointwiseCompatibilityCorePayload.{u}) :
+    OnePointRecognitionAmbientAtlasEqTransportedLocalInverseChartRangeCorePayload.{u} :=
+  onePointRecognitionAmbientAtlasEqTransportedLocalInverseChartRangeCorePayload_of_selectedByAmbientChartAtOnSourceCore_and_chartAtPointwiseCompatibilityCore_and_rangeSubset
+    selected chartAtCompat
+    (onePointRecognitionTransportedLocalInverseChartRangeSubsetAmbientAtlasCorePayload_of_eqAmbientChartAtRangeCore_and_chartAtPointwiseCompatibilityCore
+      eqRange chartAtCompat)
 
 /--
 The core atlas-range equality is exactly the pair of its two inclusion

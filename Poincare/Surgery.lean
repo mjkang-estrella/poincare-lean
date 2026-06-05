@@ -15415,6 +15415,20 @@ theorem AncientKappaSolutionLimitExtractionPayload.one_le_ancientLimitExtraction
     (pointedRescalingPayload.one_le_hamiltonCompactnessEnvelope index)
     limitExtractionPayload.hamiltonCompactnessEnvelope_le_ancientLimitExtractionEnvelope
 
+/--
+The pointed-rescaling envelope is at least one once it absorbs the ancient
+limit-extraction envelope for a normalized pointed rescaling.
+-/
+theorem KappaSolutionPointedRescalingPayload.one_le_pointedRescalingEnvelope
+    (payload :
+      KappaSolutionPointedRescalingPayload limitExtractionPayload)
+    (index : payload.pointedRescalingDomain) :
+    1 ≤ payload.pointedRescalingEnvelope :=
+  le_trans
+    (AncientKappaSolutionLimitExtractionPayload.one_le_ancientLimitExtractionEnvelope_of_pointedRescaling
+      limitExtractionPayload payload index)
+    payload.ancientLimitExtractionEnvelope_le_pointedRescalingEnvelope
+
 end KappaSolutionPointedRescalingSubsequenceEstimateLemmas
 
 /-- Interface for pointed parabolic rescalings used to form kappa-solution limits. -/
@@ -15883,6 +15897,20 @@ theorem KappaSolutionCurvatureNormalizationPayload.one_le_hamiltonCompactnessEnv
     1 ≤ hamiltonCompactnessPayload.hamiltonCompactnessEnvelope :=
   pointedRescalingPayload.one_le_hamiltonCompactnessEnvelope
     (payload.curvatureNormalizationToPointedRescalingIndex index)
+
+/--
+The curvature-normalization envelope is at least one because it absorbs the
+pointed-rescaling envelope for a normalized curvature index.
+-/
+theorem KappaSolutionCurvatureNormalizationPayload.one_le_curvatureNormalizationEnvelope
+    (payload :
+      KappaSolutionCurvatureNormalizationPayload pointedRescalingPayload)
+    (index : payload.curvatureNormalizationDomain) :
+    1 ≤ payload.curvatureNormalizationEnvelope :=
+  le_trans
+    (pointedRescalingPayload.one_le_pointedRescalingEnvelope
+      (payload.curvatureNormalizationToPointedRescalingIndex index))
+    payload.pointedRescalingEnvelope_le_curvatureNormalizationEnvelope
 
 end KappaSolutionCurvatureNormalizationCompactnessEstimateLemmas
 
@@ -17294,6 +17322,113 @@ theorem CanonicalNeighborhoodScaleControlPayload.canonicalNeighborhoodScale_nonn
     (parameter : payload.canonicalScaleParameterSpace) :
     0 ≤ payload.canonicalNeighborhoodScale parameter :=
   le_of_lt (payload.canonicalNeighborhoodScalePositive parameter)
+
+/--
+The canonical scale-control envelope is at least one once it absorbs ancient
+compactness data for a normalized pointed rescaling.
+-/
+theorem CanonicalNeighborhoodScaleControlPayload.one_le_canonicalScaleControlEnvelope_of_pointedRescaling
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload
+        entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload
+        entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload
+        conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload
+        entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload
+        entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload
+        entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload
+        entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {limitExtractionPayload :
+      AncientKappaSolutionLimitExtractionPayload
+        hamiltonCompactnessPayload}
+    {ancientCompactnessPayload :
+      AncientKappaSolutionCompactnessPayload
+        hamiltonCompactnessPayload}
+    (payload :
+      CanonicalNeighborhoodScaleControlPayload ancientCompactnessPayload)
+    (pointedRescalingPayload :
+      KappaSolutionPointedRescalingPayload limitExtractionPayload)
+    (index : pointedRescalingPayload.pointedRescalingDomain) :
+    1 ≤ payload.canonicalScaleControlEnvelope :=
+  le_trans
+    (AncientKappaSolutionCompactnessPayload.one_le_ancientCompactnessConvergenceEnvelope_of_pointedRescaling
+      ancientCompactnessPayload pointedRescalingPayload index)
+    payload.ancientCompactnessEnvelope_le_canonicalScaleControlEnvelope
 
 /-- Interface for scale control in the canonical-neighborhood theorem. -/
 inductive HasCanonicalNeighborhoodScaleControl
