@@ -13225,6 +13225,25 @@ theorem smoothabilityPackageBridgeFields_of_onePointRecognitionAmbientAtlasEqTra
       core)
 
 /--
+The ambient selected-chart source route plus atlas/range equality recovers the
+exact transported local-inverse range equality, then uses the existing
+forward-compatibility package bridge.
+-/
+theorem smoothabilityPackageBridgeFields_of_onePointRecognitionAmbientAtlasSelectedByAmbientChartAtOnSourceCore_and_eqAmbientChartAtRangeCore_and_chartAtCompatibilityCore_via_forwardCompatibility
+    (recognize : OnePointThreeSpaceRecognitionStatement.{u})
+    (selected :
+      OnePointRecognitionAmbientAtlasSelectedByAmbientChartAtOnSourceCorePayload.{u})
+    (eqRange :
+      OnePointRecognitionAmbientAtlasEqAmbientChartAtRangeCorePayload.{u})
+    (chartAtCompat :
+      OnePointRecognitionAmbientChartAtCompatibilityCorePayload.{u}) :
+    SmoothabilityPackageBridgeFields.{u} :=
+  smoothabilityPackageBridgeFields_of_onePointRecognitionAmbientAtlasEqTransportedLocalInverseChartRangeCore_via_forwardCompatibility
+    recognize
+    (onePointRecognitionAmbientAtlasEqTransportedLocalInverseChartRangeCorePayload_of_selectedByAmbientChartAtOnSourceCore_and_eqAmbientChartAtRangeCore_and_chartAtCompatibilityCore
+      selected eqRange chartAtCompat)
+
+/--
 The two core atlas-range inclusion directions construct the package fields
 through the current one-sided atlas inclusion route.
 -/

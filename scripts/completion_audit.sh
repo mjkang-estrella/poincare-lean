@@ -6556,6 +6556,8 @@ check_decl "finite-extinction component assembly theorem is declared" \
   '^theorem finite_extinction_conclusion_statement_of_components\b' Poincare/Surgery.lean
 check_decl "finite-extinction component assembly equality contract is declared" \
   '^theorem finite_extinction_conclusion_statement_of_components_eq\b' Poincare/Surgery.lean
+check_decl "finite-extinction conclusion statement from volume differential inputs is declared" \
+  '^theorem finite_extinction_conclusion_statement_of_volume_differential_inputs\b' Poincare/Surgery.lean
 check_decl "surgery package finite-extinction conclusion statement projection is declared" \
   '^theorem finite_extinction_conclusion_statement_of_surgery_package\b' Poincare/Surgery.lean
 check_decl "surgery package finite-extinction conclusion statement equality contract is declared" \
@@ -32591,6 +32593,7 @@ append_certificate_route_projection_contract_checks() {
 #check Poincare.finite_extinction_conclusion_derivation_of_surgery_package_eq
 #check Poincare.finite_extinction_conclusion_statement_of_components
 #check Poincare.finite_extinction_conclusion_statement_of_components_eq
+#check Poincare.finite_extinction_conclusion_statement_of_volume_differential_inputs
 #check Poincare.finite_extinction_conclusion_statement_of_finite_extinction_statement
 #check Poincare.finite_extinction_conclusion_statement_of_finite_extinction_statement_eq
 #check Poincare.finite_extinction_conclusion_statement_of_subobligations_statement
@@ -42703,6 +42706,7 @@ open scoped Manifold ContDiff
 #check Poincare.FiniteExtinctionStatement
 #check Poincare.finite_extinction_conclusion_statement_of_components
 #check Poincare.finite_extinction_conclusion_statement_of_components_eq
+#check Poincare.finite_extinction_conclusion_statement_of_volume_differential_inputs
 #check Poincare.finite_extinction_conclusion_statement_of_surgery_package
 #check Poincare.finite_extinction_conclusion_statement_of_surgery_package_eq
 #check Poincare.finite_extinction_statement_of_surgery_package
@@ -54749,6 +54753,7 @@ open scoped Manifold ContDiff
 #check Poincare.FiniteExtinctionStatement
 #check Poincare.finite_extinction_conclusion_statement_of_components
 #check Poincare.finite_extinction_conclusion_statement_of_components_eq
+#check Poincare.finite_extinction_conclusion_statement_of_volume_differential_inputs
 #check Poincare.finite_extinction_conclusion_statement_of_surgery_package
 #check Poincare.finite_extinction_conclusion_statement_of_surgery_package_eq
 #check Poincare.finite_extinction_statement_of_surgery_package

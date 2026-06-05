@@ -9203,6 +9203,50 @@ structure StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairNorm
         commutingPairTangentVectorFieldExtensionAtTime)
 
 /--
+The normal-representative payload exposes the pointwise connection-zero
+proposition for the representatives selected from its tangent-vector-field
+extension source.
+-/
+theorem stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_connection_zero_of_commuting_pair_normal_representatives_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (curvatureConstructionAtTime :
+      RiemannCurvatureTensorConstructionData
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)))
+    (initialTimeCommutingPairNormalRepresentativeAtTime :
+      StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairNormalRepresentativeDataCurrentApi
+        metric identifiesDerivative identifiesRicci curvatureConstructionAtTime) :
+    ∀ {x : M} (X Y : TangentSpace ThreeManifoldModelWithCorners x),
+      StationaryZeroRiemannCurvatureConstructionInitialTimeCommutingPairConnectionZeroCurrentApi
+        metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+        ((stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_tangent_vector_field_extension_current_api
+          initialTimeCommutingPairNormalRepresentativeAtTime.commutingPairTangentVectorFieldExtensionAtTime).initial_time_commuting_pair_representatives
+            X Y) :=
+  stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_connection_zero_of_connection_zero_data_current_api
+    metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+    (stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_tangent_vector_field_extension_current_api
+      initialTimeCommutingPairNormalRepresentativeAtTime.commutingPairTangentVectorFieldExtensionAtTime)
+    initialTimeCommutingPairNormalRepresentativeAtTime.initialTimeCommutingPairConditionAtTime.initialTimeCommutingPairConnectionZeroAtTime
+
+/--
 The existing commuting-pair normal-representative payload supplies the newer
 forward coefficient normal-representative source by forgetting the bracket-zero
 component and retaining the selected connection-zero representatives.
