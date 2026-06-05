@@ -10629,6 +10629,85 @@ theorem extinctionOnePointThreeSpaceCanonicalMapSelectionForwardInverseLawDataAf
       selectedInvFunRawMapChoiceData)
 
 /--
+Raw forward/inverse map data, pointwise raw `toFun` uniqueness, and selected
+raw-map backing data supply the left-inverse law for the selected canonical map
+pair.
+-/
+theorem extinctionOnePointThreeSpaceCanonicalMapSelectionLeftInverseLawDataAfterMapSelectionDataStatement_of_forwardInverseMapDataAfterDecompositionStatement_and_pointwiseToFunUniquenessData_and_selectedRawMapData
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (forwardInverseMapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (pointwiseToFunUniquenessData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataPointwiseToFunUniquenessAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData) :
+    ExtinctionOnePointThreeSpaceCanonicalMapSelectionLeftInverseLawDataAfterMapSelectionDataStatement
+      mapSelectionData :=
+  extinctionOnePointThreeSpaceCanonicalMapSelectionLeftInverseLawDataAfterMapSelectionDataStatement_of_forwardInverseMapDataAfterDecompositionStatement_and_selectedToFunInvFunRawMapChoiceData
+    mapSelectionData forwardInverseMapData
+    (extinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedToFunRawMapChoiceDataAfterMapSelectionDataStatement_of_pointwiseToFunUniquenessData_and_selectedToFunRawMapData
+      mapSelectionData forwardInverseMapData pointwiseToFunUniquenessData
+      (extinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedToFunRawMapDataAfterMapSelectionDataStatement_of_selectedRawMapData
+        mapSelectionData selectedRawMapData))
+    (extinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedInvFunRawMapChoiceDataAfterMapSelectionDataStatement_of_pointwiseToFunUniquenessData_and_selectedRawMapData
+      mapSelectionData forwardInverseMapData pointwiseToFunUniquenessData
+      selectedRawMapData)
+
+/--
+Raw forward/inverse map data, pointwise raw `toFun` uniqueness, and selected
+raw-map backing data supply the right-inverse law for the selected canonical
+map pair.
+-/
+theorem extinctionOnePointThreeSpaceCanonicalMapSelectionRightInverseLawDataAfterMapSelectionDataStatement_of_forwardInverseMapDataAfterDecompositionStatement_and_pointwiseToFunUniquenessData_and_selectedRawMapData
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (forwardInverseMapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (pointwiseToFunUniquenessData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataPointwiseToFunUniquenessAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData) :
+    ExtinctionOnePointThreeSpaceCanonicalMapSelectionRightInverseLawDataAfterMapSelectionDataStatement
+      mapSelectionData :=
+  extinctionOnePointThreeSpaceCanonicalMapSelectionRightInverseLawDataAfterMapSelectionDataStatement_of_forwardInverseMapDataAfterDecompositionStatement_and_selectedToFunInvFunRawMapChoiceData
+    mapSelectionData forwardInverseMapData
+    (extinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedToFunRawMapChoiceDataAfterMapSelectionDataStatement_of_pointwiseToFunUniquenessData_and_selectedToFunRawMapData
+      mapSelectionData forwardInverseMapData pointwiseToFunUniquenessData
+      (extinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedToFunRawMapDataAfterMapSelectionDataStatement_of_selectedRawMapData
+        mapSelectionData selectedRawMapData))
+    (extinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedInvFunRawMapChoiceDataAfterMapSelectionDataStatement_of_pointwiseToFunUniquenessData_and_selectedRawMapData
+      mapSelectionData forwardInverseMapData pointwiseToFunUniquenessData
+      selectedRawMapData)
+
+/--
+Raw forward/inverse map data, pointwise raw `toFun` uniqueness, and selected
+raw-map backing data supply both selected map-pair inverse laws.
+-/
+theorem extinctionOnePointThreeSpaceCanonicalMapSelectionForwardInverseLawDataAfterMapSelectionDataStatement_of_forwardInverseMapDataAfterDecompositionStatement_and_pointwiseToFunUniquenessData_and_selectedRawMapData
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (forwardInverseMapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (pointwiseToFunUniquenessData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataPointwiseToFunUniquenessAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData) :
+    ExtinctionOnePointThreeSpaceCanonicalMapSelectionForwardInverseLawDataAfterMapSelectionDataStatement
+      mapSelectionData :=
+  extinctionOnePointThreeSpaceCanonicalMapSelectionForwardInverseLawDataAfterMapSelectionDataStatement_of_leftRightInverseLawData
+    mapSelectionData
+    (extinctionOnePointThreeSpaceCanonicalMapSelectionLeftInverseLawDataAfterMapSelectionDataStatement_of_forwardInverseMapDataAfterDecompositionStatement_and_pointwiseToFunUniquenessData_and_selectedRawMapData
+      mapSelectionData forwardInverseMapData pointwiseToFunUniquenessData
+      selectedRawMapData)
+    (extinctionOnePointThreeSpaceCanonicalMapSelectionRightInverseLawDataAfterMapSelectionDataStatement_of_forwardInverseMapDataAfterDecompositionStatement_and_pointwiseToFunUniquenessData_and_selectedRawMapData
+      mapSelectionData forwardInverseMapData pointwiseToFunUniquenessData
+      selectedRawMapData)
+
+/--
 Pointwise raw `toFun` uniqueness plus a selected raw `toFun` backing datum
 supplies the selected raw `toFun` characterization payload.
 -/

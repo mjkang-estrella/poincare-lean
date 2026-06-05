@@ -6948,6 +6948,53 @@ theorem onePointRecognitionAmbientAtlasSelectedByTransportedLocalInverseChartOnS
       (homeomorphToOnePoint_threeSpace_transportedLocalInverseChart_eq_chartAt e q).symm
 
 /--
+The selected ambient chart plus pointwise ambient/transported `chartAt`
+compatibility gives the one-sided inclusion into the transported local-inverse
+chart range.
+-/
+theorem onePointRecognitionAmbientAtlasSubsetTransportedLocalInverseChartRangeCorePayload_of_selectedByAmbientChartAtOnSourceCore_and_chartAtPointwiseCompatibilityCore
+    (selected :
+      OnePointRecognitionAmbientAtlasSelectedByAmbientChartAtOnSourceCorePayload.{u})
+    (chartAtCompat :
+      OnePointRecognitionAmbientChartAtPointwiseCompatibilityCorePayload.{u}) :
+    OnePointRecognitionAmbientAtlasSubsetTransportedLocalInverseChartRangeCorePayload.{u} := by
+  intro M _top _charted e c hc
+  rcases selected hc with ⟨q, hqSource, _hq⟩
+  exact
+    onePointRecognitionAmbientAtlasSourceNonemptySubsetTransportedLocalInverseChartRangeCorePayload_of_selectedByAmbientChartAtOnSourceCore_and_chartAtPointwiseCompatibilityCore
+      selected chartAtCompat e hc ⟨q, hqSource⟩
+
+/--
+The same data gives generation by the transported `chartAt` selector.
+-/
+theorem onePointRecognitionAmbientAtlasGeneratedByTransportedChartAtCorePayload_of_selectedByAmbientChartAtOnSourceCore_and_chartAtPointwiseCompatibilityCore
+    (selected :
+      OnePointRecognitionAmbientAtlasSelectedByAmbientChartAtOnSourceCorePayload.{u})
+    (chartAtCompat :
+      OnePointRecognitionAmbientChartAtPointwiseCompatibilityCorePayload.{u}) :
+    OnePointRecognitionAmbientAtlasGeneratedByTransportedChartAtCorePayload.{u} := by
+  intro M _top _charted e c hc
+  rcases selected hc with ⟨q, _hqSource, hq⟩
+  exact ⟨q, hq.trans (chartAtCompat e q)⟩
+
+/--
+Generation by the transported `chartAt` selector gives the one-sided inclusion
+of the ambient atlas into the transported atlas.
+-/
+theorem onePointRecognitionAmbientAtlasSubsetTransportedAtlasCorePayload_of_selectedByAmbientChartAtOnSourceCore_and_chartAtPointwiseCompatibilityCore
+    (selected :
+      OnePointRecognitionAmbientAtlasSelectedByAmbientChartAtOnSourceCorePayload.{u})
+    (chartAtCompat :
+      OnePointRecognitionAmbientChartAtPointwiseCompatibilityCorePayload.{u}) :
+    OnePointRecognitionAmbientAtlasSubsetTransportedAtlasCorePayload.{u} := by
+  intro M _top _charted e c hc
+  rcases selected hc with ⟨q, _hqSource, hq⟩
+  rw [hq, chartAtCompat e q]
+  exact
+    @chart_mem_atlas ThreeManifoldModel M _ _
+      (homeomorphToOnePoint_threeSpace_smoothChartedSpace e) q
+
+/--
 The core atlas-field range comparison supplies the current recognition-shaped
 range payload.
 -/

@@ -11373,6 +11373,172 @@ theorem stationary_zero_tangent_vector_field_raw_extension_smoothAt_of_normal_re
     normalRepresentativeAtTime).smoothnessAtPoint.tangent_vector_field_extension_smoothAt X
 
 /--
+The commuting-pair representative selected from normal representatives has
+first vector-field value `X` at the base point.
+-/
+theorem stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_Xext_eq_of_normal_representatives_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (curvatureConstructionAtTime :
+      RiemannCurvatureTensorConstructionData
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)))
+    (normalRepresentativeAtTime :
+      StationaryZeroRiemannCurvatureConstructionNormalRepresentativeDataCurrentApi
+        metric identifiesDerivative identifiesRicci curvatureConstructionAtTime)
+    {x : M} (X Y : TangentSpace ThreeManifoldModelWithCorners x) :
+    ((stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_tangent_vector_field_extension_exists_current_api
+      (stationary_zero_tangent_vector_field_extension_exists_of_normal_representatives_current_api
+        metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+        normalRepresentativeAtTime)).initial_time_commuting_pair_representatives X Y).Xext x = X :=
+  stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_Xext_eq_of_tangent_vector_field_extension_exists_current_api
+    (stationary_zero_tangent_vector_field_extension_exists_of_normal_representatives_current_api
+      metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+      normalRepresentativeAtTime) X Y
+
+/--
+The commuting-pair representative selected from normal representatives has
+second vector-field value `Y` at the base point.
+-/
+theorem stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_Yext_eq_of_normal_representatives_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (curvatureConstructionAtTime :
+      RiemannCurvatureTensorConstructionData
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)))
+    (normalRepresentativeAtTime :
+      StationaryZeroRiemannCurvatureConstructionNormalRepresentativeDataCurrentApi
+        metric identifiesDerivative identifiesRicci curvatureConstructionAtTime)
+    {x : M} (X Y : TangentSpace ThreeManifoldModelWithCorners x) :
+    ((stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_tangent_vector_field_extension_exists_current_api
+      (stationary_zero_tangent_vector_field_extension_exists_of_normal_representatives_current_api
+        metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+        normalRepresentativeAtTime)).initial_time_commuting_pair_representatives X Y).Yext x = Y :=
+  stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_Yext_eq_of_tangent_vector_field_extension_exists_current_api
+    (stationary_zero_tangent_vector_field_extension_exists_of_normal_representatives_current_api
+      metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+      normalRepresentativeAtTime) X Y
+
+/--
+The first commuting-pair vector field selected from normal representatives is
+smooth at the base point.
+-/
+theorem stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_Xext_smoothAt_of_normal_representatives_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (curvatureConstructionAtTime :
+      RiemannCurvatureTensorConstructionData
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)))
+    (normalRepresentativeAtTime :
+      StationaryZeroRiemannCurvatureConstructionNormalRepresentativeDataCurrentApi
+        metric identifiesDerivative identifiesRicci curvatureConstructionAtTime)
+    {x : M} (X Y : TangentSpace ThreeManifoldModelWithCorners x) :
+    StationaryZeroSmoothTangentVectorFieldAtPointCurrentApi
+      ((stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_tangent_vector_field_extension_exists_current_api
+        (stationary_zero_tangent_vector_field_extension_exists_of_normal_representatives_current_api
+          metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+          normalRepresentativeAtTime)).initial_time_commuting_pair_representatives X Y).Xext x :=
+  stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_Xext_smoothAt_of_tangent_vector_field_extension_exists_current_api
+    (stationary_zero_tangent_vector_field_extension_exists_of_normal_representatives_current_api
+      metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+      normalRepresentativeAtTime) X Y
+
+/--
+The second commuting-pair vector field selected from normal representatives is
+smooth at the base point.
+-/
+theorem stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_Yext_smoothAt_of_normal_representatives_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (curvatureConstructionAtTime :
+      RiemannCurvatureTensorConstructionData
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)))
+    (normalRepresentativeAtTime :
+      StationaryZeroRiemannCurvatureConstructionNormalRepresentativeDataCurrentApi
+        metric identifiesDerivative identifiesRicci curvatureConstructionAtTime)
+    {x : M} (X Y : TangentSpace ThreeManifoldModelWithCorners x) :
+    StationaryZeroSmoothTangentVectorFieldAtPointCurrentApi
+      ((stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_tangent_vector_field_extension_exists_current_api
+        (stationary_zero_tangent_vector_field_extension_exists_of_normal_representatives_current_api
+          metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+          normalRepresentativeAtTime)).initial_time_commuting_pair_representatives X Y).Yext x :=
+  stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_Yext_smoothAt_of_tangent_vector_field_extension_exists_current_api
+    (stationary_zero_tangent_vector_field_extension_exists_of_normal_representatives_current_api
+      metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+      normalRepresentativeAtTime) X Y
+
+/--
 Normal representatives supply the combined commutator-extension witness used to
 apply the stored curvature-construction commutator formula.
 -/

@@ -15721,6 +15721,141 @@ theorem KappaSolutionCurvatureNormalizationPayload.normalizedCurvatureScale_eq_o
       pointedRescalingPayload
       (payload.curvatureNormalizationToPointedRescalingIndex index)
 
+section KappaSolutionCurvatureNormalizationCompactnessEstimateLemmas
+
+variable
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload
+        entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload
+        entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload
+        conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload
+        entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload
+        entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload
+        entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload
+        entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {limitExtractionPayload :
+      AncientKappaSolutionLimitExtractionPayload
+        hamiltonCompactnessPayload}
+    {pointedRescalingPayload :
+      KappaSolutionPointedRescalingPayload limitExtractionPayload}
+
+/--
+Curvature-normalization scales inherit the Hamilton compactness curvature bound
+from their underlying pointed-rescaling indices.
+-/
+theorem KappaSolutionCurvatureNormalizationPayload.normalizedCurvatureScale_le_compactnessCurvatureBound
+    (payload :
+      KappaSolutionCurvatureNormalizationPayload pointedRescalingPayload)
+    (index : payload.curvatureNormalizationDomain) :
+    payload.normalizedCurvatureScale index ≤
+      hamiltonCompactnessPayload.compactnessCurvatureBound := by
+  rw [payload.normalizedCurvatureScale_eq_pointedRescalingCurvatureScale index]
+  exact
+    pointedRescalingPayload.pointedRescalingCurvatureScale_le_compactnessCurvatureBound
+      (payload.curvatureNormalizationToPointedRescalingIndex index)
+
+/--
+The Hamilton compactness curvature bound is at least one for any
+curvature-normalization index.
+-/
+theorem KappaSolutionCurvatureNormalizationPayload.one_le_compactnessCurvatureBound
+    (payload :
+      KappaSolutionCurvatureNormalizationPayload pointedRescalingPayload)
+    (index : payload.curvatureNormalizationDomain) :
+    1 ≤ hamiltonCompactnessPayload.compactnessCurvatureBound :=
+  pointedRescalingPayload.one_le_compactnessCurvatureBound
+    (payload.curvatureNormalizationToPointedRescalingIndex index)
+
+/--
+The Hamilton compactness envelope is at least one for any
+curvature-normalization index.
+-/
+theorem KappaSolutionCurvatureNormalizationPayload.one_le_hamiltonCompactnessEnvelope
+    (payload :
+      KappaSolutionCurvatureNormalizationPayload pointedRescalingPayload)
+    (index : payload.curvatureNormalizationDomain) :
+    1 ≤ hamiltonCompactnessPayload.hamiltonCompactnessEnvelope :=
+  pointedRescalingPayload.one_le_hamiltonCompactnessEnvelope
+    (payload.curvatureNormalizationToPointedRescalingIndex index)
+
+end KappaSolutionCurvatureNormalizationCompactnessEstimateLemmas
+
 /-- The normalized kappa scale is positive. -/
 theorem KappaSolutionCurvatureNormalizationPayload.normalizedKappaScale_positive
     {n : ℕ∞ω}
