@@ -24359,6 +24359,27 @@ def extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surge
       forwardContinuityData)
 
 /--
+A surgery-trace prefix plus selected raw-map data and forward continuity
+advances through simply connected extinction recognition, eliminating the
+separate forward-inverse-map-data assumption.
+-/
+def extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceSelectedRawMapDataAfterDecomposition_and_forwardContinuityDataAfterDecomposition
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u} :=
+  extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_and_forwardContinuityDataAfterDecomposition
+    surgeryTracePrefix
+    (extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement_of_selectedRawMapData
+      mapSelectionData selectedRawMapData)
+    forwardContinuityData
+
+/--
 A surgery-trace prefix plus paired forward-continuous map data advances
 through simply connected extinction recognition.
 -/

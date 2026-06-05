@@ -26415,6 +26415,154 @@ inductive HasFiniteExtinctionDifferentialInequalityIntegration
         flow surgery control pinching componentControl timeBound
 
 /--
+The shared volume-evolution, surgery-volume, scalar-curvature, and
+volume-differential inputs directly construct the finite-extinction time-bound
+interface.
+-/
+theorem finite_extinction_time_bound_of_volume_differential_inputs
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {pinching : HasFiniteExtinctionCurvaturePinching flow surgery control}
+    {componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching}
+    (volumeEvolutionFormula :
+      HasFiniteExtinctionVolumeEvolutionFormula
+        flow surgery control pinching componentControl)
+    (surgeryVolumeNonincrease :
+      HasFiniteExtinctionSurgeryVolumeNonincrease
+        flow surgery control pinching componentControl)
+    (scalarCurvatureDifferentialInequality :
+      HasFiniteExtinctionScalarCurvatureDifferentialInequality
+        flow surgery control pinching componentControl)
+    (volumeDifferentialInequality :
+      HasFiniteExtinctionVolumeDifferentialInequality
+        flow surgery control pinching componentControl) :
+    HasFiniteExtinctionTimeBound flow surgery control pinching
+      componentControl :=
+  HasFiniteExtinctionTimeBound.of_volume_differential_inputs
+    volumeEvolutionFormula surgeryVolumeNonincrease
+    scalarCurvatureDifferentialInequality volumeDifferentialInequality
+
+/--
+The same volume-differential input tuple directly constructs the finite-
+extinction volume-decay estimate interface.
+-/
+theorem finite_extinction_volume_decay_estimate_of_volume_differential_inputs
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {pinching : HasFiniteExtinctionCurvaturePinching flow surgery control}
+    {componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching}
+    (volumeEvolutionFormula :
+      HasFiniteExtinctionVolumeEvolutionFormula
+        flow surgery control pinching componentControl)
+    (surgeryVolumeNonincrease :
+      HasFiniteExtinctionSurgeryVolumeNonincrease
+        flow surgery control pinching componentControl)
+    (scalarCurvatureDifferentialInequality :
+      HasFiniteExtinctionScalarCurvatureDifferentialInequality
+        flow surgery control pinching componentControl)
+    (volumeDifferentialInequality :
+      HasFiniteExtinctionVolumeDifferentialInequality
+        flow surgery control pinching componentControl) :
+    HasFiniteExtinctionVolumeDecayEstimate flow surgery control pinching
+      componentControl :=
+  HasFiniteExtinctionVolumeDecayEstimate.of_volume_differential_inputs
+    volumeEvolutionFormula surgeryVolumeNonincrease
+    scalarCurvatureDifferentialInequality volumeDifferentialInequality
+
+/--
+A concrete volume-decay estimate integrates to finite-time extinction once the
+matching time-bound input is fixed.
+-/
+theorem finite_extinction_finite_time_integration_of_volume_decay_estimate
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {pinching : HasFiniteExtinctionCurvaturePinching flow surgery control}
+    {componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching}
+    {timeBound :
+      HasFiniteExtinctionTimeBound flow surgery control pinching componentControl}
+    (volumeDecayEstimate :
+      HasFiniteExtinctionVolumeDecayEstimate
+        flow surgery control pinching componentControl) :
+    HasFiniteExtinctionFiniteTimeIntegration flow surgery control pinching
+      componentControl timeBound :=
+  HasFiniteExtinctionFiniteTimeIntegration.of_volume_decay_estimate
+    volumeDecayEstimate
+
+/--
+The volume differential inequality and its decay estimate directly construct
+the differential-inequality integration interface for the same time bound.
+-/
+theorem finite_extinction_differential_inequality_integration_of_volume_decay_estimate
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {pinching : HasFiniteExtinctionCurvaturePinching flow surgery control}
+    {componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching}
+    {timeBound :
+      HasFiniteExtinctionTimeBound flow surgery control pinching componentControl}
+    (volumeDifferentialInequality :
+      HasFiniteExtinctionVolumeDifferentialInequality
+        flow surgery control pinching componentControl)
+    (volumeDecayEstimate :
+      HasFiniteExtinctionVolumeDecayEstimate
+        flow surgery control pinching componentControl) :
+    HasFiniteExtinctionDifferentialInequalityIntegration
+      flow surgery control pinching componentControl timeBound :=
+  HasFiniteExtinctionDifferentialInequalityIntegration.of_volume_decay_estimate
+    volumeDifferentialInequality volumeDecayEstimate
+
+/--
+Finite-time integration together with surgery-time summability directly gives
+the extinction-time contradiction interface for the same time bound.
+-/
+theorem finite_extinction_extinction_time_contradiction_of_time_bound_estimates
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {pinching : HasFiniteExtinctionCurvaturePinching flow surgery control}
+    {componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching}
+    {timeBound :
+      HasFiniteExtinctionTimeBound flow surgery control pinching componentControl}
+    (finiteTimeIntegration :
+      HasFiniteExtinctionFiniteTimeIntegration
+        flow surgery control pinching componentControl timeBound)
+    (surgeryTimeSummability :
+      HasFiniteExtinctionSurgeryTimeSummability
+        flow surgery control pinching componentControl timeBound) :
+    HasFiniteExtinctionExtinctionTimeContradiction
+      flow surgery control pinching componentControl timeBound :=
+  HasFiniteExtinctionExtinctionTimeContradiction.of_time_bound_estimates
+    finiteTimeIntegration surgeryTimeSummability
+
+/--
 Interface certifying that the named finite-extinction sub-obligations derive the
 projected finite-extinction conclusion.
 -/
