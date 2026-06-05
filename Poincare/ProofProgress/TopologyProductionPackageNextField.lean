@@ -9974,6 +9974,25 @@ theorem extinctionOnePointThreeSpaceForwardInverseMapDataToFunUniquenessAfterDec
   exact pointwiseToFunUniquenessData M extinction decomposition data₁ data₂ x
 
 /--
+Pointwise equality of the forward function field determines the inverse
+function field for raw forward/inverse map data, using the inverse-law fields
+stored in the two raw records.
+-/
+theorem extinctionOnePointThreeSpaceForwardInverseMapDataPointwiseInvFunUniquenessAfterDecompositionStatement_of_pointwiseToFunUniquenessData
+    (pointwiseToFunUniquenessData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataPointwiseToFunUniquenessAfterDecompositionStatement.{u}) :
+    ExtinctionOnePointThreeSpaceForwardInverseMapDataPointwiseInvFunUniquenessAfterDecompositionStatement.{u} := by
+  intro M _top _t2 _charted _simple _compact extinction decomposition data₁ data₂ y
+  calc
+    data₁.invFun y = data₂.invFun (data₂.toFun (data₁.invFun y)) :=
+      (data₂.left_inv (data₁.invFun y)).symm
+    _ = data₂.invFun (data₁.toFun (data₁.invFun y)) := by
+      rw [pointwiseToFunUniquenessData M extinction decomposition
+        data₂ data₁ (data₁.invFun y)]
+    _ = data₂.invFun y := by
+      rw [data₁.right_inv y]
+
+/--
 Pointwise equality of the inverse function field supplies `invFun` uniqueness
 for raw forward/inverse map data.
 -/

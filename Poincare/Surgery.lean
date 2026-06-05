@@ -15289,6 +15289,68 @@ theorem KappaSolutionPointedRescalingPayload.pointedRescalingRadius_le_compactne
       (limitExtractionPayload.limitExtractionToCompactnessIndex
         (payload.pointedRescalingToLimitExtractionIndex index))
 
+/--
+Pointed rescaled models are exactly the Hamilton-compactness subsequence models
+at the extracted index selected by the pointed-rescaling payload.
+-/
+theorem KappaSolutionPointedRescalingPayload.pointedRescaledModelAtIndex_eq_compactnessFlowAtLimitExtractionIndex
+    (payload : KappaSolutionPointedRescalingPayload limitExtractionPayload)
+    (index : payload.pointedRescalingDomain) :
+    payload.pointedRescaledModelAtIndex index =
+      hamiltonCompactnessPayload.compactnessFlowAtIndex
+        (limitExtractionPayload.limitExtractionToCompactnessIndex
+          (payload.pointedRescalingToLimitExtractionIndex index)) := by
+  rw [
+    hamiltonCompactnessPayload.compactnessFlowAtIndex_eq_rescaledFlowAtIndex
+      (limitExtractionPayload.limitExtractionToCompactnessIndex
+        (payload.pointedRescalingToLimitExtractionIndex index))]
+  exact payload.pointedRescaledModelAtIndex_eq_subsequenceRescaledFlow index
+
+/--
+Pointed-rescaling curvature scales agree with the Hamilton-compactness
+subsequence of collapsed-ball rescaled curvature scales.
+-/
+theorem KappaSolutionPointedRescalingPayload.pointedRescalingCurvatureScale_eq_subsequenceRescaledCurvatureScale
+    (payload : KappaSolutionPointedRescalingPayload limitExtractionPayload)
+    (index : payload.pointedRescalingDomain) :
+    payload.pointedRescalingCurvatureScale index =
+      collapsedBallBlowupPayload.rescaledCurvatureScale
+        (hamiltonCompactnessPayload.subsequenceToBlowupIndex
+          (limitExtractionPayload.limitExtractionToCompactnessIndex
+            (payload.pointedRescalingToLimitExtractionIndex index))) := by
+  simpa [payload.pointedRescalingToBlowupIndex_eq_compactnessBlowupIndex index]
+    using payload.pointedRescalingCurvatureScale_eq_blowupCurvatureScale index
+
+/--
+The Hamilton-subsequence rescaled curvature scale selected by a pointed
+rescaling is normalized to one.
+-/
+theorem KappaSolutionPointedRescalingPayload.subsequenceRescaledCurvatureScale_eq_one
+    (payload : KappaSolutionPointedRescalingPayload limitExtractionPayload)
+    (index : payload.pointedRescalingDomain) :
+    collapsedBallBlowupPayload.rescaledCurvatureScale
+        (hamiltonCompactnessPayload.subsequenceToBlowupIndex
+          (limitExtractionPayload.limitExtractionToCompactnessIndex
+            (payload.pointedRescalingToLimitExtractionIndex index))) =
+      1 := by
+  rw [← payload.pointedRescalingCurvatureScale_eq_subsequenceRescaledCurvatureScale index]
+  exact payload.pointedRescalingCurvatureScale_eq_one index
+
+/--
+Pointed-rescaling curvature scales inherit the Hamilton-compactness curvature
+bound along the selected subsequence.
+-/
+theorem KappaSolutionPointedRescalingPayload.pointedRescalingCurvatureScale_le_compactnessCurvatureBound
+    (payload : KappaSolutionPointedRescalingPayload limitExtractionPayload)
+    (index : payload.pointedRescalingDomain) :
+    payload.pointedRescalingCurvatureScale index ≤
+      hamiltonCompactnessPayload.compactnessCurvatureBound := by
+  rw [payload.pointedRescalingCurvatureScale_eq_subsequenceRescaledCurvatureScale index]
+  exact
+    hamiltonCompactnessPayload.rescaledCurvatureScale_le_compactnessCurvatureBound
+      (limitExtractionPayload.limitExtractionToCompactnessIndex
+        (payload.pointedRescalingToLimitExtractionIndex index))
+
 end KappaSolutionPointedRescalingSubsequenceEstimateLemmas
 
 /-- Interface for pointed parabolic rescalings used to form kappa-solution limits. -/

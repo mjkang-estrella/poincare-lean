@@ -1582,6 +1582,46 @@ theorem stationary_zero_riemann_curvature_construction_initial_time_commuting_pa
     extensionExists).initial_time_commuting_pair_representatives X Y).Yext_eq
 
 /--
+For the representatives selected from an existential smooth extension source,
+the first selected vector field carries the expected smoothness evidence at
+the base point.
+-/
+theorem stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_Xext_smoothAt_of_tangent_vector_field_extension_exists_current_api
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (extensionExists :
+      ∀ {x : M} (X : TangentSpace ThreeManifoldModelWithCorners x),
+        ∃ Xext : (y : M) → TangentSpace ThreeManifoldModelWithCorners y,
+          Xext x = X ∧
+            StationaryZeroSmoothTangentVectorFieldAtPointCurrentApi Xext x)
+    {x : M} (X Y : TangentSpace ThreeManifoldModelWithCorners x) :
+    StationaryZeroSmoothTangentVectorFieldAtPointCurrentApi
+      ((stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_tangent_vector_field_extension_exists_current_api
+        extensionExists).initial_time_commuting_pair_representatives X Y).Xext x :=
+  ((stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_tangent_vector_field_extension_exists_current_api
+    extensionExists).initial_time_commuting_pair_representatives X Y).Xext_smoothAt
+
+/--
+For the representatives selected from an existential smooth extension source,
+the second selected vector field carries the expected smoothness evidence at
+the base point.
+-/
+theorem stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_Yext_smoothAt_of_tangent_vector_field_extension_exists_current_api
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (extensionExists :
+      ∀ {x : M} (X : TangentSpace ThreeManifoldModelWithCorners x),
+        ∃ Xext : (y : M) → TangentSpace ThreeManifoldModelWithCorners y,
+          Xext x = X ∧
+            StationaryZeroSmoothTangentVectorFieldAtPointCurrentApi Xext x)
+    {x : M} (X Y : TangentSpace ThreeManifoldModelWithCorners x) :
+    StationaryZeroSmoothTangentVectorFieldAtPointCurrentApi
+      ((stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_tangent_vector_field_extension_exists_current_api
+        extensionExists).initial_time_commuting_pair_representatives X Y).Yext x :=
+  ((stationary_zero_riemann_curvature_construction_initial_time_commuting_pair_representative_data_of_tangent_vector_field_extension_exists_current_api
+    extensionExists).initial_time_commuting_pair_representatives X Y).Yext_smoothAt
+
+/--
 The remaining local normal-coordinate condition for a chosen commuting-pair
 representative: the selected initial connection has zero `∇_X Y` term and the
 base-point Lie bracket vanishes.

@@ -6829,6 +6829,36 @@ theorem homeomorphToOnePoint_threeSpace_chart_eq_transportedChartAt_mem_transpor
   exact homeomorphToOnePoint_threeSpace_transportedChartAt_mem_transportedLocalInverseChart_range e q
 
 /--
+If the ambient selected chart agrees with the transported one-point selected
+chart, then the ambient selected chart lies in the explicit transported
+local-inverse chart range.
+-/
+theorem homeomorphToOnePoint_threeSpace_ambientChartAt_mem_transportedLocalInverseChart_range_of_chartAtCompatibilityCore
+    (chartAtCompat :
+      OnePointRecognitionAmbientChartAtCompatibilityCorePayload.{u})
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    (e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) (q : M) :
+    @ChartedSpace.chartAt ThreeManifoldModel _ M _ inferInstance q ∈
+      Set.range (homeomorphToOnePoint_threeSpace_transportedLocalInverseChart e) := by
+  rw [chartAtCompat e]
+  exact homeomorphToOnePoint_threeSpace_transportedChartAt_mem_transportedLocalInverseChart_range e q
+
+/--
+The pointwise ambient/transported selected-chart compatibility gives the same
+range membership for the ambient selected chart.
+-/
+theorem homeomorphToOnePoint_threeSpace_ambientChartAt_mem_transportedLocalInverseChart_range_of_pointwiseCompatibilityCore
+    (chartAtCompat :
+      OnePointRecognitionAmbientChartAtPointwiseCompatibilityCorePayload.{u})
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    (e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) (q : M) :
+    @ChartedSpace.chartAt ThreeManifoldModel _ M _ inferInstance q ∈
+      Set.range (homeomorphToOnePoint_threeSpace_transportedLocalInverseChart e) := by
+  exact
+    homeomorphToOnePoint_threeSpace_chart_eq_transportedChartAt_mem_transportedLocalInverseChart_range
+      e (chartAtCompat e q)
+
+/--
 If an ambient atlas chart is the ambient selected chart at a source point, and
 the ambient selected chart agrees there with the transported selected chart,
 then the chart lies in the transported local-inverse chart range.
@@ -6867,6 +6897,23 @@ theorem onePointRecognitionAmbientAtlasSourceNonemptySubsetTransportedLocalInver
   exact
     homeomorphToOnePoint_threeSpace_chart_eq_ambientChartAt_mem_transportedLocalInverseChart_range_of_selectedSourceCompatibilityCore
       selectedCompat e hc hq (selects hc hq)
+
+/--
+If every ambient atlas chart is selected by the ambient `chartAt` at one of its
+source points, then pointwise ambient/transported selected-chart compatibility
+constructs the source-nonempty local-inverse range input.
+-/
+theorem onePointRecognitionAmbientAtlasSourceNonemptySubsetTransportedLocalInverseChartRangeCorePayload_of_selectedByAmbientChartAtOnSourceCore_and_chartAtPointwiseCompatibilityCore
+    (selected :
+      OnePointRecognitionAmbientAtlasSelectedByAmbientChartAtOnSourceCorePayload.{u})
+    (chartAtCompat :
+      OnePointRecognitionAmbientChartAtPointwiseCompatibilityCorePayload.{u}) :
+    OnePointRecognitionAmbientAtlasSourceNonemptySubsetTransportedLocalInverseChartRangeCorePayload.{u} := by
+  intro M _top _charted e c hc _hsource
+  rcases selected hc with ⟨q, _hqSource, hq⟩
+  exact
+    homeomorphToOnePoint_threeSpace_chart_eq_transportedChartAt_mem_transportedLocalInverseChart_range
+      e (hq.trans (chartAtCompat e q))
 
 /--
 The core atlas-field range comparison supplies the current recognition-shaped
