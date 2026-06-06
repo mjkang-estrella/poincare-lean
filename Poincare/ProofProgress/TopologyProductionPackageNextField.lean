@@ -24691,6 +24691,32 @@ def extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompac
       surgeryTracePrefix onePointRecognition)
 
 /--
+A surgery-trace prefix plus decomposition-indexed one-point compactification
+recognition payload supplies the full topology extraction package.
+-/
+def extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (recognizeData :
+      ExtinctionOnePointThreeSpaceRecognitionDataAfterDecompositionStatement.{u}) :
+    ExtinctionTopologyExtractionPackage.{u} :=
+  extinctionTopologyExtractionPackage_of_simplyConnectedExtinctionRecognitionPrefixPackage
+    (extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition
+      surgeryTracePrefix recognizeData)
+
+/--
+A surgery-trace prefix plus concrete fixed-decomposition one-point
+homeomorphism data supplies the full topology extraction package.
+-/
+def extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceHomeomorphismDataAfterDecomposition
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (homeomorphismData :
+      ExtinctionOnePointThreeSpaceHomeomorphismDataAfterDecompositionStatement.{u}) :
+    ExtinctionTopologyExtractionPackage.{u} :=
+  extinctionTopologyExtractionPackage_of_simplyConnectedExtinctionRecognitionPrefixPackage
+    (extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceHomeomorphismDataAfterDecomposition
+      surgeryTracePrefix homeomorphismData)
+
+/--
 A surgery-trace prefix plus elementary fixed-decomposition one-point
 homeomorphism construction data supplies the full topology extraction package.
 -/
@@ -24702,6 +24728,47 @@ def extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_extinctionOneP
   extinctionTopologyExtractionPackage_of_simplyConnectedExtinctionRecognitionPrefixPackage
     (extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
       surgeryTracePrefix constructionData)
+
+/--
+A surgery-trace prefix plus selected raw forward/inverse maps with continuity
+supplies the full topology extraction package.
+-/
+def extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceForwardInverseMapWithContinuityDataAfterDecomposition
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (selectedMapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapWithContinuityDataAfterDecompositionStatement.{u}) :
+    ExtinctionTopologyExtractionPackage.{u} :=
+  extinctionTopologyExtractionPackage_of_simplyConnectedExtinctionRecognitionPrefixPackage
+    (extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceForwardInverseMapWithContinuityDataAfterDecomposition
+      surgeryTracePrefix selectedMapData)
+
+/--
+A surgery-trace prefix plus point-set data for one selected raw forward map
+supplies the full topology extraction package.
+-/
+def extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecompositionStatement.{u}) :
+    ExtinctionTopologyExtractionPackage.{u} :=
+  extinctionTopologyExtractionPackage_of_simplyConnectedExtinctionRecognitionPrefixPackage
+    (extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition
+      surgeryTracePrefix pointSetData)
+
+/--
+A surgery-trace prefix plus raw forward/inverse map data and forward continuity
+supplies the full topology extraction package.
+-/
+def extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_and_forwardContinuityDataAfterDecomposition
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    ExtinctionTopologyExtractionPackage.{u} :=
+  extinctionTopologyExtractionPackage_of_simplyConnectedExtinctionRecognitionPrefixPackage
+    (extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_and_forwardContinuityDataAfterDecomposition
+      surgeryTracePrefix mapData forwardContinuityData)
 
 /--
 A surgery-trace prefix plus paired forward-continuous map data supplies the

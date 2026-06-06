@@ -16865,6 +16865,18 @@ theorem smoothabilityPackageBridgeFields_of_commonSourceTransportedAtlasTransiti
       inputs)
 
 /--
+The target-preimage right-inverse transported-atlas bridge input also supplies
+the current package route through the equivalent internal transition-id bridge.
+-/
+theorem smoothabilityPackageBridgeFields_of_commonSourceTransportedAtlasTargetPreimageRightInvBridgeInputs_via_transitionId
+    (inputs :
+      OnePointRecognitionAmbientChartLocalTransportedChartAtCommonSourceTransportedAtlasTargetPreimageRightInvBridgeInputs.{u}) :
+    SmoothabilityPackageBridgeFields.{u} :=
+  smoothabilityPackageBridgeFields_of_commonSourceTransportedAtlasTransitionIdBridgeInputs_via_sourceChartMapEqOnTransportedSource
+    (commonSourceTransportedAtlasTransitionIdBridgeInputs_of_commonSourceTransportedAtlasTargetPreimageRightInvBridgeInputs
+      inputs)
+
+/--
 The ambient transported-atlas membership source and internal transition identity
 payload are sufficient for the current smoothability bridge route.
 -/

@@ -12888,6 +12888,105 @@ theorem stationary_zero_riemann_curvature_construction_apply_eq_zero_of_commutat
     _ = 0 := hcomm t
 
 /--
+Normal-representative data directly supplies pointwise vanishing for the
+concrete Riemann-curvature construction, without routing through the
+commutator wrapper payload.
+-/
+theorem stationary_zero_riemann_curvature_construction_apply_eq_zero_of_normal_representatives_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (curvatureConstructionAtTime :
+      RiemannCurvatureTensorConstructionData
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)))
+    (normalRepresentativeAtTime :
+      StationaryZeroRiemannCurvatureConstructionNormalRepresentativeDataCurrentApi
+        metric identifiesDerivative identifiesRicci curvatureConstructionAtTime) :
+    ∀ (t : ℝ) {x : M} (X Y Z : TangentSpace ThreeManifoldModelWithCorners x),
+      curvatureConstructionAtTime.curvatureAtTime t x X Y Z = 0 := by
+  intro t x X Y Z
+  rcases
+    stationary_zero_riemann_curvature_construction_commutator_extension_eq_zero_of_normal_representatives_current_api
+      metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+      normalRepresentativeAtTime
+      X Y Z with
+    ⟨Xext, Yext, Zext, hX, hY, hZ, hXdiff, hYdiff, hZdiff, hcomm⟩
+  rw [← hX, ← hY, ← hZ]
+  calc
+    curvatureConstructionAtTime.curvatureAtTime
+        t x (Xext x) (Yext x) (Zext x) =
+        stationary_zero_riemann_curvature_construction_commutator_rhs_current_api
+          metric identifiesDerivative identifiesRicci
+          curvatureConstructionAtTime t (x := x) Xext Yext Zext := by
+      simpa [stationary_zero_riemann_curvature_construction_commutator_rhs_current_api]
+        using
+          curvatureConstructionAtTime.curvature_eq_commutator
+            t (X := Xext) (Y := Yext) (Z := Zext) (x := x)
+            hXdiff hYdiff hZdiff
+    _ = 0 := hcomm t
+
+/--
+Normal-representative data directly supplies the field-level zero identity for
+the concrete Riemann-curvature construction.
+-/
+theorem stationary_zero_riemann_curvature_construction_field_eq_zero_of_normal_representatives_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (curvatureConstructionAtTime :
+      RiemannCurvatureTensorConstructionData
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)))
+    (normalRepresentativeAtTime :
+      StationaryZeroRiemannCurvatureConstructionNormalRepresentativeDataCurrentApi
+        metric identifiesDerivative identifiesRicci curvatureConstructionAtTime) :
+    curvatureConstructionAtTime.curvatureAtTime =
+      (fun _t _x => 0 :
+        TimeDependentRiemannCurvatureTensorField
+          (metric_of_ricci_flow_data
+            (stationary_zero_ricci_flow_data_current_api
+              metric identifiesDerivative identifiesRicci))) := by
+  funext t x
+  ext X Y Z
+  exact
+    stationary_zero_riemann_curvature_construction_apply_eq_zero_of_normal_representatives_current_api
+      metric identifiesDerivative identifiesRicci curvatureConstructionAtTime
+      normalRepresentativeAtTime t X Y Z
+
+/--
 Pointwise stationary-zero Riemann-curvature vanishing for the concrete
 curvature field stored by a Riemann-curvature construction.
 
@@ -13199,6 +13298,46 @@ theorem stationary_zero_riemann_curvature_tensor_field_vanishing_of_construction
       metric identifiesDerivative identifiesRicci
       secondBianchiAtTime.firstBianchiAtTime.curvatureSymmetryAtTime.curvatureConstructionAtTime
       curvatureConstructionFieldVanishingAtTime
+
+/--
+Normal-representative data for the second-Bianchi-nested construction directly
+supplies the tensor-field vanishing payload.
+-/
+theorem stationary_zero_riemann_curvature_tensor_field_vanishing_of_normal_representatives_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (secondBianchiAtTime :
+      RiemannCurvatureSecondBianchiData
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)))
+    (normalRepresentativeAtTime :
+      StationaryZeroRiemannCurvatureConstructionNormalRepresentativeDataCurrentApi
+        metric identifiesDerivative identifiesRicci
+        secondBianchiAtTime.firstBianchiAtTime.curvatureSymmetryAtTime.curvatureConstructionAtTime) :
+    StationaryZeroRiemannCurvatureTensorFieldVanishingDataCurrentApi
+      metric identifiesDerivative identifiesRicci secondBianchiAtTime where
+  curvatureAtTime_eq_zero :=
+    stationary_zero_riemann_curvature_construction_field_eq_zero_of_normal_representatives_current_api
+      metric identifiesDerivative identifiesRicci
+      secondBianchiAtTime.firstBianchiAtTime.curvatureSymmetryAtTime.curvatureConstructionAtTime
+      normalRepresentativeAtTime
 
 /--
 Stationary-zero Riemann-curvature vanishing data for the constructed curvature

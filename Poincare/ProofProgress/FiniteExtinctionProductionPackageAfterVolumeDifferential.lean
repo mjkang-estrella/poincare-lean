@@ -972,6 +972,54 @@ theorem finite_extinction_surgery_package_nonempty_of_volume_differential_fronti
       scalarCurvatureFrontier volumeDifferentialFrontier)
 
 /--
+The volume-differential frontier data supply a completed surgery package, hence
+the theorem-shaped finite-extinction statement.
+-/
+theorem finite_extinction_statement_of_volume_differential_frontier
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (analyticFoundation :
+      RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M)
+    (surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (widthStatement :
+      FiniteExtinctionWidthSubobligationsStatement
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control)
+    (curvatureFrontier :
+      FiniteExtinctionProductionCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl)
+    (volumeFrontier :
+      FiniteExtinctionProductionVolumeEvolutionFrontier
+        analyticFoundation surgeryConstruction perelmanControl
+        curvatureFrontier)
+    (surgeryVolumeFrontier :
+      FiniteExtinctionProductionSurgeryVolumeFrontier
+        analyticFoundation surgeryConstruction perelmanControl
+        curvatureFrontier volumeFrontier)
+    (scalarCurvatureFrontier :
+      FiniteExtinctionProductionScalarCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl
+        curvatureFrontier volumeFrontier surgeryVolumeFrontier)
+    (volumeDifferentialFrontier :
+      FiniteExtinctionProductionVolumeDifferentialFrontier
+        analyticFoundation surgeryConstruction perelmanControl
+        curvatureFrontier volumeFrontier surgeryVolumeFrontier
+        scalarCurvatureFrontier) :
+    FiniteExtinctionStatement n M := by
+  rcases finite_extinction_surgery_package_nonempty_of_volume_differential_frontier
+    analyticFoundation surgeryConstruction perelmanControl widthStatement
+    curvatureFrontier volumeFrontier surgeryVolumeFrontier
+    scalarCurvatureFrontier volumeDifferentialFrontier with ⟨package⟩
+  exact finite_extinction_statement_of_surgery_package package
+
+/--
 The scalar-curvature frontier now supplies the volume-differential frontier, so
 the finite-extinction surgery package is constructible without a separate
 post-scalar-curvature remainder.
@@ -1017,6 +1065,49 @@ theorem finite_extinction_surgery_package_nonempty_of_scalar_curvature_frontier
       analyticFoundation surgeryConstruction perelmanControl
       curvatureFrontier volumeFrontier surgeryVolumeFrontier
       scalarCurvatureFrontier)
+
+/--
+The scalar-curvature frontier closes the volume-differential frontier and then
+supplies the theorem-shaped finite-extinction statement through the package.
+-/
+theorem finite_extinction_statement_of_scalar_curvature_frontier
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (analyticFoundation :
+      RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M)
+    (surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (widthStatement :
+      FiniteExtinctionWidthSubobligationsStatement
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control)
+    (curvatureFrontier :
+      FiniteExtinctionProductionCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl)
+    (volumeFrontier :
+      FiniteExtinctionProductionVolumeEvolutionFrontier
+        analyticFoundation surgeryConstruction perelmanControl
+        curvatureFrontier)
+    (surgeryVolumeFrontier :
+      FiniteExtinctionProductionSurgeryVolumeFrontier
+        analyticFoundation surgeryConstruction perelmanControl
+        curvatureFrontier volumeFrontier)
+    (scalarCurvatureFrontier :
+      FiniteExtinctionProductionScalarCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl
+        curvatureFrontier volumeFrontier surgeryVolumeFrontier) :
+    FiniteExtinctionStatement n M := by
+  rcases finite_extinction_surgery_package_nonempty_of_scalar_curvature_frontier
+    analyticFoundation surgeryConstruction perelmanControl widthStatement
+    curvatureFrontier volumeFrontier surgeryVolumeFrontier
+    scalarCurvatureFrontier with ⟨package⟩
+  exact finite_extinction_statement_of_surgery_package package
 
 /--
 The surgery-volume frontier now also closes the volume-differential frontier:
@@ -1107,6 +1198,45 @@ theorem finite_extinction_surgery_package_nonempty_of_surgery_volume_frontier
     analyticFoundation surgeryConstruction perelmanControl widthStatement
     curvatureFrontier volumeFrontier surgeryVolumeFrontier
     scalarCurvatureFrontier volumeDifferentialFrontier
+
+/--
+The surgery-volume frontier produces the scalar-curvature and
+volume-differential frontiers needed for a completed package, hence the
+theorem-shaped finite-extinction statement.
+-/
+theorem finite_extinction_statement_of_surgery_volume_frontier
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (analyticFoundation :
+      RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M)
+    (surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (widthStatement :
+      FiniteExtinctionWidthSubobligationsStatement
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control)
+    (curvatureFrontier :
+      FiniteExtinctionProductionCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl)
+    (volumeFrontier :
+      FiniteExtinctionProductionVolumeEvolutionFrontier
+        analyticFoundation surgeryConstruction perelmanControl
+        curvatureFrontier)
+    (surgeryVolumeFrontier :
+      FiniteExtinctionProductionSurgeryVolumeFrontier
+        analyticFoundation surgeryConstruction perelmanControl
+        curvatureFrontier volumeFrontier) :
+    FiniteExtinctionStatement n M := by
+  rcases finite_extinction_surgery_package_nonempty_of_surgery_volume_frontier
+    analyticFoundation surgeryConstruction perelmanControl widthStatement
+    curvatureFrontier volumeFrontier surgeryVolumeFrontier with ⟨package⟩
+  exact finite_extinction_statement_of_surgery_package package
 
 /--
 With surgery-volume nonincrease constructed from the surgery package and
