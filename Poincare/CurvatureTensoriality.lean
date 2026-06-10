@@ -829,4 +829,70 @@ theorem ricciBilinearAt_symm
 
 end RicciSymm
 
+/--
+**Pair symmetry of the curvature tensor**:
+`g(R(a,b)c, d) = g(R(c,d)a, b)` for a torsion-free `g`-compatible
+connection, by the classical four-Bianchi computation from the three basic
+symmetries.
+-/
+theorem curvature_pair_symm
+    (htf : ∀ y : M, TorsionFreeAt cov y)
+    (hc : ∀ y : M, MetricCompatibleAt g cov y) {x : M}
+    (hgsymm : ∀ v w : TangentSpace I x, g x v w = g x w v)
+    (hgC : ∀ (A B : Π y : M, TangentSpace I y), CMDiffAt 2 (T% A) x →
+      CMDiffAt 2 (T% B) x → CMDiffAt 2 (fun y ↦ g y (A y) (B y)) x)
+    (hP : ∀ (A B : Π y : M, TangentSpace I y), MDiffAt (T% A) x →
+      MDiffAt (T% B) x → MDiffAt (fun y ↦ g y (A y) (B y)) x)
+    (a b c d : TangentSpace I x) :
+    g x (curvatureOp cov (extend E a) (extend E b) (extend E c) x) d =
+      g x (curvatureOp cov (extend E c) (extend E d) (extend E a) x) b := by
+  set Q : TangentSpace I x → TangentSpace I x → TangentSpace I x →
+      TangentSpace I x → ℝ := fun p q r s ↦
+    g x (curvatureOp cov (extend E p) (extend E q) (extend E r) x) s
+    with hQ
+  have hA1 : ∀ p q r s, Q p q r s = - Q q p r s := by
+    intro p q r s
+    simp only [hQ]
+    rw [curvatureOp_antisymm_apply]
+    simp
+  have hA2 : ∀ p q r s, Q p q r s = - Q p q s r := by
+    intro p q r s
+    have hpa := curvature_pair_antisymm_of_compat cov hc
+      (X := extend E p) (Y := extend E q) (Z := extend E r)
+      (W := extend E s)
+      (mdifferentiableAt_extend ..) (mdifferentiableAt_extend ..)
+      (contMDiffAt_extend' (k := 2) I E r)
+      (contMDiffAt_extend' (k := 2) I E s)
+      (hgC _ _ (contMDiffAt_extend' (k := 2) I E r)
+        (contMDiffAt_extend' (k := 2) I E s)) hP
+    simp only [extend_apply_self] at hpa
+    have hsw : g x r (curvatureOp cov (extend E p) (extend E q)
+        (extend E s) x) = Q p q s r := by
+      simp only [hQ]
+      exact hgsymm _ _
+    simp only [hQ]
+    linarith [hsw]
+  have hB : ∀ p q r s, Q p q r s + Q q r p s + Q r p q s = 0 := by
+    intro p q r s
+    have hb := bianchi_first_at cov htf
+      (contMDiffAt_extend' (k := 2) I E p)
+      (contMDiffAt_extend' (k := 2) I E q)
+      (contMDiffAt_extend' (k := 2) I E r)
+    have := congrArg (fun v ↦ g x v s) hb
+    simpa [hQ, map_add] using this
+  show Q a b c d = Q c d a b
+  linarith [hB a b c d, hB b c d a, hB c d a b, hB d a b c,
+    hA1 a b c d, hA1 b c a d, hA1 c a b d,
+    hA1 b c d a, hA1 c d b a, hA1 d b c a,
+    hA1 c d a b, hA1 d a c b, hA1 a c d b,
+    hA1 d a b c, hA1 a b d c, hA1 b d a c,
+    hA2 a b c d, hA2 b c a d, hA2 c a b d,
+    hA2 b c d a, hA2 c d b a, hA2 d b c a,
+    hA2 c d a b, hA2 d a c b, hA2 a c d b,
+    hA2 d a b c, hA2 a b d c, hA2 b d a c,
+    hA2 b a c d, hA2 a c b d, hA2 c b a d,
+    hA1 a c b d, hA1 c b a d, hA1 b a d c,
+    hA1 a d c b, hA1 d c a b, hA1 c a d b,
+    hA1 b a c d, hA1 a c d b]
+
 end CovariantDerivative
